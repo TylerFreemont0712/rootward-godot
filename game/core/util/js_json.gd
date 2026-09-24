@@ -17,6 +17,37 @@ static func stringify(value: Variant) -> String:
 	return "".join(parts)
 
 
+## JSON text read back the way JavaScript would hold it: a whole number is an int again, not 4.0. Returns null for text
+## that is not JSON. A saved run comes back looking exactly like the run that was saved.
+static func parse(text: String) -> Variant:
+	var json := JSON.new()
+	if json.parse(text) != OK:
+		return null
+	return whole_numbers(json.data)
+
+
+## A copy of `value` with every float that holds a whole number (and fits an int) turned into an int.
+static func whole_numbers(value: Variant) -> Variant:
+	match typeof(value):
+		TYPE_FLOAT:
+			var number: float = value
+			if number == floorf(number) and absf(number) < 9.0e18:
+				return int(number)
+			return number
+		TYPE_DICTIONARY:
+			var out := {}
+			var dictionary: Dictionary = value
+			for key: Variant in dictionary:
+				out[key] = whole_numbers(dictionary[key])
+			return out
+		TYPE_ARRAY:
+			var out: Array = []
+			for item: Variant in value:
+				out.append(whole_numbers(item))
+			return out
+	return value
+
+
 static func _write(value: Variant, parts: PackedStringArray) -> void:
 	match typeof(value):
 		TYPE_NIL:
