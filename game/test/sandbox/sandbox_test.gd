@@ -134,3 +134,59 @@ func test_job_folders_are_removed() -> void:
 	_run(SandboxJob.PYTHON, "print(1)")
 	var jobs := DirAccess.get_directories_at(OS.get_user_data_dir().path_join("sandbox/jobs"))
 	assert_int(jobs.size()).is_equal(0)
+
+
+# The old runners' malicious suite (ProgramMe packages/runners/test/*-safety.test.ts), ported.
+
+
+func test_runaway_recursion_is_a_runtime_error() -> void:
+	var py := _run(SandboxJob.PYTHON, "def f(n):\n    return f(n + 1)\nf(0)\n")
+	assert_str(py.status).override_failure_message(str(py)).is_equal(SandboxResult.RUNTIME_ERROR)
+	assert_str(py.message).contains("RecursionError")
+	var js := _run(SandboxJob.JAVASCRIPT, "function f(n) { return f(n + 1); }\nf(0);\n")
+	assert_str(js.status).override_failure_message(str(js)).is_equal(SandboxResult.RUNTIME_ERROR)
+
+
+func test_reasonable_recursion_still_works() -> void:
+	var py := _run(SandboxJob.PYTHON, "def f(n):\n    return 0 if n == 0 else 1 + f(n - 1)\nprint(f(900))\n")
+	assert_str(py.stdout).override_failure_message(str(py) + py.stderr).is_equal("900\n")
+	var js := _run(
+		SandboxJob.JAVASCRIPT, "function f(n) { return n === 0 ? 0 : 1 + f(n - 1); }\nconsole.log(f(5000));\n"
+	)
+	assert_str(js.stdout).override_failure_message(str(js) + js.stderr).is_equal("5000\n")
+
+
+func test_no_processes() -> void:
+	var system := _run(SandboxJob.PYTHON, "import os\nprint(os.system('echo hi'))\n")
+	assert_str(system.stdout).not_contains("hi\n0")
+	var sub := _run(SandboxJob.PYTHON, "import subprocess\nsubprocess.run(['echo', 'hi'])\n")
+	assert_str(sub.status).is_equal(SandboxResult.RUNTIME_ERROR)
+	var js := _run(SandboxJob.JAVASCRIPT, "require('child_process').execSync('echo hi');")
+	assert_str(js.status).is_equal(SandboxResult.RUNTIME_ERROR)
+	assert_str(js.stderr).contains("Cannot find module")
+
+
+func test_no_network_modules_or_globals_in_javascript() -> void:
+	var source := "console.log(typeof fetch, typeof XMLHttpRequest, typeof WebSocket, typeof std, typeof os);"
+	assert_str(_run(SandboxJob.JAVASCRIPT, source).stdout).is_equal(
+		"undefined undefined undefined undefined undefined\n"
+	)
+	for module: String in ["net", "http", "https", "dgram", "os"]:
+		var result := _run(SandboxJob.JAVASCRIPT, "require('%s');" % module)
+		assert_str(result.status).override_failure_message(module).is_equal(SandboxResult.RUNTIME_ERROR)
+
+
+func test_javascript_cannot_require_outside_the_job() -> void:
+	var files: Dictionary[String, String] = {"main.js": "require('../../etc/passwd');"}
+	var result := Sandbox.run(SandboxJob.of(SandboxJob.JAVASCRIPT, files, "main.js"))
+	assert_str(result.status).is_equal(SandboxResult.RUNTIME_ERROR)
+	assert_str(result.stderr).contains("Cannot find module")
+
+
+func test_the_wall_clock_backstop_kills_the_process() -> void:
+	var job := SandboxJob.of(SandboxJob.PYTHON, {"main.py": "while True:\n    pass\n"}, "main.py")
+	job.time_ms = 60000
+	job.wall_ms = 400
+	var result := Sandbox.run(job)
+	assert_str(result.status).is_equal(SandboxResult.TIMEOUT)
+	assert_int(result.wall_ms).is_less(2000)

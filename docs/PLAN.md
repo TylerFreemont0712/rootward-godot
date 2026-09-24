@@ -39,14 +39,16 @@ docs/                 this plan, ADRs, the learning log
 - [x] AGENT.md, CLAUDE.md, this plan, ADR-0001.
 
 ### Phase 1: the sandbox (go / no-go, first because it is the riskiest)
-- [ ] Choose the runtime by measurement: `godot-wasm` in-process versus the `wasmtime` CLI as a sidecar process, with
-      QuickJS (JavaScript) and CPython (Python) as WASI modules, versions pinned and checksums recorded.
-- [ ] `Sandbox.run(job)` in GDScript: files, stdin, a time limit, a memory cap, no network, no filesystem beyond the
-      job; results as statuses (`ok`, `runtime-error`, `timeout`, `oom`, `sandbox-error`) with stdout and stderr.
-- [ ] The Shardrun spell harness (the old `spellsJob`) runs a spell of real shards in both languages and returns the
-      same bolts and trace as the TypeScript server.
-- [ ] Limits proven: an endless loop stops on time, a memory bomb on the cap, file and network access fail.
-- [ ] Timing measured (cold start and per cast, both languages) and written into ADR-0002.
+- [x] Runtime chosen: the `wasmtime` CLI as a sidecar process per job (godot-wasm has no WASI filesystem, so no
+      CPython), with CPython 3.14.7 and QuickJS-ng 0.17.0 as WASI modules, pinned by SHA-256
+      (`scripts/fetch-sandbox.sh`).
+- [x] `Sandbox.run(job)` in GDScript: files, stdin, a time limit, a memory cap, an output cap, no network, no files
+      beyond the job; the old contract's statuses. `Background.run` keeps it off the main thread.
+- [x] The Shardrun spell harness returns the same bolts, traces, work and failures as the TypeScript server for 105
+      spells x 3 inputs x 2 languages; the io grader grades tally-wisp as the old runners did.
+- [x] Limits proven: the old runners' malicious suite ported and green, plus a read-only standard library and a
+      symlink escape on cleanup.
+- [x] Timing measured and written into ADR-0002: a Shardrun turn is 74 ms in Python and 11 ms in JavaScript.
 
 ### Phase 2: the Shardrun rules, proven against the old engine
 - [ ] `tools/fixtures/shardrun.ts`: seeded runs of the TypeScript engine (map layouts, command sequences with every

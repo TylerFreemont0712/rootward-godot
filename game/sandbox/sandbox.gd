@@ -18,6 +18,12 @@ const EXIT_RUNTIME_ERROR := 70
 const EXIT_COMPILE_ERROR := 71
 const EXIT_OUT_OF_MEMORY := 72
 const POLL_MS := 2
+## LEARN: QuickJS keeps its C stack inside the module's own memory, a region of about 2 MB fixed when qjs-wasi was
+## built. QuickJS checks its depth against --stack-size and throws a catchable RangeError; set above that region, the
+## check comes too late and the whole engine traps. 1792 KB sits just under it, which allows about 5000 nested calls
+## (the old game's bar). The native Wasm stack gets 8 MB so it never runs out first.
+const JS_STACK_KB := 1792
+const WASM_STACK_BYTES := 8 * 1024 * 1024
 const READ_CHUNK := 65536
 
 
@@ -75,6 +81,7 @@ static func _arguments(job: SandboxJob, dir: String) -> PackedStringArray:
 	var args := PackedStringArray(["run", "--allow-precompiled"])
 	args.append_array(["-W", "timeout=%dms" % job.time_ms])
 	args.append_array(["-W", "max-memory-size=%d" % (job.memory_mb * 1024 * 1024)])
+	args.append_array(["-W", "max-wasm-stack=%d" % WASM_STACK_BYTES])
 	args.append_array(["--dir", "%s::/work" % dir])
 	match job.language:
 		SandboxJob.PYTHON:
@@ -88,7 +95,8 @@ static func _arguments(job: SandboxJob, dir: String) -> PackedStringArray:
 		SandboxJob.JAVASCRIPT:
 			var memory_kb := job.memory_mb * 1024
 			args.append_array([runtime.path_join("js/qjs.cwasm"), "--std", "--script"])
-			args.append_array(["--memory-limit", str(memory_kb), "/work/.rootward/launch.js", job.entry])
+			args.append_array(["--memory-limit", str(memory_kb), "--stack-size", str(JS_STACK_KB)])
+			args.append_array(["/work/.rootward/launch.js", job.entry])
 	return args
 
 

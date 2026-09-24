@@ -2,12 +2,15 @@
 
 # Commands (Godot 4.7.2 at `~/godot`, `godot` on PATH)
 
+- First, on a fresh checkout: `scripts/fetch-sandbox.sh` installs the sandbox runtime (wasmtime, CPython and
+  QuickJS for WASI, about 100 MB, pinned by SHA-256) into `game/sandbox/runtime/`. The sandbox tests need it.
 - Tests (gdUnit4 6.2.1, headless): `scripts/test.sh`; one suite: `scripts/test.sh -a res://test/core/rng_test.gd`.
   It runs an import pass first, so a new `class_name` is visible.
 - Lint: `scripts/lint.sh` (gdlint and a gdformat check through `uvx`, gdtoolkit 4.5.0 pinned). Format a file you
   wrote with `uvx --from gdtoolkit==4.5.0 gdformat --line-length 120 <file>`.
 - Screenshot a scene: `scripts/screenshot.sh res://scenes/boot/boot.tscn shots/boot.png [frames]`. It renders on the
   GPU under a private Xvfb display, so nothing opens on the desktop. `shots/` is ignored.
+- Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
 - Run the game: `godot --path game`. Open the editor: `godot --path game -e`.
 - Differential fixtures from the old engine: `node tools/fixtures/<name>.ts` writes `game/test/fixtures/<name>.json`.
   It imports `../ProgramMe` directly, so the old repo must be checked out beside this one with `node_modules`.
