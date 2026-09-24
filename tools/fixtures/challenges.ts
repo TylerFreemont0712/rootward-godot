@@ -1,7 +1,8 @@
-// Writes game/test/fixtures/challenges.json: challenges graded by the old runners (QuickJS and Pyodide) with their
+// Writes game/test/fixtures/challenges.json.gz: challenges graded by the old runners (QuickJS and Pyodide) with their
 // reference solutions, starters, and a wrong answer, over visible and hidden io cases. The Godot grader must agree.
 // Run: node tools/fixtures/challenges.ts   (needs ../ProgramMe with its node_modules installed)
 import { writeFileSync } from "node:fs";
+import { gzipSync } from "node:zlib";
 import path from "node:path";
 import { resolveStdin } from "../../../ProgramMe/packages/content-schema/src/index.ts";
 import { buildIoJob, selectIoCases } from "../../../ProgramMe/packages/content-tools/src/jobs.ts";
@@ -53,6 +54,6 @@ for (const id of ids) {
   });
 }
 await runners.python.dispose?.();
-const out = new URL("../../game/test/fixtures/challenges.json", import.meta.url);
-writeFileSync(out, `${JSON.stringify({ challenges }, null, 1)}\n`);
+const out = new URL("../../game/test/fixtures/challenges.json.gz", import.meta.url);
+writeFileSync(out, gzipSync(JSON.stringify({ challenges })));
 console.log(`wrote ${out.pathname}`);

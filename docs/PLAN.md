@@ -51,10 +51,12 @@ docs/                 this plan, ADRs, the learning log
 - [x] Timing measured and written into ADR-0002: a Shardrun turn is 74 ms in Python and 11 ms in JavaScript.
 
 ### Phase 2: the Shardrun rules, proven against the old engine
-- [ ] `tools/fixtures/shardrun.ts`: seeded runs of the TypeScript engine (map layouts, command sequences with every
-      snapshot and log, relic conditions, scores) written as fixtures.
-- [ ] `game/core/shardrun/`: map, engine (`step(state, command, catalog)`), relic conditions, score.
-- [ ] Every fixture reproduced exactly, and the old unit tests' cases ported.
+- [x] `tools/fixtures/shardrun.ts`: 36 seeded runs (3,789 steps with every snapshot, refusal and preview), maps,
+      pricing, clamps, relic modifiers and scores from the TypeScript engine.
+- [x] `game/core/shardrun/`: map, engine (`Shardrun.step(state, command, catalog)`), commands, dev commands, battle,
+      rules, relic conditions, score (ADR-0003; the state's shape in `docs/shardrun-state.md`).
+- [x] Every fixture reproduced exactly, and the old unit tests' cases ported by recording the 2,517 calls they make
+      (`tools/fixtures/record/`) and replaying them.
 
 ### Phase 3: Shardrun content
 - [ ] `tools/content/convert.ts`: the Shardrun part of the old packs (shards, relics, foes, `run.yaml`) and

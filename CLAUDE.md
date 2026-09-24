@@ -12,8 +12,13 @@
   GPU under a private Xvfb display, so nothing opens on the desktop. `shots/` is ignored.
 - Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
 - Run the game: `godot --path game`. Open the editor: `godot --path game -e`.
-- Differential fixtures from the old engine: `node tools/fixtures/<name>.ts` writes `game/test/fixtures/<name>.json`.
-  It imports `../ProgramMe` directly, so the old repo must be checked out beside this one with `node_modules`.
+- Differential fixtures from the old engine: `node tools/fixtures/<name>.ts` writes `game/test/fixtures/<name>.json`
+  (big ones `.json.gz`). It imports `../ProgramMe` directly, so the old repo must be checked out beside this one with
+  `node_modules`. The old engine's unit tests are recorded with
+  `cd ../ProgramMe/packages/core && npx vitest run --config ../../../Rootward/tools/fixtures/record/vitest.config.mts`.
+- Parse-check every script at once (faster than a test run for typos): `scripts/check.sh`.
+- A throwaway probe script: run it with `< /dev/null` (`godot --headless --path game -s res://probe.gd < /dev/null`),
+  or a script error drops Godot into its interactive debugger and it waits forever.
 
 # Conventions
 
@@ -23,6 +28,9 @@
   other code refers to. Content JSON is snake_case, and so is runtime state (one naming scheme end to end).
 - `game/core/` is pure: `RefCounted` classes and static functions over Dictionaries and typed arrays, no nodes, no
   file or network I/O, all randomness from `Rng`. State is plain data (Dictionaries) so it saves as JSON.
+- `game/core/shardrun/` mirrors the old engine's semantics exactly (ADR-0003): `JsMath.js_round` for `Math.round`,
+  float division wherever JavaScript divided, and `JsJson.stringify` for anything sent to shard code.
+- Reserved or shadowing names to avoid: `trait` (a keyword in 4.7), `log` (the built-in logarithm).
 - 32-bit integer maths (hashes, RNG) masks with `& 0xFFFFFFFF` and multiplies through `Rng.imul`.
 - Tests live in `game/test/`, mirror the source tree, and end in `_test.gd`. Fixtures from the old engine are compared
   exactly; floats that were 32-bit words are compared as words (`Fixtures.word`).

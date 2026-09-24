@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 
 
 func test_grades_match_the_old_runners() -> void:
-	var fixture: Dictionary = Fixtures.load_json("challenges")
+	var fixture: Dictionary = Fixtures.load_json_gz("challenges")
 	for challenge: Dictionary in fixture.challenges:
 		for attempt: Dictionary in challenge.attempts:
 			var files: Dictionary[String, String] = {}

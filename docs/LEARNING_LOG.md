@@ -36,3 +36,15 @@ calls `range(power)`, so the difference cannot slip back in unnoticed.
 A test passed on the first try, so it was checked by breaking the code on purpose (a "mutant"): with the symlink guard
 removed, cleanup deleted a file outside the job and the test failed, as it should. Another passed with the code broken,
 which showed the fixture was too gentle (no spell ever had more than six bolts). Mutate once whenever a test is new.
+
+## Porting by replay (`game/test/core/shardrun/`, ADR-0003)
+Three kinds of fixture pin the Shardrun port: a seeded "player" that plays whole runs against the old engine (every
+snapshot recorded), direct cases for the pure functions, and a recording of every call the old unit tests made (a
+Vitest alias swaps the engine for a wrapper that writes calls down, `tools/fixtures/record/`). The port matched all of
+them on its first run, which is exactly when to try breaking it on purpose: mutants that survive are either
+equivalent code or holes in the fixtures, and it is worth knowing which.
+
+## When JSON is not quite JSON (`game/test/support/fixtures.gd`)
+Godot reads "0.9750000000000001" as 0.975: its number parser is not correctly rounded at 17 digits. Short decimals are
+fine. A comparison that forgives one unit in the last place (`Fixtures.same_number`) is honest about that without
+hiding real differences.
