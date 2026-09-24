@@ -1,0 +1,16 @@
+# Godot
+game/.godot/
+game/reports/
+game/addons/gdUnit4/reports/
+*.import.tmp
+# Exports
+build/
+# Python
+__pycache__/
+.venv/
+# The player's list; never committed
+WIP.md
+# Pipeline caches and heavy intermediates (renders, models, Mixamo takes)
+pipeline/cache/
+*.blend1
+shots/
