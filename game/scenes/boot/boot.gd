@@ -1,12 +1,16 @@
 extends Control
-## The first scene: for now it only says the game is alive. Phase 4 replaces it with the title screen.
+## The first scene: loads what every screen shares (Game.boot), then hands over to the title. A screen that cannot
+## start (broken content) says so on the title rather than here.
 
 
 func _ready() -> void:
-	var label := Label.new()
-	label.text = "Rootward"
-	label.add_theme_font_size_override("font_size", 64)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	theme = UiTheme.shared()
+	var ground := ColorRect.new()
+	ground.color = UiTheme.GROUND
+	ground.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(ground)
+	var label := Ui.label("Lowering a lantern into the Salvage…", "Narration")
+	label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	add_child(label)
+	Game.boot()
+	Game.go(Game.TITLE)

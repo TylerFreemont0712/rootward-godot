@@ -58,3 +58,40 @@ studying: they make "this field only exists for that kind" checkable.
 ## Keeping comments when converting formats (`tools/content/convert.ts`)
 `JSON.stringify(yaml.parse(text))` would have dropped every comment. Walking the YAML *document* (its syntax tree)
 instead of its value keeps each comment attached to the key it explained.
+
+## Coroutines: `await` without freezing the game (`game/app/shardrun_session.gd`)
+A GDScript function that contains `await` pauses there and lets the game go on drawing; it resumes when the awaited
+signal fires or the awaited coroutine returns. A cast runs its spell in the sandbox on a thread (`Background.run`
+checks every frame whether the thread is done), so the screen stays alive while Python thinks. Everything that calls a
+coroutine has to `await` it as well, all the way up to the button that started it (`ShardrunScreen.send`).
+
+## One writer, many readers (ADR-0006)
+Screens never change the run. They send a command to `ShardrunSession`, which asks the rules, saves, and hands back the
+state before and after. That single door is why a refused command changes nothing, why saves are always whole, and
+why a test can drive the real screen with a bot.
+
+## The same run for the preview and the cast (`game/app/spell_runs.gd`)
+A shard may be random, so "run it again when the player casts" could land something other than what the preview
+promised. Instead every run is remembered by its exact input, written out as JSON text (`SpellRuns.key_of`): same
+spell, same battle, same text, same run. A cache key made of the whole input is a simple way to be sure two things are
+"the same".
+
+## A 3D actor on a 2D screen (`game/scenes/shardrun/fight/hero_view.gd`)
+A `SubViewport` with `own_world_3d` and a transparent background is a little 3D world of its own; a
+`SubViewportContainer` shows what its camera sees as a picture in the interface. The fight stays a 2D screen of
+controls, with one 3D character standing in the painted arena.
+
+## Hit-stop (`game/scenes/shardrun/fight/battle_stage.gd`)
+Freezing the action for 70 ms on a heavy hit makes it feel heavy. `Engine.time_scale` slows every timer and tween at
+once; the timer that ends the freeze must ignore the time scale (the fourth argument of `create_timer`), or it would be
+frozen too.
+
+## A new `class_name` needs an import pass
+Godot finds classes by name through a cache it rebuilds on import. A script that uses a class added since the last
+import fails to compile, and a script error in a `-s` run can leave Godot waiting in its debugger. `scripts/test.sh`
+and `scripts/screenshot.sh` run `godot --headless --import` first for that reason; a hand-run probe should too.
+
+## Saving without ever leaving half a file (`game/app/save_store.gd`)
+Write the new save to `spellbook.json.tmp`, then rename it over `spellbook.json`. A rename on the same disk is atomic:
+either the old file or the new one is there, never a torn one, even if the game crashes mid-write.
+

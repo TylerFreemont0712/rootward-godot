@@ -7,9 +7,11 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 scene="$1"; out="$2"; frames="${3:-30}"
 case "$out" in /*) ;; *) out="$root/$out" ;; esac
 GODOT="${GODOT_BIN:-godot}"
+# An import pass first, so a class_name added since the last one is known (otherwise its script fails to compile).
+"$GODOT" --headless --import --path "$root/game" < /dev/null > /dev/null 2>&1 || true
 cmd=("$GODOT" --path "$root/game" --resolution 1600x900 -s res://tools/screenshot.gd -- "$scene" "$out" "$frames")
 if [ -n "${SHOT_DISPLAY:-}" ]; then
-	DISPLAY="$SHOT_DISPLAY" "${cmd[@]}"
+	DISPLAY="$SHOT_DISPLAY" "${cmd[@]}" < /dev/null
 else
-	xvfb-run -a -s "-screen 0 1600x900x24" "${cmd[@]}"
+	xvfb-run -a -s "-screen 0 1600x900x24" "${cmd[@]}" < /dev/null
 fi

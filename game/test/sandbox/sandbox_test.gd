@@ -131,9 +131,22 @@ func test_a_symlink_left_behind_is_not_followed_on_cleanup() -> void:
 
 
 func test_job_folders_are_removed() -> void:
+	Sandbox.sweep_stale()
 	_run(SandboxJob.PYTHON, "print(1)")
-	var jobs := DirAccess.get_directories_at(OS.get_user_data_dir().path_join("sandbox/jobs"))
+	var jobs := DirAccess.get_directories_at(Sandbox.jobs_dir())
 	assert_int(jobs.size()).is_equal(0)
+
+
+func test_folders_a_killed_game_left_behind_are_swept() -> void:
+	var stale := Sandbox.jobs_dir().path_join("left-behind")
+	var fresh := Sandbox.jobs_dir().path_join("still-running")
+	DirAccess.make_dir_recursive_absolute(stale.path_join(".rootward"))
+	DirAccess.make_dir_recursive_absolute(fresh.path_join(".rootward"))
+	OS.execute("touch", ["-d", "2 hours ago", stale])
+	assert_int(Sandbox.sweep_stale()).is_equal(1)
+	assert_bool(DirAccess.dir_exists_absolute(stale)).is_false()
+	assert_bool(DirAccess.dir_exists_absolute(fresh)).is_true()
+	Sandbox._remove_dir(fresh)
 
 
 # The old runners' malicious suite (ProgramMe packages/runners/test/*-safety.test.ts), ported.

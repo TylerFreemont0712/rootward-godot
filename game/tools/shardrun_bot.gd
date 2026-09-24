@@ -13,6 +13,8 @@ const ROOM_ORDER: Array[String] = ["fight", "rest", "forge", "treasure", "elite"
 const STALEMATE_TURNS := 50
 
 var session: ShardrunSession
+## A kind of room to walk into whenever one is open (a tool heading for a forge, say); "" for the usual order.
+var prefer := ""
 var refusals: Array[Dictionary] = []
 var steps := 0
 
@@ -83,7 +85,10 @@ func _pick_room(state: Dictionary) -> Dictionary:
 	if rooms.is_empty():
 		return {}
 	rooms.sort_custom(
-		func(a: Dictionary, b: Dictionary) -> bool: return ROOM_ORDER.find(a.kind) < ROOM_ORDER.find(b.kind)
+		func(a: Dictionary, b: Dictionary) -> bool:
+			if (a.kind == prefer) != (b.kind == prefer):
+				return a.kind == prefer
+			return ROOM_ORDER.find(a.kind) < ROOM_ORDER.find(b.kind)
 	)
 	return {"type": "enter", "node_id": rooms[0].id}
 

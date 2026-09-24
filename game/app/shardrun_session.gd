@@ -60,6 +60,9 @@ func start(language: String, difficulty: String, seed := "", sandbox := false) -
 
 ## Applies one command. Returns {ok: true, before, state, replay} or {ok: false, error: {code, message}}; `replay` is
 ## the cast's run step by step ({spell_id, shards, run}) for the code view, or {} for anything else.
+## LEARN: a function that contains `await` is a coroutine: it pauses there, the game keeps drawing frames, and it
+## carries on when the awaited thing is done. Callers must `await` it too, or they get the pause instead of the result.
+## `busy` makes a second command wait for the first, so two quick clicks cannot both start from the same state.
 func command(request: Dictionary) -> Dictionary:
 	if state.is_empty():
 		return Shardrun.refuse("no-run", "There is no run underway.")

@@ -12,11 +12,12 @@ Each phase ends with tests green, screenshots of anything visible, this file tic
 
 ```
 game/                 the Godot project (res://)
+  app/                the glue: the run session, spell runs off the main thread, saves, settings, sound (ADR-0006)
   core/               pure rules: rng, shardrun (engine, map, relics, score)
   content/            the JSON packs and their loader and validators
   sandbox/            running player code: the runner, its protocol, limits, the spell harness
-  scenes/             boot, title, shardrun (map, fight, rewards), options
-  ui/                 theme, fonts, shared controls (the code view, shard cards)
+  scenes/             boot, title, shardrun (map, workbench, rooms, fight: stage, foes, spell cards, log playback)
+  ui/                 theme, fonts, shared controls (the code view, shard and relic cards, options)
   characters/         imported characters, the toon shader, animation trees
   assets/             art and audio the pipeline exports (imported by Godot)
   i18n/               en and ja
@@ -75,11 +76,19 @@ docs/                 this plan, ADRs, the learning log
       audio re-encoded as Ogg Vorbis from the raw renders, with loop points.
 
 ### Phase 5: the spellbook Shardrun, playable
-- [ ] Title and a menu to start a run: language, difficulty.
-- [ ] The layer map as a place; rooms, rewards, forge, rest, treasure, relics.
-- [ ] The fight: the stage over the painted arenas, foes and intents, HP and block, the code view playing the spell's
-      code line by line, a preview the cast lands exactly, damage numbers, hit-stop.
-- [ ] Saves in `user://`, one run per playstyle.
+- [x] Title and a menu to start a run: language, difficulty; continue the run underway, or see how the last one ended.
+- [x] The layer map as a place (chambers and corridors, the open rooms glowing); rewards, forge, rest, treasure,
+      relics; the spellbook workbench with drag and drop (or click, then click) and a shard inspector with the code.
+- [x] The fight: the stage over the painted arenas with Emberfox in 3D, foes and intents, HP and block, the code view
+      playing the spell's code line by line with the measured numbers, a preview the cast lands exactly (the same
+      sandbox run, ADR-0006), bolts in flight, damage numbers, hit-stop and shake, skippable.
+- [x] Saves in `user://`, one run per playstyle, written atomically; a save that cannot continue is set aside.
+- [x] Options (code speed, predictions, shake, music and sound volume), stats, abandon, the end of a run with its score.
+- [x] Proof: a bot plays whole runs through the session and through the real run screen in tests; screenshots of
+      every screen from `tools/shardrun_shot.tscn`.
+
+Not yet (next candidates): the screens in Japanese (content is translated; the interface strings are not), the dev
+drawer for sandbox runs, a Codex, the rules' modifiers table in Stats, keyboard focus through the map.
 
 ### Phase 6: characters and spells in 3D
 - [ ] Emberfox as the first character: glTF, a toon shader (two tones, rim, outline), clips in an AnimationTree with

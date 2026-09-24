@@ -201,8 +201,29 @@ static func _last_line(text: String, fallback: String) -> String:
 	return fallback
 
 
+static func jobs_dir() -> String:
+	return OS.get_user_data_dir().path_join("sandbox/jobs")
+
+
+## Removes job folders left behind by a game that was killed in the middle of a job (a finished job removes its own),
+## ones older than `max_age_s`, far past any job's wall-clock limit. Returns how many were removed. Game.boot calls it.
+static func sweep_stale(max_age_s := 600) -> int:
+	var base := jobs_dir()
+	if not DirAccess.dir_exists_absolute(base):
+		return 0
+	var now := int(Time.get_unix_time_from_system())
+	var removed := 0
+	for name in DirAccess.get_directories_at(base):
+		var dir := base.path_join(name)
+		var stamp := int(FileAccess.get_modified_time(dir))
+		if stamp > 0 and now - stamp > max_age_s:
+			_remove_dir(dir)
+			removed += 1
+	return removed
+
+
 static func _make_job_dir() -> String:
-	var base := OS.get_user_data_dir().path_join("sandbox/jobs")
+	var base := jobs_dir()
 	var crypto := Crypto.new()
 	var dir := base.path_join(crypto.generate_random_bytes(8).hex_encode())
 	if DirAccess.make_dir_recursive_absolute(dir.path_join(".rootward")) != OK:

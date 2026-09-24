@@ -49,6 +49,15 @@ static func play(id: String, volume := 1.0, pitch := 1.0) -> void:
 	_start(voice)
 
 
+## Stops everything and lets go of the streams. At exit, a stream still playing is otherwise reported as leaked.
+static func silence() -> void:
+	for player in _music + _voices:
+		if is_instance_valid(player):
+			player.stop()
+			player.stream = null
+	_music_id = ""
+
+
 ## The first sound can come before the players have joined the tree (they join deferred); it plays once they have.
 static func _start(player: AudioStreamPlayer) -> void:
 	if player.is_inside_tree():

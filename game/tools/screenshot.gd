@@ -18,12 +18,17 @@ func _initialize() -> void:
 		push_error("cannot load scene %s" % args[0])
 		quit(2)
 		return
-	root.add_child(packed.instantiate())
+	var scene := packed.instantiate()
+	root.add_child(scene)
 	var frames := int(args[2]) if args.size() > 2 else DEFAULT_FRAMES
-	_capture.call_deferred(args[1], frames)
+	_capture.call_deferred(scene, args[1], frames)
 
 
-func _capture(path: String, frames: int) -> void:
+## A scene that needs time to set itself up (a tool playing a run to a moment) says `shot_ready`; the frames are counted
+## from then.
+func _capture(scene: Node, path: String, frames: int) -> void:
+	if scene.has_signal("shot_ready") and not scene.get_meta("shot_ready", false):
+		await scene.shot_ready
 	for i in frames:
 		await process_frame
 	await RenderingServer.frame_post_draw
@@ -35,4 +40,5 @@ func _capture(path: String, frames: int) -> void:
 		quit(1)
 		return
 	print("screenshot: %s (%dx%d)" % [path, image.get_width(), image.get_height()])
+	Background.finish_all()
 	quit(0)

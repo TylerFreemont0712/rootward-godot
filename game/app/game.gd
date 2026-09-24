@@ -23,6 +23,7 @@ static func boot() -> bool:
 	if _loaded:
 		return diagnostics.all(func(d: Dictionary) -> bool: return d.severity != "error")
 	_loaded = true
+	Sandbox.sweep_stale()
 	var loaded := ContentLoader.load_shardrun()
 	catalog = loaded.catalog
 	diagnostics = loaded.diagnostics
@@ -32,6 +33,11 @@ static func boot() -> bool:
 	if loaded.ok:
 		session.load_saved()
 	Sound.set_volumes(Settings.music_volume, Settings.sound_volume)
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree != null and tree.root.get_node_or_null("Lifecycle") == null:
+		var lifecycle := Lifecycle.new()
+		lifecycle.name = "Lifecycle"
+		tree.root.add_child.call_deferred(lifecycle)
 	return loaded.ok
 
 
@@ -51,6 +57,17 @@ static func languages() -> Array[String]:
 		if Sandbox.is_available(language):
 			usable.append(language)
 	return usable
+
+
+## Leaves the game tidily: running sandbox jobs finish, the music stops, and the audio server gets two frames to let go
+## of its streams before the tree ends (quitting mid-song otherwise reports them as leaked).
+static func quit() -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	Background.finish_all()
+	Sound.silence()
+	await tree.process_frame
+	await tree.process_frame
+	tree.quit()
 
 
 static func go(scene: String) -> void:

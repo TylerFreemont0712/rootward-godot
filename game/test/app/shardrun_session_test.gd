@@ -15,6 +15,11 @@ func before_test() -> void:
 	_clear(ROOT)
 
 
+func after_test() -> void:
+	# A command starts the next turn's spells in the background; they finish here, not in another suite's test.
+	Background.finish_all()
+
+
 func after() -> void:
 	_clear(ROOT)
 
