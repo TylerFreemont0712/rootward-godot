@@ -36,6 +36,7 @@ docs/                 this plan, ADRs, the learning log
 - [x] gdUnit4 6.2.1 as an addon; `scripts/test.sh` runs every suite headless.
 - [x] Static typing enforced (untyped declarations are errors); gdlint/gdformat (gdtoolkit 4.5.0) as `scripts/lint.sh`.
 - [x] `scripts/screenshot.sh`: a scene rendered on the GPU under Xvfb and saved to PNG.
+- [x] Codex MCP workflow: the Godot CLI and Blender servers plus Rootward's editor bridge are configured and live-tested.
 - [x] `Rng` ported bit for bit and proven against fixtures from the TypeScript engine (the first differential test).
 - [x] AGENT.md, CLAUDE.md, this plan, ADR-0001.
 
