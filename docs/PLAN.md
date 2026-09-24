@@ -67,12 +67,12 @@ docs/                 this plan, ADRs, the learning log
 - [x] Japanese overlays load, keyed by the English text; `scripts/locale.sh ja` reports 335 of 335 translated.
 
 ### Phase 4: the asset pipeline into Godot (smooth by design)
-- [ ] One manifest for art, characters and audio under `pipeline/`, and one command per asset that renders it and
-      writes it straight into `game/assets/` (imported by Godot, listed in a catalog, with a fallback).
-- [ ] Characters: Blender to glTF with the Mixamo clips as named animations, a check that the export imports in
-      Godot, and a turntable screenshot.
-- [ ] ComfyUI art (arenas, foes, portraits) and audio carried over from the old repo's outputs, re-rendered only when
-      needed.
+- [x] `pipeline/` with one manifest and one command per kind (`scripts/art.sh`, `audio.sh`, `character.sh`), writing
+      straight into the Godot project with a GPU guard; `Art` loads by id with a null fallback (ADR-0005).
+- [x] Characters: Emberfox's rig to glTF with all 11 clips, imported and tested, toon shader, ink, spring bones;
+      contact sheet and close-up screenshots.
+- [x] The Shardrun's 190 pictures regenerated from the cached renders (pixel-identical to the old game) and its
+      audio re-encoded as Ogg Vorbis from the raw renders, with loop points.
 
 ### Phase 5: the spellbook Shardrun, playable
 - [ ] Title and a menu to start a run: language, difficulty.

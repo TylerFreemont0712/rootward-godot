@@ -15,3 +15,4 @@ pipeline/cache/
 *.blend1
 shots/
 game/sandbox/runtime/
+pipeline/sources/vendor

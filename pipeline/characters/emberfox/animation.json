@@ -1,0 +1,19 @@
+{
+  "_about": "Every clip the game plays, as explicit key poses from the Mixamo takes on her rig (ADR-0034). A clip is a list of keys: `take` and `frames` [first, last, step] pick the source frames that become drawings, and `hold` repeats a drawing for emphasis ({source frame: extra frames}). `from`/`to` ease the first/last `ease` drawings into an anchor pose (`rest` is the idle's first frame, `<clip>:last` another clip's last drawing), so any clip cuts into any other. Drawings play at `fps` with no interpolation between them (limited animation, as Guilty Gear Xrd does it): 15 fps of drawings from 30 fps capture is animating on twos. `tail`/`ears` scale the procedural follow-through; `release` is where a spell leaves (a fraction, or `auto`: the drawing where a hand reaches furthest toward the foe).",
+  "view": { "turn": 35, "frame": [800, 700], "figure_px": 540, "baseline": 0.964, "root_at": 0.42 },
+  "rest": { "take": "mx-breathing-idle", "frame": 1 },
+  "clips": {
+    "idle-breathe": { "take": "mx-breathing-idle", "frames": [1, 118, 3], "fps": 10, "loop": true, "blend": true, "from": "rest", "to": "rest", "ease": 6, "tail": 1.0 },
+    "idle-fidget": { "take": "mx-breathing-idle", "frames": [150, 270, 3], "fps": 10, "after": "idle-breathe", "idleAfterMs": 7000, "blend": true, "from": "rest", "to": "rest", "ease": 6, "tail": 1.6, "ears": "flick" },
+    "windup": { "take": "mx-magic-spell-casting", "frames": [1, 37, 2], "fps": 15, "hold": "last", "after": "channel", "from": "rest", "ease": 4, "tail": 1.0 },
+    "channel": { "take": "mx-magic-spell-casting", "frames": [37, 97, 3], "fps": 10, "loop": true, "blend": true, "from": "windup:last", "to": "windup:last", "ease": 5, "tail": 0.8 },
+    "cast-light": { "take": "mx-standing-1h-magic-attack-01", "frames": [4, 70, 2], "fps": 15, "after": "idle-breathe", "from": "windup:last", "to": "rest", "ease": 4, "hold": { "22": 2 }, "release": "auto", "tail": 1.4 },
+    "cast-sigil": { "take": "mx-standing-2h-magic-attack-01", "frames": [4, 82, 2], "fps": 15, "after": "idle-breathe", "from": "windup:last", "to": "rest", "ease": 4, "hold": { "30": 2 }, "release": 0.44, "hand": "Left", "tail": 1.4 },
+    "cast-heavy": { "take": "mx-standing-2h-magic-area-attack-01", "frames": [4, 90, 2], "fps": 15, "after": "idle-breathe", "from": "windup:last", "to": "rest", "ease": 4, "hold": { "42": 3 }, "release": 0.46, "hand": "both", "tail": 1.8 },
+    "guard": { "take": "mx-standing-block-idle", "frames": [1, 43, 2], "fps": 15, "after": "idle-breathe", "from": "rest", "to": "rest", "ease": 5, "tail": 0.8 },
+    "hurt": { "take": "mx-standing-react-small-from-front", "frames": [1, 39, 2], "fps": 15, "after": "idle-breathe", "from": "rest", "to": "rest", "ease": 3, "tail": 2.0, "ears": "flat" },
+    "victory": { "take": "mx-victory", "frames": [1, 99, 2], "fps": 15, "hold": "last", "blend": true, "from": "rest", "ease": 4, "tail": 1.8 },
+    "death": { "take": "mx-dying", "frames": [1, 79, 2], "fps": 15, "hold": "last", "from": "rest", "ease": 3, "tail": 1.2, "ears": "flat" }
+  },
+  "casts": { "light": ["cast-light", "cast-sigil"], "heavy": "cast-heavy" }
+}

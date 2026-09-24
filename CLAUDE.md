@@ -13,6 +13,11 @@
 - Check all content and run every shard's worked examples in the sandbox: `scripts/validate.sh` (`--no-exec` to skip
   the sandbox). Translation coverage: `scripts/locale.sh ja [--missing]`.
 - Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
+- Assets (pipeline/README.md): `scripts/art.sh --only '<ids>'`, `scripts/audio.sh --only '<ids>'` (`--reprocess` for
+  post-processing only, no GPU), `scripts/character.sh <id>` (Blender export, import, screenshots in `shots/`).
+  Never ComfyUI and Blender at once; the scripts refuse.
+- Godot MCP (`godot`, user scope, `@coding-solo/godot-mcp@0.1.1`): launch the editor, run the project and read its
+  debug output, create and edit scenes. Tests and screenshots still go through the scripts above.
 - Run the game: `godot --path game`. Open the editor: `godot --path game -e`.
 - Differential fixtures from the old engine: `node tools/fixtures/<name>.ts` writes `game/test/fixtures/<name>.json`
   (big ones `.json.gz`). It imports `../ProgramMe` directly, so the old repo must be checked out beside this one with

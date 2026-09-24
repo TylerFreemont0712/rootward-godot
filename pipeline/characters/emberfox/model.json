@@ -1,0 +1,76 @@
+{
+  "id": "emberfox",
+  "name": "Emberfox",
+  "_about": "A skin built as a generated 3D model (ADR-0034): concept.py draws this paragraph in an A-pose, TRELLIS.2 builds the model, Blender rigs, poses and toon-renders it.",
+  "character": "1girl, young teen fox girl mage, (orange fox ears with white inner fur:1.2), (one large fluffy orange fox tail with a white tip, sticking out sideways away from her legs:1.35), short orange-red bob hair with side bangs, bright amber eyes, cheerful smile, (fitted cropped teal jacket:1.4) with gold trim and short sleeves, white shirt, red neck ribbon, brown leather belt with a small pouch, dark navy shorts, black tights, brown ankle boots, fingerless brown gloves",
+  "negative": "nine tails, multiple tails, kimono, dress, skirt, hakama, animal paws, furry, anthro, orange jacket, red jacket, brown jacket, tail between legs, tail behind legs",
+  "accent": "#ff8a3d",
+  "fx": {
+    "flight": "arcane",
+    "secondary": "#3ec7c2"
+  },
+  "_trim": "Boxes (metres, the stood-up model: x across, y back, z up) of generator strays to delete: her hair antenna came out as two balls between the ears, and a ribbon end as a strand flung behind the neck.",
+  "trim": [
+    {
+      "min": [
+        -0.07,
+        -0.02,
+        1.43
+      ],
+      "max": [
+        0.07,
+        0.3,
+        1.6
+      ]
+    },
+    {
+      "min": [
+        -0.06,
+        0.17,
+        1.05
+      ],
+      "max": [
+        0.06,
+        0.4,
+        1.3
+      ]
+    },
+    {
+      "min": [
+        -0.06,
+        -0.4,
+        1.0
+      ],
+      "max": [
+        0.06,
+        -0.15,
+        1.2
+      ]
+    }
+  ],
+  "_regions": "Parts coloured apart from their neighbours. A vertex is in a region when any rule holds: its front projection lands in that SAM3 mask of the concept (seg/) on the given side of x, or it lies in the box (metres). The tail's hidden side otherwise took the tights' black.",
+  "regions": {
+    "tail": {
+      "any": [
+        {
+          "mask": "fox-tail",
+          "x_below": -0.1
+        },
+        {
+          "box": {
+            "min": [
+              -0.6,
+              0.08,
+              0.3
+            ],
+            "max": [
+              0.08,
+              0.6,
+              0.8
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+# The asset pipeline's own Python environment (uv): `uv run --project pipeline python pipeline/<tool>.py`.
+# ComfyUI and Blender keep their own Pythons; these scripts only talk to ComfyUI over HTTP and to Blender by running it.
+[project]
+name = "rootward-pipeline"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy==2.5.3",
+    "pillow==12.3.0",
+    "soundfile==0.13.1",
+]
+
+[tool.uv]
+package = false
+no-build = true

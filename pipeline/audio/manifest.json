@@ -1,0 +1,650 @@
+{
+  "comfy_url": "http://127.0.0.1:8188",
+  "defaults": {
+    "unet": "acestep_v1.5_turbo.safetensors",
+    "clip": "qwen_0.6b_ace15.safetensors",
+    "lm": "qwen_1.7b_ace15.safetensors",
+    "vae": "ace_1.5_vae.safetensors",
+    "steps": 8,
+    "cfg": 1,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "shift": 3,
+    "audio_codes": true,
+    "lm_cfg": 2,
+    "temperature": 0.85,
+    "top_p": 0.9,
+    "top_k": 0,
+    "min_p": 0,
+    "language": "en",
+    "timesignature": "4",
+    "lyrics": "[instrumental]",
+    "headroom_db": 3
+  },
+  "styles": {
+    "music": {
+      "candidates": 1,
+      "seconds": 150,
+      "lyrics": "[instrumental]",
+      "post": {
+        "kind": "bgm",
+        "intro_bars": 4,
+        "tail_bars": 4,
+        "crossfade_ms": 150,
+        "lufs": -20,
+        "peak": -1.5,
+        "bitrate": 160,
+        "highpass_hz": 48,
+        "lowpass_hz": 15000,
+        "denoise_db": 5,
+        "low_shelf_db": -2.5
+      },
+      "audio_codes": false
+    },
+    "cue": {
+      "candidates": 1,
+      "seconds": 8,
+      "post": {
+        "kind": "cue",
+        "max_seconds": 4,
+        "fade_ms": 400,
+        "lufs": -17,
+        "peak": -1,
+        "bitrate": 160,
+        "highpass_hz": 80,
+        "lowpass_hz": 14000,
+        "denoise_db": 5
+      }
+    },
+    "designed": {
+      "backend": "stable-audio",
+      "checkpoint": "stable-audio-open-1.0.safetensors",
+      "clip": "t5_base.safetensors",
+      "candidates": 2,
+      "seconds": 4,
+      "steps": 70,
+      "cfg": 6,
+      "sampler": "dpmpp_3m_sde_gpu",
+      "scheduler": "exponential",
+      "headroom_db": 6,
+      "negative": "Music, melody, song, singing, speech, voices, drum beat, rhythmic loop, electronic beep, 8-bit video game, harsh distortion, clipping, background hiss.",
+      "post": {
+        "kind": "cue",
+        "max_seconds": 1.6,
+        "fade_ms": 280,
+        "threshold_db": -42,
+        "lufs": -18,
+        "peak": -3,
+        "bitrate": 128,
+        "highpass_hz": 110,
+        "lowpass_hz": 12500,
+        "denoise_db": 6,
+        "low_shelf_db": -2
+      }
+    },
+    "recorded": {
+      "candidates": 1,
+      "post": {
+        "kind": "cue",
+        "max_seconds": 1.5,
+        "fade_ms": 60,
+        "threshold_db": -45,
+        "lufs": -16,
+        "peak": -3.5,
+        "bitrate": 128,
+        "highpass_hz": 80,
+        "lowpass_hz": 12000,
+        "denoise_db": 3
+      }
+    }
+  },
+  "assets": [
+    {
+      "id": "music-title",
+      "out": "audio/music-title",
+      "style": "music",
+      "seed": 58101,
+      "bpm": 76,
+      "keyscale": "D major",
+      "tags": "Acoustic chamber fantasy adventure theme. A beautiful memorable piano melody, solo flute answering, plucked harp arpeggios and expressive acoustic cello. Real players in a small scoring room, clear piano hammer and harp string attacks, expressive dynamics, breathing between phrases, a hopeful rising refrain. Intimate, warm, wondrous, instrumental."
+    },
+    {
+      "id": "music-bastion",
+      "out": "audio/music-bastion",
+      "style": "music",
+      "seed": 58201,
+      "bpm": 104,
+      "keyscale": "G major",
+      "tags": "Rustic acoustic folk dance in a welcoming fantasy village. Nimble fiddle and wooden flute trade a cheerful singable melody over lute strumming, acoustic guitar, upright bass and soft tambourine. Small live ensemble, woody string attacks, lively human timing, clear natural recording, instrumental.",
+      "audio_codes": true
+    },
+    {
+      "id": "music-battle",
+      "out": "audio/music-battle",
+      "style": "music",
+      "seed": 58301,
+      "bpm": 138,
+      "keyscale": "E minor",
+      "tags": "Energetic acoustic fantasy battle music. Agile spiccato violin and cello figures, a bold live French horn melody answered by woodwinds, timpani strikes and tight frame drums. Articulated rhythmic phrases with rests, dramatic dynamic contrast, a memorable heroic refrain. Clear orchestral recording, instrumental."
+    },
+    {
+      "id": "music-battle-salvage",
+      "out": "audio/music-battle-salvage",
+      "style": "music",
+      "seed": 58311,
+      "bpm": 132,
+      "keyscale": "D minor",
+      "tags": "Driving acoustic adventure battle in ruined workshops. Short rhythmic cello bow strokes, hammered metal accents, a defiant French horn tune answered by violin, deep tom strikes and a plucked bass. Real acoustic instruments with clear separated attacks, a memorable determined melody, dynamic and heroic, instrumental.",
+      "audio_codes": true
+    },
+    {
+      "id": "music-battle-heap",
+      "out": "audio/music-battle-heap",
+      "style": "music",
+      "seed": 58321,
+      "bpm": 124,
+      "keyscale": "E minor",
+      "tags": "Nimble eerie acoustic fantasy combat. Bass clarinet and bassoon trade a crooked melody over pizzicato strings, crisp marimba droplets and quick frame drums. Small live chamber ensemble, playful dark counterpoint, breathing between phrases, energetic clear transients and natural room sound, instrumental."
+    },
+    {
+      "id": "music-battle-kernel",
+      "out": "audio/music-battle-kernel",
+      "style": "music",
+      "seed": 58331,
+      "bpm": 116,
+      "keyscale": "C minor",
+      "tags": "Grave acoustic orchestral battle in an ancient cathedral. Articulated low cello rhythms, bold trombone and horn phrases, timpani strikes and occasional tubular bells, high violins rising to a noble defiant refrain. Dramatic pauses and dynamic contrast, clear acoustic orchestral recording, instrumental.",
+      "audio_codes": true
+    },
+    {
+      "id": "music-salvage",
+      "out": "audio/music-salvage",
+      "style": "music",
+      "seed": 58401,
+      "bpm": 80,
+      "keyscale": "A minor",
+      "tags": "Curious melancholy acoustic fantasy exploration. A lyrical solo cello and wooden flute melody over plucked harp, sparse piano and delicate wooden percussion. Ruined workshops and forgotten stories, a memorable warm minor-key tune with space between phrases, natural string texture and clear acoustic recording, instrumental."
+    },
+    {
+      "id": "music-focus",
+      "out": "audio/music-focus",
+      "style": "music",
+      "seed": 58501,
+      "bpm": 70,
+      "keyscale": "F major",
+      "seconds": 180,
+      "tags": "Quiet acoustic chamber music for contemplation. A gentle memorable felt piano melody, individually plucked harp strings, a soft wooden clarinet response and occasional pizzicato cello. Slow breathing phrases, spacious arrangement, real acoustic instruments, clear intimate room sound, thoughtful and warm, instrumental.",
+      "audio_codes": true
+    },
+    {
+      "id": "music-foundry",
+      "out": "audio/music-foundry",
+      "style": "music",
+      "seed": 58601,
+      "bpm": 92,
+      "keyscale": "D minor",
+      "tags": "Steady industrious acoustic fantasy workshop music. A determined cello and French horn melody, rhythmic plucked strings, hammered dulcimer, wooden mallet accents and gentle low drum beats. Warm woody timbres, clear note attacks, a memorable rising refrain, small live acoustic ensemble, instrumental."
+    },
+    {
+      "id": "music-heap",
+      "out": "audio/music-heap",
+      "style": "music",
+      "seed": 58701,
+      "bpm": 84,
+      "keyscale": "E minor",
+      "tags": "Mysterious acoustic cavern exploration. Bass clarinet, pizzicato cello and marimba play a strange gentle melody, with sparse harp droplets and soft brushed frame drum. Intimate live chamber ensemble, quiet natural resonance, spacious thoughtful phrases, darkly playful and curious, instrumental."
+    },
+    {
+      "id": "music-kernel",
+      "out": "audio/music-kernel",
+      "style": "music",
+      "seed": 58811,
+      "bpm": 78,
+      "candidates": 2,
+      "keyscale": "C minor",
+      "tags": "Instrumental acoustic orchestral fantasy exploration soundtrack. A noble cello melody in C minor over a flowing piano ostinato, plucked harp, clarinet and French horn answering phrases. An ancient stone sanctuary, solemn and mysterious, dignified measured forward motion. Clear natural orchestral recording, expressive articulated strings, a developed main theme and contrasting middle section.",
+      "audio_codes": false
+    },
+    {
+      "id": "music-guardian",
+      "out": "audio/music-guardian",
+      "style": "music",
+      "seed": 58901,
+      "bpm": 126,
+      "keyscale": "C minor",
+      "tags": "Dramatic acoustic orchestral boss battle. Powerful live horns and trombones trade a stern memorable melody over tightly articulated low strings, pounding timpani and large taiko strikes, with soaring violin answers. Strong rhythmic rests and dynamic contrast, clear natural brass and percussion attacks, epic, instrumental.",
+      "audio_codes": true
+    },
+    {
+      "id": "cue-victory",
+      "out": "audio/cue-victory",
+      "style": "designed",
+      "seed": 61001,
+      "candidates": 4,
+      "pick": 3,
+      "seconds": 6,
+      "bpm": 132,
+      "keyscale": "D major",
+      "post": {
+        "max_seconds": 4.2,
+        "fade_ms": 900,
+        "highpass_hz": 90,
+        "lufs": -17,
+        "peak": -2.5
+      },
+      "tags": "A short triumphant acoustic victory fanfare. Bright real French horns and trumpets play three rising notes and resolve together on a warm major chord, with a single timpani strike and a delicate cymbal flourish. Natural brass breath and room resonance, a decisive uplifting ending.",
+      "negative": "Electronic hum, buzzer, synthesizer, distorted brass, speech, vocals, singing, noisy recording."
+    },
+    {
+      "id": "cue-defeat",
+      "out": "audio/cue-defeat",
+      "style": "designed",
+      "seed": 62001,
+      "bpm": 66,
+      "keyscale": "A minor",
+      "post": {
+        "max_seconds": 4.5,
+        "fade_ms": 1300,
+        "highpass_hz": 85,
+        "lufs": -20,
+        "peak": -3
+      },
+      "tags": "Three gentle descending notes played on a real acoustic piano, ending in a soft melancholy minor chord. Felt hammer attacks, natural vibrating strings, warm quiet room resonance fading into silence. A short sorrowful game ending.",
+      "candidates": 3,
+      "pick": 1,
+      "seconds": 6,
+      "negative": "Electronic hum, buzzing, synthesizer, speech, vocals, singing, noisy recording."
+    },
+    {
+      "id": "cue-treasure",
+      "out": "audio/cue-treasure",
+      "style": "recorded",
+      "layers": [
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactBell_heavy_002.ogg",
+          "gain_db": -2,
+          "rate": 1.18
+        },
+        {
+          "source": "vendor/kenney-rpg-audio/Audio/handleCoins2.ogg",
+          "gain_db": -9,
+          "delay_ms": 245,
+          "rate": 1.12
+        }
+      ],
+      "post": {
+        "max_seconds": 1.6,
+        "fade_ms": 280,
+        "lufs": -18,
+        "peak": -2.5,
+        "highpass_hz": 140,
+        "lowpass_hz": 10000,
+        "bitrate": 128
+      }
+    },
+    {
+      "id": "sfx-charge",
+      "out": "audio/sfx-charge",
+      "style": "recorded",
+      "layers": [
+        {
+          "source": "vendor/kenney-rpg-audio/Audio/knifeSlice2.ogg",
+          "reverse": true,
+          "rate": 0.72,
+          "gain_db": -2
+        },
+        {
+          "source": "vendor/kenney-rpg-audio/Audio/bookFlip2.ogg",
+          "reverse": true,
+          "rate": 1.3,
+          "gain_db": -10
+        }
+      ],
+      "post": {
+        "max_seconds": 0.42,
+        "attack_ms": 55,
+        "fade_ms": 55,
+        "highpass_hz": 320,
+        "lowpass_hz": 6500,
+        "lufs": -23,
+        "bitrate": 128
+      }
+    },
+    {
+      "id": "sfx-cast",
+      "out": "audio/sfx-cast",
+      "style": "designed",
+      "seed": 42001,
+      "candidates": 6,
+      "tags": "A fast swoosh followed by a deep resonant impact and a shimmering ringing tail. A single magical energy blast sound effect.",
+      "post": {
+        "max_seconds": 1.25,
+        "hold_ms": 70,
+        "decay_ms": 500,
+        "lufs": -17
+      },
+      "seconds": 3
+    },
+    {
+      "id": "sfx-cast-fire",
+      "out": "audio/sfx-cast-fire",
+      "style": "designed",
+      "seed": 22201,
+      "candidates": 2,
+      "tags": "A single fireball bursts into life and rushes past. A deep forceful fire whoosh with a brief heavy ignition thump, fluttering flames and tiny dry embers crackling in its fading wake. Close detailed fiery fantasy spell sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.35,
+        "hold_ms": 80,
+        "decay_ms": 430,
+        "lufs": -17
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-cast-frost",
+      "out": "audio/sfx-cast-frost",
+      "style": "designed",
+      "seed": 32301,
+      "candidates": 3,
+      "tags": "Ice cracking and ice crystals shattering with a fast cold wind whoosh. A single sharp icy burst followed by delicate crystalline tinkling and an airy fading tail. Close detailed ice magic sound effect.",
+      "post": {
+        "max_seconds": 1.45,
+        "hold_ms": 80,
+        "decay_ms": 450,
+        "lufs": -18,
+        "lowpass_hz": 10500,
+        "start_seconds": 0.22
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-cast-spark",
+      "out": "audio/sfx-cast-spark",
+      "style": "designed",
+      "seed": 22401,
+      "candidates": 2,
+      "tags": "A single short burst of electricity leaps through the air. A sharp electrical snap with a deep punch beneath it, branching irregular crackles and a brief sizzling airy decay. Powerful close lightning spell sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.05,
+        "hold_ms": 45,
+        "decay_ms": 270,
+        "lufs": -18,
+        "lowpass_hz": 9500
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-hit",
+      "out": "audio/sfx-hit",
+      "style": "designed",
+      "seed": 22501,
+      "candidates": 2,
+      "tags": "A single heavy magical impact on stone and leather. A solid rounded punch with a brief dry crack, a few tiny fragments scatter, and a low airy resonance quickly fades. Close detailed fantasy combat impact sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1,
+        "hold_ms": 45,
+        "decay_ms": 250,
+        "lufs": -16,
+        "peak": -2.5
+      },
+      "pick": 0
+    },
+    {
+      "id": "sfx-hit-heavy",
+      "out": "audio/sfx-hit-heavy",
+      "style": "designed",
+      "seed": 22601,
+      "candidates": 2,
+      "tags": "A single powerful magical slam into ancient stone. Deep weighty impact with a sharp gritty crack, a burst of crumbling stone fragments and a short low resonant rumble fading into the room. Close fantasy combat sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.5,
+        "hold_ms": 90,
+        "decay_ms": 380,
+        "lufs": -15.5,
+        "peak": -2.5
+      },
+      "pick": 0
+    },
+    {
+      "id": "sfx-ward",
+      "out": "audio/sfx-ward",
+      "style": "designed",
+      "seed": 61901,
+      "candidates": 4,
+      "tags": "A magical protective barrier forms with a deep airy impact, an expanding rush of wind and many delicate glass fragments shimmering outward. A brief crystalline shell closing, layered tiny irregular sparkling impacts decaying naturally. Isolated fantasy shield sound effect.",
+      "post": {
+        "max_seconds": 2.1,
+        "hold_ms": 180,
+        "decay_ms": 800,
+        "lufs": -17.5
+      },
+      "pick": 2
+    },
+    {
+      "id": "sfx-glance",
+      "out": "audio/sfx-glance",
+      "style": "designed",
+      "seed": 22701,
+      "candidates": 2,
+      "tags": "A single blow glances off a magical glass shield. A short rounded impact followed by a delicate resonant glass ripple and a small scattering of shimmering particles. Muted, hollow, protective, quick natural decay. Fantasy shield impact sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.2,
+        "hold_ms": 50,
+        "decay_ms": 310,
+        "lufs": -18.5
+      },
+      "pick": 0
+    },
+    {
+      "id": "sfx-shatter",
+      "out": "audio/sfx-shatter",
+      "style": "designed",
+      "seed": 22801,
+      "candidates": 2,
+      "tags": "A magical crystal creature dissolves into dust. One brittle glass crack with a low hollow collapse, then many tiny irregular crystal fragments scatter and tinkle, fading softly into airy dust. Detailed fantasy disintegration sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.85,
+        "hold_ms": 130,
+        "decay_ms": 600,
+        "lufs": -18
+      },
+      "pick": 0
+    },
+    {
+      "id": "sfx-hurt",
+      "out": "audio/sfx-hurt",
+      "style": "designed",
+      "seed": 22901,
+      "candidates": 2,
+      "tags": "A single forceful punch against thick leather armor, with a deep rounded body thud, a sharp woody crack and a brief cloth rustle settling afterward. Close physical combat impact, dry and weighty, no vocal sounds, isolated sound effect, no music.",
+      "post": {
+        "max_seconds": 0.85,
+        "hold_ms": 40,
+        "decay_ms": 230,
+        "lufs": -16,
+        "peak": -2.5
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-heal",
+      "out": "audio/sfx-heal",
+      "style": "designed",
+      "seed": 23001,
+      "candidates": 2,
+      "tags": "A gentle magical blessing appears in a warm shimmer. A soft breath of air blooms into luminous singing glass overtones, delicate sparkling particles drift upward and fade naturally in a small stone sanctuary. Tender restorative fantasy magic sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 2,
+        "attack_ms": 30,
+        "hold_ms": 150,
+        "decay_ms": 650,
+        "lufs": -20,
+        "start_seconds": 0.25
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-curse",
+      "out": "audio/sfx-curse",
+      "style": "designed",
+      "seed": 23101,
+      "candidates": 2,
+      "tags": "A dark magical curse takes hold. A low hollow breathy rush with dry whispering sand and a tense bowed metal resonance bending downward, then softly dissipating. Ominous organic fantasy spell sound effect, no voices, isolated, no music.",
+      "post": {
+        "max_seconds": 1.65,
+        "attack_ms": 15,
+        "hold_ms": 90,
+        "decay_ms": 500,
+        "lufs": -20
+      },
+      "pick": 0
+    },
+    {
+      "id": "sfx-card",
+      "out": "audio/sfx-card",
+      "style": "recorded",
+      "source": "vendor/kenney-rpg-audio/Audio/bookPlace1.ogg",
+      "post": {
+        "lufs": -20
+      }
+    },
+    {
+      "id": "sfx-draw",
+      "out": "audio/sfx-draw",
+      "style": "recorded",
+      "source": "vendor/kenney-rpg-audio/Audio/bookFlip2.ogg",
+      "post": {
+        "lufs": -20
+      }
+    },
+    {
+      "id": "sfx-step",
+      "out": "audio/sfx-step",
+      "style": "recorded",
+      "source": "vendor/kenney-impact-sounds/Audio/footstep_concrete_000.ogg",
+      "post": {
+        "lufs": -22
+      }
+    },
+    {
+      "id": "sfx-coins",
+      "out": "audio/sfx-coins",
+      "style": "recorded",
+      "source": "vendor/kenney-rpg-audio/Audio/handleCoins.ogg",
+      "post": {
+        "lufs": -19
+      }
+    },
+    {
+      "id": "sfx-chime",
+      "out": "audio/sfx-chime",
+      "style": "designed",
+      "seed": 23501,
+      "candidates": 2,
+      "tags": "One small crystal bell gently struck, a clear delicate glass attack with warm shimmering overtones and a soft natural decay in a quiet room. Intimate enchanted object sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.15,
+        "hold_ms": 50,
+        "decay_ms": 650,
+        "lufs": -21,
+        "rate": 0.9
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-relic",
+      "out": "audio/sfx-relic",
+      "style": "designed",
+      "seed": 23201,
+      "candidates": 2,
+      "tags": "An enchanted relic awakens with one delicate bright glass chime and a warm resonant bronze shimmer, followed by tiny sparkling crystalline particles drifting and fading in a quiet stone room. A wondrous intimate fantasy discovery sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 1.85,
+        "hold_ms": 100,
+        "decay_ms": 900,
+        "lufs": -19,
+        "rate": 0.86
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-forge",
+      "out": "audio/sfx-forge",
+      "style": "recorded",
+      "layers": [
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactMining_001.ogg"
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_light_001.ogg",
+          "gain_db": -10,
+          "delay_ms": 80,
+          "rate": 0.76
+        }
+      ],
+      "post": {
+        "lufs": -17,
+        "peak": -2.5
+      }
+    },
+    {
+      "id": "sfx-turn",
+      "out": "audio/sfx-turn",
+      "style": "designed",
+      "seed": 23601,
+      "candidates": 2,
+      "tags": "A single soft wooden mechanism clicks into place with a warm muted tap and a tiny resonant bronze ting fading quickly. Tactile old clockwork game piece, close gentle fantasy interface sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 0.65,
+        "hold_ms": 40,
+        "decay_ms": 220,
+        "lufs": -23
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-pass",
+      "out": "audio/sfx-pass",
+      "style": "designed",
+      "seed": 23301,
+      "candidates": 2,
+      "tags": "Two soft bright glass chimes gently ascending, with warm wooden resonance underneath and a delicate natural ringing decay. A reassuring small magical confirmation sound, intimate and clear, isolated sound effect, no music.",
+      "post": {
+        "max_seconds": 0.95,
+        "hold_ms": 200,
+        "decay_ms": 450,
+        "lufs": -20
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-fail",
+      "out": "audio/sfx-fail",
+      "style": "designed",
+      "seed": 23401,
+      "candidates": 2,
+      "tags": "A short hollow wooden knock followed by a soft descending breath of air and a muted low glass resonance. A gentle magical attempt fizzles out, subdued and clear. Intimate fantasy interface sound effect, isolated, no music.",
+      "post": {
+        "max_seconds": 0.8,
+        "hold_ms": 60,
+        "decay_ms": 260,
+        "lufs": -20
+      },
+      "pick": 1
+    },
+    {
+      "id": "sfx-open",
+      "out": "audio/sfx-open",
+      "style": "recorded",
+      "source": "vendor/kenney-rpg-audio/Audio/bookFlip2.ogg",
+      "post": {
+        "max_seconds": 0.5,
+        "rate": 1.15,
+        "attack_ms": 8,
+        "fade_ms": 80,
+        "lowpass_hz": 7500,
+        "lufs": -24
+      }
+    }
+  ]
+}

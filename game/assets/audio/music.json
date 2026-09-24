@@ -1,0 +1,50 @@
+{
+  "music-bastion": {
+    "loopStart": 9.2508,
+    "loopEnd": 129.2505
+  },
+  "music-battle": {
+    "loopStart": 6.9765,
+    "loopEnd": 132.1935
+  },
+  "music-battle-heap": {
+    "loopStart": 7.7619167,
+    "loopEnd": 131.6325833
+  },
+  "music-battle-kernel": {
+    "loopStart": 8.2958333,
+    "loopEnd": 132.4333333
+  },
+  "music-battle-salvage": {
+    "loopStart": 7.29275,
+    "loopEnd": 130.9295
+  },
+  "music-focus": {
+    "loopStart": 13.7342,
+    "loopEnd": 150.8767
+  },
+  "music-foundry": {
+    "loopStart": 10.4548,
+    "loopEnd": 125.237
+  },
+  "music-guardian": {
+    "loopStart": 7.6390833,
+    "loopEnd": 137.1635
+  },
+  "music-heap": {
+    "loopStart": 11.4485833,
+    "loopEnd": 125.7344167
+  },
+  "music-kernel": {
+    "loopStart": 12.3276667,
+    "loopEnd": 123.0966667
+  },
+  "music-salvage": {
+    "loopStart": 12.02,
+    "loopEnd": 120.02
+  },
+  "music-title": {
+    "loopStart": 12.6515833,
+    "loopEnd": 126.3358333
+  }
+}
