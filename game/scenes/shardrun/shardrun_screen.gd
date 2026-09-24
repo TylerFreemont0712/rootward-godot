@@ -116,6 +116,9 @@ func _show_header(state: Dictionary) -> void:
 		],
 		6
 	)
+	if state.get("sandbox", false) and not state.status in Shardrun.ENDED:
+		buttons.add_child(Ui.button("Dev", _open_dev))
+		logo.text = "SPELLFORGE · DEV"
 	if not state.status in Shardrun.ENDED:
 		buttons.add_child(Ui.button("Abandon", _confirm_abandon, "DangerButton"))
 	var row := Ui.hbox([logo, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
@@ -195,6 +198,14 @@ func send(command: Dictionary) -> void:
 func _present(result: Dictionary, command: Dictionary) -> void:
 	var before: Dictionary = result.before
 	var after: Dictionary = result.state
+	if String(command.type).begins_with("dev-"):
+		# A dev command can replace the whole fight (a spawn), so the screen is drawn afresh rather than played.
+		_show(after)
+		toast(_story(after.log))
+		if _fight != null:
+			_fight.write_entries(after.log)
+			_fight.refresh_previews()
+		return
 	if before.status == "battle" and _fight != null:
 		await _fight.present(result)
 		if after.status == "battle":
@@ -297,6 +308,18 @@ func _open_options() -> void:
 	var options := OptionsPanel.create()
 	options.closed.connect(_close_overlay)
 	_open(options)
+
+
+func _open_dev() -> void:
+	var drawer := DevDrawer.create(session)
+	drawer.closed.connect(_close_overlay)
+	drawer.wants.connect(
+		func(command: Dictionary) -> void:
+			await send(command)
+			if _overlay.get_child_count() > 0:
+				_open_dev()
+	)
+	_open(drawer)
 
 
 func _open_stats() -> void:

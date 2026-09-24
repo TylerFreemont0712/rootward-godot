@@ -139,27 +139,40 @@ func _new_run(session: ShardrunSession) -> Control:
 	start.disabled = not Settings.language in usable
 	if not session.in_progress():
 		start.call_deferred("grab_focus")
-	column.add_child(Ui.hbox([start]))
+	var actions := Ui.hbox([start], 10)
+	if Game.dev_tools():
+		var sandbox := Ui.button("Sandbox run (dev tools)", _start_sandbox)
+		sandbox.tooltip_text = "A run with the dev drawer: grant shards and relics, spawn foes, jump layers."
+		sandbox.disabled = start.disabled
+		actions.add_child(sandbox)
+	column.add_child(actions)
 	return Ui.panel(column, "Card")
 
 
 func _start() -> void:
 	if Game.session.in_progress():
-		_confirm_new_run()
+		_confirm_new_run(false)
 		return
-	_begin()
+	_begin(false)
 
 
-func _begin() -> void:
+func _start_sandbox() -> void:
+	if Game.session.in_progress():
+		_confirm_new_run(true)
+		return
+	_begin(true)
+
+
+func _begin(sandbox: bool) -> void:
 	var difficulties: Array = Game.catalog.config.difficulties
 	var known := difficulties.any(func(d: Dictionary) -> bool: return d.id == Settings.difficulty)
-	Game.session.start(Settings.language, Settings.difficulty if known else String(difficulties[0].id))
+	Game.session.start(Settings.language, Settings.difficulty if known else String(difficulties[0].id), "", sandbox)
 	Game.go(Game.SHARDRUN)
 
 
-func _confirm_new_run() -> void:
+func _confirm_new_run(sandbox: bool) -> void:
 	var text := "The run underway ends here: one run at a time. It is replaced by the new one."
-	var yes := Ui.button("Start anew", _begin, "DangerButton")
+	var yes := Ui.button("Start anew", _begin.bind(sandbox), "DangerButton")
 	var no := Ui.button("Keep the run", func() -> void: Ui.clear(_overlay), "PrimaryButton")
 	var panel := Ui.panel(
 		Ui.vbox([Ui.label("Start a new run?", "Heading"), Ui.label(text, "", true), Ui.hbox([no, yes])], 14), "Overlay"

@@ -38,6 +38,9 @@ screen, a new presenter for the hero, or the deck playstyle later should not mea
 - **The Maintainer on the stage is the 3D `StageCharacter`** in its own `SubViewport` with a clear background, and a
   2D picture stands in when there is no model. `HeroView` is the only thing that knows which, so a better model, a
   different character or sprites again is a change there alone.
+- **Dev tools are content-free commands.** A sandbox run (offered when the game runs from the Godot binary, or with
+  `ROOTWARD_DEV=1`) opens `DevDrawer`, which only sends the rules' dev commands; after one, the screen is drawn afresh
+  rather than played, since a spawn replaces the whole fight.
 - **Static services instead of autoloads**: `Game` (content, the session), `Settings`, `Sound`. Any scene can be opened
   alone (the editor, a screenshot, a test) and calls `Game.boot()` first; nothing depends on project settings.
 

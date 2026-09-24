@@ -1,6 +1,7 @@
 extends Control
 ## A run set up for a screenshot, then the run screen over it. ROOTWARD_SHOT picks the moment:
-##   map (default), fight, cast, volley (the bolts, without the code), turn, reward, treasure, rest, forge, end, code
+##   map (default), fight, cast, volley (the bolts, without the code), turn, reward, treasure, rest, forge, end, code,
+##   dev (a sandbox run with its tools open)
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
 
@@ -16,10 +17,10 @@ func _ready() -> void:
 	Game.boot()
 	var session := Game.session
 	session.saves.delete_run("spellbook")
-	session.start(language if language != "" else "python", "beginner", "screenshot")
+	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev")
 	var bot := ShardrunBot.new(session)
 	match shot:
-		"fight", "cast", "volley", "turn", "code":
+		"fight", "cast", "volley", "turn", "code", "dev":
 			await bot.play_until("battle")
 		"reward":
 			await bot.play_until("reward")
@@ -54,3 +55,5 @@ func _ready() -> void:
 			screen.call("send", {"type": "end-turn"})
 		"code":
 			screen.call("_explore", "spell-1")
+		"dev":
+			screen.call("_open_dev")

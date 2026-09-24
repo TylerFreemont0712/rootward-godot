@@ -93,5 +93,23 @@ func test_every_between_room_draws() -> void:
 	assert_bool(catalog.relics.has("arcane-seal")).is_true()
 
 
+func test_a_dev_spawn_replaces_the_foes_on_the_stage() -> void:
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "dev-spawn", true)
+	var run_screen := await _open()
+	await run_screen.send({"type": "dev-spawn", "kind": "fight", "foes": ["tally-wisp"]})
+	assert_str(Game.session.state.status).is_equal("battle")
+	await run_screen.send({"type": "dev-spawn", "kind": "elite", "foes": ["null-wraith", "null-wraith"]})
+	var stages := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is BattleStage)
+	assert_int(stages.size()).is_equal(1)
+	var shown: Array = (stages[0] as BattleStage).foes.values()
+	assert_int(shown.size()).is_equal(2)
+	assert_str((shown[0] as FoeView).foe.id).is_equal("null-wraith")
+	# The previews arrive (a frame after their thread ends) and redraw the foes' tags; the nodes they replaced, and the
+	# old fight's, are freed at the end of the frame after.
+	Background.finish_all()
+	for i in 3:
+		await get_tree().process_frame
+
+
 static func _rooms(root: Node) -> int:
 	return root.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is RoomPanel).size()

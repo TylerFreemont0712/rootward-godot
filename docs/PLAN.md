@@ -84,11 +84,13 @@ docs/                 this plan, ADRs, the learning log
       sandbox run, ADR-0006), bolts in flight, damage numbers, hit-stop and shake, skippable.
 - [x] Saves in `user://`, one run per playstyle, written atomically; a save that cannot continue is set aside.
 - [x] Options (code speed, predictions, shake, music and sound volume), stats, abandon, the end of a run with its score.
+- [x] Sandbox runs with the dev drawer (grant or remove shards and relics, set Integrity and mana, spawn foes, win or
+      lose a fight, jump layers, add a spell), offered when the game runs from the Godot binary or with ROOTWARD_DEV=1.
 - [x] Proof: a bot plays whole runs through the session and through the real run screen in tests; screenshots of
       every screen from `tools/shardrun_shot.tscn`.
 
-Not yet (next candidates): the screens in Japanese (content is translated; the interface strings are not), the dev
-drawer for sandbox runs, a Codex, the rules' modifiers table in Stats, keyboard focus through the map.
+Not yet (next candidates): the screens in Japanese (content is translated; the interface strings are not), a Codex,
+the rules' modifiers table in Stats, keyboard focus through the map.
 
 ### Phase 6: characters and spells in 3D
 - [ ] Emberfox as the first character: glTF, a toon shader (two tones, rim, outline), clips in an AnimationTree with

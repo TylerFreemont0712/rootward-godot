@@ -51,6 +51,12 @@ static func reset(save_root := "") -> void:
 		OS.set_environment(SAVES_ENV, save_root)
 
 
+## Whether sandbox runs and their dev tools are offered: always when the game runs from the Godot editor binary (as it
+## does during development), or with ROOTWARD_DEV=1; never in an exported build.
+static func dev_tools() -> bool:
+	return OS.has_feature("editor") or OS.get_environment("ROOTWARD_DEV") == "1"
+
+
 static func languages() -> Array[String]:
 	var usable: Array[String] = []
 	for language in SandboxJob.LANGUAGES:

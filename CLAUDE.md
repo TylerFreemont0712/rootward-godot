@@ -11,7 +11,7 @@
 - Screenshot a scene: `scripts/screenshot.sh res://scenes/boot/boot.tscn shots/boot.png [frames]`. It renders on the
   GPU under a private Xvfb display, so nothing opens on the desktop. `shots/` is ignored.
 - Screenshot a moment of a run: `ROOTWARD_SHOT=fight scripts/screenshot.sh res://tools/shardrun_shot.tscn
-  shots/fight.png 60` (map, fight, cast, volley, turn, reward, treasure, rest, forge, end, code;
+  shots/fight.png 60` (map, fight, cast, volley, turn, reward, treasure, rest, forge, end, code, dev;
   `ROOTWARD_SHOT_LANGUAGE=javascript` is faster for the long ones). It plays in its own save folder.
 - Saves live in `user://shardrun/` (`~/.local/share/godot/app_userdata/Rootward/`); `ROOTWARD_SAVES=user://elsewhere`
   points a run of the game at another folder.
