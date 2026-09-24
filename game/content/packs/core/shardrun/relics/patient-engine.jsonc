@@ -1,0 +1,10 @@
+{
+  "id": "patient-engine",
+  "name": "Patient Engine",
+  "rarity": "rare",
+  "icon": "patient-engine",
+  "summary": "From turn three onward, all bolt multipliers triple.",
+  "flavor": "It takes its time. Then it takes everything.",
+  "art_note": "A three-stage clockwork chamber, its final segment blazing gold.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "turn", "min": 3 }, "factor": 3 }]
+}

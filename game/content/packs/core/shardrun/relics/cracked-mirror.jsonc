@@ -1,0 +1,11 @@
+{
+  "id": "cracked-mirror",
+  "name": "Cracked Mirror",
+  "rarity": "uncommon",
+  "icon": "cracked-mirror",
+  "summary": "All bolt multipliers are multiplied by 0.75, including wards. A rest can cleanse this curse instead of healing.",
+  "flavor": "The missing quarter never comes back.",
+  "art_note": "A silver mirror with one dark triangular section missing.",
+  "effects": [{ "kind": "bolt-mult-factor", "factor": 0.75 }],
+  "cursed": true
+}

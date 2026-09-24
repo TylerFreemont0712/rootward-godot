@@ -1,0 +1,10 @@
+{
+  "id": "riposte-clock",
+  "name": "Riposte Clock",
+  "rarity": "rare",
+  "icon": "riposte-clock",
+  "summary": "If your previous successful cast in this fight contained only wards, attack bolts triple their multipliers.",
+  "flavor": "First shelter. Then answer.",
+  "art_note": "A split clock face: a cyan shield on one half and a gold blade on the other.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "after-ward" }, "factor": 3 }]
+}

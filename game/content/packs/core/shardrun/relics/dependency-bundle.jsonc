@@ -1,0 +1,13 @@
+{
+  "id": "dependency-bundle",
+  "name": "Dependency Bundle",
+  "rarity": "common",
+  "icon": "dependency-bundle",
+  "summary": "Adds Pierce, Seeker and Focus Lens to your deck.",
+  "flavor": "You asked for one package. Three more came with it, and all of them turn out to be useful.",
+  // Shardrun only (ADR-0020): it works on the hand and the deck, which Spellforge does not have.
+  "playstyles": ["deck"],
+  "effects": [
+    { "kind": "add-cards", "cards": ["pierce", "seeker", "focus"] }
+  ]
+}

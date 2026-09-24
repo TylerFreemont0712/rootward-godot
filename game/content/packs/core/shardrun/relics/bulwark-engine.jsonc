@@ -1,0 +1,10 @@
+{
+  "id": "bulwark-engine",
+  "name": "Bulwark Engine",
+  "rarity": "rare",
+  "icon": "bulwark-engine",
+  "summary": "With at least 12 block before a cast, all bolt multipliers double. Does not spend block.",
+  "flavor": "Pressure becomes purpose.",
+  "art_note": "A heavy teal shield feeding golden energy into a small turbine.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "block", "min": 12 }, "factor": 2 }]
+}

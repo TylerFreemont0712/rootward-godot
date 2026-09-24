@@ -1,0 +1,10 @@
+{
+  "id": "rime-crown",
+  "name": "Rime Crown",
+  "rarity": "uncommon",
+  "icon": "rime-crown",
+  "summary": "Frost bolts double their multipliers, including frost wards.",
+  "flavor": "The cold keeps its promises.",
+  "art_note": "An asymmetric crown of translucent blue ice, silver roots inside.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "element", "element": "frost" }, "factor": 2 }]
+}

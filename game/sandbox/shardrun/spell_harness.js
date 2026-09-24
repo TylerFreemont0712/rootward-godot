@@ -14,7 +14,8 @@ function load(shard) {
 }
 
 function runSpell(spell, battleJson, trace) {
-  let bolts = JSON.parse(JSON.stringify(DATA.bolts));
+  // A spell can bring its own starting bolts and battle (content validation runs every worked example in one job).
+  let bolts = JSON.parse(JSON.stringify(spell.bolts !== undefined ? spell.bolts : DATA.bolts));
   for (const index of spell.shards) {
     const shard = SHARDS[index];
     let snapshot;
@@ -36,8 +37,9 @@ function runSpell(spell, battleJson, trace) {
   return bolts;
 }
 
-const battleJson = JSON.stringify(DATA.battle);
+const defaultBattle = JSON.stringify(DATA.battle);
 for (const spell of DATA.spells) {
+  const battleJson = spell.battle !== undefined ? JSON.stringify(spell.battle) : defaultBattle;
   const trace = [];
   let result;
   try {

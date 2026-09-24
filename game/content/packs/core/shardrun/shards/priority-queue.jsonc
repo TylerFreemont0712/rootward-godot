@@ -1,0 +1,25 @@
+{
+  "id": "priority-queue",
+  "name": "Priority Queue",
+  "rarity": "rare",
+  "cost": 1,
+  "complexity": "linearithmic",
+  "function": "priority_queue",
+  "summary": "Sorts bolts from strongest to weakest, and sends the strongest at the foe with the most HP.",
+  "tags": ["sorting", "lambda"],
+  "examples": [
+    {
+      "name": "strongest first, aimed high",
+      "bolts": [
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 6, "element": "none", "target": "strongest", "pierce": false, "ward": false },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

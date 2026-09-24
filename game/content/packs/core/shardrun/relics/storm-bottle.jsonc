@@ -1,0 +1,10 @@
+{
+  "id": "storm-bottle",
+  "name": "Storm Bottle",
+  "rarity": "uncommon",
+  "icon": "storm-bottle",
+  "summary": "Spark bolts double their multipliers.",
+  "flavor": "Please do not shake.",
+  "art_note": "A stoppered violet glass bottle holding a branching miniature thunderstorm.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "element", "element": "spark" }, "factor": 2 }]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "triage",
+  "name": "Triage",
+  "rarity": "uncommon",
+  "cost": 1,
+  "function": "triage",
+  "summary": "Aims every bolt at the foe with the most HP left.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "every bolt changes aim",
+      "bolts": [
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "fire", "target": "back", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 6, "element": "none", "target": "strongest", "pierce": false, "ward": false },
+        { "power": 4, "element": "fire", "target": "strongest", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

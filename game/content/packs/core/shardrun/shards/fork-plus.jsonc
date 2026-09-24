@@ -1,0 +1,22 @@
+{
+  "id": "fork-plus",
+  "name": "Fork+",
+  "rarity": "common",
+  "cost": 1,
+  "function": "fork_plus",
+  "summary": "Splits every bolt into two copies at 80% power.",
+  "tags": ["loops", "lists"],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "one bolt becomes two",
+      "bolts": [
+        { "power": 5, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

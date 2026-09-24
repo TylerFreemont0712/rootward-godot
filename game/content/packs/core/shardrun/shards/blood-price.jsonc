@@ -1,0 +1,30 @@
+{
+  "id": "blood-price",
+  "name": "Blood Price",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "linear",
+  "function": "blood_price",
+  "summary": "Quadruples every multiplier. Cursed code: each successful cast burns 2 Integrity, even if the volley kills the foe.",
+  "art_note": "Four red multiplier runes circling a cracked heart-shaped ruby.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 12 },
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 4 }
+      ]
+    }
+  ],
+  "curse": { "integrity": 2 }
+}

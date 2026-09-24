@@ -1,0 +1,29 @@
+{
+  "id": "cross-product",
+  "name": "Cross Product",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "quadratic",
+  "function": "cross_product",
+  "summary": "Makes a bolt for each ordered pair of different elements, averaging power and adding multipliers. Keeps the first bolt's shape. Same-element pairs vanish. Quadratic work.",
+  "art_note": "A three-color lattice with bright bolts at the intersections between unlike strands.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 8, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 3 }
+      ],
+      "expect": [
+        { "power": 6, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 5 },
+        { "power": 6, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 5 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "fork",
+  "name": "Fork",
+  "rarity": "common",
+  "cost": 1,
+  "function": "fork",
+  "summary": "Splits every bolt into two copies at 60% power. More bolts, a little less power in all.",
+  "tags": ["loops", "lists"],
+  "forge": { "into": "fork-plus", "verb": "upgrade" },
+  "examples": [
+    {
+      "name": "one bolt becomes two",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    },
+    {
+      "name": "every bolt splits, keeping its element",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 10, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 6, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 6, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

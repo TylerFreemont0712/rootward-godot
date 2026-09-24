@@ -1,0 +1,11 @@
+{
+  "id": "ember-infection",
+  "name": "Ember Infection",
+  "rarity": "uncommon",
+  "icon": "ember-infection",
+  "summary": "From turn two of each fight, lose 1 Integrity at the start of every turn. A rest can cleanse this curse instead of healing.",
+  "flavor": "A warmth that should not be there.",
+  "art_note": "A black seed with tiny red embers growing through its shell.",
+  "effects": [{ "kind": "turn-burn", "amount": 1 }],
+  "cursed": true
+}

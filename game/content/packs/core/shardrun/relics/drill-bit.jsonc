@@ -1,0 +1,10 @@
+{
+  "id": "drill-bit",
+  "name": "Drill Bit",
+  "rarity": "uncommon",
+  "icon": "drill-bit",
+  "summary": "Piercing bolts double their multipliers.",
+  "flavor": "The shortest path is through.",
+  "art_note": "A spiral silver drill tip with a sharp orange point.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "pierce" }, "factor": 2 }]
+}

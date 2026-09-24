@@ -1,0 +1,22 @@
+{
+  "id": "bulwark",
+  "name": "Bulwark",
+  "rarity": "uncommon",
+  "cost": 1,
+  "function": "bulwark",
+  "summary": "Turns every bolt into a ward at 75% power. All defense, no attack.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "everything becomes block",
+      "bolts": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": true },
+        { "power": 3, "element": "fire", "target": "front", "pierce": false, "ward": true }
+      ]
+    }
+  ]
+}

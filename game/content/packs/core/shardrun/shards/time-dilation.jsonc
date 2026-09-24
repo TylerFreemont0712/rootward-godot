@@ -1,0 +1,43 @@
+{
+  "id": "time-dilation",
+  "name": "Time Dilation",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "linear",
+  "function": "time_dilation",
+  "summary": "Adds the square of the turn number to every multiplier, capped at +25. Survive to build the payoff.",
+  "art_note": "An hourglass stretching into a spiral of five luminous numbered rings.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 }],
+      "expect": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 3 }]
+    },
+    {
+      "name": "Turn three adds nine, not three",
+      "bolts": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 }],
+      "battle": {
+        "turn": 3,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 6 },
+        "foes": [{ "name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": [] }]
+      },
+      "expect": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 11 }]
+    },
+    {
+      "name": "Late turns cap the addition at twenty five",
+      "bolts": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }],
+      "battle": {
+        "turn": 8,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 6 },
+        "foes": [{ "name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": [] }]
+      },
+      "expect": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 26 }]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "lazy-fork",
+  "name": "Lazy Fork",
+  "rarity": "common",
+  "cost": 0,
+  "function": "lazy_fork",
+  "summary": "A free Fork, salvaged from broken code. Something about it is off by one. A forge can repair it.",
+  "tags": ["loops", "off-by-one"],
+  "forge": { "into": "fork", "verb": "repair" },
+  "examples": [
+    {
+      "name": "a single bolt is lost entirely",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": []
+    },
+    {
+      "name": "the last bolt is never copied",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 2.4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

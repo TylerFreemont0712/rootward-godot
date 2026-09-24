@@ -1,0 +1,29 @@
+{
+  "id": "lodestone",
+  "name": "Lodestone",
+  "rarity": "common",
+  "cost": 0,
+  "complexity": "linear",
+  "function": "lodestone",
+  "summary": "Doubles the last bolt's multiplier and aims it at the back foe. Attune can spread its multiplier afterward.",
+  "art_note": "A floating horseshoe magnet pulling the rear bolt into a golden crescent.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 3 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "none", "target": "back", "pierce": false, "ward": false, "mult": 6 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "arc",
+  "name": "Arc",
+  "rarity": "common",
+  "cost": 1,
+  "function": "arc",
+  "summary": "Charges every bolt: spark, and 1 more power.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "one plain bolt",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 5, "element": "spark", "target": "front", "pierce": false, "ward": false }
+      ]
+    },
+    {
+      "name": "elements are replaced, not stacked",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 1, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 5, "element": "spark", "target": "front", "pierce": false, "ward": false },
+        { "power": 2, "element": "spark", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "rearview-lens",
+  "name": "Rearview Lens",
+  "rarity": "uncommon",
+  "icon": "rearview-lens",
+  "summary": "Bolts aimed at the back double their multipliers.",
+  "flavor": "The safest enemy is usually the wrong one to ignore.",
+  "art_note": "A brass lens showing a bright distant silhouette behind a blurred foreground.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "target", "target": "back" }, "factor": 2 }]
+}

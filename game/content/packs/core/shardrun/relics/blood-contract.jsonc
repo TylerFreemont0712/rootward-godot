@@ -1,0 +1,11 @@
+{
+  "id": "blood-contract",
+  "name": "Blood Contract",
+  "rarity": "uncommon",
+  "icon": "blood-contract",
+  "summary": "Every successful cast burns 1 Integrity before its bolts land. A rest can cleanse this curse instead of healing.",
+  "flavor": "The signature keeps writing itself.",
+  "art_note": "A curled parchment bound by a red thread that ends in a droplet.",
+  "effects": [{ "kind": "cast-burn", "amount": 1 }],
+  "cursed": true
+}

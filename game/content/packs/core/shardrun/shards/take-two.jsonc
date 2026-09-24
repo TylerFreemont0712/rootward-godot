@@ -1,0 +1,30 @@
+{
+  "id": "take-two",
+  "name": "Take Two",
+  "rarity": "common",
+  "cost": 0,
+  "complexity": "constant",
+  "function": "take_two",
+  "summary": "Keeps the first two bolts and doubles their multipliers. Trim a wide volley before expensive work.",
+  "art_note": "Two bright bolts pass through a bronze gate; dim rejected bolts peel away.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 3, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 3, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 }
+      ]
+    }
+  ]
+}

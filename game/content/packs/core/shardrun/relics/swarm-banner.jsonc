@@ -1,0 +1,10 @@
+{
+  "id": "swarm-banner",
+  "name": "Swarm Banner",
+  "rarity": "uncommon",
+  "icon": "swarm-banner",
+  "summary": "If at least eight bolts survive the landing cap, double all their multipliers. Pair with a wider aperture.",
+  "flavor": "One signal. A thousand answers.",
+  "art_note": "A torn indigo pennant trailing a coordinated cloud of golden motes.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "volley-size", "min": 8, "max": 96 }, "factor": 2 }]
+}

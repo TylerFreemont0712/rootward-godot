@@ -1,0 +1,26 @@
+{
+  "id": "focus",
+  "name": "Focus Lens",
+  "rarity": "uncommon",
+  "cost": 1,
+  "function": "focus",
+  "summary": "Merges every bolt into one, adding up their power. It keeps the first bolt's element and aim.",
+  "tags": ["accumulator", "lists"],
+  "examples": [
+    {
+      "name": "two bolts become one",
+      "bolts": [
+        { "power": 3, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 5, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    },
+    {
+      "name": "nothing to focus",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

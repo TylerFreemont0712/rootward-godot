@@ -1,0 +1,31 @@
+{
+  "id": "confluence",
+  "name": "Confluence",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "confluence",
+  "summary": "Multiplies every multiplier by the number of distinct fire, frost and spark elements present (at least ×1).",
+  "art_note": "Three differently colored tributaries meet in a brilliant triskelion.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 3 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "spectrum-wheel",
+  "name": "Spectrum Wheel",
+  "rarity": "common",
+  "cost": 0,
+  "complexity": "linear",
+  "function": "spectrum_wheel",
+  "summary": "Cycles bolt elements through fire, frost and spark without splitting them. Prepare diversity without adding work from width.",
+  "art_note": "A three-spoked stained-glass wheel turning above three intact bolts.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

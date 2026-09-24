@@ -1,0 +1,13 @@
+{
+  "id": "generator",
+  "name": "Generator",
+  "rarity": "rare",
+  "icon": "generator",
+  "summary": "Casting a spell of 3 or more cards draws a card.",
+  "flavor": "yield, and the next one is already waiting.",
+  // Shardrun only (ADR-0020): it works on the hand and the deck, which Spellforge does not have.
+  "playstyles": ["deck"],
+  "effects": [
+    { "kind": "draw-on-cast", "min_cards": 3, "draw": 1 }
+  ]
+}

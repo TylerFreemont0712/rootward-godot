@@ -1,0 +1,22 @@
+{
+  "id": "rewind",
+  "name": "Rewind",
+  "rarity": "common",
+  "cost": 0,
+  "function": "rewind",
+  "summary": "Fires the volley back to front: the last bolt becomes the first.",
+  "tags": ["lists", "slicing"],
+  "examples": [
+    {
+      "name": "last becomes first",
+      "bolts": [
+        { "power": 3, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 7, "element": "fire", "target": "back", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 7, "element": "fire", "target": "back", "pierce": false, "ward": false },
+        { "power": 3, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

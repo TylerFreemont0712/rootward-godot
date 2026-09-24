@@ -1,0 +1,10 @@
+{
+  "id": "arcane-seal",
+  "name": "Arcane Seal",
+  "rarity": "uncommon",
+  "icon": "arcane-seal",
+  "summary": "Elementless bolts double their multipliers.",
+  "flavor": "Before the elements, there was intent.",
+  "art_note": "An ivory wax seal impressed with a clean concentric gold rune.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "element", "element": "none" }, "factor": 2 }]
+}

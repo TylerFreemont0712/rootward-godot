@@ -1,0 +1,29 @@
+{
+  "id": "backdraft",
+  "name": "Backdraft",
+  "rarity": "common",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "backdraft",
+  "summary": "Triples the multiplier of fire bolts. Other elements pass through unchanged.",
+  "art_note": "A flame curls back through a furnace vent and erupts threefold.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 6 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

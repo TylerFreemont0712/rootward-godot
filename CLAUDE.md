@@ -10,6 +10,8 @@
   wrote with `uvx --from gdtoolkit==4.5.0 gdformat --line-length 120 <file>`.
 - Screenshot a scene: `scripts/screenshot.sh res://scenes/boot/boot.tscn shots/boot.png [frames]`. It renders on the
   GPU under a private Xvfb display, so nothing opens on the desktop. `shots/` is ignored.
+- Check all content and run every shard's worked examples in the sandbox: `scripts/validate.sh` (`--no-exec` to skip
+  the sandbox). Translation coverage: `scripts/locale.sh ja [--missing]`.
 - Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
 - Run the game: `godot --path game`. Open the editor: `godot --path game -e`.
 - Differential fixtures from the old engine: `node tools/fixtures/<name>.ts` writes `game/test/fixtures/<name>.json`
@@ -34,5 +36,8 @@
 - 32-bit integer maths (hashes, RNG) masks with `& 0xFFFFFFFF` and multiplies through `Rng.imul`.
 - Tests live in `game/test/`, mirror the source tree, and end in `_test.gd`. Fixtures from the old engine are compared
   exactly; floats that were 32-bit words are compared as words (`Fixtures.word`).
+- Content is JSONC under `game/content/` (ADR-0004): data in `<id>.jsonc` named after its id, a shard's code in
+  `<id>.py` and `<id>.js` beside it, prose translated in `packs/<pack>/locales/<locale>/*.jsonc` keyed by the English.
+  New fields go into `ShardrunSchemas` (with a default if old files lack them) before any content uses them.
 - `# LEARN:` comments for the non-obvious, with an entry in `docs/LEARNING_LOG.md`. The next ADR number is in
   `docs/decisions/README.md`.

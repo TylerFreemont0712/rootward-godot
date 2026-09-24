@@ -1,0 +1,10 @@
+{
+  "id": "runic-loom",
+  "name": "Runic Loom",
+  "rarity": "uncommon",
+  "icon": "runic-loom",
+  "summary": "Gain 4 block after each successful cast, even an empty volley. Fizzles do not count.",
+  "flavor": "Every spell leaves a thread.",
+  "art_note": "A small brass loom weaving thin golden spell trails into teal cloth.",
+  "effects": [{ "kind": "cast-block", "amount": 4 }]
+}

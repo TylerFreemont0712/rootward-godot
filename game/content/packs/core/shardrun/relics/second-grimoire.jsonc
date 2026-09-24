@@ -1,0 +1,11 @@
+{
+  "id": "second-grimoire",
+  "name": "Second Grimoire",
+  "rarity": "rare",
+  "icon": "second-grimoire",
+  "summary": "Bind a new, empty spell at once, exceeding the normal two-spell limit.",
+  "flavor": "Someone else's book, half burned. The empty pages still take ink.",
+  "effects": [
+    { "kind": "spell-slot", "add": 1 }
+  ]
+}

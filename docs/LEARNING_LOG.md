@@ -48,3 +48,13 @@ equivalent code or holes in the fixtures, and it is worth knowing which.
 Godot reads "0.9750000000000001" as 0.975: its number parser is not correctly rounded at 17 digits. Short decimals are
 fine. A comparison that forgives one unit in the last place (`Fixtures.same_number`) is honest about that without
 hiding real differences.
+
+## A schema language in 250 lines (`game/content/schema.gd`)
+The old game's zod schemas did three jobs: say what shape a file must have, fill in defaults, and explain what is
+wrong in words. `Schema.check` does the same with plain Dictionaries as schemas ({"type": "int", "min": 1}), so a
+content rule is data too. Tagged unions (a relic effect's `kind` picks which fields it has) are the one idea worth
+studying: they make "this field only exists for that kind" checkable.
+
+## Keeping comments when converting formats (`tools/content/convert.ts`)
+`JSON.stringify(yaml.parse(text))` would have dropped every comment. Walking the YAML *document* (its syntax tree)
+instead of its value keeps each comment attached to the key it explained.

@@ -1,0 +1,29 @@
+{
+  "id": "pierce",
+  "name": "Pierce",
+  "rarity": "common",
+  "cost": 1,
+  "function": "pierce",
+  "summary": "Bolts ignore shields, but lose 1 power (never below 1).",
+  "tags": ["lists", "min-max"],
+  "examples": [
+    {
+      "name": "pierces for one less",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "target": "front", "pierce": true, "ward": false }
+      ]
+    },
+    {
+      "name": "never drops below 1",
+      "bolts": [
+        { "power": 1, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 1, "element": "none", "target": "front", "pierce": true, "ward": false }
+      ]
+    }
+  ]
+}

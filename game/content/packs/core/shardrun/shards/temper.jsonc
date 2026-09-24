@@ -1,0 +1,24 @@
+{
+  "id": "temper",
+  "name": "Temper",
+  "rarity": "common",
+  "cost": 1,
+  "function": "temper",
+  "summary": "Rounds every bolt's power up to the next multiple of 5.",
+  "tags": ["loops", "lists"],
+  "examples": [
+    {
+      "name": "rounded up, and left alone when already even",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 10, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 11, "element": "frost", "target": "back", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 5, "element": "none", "target": "front", "pierce": false, "ward": false },
+        { "power": 10, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 15, "element": "frost", "target": "back", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

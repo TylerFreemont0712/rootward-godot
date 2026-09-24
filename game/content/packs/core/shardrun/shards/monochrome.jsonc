@@ -1,0 +1,29 @@
+{
+  "id": "monochrome",
+  "name": "Monochrome",
+  "rarity": "common",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "monochrome",
+  "summary": "Doubles multipliers only when the entire volley shares one non-arcane element.",
+  "art_note": "Identical colored shards locking into a single harmonious ring.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 3 }
+      ],
+      "expect": [
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 2, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 6 }
+      ]
+    }
+  ]
+}

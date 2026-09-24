@@ -1,0 +1,10 @@
+{
+  "id": "last-resort",
+  "name": "Last Resort",
+  "rarity": "uncommon",
+  "icon": "last-resort",
+  "summary": "At half Integrity or below before a cast, all bolt multipliers double.",
+  "flavor": "The last light burns fiercest.",
+  "art_note": "A half-broken red lantern with an oversized living flame.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "hurt", "fraction": 0.5 }, "factor": 2 }]
+}

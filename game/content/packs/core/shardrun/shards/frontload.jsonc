@@ -1,0 +1,29 @@
+{
+  "id": "frontload",
+  "name": "Frontload",
+  "rarity": "common",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "frontload",
+  "summary": "Quadruples the first multiplier and halves the rest. Reordering before this shard changes the beneficiary.",
+  "art_note": "One oversized golden rune ahead of a line of dimmer, smaller runes.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 8 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

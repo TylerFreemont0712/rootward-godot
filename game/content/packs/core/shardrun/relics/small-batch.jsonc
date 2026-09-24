@@ -1,0 +1,10 @@
+{
+  "id": "small-batch",
+  "name": "Small Batch",
+  "rarity": "uncommon",
+  "icon": "small-batch",
+  "summary": "If one or two bolts survive the landing cap, double their multipliers. Fuse or trim a volley to qualify.",
+  "flavor": "Nothing wasted. Nothing diluted.",
+  "art_note": "A tiny brass vial containing two intensely bright motes.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "volley-size", "min": 1, "max": 2 }, "factor": 2 }]
+}

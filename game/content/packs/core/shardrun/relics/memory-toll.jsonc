@@ -1,0 +1,11 @@
+{
+  "id": "memory-toll",
+  "name": "Memory Toll",
+  "rarity": "uncommon",
+  "icon": "memory-toll",
+  "summary": "Every cast attempt costs 1 extra mana, including fizzles. A rest can cleanse this curse instead of healing.",
+  "flavor": "Even a mistake pays the gatekeeper.",
+  "art_note": "A narrow iron gate collecting a small blue spark in its teeth.",
+  "effects": [{ "kind": "cost-tax", "amount": 1 }],
+  "cursed": true
+}

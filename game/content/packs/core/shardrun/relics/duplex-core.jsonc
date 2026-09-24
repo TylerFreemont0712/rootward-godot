@@ -1,0 +1,10 @@
+{
+  "id": "duplex-core",
+  "name": "Duplex Core",
+  "rarity": "uncommon",
+  "icon": "duplex-core",
+  "summary": "Final volleys containing both attacks and wards double all their multipliers.",
+  "flavor": "Two duties. One circuit.",
+  "art_note": "Two orbiting cores, one shield-shaped and one needle-shaped, joined by a warm filament.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "mixed-roles" }, "factor": 2 }]
+}

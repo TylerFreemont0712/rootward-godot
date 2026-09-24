@@ -1,0 +1,29 @@
+{
+  "id": "mirror-power",
+  "name": "Mirror Power",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "mirror_power",
+  "summary": "Gives every bolt the highest power in the volley. Raise one bolt, then spread its strength.",
+  "art_note": "A tall golden flame reflected into a row of small crystal mirrors.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 8, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

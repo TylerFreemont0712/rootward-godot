@@ -1,0 +1,29 @@
+{
+  "id": "superconductor",
+  "name": "Superconductor",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "superconductor",
+  "summary": "Turns frost bolts into piercing spark bolts with triple multipliers. Other bolts are unchanged.",
+  "art_note": "A blue-white lightning filament racing along a frozen copper coil.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "spark", "target": "front", "pierce": true, "ward": false, "mult": 3 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

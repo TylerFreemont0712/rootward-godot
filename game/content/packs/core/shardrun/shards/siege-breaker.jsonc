@@ -1,0 +1,45 @@
+{
+  "id": "siege-breaker",
+  "name": "Siege Breaker",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "siege_breaker",
+  "summary": "If the front foe has a shield, attacks aim front, gain piercing and double multipliers. Wards stay unchanged.",
+  "art_note": "A reinforced spear passing through a fractured metal shield.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [{ "power": 4, "element": "none", "target": "back", "pierce": false, "ward": false, "mult": 1 }],
+      "expect": [{ "power": 4, "element": "none", "target": "back", "pierce": false, "ward": false, "mult": 1 }]
+    },
+    {
+      "name": "A shield activates piercing at the front",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "back", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 6 },
+        "foes": [{ "name": "Training Dummy", "hp": 20, "max": 20, "shield": 5, "weak": [], "resist": [] }]
+      },
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": true, "ward": false, "mult": 2 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ]
+    },
+    {
+      "name": "No foes needs no shield breaker",
+      "bolts": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }],
+      "battle": { "turn": 1, "me": { "hp": 30, "max": 30, "block": 0, "mana": 6 }, "foes": [] },
+      "expect": [{ "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }]
+    }
+  ]
+}

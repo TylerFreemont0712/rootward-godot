@@ -30,7 +30,8 @@ static func function_name(shard: Dictionary, language: String) -> String:
 	return name
 
 
-## Runs `spells` ([{id, shards: [shard Dictionary]}]) from the same `input` ({bolts, battle, limit, trace_limit}).
+## Runs `spells` ([{id, shards: [shard Dictionary], bolts?, battle?}]) from `input` ({bolts, battle, limit,
+## trace_limit}); a spell with its own `bolts` or `battle` starts from those instead.
 ## Returns spell id -> run. When one spell stops the whole job (an endless loop), each spell runs again alone, so the
 ## timeout lands on the spell that caused it and the others still report.
 static func run(
@@ -72,7 +73,13 @@ static func build_job(
 				var name := function_name(shard, language)
 				shards.append({"id": shard.id, "name": name, "source": shard.code[language]})
 			indexes.append(index_of[shard.id])
-		programs.append({"id": spell.id, "shards": indexes})
+		var program := {"id": spell.id, "shards": indexes}
+		# A spell may start from its own bolts and battle instead of the job's (content validation's worked examples).
+		if spell.has("bolts"):
+			program.bolts = spell.bolts
+		if spell.has("battle"):
+			program.battle = spell.battle
+		programs.append(program)
 	var data := {
 		"marker": marker,
 		"shards": shards,

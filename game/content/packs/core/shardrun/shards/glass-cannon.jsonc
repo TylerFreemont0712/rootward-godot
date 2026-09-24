@@ -1,0 +1,27 @@
+{
+  "id": "glass-cannon",
+  "name": "Glass Cannon",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "linear",
+  "function": "glass_cannon",
+  "summary": "Drops every ward, then doubles both power and multiplier on attacks. Cursed code: burns 1 Integrity per successful cast.",
+  "art_note": "A transparent cannon firing a brilliant bolt as its shield casing shatters.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 6, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ],
+      "expect": [{ "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 6 }]
+    }
+  ],
+  "curse": { "integrity": 1 }
+}

@@ -1,0 +1,30 @@
+{
+  "id": "guard-echo",
+  "name": "Guard Echo",
+  "rarity": "common",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "guard_echo",
+  "summary": "After each attack, inserts a ward copy at one-quarter power with the same multiplier. Existing wards are not copied.",
+  "art_note": "An amber projectile followed by a smaller translucent shield-shaped echo.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 2 },
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ]
+    }
+  ]
+}

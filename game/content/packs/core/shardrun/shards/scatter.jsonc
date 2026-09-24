@@ -1,0 +1,20 @@
+{
+  "id": "scatter",
+  "name": "Scatter",
+  "rarity": "uncommon",
+  "cost": 1,
+  "function": "scatter",
+  "summary": "Every bolt hits every foe, at half power each.",
+  "tags": ["lists"],
+  "examples": [
+    {
+      "name": "aims every bolt at everyone",
+      "bolts": [
+        { "power": 8, "element": "none", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 8, "element": "none", "target": "all", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

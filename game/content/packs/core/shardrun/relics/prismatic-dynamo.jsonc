@@ -1,0 +1,10 @@
+{
+  "id": "prismatic-dynamo",
+  "name": "Prismatic Dynamo",
+  "rarity": "rare",
+  "icon": "prismatic-dynamo",
+  "summary": "A final volley containing fire, frost and spark doubles every bolt's multiplier.",
+  "flavor": "Three incompatible currents, finally agreeing.",
+  "art_note": "Three interlocked red, cyan and violet rings around a white core.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "elements", "count": 3 }, "factor": 2 }]
+}

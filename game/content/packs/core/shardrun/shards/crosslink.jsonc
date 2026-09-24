@@ -1,0 +1,36 @@
+{
+  "id": "crosslink",
+  "name": "Crosslink",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "quadratic",
+  "function": "crosslink",
+  "summary": "Every bolt gains 1 to its multiplier for each other bolt of the same element. Compares every pair, and is billed for it.",
+  "tags": ["nested-loops", "lists"],
+  "examples": [
+    {
+      "name": "one bolt has no kin",
+      "bolts": [
+        { "power": 6, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 6, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    },
+    {
+      "name": "three of a kind, and an outsider",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false },
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

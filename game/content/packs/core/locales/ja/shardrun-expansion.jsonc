@@ -1,0 +1,547 @@
+[
+  // Combo shards, build-defining relics, and optional cache curses (ADR-0025).
+  {
+    "en": "Take Two",
+    "to": "二つ取り"
+  },
+  {
+    "en": "Keeps the first two bolts and doubles their multipliers. Trim a wide volley before expensive work.",
+    "to": "先頭の矢を2本だけ残し、その倍率を2倍にします。幅広い一斉射を絞り、後続の重い処理を軽くします。"
+  },
+  {
+    "en": "Fuse",
+    "to": "融合"
+  },
+  {
+    "en": "Fuses all attacks into one bolt carrying their combined power × multiplier. Keeps its first attack's aim and element; wards stay separate.",
+    "to": "攻撃の矢を1本にまとめ、威力×倍率の合計を引き継ぎます。最初の攻撃の狙いと属性を保ち、防護の矢は別に残します。"
+  },
+  {
+    "en": "Pair Fold",
+    "to": "対の折り畳み"
+  },
+  {
+    "en": "Merges adjacent pairs that share attack/ward roles, keeping the first bolt's shape and combined effective power. An unpaired bolt stays.",
+    "to": "隣り合う矢が同じ役割（攻撃または防護）なら、最初の形を保って実効威力を合算します。余った1本はそのままです。"
+  },
+  {
+    "en": "Mirror Power",
+    "to": "威力の反映"
+  },
+  {
+    "en": "Gives every bolt the highest power in the volley. Raise one bolt, then spread its strength.",
+    "to": "すべての矢の威力を、一斉射の中で最も高い威力に揃えます。1本を強化してから、その強さを広げましょう。"
+  },
+  {
+    "en": "Prefix Charge",
+    "to": "累積充填"
+  },
+  {
+    "en": "Each bolt receives the sum of all multipliers up to its position. Ordering decides who inherits the charge.",
+    "to": "各矢の倍率を、先頭からその位置までの倍率の合計に置き換えます。並び順が充填の受け手を決めます。"
+  },
+  {
+    "en": "Weave",
+    "to": "織り交ぜ"
+  },
+  {
+    "en": "Alternates doubled-multiplier wards and attacks, starting with a ward. Build protection and damage in the same volley.",
+    "to": "倍率を2倍にした防護の矢と攻撃の矢を交互に並べます。先頭は防護。同じ一斉射で守りと攻撃を組み立てます。"
+  },
+  {
+    "en": "Backdraft",
+    "to": "逆巻く炎"
+  },
+  {
+    "en": "Triples the multiplier of fire bolts. Other elements pass through unchanged.",
+    "to": "火属性の矢の倍率を3倍にします。他の属性は変わりません。"
+  },
+  {
+    "en": "Thermal Shock",
+    "to": "熱衝撃"
+  },
+  {
+    "en": "Turns frost bolts into fire and quadruples their multipliers. Set up frost before the detonation.",
+    "to": "霜属性の矢を火属性に変え、倍率を4倍にします。爆発の前に霜を仕込みましょう。"
+  },
+  {
+    "en": "Superconductor",
+    "to": "超伝導"
+  },
+  {
+    "en": "Turns frost bolts into piercing spark bolts with triple multipliers. Other bolts are unchanged.",
+    "to": "霜属性の矢を貫通する雷属性の矢に変え、倍率を3倍にします。他の矢は変わりません。"
+  },
+  {
+    "en": "Flash Freeze",
+    "to": "瞬間凍結"
+  },
+  {
+    "en": "Turns fire bolts into frost wards with triple multipliers. Converts an offensive setup into protection.",
+    "to": "火属性の矢を霜属性の防護に変え、倍率を3倍にします。攻撃の仕込みを守りに転換します。"
+  },
+  {
+    "en": "Confluence",
+    "to": "合流"
+  },
+  {
+    "en": "Multiplies every multiplier by the number of distinct fire, frost and spark elements present (at least ×1).",
+    "to": "一斉射に含まれる火・霜・雷の異なる属性の数だけ、すべての倍率を乗算します（最低1倍）。"
+  },
+  {
+    "en": "Monochrome",
+    "to": "単色"
+  },
+  {
+    "en": "Doubles multipliers only when the entire volley shares one non-arcane element.",
+    "to": "一斉射のすべての矢が同じ火・霜・雷属性のいずれかである場合だけ、倍率を2倍にします。"
+  },
+  {
+    "en": "Spectrum Wheel",
+    "to": "分光輪"
+  },
+  {
+    "en": "Cycles bolt elements through fire, frost and spark without splitting them. Prepare diversity without adding work from width.",
+    "to": "矢の属性を火・霜・雷の順に繰り返し割り当てます。矢を増やさず、多属性の組み合わせを準備します。"
+  },
+  {
+    "en": "Resonant Run",
+    "to": "連続共鳴"
+  },
+  {
+    "en": "Consecutive bolts of the same element multiply their multipliers by ×1, ×2, ×3… A changed element restarts the streak.",
+    "to": "同じ属性の矢が続くと、その倍率を順に1倍、2倍、3倍…にします。属性が変わると数え直します。"
+  },
+  {
+    "en": "Alternating Current",
+    "to": "交互電流"
+  },
+  {
+    "en": "Triples a bolt's multiplier when its element differs from the previous bolt. The first bolt is unchanged.",
+    "to": "直前の矢と属性が異なる矢の倍率を3倍にします。先頭の矢は変わりません。"
+  },
+  {
+    "en": "Transduce",
+    "to": "威力変換"
+  },
+  {
+    "en": "Converts bolts above 4 power to exactly 4 power, preserving their effective strength in the multiplier. Amplifying afterward is much stronger.",
+    "to": "威力が4を超える矢を威力4に変え、実効威力を保つよう倍率に移します。その後の威力加算がより強力になります。"
+  },
+  {
+    "en": "Rebuke",
+    "to": "反撃への転換"
+  },
+  {
+    "en": "Turns wards back into attacks and doubles their multipliers. Does not spend block already raised.",
+    "to": "防護の矢を攻撃に戻し、倍率を2倍にします。すでに得た防御は消費しません。"
+  },
+  {
+    "en": "Reserve Tap",
+    "to": "備えの活用"
+  },
+  {
+    "en": "Attacks gain +1 multiplier per 4 block you already have. Reads your protection without spending it; wards are unchanged.",
+    "to": "現在の防御4ごとに、攻撃の矢の倍率を1加えます。防御は消費せず、防護の矢は変わりません。"
+  },
+  {
+    "en": "Counterweight",
+    "to": "釣り合い"
+  },
+  {
+    "en": "Multiplies attack multipliers by 1 plus the number of wards in this volley. Wards are kept unchanged.",
+    "to": "攻撃の矢の倍率を「この一斉射の防護の矢の数＋1」倍にします。防護の矢は変わりません。"
+  },
+  {
+    "en": "Fortify",
+    "to": "要塞化"
+  },
+  {
+    "en": "Multiplies ward multipliers by 1 plus the number of attacks in this volley. Attacks are kept unchanged.",
+    "to": "防護の矢の倍率を「この一斉射の攻撃の矢の数＋1」倍にします。攻撃の矢は変わりません。"
+  },
+  {
+    "en": "Entrench",
+    "to": "陣地構築"
+  },
+  {
+    "en": "Multiplies ward multipliers by the turn number, up to ×5. Later defenses can support a bigger counterattack.",
+    "to": "防護の矢の倍率をターン数倍にします（最大5倍）。長く守るほど、大きな反撃を支えられます。"
+  },
+  {
+    "en": "Time Dilation",
+    "to": "時間の伸長"
+  },
+  {
+    "en": "Adds the square of the turn number to every multiplier, capped at +25. Survive to build the payoff.",
+    "to": "すべての倍率にターン数の2乗を加えます（最大＋25）。生き延びて力を蓄えましょう。"
+  },
+  {
+    "en": "Blood Price",
+    "to": "血の代価"
+  },
+  {
+    "en": "Quadruples every multiplier. Cursed code: each successful cast burns 2 Integrity, even if the volley kills the foe.",
+    "to": "すべての倍率を4倍にします。呪われたコード：詠唱に成功するたび整合性を2失います。敵を倒す詠唱でも消費します。"
+  },
+  {
+    "en": "Glass Cannon",
+    "to": "薄氷の砲台"
+  },
+  {
+    "en": "Drops every ward, then doubles both power and multiplier on attacks. Cursed code: burns 1 Integrity per successful cast.",
+    "to": "防護の矢をすべて除き、攻撃の威力と倍率をそれぞれ2倍にします。呪われたコード：詠唱成功ごとに整合性を1失います。"
+  },
+  {
+    "en": "Last Stand",
+    "to": "背水の陣"
+  },
+  {
+    "en": "Quadruples multipliers at half Integrity or lower. Above half, changes nothing.",
+    "to": "整合性が半分以下なら倍率を4倍にします。半分を超えている場合は変わりません。"
+  },
+  {
+    "en": "Execution",
+    "to": "とどめ"
+  },
+  {
+    "en": "If any living foe is at half HP or below, triples attack multipliers and aims them at the weakest foe. Wards stay unchanged.",
+    "to": "生きている敵のどれかがHP半分以下なら、攻撃の倍率を3倍にして最も弱った敵を狙います。防護の矢は変わりません。"
+  },
+  {
+    "en": "Siege Breaker",
+    "to": "攻城の一撃"
+  },
+  {
+    "en": "If the front foe has a shield, attacks aim front, gain piercing and double multipliers. Wards stay unchanged.",
+    "to": "前列の敵に盾があれば、攻撃は前列を狙う貫通の矢になり、倍率を2倍にします。防護の矢は変わりません。"
+  },
+  {
+    "en": "Crowd Surge",
+    "to": "群勢のうねり"
+  },
+  {
+    "en": "Multiplies attack multipliers by the number of living foes (at least ×1). Combines with scatter; wards are unchanged.",
+    "to": "攻撃の倍率を生きている敵の数倍にします（最低1倍）。散射と組み合わせられます。防護の矢は変わりません。"
+  },
+  {
+    "en": "Lodestone",
+    "to": "磁石の導き"
+  },
+  {
+    "en": "Doubles the last bolt's multiplier and aims it at the back foe. Attune can spread its multiplier afterward.",
+    "to": "最後の矢の倍率を2倍にし、後列を狙わせます。その後の調律で、その倍率を広げられます。"
+  },
+  {
+    "en": "Frontload",
+    "to": "先頭集中"
+  },
+  {
+    "en": "Quadruples the first multiplier and halves the rest. Reordering before this shard changes the beneficiary.",
+    "to": "先頭の矢の倍率を4倍にし、残りは半分にします。この欠片の前で並べ替えると、強化の対象が変わります。"
+  },
+  {
+    "en": "Cross Product",
+    "to": "直積"
+  },
+  {
+    "en": "Makes a bolt for each ordered pair of different elements, averaging power and adding multipliers. Keeps the first bolt's shape. Same-element pairs vanish. Quadratic work.",
+    "to": "異なる属性の順序付きペアごとに、威力を平均し倍率を足した矢を作ります。最初の矢の形を保ち、同属性のペアは除きます。計算量は二次です。"
+  },
+  {
+    "en": "Guard Echo",
+    "to": "防護の残響"
+  },
+  {
+    "en": "After each attack, inserts a ward copy at one-quarter power with the same multiplier. Existing wards are not copied.",
+    "to": "攻撃の矢ごとに、威力が4分の1で倍率が同じ防護の複製を直後に挿入します。既存の防護は複製しません。"
+  },
+  {
+    "en": "Small Batch",
+    "to": "小さな精鋭"
+  },
+  {
+    "en": "If one or two bolts survive the landing cap, double their multipliers. Fuse or trim a volley to qualify.",
+    "to": "着弾上限の適用後に矢が1～2本なら、その倍率を2倍にします。融合や絞り込みで条件を満たしましょう。"
+  },
+  {
+    "en": "Nothing wasted. Nothing diluted.",
+    "to": "無駄なく、薄めず。"
+  },
+  {
+    "en": "Swarm Banner",
+    "to": "群れの旗"
+  },
+  {
+    "en": "If at least eight bolts survive the landing cap, double all their multipliers. Pair with a wider aperture.",
+    "to": "着弾上限の適用後に矢が8本以上あれば、すべての倍率を2倍にします。開口の拡張と組み合わせましょう。"
+  },
+  {
+    "en": "One signal. A thousand answers.",
+    "to": "一つの合図に、千の応答。"
+  },
+  {
+    "en": "Prismatic Dynamo",
+    "to": "虹彩の発電機"
+  },
+  {
+    "en": "A final volley containing fire, frost and spark doubles every bolt's multiplier.",
+    "to": "最終一斉射に火・霜・雷がすべて含まれていれば、すべての矢の倍率を2倍にします。"
+  },
+  {
+    "en": "Three incompatible currents, finally agreeing.",
+    "to": "相容れない三つの流れが、ついに手を結ぶ。"
+  },
+  {
+    "en": "Ember Heart",
+    "to": "残り火の心臓"
+  },
+  {
+    "en": "Fire bolts double their multipliers.",
+    "to": "火属性の矢の倍率を2倍にします。"
+  },
+  {
+    "en": "It remembers the first furnace.",
+    "to": "最初の炉を覚えている。"
+  },
+  {
+    "en": "Rime Crown",
+    "to": "霜の王冠"
+  },
+  {
+    "en": "Frost bolts double their multipliers, including frost wards.",
+    "to": "霜属性の矢の倍率を2倍にします。霜属性の防護にも適用されます。"
+  },
+  {
+    "en": "The cold keeps its promises.",
+    "to": "冷気は約束を守る。"
+  },
+  {
+    "en": "Storm Bottle",
+    "to": "嵐の小瓶"
+  },
+  {
+    "en": "Spark bolts double their multipliers.",
+    "to": "雷属性の矢の倍率を2倍にします。"
+  },
+  {
+    "en": "Please do not shake.",
+    "to": "振らないでください。"
+  },
+  {
+    "en": "Arcane Seal",
+    "to": "無属性の印章"
+  },
+  {
+    "en": "Elementless bolts double their multipliers.",
+    "to": "無属性の矢の倍率を2倍にします。"
+  },
+  {
+    "en": "Before the elements, there was intent.",
+    "to": "属性より先に、意志があった。"
+  },
+  {
+    "en": "Wardstone",
+    "to": "護り石"
+  },
+  {
+    "en": "Ward bolts double their multipliers.",
+    "to": "防護の矢の倍率を2倍にします。"
+  },
+  {
+    "en": "A wall is also a promise to strike later.",
+    "to": "壁とは、後に打ち返すという約束でもある。"
+  },
+  {
+    "en": "Drill Bit",
+    "to": "穿孔の刃"
+  },
+  {
+    "en": "Piercing bolts double their multipliers.",
+    "to": "貫通する矢の倍率を2倍にします。"
+  },
+  {
+    "en": "The shortest path is through.",
+    "to": "最短の道は、突き抜けた先にある。"
+  },
+  {
+    "en": "Rearview Lens",
+    "to": "後方のレンズ"
+  },
+  {
+    "en": "Bolts aimed at the back double their multipliers.",
+    "to": "後列を狙う矢の倍率を2倍にします。"
+  },
+  {
+    "en": "The safest enemy is usually the wrong one to ignore.",
+    "to": "安全な場所にいる敵ほど、放置してはいけない。"
+  },
+  {
+    "en": "Patient Engine",
+    "to": "忍耐の機関"
+  },
+  {
+    "en": "From turn three onward, all bolt multipliers triple.",
+    "to": "3ターン目以降、すべての矢の倍率を3倍にします。"
+  },
+  {
+    "en": "It takes its time. Then it takes everything.",
+    "to": "ゆっくり待つ。そして、すべてをさらう。"
+  },
+  {
+    "en": "Last Resort",
+    "to": "最後の手段"
+  },
+  {
+    "en": "At half Integrity or below before a cast, all bolt multipliers double.",
+    "to": "詠唱前の整合性が半分以下なら、すべての矢の倍率を2倍にします。"
+  },
+  {
+    "en": "The last light burns fiercest.",
+    "to": "最後の灯ほど激しく燃える。"
+  },
+  {
+    "en": "Bulwark Engine",
+    "to": "防塁の機関"
+  },
+  {
+    "en": "With at least 12 block before a cast, all bolt multipliers double. Does not spend block.",
+    "to": "詠唱前の防御が12以上なら、すべての矢の倍率を2倍にします。防御は消費しません。"
+  },
+  {
+    "en": "Pressure becomes purpose.",
+    "to": "圧力が目的へと変わる。"
+  },
+  {
+    "en": "Riposte Clock",
+    "to": "反撃の時計"
+  },
+  {
+    "en": "If your previous successful cast in this fight contained only wards, attack bolts triple their multipliers.",
+    "to": "この戦いで直前に成功した詠唱が防護の矢だけなら、攻撃の矢の倍率を3倍にします。"
+  },
+  {
+    "en": "First shelter. Then answer.",
+    "to": "まず守り、そして応える。"
+  },
+  {
+    "en": "Duplex Core",
+    "to": "双系統の核"
+  },
+  {
+    "en": "Final volleys containing both attacks and wards double all their multipliers.",
+    "to": "最終一斉射に攻撃と防護の両方が含まれていれば、すべての倍率を2倍にします。"
+  },
+  {
+    "en": "Two duties. One circuit.",
+    "to": "二つの役目を、一つの回路で。"
+  },
+  {
+    "en": "Persistent Cache",
+    "to": "永続キャッシュ"
+  },
+  {
+    "en": "Keep half your unspent block between turns, rounded down. New turn block is added afterward.",
+    "to": "使い残した防御の半分を次のターンに持ち越します（端数切り捨て）。新しいターンの防御はその後に加算されます。"
+  },
+  {
+    "en": "Some preparations outlive their moment.",
+    "to": "備えの中には、その瞬間を越えて残るものもある。"
+  },
+  {
+    "en": "Runic Loom",
+    "to": "ルーンの織機"
+  },
+  {
+    "en": "Gain 4 block after each successful cast, even an empty volley. Fizzles do not count.",
+    "to": "詠唱に成功するたび、その後に防御を4得ます。空の一斉射でも有効ですが、不発は数えません。"
+  },
+  {
+    "en": "Every spell leaves a thread.",
+    "to": "呪文はみな、一本の糸を残す。"
+  },
+  {
+    "en": "Blood Engine",
+    "to": "血の機関"
+  },
+  {
+    "en": "Attack bolt multipliers triple, but every successful cast burns 2 Integrity before its bolts land. This bargain is not a cleansable curse.",
+    "to": "攻撃の矢の倍率を3倍にしますが、詠唱成功ごとに着弾前に整合性を2失います。この取引は浄化できる呪いではありません。"
+  },
+  {
+    "en": "It runs on what you cannot replace.",
+    "to": "取り戻せないものを燃料にする。"
+  },
+  {
+    "en": "Leaking Capacitor",
+    "to": "漏電コンデンサ"
+  },
+  {
+    "en": "Lose 1 mana each turn (minimum 1 remains). A rest can cleanse this curse instead of healing.",
+    "to": "毎ターンのマナが1減ります（最低1は残ります）。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "Every charge finds a way out.",
+    "to": "どんな電荷も出口を見つける。"
+  },
+  {
+    "en": "Rusted Lens",
+    "to": "錆びたレンズ"
+  },
+  {
+    "en": "Attack damage is multiplied by 0.75. Wards are unaffected. A rest can cleanse this curse instead of healing.",
+    "to": "攻撃ダメージを0.75倍にします。防護には影響しません。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "It makes every target look farther away.",
+    "to": "どの標的も、遠くに見える。"
+  },
+  {
+    "en": "Cracked Mirror",
+    "to": "ひび割れた鏡"
+  },
+  {
+    "en": "All bolt multipliers are multiplied by 0.75, including wards. A rest can cleanse this curse instead of healing.",
+    "to": "防護を含むすべての矢の倍率を0.75倍にします。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "The missing quarter never comes back.",
+    "to": "失われた4分の1は戻らない。"
+  },
+  {
+    "en": "Blood Contract",
+    "to": "血の契約"
+  },
+  {
+    "en": "Every successful cast burns 1 Integrity before its bolts land. A rest can cleanse this curse instead of healing.",
+    "to": "詠唱成功ごとに、着弾前に整合性を1失います。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "The signature keeps writing itself.",
+    "to": "署名はひとりでに書き続けられる。"
+  },
+  {
+    "en": "Memory Toll",
+    "to": "記憶の通行料"
+  },
+  {
+    "en": "Every cast attempt costs 1 extra mana, including fizzles. A rest can cleanse this curse instead of healing.",
+    "to": "不発を含むすべての詠唱試行で、追加のマナを1消費します。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "Even a mistake pays the gatekeeper.",
+    "to": "失敗にも、門番への支払いは必要だ。"
+  },
+  {
+    "en": "Ember Infection",
+    "to": "残り火の侵食"
+  },
+  {
+    "en": "From turn two of each fight, lose 1 Integrity at the start of every turn. A rest can cleanse this curse instead of healing.",
+    "to": "各戦いの2ターン目から、ターン開始ごとに整合性を1失います。休息で、回復の代わりにこの呪いを浄化できます。"
+  },
+  {
+    "en": "A warmth that should not be there.",
+    "to": "そこにあるはずのない温もり。"
+  }
+]

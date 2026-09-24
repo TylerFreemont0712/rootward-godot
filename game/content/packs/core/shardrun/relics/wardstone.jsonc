@@ -1,0 +1,10 @@
+{
+  "id": "wardstone",
+  "name": "Wardstone",
+  "rarity": "uncommon",
+  "icon": "wardstone",
+  "summary": "Ward bolts double their multipliers.",
+  "flavor": "A wall is also a promise to strike later.",
+  "art_note": "A smooth teal stone projecting a curved translucent shield.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "ward", "value": true }, "factor": 2 }]
+}

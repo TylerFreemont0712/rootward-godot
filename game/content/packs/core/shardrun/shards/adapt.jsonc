@@ -1,0 +1,36 @@
+{
+  "id": "adapt",
+  "name": "Adapt",
+  "rarity": "uncommon",
+  "cost": 1,
+  "function": "adapt",
+  "summary": "Gives every bolt the element the front foe is weak to, if it has one.",
+  "tags": ["conditionals", "battle-state"],
+  "examples": [
+    {
+      "name": "matches a weakness",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 6 },
+        "foes": [
+          { "name": "Wisp", "hp": 20, "max": 20, "shield": 0, "weak": ["frost"], "resist": [] }
+        ]
+      },
+      "expect": [
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false }
+      ]
+    },
+    {
+      "name": "no weakness, no change",
+      "bolts": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false }
+      ]
+    }
+  ]
+}

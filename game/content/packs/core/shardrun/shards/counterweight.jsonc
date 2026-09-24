@@ -1,0 +1,31 @@
+{
+  "id": "counterweight",
+  "name": "Counterweight",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "counterweight",
+  "summary": "Multiplies attack multipliers by 1 plus the number of wards in this volley. Wards are kept unchanged.",
+  "art_note": "An attack arrow balanced against several heavy teal shield weights.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 3 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": true, "mult": 1 }
+      ]
+    }
+  ]
+}

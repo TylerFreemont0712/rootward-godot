@@ -1,0 +1,29 @@
+{
+  "id": "thermal-shock",
+  "name": "Thermal Shock",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "thermal_shock",
+  "summary": "Turns frost bolts into fire and quadruples their multipliers. Set up frost before the detonation.",
+  "art_note": "An ice crystal split by a brilliant orange eruption.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 4, "element": "frost", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "fire", "target": "front", "pierce": false, "ward": false, "mult": 8 },
+        { "power": 4, "element": "spark", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

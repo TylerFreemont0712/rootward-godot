@@ -29,7 +29,8 @@ class ShardFailure(Exception):
 
 
 def run_spell(spell, battle_json, trace):
-    bolts = json.loads(json.dumps(DATA["bolts"]))
+    # A spell can bring its own starting bolts and battle (content validation runs every worked example in one job).
+    bolts = json.loads(json.dumps(spell.get("bolts", DATA["bolts"])))
     for index in spell["shards"]:
         shard = SHARDS[index]
         try:
@@ -62,8 +63,9 @@ def locate(failure):
 
 
 def main():
-    battle_json = json.dumps(DATA["battle"])
+    default_battle = json.dumps(DATA["battle"])
     for spell in DATA["spells"]:
+        battle_json = json.dumps(spell["battle"]) if "battle" in spell else default_battle
         trace = []
         try:
             bolts = run_spell(spell, battle_json, trace)

@@ -59,11 +59,12 @@ docs/                 this plan, ADRs, the learning log
       (`tools/fixtures/record/`) and replaying them.
 
 ### Phase 3: Shardrun content
-- [ ] `tools/content/convert.ts`: the Shardrun part of the old packs (shards, relics, foes, `run.yaml`) and
-      `balance.yaml` as JSON under `game/content/`.
-- [ ] GDScript validators with the old schemas' rules, run at load and in a test.
-- [ ] Every shard's worked examples run in the sandbox, headless, in both languages.
-- [ ] Japanese overlays load, keyed by the English text.
+- [x] `tools/content/convert.ts`: the Shardrun part of the old packs and `balance.yaml` as JSONC under
+      `game/content/`, comments kept, each shard's code in its own `.py` and `.js` (ADR-0004).
+- [x] `Schema` and `ShardrunSchemas` with the old schemas' rules and defaults, and `ShardrunChecks` between files; the
+      loader builds exactly the old engine's catalog.
+- [x] `scripts/validate.sh`: every shard's 154 worked examples run in the sandbox in both languages.
+- [x] Japanese overlays load, keyed by the English text; `scripts/locale.sh ja` reports 335 of 335 translated.
 
 ### Phase 4: the asset pipeline into Godot (smooth by design)
 - [ ] One manifest for art, characters and audio under `pipeline/`, and one command per asset that renders it and

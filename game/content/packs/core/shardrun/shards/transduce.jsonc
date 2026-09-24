@@ -1,0 +1,29 @@
+{
+  "id": "transduce",
+  "name": "Transduce",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "linear",
+  "function": "transduce",
+  "summary": "Converts bolts above 4 power to exactly 4 power, preserving their effective strength in the multiplier. Amplifying afterward is much stronger.",
+  "art_note": "A thick brass energy pipe narrowing into a bright multiplier rune.",
+  "tags": ["lists", "dictionaries"],
+  "examples": [
+    {
+      "name": "An empty volley stays empty",
+      "bolts": [],
+      "expect": []
+    },
+    {
+      "name": "The transformation is visible in the output",
+      "bolts": [
+        { "power": 20, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 2 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ],
+      "expect": [
+        { "power": 4, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 10 },
+        { "power": 2, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1 }
+      ]
+    }
+  ]
+}

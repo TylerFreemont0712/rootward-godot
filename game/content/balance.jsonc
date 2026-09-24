@@ -1,0 +1,138 @@
+{
+  // Starting tunables. Every number the engine uses for combat, economy, and progression comes from here.
+  // See PROMPT.md sections 7, 9, 10 and ideas/solutions/adaptive-difficulty.md. Adjust from playtest data.
+  // Schema: packages/content-schema/src/balance.ts. Changes from the pre-build seed are explained in ADR-0004.
+  "version": 1,
+  "player": {
+    "integrity_start": 100,
+    "focus_base": 5,
+    "cycles_start": 60 // enough for the first hint levels on a brand-new concept
+  },
+  "encounter": {
+    "test_weights": { "visible": 1, "hidden": 2, "adversary": 1 },
+    "regression_heals_enemy": true,
+    "suggest_retreat_after_failed_casts": 3,
+    "hint_costs_cycles": [
+      20,
+      40,
+      60,
+      80
+    ],
+    "hint_cost_multiplier_by_mastery": { "0": 0.5, "1": 0.75, "2": 1, "3": 1.25, "4": 1.5, "5": 2 }
+  },
+  "enemy_moves": {
+    "strike_atk_by_tier": {
+      "1": 6,
+      "2": 9,
+      "3": 12,
+      "elite": 12,
+      "boss": 15,
+      "special": 9
+    },
+    "strike_damage_cap": 24, // one Strike never removes more Integrity than this
+    "edge_case_hp_added": 2, // weight of a test revealed by Edge Case
+    "drain_focus": 1,
+    "timeout_breath_factor": 0.5, // per-test time limit multiplier
+    "memory_bloat_factor": 0.5,
+    "counterattack_tests": { "min": 1, "max": 3 }
+  },
+  "bonuses": {
+    "commits_multiplier": { "crit": 1.5, "true_sight": 1.2, "efficiency": 1.2, "elegance": 1.2, "unaided": 1.3 },
+    "elegance_threshold": 7, // Reviewer rubric average out of 10
+    "efficiency_max_ratio_vs_reference": 3, // large-input time within 3x the reference solution on the same runner
+    "cycles_by_tier": { "1": 30, "2": 50, "3": 80, "elite": 120, "boss": 200, "special": 50 }
+  },
+  "commits": {
+    "base_by_difficulty": { "1": 6, "2": 8, "3": 10, "4": 12, "5": 15, "6": 18, "7": 22, "8": 26, "9": 30, "10": 35 },
+    "puzzle_multiplier": 0.3,
+    "boss_split_across_concepts": true
+  },
+  "mastery": {
+    "retained_min_days_between_passes": 7,
+    "rotting_retrievability_below": 0.7,
+    "rotting_after_days_unexercised": 30,
+    "never_drop_below_once_reached": 3
+  },
+  "planner": {
+    "session_rooms": { "short": 5, "standard": 7, "long": 9 },
+    "default_session": "long", // kickoff 2026-09-13
+    "target_success": { "frontier": 0.75, "review": 0.9, "elite": 0.55 },
+    "frontier_nodes_per_run": { "min": 2, "max": 4 },
+    "review_slots_per_run": { "rest": 1, "encounter": 1 },
+    "stretch_probability": 0.5,
+    "recency_exclusion_days": 14,
+    "streak_valve": { "failures_to_soften": 2, "crits_to_harden": 2, "target_delta": 0.1 }
+  },
+  "rating": {
+    "initial_player": 1000,
+    "challenge_rating_base": 1000,
+    "challenge_rating_per_difficulty": 100, // rating = base + per_difficulty * (difficulty - 5)
+    "k_by_tier": { "0": 32, "1": 32, "2": 24, "3": 24, "4": 24 },
+    "actual_score": { "unaided": 1, "assisted": 0.6, "retreat": 0 },
+    "max_change_per_attempt": 40
+  },
+  // the Maintainer's semver "level" (PROMPT.md section 9.4)
+  "character_version": {
+    "patch_per_encounter": 1,
+    "minor_per_dungeon": 1,
+    "major_requires_realm_boss_and_avg_mastery": 3,
+    "unlocks": { "2.0.0": "second_ability_slot", "3.0.0": "multiclass", "4.0.0": "prestige_classes" }
+  },
+  // the roguelite mode (ADR-0012)
+  "shardrun": {
+    "integrity_start": 60,
+    "mana_per_turn": {
+      "base": 6,
+      "per_layer": 3
+    },
+    "spell_base_cost": 1,
+    // Work is billed on a curve, not per bolt: units come from each shard's complexity class and the bolts it was handed,
+    // `per_mana` units cost 1 mana on the linear curve, and `sqrt` amortizes the rest. A relic can buy the `log` curve.
+    "work_billing": { "curve": "sqrt", "per_mana": 8, "log_base": 2 },
+    "base_bolt_power": 4,
+    "bolt_cap": {
+      "base": 16,
+      "per_layer": 12,
+      "max": 96
+    },
+    "max_pipeline_bolts": 128,
+    "max_bolt_power": 40,
+    // The two rails on what a shard may compute. They are sized from the safe-integer budget, not from taste (ADR-0016):
+    // a whole cast is at most bolt_cap.max x max_bolt_power x max_bolt_mult = 3 840 000, six orders under max_foe_hp.
+    "max_bolt_mult": 1000,
+    "max_foe_hp": 1000000000000, // 1e12: damage is bounded by HP, so this bounds every number the engine carries
+    "weak_multiplier": 1.5,
+    "resist_multiplier": 0.5,
+    "scatter_multiplier": 0.5,
+    "pattern_off_multiplier": 0.25,
+    "rest_heal_fraction": 0.3,
+    "reward_choices": 3,
+    "elite_relic_choices": 1,
+    "treasure_relic_choices": 2,
+    "treasure_curse_chance": 0.18,
+    "boss_relic_choices": 3,
+    "max_spells": 2,
+    "max_spell_capacity": 6,
+    "layer_heal_fraction": 0.5,
+    "trace_bolts": 16,
+    // The experimental deck playstyle (ADR-0020): shards are cards, drawn every turn into blank spells.
+    "deck": {
+      "hand_size": 5,
+      "opening_draw": 1, // one extra choice on the first hand of each fight; it is not extra mana
+      "hold": 1, // cards kept in hand into the next turn (relics raise it)
+      "mana_per_turn": {
+        "base": 5,
+        "per_layer": 1
+      },
+      "min_cards": 5
+    }
+  },
+  "sandbox_defaults": {
+    "wall_ms": 10000,
+    "cpu_ms": 5000,
+    "mem_mb": 256,
+    "pids": 128,
+    "output_kb": 256,
+    "max_concurrent": 2
+  }
+}

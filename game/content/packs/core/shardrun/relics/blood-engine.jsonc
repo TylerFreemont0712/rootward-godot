@@ -1,0 +1,13 @@
+{
+  "id": "blood-engine",
+  "name": "Blood Engine",
+  "rarity": "boss",
+  "icon": "blood-engine",
+  "summary": "Attack bolt multipliers triple, but every successful cast burns 2 Integrity before its bolts land. This bargain is not a cleansable curse.",
+  "flavor": "It runs on what you cannot replace.",
+  "art_note": "A dark iron turbine suspended around a vivid red droplet.",
+  "effects": [
+    { "kind": "conditional-mult", "when": { "kind": "ward", "value": false }, "factor": 3 },
+    { "kind": "cast-burn", "amount": 2 }
+  ]
+}

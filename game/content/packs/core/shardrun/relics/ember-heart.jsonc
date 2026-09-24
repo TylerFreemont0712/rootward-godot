@@ -1,0 +1,10 @@
+{
+  "id": "ember-heart",
+  "name": "Ember Heart",
+  "rarity": "uncommon",
+  "icon": "ember-heart",
+  "summary": "Fire bolts double their multipliers.",
+  "flavor": "It remembers the first furnace.",
+  "art_note": "A cracked obsidian heart with deep orange light in its seams.",
+  "effects": [{ "kind": "conditional-mult", "when": { "kind": "element", "element": "fire" }, "factor": 2 }]
+}
