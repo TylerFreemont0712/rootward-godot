@@ -6,14 +6,17 @@ extends Control
 const NAMES := {"python": "Python", "javascript": "JavaScript"}
 ## The ways to play, in the menu's order. A mode with no playstyle yet is shown, but not open.
 const MODES: Array[Dictionary] = [
-	{"id": "deck", "name": "Shardrun", "line": "Draw shards. Build the spell every turn."},
+	{"id": "program", "name": "Shardrun", "line": "Draft a paradigm. Write the program. Outrun them."},
+	# The card Shardrun the program run grew from: shown only while a run of it is underway, so it can be finished.
+	{"id": "deck", "name": "Card Shardrun", "line": "The card run underway. Finish it here."},
 	{"id": "spellbook", "name": "Spellforge", "line": "The Artificer's spellbook. Build between fights."},
 	{"id": "verifier", "name": "Verifier", "line": "Trace real programs. Predict their output. Master the course."},
 ]
 const HOW_TO: Array[String] = [
-	"A shard is a function that takes a list of bolts and the battle, and returns bolts.",
-	"A spell runs its shards in order, starting from one plain bolt. Read any spell as one function with </> Code.",
-	"Every bolt a shard handles costs mana, and bolts past the cap fizzle.",
+	"A card is a function: it takes a list of bolts and the battle, and returns bolts.",
+	"The cards you play, in order, are one program. It starts from a seed bolt; watch its code being written.",
+	"Every card has a speed, O(log n) to O(2ⁿ). A foe whose tempo beats your program's work acts before it lands.",
+	"Some cards need sorted bolts. Order matters: sort first, then search.",
 	"Relics bend the rules for the rest of a run. Guardians guard the best of them.",
 ]
 const MENU_WIDTH := 820.0
@@ -140,17 +143,23 @@ func _build(content_ok: bool) -> void:
 	_menu.add_child(_section("01", "Choose your journey"))
 	var modes := Ui.hbox([], 8)
 	for mode in MODES:
+		var run: ShardrunSession = Game.sessions.get(mode.id)
+		if mode.id == "deck" and (run == null or not run.in_progress()):
+			continue
 		modes.add_child(_tile(mode))
 	_menu.add_child(modes)
-	if Settings.playstyle == "deck":
-		_menu.add_child(_section("02", "Artificer  /  foundations"))
+	if Settings.playstyle == "program":
+		_menu.add_child(_section("02", "Paradigms  /  algorithms"))
 		_menu.add_child(
 			Ui.label(
-				"Build real functions from shard cards in Python or JavaScript. Choose one of three battle looks.",
+				"Cards are real algorithms. Play them in order to write one program a turn; faster code acts first.",
 				"Muted",
 				true
 			)
 		)
+	elif Settings.playstyle == "deck":
+		_menu.add_child(_section("02", "Artificer  /  foundations"))
+		_menu.add_child(Ui.label("Build real functions from shard cards in Python or JavaScript.", "Muted", true))
 	elif Settings.playstyle == "verifier":
 		_menu.add_child(_section("02", "Verifier  /  code reading"))
 		_menu.add_child(
@@ -278,9 +287,8 @@ func _launcher(session: ShardrunSession) -> Control:
 		sandbox.disabled = start.disabled
 		actions.add_child(sandbox)
 	column.add_child(actions)
-	column.add_child(
-		Ui.hbox([Ui.label("YOUR LOOK", "Faint"), Ui.button("Choose from 3 Artificer skins", _open_skins)], 8)
-	)
+	var looks := Ui.button("Choose from %d looks" % Settings.CHARACTER_SKINS.size(), _open_skins)
+	column.add_child(Ui.hbox([Ui.label("YOUR LOOK", "Faint"), looks], 8))
 	var panel := Ui.panel(column, "Card")
 	panel.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color(0.06, 0.05, 0.06, 0.85), Color(1, 1, 1, 0.06), 1, 10, Vector2(18, 14))

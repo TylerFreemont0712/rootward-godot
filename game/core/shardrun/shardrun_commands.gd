@@ -5,8 +5,9 @@ extends RefCounted
 ##
 ## Commands: enter {node_id}, arrange {spells: [{id, shards}], inventory}, cast {spell_id, outcome}, compose {spells,
 ## hand, held}, end-turn, take {shard_id | null}, claim-relic {relic_id}, open-chest, cleanse-relic {relic_id},
-## claim-spell, leave, rest, forge {shard_id | null}, widen {spell_id}, bind, purge {shard_id}, abandon, and the dev
-## commands of a sandbox run (see ShardrunDev). A cast's outcome is what its shards did in the sandbox:
+## claim-spell, leave, rest, forge {shard_id | null}, widen {spell_id}, bind, purge {shard_id}, abandon, a program run's
+## draft (pick-paradigm {paradigm_id}, draft-card {card_id}; ProgramDraft), and the dev commands of a sandbox run (see
+## ShardrunDev). A cast's outcome is what its shards did in the sandbox:
 ## {ok: true, bolts, work: [{shard, given}]} or {ok: false, reason}.
 
 
@@ -57,6 +58,10 @@ static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return _bind(next, catalog)
 		"purge":
 			return _purge(next, command, catalog)
+		"pick-paradigm":
+			return ProgramDraft.pick_paradigm(next, command, catalog)
+		"draft-card":
+			return ProgramDraft.pick_card(next, command, catalog)
 		"abandon":
 			next.status = "abandoned"
 			Shardrun.record(
@@ -102,7 +107,7 @@ static func _spells_by_id(next: Dictionary, listed: Array) -> Dictionary:
 
 
 static func _arrange(next: Dictionary, command: Dictionary) -> Dictionary:
-	if next.playstyle == "deck":
+	if ShardrunRules.is_deck(next):
 		return _no("cannot-arrange", "A deck run fills its spells from the hand, during a fight.")
 	if not next.status in Shardrun.ARRANGEABLE:
 		return _no("cannot-arrange", "Spells can only be rearranged between fights.")
@@ -144,7 +149,7 @@ static func _cast(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 		return refusal
 	# A deck run's cast cards are spent: onto the discard pile, leaving the spell blank for the next turn. A cast that
 	# won the fight took the battle with it; one whose curse lost the run leaves nothing to draw for.
-	if next.playstyle == "deck" and next.has("battle") and int(next.integrity) > 0:
+	if ShardrunRules.is_deck(next) and next.has("battle") and int(next.integrity) > 0:
 		var played := (spell.shards as Array).size()
 		(next.battle.discard as Array).append_array(spell.shards)
 		spell.shards = []
@@ -158,7 +163,7 @@ static func _cast(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 
 
 static func _compose(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
-	if next.playstyle != "deck":
+	if not ShardrunRules.is_deck(next):
 		return _no("not-a-deck-run", "Only a deck run plays cards from a hand.")
 	if next.status != "battle" or not next.has("battle"):
 		return _no("not-in-battle", "Cards are only played during a fight.")
@@ -218,7 +223,7 @@ static func _take(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return _no("not-offered", "That shard was not offered.")
 		var name: String = (catalog.shards.get(shard_id, {}) as Dictionary).get("name", shard_id)
 		next.stats.shards += 1
-		if next.playstyle == "deck":
+		if ShardrunRules.is_deck(next):
 			(next.deck as Array).append(shard_id)
 			Shardrun.record(next, {"kind": "reward", "text": "%s joins your deck." % name})
 		else:
@@ -310,7 +315,7 @@ static func _forge(next: Dictionary, command: Dictionary, catalog: Dictionary) -
 	if shard.is_empty() or not forge.has("into"):
 		return _no("cannot-forge", "That shard cannot be reworked.")
 	var into: String = forge.into
-	if next.playstyle == "deck":
+	if ShardrunRules.is_deck(next):
 		var card := (next.deck as Array).find(shard.id)
 		if card < 0:
 			return _no("not-owned", "That card is not in your deck.")
@@ -328,7 +333,7 @@ static func _forge(next: Dictionary, command: Dictionary, catalog: Dictionary) -
 			next.inventory[index] = into
 		else:
 			return _no("not-owned", "You do not carry that shard.")
-	var verb := "repair" if forge.get("verb") == "repair" else "upgrade"
+	var verb: String = forge.get("verb") if forge.get("verb") in ["repair", "optimize"] else "upgrade"
 	var into_name: String = (catalog.shards.get(into, {}) as Dictionary).get("name", into)
 	Shardrun.record(next, {"kind": "forge", "text": "You %s %s into %s." % [verb, shard.name, into_name]})
 	Shardrun.after_room(next, catalog)
@@ -365,7 +370,7 @@ static func _bind(next: Dictionary, catalog: Dictionary) -> Dictionary:
 static func _purge(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
 	if next.status != "forge":
 		return _no("no-forge", "There is no forge here.")
-	if next.playstyle != "deck":
+	if not ShardrunRules.is_deck(next):
 		return _no("not-a-deck-run", "Only a deck run has cards to melt down.")
 	var index := (next.deck as Array).find(command.shard_id)
 	if index < 0:

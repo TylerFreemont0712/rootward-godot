@@ -1,0 +1,78 @@
+{
+  "id": "tabulate",
+  "name": "Tabulate",
+  "rarity": "uncommon",
+  "art": "tally",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "makes": "sorted",
+  "summary": "Bottom-up dynamic programming: each bolt becomes the best total collectable up to it without taking two neighbours. The table only grows.",
+  "function": "tabulate",
+  "examples": [
+    {
+      "name": "a salvo tabulated",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 11,
+          "element": "none"
+        },
+        {
+          "power": 15,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "amplify",
+  "name": "Amplify",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Adds 3 power to every bolt. The more bolts, the more it adds.",
+  "function": "amplify",
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

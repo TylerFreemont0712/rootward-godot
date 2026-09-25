@@ -2,7 +2,10 @@ extends Control
 ## A run set up for a screenshot, then the run screen over it. ROOTWARD_SHOT picks the moment:
 ##   map (default), fight, table (a Shardrun hand half played), cast, volley (the bolts, without the code), storm (a
 ##   heavy spark spell on two foes: lightning called down), turn, reward, treasure, rest, forge, end, code,
-##   dev (a sandbox run with its tools open)
+##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms), pack (a draft
+##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
+##   than the Program acts first)
+## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered).
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
 ## ROOTWARD_SHOT_SKIN wears a battle skin for the shot (not saved). ROOTWARD_SHOT_AFTER_MS catches the moment that many
@@ -20,18 +23,36 @@ func _ready() -> void:
 	var language := OS.get_environment("ROOTWARD_SHOT_LANGUAGE")
 	Game.reset(SAVES)
 	Game.boot()
-	# ROOTWARD_SHOT_PLAYSTYLE=spellbook shows Spellforge; the card Shardrun otherwise.
+	# ROOTWARD_SHOT_PLAYSTYLE=spellbook shows Spellforge, =deck the card Shardrun; the program Shardrun otherwise.
 	var playstyle := OS.get_environment("ROOTWARD_SHOT_PLAYSTYLE")
-	Game.use(playstyle if playstyle != "" else "deck")
+	Game.use(playstyle if playstyle != "" else "program")
 	var session := Game.session
 	session.saves.delete_run("spellbook")
 	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev")
 	var bot := ShardrunBot.new(session)
+	bot.paradigm = OS.get_environment("ROOTWARD_SHOT_PARADIGM")
 	match shot:
+		"draft":
+			pass
+		"pack":
+			await bot.send(await bot.next_command())
+		"write":
+			# Two cards already in the Program; the shot plays a third and catches its code being written.
+			await bot.play_until("battle")
+			var table := CardTable.of(session.state, session.catalog)
+			for i in 2:
+				table = CardTable.tap(table, {"zone": "hand", "index": 0}, table.spells[0].id)
+			await bot.send(CardTable.command(table))
 		"boss":
 			session.start(language if language != "" else "python", "beginner", "screenshot", true)
 			await bot.play_until("battle")
 			await bot.send({"type": "dev-spawn", "kind": "boss", "foes": ["kiln-warden"]})
+		"race":
+			# A program slower than a race-condition imp (tempo 16): the imp strikes before the bolts land.
+			session.start(language if language != "" else "python", "beginner", "screenshot", true)
+			await bot.play_until("battle")
+			await bot.send({"type": "dev-spawn", "kind": "fight", "foes": ["race-condition-imp", "tally-wisp"]})
+			await bot.send(bot._deal_hand(session.state))
 		"storm":
 			# A heavy spark spell against two foes: lightning called down on both, a wave across the floor.
 			session.start(language if language != "" else "python", "beginner", "screenshot", true)
@@ -47,9 +68,9 @@ func _ready() -> void:
 			await bot.send(CardTable.command(table))
 		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile":
 			await bot.play_until("battle")
-			if session.playstyle == "deck" and shot in ["cast", "volley", "code"]:
+			if ShardrunRules.is_deck(session.state) and shot in ["cast", "volley", "code"]:
 				await bot.send(bot._deal_hand(session.state))
-			elif session.playstyle == "deck" and shot == "table":
+			elif ShardrunRules.is_deck(session.state) and shot == "table":
 				# Two cards played into the first spell, the rest still in hand.
 				var table := CardTable.of(session.state, session.catalog)
 				for i in 2:
@@ -96,13 +117,18 @@ func _act(shot: String, screen: Control) -> void:
 		"cast":
 			Settings.code_speed = "normal"
 			screen.call("send", {"type": "cast", "spell_id": "spell-1"})
-		"volley", "storm":
+		"volley", "storm", "race":
 			# ROOTWARD_SHOT_SPELL picks the spell (spell-2 is the Ward).
 			Settings.code_speed = "off"
 			var spell := OS.get_environment("ROOTWARD_SHOT_SPELL")
 			screen.call("send", {"type": "cast", "spell_id": spell if spell != "" else "spell-1"})
 		"turn":
 			screen.call("send", {"type": "end-turn"})
+		"write":
+			var session := Game.session
+			var table := CardTable.of(session.state, session.catalog)
+			table = CardTable.tap(table, {"zone": "hand", "index": 0}, table.spells[0].id)
+			screen.call("send", CardTable.command(table))
 		"code":
 			screen.call("_explore", "spell-1")
 		"dev":

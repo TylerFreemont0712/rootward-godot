@@ -1,0 +1,62 @@
+{
+  "id": "merge-sort",
+  "name": "Merge Sort",
+  "rarity": "common",
+  "art": "confluence",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "order",
+  "complexity": "linearithmic",
+  "makes": "sorted",
+  "summary": "Sorts the volley weakest first: split it in half, sort each half, merge them back. Searches need this.",
+  "function": "merge_sort",
+  "examples": [
+    {
+      "name": "a jumbled volley",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -10,9 +10,11 @@ static func shard(
 	item: Dictionary, language: String, summary := true, code_lines := 0, action: Control = null, wide := false
 ) -> PanelContainer:
 	var title := Ui.tint(Ui.label(item.get("name", item.get("id", "?")), "Subheading"), UiTheme.rarity(item.rarity))
-	var icon := Ui.picture("shardrun/shard-" + String(item.id), Vector2(40, 40), "◆")
+	var icon := Ui.picture(ShardrunViews.art(item), Vector2(40, 40), "◆")
 	var facts := "%s · %s" % [item.rarity, ShardrunViews.complexity(item)]
-	if int(item.get("cost", 0)) > 0:
+	if item.has("paradigm"):
+		facts += " · %d mana" % int(item.get("cost", 0))
+	elif int(item.get("cost", 0)) > 0:
 		facts += " · +%d work" % int(item.cost)
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(facts, "Faint")], 0)], 10)
 	var body := Ui.vbox([head], 8)
@@ -28,7 +30,7 @@ static func shard(
 		body.add_child(listing)
 	var forge: Dictionary = item.get("forge", {})
 	if forge.has("into"):
-		var verb := "repairs" if forge.get("verb") == "repair" else "upgrades"
+		var verb := {"repair": "repairs", "optimize": "optimises"}.get(forge.get("verb"), "upgrades") as String
 		var into: Dictionary = (Game.catalog.get("shards", {}) as Dictionary).get(forge.into, {})
 		body.add_child(Ui.label("A forge %s it into %s." % [verb, into.get("name", forge.into)], "Faint", true))
 	if action != null:

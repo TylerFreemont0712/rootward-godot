@@ -1,0 +1,158 @@
+{
+  "id": "knapsack-strike",
+  "name": "Knapsack Strike",
+  "rarity": "rare",
+  "art": "compound",
+  "cost": 2,
+  "paradigm": "dynamic",
+  "role": "strike",
+  "complexity": "pseudo",
+  "big_o": "O(n·H)",
+  "summary": "Dynamic programming over sums: finds the smallest total a subset of bolts can make that still kills the front foe (exactly, if it can). Those fly at it; the rest at the next foe.",
+  "function": "knapsack_strike",
+  "examples": [
+    {
+      "name": "an exact kill",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 9,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": [
+              "fire"
+            ]
+          },
+          {
+            "name": "Off-by-One Goblin",
+            "hp": 9,
+            "max": 22,
+            "shield": 2,
+            "weak": [
+              "spark"
+            ],
+            "resist": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "not enough: everything at the front",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": [
+              "fire"
+            ]
+          },
+          {
+            "name": "Off-by-One Goblin",
+            "hp": 9,
+            "max": 22,
+            "shield": 2,
+            "weak": [
+              "spark"
+            ],
+            "resist": []
+          }
+        ]
+      }
+    }
+  ]
+}

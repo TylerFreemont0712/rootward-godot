@@ -74,6 +74,11 @@ func _show(state: Dictionary) -> void:
 	if state.status in Shardrun.ENDED:
 		view = _ending(state)
 		Sound.music("music-title")
+	elif state.status == "draft":
+		var draft := DraftView.create(session)
+		draft.wants.connect(send)
+		view = draft
+		Sound.music(layer.get("music", "music-salvage"))
 	elif state.status == "battle":
 		_fight = FightView.create(session)
 		_fight.wants.connect(send)
@@ -91,6 +96,9 @@ func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
 	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
 	var heading := mode + (" / ARTIFICER" if state.get("playstyle", "") == "deck" else "")
+	var paradigm := ProgramDraft.paradigm_of(session.catalog, String(state.get("paradigm", "")))
+	if state.get("playstyle", "") == "program" and not paradigm.is_empty():
+		heading += " / " + String(paradigm.name).to_upper()
 	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD)
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
@@ -116,7 +124,7 @@ func _show_header(state: Dictionary) -> void:
 			[
 				(
 					Ui.button("Deck", _open_deck)
-					if state.get("playstyle", "") == "deck" and state.status == "battle"
+					if ShardrunRules.is_deck(state) and state.status == "battle"
 					else Ui.spacer()
 				),
 				Ui.button("Stats", _open_stats),
@@ -136,7 +144,7 @@ func _between(state: Dictionary) -> Control:
 	var left := Ui.vbox([], 8)
 	var map_view: MapView
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left.size_flags_stretch_ratio = 2.7 if state.get("playstyle", "") == "deck" else 1.25
+	left.size_flags_stretch_ratio = 2.7 if ShardrunRules.is_deck(state) else 1.25
 	if state.status in ["reward", "rest", "forge"]:
 		var room := RoomPanel.create(session)
 		room.wants.connect(send)
@@ -153,7 +161,7 @@ func _between(state: Dictionary) -> Control:
 	_chronicle = Ui.label(_story(state.log), "Muted", true)
 	left.add_child(_chronicle)
 	var right: PanelContainer
-	if state.get("playstyle", "") == "deck":
+	if ShardrunRules.is_deck(state):
 		var sidebar := Ui.vbox([], 16)
 		if state.status == "map":
 			sidebar.add_child(_routes(state, map_view))
@@ -277,7 +285,7 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 				Sound.play("cue-treasure", 0.6)
 		"rest":
 			Sound.play("sfx-heal", 0.8)
-		"forge", "widen", "bind":
+		"forge", "widen", "bind", "pick-paradigm":
 			Sound.play("sfx-forge", 0.8)
 		"claim-relic", "claim-spell":
 			Sound.play("sfx-relic", 0.8)
@@ -287,7 +295,7 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 			Sound.play(
 				"sfx-curse" if "relic" in kinds and after.get("reward", {}).has("cursed_relic") else "sfx-open", 0.8
 			)
-		"arrange", "purge":
+		"arrange", "purge", "draft-card":
 			Sound.play("sfx-card", 0.5)
 
 
@@ -386,7 +394,7 @@ func _open_run_menu() -> void:
 	var tools_row := Ui.hbox(
 		[Ui.button("Stats", _open_stats), Ui.button("Battle look", _open_skins), Ui.button("Options", _open_options)], 8
 	)
-	if state.get("playstyle", "") == "deck":
+	if ShardrunRules.is_deck(state):
 		tools_row.add_child(Ui.button("Deck", _open_deck))
 	column.add_child(tools_row)
 	var actions := Ui.hbox(

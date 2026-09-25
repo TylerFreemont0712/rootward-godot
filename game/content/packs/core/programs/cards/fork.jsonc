@@ -1,0 +1,44 @@
+{
+  "id": "fork",
+  "name": "Fork",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "grow",
+  "complexity": "linear",
+  "summary": "Every bolt splits in two, each with 60% of its power (at least 1). The volley doubles.",
+  "function": "fork",
+  "examples": [
+    {
+      "name": "two bolts become four",
+      "bolts": [
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

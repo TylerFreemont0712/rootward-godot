@@ -13,6 +13,8 @@ const SIZES := {Size.HAND: Vector2(138, 178), Size.SLOT: Vector2(96, 118), Size.
 const ELEMENT_FRAME := {"fire": "#ff9147", "frost": "#82d8ff", "spark": "#ffe066"}
 
 var shard_id := ""
+## A program card's paradigm colour (ADR-0012), for its frame; transparent for a shard, whose frame is its element's.
+var paradigm_colour := Color.TRANSPARENT
 var spot: Dictionary = {}
 var shard: Dictionary = {}
 var language := "python"
@@ -31,6 +33,10 @@ static func create(
 	card.shard_id = id
 	card.spot = at
 	card.shard = catalog.shards.get(id, {"id": id, "name": id, "rarity": "common"})
+	if card.shard.has("paradigm") and catalog.has("programs"):
+		var paradigm := ProgramDraft.paradigm_of(catalog, String(card.shard.paradigm))
+		if not paradigm.is_empty():
+			card.paradigm_colour = Color(paradigm.colour)
 	card.language = run_language
 	card._build(summaries, size_kind)
 	return card
@@ -58,17 +64,21 @@ func _build(summaries: bool, size_kind: Size) -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var rarity := UiTheme.rarity(shard.get("rarity", "common"))
 	var frame := Color(ELEMENT_FRAME.get(element_of(shard), rarity.to_html()))
+	if paradigm_colour.a > 0.0:
+		frame = paradigm_colour
 	var face := UiTheme.box(Color("#241b17"), frame.darkened(0.15), 2, 10, Vector2(7, 6))
 	face.shadow_color = Color(0, 0, 0, 0.45)
 	face.shadow_size = 4
 	add_theme_stylebox_override("panel", face)
 	var small := size_kind == Size.SLOT
 	var cost := int(shard.get("cost", 0))
-	var gem := Ui.tint(Ui.label("+%d" % cost if cost > 0 else "·", "Faint"), UiTheme.SHARD)
+	# A shard's cost is extra work; a program card's is mana (ADR-0012).
+	var price := ("%d◆" % cost) if shard.has("paradigm") else ("+%d" % cost if cost > 0 else "·")
+	var gem := Ui.tint(Ui.label(price, "Faint"), UiTheme.SHARD)
 	var big_o := Ui.label(ShardrunViews.complexity(shard), "Faint")
 	var top := Ui.hbox([gem, Ui.spacer(), big_o], 2)
 	var art_size := Vector2(40, 40) if small else Vector2(56, 56)
-	var art := Ui.picture("shardrun/shard-" + shard_id, art_size, "◆")
+	var art := Ui.picture(ShardrunViews.art(shard, shard_id), art_size, "◆")
 	art.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var name := Ui.tint(
 		Ui.label(shard.get("name", shard_id), "" if small else "Subheading", true), rarity.lightened(0.2)

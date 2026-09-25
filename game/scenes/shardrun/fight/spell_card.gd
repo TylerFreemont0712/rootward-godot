@@ -40,7 +40,11 @@ func _build(index: int, catalog: Dictionary) -> void:
 		var shard: Dictionary = catalog.shards.get(shard_id, {})
 		chain.add_child(Ui.label("→", "Faint"))
 		var chip := Ui.hbox(
-			[Ui.picture("shardrun/shard-" + shard_id, Vector2(20, 20), "◆"), Ui.label(shard.get("name", shard_id))], 4
+			[
+				Ui.picture(ShardrunViews.art(shard, shard_id), Vector2(20, 20), "◆"),
+				Ui.label(shard.get("name", shard_id))
+			],
+			4
 		)
 		var holder := Ui.panel(chip, "Chip")
 		holder.tooltip_text = "%s · %s" % [shard.get("name", shard_id), ShardrunViews.complexity(shard)]
@@ -107,6 +111,9 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 		_preview.add_theme_color_override("font_color", UiTheme.FAIL)
 		return
 	_preview.remove_theme_color_override("font_color")
+	if view.get("program", false):
+		_show_program(view)
+		return
 	if not view.has("result"):
 		_preview.text = "Predictions hidden: read its code, or cast it and watch."
 		return
@@ -120,6 +127,31 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 	if int(result.potential) > int(result.damage):
 		parts.append("worth %d" % int(result.potential))
 	_preview.text = " · ".join(parts)
+
+
+## A program run shows its code beside the table all the time, so its spell has no Code button.
+func hide_code() -> void:
+	_code.hide()
+
+
+## A Program's line: its speed and work, who beats it to the punch, and (if predictions show) what it will do.
+func _show_program(view: Dictionary) -> void:
+	if view.timeout:
+		_preview.text = "Time limit exceeded: %d ops of %d. Nothing would land." % [int(view.work), int(view.budget)]
+		_preview.add_theme_color_override("font_color", UiTheme.FAIL)
+		return
+	var parts: Array[String] = ["%s · %d ops" % [view.speed, int(view.work)]]
+	var first := (view.race as Array).filter(func(entry: Dictionary) -> bool: return entry.first)
+	if not first.is_empty():
+		parts.append("⚡ %d %s first" % [first.size(), "foe acts" if first.size() == 1 else "foes act"])
+	if view.has("result"):
+		var result: Dictionary = view.result
+		parts.append("%d damage" % int(result.damage))
+		if int(result.block) > 0:
+			parts.append("%d block" % int(result.block))
+	_preview.text = " · ".join(parts)
+	if not first.is_empty():
+		_preview.add_theme_color_override("font_color", UiTheme.WARN)
 
 
 func set_busy(busy: bool) -> void:

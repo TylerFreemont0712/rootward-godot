@@ -9,9 +9,9 @@ signal numbers_changed
 
 ## Flight times by how a bolt flies: straight, a lance that pierces, a rain on everyone, a seeker that picks a target.
 const FLIGHT := {"missile": 250.0, "lance": 140.0, "rain": 380.0, "seeker": 320.0}
-const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "ward"]
+const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted"]
 ## What a cast logs after itself, before the next thing happens: its bolts, and what fizzled or burned on the way.
-const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "ward", "defeat", "fizzle", "curse"]
+const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted", "defeat", "fizzle", "curse"]
 ## A volley spreads its launches over about this long, one bolt every `max` ms at most and `min` at least.
 const VOLLEY := {"spread": 1300.0, "max": 190.0, "min": 45.0}
 
@@ -158,6 +158,12 @@ func _land(hit: Dictionary, volley: Array) -> void:
 			if view != null:
 				stage.popup(view.top_point(), "glance", UiTheme.MUTED, 24)
 			Sound.play("sfx-glance", 0.7)
+		"wasted":
+			# A program's bolt aimed at a foe that already fell (ADR-0012): it sails through the empty air.
+			var view: FoeView = stage.foes.get(hit.foe)
+			if view != null:
+				stage.popup(view.top_point() + Vector2(0, 30), "wasted %d" % int(hit.amount), UiTheme.FAINT, 20)
+			Sound.play("sfx-glance", 0.4, 1.3)
 	numbers_changed.emit()
 
 
@@ -203,6 +209,22 @@ func _one(entry: Dictionary) -> void:
 			await stage.wait(460.0)
 		"heal":
 			await _heal(entry)
+		"tempo":
+			# A foe quicker than the program acts before it lands (ADR-0012); its action is the next entry.
+			var view: FoeView = stage.foes.get(entry.foe)
+			if view != null:
+				view.recoil(0.4)
+				stage.popup(view.top_point() - Vector2(0, 24), "⚡ faster  %d ops" % int(entry.amount), UiTheme.WARN, 26)
+			Sound.play("sfx-charge", 0.6, 1.25)
+			await stage.wait(560.0)
+		"timeout":
+			stage.banner("Time limit exceeded", UiTheme.FAIL, 1000.0)
+			stage.popup(stage.hero.hand_point(), "%d ops" % int(entry.amount), UiTheme.FAIL, 28)
+			stage.hero.flash(Color(UiTheme.FAIL, 0.6))
+			shown.mana -= int(entry.get("cost", 0))
+			numbers_changed.emit()
+			Sound.play("sfx-fail", 0.7)
+			await stage.wait(1100.0)
 		"fizzle":
 			stage.popup(stage.hero.hand_point(), "fizzle", UiTheme.MUTED, 26)
 			Sound.play("sfx-fail", 0.6)

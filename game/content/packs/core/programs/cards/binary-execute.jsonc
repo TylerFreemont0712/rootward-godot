@@ -1,0 +1,164 @@
+{
+  "id": "binary-execute",
+  "name": "Binary Execute",
+  "rarity": "rare",
+  "art": "execution",
+  "cost": 2,
+  "paradigm": "search-index",
+  "role": "strike",
+  "complexity": "logarithmic",
+  "big_o": "O(m log n)",
+  "needs": "sorted",
+  "summary": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it. Only those bolts fly. On unsorted data it picks wrong.",
+  "function": "binary_execute",
+  "examples": [
+    {
+      "name": "exact kills from a sorted volley",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 12,
+          "element": "none"
+        },
+        {
+          "power": 15,
+          "element": "none"
+        },
+        {
+          "power": 21,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 12,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 21,
+          "element": "none",
+          "foe": 0
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": [
+              "fire"
+            ]
+          },
+          {
+            "name": "Off-by-One Goblin",
+            "hp": 9,
+            "max": 22,
+            "shield": 2,
+            "weak": [
+              "spark"
+            ],
+            "resist": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "unsorted, it misses",
+      "bolts": [
+        {
+          "power": 21,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 15,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 12,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 15,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 12,
+          "element": "none",
+          "foe": 0
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": [
+              "fire"
+            ]
+          },
+          {
+            "name": "Off-by-One Goblin",
+            "hp": 9,
+            "max": 22,
+            "shield": 2,
+            "weak": [
+              "spark"
+            ],
+            "resist": []
+          }
+        ]
+      }
+    }
+  ]
+}

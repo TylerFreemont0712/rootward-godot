@@ -6,9 +6,12 @@ extends RefCounted
 
 const COMPLEXITY := {
 	"constant": "O(1)",
+	"logarithmic": "O(log n)",
 	"linear": "O(n)",
 	"linearithmic": "O(n log n)",
 	"quadratic": "O(n²)",
+	"exponential": "O(2ⁿ)",
+	"pseudo": "O(n·H)",
 }
 
 
@@ -19,6 +22,8 @@ const COMPLEXITY := {
 static func spell_run_view(
 	state: Dictionary, spell: Dictionary, run: Dictionary, reveal: bool, catalog: Dictionary
 ) -> Dictionary:
+	if state.get("playstyle") == "program":
+		return ProgramViews.run_view(state, spell, run, reveal, catalog)
 	var base := ShardrunRules.base_bolt(catalog.balance)
 	var preview := ShardrunBattle.preview_cast(state, spell.id, SpellRuns.to_outcome(run), catalog)
 	var view := {
@@ -160,7 +165,7 @@ static func room_foes(state: Dictionary, node: Dictionary, catalog: Dictionary) 
 static func forge_options(state: Dictionary, catalog: Dictionary) -> Dictionary:
 	var owned: Array[String] = []
 	var carried: Array = []
-	if state.playstyle == "deck":
+	if ShardrunRules.is_deck(state):
 		carried = state.deck
 	else:
 		for spell: Dictionary in state.spells:
@@ -206,4 +211,9 @@ static func incoming(state: Dictionary) -> int:
 
 
 static func complexity(shard: Dictionary) -> String:
-	return COMPLEXITY.get(shard.get("complexity", "linear"), "O(n)")
+	return shard.get("big_o", COMPLEXITY.get(shard.get("complexity", "linear"), "O(n)"))
+
+
+## The picture of a shard or a program card: its own, or the one its `art` borrows.
+static func art(shard: Dictionary, id := "") -> String:
+	return "shardrun/shard-" + String(shard.get("art", shard.get("id", id)))

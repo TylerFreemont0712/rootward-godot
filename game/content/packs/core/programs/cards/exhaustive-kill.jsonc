@@ -1,0 +1,100 @@
+{
+  "id": "exhaustive-kill",
+  "name": "Exhaustive Kill",
+  "rarity": "rare",
+  "art": "siege-breaker",
+  "cost": 2,
+  "paradigm": "brute-force",
+  "role": "strike",
+  "complexity": "exponential",
+  "cap_n": 12,
+  "summary": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill (2ⁿ subsets). The rest go at the next foe.",
+  "function": "exhaustive_kill",
+  "examples": [
+    {
+      "name": "no overkill on the front foe",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 9,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": [
+              "fire"
+            ]
+          },
+          {
+            "name": "Off-by-One Goblin",
+            "hp": 9,
+            "max": 22,
+            "shield": 2,
+            "weak": [
+              "spark"
+            ],
+            "resist": []
+          }
+        ]
+      }
+    }
+  ]
+}

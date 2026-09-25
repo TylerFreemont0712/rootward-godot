@@ -17,7 +17,7 @@ static var predictions := true
 ## Shake the stage on heavy hits.
 static var shake := true
 ## The last journey selected on the title screen.
-static var playstyle := "deck"
+static var playstyle := "program"
 ## The last selected battle look. Vesper is the first impression on a fresh install.
 static var character_skin := "vesper"
 static var music_volume := 0.6
@@ -48,7 +48,7 @@ static func load_file(from := PATH) -> void:
 		language = chosen
 	if values.get("difficulty") is String:
 		difficulty = values.difficulty
-	if values.get("playstyle") in ["deck", "spellbook", "verifier"]:
+	if values.get("playstyle") in ["program", "deck", "spellbook", "verifier"]:
 		playstyle = values.playstyle
 	var skin: Variant = values.get("character_skin")
 	if skin is String:

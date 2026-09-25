@@ -1,0 +1,82 @@
+{
+  "id": "fib-surge",
+  "name": "Fibonacci Surge",
+  "rarity": "uncommon",
+  "art": "resonate",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "exponential",
+  "cap_n": 16,
+  "summary": "Each bolt gains fib(i) power for its place i in the volley (up to fib(16)), computed by naive recursion: about 2ⁿ calls. A forge can optimise it.",
+  "function": "fib_surge",
+  "forge": {
+    "into": "fib-memo",
+    "verb": "optimize"
+  },
+  "examples": [
+    {
+      "name": "a salvo surges",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 14,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

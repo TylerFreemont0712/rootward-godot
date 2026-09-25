@@ -14,7 +14,7 @@ static func apply(state: Dictionary, command: Dictionary, catalog: Dictionary) -
 			var shard: Dictionary = catalog.shards.get(command.shard_id, {})
 			if shard.is_empty():
 				return _no("unknown-shard", "No such shard.")
-			if state.playstyle == "deck":
+			if ShardrunRules.is_deck(state):
 				# Into the deck, and straight into the hand during a fight, so a granted card can be tried at once.
 				(state.deck as Array).append(shard.id)
 				if state.has("battle"):
@@ -97,7 +97,7 @@ static func _note(state: Dictionary, text: String) -> void:
 
 static func _remove_shard(state: Dictionary, shard_id: String, catalog: Dictionary) -> Dictionary:
 	var name: String = (catalog.shards.get(shard_id, {}) as Dictionary).get("name", shard_id)
-	if state.playstyle == "deck":
+	if ShardrunRules.is_deck(state):
 		var card := (state.deck as Array).find(shard_id)
 		if card < 0:
 			return _no("not-owned", "That card is not in this deck.")

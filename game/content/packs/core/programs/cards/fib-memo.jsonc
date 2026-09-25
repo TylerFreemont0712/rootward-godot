@@ -1,0 +1,78 @@
+{
+  "id": "fib-memo",
+  "name": "Fibonacci Table",
+  "rarity": "rare",
+  "art": "resonant-run",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "The same Fibonacci surge, remembered instead of recomputed: each fib(i) is the sum of the two before it. O(n) where the naive one was O(2ⁿ).",
+  "function": "fib_memo",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a salvo, the same surge",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 14,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

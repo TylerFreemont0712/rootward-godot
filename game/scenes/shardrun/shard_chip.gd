@@ -17,7 +17,7 @@ static func filled(at: Dictionary, id: String, shard: Dictionary) -> ShardChip:
 	chip.place = at
 	chip.shard_id = id
 	chip.text = shard.get("name", id)
-	chip.icon = Art.texture("shardrun/shard-" + id)
+	chip.icon = Art.texture(ShardrunViews.art(shard, id))
 	chip.expand_icon = false
 	chip.theme_type_variation = "ChipButton"
 	chip.tooltip_text = "%s · %s\nDrag it, or click it and then where it goes." % [chip.text, shard.get("rarity", "")]

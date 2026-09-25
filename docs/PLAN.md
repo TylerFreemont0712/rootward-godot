@@ -116,8 +116,23 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] Verifier, a separate code-reading course with twelve executable JavaScript lessons, checkpoint tracing,
       exact-output predictions, sandbox grading, and saved mastery; Artificer keeps Python/JavaScript and three looks
       (ADR-0011).
-- [ ] The build-code view (the spell's function growing card by card), card art and card animations, and a balance pass
-      by play.
+- [x] The build-code view (the spell's function growing card by card): in the program Shardrun, always on the table
+      (Phase 8). [ ] Card art and card animations, and a balance pass by play.
+
+### Phase 8: the program Shardrun (paradigms and the speed race, ADR-0012)
+- [x] Rules in `core/programs/`: a Program's work measured per stage (its complexity class on the larger of the volley
+      in and out), foe tempo (faster foes act before it lands, once), a budget (a timeout lands nothing), mana per
+      card, bolts aimed at foes or turned to block, wasted overkill, and a lint for sorted invariants.
+- [x] 23 cards, real algorithms in Python and JavaScript with worked examples run in the sandbox: merge sort, divide
+      and conquer, tournament merges, prefix sums, binary search, hash maps, greedy assignment, all pairs, subset
+      search, tabulation, 0/1 knapsack, naive and memoised Fibonacci (a forge optimises one into the other).
+- [x] Five paradigms, and a draft before the first room: three paradigms offered, then five packs of three.
+- [x] The fight: the Program's code always on screen, new lines written in with runes, a race bar of foe tempos
+      against the program's work, and the program run line by line during a cast.
+- [x] The title's Shardrun is the program run; the card Shardrun is kept for a run already underway.
+- [ ] A balance pass by play (tempos, budget, card numbers; Brute Force is weakest played naively).
+- [ ] Cards of their own: art, and a paradigm frame; Japanese for the new text.
+- [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

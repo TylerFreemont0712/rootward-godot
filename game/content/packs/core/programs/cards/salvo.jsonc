@@ -1,0 +1,54 @@
+{
+  "id": "salvo",
+  "name": "Salvo",
+  "rarity": "common",
+  "art": "cascade",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "grow",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "Adds a rising run of six bolts, 1 to 6 power, after the volley.",
+  "function": "salvo",
+  "examples": [
+    {
+      "name": "the seed and a salvo",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

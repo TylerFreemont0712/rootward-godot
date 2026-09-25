@@ -37,6 +37,8 @@ var _work_area: Control
 var _surface: Control
 ## The Shardrun's hand and card slots, in a deck run; null in Spellforge.
 var _table: DeckTable
+## A program run's code, always in view beside the table (ADR-0012); null otherwise.
+var _program: ProgramCode
 
 
 static func create(run_session: ShardrunSession) -> FightView:
@@ -54,7 +56,7 @@ func _build() -> void:
 	stage.gui_input.connect(_on_stage_input)
 	add_child(stage)
 	var bottom: HBoxContainer
-	if state.playstyle == "deck":
+	if ShardrunRules.is_deck(state):
 		_table = DeckTable.create(session)
 		_table.wants.connect(func(command: Dictionary) -> void: _ask(command))
 		cards = _table.cards
@@ -63,6 +65,12 @@ func _build() -> void:
 			card.code_pressed.connect(_explore)
 		_work_area = _table
 		bottom = Ui.hbox([_hero_panel(), _make_surface(_work_area)], 10)
+		if state.playstyle == "program":
+			# The code is the program itself, so it is always on the table rather than behind a button.
+			_program = ProgramCode.create(session)
+			for card: SpellCard in cards.values():
+				card.hide_code()
+			bottom.add_child(_program)
 	else:
 		_work_area = _spellbook(state)
 		bottom = Ui.hbox([_hero_panel(), _make_surface(_work_area)], 10)
@@ -150,6 +158,8 @@ func show_state(state: Dictionary) -> void:
 	stage.show_foes(battle.foes)
 	if _table != null:
 		_table.show_table(state)
+	if _program != null:
+		_program.show_program(state, _previews.get((state.spells as Array)[0].id, {}))
 	for spell: Dictionary in state.spells:
 		var card: SpellCard = cards.get(spell.id)
 		if card != null:
@@ -193,7 +203,9 @@ func present(result: Dictionary) -> void:
 	var player := LogPlayer.new(stage, before)
 	player.numbers_changed.connect(func() -> void: _show_numbers(player.shown))
 	var replay: Dictionary = result.get("replay", {})
-	if not replay.is_empty() and Settings.code_speed != "off":
+	if not replay.is_empty() and _program != null:
+		await _program.play_cast(replay.run, Settings.code_speed)
+	elif not replay.is_empty() and Settings.code_speed != "off":
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)
 		var view := _code_view(spell, replay.run, "cast")
 		await view.finished
@@ -261,7 +273,10 @@ func _ask(command: Dictionary) -> void:
 
 func _on_stage_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed and busy:
-		if _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
+		if _program != null:
+			_program.skip()
+			stage.fast = true
+		elif _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
 			_code.skip()
 		else:
 			stage.fast = true
@@ -272,7 +287,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if key == null or not key.pressed or key.echo:
 		return
 	if key.keycode == KEY_SPACE and busy:
-		if _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
+		if _program != null:
+			_program.skip()
+			stage.fast = true
+		elif _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
 			_code.skip()
 		else:
 			stage.fast = true

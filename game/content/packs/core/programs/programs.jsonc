@@ -1,0 +1,94 @@
+// The Shardrun (ADR-0012): a run is a program built card by card every turn, and its cards are real algorithms. A
+// program starts from one seed bolt; each card is a stage that takes the volley and the battle and returns a new
+// volley; the last stage usually aims it. Every stage's work is its complexity applied to the input size the sandbox
+// really measured, and a foe whose tempo is below the program's total work acts before the program lands.
+{
+  // What every program starts from, before its first card.
+  "seed": [{ "power": 3, "element": "none" }],
+  "program": { "name": "Program", "capacity": 5 },
+  // Work, in operations, above which a program times out: it lands nothing, and every foe acts. Relics may raise it.
+  "budget": 4096,
+  // The strongest a bolt can be, and how many a volley can hold (more are dropped as fizzled).
+  "max_power": 9999,
+  "max_bolts": 128,
+  // The first thing a run asks: pick one paradigm of three, then draft cards from packs.
+  "draft": {
+    "paradigms_offered": 3,
+    "rounds": 5,
+    "pack_size": 3
+  },
+  // Every deck starts with these, whatever the paradigm.
+  "basics": ["salvo", "salvo", "fork", "amplify", "ward", "ward", "round-robin", "kindle"],
+  "paradigms": [
+    {
+      "id": "divide-conquer",
+      "name": "Divide & Conquer",
+      "tier": "O(n log n)",
+      "colour": "#b48cff",
+      "summary": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
+      "signature": ["divide", "merge-strike"],
+      "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify"]
+    },
+    {
+      "id": "search-index",
+      "name": "Search & Index",
+      "tier": "O(log n)",
+      "colour": "#5cc8b8",
+      "summary": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
+      "signature": ["prefix-sum", "binary-execute"],
+      "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill"]
+    },
+    {
+      "id": "greedy",
+      "name": "Greedy",
+      "tier": "O(n)",
+      "colour": "#f2a541",
+      "summary": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
+      "signature": ["greedy-assign", "take-max"],
+      "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge"]
+    },
+    {
+      "id": "brute-force",
+      "name": "Brute Force",
+      "tier": "O(n²)",
+      "colour": "#e2584f",
+      "summary": "Try every pair, every subset. Enormous damage and perfect answers, but slow: foes act first, and a big volley times out.",
+      "signature": ["pairwise", "exhaustive-kill"],
+      "pool": ["pairwise", "exhaustive-kill", "kindle", "fork", "take-max"]
+    },
+    {
+      "id": "dynamic",
+      "name": "Dynamic Programming",
+      "tier": "O(n·H)",
+      "colour": "#82d8ff",
+      "summary": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
+      "signature": ["tabulate", "knapsack-strike"],
+      "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill"]
+    }
+  ],
+  // Cards any pack can offer beside the paradigm's own.
+  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge", "take-max"],
+  // Operations a foe waits before it acts: a program doing more work than this lands after the foe's move.
+  "tempo_default": 48,
+  "tempo": {
+    "race-condition-imp": 16,
+    "tally-wisp": 24,
+    "dangling-pointer": 24,
+    "null-wraith": 32,
+    "off-by-one-goblin": 48,
+    "memory-leak-ooze": 64,
+    "type-mimic": 48,
+    "segfault-specter": 40,
+    "stack-overflow-serpent": 64,
+    "regex-sphinx": 96,
+    "garbage-collector": 128,
+    "fork-bomb": 96,
+    "kiln-warden": 160,
+    "deadlock-golem": 256,
+    "root-daemon": 384
+  },
+  // The relics a program run can find: the ones whose effects are about the run, not the old engine's bolts.
+  "relics": ["blood-contract", "ecc-memory", "ember-infection", "firewall", "grimoire-page", "leaking-capacitor",
+    "lens-of-types", "mana-capacitor", "overclocked-core", "patch-kit", "persistent-cache", "runic-loom", "rusted-lens",
+    "thread-pool"]
+}

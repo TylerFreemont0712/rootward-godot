@@ -99,7 +99,7 @@ static func _apply_effect(m: Dictionary, effect: Dictionary) -> void:
 ## Mana a turn gives: the base, more for every layer descended, and what relics add (old ADR-0015). A deck run has its
 ## own, smaller income (old ADR-0020).
 static func mana_per_turn(state: Dictionary, catalog: Dictionary) -> int:
-	var income: Dictionary = catalog.balance.deck.mana_per_turn if _is_deck(state) else catalog.balance.mana_per_turn
+	var income: Dictionary = catalog.balance.deck.mana_per_turn if is_deck(state) else catalog.balance.mana_per_turn
 	var bonus: int = relic_modifiers(state, catalog).mana_per_turn
 	return maxi(1, int(income.base) + int(income.per_layer) * int(state.layer) + bonus)
 
@@ -117,7 +117,7 @@ static func hold_limit(state: Dictionary, catalog: Dictionary) -> int:
 static func bolt_power_bonus(state: Dictionary, catalog: Dictionary) -> float:
 	var m := relic_modifiers(state, catalog)
 	var thin := 0
-	if _is_deck(state):
+	if is_deck(state):
 		for effect: Dictionary in m.small_deck_power:
 			thin += int(effect.per_card) * maxi(0, int(effect.below) - (state.deck as Array).size())
 	return m.bolt_power + thin
@@ -264,7 +264,12 @@ static func encounter_for(seed: String, node: Dictionary, layer: Dictionary) -> 
 static func bindable_spell(state: Dictionary, catalog: Dictionary, ignore_cap := false) -> Dictionary:
 	var slots: Dictionary = catalog.config.get("spell_slots", {})
 	var spells: Array = state.spells
-	if slots.is_empty() or (not ignore_cap and spells.size() >= int(catalog.balance.max_spells)):
+	# A program run writes one Program (ADR-0012): it grows wider at a forge, never into a second one.
+	if (
+		state.get("playstyle") == "program"
+		or slots.is_empty()
+		or (not ignore_cap and spells.size() >= int(catalog.balance.max_spells))
+	):
 		return {}
 	var taken := spells.map(func(spell: Dictionary) -> String: return spell.name)
 	for name: String in slots.names:
@@ -295,5 +300,6 @@ static func _is_number(value: Variant) -> bool:
 	return (value is float or value is int) and not (value is float and (is_nan(value) or is_inf(value)))
 
 
-static func _is_deck(state: Dictionary) -> bool:
-	return state.get("playstyle", "spellbook") == "deck"
+## Whether a run draws a hand from a deck: the old deck playstyle, and the Shardrun's programs (ADR-0012).
+static func is_deck(state: Dictionary) -> bool:
+	return state.get("playstyle", "spellbook") in ["deck", "program"]

@@ -68,7 +68,7 @@ func _reward() -> void:
 			row.add_child(Ui.expand(Cards.relic(relic, claim)))
 		add_child(row)
 	if reward.has("shards"):
-		var deck: bool = state.get("playstyle", "") == "deck"
+		var deck := ShardrunRules.is_deck(state)
 		add_child(Ui.label("Add one card to your deck" if deck else "Take one shard", "Subheading"))
 		var joins := (
 			"It is shuffled into your deck for every fight from now on."
@@ -137,13 +137,13 @@ func _forge() -> void:
 	var catalog := session.catalog
 	var options := ShardrunViews.forge_options(state, catalog)
 	add_child(Ui.label("An abandoned forge", "Heading"))
-	var deck: bool = state.get("playstyle", "") == "deck"
+	var deck := ShardrunRules.is_deck(state)
 	var thing := "card" if deck else "shard"
 	var text := (
 		"Do one thing here: rework a %s (upgrade it, or repair a broken one), widen a spell by one slot, " % thing
 	)
 	text += "melt a card out of your deck, " if deck else ""
-	text += "or bind a new spell to your book."
+	text += "or widen your Program by a slot." if state.playstyle == "program" else "or bind a new spell to your book."
 	add_child(Ui.label(text, "Narration", true))
 	if deck:
 		_melt(state, catalog)
@@ -153,7 +153,7 @@ func _forge() -> void:
 		for shard_id: String in options.shards:
 			var shard: Dictionary = catalog.shards.get(shard_id, {})
 			var into: Dictionary = catalog.shards.get(shard.forge.into, {})
-			var verb := "Repair" if shard.forge.get("verb") == "repair" else "Upgrade"
+			var verb := String(shard.forge.get("verb", "upgrade")).capitalize()
 			var button := Ui.button(
 				"%s %s → %s" % [verb, shard.name, into.get("name", shard.forge.into)],
 				_ask({"type": "forge", "shard_id": shard_id})

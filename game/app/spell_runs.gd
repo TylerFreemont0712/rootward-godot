@@ -136,6 +136,15 @@ func input_for(state: Dictionary) -> Dictionary:
 	if battle.is_empty():
 		return {}
 	var balance: Dictionary = catalog.balance
+	if state.get("playstyle") == "program":
+		# A program starts from its seed volley, and may grow up to the program limit (ADR-0012).
+		var config := ProgramRules.config_of(catalog)
+		return {
+			"bolts": (config.seed as Array).duplicate(true),
+			"battle": ShardrunRules.shard_battle(state, battle),
+			"limit": int(config.max_bolts),
+			"trace_limit": int(balance.trace_bolts),
+		}
 	return {
 		"bolts": [ShardrunRules.base_bolt(balance)],
 		"battle": ShardrunRules.shard_battle(state, battle),
@@ -159,7 +168,7 @@ static func to_outcome(run: Dictionary) -> Dictionary:
 		return {"ok": false, "reason": run.reason}
 	var work: Array = []
 	for step: Dictionary in run.trace:
-		work.append({"shard": step.shard, "given": step.given})
+		work.append({"shard": step.shard, "given": step.given, "returned": step.get("returned", step.given)})
 	return {"ok": true, "bolts": run.bolts, "work": work}
 
 

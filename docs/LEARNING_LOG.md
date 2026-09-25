@@ -163,3 +163,30 @@ answer. Keeping the trace optional lets a learner trade a lower score for the he
 Replacing the work surface with a code view can change a container's minimum height and resize the stage above it.
 Measure and preserve that height through playback. An impact can use a brief shake and animated effects without
 scaling both world and effects around different pivot points.
+
+## Work is what the code did, not what it was given (`game/core/programs/program_rules.gd`, ADR-0012)
+Big-O describes how work grows with the size of the input, but a card that grows the volley (7 bolts in, 21 pairs out)
+does work in proportion to what it makes as well. The rules take n as the larger of the two sizes the sandbox measured,
+and apply the card's complexity class to it: O(n log n) on 21 is about 93 operations, O(2ⁿ) on 12 is 4096. That number
+is the program's speed, and every foe with a smaller tempo acts before the program lands.
+
+## Order is an invariant (`game/content/packs/core/programs/cards/binary-execute.py`)
+Binary search is O(log n) only because it may skip half of what is left at every step, and it may skip only because the
+list is sorted. Binary Execute on an unsorted volley still runs and still answers, but looks in the wrong half and
+misses. Cards say what they need (`needs: sorted`) and what they leave (`makes`), and the code panel warns about a
+broken order the way a linter would: before the program runs, not after it fails.
+
+## Drawing text yourself (`game/ui/code/rune_code.gd`)
+A Label draws a whole string at once. To write code in one character at a time, each first a rune and then the letter,
+the control draws every character itself with `draw_char` at `column × character width` (the font is monospaced), and
+the runes as short strokes with `draw_polyline`. Only lines still being written are drawn character by character;
+settled lines are drawn in runs of one colour, and the control stops redrawing when nothing is moving.
+
+## Sampling without replacement by weight (`game/core/programs/program_draft.gd`)
+A pack draws three different cards, rarer ones less often. Setting the drawn card's weight to zero makes the next roll
+spread over what is left, in the same proportions, without removing it from the list and shifting every index.
+
+## Options loaded at boot win over a test's (`game/test/scenes/shardrun_screen_test.gd`)
+The screen test set the code speed to "off" and then booted the game, which loaded the player's saved options over it,
+so every cast played its code in real time and the test took minutes. Setting options after boot made it seconds.
+The order of setup matters whenever setup loads state.

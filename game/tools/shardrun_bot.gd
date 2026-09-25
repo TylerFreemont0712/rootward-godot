@@ -15,6 +15,8 @@ const STALEMATE_TURNS := 50
 var session: ShardrunSession
 ## A kind of room to walk into whenever one is open (a tool heading for a forge, say); "" for the usual order.
 var prefer := ""
+## The paradigm a program run's draft picks when it is offered; otherwise the first on offer.
+var paradigm := ""
 var refusals: Array[Dictionary] = []
 var steps := 0
 
@@ -54,6 +56,12 @@ func next_command() -> Dictionary:
 	var state := session.state
 	var catalog := session.catalog
 	match state.status:
+		"draft":
+			var draft: Dictionary = state.draft
+			if String(state.get("paradigm", "")) == "":
+				var offers: Array = draft.offers
+				return {"type": "pick-paradigm", "paradigm_id": paradigm if paradigm in offers else offers[0]}
+			return {"type": "draft-card", "card_id": draft.pack[0]}
 		"map":
 			var better := _arrangement(state)
 			if not better.is_empty():
@@ -97,7 +105,7 @@ func _battle_move(state: Dictionary) -> Dictionary:
 	var battle: Dictionary = state.battle
 	if int(battle.turn) > STALEMATE_TURNS:
 		return {"type": "abandon"}
-	if state.playstyle == "deck":
+	if ShardrunRules.is_deck(state):
 		var dealt := _deal_hand(state)
 		if not dealt.is_empty():
 			return dealt

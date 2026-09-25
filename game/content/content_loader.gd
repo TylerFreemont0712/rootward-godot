@@ -31,9 +31,29 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		var defaults: Variant = (balance_raw as Dictionary).get("sandbox_defaults")
 		sandbox = _checked(ShardrunSchemas.sandbox_defaults(), defaults, balance_file, "sandbox_defaults", diagnostics)
 
-	var catalog := {"config": {}, "shards": {}, "foes": {}, "relics": {}, "balance": balance, "sandbox": sandbox}
+	var catalog := {
+		"config": {},
+		"shards": {},
+		"foes": {},
+		"relics": {},
+		"balance": balance,
+		"sandbox": sandbox,
+		"programs": {"config": {}, "cards": {}},
+	}
+	var programs_file := ""
 	var run_file := ""
 	for pack in _sorted_dirs(root.path_join("packs")):
+		var programs_dir := root.path_join("packs").path_join(pack).path_join("programs")
+		if DirAccess.dir_exists_absolute(programs_dir):
+			var cards: Dictionary = catalog.programs.cards
+			_load_kind(programs_dir.path_join("cards"), ProgramSchemas.card(), cards, "card", diagnostics)
+			var config_file := programs_dir.path_join("programs.jsonc")
+			if FileAccess.file_exists(config_file):
+				programs_file = config_file
+				var config := _checked(
+					ProgramSchemas.config(), _read(config_file, diagnostics), config_file, "", diagnostics
+				)
+				catalog.programs.config = config
 		var dir := root.path_join("packs").path_join(pack).path_join("shardrun")
 		if not DirAccess.dir_exists_absolute(dir):
 			continue
@@ -54,6 +74,8 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		_error(diagnostics, "no-run", "no pack declares shardrun/run.jsonc", root)
 	elif not (catalog.config as Dictionary).is_empty():
 		ShardrunChecks.check(catalog, run_file, diagnostics)
+	if programs_file != "" and not (catalog.programs.config as Dictionary).is_empty():
+		ProgramSchemas.check(catalog, programs_file, diagnostics)
 	var ok := diagnostics.all(func(d: Dictionary) -> bool: return d.severity != "error")
 	return {"ok": ok, "catalog": catalog, "diagnostics": diagnostics}
 
@@ -71,7 +93,7 @@ static func _load_kind(
 		var raw: Variant = _read(file, diagnostics)
 		if raw == null:
 			continue
-		if noun == "shard" and raw is Dictionary:
+		if noun in ["shard", "card"] and raw is Dictionary:
 			(raw as Dictionary).code = _shard_code(dir, name.get_basename())
 		var item := _checked(schema, raw, file, "", diagnostics)
 		if item.is_empty():

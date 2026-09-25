@@ -25,41 +25,50 @@ const CALL := "#82d8ff"
 
 
 static func bbcode(line: String, language: String) -> String:
+	var out := ""
+	for token in tokens(line, language):
+		out += _paint(token.text, token.colour) if token.colour != "" else String(token.text).replace("[", "[lb]")
+	return out
+
+
+## The line cut into pieces, each with its colour ("" for plain text), in order: joined, they are the line again.
+static func tokens(line: String, language: String) -> Array[Dictionary]:
 	var keywords := String(KEYWORDS.get(language, KEYWORDS.python)).split(" ")
 	var comment := "#" if language == "python" else "//"
-	var out := ""
+	var out: Array[Dictionary] = []
 	var i := 0
 	while i < line.length():
 		var character := line[i]
 		if line.substr(i, comment.length()) == comment:
-			return out + _paint(line.substr(i), COMMENT)
+			out.append({"text": line.substr(i), "colour": COMMENT})
+			return out
 		if character == '"' or character == "'" or character == "`":
 			var end := i + 1
 			while end < line.length() and line[end] != character:
 				end += 2 if line[end] == "\\" else 1
 			end = mini(end + 1, line.length())
-			out += _paint(line.substr(i, end - i), STRING)
+			out.append({"text": line.substr(i, end - i), "colour": STRING})
 			i = end
 		elif _is_digit(character):
 			var end := i
 			while end < line.length() and (_is_digit(line[end]) or line[end] == "."):
 				end += 1
-			out += _paint(line.substr(i, end - i), NUMBER)
+			out.append({"text": line.substr(i, end - i), "colour": NUMBER})
 			i = end
 		elif _is_word(character):
 			var end := i
 			while end < line.length() and (_is_word(line[end]) or _is_digit(line[end])):
 				end += 1
 			var word := line.substr(i, end - i)
+			var colour := ""
 			if word in keywords:
-				out += _paint(word, KEYWORD)
+				colour = KEYWORD
 			elif end < line.length() and line[end] == "(":
-				out += _paint(word, CALL)
-			else:
-				out += word
+				colour = CALL
+			out.append({"text": word, "colour": colour})
 			i = end
 		else:
-			out += "[lb]" if character == "[" else character
+			out.append({"text": character, "colour": ""})
 			i += 1
 	return out
 

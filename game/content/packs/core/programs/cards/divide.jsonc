@@ -1,0 +1,100 @@
+{
+  "id": "divide",
+  "name": "Divide",
+  "rarity": "rare",
+  "art": "prism",
+  "cost": 2,
+  "paradigm": "divide-conquer",
+  "role": "shape",
+  "complexity": "linearithmic",
+  "summary": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger: about log₂ n each.",
+  "function": "divide",
+  "examples": [
+    {
+      "name": "eight bolts, three levels",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "one bolt stays",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

@@ -84,6 +84,8 @@ static func entrance(foes: Array) -> String:
 static func cast_spell(
 	state: Dictionary, battle: Dictionary, spell: Dictionary, outcome: Dictionary, catalog: Dictionary
 ) -> Dictionary:
+	if state.playstyle == "program":
+		return ProgramRules.cast(state, battle, spell, outcome, catalog)
 	var balance: Dictionary = catalog.balance
 	if not outcome.ok:
 		var fizzle_cost := ShardrunRules.discounted(state, int(balance.spell_base_cost), catalog)
@@ -295,39 +297,46 @@ static func _pick(alive: Array, better: Callable) -> Dictionary:
 
 
 static func enemy_turn(state: Dictionary, battle: Dictionary) -> void:
+	# A program run's faster foes may already have acted this turn, before the program landed (ADR-0012).
+	var acted: Array = battle.get("acted", [])
 	for foe: Dictionary in battle.foes:
-		if int(foe.hp) == 0:
+		if int(foe.hp) == 0 or foe.uid in acted:
 			continue
-		# A shield raised last turn has done its job by the time its owner acts again.
-		foe.shield = 0
-		var intents: Array = foe.intents
-		var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
-		match intent.kind:
-			"strike":
-				var power := int(intent.power) * (2 if foe.stoked else 1)
-				foe.stoked = false
-				hit_maintainer(state, battle, foe, power)
-			"multi":
-				var i := 0
-				while i < int(intent.times) and int(state.integrity) > 0:
-					hit_maintainer(state, battle, foe, int(intent.power))
-					i += 1
-			"shield":
-				var amount := int(intent.amount)
-				foe.shield += amount
-				var text := "%s raises a %d-point shield." % [foe.name, amount]
-				Shardrun.record(state, {"kind": "shield", "foe": foe.uid, "amount": amount, "text": text})
-			"stoke":
-				foe.stoked = true
-				var text := "%s stokes its fire. Its next strike hits twice as hard." % foe.name
-				Shardrun.record(state, {"kind": "stoke", "foe": foe.uid, "text": text})
-			"heal":
-				var healed := mini(int(foe.max) - int(foe.hp), int(intent.amount))
-				foe.hp += healed
-				var text := "%s mends %d HP." % [foe.name, healed]
-				Shardrun.record(state, {"kind": "heal", "foe": foe.uid, "amount": healed, "text": text})
+		foe_act(state, battle, foe)
 		if int(state.integrity) <= 0:
 			return
+
+
+## One foe does what its intent says.
+static func foe_act(state: Dictionary, battle: Dictionary, foe: Dictionary) -> void:
+	# A shield raised last turn has done its job by the time its owner acts again.
+	foe.shield = 0
+	var intents: Array = foe.intents
+	var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
+	match intent.kind:
+		"strike":
+			var power := int(intent.power) * (2 if foe.stoked else 1)
+			foe.stoked = false
+			hit_maintainer(state, battle, foe, power)
+		"multi":
+			var i := 0
+			while i < int(intent.times) and int(state.integrity) > 0:
+				hit_maintainer(state, battle, foe, int(intent.power))
+				i += 1
+		"shield":
+			var amount := int(intent.amount)
+			foe.shield += amount
+			var text := "%s raises a %d-point shield." % [foe.name, amount]
+			Shardrun.record(state, {"kind": "shield", "foe": foe.uid, "amount": amount, "text": text})
+		"stoke":
+			foe.stoked = true
+			var text := "%s stokes its fire. Its next strike hits twice as hard." % foe.name
+			Shardrun.record(state, {"kind": "stoke", "foe": foe.uid, "text": text})
+		"heal":
+			var healed := mini(int(foe.max) - int(foe.hp), int(intent.amount))
+			foe.hp += healed
+			var text := "%s mends %d HP." % [foe.name, healed]
+			Shardrun.record(state, {"kind": "heal", "foe": foe.uid, "amount": healed, "text": text})
 
 
 static func hit_maintainer(state: Dictionary, battle: Dictionary, foe: Dictionary, power: int) -> void:
@@ -349,6 +358,8 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 	battle.mana = ShardrunRules.mana_per_turn(state, catalog)
 	battle.block = floori(int(battle.block) * float(m.retain_block)) + int(m.turn_block)
 	battle.cast = []
+	if battle.has("acted"):
+		battle.acted = []
 	var burn := int(m.turn_burn)
 	if burn > 0:
 		state.integrity = maxi(0, int(state.integrity) - burn)
@@ -358,7 +369,7 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 		if int(state.integrity) == 0:
 			lose(state)
 			return
-	if state.playstyle == "deck":
+	if ShardrunRules.is_deck(state):
 		# What was not cast this turn is let go, the hand and anything still in a spell, except what was held: that
 		# starts the new hand, and a full hand is drawn on top of it.
 		var discard: Array = battle.discard
@@ -396,7 +407,7 @@ static func _element_at(cycle: Array, turn: int) -> Array:
 ## A deck run's fight begins (old ADR-0020): every card of the deck, shuffled from the run's seed, becomes the draw
 ## pile, and the first hand is drawn. The spells start the fight blank.
 static func deal(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
-	if state.playstyle != "deck":
+	if not ShardrunRules.is_deck(state):
 		return
 	clear_spells(state)
 	battle.draw = Rng.create(state.seed, "deck:%d" % state.revision).shuffled(state.deck)
@@ -431,7 +442,7 @@ static func draw(state: Dictionary, battle: Dictionary, count: int, catalog: Dic
 
 ## Empties a deck run's spells: between fights its cards are only the deck. A spellbook run's spells are left alone.
 static func clear_spells(state: Dictionary) -> void:
-	if state.playstyle != "deck":
+	if not ShardrunRules.is_deck(state):
 		return
 	for spell: Dictionary in state.spells:
 		spell.shards = []
@@ -468,7 +479,13 @@ static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> v
 		if not relics.is_empty():
 			reward.relics = relics
 	var boss_spell: Dictionary = ShardrunRules.layer_of(state, catalog).get("boss_spell", {})
-	if boss and not boss_spell.is_empty() and (state.spells as Array).size() < int(balance.max_spells):
+	var one_program: bool = state.playstyle == "program"
+	if (
+		boss
+		and not one_program
+		and not boss_spell.is_empty()
+		and (state.spells as Array).size() < int(balance.max_spells)
+	):
 		reward.spell = {"name": boss_spell.name, "capacity": int(boss_spell.capacity)}
 	if reward.is_empty():
 		Shardrun.after_room(state, catalog)
@@ -534,6 +551,8 @@ static func preview_cast(state: Dictionary, spell_id: String, outcome: Dictionar
 	var spell := Shardrun.spell_by_id(state, spell_id)
 	if battle.is_empty() or spell.is_empty():
 		return {}
+	if state.playstyle == "program":
+		return ProgramRules.preview(state, spell_id, outcome, catalog)
 	var spent: bool = spell_id in battle.cast
 	if not outcome.ok:
 		var fizzle_cost := ShardrunRules.discounted(state, int(catalog.balance.spell_base_cost), catalog)

@@ -9,9 +9,10 @@ var screen: ShardrunScreen
 
 func before_test() -> void:
 	BattleStage.instant = true
-	Settings.code_speed = "off"
 	Game.reset(ROOT)
 	Game.boot()
+	# After boot, which loads the player's options: their code speed would play every cast's code in real time.
+	Settings.code_speed = "off"
 	Game.use("spellbook")
 	Game.session.saves.delete_run("spellbook")
 	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-test")
@@ -24,6 +25,7 @@ func after_test() -> void:
 	BattleStage.instant = false
 	Game.session.saves.delete_run("spellbook")
 	Game.session.saves.delete_run("deck")
+	Game.session.saves.delete_run("program")
 	Game.reset()
 
 
@@ -80,6 +82,47 @@ func test_a_shardrun_is_played_card_by_card_through_the_screen() -> void:
 	var tables := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckTable)
 	var decks := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckPanel)
 	assert_int(tables.size() + decks.size()).is_greater(0)
+
+
+func test_a_program_run_is_drafted_and_fought_through_the_screen() -> void:
+	Game.use("program")
+	Game.session.saves.delete_run("program")
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-program")
+	var run_screen := await _open()
+	var session := Game.session
+	var bot := ShardrunBot.new(session)
+	var seen := {}
+	var written := 0
+	for i in 90:
+		if not session.in_progress():
+			break
+		seen[session.state.status] = true
+		var command: Dictionary = await bot.next_command()
+		if command.is_empty():
+			break
+		seen["command:" + String(command.type)] = true
+		var revision: int = session.state.revision
+		await run_screen.send(command)
+		assert_int(session.state.revision).override_failure_message("refused: %s" % [command]).is_equal(revision + 1)
+		# In a fight the Program's code is on screen, and holds the calls of the cards played into it.
+		if session.state.status == "battle":
+			var panels := run_screen.find_children("*", "", true, false).filter(
+				func(n: Node) -> bool: return n is ProgramCode
+			)
+			assert_int(panels.size()).is_equal(1)
+			var calls: Array = session.state.spells[0].shards as Array
+			var code := (panels[0] as Node).find_children("*", "", true, false).filter(
+				func(n: Node) -> bool: return n is RuneCode
+			)
+			var lines: Array = (code[0] as RuneCode).get("_lines")
+			var called := lines.filter(func(line: Dictionary) -> bool: return String(line.key).begins_with("call:"))
+			assert_int(called.size()).is_equal(calls.size())
+			written = maxi(written, called.size())
+	for key: String in [
+		"draft", "command:pick-paradigm", "command:draft-card", "command:compose", "command:cast", "reward"
+	]:
+		assert_bool(seen.has(key)).override_failure_message("never saw " + key).is_true()
+	assert_int(written).is_greater(0)
 
 
 func test_a_cast_with_its_code_playing_reaches_the_stage() -> void:

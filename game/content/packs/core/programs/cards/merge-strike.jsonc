@@ -1,0 +1,77 @@
+{
+  "id": "merge-strike",
+  "name": "Merge Strike",
+  "rarity": "rare",
+  "art": "fuse",
+  "cost": 2,
+  "paradigm": "divide-conquer",
+  "role": "strike",
+  "complexity": "linear",
+  "summary": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20%. It flies at the toughest foe.",
+  "function": "merge_strike",
+  "examples": [
+    {
+      "name": "four bolts into one",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 28,
+          "element": "none",
+          "foe": 2
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Imp",
+            "hp": 5,
+            "max": 14,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Golem",
+            "hp": 40,
+            "max": 40,
+            "shield": 4,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      }
+    }
+  ]
+}

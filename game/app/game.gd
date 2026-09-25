@@ -10,8 +10,10 @@ const SAVES_ENV := "ROOTWARD_SAVES"
 const TITLE := "res://scenes/title/title.tscn"
 const SHARDRUN := "res://scenes/shardrun/shardrun.tscn"
 const VERIFIER := "res://scenes/verifier/verifier.tscn"
-## Shardrun and Spellforge keep separate combat runs; Verifier is a saved code-reading course.
-const PLAYSTYLES := {"deck": "Shardrun", "spellbook": "Spellforge", "verifier": "Verifier"}
+## Each combat playstyle keeps its own run; Verifier is a saved code-reading course. The Shardrun is the program run
+## (ADR-0012); the card Shardrun it grew from stays playable for a run already underway.
+const PLAYSTYLES := {"program": "Shardrun", "deck": "Card Shardrun", "spellbook": "Spellforge", "verifier": "Verifier"}
+const COMBAT: Array[String] = ["program", "deck", "spellbook"]
 
 ## The rules read English content (old ADR-0018); screens show the same catalog, translated later (phase "Later").
 static var catalog: Dictionary = {}
@@ -36,12 +38,18 @@ static func boot() -> bool:
 	Settings.load_file()
 	var root := OS.get_environment(SAVES_ENV)
 	var saves := SaveStore.new(root if root != "" else SaveStore.ROOT)
-	for playstyle: String in ["deck", "spellbook"]:
-		var run := ShardrunSession.new(catalog, saves, playstyle)
+	for playstyle in COMBAT:
+		var run_catalog := catalog
+		if playstyle == "program" and loaded.ok:
+			run_catalog = ProgramRules.catalog_for(catalog)
+		var run := ShardrunSession.new(run_catalog, saves, playstyle)
 		if loaded.ok:
 			run.load_saved()
 		sessions[playstyle] = run
 	use(Settings.playstyle)
+	# The card Shardrun is only offered while a run of it is underway (ADR-0012).
+	if Settings.playstyle == "deck" and not (sessions.deck as ShardrunSession).in_progress():
+		use("program")
 	Sound.set_volumes(Settings.music_volume, Settings.sound_volume)
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree != null and tree.root.get_node_or_null("Lifecycle") == null:
@@ -65,11 +73,11 @@ static func reset(save_root := "") -> void:
 ## Plays `playstyle` from now on (and remembers it as the player's choice).
 static func use(playstyle: String) -> void:
 	if playstyle == "verifier":
-		session = sessions.deck
+		session = sessions.program
 		Settings.playstyle = playstyle
 		return
 	if not sessions.has(playstyle):
-		playstyle = "deck"
+		playstyle = "program"
 	session = sessions[playstyle]
 	Settings.playstyle = playstyle
 

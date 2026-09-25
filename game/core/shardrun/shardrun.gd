@@ -23,13 +23,15 @@ static func start(catalog: Dictionary, options: Dictionary) -> Dictionary:
 	var first_layer: Dictionary = layers[0]
 	var playstyle: String = options.get("playstyle", "spellbook")
 	var deck: Dictionary = config.get("deck", {})
-	assert(playstyle != "deck" or not deck.is_empty(), "this Shardrun config has no deck playstyle")
+	# A program run is dealt like a deck run, then drafts its deck before the first room (ADR-0012).
+	var decked: bool = playstyle in ["deck", "program"]
+	assert(not decked or not deck.is_empty(), "this Shardrun config has no deck playstyle")
 	var seed: String = options.seed
-	var templates: Array = deck.spells if playstyle == "deck" else config.start.spells
+	var templates: Array = deck.spells if decked else config.start.spells
 	var spells: Array = []
 	for index in templates.size():
 		var template: Dictionary = templates[index]
-		var shards: Array = [] if playstyle == "deck" else (template.shards as Array).duplicate()
+		var shards: Array = [] if decked else (template.shards as Array).duplicate()
 		spells.append(
 			{
 				"id": "spell-%d" % (index + 1),
@@ -53,8 +55,8 @@ static func start(catalog: Dictionary, options: Dictionary) -> Dictionary:
 		"visited": [],
 		"playstyle": playstyle,
 		"spells": spells,
-		"inventory": [] if playstyle == "deck" else (config.start.get("inventory", []) as Array).duplicate(),
-		"deck": (deck.cards as Array).duplicate() if playstyle == "deck" else [],
+		"inventory": [] if decked else (config.start.get("inventory", []) as Array).duplicate(),
+		"deck": (deck.cards as Array).duplicate() if decked else [],
 		"relics": [],
 		"revision": 0,
 		"sandbox": options.get("sandbox", false),
@@ -66,6 +68,8 @@ static func start(catalog: Dictionary, options: Dictionary) -> Dictionary:
 		if not relic.is_empty():
 			gain_relic(state, relic, catalog)
 	state.log = [{"kind": "layer", "text": "%s. %s" % [first_layer.name, first_layer.flavor]}]
+	if playstyle == "program":
+		ProgramDraft.open(state, catalog)
 	return state
 
 
@@ -232,7 +236,7 @@ static func gain_relic(state: Dictionary, relic: Dictionary, catalog: Dictionary
 				for card: String in effect.cards:
 					if not catalog.shards.has(card):
 						continue
-					if state.playstyle == "deck":
+					if ShardrunRules.is_deck(state):
 						(state.deck as Array).append(card)
 						# During a fight every card of the deck sits in a pile; a new one starts on the discard pile.
 						if state.has("battle"):
