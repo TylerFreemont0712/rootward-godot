@@ -211,3 +211,14 @@ freed with the card; `get_global_transform() * Rect2(...)` gives where the (lift
 `get_meta(name, null)` reports an error when the key is missing, because Godot reads a null default as "no default";
 ask `has_meta` first.
 
+## An animation is a function of time (`pipeline/sprites/spells.py`, ADR-0014)
+Each spell animation is one function drawing frame t (0 to 1). Easing does the acting: `into` (slow, then fast) for
+things slamming shut or falling, `out` (fast, then slow) for things thrown, `overshoot` for things locking into place,
+and a blow that lands on a frame of its own, with a moment of stillness (a hit-stop) after it. Punch is timing and
+contrast; brightness only adds glare.
+
+## Light and shade in one pass (`game/scenes/shardrun/fight/spell_anim.gdshader`)
+With premultiplied alpha the blend is `out = source.rgb + behind * (1 - source.a)`. Putting the effect's coloured light
+in `rgb` and its shade in `a` lets one sprite both add light and darken what is behind it, so a slash can be a dark cut
+with bright edges instead of a white smear.
+

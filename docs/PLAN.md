@@ -134,6 +134,11 @@ the rules' modifiers table in Stats, keyboard focus through the map.
       hand held Slay the Spire style with details beside the pointed-at card, summaries as comments, the Program's run
       ending the turn (`▶ python program.py`), a guardian's health bar at the top, a portrait of the worn skin, and
       the fight's `.log`.
+- [x] After the first play: the hand whole on screen, `main.py`, the numbers over the Maintainer, a calmer stage
+      (ADR-0013's amendment).
+- [x] Spell animations drawn as motion (ADR-0014): the sigil, the rune comet, the bracket slam, the falling code
+      blocks, the hex ward, the shatter, the claw and the clock, coloured per element in the game.
+- [ ] More spell animations: one per card role (a sort, a search, a split), and per paradigm.
 - [ ] A balance pass by play (tempos, budget, card numbers; Brute Force is weakest played naively).
 - [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.

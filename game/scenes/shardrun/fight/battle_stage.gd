@@ -196,10 +196,33 @@ func wait(ms: float) -> void:
 	await get_tree().create_timer(ms / 1000.0).timeout
 
 
+## One of the pipeline's spell animations at `at` (ADR-0014), coloured by `ramp`; null when skipping ahead or when the
+## animation is not there (the caller then falls back to the older effects).
+func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> SpellAnim:
+	if fast:
+		return null
+	return SpellAnim.play(_fx, id, at, ramp, size, angle)
+
+
 ## A bolt from `from` to `to`; `arrive` is called when it lands.
 func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callable, ward := false) -> void:
 	if fast:
 		arrive.call()
+		return
+	if SpellAnim.has("glyph-bolt"):
+		# A comet of runes along an arc, turned to face where it is going.
+		var head := SpellAnim.play(_fx, "glyph-bolt", from, "ward" if ward else element, 0.85)
+		var lift := 42.0 + randf() * 48.0
+		var travel := func(progress: float) -> void:
+			var bend := (from + to) * 0.5 - Vector2(0, lift * 2.0)
+			var a := from.lerp(bend, progress)
+			var b := bend.lerp(to, progress)
+			head.position = a.lerp(b, progress)
+			head.rotation = (b - a).angle()
+		var motion := head.create_tween()
+		motion.tween_method(travel, 0.0, 1.0, ms / 1000.0)
+		motion.tween_callback(arrive)
+		motion.tween_callback(head.stop)
 		return
 	var colour: Color = UiTheme.TEAL if ward else UiTheme.element(element)
 	var bolt := BattleFX.spawn(_fx, BattleFX.Kind.BOLT, from, colour, ms / 1000.0 + 0.05, "ward" if ward else element)

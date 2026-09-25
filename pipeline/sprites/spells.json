@@ -1,0 +1,13 @@
+{
+  "_about": "Spell animations drawn by spells.py (ADR-0014). Each is a motion in spells.py drawn `frames` times at `size`; `anchor` is the point of a frame that lands on the spot it is played at (a heavy blow's ground), `impact` the share of its time at which its blow lands, `preview` only the colour of the contact sheet.",
+  "spells": [
+    {"id": "cast-sigil", "motion": "cast-sigil", "size": [320, 320], "frames": 26, "fps": 30, "bloom": 0.5, "impact": 0.86, "preview": "#b48cff"},
+    {"id": "glyph-bolt", "motion": "glyph-bolt", "size": [224, 128], "frames": 12, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#ff8a3a"},
+    {"id": "hit-compile", "motion": "hit-compile", "size": [288, 288], "frames": 22, "fps": 30, "bloom": 0.5, "impact": 0.16, "seed": 11, "preview": "#3fb6ff"},
+    {"id": "hit-heavy", "motion": "hit-heavy", "size": [320, 400], "frames": 30, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.85], "impact": 0.44, "seed": 5, "preview": "#ffc83a"},
+    {"id": "ward-hex", "motion": "ward-hex", "size": [300, 360], "frames": 26, "fps": 30, "bloom": 0.45, "seed": 3, "preview": "#33d6b6"},
+    {"id": "shatter", "motion": "shatter", "size": [300, 300], "frames": 26, "fps": 30, "bloom": 0.4, "impact": 0.3, "seed": 9, "preview": "#e9dcff"},
+    {"id": "claw", "motion": "claw", "size": [256, 256], "frames": 16, "fps": 30, "bloom": 0.35, "impact": 0.12, "preview": "#ff3a4a"},
+    {"id": "tempo", "motion": "tempo", "size": [192, 192], "frames": 20, "fps": 30, "bloom": 0.4, "preview": "#ffb13a"}
+  ]
+}

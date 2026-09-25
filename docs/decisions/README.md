@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0014**.
+The next number is **ADR-0015**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -16,3 +16,4 @@ The next number is **ADR-0014**.
 - [ADR-0011](ADR-0011-verifier-code-lab-and-spell-motion.md): Verifier becomes a code course; spell effects gain motion and fixed framing.
 - [ADR-0012](ADR-0012-programs-paradigms-and-the-speed-race.md): the Shardrun becomes programs: paradigms, measured work, foes faster than your code.
 - [ADR-0013](ADR-0013-the-card-table.md): cards as painted cards held in a hand, details beside them, the turn ending on the Program's run.
+- [ADR-0014](ADR-0014-spell-animations-drawn-as-motion.md): spell animations drawn as motion in the pipeline, light and shade coloured in the game; the strikes retired.
