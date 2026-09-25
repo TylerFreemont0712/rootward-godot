@@ -11,9 +11,11 @@ const ENDINGS := {
 const PARTS := ["progress", "combat", "build", "survival", "tempo", "completion", "penalties"]
 
 
-static func ending(state: Dictionary) -> Control:
+## How a run ended and its score. `title_variation` is the headline's label variation: "Title" at the end of a run,
+## a smaller one where it shares a screen (the title screen).
+static func ending(state: Dictionary, title_variation := "Title") -> Control:
 	var said: Array = ENDINGS.get(state.status, ["The run", UiTheme.AMBER])
-	var title := Ui.tint(Ui.label(said[0], "Title"), said[1])
+	var title := Ui.tint(Ui.label(said[0], title_variation), said[1])
 	return Ui.vbox([title, score(state)], 12)
 
 

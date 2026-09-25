@@ -162,10 +162,8 @@ func _ending(state: Dictionary) -> Control:
 	var panel := Ui.panel(
 		Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log), "Narration", true), buttons], 16), "Overlay"
 	)
-	panel.custom_minimum_size = Vector2(760, 0)
-	var center := CenterContainer.new()
-	center.add_child(panel)
-	return center
+	panel.custom_minimum_size = Vector2(820, 0)
+	return Ui.centered_scroll(panel)
 
 
 static func _story(entries: Array) -> String:
@@ -287,11 +285,17 @@ func _open(panel: Control) -> void:
 				_close_overlay()
 	)
 	_overlay.add_child(dim)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	center.add_child(panel)
-	_overlay.add_child(center)
+	var page := Ui.centered_scroll(panel)
+	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	(page.get_child(0) as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# A click beside the panel (on the dimmed screen) closes it, as a click on the dim itself would.
+	page.gui_input.connect(
+		func(event: InputEvent) -> void:
+			var click := event as InputEventMouseButton
+			if click != null and click.pressed and click.button_index == MOUSE_BUTTON_LEFT:
+				_close_overlay()
+	)
+	_overlay.add_child(page)
 
 
 func _close_overlay() -> void:
@@ -346,6 +350,6 @@ func _explore(spell_id: String) -> void:
 	var base := int(session.catalog.balance.base_bolt_power)
 	var note := {"note": "This is the whole spell as one function. Cast it in a fight to watch it run, line by line."}
 	var view := CodeView.create(session.state.language, spell, session.catalog.shards, base, note, "explore", "normal")
-	view.custom_minimum_size = Vector2(760, 620)
+	view.custom_minimum_size = Vector2(1040, 820)
 	view.finished.connect(_close_overlay)
 	_open(view)

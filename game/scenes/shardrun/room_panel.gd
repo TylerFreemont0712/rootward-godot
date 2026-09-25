@@ -70,14 +70,14 @@ func _reward() -> void:
 	if reward.has("shards"):
 		add_child(Ui.label("Take one shard", "Subheading"))
 		add_child(Ui.label("It joins your spare shards; slot it into a spell before the next fight.", "Muted", true))
-		var row := Ui.hbox([], 10)
+		# One shard to a row, its code beside it at full width: the code is what the choice is about.
+		var column := Ui.vbox([], 10)
 		for shard_id: String in reward.shards:
 			var shard: Dictionary = catalog.shards.get(shard_id, {})
 			var take := Ui.button("Take %s" % shard.get("name", shard_id), _ask({"type": "take", "shard_id": shard_id}))
 			take.theme_type_variation = "PrimaryButton"
-			var card := Cards.shard(shard, state.language, session.show_summaries(), 9, take)
-			row.add_child(Ui.expand(card))
-		add_child(row)
+			column.add_child(Cards.shard(shard, state.language, session.show_summaries(), 12, take, true))
+		add_child(column)
 		add_child(Ui.hbox([Ui.button("Skip the shards", _ask({"type": "take", "shard_id": null}))]))
 	var leave := "Leave it unopened" if reward.has("chest") else "Leave the rest and move on"
 	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}))]))

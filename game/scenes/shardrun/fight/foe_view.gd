@@ -4,7 +4,8 @@ extends VBoxContainer
 ## trait. It shows the numbers it is given (`show_foe`), so the stage can play a volley hit by hit before the new state
 ## is drawn.
 
-const SIZES := {"small": 144.0, "medium": 184.0, "large": 224.0, "huge": 264.0, "colossal": 300.0}
+## A foe's sprite, square, by its size in content (in the 1920x1080 design canvas).
+const SIZES := {"small": 110.0, "medium": 140.0, "large": 170.0, "huge": 200.0, "colossal": 232.0}
 const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚"}
 
 var uid := ""
@@ -52,14 +53,14 @@ func _build(foe_state: Dictionary, size_name: String, flavor: String) -> void:
 	_name = Ui.label(foe_state.name, "")
 	_bar = ProgressBar.new()
 	_bar.show_percentage = false
-	_bar.custom_minimum_size = Vector2(190, 12)
+	_bar.custom_minimum_size = Vector2(150, 10)
 	_hp = Ui.label("", "Faint")
 	_shield = Ui.tint(Ui.label("", "Muted"), UiTheme.TEAL) as Label
 	_tags = Ui.flow([], 4)
 	var hp_row := Ui.hbox([_bar, _hp], 6)
 	_card = Ui.panel(Ui.vbox([Ui.hbox([_name, Ui.spacer(), _shield]), hp_row, _tags], 3), "Card")
 	_card.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	_card.custom_minimum_size.x = 230
+	_card.custom_minimum_size.x = 200
 	add_child(_card)
 
 

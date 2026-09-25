@@ -15,6 +15,8 @@ signal finished
 const ROW_CURRENT := Color(0.95, 0.65, 0.25, 0.22)
 const ROW_ERROR := Color(0.89, 0.35, 0.31, 0.3)
 const ROW_ACTIVE := Color(0.71, 0.55, 1.0, 0.07)
+## The code's font size (design canvas): the code is what this view is for, so it is the largest text in it.
+const CODE_SIZE := 16
 
 var language := ""
 var mode := "cast"
@@ -108,7 +110,7 @@ func _finish() -> void:
 
 
 func _build(spell: Dictionary) -> void:
-	custom_minimum_size = Vector2(640, 0)
+	custom_minimum_size = Vector2(560, 0)
 	var steps: Array = run.get("steps", [])
 	var work := 0
 	for step: Dictionary in steps:
@@ -150,19 +152,21 @@ func _build(spell: Dictionary) -> void:
 	add_child(body)
 
 
+## The three numbers in one slim row, so the code below keeps most of the height.
 func _scoreboard() -> Control:
-	var row := Ui.hbox([], 8)
+	var row := Ui.hbox([], 26)
 	var kinds := [["bolts", UiTheme.SHARD], ["damage", UiTheme.AMBER], ["block", UiTheme.TEAL]]
 	for kind: Array in kinds:
-		var number := Ui.tint(Ui.label("0", "Big"), kind[1]) as Label
-		number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var number := Ui.sized(Ui.tint(Ui.label("0", "Big"), kind[1]), 30) as Label
+		number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_scores[kind[0]] = number
 		var caption := Ui.label(String(kind[0]).to_upper(), "Faint")
-		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		row.add_child(Ui.expand(Ui.panel(Ui.vbox([caption, number], 0), "Card")))
+		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		row.add_child(Ui.hbox([caption, number], 8))
 	_worth = Ui.label("", "Muted")
-	_worth.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	return Ui.vbox([row, _worth], 2)
+	_worth.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(_worth)
+	return Ui.panel(row, "Card")
 
 
 func _code() -> Control:
@@ -177,7 +181,7 @@ func _code() -> Control:
 	(_styles.error as StyleBoxFlat).border_width_left = 3
 	for line: Dictionary in source.lines:
 		var gutter := Ui.label(str(line.number), "Faint")
-		gutter.custom_minimum_size.x = 30
+		gutter.custom_minimum_size.x = 34
 		gutter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var text := RichTextLabel.new()
 		text.bbcode_enabled = true
@@ -185,7 +189,7 @@ func _code() -> Control:
 		text.scroll_active = false
 		text.autowrap_mode = TextServer.AUTOWRAP_OFF
 		text.text = CodeColors.bbcode(line.text, language)
-		text.add_theme_font_size_override("normal_font_size", 14)
+		text.add_theme_font_size_override("normal_font_size", CODE_SIZE)
 		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var note := Ui.tint(Ui.label("", "Muted"), UiTheme.TEAL) as Label
 		var row := Ui.panel(Ui.hbox([gutter, text, note], 10), "")

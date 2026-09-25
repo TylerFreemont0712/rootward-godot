@@ -180,10 +180,16 @@ func _code_view(spell: Dictionary, run: Dictionary, mode: String) -> CodeView:
 	var base := int(session.catalog.balance.base_bolt_power)
 	_code = CodeView.create(session.state.language, spell, session.catalog.shards, base, run, mode, Settings.code_speed)
 	stage.add_child(_code)
-	# Between the Maintainer and the foes, so the bolts it makes fly past it afterwards.
-	var width := clampf(stage.size.x * 0.4, 520.0, 700.0)
-	_code.position = Vector2(stage.size.x * 0.24, 10)
-	_code.size = Vector2(width, stage.size.y - 20)
+	# Between the Maintainer and the foes, as wide as the gap allows (never narrower than 720, so short lines stay
+	# whole); with several foes it may cover the nearest while the code plays. It leaves before the bolts fly.
+	var left := stage.hero.position.x + stage.hero.size.x + 16.0
+	var right := stage.size.x - 16.0
+	for view: FoeView in stage.foes.values():
+		right = minf(right, view.position.x - 16.0)
+	var width := clampf(right - left, 720.0, 1000.0)
+	width = minf(width, stage.size.x - left - 16.0)
+	_code.position = Vector2(left, 12)
+	_code.size = Vector2(width, stage.size.y - 24)
 	return _code
 
 

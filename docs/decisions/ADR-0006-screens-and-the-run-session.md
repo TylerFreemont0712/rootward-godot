@@ -32,6 +32,11 @@ screen, a new presenter for the hero, or the deck playstyle later should not mea
   A screen reads as what it shows, a review sees every change as text, and the look lives in one file. The cost is
   less to click together in the Godot editor; a screen whose layout wants hand-tuning can become a `.tscn` later
   without touching the session.
+- **One design canvas, 1920x1080** (`canvas_items` stretch, `expand` aspect): every size in the code is in that
+  canvas, and the window scales it all together; a taller or wider window gets more room, never a cut-off edge. It
+  was 1600x900 at first, which drew everything about 1.55 times as large on the player's maximized 2560x1440 screen.
+  Screens whose content can outgrow the window (the title, the end of a run, the overlays) sit in a scroll container
+  that centres them when they fit (`Ui.centered_scroll`), so a button can never end up out of reach.
 - **The stage shows, it never decides.** `LogPlayer` plays the rules' log entry by entry (bolts, bursts, numbers,
   lunges, banners, hit-stop, shake) and keeps its own copy of the numbers on screen, so no bar gives a result away
   before its hit lands; the true state is drawn when the log has played. A player can click or press Space to skip.

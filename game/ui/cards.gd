@@ -5,8 +5,9 @@ extends RefCounted
 
 
 ## A shard's card. `summary` is false on a difficulty that shows only code; `code_lines` caps the code shown (0: all).
+## `wide` puts the code beside the rest instead of under it, so whole lines show where there is room across.
 static func shard(
-	item: Dictionary, language: String, summary := true, code_lines := 0, action: Control = null
+	item: Dictionary, language: String, summary := true, code_lines := 0, action: Control = null, wide := false
 ) -> PanelContainer:
 	var title := Ui.tint(Ui.label(item.get("name", item.get("id", "?")), "Subheading"), UiTheme.rarity(item.rarity))
 	var icon := Ui.picture("shardrun/shard-" + String(item.id), Vector2(40, 40), "◆")
@@ -22,7 +23,9 @@ static func shard(
 		body.add_child(
 			Ui.tint(Ui.label("Cursed: each cast burns %d Integrity." % int(curse.integrity), "", true), UiTheme.SHARD)
 		)
-	body.add_child(code(item, language, code_lines))
+	var listing := code(item, language, code_lines)
+	if not wide:
+		body.add_child(listing)
 	var forge: Dictionary = item.get("forge", {})
 	if forge.has("into"):
 		var verb := "repairs" if forge.get("verb") == "repair" else "upgrades"
@@ -30,8 +33,11 @@ static func shard(
 		body.add_child(Ui.label("A forge %s it into %s." % [verb, into.get("name", forge.into)], "Faint", true))
 	if action != null:
 		body.add_child(action)
-	var card := Ui.panel(body, "Card")
-	return card
+	if not wide:
+		return Ui.panel(body, "Card")
+	body.custom_minimum_size.x = 300
+	listing.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return Ui.panel(Ui.hbox([body, listing], 14), "Card")
 
 
 ## A shard's code in the run's language, coloured, in a sunken box.

@@ -73,6 +73,19 @@ static func scroll(child: Control, horizontal := false) -> ScrollContainer:
 
 
 ## A picture from game/assets by id at a fixed size, pixel-crisp; `fallback` (a glyph or a word) when there is none.
+## `content` centred in the space it is given, and scrollable when it is taller than that space, so nothing on a
+## screen can end up out of reach below the window's edge.
+static func centered_scroll(content: Control) -> ScrollContainer:
+	var center := CenterContainer.new()
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	center.add_child(content)
+	var node := ScrollContainer.new()
+	node.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	node.add_child(center)
+	return node
+
+
 static func picture(id: String, size: Vector2, fallback := "") -> Control:
 	var texture := Art.texture(id)
 	if texture == null:

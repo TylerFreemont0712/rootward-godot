@@ -9,7 +9,8 @@
 - Lint: `scripts/lint.sh` (gdlint and a gdformat check through `uvx`, gdtoolkit 4.5.0 pinned). Format a file you
   wrote with `uvx --from gdtoolkit==4.5.0 gdformat --line-length 120 <file>`.
 - Screenshot a scene: `scripts/screenshot.sh res://scenes/boot/boot.tscn shots/boot.png [frames]`. It renders on the
-  GPU under a private Xvfb display, so nothing opens on the desktop. `shots/` is ignored.
+  GPU under a private Xvfb display, so nothing opens on the desktop, at the 1920x1080 design size (`SHOT_SIZE=2560x1440`
+  for another window). `shots/` is ignored.
 - Screenshot a moment of a run: `ROOTWARD_SHOT=fight scripts/screenshot.sh res://tools/shardrun_shot.tscn
   shots/fight.png 60` (map, fight, cast, volley, turn, reward, treasure, rest, forge, end, code, dev;
   `ROOTWARD_SHOT_LANGUAGE=javascript` is faster for the long ones). It plays in its own save folder.

@@ -95,3 +95,10 @@ and `scripts/screenshot.sh` run `godot --headless --import` first for that reaso
 Write the new save to `spellbook.json.tmp`, then rename it over `spellbook.json`. A rename on the same disk is atomic:
 either the old file or the new one is there, never a torn one, even if the game crashes mid-write.
 
+## One canvas, any window (`game/project.godot`, ADR-0006)
+The game is laid out on a fixed 1920x1080 canvas, and Godot's `canvas_items` stretch mode scales that canvas to the
+window, re-drawing text at the new size so it stays sharp. Choosing the canvas size is choosing how big everything
+looks: the same 15-pixel font is 15 pixels in a 1920x1080 window and about 20 in a maximized 2560x1440 one. With the
+`expand` aspect, a window of another shape gets extra canvas at the sides or bottom instead of black bars, so layouts
+use anchors and containers rather than fixed positions.
+

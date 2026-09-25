@@ -36,12 +36,15 @@ func _ready() -> void:
 	backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	backdrop.modulate = Color(0.42, 0.38, 0.36)
 	add_child(backdrop)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
 	_column = Ui.vbox([], 16)
-	_column.custom_minimum_size.x = 1180
-	center.add_child(_column)
+	_column.custom_minimum_size.x = 1240
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_top", 32)
+	margin.add_theme_constant_override("margin_bottom", 32)
+	margin.add_child(_column)
+	var page := Ui.centered_scroll(margin)
+	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(page)
 	_overlay = Control.new()
 	_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -73,7 +76,7 @@ func _build(content_ok: bool) -> void:
 	if session.in_progress():
 		left.add_child(_underway(session))
 	elif session.has_run():
-		left.add_child(Ui.panel(RunSummary.ending(session.state), "Card"))
+		left.add_child(Ui.panel(RunSummary.ending(session.state, "Heading"), "Card"))
 	left.add_child(_new_run(session))
 	var how := Ui.vbox([Ui.label("How it works", "Subheading")], 10)
 	for line in HOW_TO:
@@ -193,10 +196,9 @@ func _show_overlay(panel: Control) -> void:
 	dim.color = Color(0, 0, 0, 0.55)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.add_child(dim)
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.add_child(panel)
-	_overlay.add_child(center)
+	var page := Ui.centered_scroll(panel)
+	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_overlay.add_child(page)
 
 
 func _broken() -> Control:

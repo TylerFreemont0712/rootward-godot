@@ -4,8 +4,13 @@ extends Control
 ## them: bolts in flight, bursts, numbers, banners, the shake of a heavy hit and the freeze of hit-stop. It knows how to
 ## show things, never what happened: LogPlayer tells it, entry by entry, from the rules' log.
 
-const FOE_SPAN := Vector2(0.5, 0.95)
-const HERO_X := 0.04
+## Where the foes stand across the stage (a share of its width), and where a lone foe stands.
+const FOE_SPAN := Vector2(0.58, 0.94)
+const LONE_FOE := 0.78
+const HERO_X := 0.07
+## The Maintainer's height as a share of the stage's, and the floor line everyone stands on (from the top).
+const HERO_HEIGHT := 0.66
+const FLOOR := 0.97
 
 ## Every stage skips its waits and animations (tests and tools that drive the screens).
 static var instant := false
@@ -80,9 +85,10 @@ func _layout() -> void:
 	_world.size = size
 	_backdrop.size = size
 	_fx.size = size
-	var hero_height := size.y * 0.98
+	var floor_y := size.y * FLOOR
+	var hero_height := size.y * HERO_HEIGHT
 	hero.size = Vector2(hero_height * 0.75, hero_height)
-	hero.position = Vector2(size.x * HERO_X, size.y - hero_height)
+	hero.position = Vector2(size.x * HERO_X, floor_y - hero_height)
 	var count := foes.size()
 	var index := 0
 	for view: FoeView in foes.values():
@@ -90,8 +96,8 @@ func _layout() -> void:
 		var share := (index + 0.5) / count
 		var x := size.x * lerpf(FOE_SPAN.x, FOE_SPAN.y, share)
 		if count == 1:
-			x = size.x * 0.74
-		view.position = Vector2(x - view.size.x * 0.5, size.y - view.size.y - 8)
+			x = size.x * LONE_FOE
+		view.position = Vector2(x - view.size.x * 0.5, floor_y - view.size.y)
 		index += 1
 
 
