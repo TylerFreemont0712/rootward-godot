@@ -12,6 +12,7 @@ func before_test() -> void:
 	Settings.code_speed = "off"
 	Game.reset(ROOT)
 	Game.boot()
+	Game.use("spellbook")
 	Game.session.saves.delete_run("spellbook")
 	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-test")
 
@@ -22,6 +23,7 @@ func after_test() -> void:
 		screen.queue_free()
 	BattleStage.instant = false
 	Game.session.saves.delete_run("spellbook")
+	Game.session.saves.delete_run("deck")
 	Game.reset()
 
 
@@ -50,6 +52,34 @@ func test_the_screen_plays_a_run_through_its_rooms() -> void:
 	assert_bool(seen.has("battle")).is_true()
 	assert_bool(seen.has("reward")).is_true()
 	assert_int(run_screen.get_child_count()).is_greater(0)
+
+
+func test_a_shardrun_is_played_card_by_card_through_the_screen() -> void:
+	Game.use("deck")
+	Game.session.saves.delete_run("deck")
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-deck")
+	var run_screen := await _open()
+	var session := Game.session
+	var bot := ShardrunBot.new(session)
+	var seen := {}
+	for i in 90:
+		if not session.in_progress():
+			break
+		seen[session.state.status] = true
+		var command: Dictionary = await bot.next_command()
+		if command.is_empty():
+			break
+		seen["command:" + String(command.type)] = true
+		var revision: int = session.state.revision
+		await run_screen.send(command)
+		assert_int(session.state.revision).override_failure_message("refused: %s" % [command]).is_equal(revision + 1)
+	assert_bool(seen.has("command:compose")).is_true()
+	assert_bool(seen.has("command:cast")).is_true()
+	assert_bool(seen.has("reward")).is_true()
+	# The table is on screen with a hand while the fight goes on, and the deck panel between rooms.
+	var tables := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckTable)
+	var decks := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckPanel)
+	assert_int(tables.size() + decks.size()).is_greater(0)
 
 
 func test_a_cast_with_its_code_playing_reaches_the_stage() -> void:

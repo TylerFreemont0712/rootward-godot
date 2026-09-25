@@ -21,12 +21,10 @@ MCPGameBridge="res://addons/godot_mcp/game_bridge/mcp_game_bridge.gd"
 
 [debug]
 
-gdscript/warnings/exclude_addons=true
 gdscript/warnings/untyped_declaration=2
 gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1
 gdscript/warnings/unsafe_call_argument=1
-gdscript/warnings/return_value_discarded=0
 
 [display]
 
@@ -45,8 +43,3 @@ bind_mode=0
 custom_bind_ip=""
 port_override_enabled=false
 port_override=6550
-
-[rendering]
-
-renderer/rendering_method="forward_plus"
-textures/canvas_textures/default_texture_filter=1

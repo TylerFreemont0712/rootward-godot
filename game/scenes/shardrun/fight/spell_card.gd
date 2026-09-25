@@ -13,6 +13,8 @@ var _cost: Label
 var _preview: Label
 var _cast: Button
 var _code: Button
+var _chain: Control
+var _look: StyleBox
 
 
 static func create(index: int, run_spell: Dictionary, catalog: Dictionary) -> SpellCard:
@@ -43,11 +45,37 @@ func _build(index: int, catalog: Dictionary) -> void:
 		chain.add_child(holder)
 	if (spell.shards as Array).is_empty():
 		chain.add_child(Ui.label("one plain bolt", "Faint"))
+	_chain = chain
 	_preview = Ui.label("Reading the shards…", "Muted", true)
 	_code = Ui.button("</> Code", func() -> void: code_pressed.emit(spell.id))
 	_cast = Ui.button("Cast  [%d]" % index, func() -> void: cast_pressed.emit(spell.id), "PrimaryButton")
 	_cast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	add_child(Ui.vbox([header, chain, _preview, Ui.hbox([_code, _cast], 8)], 8))
+
+
+## A Shardrun spell shows card slots instead of its chain of shards (DeckTable fills them).
+func set_slots(slots: Control) -> void:
+	var parent := _chain.get_parent()
+	var at := _chain.get_index()
+	parent.remove_child(_chain)
+	_chain.queue_free()
+	parent.add_child(slots)
+	parent.move_child(slots, at)
+	_chain = slots
+
+
+## The spell a click plays cards into is outlined in the shard colour.
+func set_targeted(on: bool) -> void:
+	if _look == null:
+		_look = get_theme_stylebox("panel")
+	if not on:
+		remove_theme_stylebox_override("panel")
+		return
+	var outlined := _look.duplicate() as StyleBox
+	if outlined is StyleBoxFlat:
+		(outlined as StyleBoxFlat).border_color = UiTheme.SHARD
+		(outlined as StyleBoxFlat).set_border_width_all(2)
+	add_theme_stylebox_override("panel", outlined)
 
 
 ## Shows a run view (ShardrunViews.spell_run_view), or {} while it is still running. `spent` greys the card out.

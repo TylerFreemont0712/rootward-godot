@@ -89,7 +89,8 @@ func _show(state: Dictionary) -> void:
 
 func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
-	var logo := Ui.tint(Ui.label("SPELLFORGE", "Subheading"), UiTheme.SHARD)
+	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
+	var logo := Ui.tint(Ui.label(mode, "Subheading"), UiTheme.SHARD)
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
 	bar.custom_minimum_size = Vector2(170, 14)
@@ -110,7 +111,9 @@ func _show_header(state: Dictionary) -> void:
 		relics.add_child(Cards.relic_icon(session.catalog.relics.get(relic_id, {"name": relic_id, "summary": ""})))
 	var buttons := Ui.hbox(
 		[
+			Ui.button("Deck", _open_deck) if state.get("playstyle", "") == "deck" else Ui.spacer(),
 			Ui.button("Stats", _open_stats),
+			Ui.button("Skin", _open_skins),
 			Ui.button("Options", _open_options),
 			Ui.button("Title", func() -> void: Game.go(Game.TITLE)),
 		],
@@ -118,7 +121,7 @@ func _show_header(state: Dictionary) -> void:
 	)
 	if state.get("sandbox", false) and not state.status in Shardrun.ENDED:
 		buttons.add_child(Ui.button("Dev", _open_dev))
-		logo.text = "SPELLFORGE · DEV"
+		logo.text = mode + " · DEV"
 	if not state.status in Shardrun.ENDED:
 		buttons.add_child(Ui.button("Abandon", _confirm_abandon, "DangerButton"))
 	var row := Ui.hbox([logo, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
@@ -143,11 +146,16 @@ func _between(state: Dictionary) -> Control:
 		map.show_map(state, session.catalog)
 	_chronicle = Ui.label(_story(state.log), "Muted", true)
 	left.add_child(_chronicle)
-	var bench := Workbench.create(session)
-	bench.wants.connect(send)
-	bench.notice.connect(toast)
-	bench.explore.connect(_explore)
-	var right := Ui.panel(bench, "")
+	var right: PanelContainer
+	if state.get("playstyle", "") == "deck":
+		var deck := Ui.scroll(DeckPanel.create(session))
+		right = Ui.panel(deck, "")
+	else:
+		var bench := Workbench.create(session)
+		bench.wants.connect(send)
+		bench.notice.connect(toast)
+		bench.explore.connect(_explore)
+		right = Ui.panel(bench, "")
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return Ui.hbox([left, right], 12)
 
@@ -242,7 +250,7 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 			Sound.play(
 				"sfx-curse" if "relic" in kinds and after.get("reward", {}).has("cursed_relic") else "sfx-open", 0.8
 			)
-		"arrange":
+		"arrange", "purge":
 			Sound.play("sfx-card", 0.5)
 
 
@@ -314,6 +322,18 @@ func _open_options() -> void:
 	_open(options)
 
 
+func _open_skins() -> void:
+	var wardrobe := SkinSelectionPanel.create()
+	wardrobe.skin_selected.connect(_set_battle_skin)
+	wardrobe.closed.connect(_close_overlay)
+	_open(wardrobe)
+
+
+func _set_battle_skin(id: String) -> void:
+	if _fight != null and is_instance_valid(_fight.stage.hero):
+		_fight.stage.hero.set_skin(id)
+
+
 func _open_dev() -> void:
 	var drawer := DevDrawer.create(session)
 	drawer.closed.connect(_close_overlay)
@@ -324,6 +344,12 @@ func _open_dev() -> void:
 				_open_dev()
 	)
 	_open(drawer)
+
+
+func _open_deck() -> void:
+	var panel := Ui.panel(DeckPanel.create(session, true), "Overlay")
+	panel.custom_minimum_size = Vector2(980, 0)
+	_open(panel)
 
 
 func _open_stats() -> void:

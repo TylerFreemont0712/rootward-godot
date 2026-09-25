@@ -15,6 +15,21 @@ const HOW_TO: Array[String] = [
 	"Relics bend the rules for the rest of a run. Guardians guard the best of them.",
 ]
 const NAMES := {"python": "Python", "javascript": "JavaScript"}
+const MODES := {
+	"deck":
+	[
+		"Shardrun",
+		(
+			"Shards are cards. Every turn you draw a hand and play it into two blank spells, in the order they should run: "
+			+ "building the spell is the turn."
+		),
+	],
+	"spellbook":
+	[
+		"Spellforge",
+		"Shards are yours to keep. Build your spells at the workbench between fights, then cast them in battle.",
+	],
+}
 
 var _column: VBoxContainer
 var _overlay: Control
@@ -56,7 +71,8 @@ func _ready() -> void:
 func _build(content_ok: bool) -> void:
 	Ui.clear(_column)
 	var emblem := Ui.picture("brand/shardrun", Vector2(96, 96), "")
-	var titles := Ui.vbox([Ui.label("ROOTWARD", "Title"), Ui.tint(Ui.label("SPELLFORGE", "Heading"), UiTheme.SHARD)], 0)
+	var mode_name := String(Game.PLAYSTYLES.get(Settings.playstyle, "Shardrun")).to_upper()
+	var titles := Ui.vbox([Ui.label("ROOTWARD", "Title"), Ui.tint(Ui.label(mode_name, "Heading"), UiTheme.SHARD)], 0)
 	_column.add_child(Ui.hbox([emblem, titles], 18))
 	if not content_ok:
 		_column.add_child(_broken())
@@ -69,6 +85,7 @@ func _build(content_ok: bool) -> void:
 		+ "Chain them into spells, climb through three layers of the Machine, and find out what your code can do."
 	)
 	left.add_child(Ui.label(story, "Narration", true))
+	left.add_child(_modes())
 	var problem: String = Game.session.saves.problem
 	if problem != "":
 		left.add_child(Ui.panel(Ui.tint(Ui.label(problem, "", true), UiTheme.WARN), "Card"))
@@ -86,7 +103,29 @@ func _build(content_ok: bool) -> void:
 	right.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_column.add_child(Ui.hbox([left, right], 20))
 	var quit := Ui.button("Quit", Game.quit)
-	_column.add_child(Ui.hbox([Ui.button("Options", _open_options), quit], 8))
+	_column.add_child(Ui.hbox([Ui.button("Appearance", _open_skins), Ui.button("Options", _open_options), quit], 8))
+
+
+## The two ways to play, side by side; the chosen one is the one below it continues or starts.
+func _modes() -> Control:
+	var row := Ui.hbox([], 10)
+	for playstyle: String in MODES:
+		var chosen := Settings.playstyle == playstyle
+		var pick := func() -> void:
+			Game.use(playstyle)
+			Settings.save_file()
+			_build(true)
+		var run: ShardrunSession = Game.sessions.get(playstyle)
+		var note := ""
+		if run != null and run.in_progress():
+			note = "A run is underway on %s." % ShardrunRules.layer_of(run.state, run.catalog).name
+		var column := Ui.vbox(
+			[Ui.choice(MODES[playstyle][0], chosen, pick), Ui.label(MODES[playstyle][1], "Muted", true)], 6
+		)
+		if note != "":
+			column.add_child(Ui.tint(Ui.label(note, "Faint"), UiTheme.SHARD))
+		row.add_child(Ui.expand(Ui.panel(column, "Card")))
+	return row
 
 
 func _underway(session: ShardrunSession) -> Control:
@@ -102,7 +141,11 @@ func _underway(session: ShardrunSession) -> Control:
 			session.difficulty().get("name", "")
 		]
 	)
-	var go := Ui.button("Continue the run", func() -> void: Game.go(Game.SHARDRUN), "PrimaryButton")
+	var go := Ui.button(
+		"Continue the %s run" % Game.PLAYSTYLES.get(session.playstyle, ""),
+		func() -> void: Game.go(Game.SHARDRUN),
+		"PrimaryButton"
+	)
 	go.custom_minimum_size = Vector2(260, 44)
 	go.call_deferred("grab_focus")
 	var column := Ui.vbox([Ui.label("A run is underway", "Subheading"), Ui.label(where, "Muted"), Ui.hbox([go])], 8)
@@ -188,6 +231,12 @@ func _open_options() -> void:
 	var options := OptionsPanel.create()
 	options.closed.connect(func() -> void: Ui.clear(_overlay))
 	_show_overlay(options)
+
+
+func _open_skins() -> void:
+	var wardrobe := SkinSelectionPanel.create()
+	wardrobe.closed.connect(func() -> void: Ui.clear(_overlay))
+	_show_overlay(wardrobe)
 
 
 func _show_overlay(panel: Control) -> void:

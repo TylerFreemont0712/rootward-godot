@@ -104,6 +104,11 @@ func target_point() -> Vector2:
 	return position + _holder.position + _holder.size * 0.5
 
 
+## Where the foe stands, under the middle of its sprite: strikes hit the ground here.
+func foot_point() -> Vector2:
+	return position + _holder.position + Vector2(_holder.size.x * 0.5, _holder.size.y)
+
+
 func top_point() -> Vector2:
 	return position + _holder.position + Vector2(_holder.size.x * 0.5, _holder.size.y * 0.15)
 

@@ -1,8 +1,7 @@
 class_name StageCharacter
 extends Node3D
-## A character on the stage: an imported glTF (pipeline/blender/export_character.py) dressed in the toon shader and
-## ink outline, playing its clips with short blends between them, with spring bones for whatever the takes do not move
-## (a tail, ears).
+## A character on the stage: an imported glTF dressed in the toon shader and ink outline, playing its authored clips
+## with short blends between them. Tamamo's nine tail fans and loose details follow the same action rig as her body.
 ##
 ##   var fox := StageCharacter.create("emberfox")
 ##   add_child(fox)
@@ -13,6 +12,7 @@ extends Node3D
 signal clip_finished(clip: String)
 
 const TOON := preload("res://characters/toon.gdshader")
+const TOON_2D := preload("res://characters/toon_2d.gdshader")
 const OUTLINE := preload("res://characters/outline.gdshader")
 ## Seconds to cross-fade from one clip into the next.
 const BLEND := 0.18
@@ -78,21 +78,22 @@ func _toon(mesh: MeshInstance3D) -> void:
 	for surface in mesh.mesh.get_surface_count():
 		var imported := mesh.mesh.surface_get_material(surface) as StandardMaterial3D
 		var toon := ShaderMaterial.new()
-		toon.shader = TOON
+		toon.shader = TOON_2D if id == "tamamo_no_mae" else TOON
 		if imported != null and imported.albedo_texture != null:
 			toon.set_shader_parameter("drawing", imported.albedo_texture)
-		var outline := ShaderMaterial.new()
-		outline.shader = OUTLINE
-		toon.next_pass = outline
+		if id != "tamamo_no_mae":
+			var outline := ShaderMaterial.new()
+			outline.shader = OUTLINE
+			toon.next_pass = outline
 		mesh.set_surface_override_material(surface, toon)
 		materials.append(toon)
 
 
 ## Tail and ears follow the body with a little lag and settle, instead of being stiff (no take moves them).
 func _add_spring_bones() -> void:
-	if skeleton == null:
+	if skeleton == null or id == "tamamo_no_mae":
 		return
-	var chains: Array = []
+	var chains: Array[Array] = []
 	if skeleton.find_bone("Tail1") >= 0:
 		chains.append(["Tail1", "Tail5", 0.45, 0.35])
 	for ear: String in ["LeftEar", "RightEar"]:

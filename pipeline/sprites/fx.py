@@ -48,7 +48,14 @@ def source(effect: dict) -> Image.Image:
     rgb = np.asarray(crop, dtype=np.float32) / 255
     light = rgb.max(axis=2, keepdims=True)
     keep = np.clip((light - 0.28) / 0.3, 0, 1)
-    return Image.fromarray(np.round(rgb * keep * 255).astype(np.uint8)).resize((1024, 1024), Image.LANCZOS)
+    rgb = rgb * keep
+    if effect.get("recolor"):
+        # A board drawn in one element's colours, redrawn as another: its light kept, its hue replaced, so img2img
+        # starts from the right colours (it holds on to a source's hues at any denoise that keeps its shapes).
+        hue = np.array([int(effect["recolor"].lstrip("#")[i : i + 2], 16) / 255 for i in (0, 2, 4)], dtype=np.float32)
+        value = rgb.max(axis=2, keepdims=True)
+        rgb = np.clip(value * hue + np.clip(value - 0.75, 0, 1) * 1.6, 0, 1)
+    return Image.fromarray(np.round(rgb * 255).astype(np.uint8)).resize((1024, 1024), Image.LANCZOS)
 
 
 def render(comfy: Comfy, effect: dict, style: dict) -> Image.Image:

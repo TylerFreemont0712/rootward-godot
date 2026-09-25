@@ -68,25 +68,42 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	numbers_changed.emit()
 	var heavy := bolts.size() >= 4 or _total(bolts) >= 30
 	stage.hero.play("cast-heavy" if heavy else "cast-light")
+	stage.cast_flash(element, heavy)
 	stage.hero.flash(Color(UiTheme.element(element), 0.6), 0.4)
 	Sound.play("sfx-cast-" + element if element != "none" else "sfx-cast", 0.8)
+	# A heavy spell gathers: the stage darkens and a vortex turns at the hand, and its blows are called down on the
+	# foes (strikes) instead of flying.
+	if heavy:
+		stage.dim(0.38, 0.3)
+		stage.vortex(element, 0.62)
 	await stage.wait(380.0)
 	for part: Dictionary in volley:
 		if part.kind in ["fizzle", "curse"]:
 			await _one(part)
+	var feet: Array[Vector2] = []
+	for hit: Dictionary in bolts:
+		var view: FoeView = stage.foes.get(hit.get("foe", ""))
+		if view != null and not view.foot_point() in feet:
+			feet.append(view.foot_point())
+	if feet.size() >= 2:
+		stage.sweep(feet, element)
 	var gap := clampf(VOLLEY.spread / maxf(1.0, bolts.size()), VOLLEY.min, VOLLEY.max)
+	if heavy:
+		gap *= 1.35
 	var longest := 0.0
 	for hit: Dictionary in volley:
 		if not hit.kind in BOLT_KINDS:
 			continue
 		var flight := _flight(hit)
 		longest = flight
-		_launch(hit, flight, volley)
+		_launch(hit, flight, volley, heavy)
 		await stage.wait(gap)
 	await stage.wait(longest + 220.0)
+	if heavy:
+		stage.dim(0.0, 0.4)
 
 
-func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
+func _launch(hit: Dictionary, flight: float, volley: Array, heavy := false) -> void:
 	var from := stage.hero.hand_point()
 	if hit.kind == "ward":
 		stage.fly(
@@ -96,6 +113,9 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 	var view: FoeView = stage.foes.get(hit.get("foe", ""))
 	if view == null:
 		_land(hit, volley)
+		return
+	if heavy:
+		stage.strike(view, hit.get("element", "none"), _land.bind(hit, volley))
 		return
 	stage.fly(from, view.target_point(), hit.get("element", "none"), flight, _land.bind(hit, volley))
 

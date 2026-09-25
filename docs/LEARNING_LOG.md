@@ -138,3 +138,14 @@ above the threshold makes the edge glow, so the picture burns away instead of fa
 sweeps round the centre), a wobble (UVs pushed by scrolling noise) and a shimmer, the same painted burst or seal can
 appear, hold and leave in several ways, which is cheaper than painting every frame.
 
+## A card table as data (`game/app/card_table.gd`, ADR-0009)
+Dragging a card is not the move itself: the screen works out the whole table the move would make (every spell's cards,
+the hand, the hold) and asks the rules for it. The rules only check that the new table holds the same cards as the old
+one, in places they may be. Keeping the move a pure function over plain data is what lets a test make every kind of
+move and check the rules accept it, with no screen at all.
+
+## Squash the parent, spin the child (`game/scenes/shardrun/fight/battle_fx.gd`)
+A ring lying on the floor is a circle seen at a slant: an ellipse. Squashing the effect node vertically and spinning
+the sprite inside it gives a spinning ellipse that stays flat; squashing the sprite after spinning it would tilt the
+ellipse with the spin, because a node's own scale is applied after its own rotation.
+

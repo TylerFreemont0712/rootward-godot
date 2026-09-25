@@ -3,8 +3,9 @@
   ~/blender/blender --background pipeline/cache/characters/<id>/rigged.blend \
       --python pipeline/blender/export_character.py -- <id>
 
-Reads `pipeline/characters/<id>/animation.json` (the clips, as ranges of the Mixamo takes on the rig) and writes
-`game/characters/<id>/<id>.glb`. Godot imports it on its own; `game/characters/character.gd` puts it on the stage.
+Reads `pipeline/characters/<id>/animation.json` and writes `game/characters/<id>/<id>.glb`. Emberfox clips are baked
+from Mixamo take ranges; Tamamo's hand-keyed actions are exported as named NLA tracks. Godot imports the result and
+`game/characters/character.gd` puts it on the stage.
 
 - **Clips, not takes.** Each clip (`idle-breathe`, `cast-light`, ...) is baked from its take's frames [first, last] into
   an action of its own, and the exporter slides every action to start at 0. Godot plays them at full frame rate and
@@ -13,7 +14,7 @@ Reads `pipeline/characters/<id>/animation.json` (the clips, as ranges of the Mix
   `concept` UV, by a `front` mask (clean.py in the old repo made them). glTF cannot carry a mix node, so the base colour
   goes out as a vertex colour with the mask in its alpha, the drawing as the base colour texture on that UV, and the
   toon shader in Godot mixes them exactly as Blender did. The face keeps the drawing's full resolution.
-- **Bones as they are.** Mixamo's names, plus the tail and ears that Godot's spring bones move.
+- **Bones as they are.** Tamamo's detailed 2D-plane armature, or Emberfox's Mixamo rig with spring bones.
 """
 
 from __future__ import annotations
@@ -110,14 +111,48 @@ def main() -> None:
     character = sys.argv[sys.argv.index("--") + 1]
     folder = ROOT / "pipeline" / "characters" / character
     clips = json.loads((folder / "animation.json").read_text())["clips"]
+    model_path = folder / "model.json"
+    model = json.loads(model_path.read_text()) if model_path.exists() else {}
     out = ROOT / "game" / "characters" / character / f"{character}.glb"
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    body = next(o for o in bpy.data.objects if o.type == "MESH")
-    rig = next(o for o in bpy.data.objects if o.type == "ARMATURE")
-    packed_colour(body)
-    export_material(body)
-    names = bake_clips(rig, clips)
+    body = bpy.data.objects.get(model.get("mesh_name", ""))
+    rig = bpy.data.objects.get(model.get("armature_name", ""))
+    if body is None:
+        body = next(o for o in bpy.data.objects if o.type == "MESH")
+    if rig is None:
+        rig = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    if model.get("representation") == "2.5d-skinned-mesh":
+        # These actions were authored directly on the new rig; named NLA tracks keep old scene actions out.
+        names = []
+        anim_data = rig.animation_data_create()
+        for name, clip in clips.items():
+            action_name = clip.get("action", name)
+            action = bpy.data.actions.get(action_name)
+            if action is None:
+                raise SystemExit(f"clip {name}: no Blender action {action_name}")
+            action.name = name
+            action.use_fake_user = True
+            names.append(name)
+            track = next((item for item in anim_data.nla_tracks if item.name == name), None)
+            if track is None:
+                track = anim_data.nla_tracks.new()
+                track.name = name
+                strip = track.strips.new(name, 1, action)
+                strip.action_slot = action.slots[0]
+            track.mute = False
+        for track in anim_data.nla_tracks:
+            if track.name not in names:
+                track.mute = True
+        anim_data.action = None
+        animation_mode = "NLA_TRACKS"
+        export_vertex_color = "NONE"
+    else:
+        packed_colour(body)
+        export_material(body)
+        names = bake_clips(rig, clips)
+        animation_mode = "ACTIONS"
+        export_vertex_color = "NAME"
 
     bpy.ops.object.select_all(action="DESELECT")
     body.select_set(True)
@@ -133,14 +168,15 @@ def main() -> None:
         export_leaf_bone=False,
         export_rest_position_armature=True,
         export_animations=True,
-        export_animation_mode="ACTIONS",
+        export_animation_mode=animation_mode,
+        export_nla_strips=True,
         export_anim_slide_to_zero=True,
         export_force_sampling=True,
         export_frame_step=1,
         export_optimize_animation_size=True,
         export_materials="EXPORT",
         export_image_format="AUTO",
-        export_vertex_color="NAME",
+        export_vertex_color=export_vertex_color,
         export_vertex_color_name=PACKED,
         export_all_vertex_colors=False,
     )

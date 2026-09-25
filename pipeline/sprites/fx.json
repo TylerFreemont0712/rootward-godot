@@ -90,7 +90,65 @@
       "size": 512,
       "seed": 3401,
       "prompt": "curved crescent energy barrier shield, translucent teal glass with glowing veins, bright rim, small crystal shards"
+    },
+    {
+      "id": "strike-spark",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "tr",
+      "size": 512,
+      "seed": 3501,
+      "denoise": 0.66,
+      "prompt": "massive lightning bolt striking straight down from the sky onto the ground, jagged branching bright yellow and white electricity, blinding flash where it hits, crackling sparks, electric ring on the ground"
+    },
+    {
+      "id": "strike-none",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "tr",
+      "size": 512,
+      "seed": 3502,
+      "denoise": 0.55,
+      "prompt": "column of violet arcane starlight falling from the sky, a beam of purple and white light with floating star crystals, glowing rune circle on the ground",
+      "recolor": "#b48cff"
+    },
+    {
+      "id": "strike-fire",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "tr",
+      "size": 512,
+      "seed": 3503,
+      "denoise": 0.68,
+      "prompt": "pillar of fire erupting upward from a burning ring on the ground, roaring orange and yellow flames, embers flying"
+    },
+    {
+      "id": "strike-frost",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "tr",
+      "size": 512,
+      "seed": 3504,
+      "denoise": 0.62,
+      "prompt": "cluster of huge jagged ice crystal spikes erupting upward from frozen ground, pale cyan and white, frost mist, a ring of frost on the ground",
+      "recolor": "#8fdcff"
+    },
+    {
+      "id": "wave",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "br",
+      "size": 512,
+      "seed": 3601,
+      "denoise": 0.55,
+      "desaturate": true,
+      "prompt": "spiralling ring of energy spreading outward, a swirling shockwave of flame-like wisps around an empty centre"
+    },
+    {
+      "id": "vortex",
+      "board": "05-roots-and-ultimates.png",
+      "quadrant": "bl",
+      "size": 448,
+      "seed": 3602,
+      "denoise": 0.5,
+      "prompt": "swirling violet arcane vortex, spiral arms of purple light around a dark centre, glowing orbiting crystals"
     }
   ],
-  "_boards": "Note: 02-wards-and-barriers.png holds the radial bursts and 03-radial-glyph-bursts.png the wards; the files' names and pictures are swapped, so the entries below follow the pictures."
+  "_boards": "Note: 02-wards-and-barriers.png holds the radial bursts and 03-radial-glyph-bursts.png the wards; the files' names and pictures are swapped, so the entries below follow the pictures.",
+  "_strikes": "strike-* are called down onto a foe by a heavy spell of that element (lightning from the sky, a fire pillar, ice spikes, a beam of starlight); wave spreads across the floor when a volley hits several foes; vortex opens behind a heavy cast."
 }

@@ -101,12 +101,18 @@ the rules' modifiers table in Stats, keyboard focus through the map.
       cast, in the fight and the wardrobe. [ ] Her other clips (hurt, guard, victory, death, a heavy cast).
 - [x] Spell sprites from the concept boards (ADR-0008): a bolt and a burst per element, a casting seal, a ward, each
       animated by one shader (dissolve, reveal, wobble, shimmer), flashes, shockwaves and sparkles.
-- [ ] Spell variety: lightning called down, strikes on every foe, per-element casts and landings.
+- [x] Spell variety (ADR-0009): heavy spells call their element's strike down on each foe (lightning, a fire pillar,
+      ice spikes, starlight) under a darkened stage and a vortex at the hand; a volley on several foes sends a wave
+      across the floor.
 - [ ] Spell effects as Godot particles and shaders, per element, and the ward.
 - [ ] Sound and music on audio buses with volume and mute settings.
 
-### Phase 7: the deck playstyle
-- [ ] Hand, holding, deck relics, and a run per playstyle.
+### Phase 7: the deck playstyle (the Shardrun, now the main mode)
+- [x] A run per playstyle, chosen on the title: Shardrun (cards) and Spellforge (the spellbook) (ADR-0009).
+- [x] The table: a hand dealt each turn, cards played by click or drag into blank spells, holding, the draw and
+      discard piles, cards with their code on hover; the deck between rooms and in a drawer; card rewards and melting.
+- [ ] The build-code view (the spell's function growing card by card), card art and card animations, and a balance pass
+      by play.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

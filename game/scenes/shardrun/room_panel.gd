@@ -68,17 +68,25 @@ func _reward() -> void:
 			row.add_child(Ui.expand(Cards.relic(relic, claim)))
 		add_child(row)
 	if reward.has("shards"):
-		add_child(Ui.label("Take one shard", "Subheading"))
-		add_child(Ui.label("It joins your spare shards; slot it into a spell before the next fight.", "Muted", true))
+		var deck: bool = state.get("playstyle", "") == "deck"
+		add_child(Ui.label("Add one card to your deck" if deck else "Take one shard", "Subheading"))
+		var joins := (
+			"It is shuffled into your deck for every fight from now on."
+			if deck
+			else ("It joins your spare shards; slot it into a spell before the next fight.")
+		)
+		add_child(Ui.label(joins, "Muted", true))
 		# One shard to a row, its code beside it at full width: the code is what the choice is about.
 		var column := Ui.vbox([], 10)
 		for shard_id: String in reward.shards:
 			var shard: Dictionary = catalog.shards.get(shard_id, {})
-			var take := Ui.button("Take %s" % shard.get("name", shard_id), _ask({"type": "take", "shard_id": shard_id}))
+			var verb := "Add %s to the deck" if deck else "Take %s"
+			var take := Ui.button(verb % shard.get("name", shard_id), _ask({"type": "take", "shard_id": shard_id}))
 			take.theme_type_variation = "PrimaryButton"
 			column.add_child(Cards.shard(shard, state.language, session.show_summaries(), 12, take, true))
 		add_child(column)
-		add_child(Ui.hbox([Ui.button("Skip the shards", _ask({"type": "take", "shard_id": null}))]))
+		var skip := "Skip the cards" if deck else "Skip the shards"
+		add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
 	var leave := "Leave it unopened" if reward.has("chest") else "Leave the rest and move on"
 	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}))]))
 
@@ -103,16 +111,44 @@ func _rest_text(heal: int) -> Control:
 	)
 
 
+## A Shardrun's forge can melt a card down: a thinner deck deals its best cards more often (never below the minimum).
+func _melt(state: Dictionary, catalog: Dictionary) -> void:
+	var deck: Array = state.get("deck", [])
+	var smallest := int(catalog.balance.deck.min_cards)
+	add_child(Ui.label("Melt a card down", "Subheading"))
+	if deck.size() <= smallest:
+		add_child(Ui.label("Your deck is already as thin as it can be (%d cards)." % smallest, "Muted"))
+		return
+	var row := Ui.flow([], 8)
+	var seen := {}
+	for shard_id: String in deck:
+		if seen.has(shard_id):
+			continue
+		seen[shard_id] = true
+		var shard: Dictionary = catalog.shards.get(shard_id, {})
+		var count := deck.count(shard_id)
+		var label := "Melt %s%s" % [shard.get("name", shard_id), " (1 of %d)" % count if count > 1 else ""]
+		row.add_child(Ui.button(label, _ask({"type": "purge", "shard_id": shard_id})))
+	add_child(row)
+
+
 func _forge() -> void:
 	var state := session.state
 	var catalog := session.catalog
 	var options := ShardrunViews.forge_options(state, catalog)
 	add_child(Ui.label("An abandoned forge", "Heading"))
-	var text := "Do one thing here: rework a shard (upgrade it, or repair a broken one), widen a spell by one slot, "
+	var deck: bool = state.get("playstyle", "") == "deck"
+	var thing := "card" if deck else "shard"
+	var text := (
+		"Do one thing here: rework a %s (upgrade it, or repair a broken one), widen a spell by one slot, " % thing
+	)
+	text += "melt a card out of your deck, " if deck else ""
 	text += "or bind a new spell to your book."
 	add_child(Ui.label(text, "Narration", true))
+	if deck:
+		_melt(state, catalog)
 	if not (options.shards as Array).is_empty():
-		add_child(Ui.label("Rework a shard", "Subheading"))
+		add_child(Ui.label("Rework a %s" % thing, "Subheading"))
 		var row := Ui.flow([], 8)
 		for shard_id: String in options.shards:
 			var shard: Dictionary = catalog.shards.get(shard_id, {})

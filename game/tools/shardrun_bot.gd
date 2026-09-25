@@ -97,6 +97,10 @@ func _battle_move(state: Dictionary) -> Dictionary:
 	var battle: Dictionary = state.battle
 	if int(battle.turn) > STALEMATE_TURNS:
 		return {"type": "abandon"}
+	if state.playstyle == "deck":
+		var dealt := _deal_hand(state)
+		if not dealt.is_empty():
+			return dealt
 	var previews: Dictionary = await session.previews()
 	for spell: Dictionary in state.spells:
 		var view: Dictionary = previews.spells.get(spell.id, {})
@@ -116,6 +120,20 @@ func _reward_move(state: Dictionary) -> Dictionary:
 	if reward.has("shards") and not (reward.shards as Array).is_empty():
 		return {"type": "take", "shard_id": reward.shards[0]}
 	return {"type": "leave"}
+
+
+## A Shardrun hand played into every spell with room, in the order it was dealt, as a `compose` command; {} when every
+## card is placed or no spell has room.
+func _deal_hand(state: Dictionary) -> Dictionary:
+	var table := CardTable.of(state, session.catalog)
+	var moved := false
+	while not (table.hand as Array).is_empty():
+		var next := CardTable.tap(table, {"zone": "hand", "index": 0})
+		if next.is_empty():
+			break
+		table = next
+		moved = true
+	return CardTable.command(table) if moved else {}
 
 
 ## Spare shards slotted into spells with room, as an `arrange` command; {} when there is nothing to move.

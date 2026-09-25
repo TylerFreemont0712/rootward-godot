@@ -9,7 +9,7 @@ const FOE_SPAN := Vector2(0.58, 0.94)
 const LONE_FOE := 0.78
 const HERO_X := 0.07
 ## The Maintainer's height as a share of the stage's, and the floor line everyone stands on (from the top).
-const HERO_HEIGHT := 0.66
+const HERO_HEIGHT := 0.76
 const FLOOR := 0.97
 
 ## Every stage skips its waits and animations (tests and tools that drive the screens).
@@ -113,27 +113,21 @@ func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callabl
 	if fast:
 		arrive.call()
 		return
-	var id := "shardrun/bolt-ward" if ward else "shardrun/bolt-" + element
-	var bolt := Ui.picture(id, Vector2(40, 40), "◆")
-	bolt.modulate = UiTheme.TEAL if ward and bolt is Label else Color.WHITE
-	bolt.pivot_offset = Vector2(20, 20)
-	_fx.add_child(bolt)
-	bolt.position = from - Vector2(20, 20)
-	var lift := -40.0 - randf() * 50.0
+	var colour: Color = UiTheme.TEAL if ward else UiTheme.element(element)
+	var bolt := BattleFX.spawn(_fx, BattleFX.Kind.BOLT, from, colour, ms / 1000.0 + 0.05, "ward" if ward else element)
+	bolt.set_flight(from, to, 42.0 + randf() * 48.0)
 	var tween := bolt.create_tween()
-	tween.tween_method(
-		func(t: float) -> void:
-			bolt.position = from.lerp(to, t) + Vector2(0, lift * 4.0 * t * (1.0 - t)) - Vector2(20, 20),
-		0.0,
-		1.0,
-		ms / 1000.0
-	)
+	tween.tween_method(bolt.set_flight_progress, 0.0, 1.0, ms / 1000.0)
 	tween.tween_callback(arrive)
-	tween.tween_callback(bolt.queue_free)
+	tween.tween_callback(bolt.finish)
 
 
 func burst(at: Vector2, element: String, scale_to := 1.4) -> void:
 	if fast:
+		return
+	if BattleFX.has_sprite("burst", element):
+		var effect := BattleFX.spawn(_fx, BattleFX.Kind.BURST, at, UiTheme.element(element), 0.62, element)
+		effect.scale = Vector2.ONE * (0.45 + scale_to * 0.25)
 		return
 	var id := "fx/burst-arcane" if element == "none" else "fx/burst-" + element
 	var picture := Ui.picture(id, Vector2(96, 96), "")
@@ -141,10 +135,85 @@ func burst(at: Vector2, element: String, scale_to := 1.4) -> void:
 	picture.position = at - Vector2(48, 48)
 	picture.scale = Vector2(0.6, 0.6)
 	_fx.add_child(picture)
+	BattleFX.spawn(_fx, BattleFX.Kind.BURST, at, UiTheme.element(element), 0.48)
 	var tween := picture.create_tween().set_parallel()
 	tween.tween_property(picture, "scale", Vector2(scale_to, scale_to), 0.32)
 	tween.tween_property(picture, "modulate", Color(1, 1, 1, 0), 0.36)
 	tween.chain().tween_callback(picture.queue_free)
+
+
+## A heavy spell's blow called down on a foe: lightning from the sky, a fire pillar, ice spikes or a beam of starlight
+## (the element's strike sprite), landing on its feet. `arrive` is called at the moment of impact.
+func strike(view: FoeView, element: String, arrive: Callable) -> void:
+	if fast or not BattleFX.has_sprite("strike", element):
+		arrive.call()
+		return
+	var colour := UiTheme.element(element)
+	var fx := BattleFX.spawn(_fx, BattleFX.Kind.STRIKE, view.foot_point(), colour, 0.8, element)
+	var impact := 0.07 if element == "spark" else 0.2
+	get_tree().create_timer(impact).timeout.connect(
+		func() -> void:
+			if element == "spark":
+				flash(Color(1.0, 0.97, 0.8, 0.55), 0.18)
+			shake(0.45)
+			arrive.call()
+	)
+	if fx != null:
+		fx.z_index = 1
+
+
+## A volley that hits several foes sends a wave across the floor under them.
+func sweep(points: Array[Vector2], element: String) -> void:
+	if fast or points.is_empty() or BattleFX.sprite("wave") == null:
+		return
+	var middle := Vector2.ZERO
+	for point in points:
+		middle += point
+	middle /= points.size()
+	var colour := UiTheme.element(element)
+	BattleFX.spawn(_fx, BattleFX.Kind.WAVE, middle + Vector2(0, -10), colour, 0.9, element)
+
+
+## A heavy cast opens a vortex at the casting hand while the spell gathers.
+func vortex(element: String, seconds: float) -> void:
+	if fast or BattleFX.sprite("vortex") == null:
+		return
+	var at := hero.hand_point()
+	BattleFX.spawn(_fx, BattleFX.Kind.VORTEX, at, UiTheme.element(element), seconds, element)
+
+
+## The whole stage lit for an instant (lightning), its colour's alpha the strength.
+func flash(colour: Color, seconds := 0.2) -> void:
+	if fast:
+		return
+	var light := ColorRect.new()
+	light.color = colour
+	light.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	light.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var additive := CanvasItemMaterial.new()
+	additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	light.material = additive
+	_fx.add_child(light)
+	var tween := light.create_tween()
+	tween.tween_property(light, "modulate:a", 0.0, seconds)
+	tween.tween_callback(light.queue_free)
+
+
+## The stage darkens while a heavy spell gathers (0 is none), and clears again.
+func dim(amount: float, seconds := 0.25) -> void:
+	if fast:
+		return
+	var shade: ColorRect = _fx.get_node_or_null("Dim")
+	if shade == null:
+		shade = ColorRect.new()
+		shade.name = "Dim"
+		shade.color = Color(0.03, 0.02, 0.08, 0.0)
+		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		_fx.add_child(shade)
+		_fx.move_child(shade, 0)
+	var tween := shade.create_tween()
+	tween.tween_property(shade, "color:a", amount, seconds)
 
 
 ## A number or a word that rises from `at` and fades.
@@ -186,14 +255,20 @@ func banner(text: String, colour: Color, ms := 900.0) -> void:
 func ward_glow() -> void:
 	if fast:
 		return
-	var glow := Ui.picture("fx/ward", Vector2(220, 220), "")
-	glow.modulate = Color(UiTheme.TEAL, 0.0)
-	glow.position = hero.body_point() - Vector2(110, 110)
-	_fx.add_child(glow)
-	var tween := glow.create_tween()
-	tween.tween_property(glow, "modulate:a", 0.85, 0.15)
-	tween.tween_property(glow, "modulate:a", 0.0, 0.45)
-	tween.tween_callback(glow.queue_free)
+	BattleFX.spawn(_fx, BattleFX.Kind.WARD, hero.body_point(), UiTheme.TEAL, 0.95, "ward")
+	var ward_seal := BattleFX.spawn(_fx, BattleFX.Kind.CAST, hero.body_point(), Color(1.0, 0.78, 0.38), 0.58)
+	ward_seal.scale = Vector2.ONE * 0.82
+
+
+func cast_flash(element: String, heavy := false) -> void:
+	if fast:
+		return
+	var colour := UiTheme.element(element)
+	var seal := BattleFX.spawn(_fx, BattleFX.Kind.CAST, hero.hand_point(), colour, 0.82 if heavy else 0.68, element)
+	seal.scale = Vector2.ONE * (1.45 if heavy else 1.0)
+	if heavy:
+		var flare := BattleFX.spawn(_fx, BattleFX.Kind.BURST, hero.body_point(), Color(1.0, 0.73, 0.34), 0.62)
+		flare.scale = Vector2.ONE * 1.35
 
 
 func shake(strength: float) -> void:

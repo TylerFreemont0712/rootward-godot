@@ -26,7 +26,8 @@ Then say in one short message what you are picking up, ask any blocking question
   state and send commands; they never decide outcomes.
 - **Sandbox invariants.** Player code never runs outside the sandbox, which has no filesystem beyond what a job is
   given, no network, a time limit and a memory cap. No telemetry.
-- **Protect what the player loves.** The spellbook Shardrun is the favourite: its rules are ported faithfully, proven
+- **Protect what the player loves.** The Shardrun (the card playstyle: shards drawn as a hand and played into blank
+  spells) is the main mode, with Spellforge (the spellbook) beside it. Both share rules ported faithfully and proven
   against fixtures from the TypeScript engine. Experiments go behind an option or in their own playstyle.
 - **Small slices.** Every step leaves tests green and the game launchable. Commit after each meaningful step with a
   conventional message. Never push unless asked.

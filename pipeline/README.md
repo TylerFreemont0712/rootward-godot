@@ -9,7 +9,7 @@ game runs with none of it (`Art.texture` returns null, a character without a mod
 |---|---|---|---|
 | Pictures (arenas, foes, relic icons, map pieces) | `art/manifest.json` (a style + a prompt each) | `scripts/art.sh --only '<ids>'` | `game/assets/<out>.png` |
 | Music, cues, sounds | `audio/manifest.json` | `scripts/audio.sh --only '<ids>'` | `game/assets/audio/<id>.ogg`, loop points in `music.json` |
-| Characters | `characters/<id>/animation.json` + the rigged `.blend` | `scripts/character.sh <id>` | `game/characters/<id>/<id>.glb`, screenshots in `shots/` |
+| Characters | `characters/<id>/model.json`, `animation.json`, concept art, and the rigged `.blend` | `scripts/character.sh <id>` | `game/characters/<id>/<id>.glb`, screenshots in `shots/` |
 
 `--reprocess` re-runs only the post-processing on cached renders (no GPU, no ComfyUI), which is how a change to a
 palette, a crop or a loudness target is applied. `--only` takes ids, with a trailing `*` for a prefix.
@@ -29,21 +29,25 @@ The pipeline has its own pinned environment (`pyproject.toml`, `uv.lock`): numpy
 through `uv run --project pipeline`. ComfyUI and Blender keep their own Pythons; the pipeline talks to ComfyUI over
 HTTP and runs Blender as a program.
 
-## Characters (ADR-0005)
+## Characters
 
-A character is a generated 3D model rigged to Mixamo's skeleton (the old game's ADR-0034 made Emberfox that way:
-concept drawing, TRELLIS.2 model, cleanup, rig, takes). This pipeline starts from the rigged file:
+Characters export as animated glTF and use the same `StageCharacter` controller and Godot toon look. Their authoring
+paths can differ by art style:
 
-1. `pipeline/cache/characters/<id>/rigged.blend`: the model, the rig (Mixamo bones plus tail and ears), and every
-   Mixamo take as an action.
-2. `pipeline/characters/<id>/animation.json`: each clip the game plays as a range of a take (`take`, `frames`).
-   Change a range, run `scripts/character.sh <id>`, and the game has it.
-3. The export bakes each clip into its own animation, packs the colour (base vertex colour, the concept drawing, and
-   the mask between them), and writes one `.glb`. In Godot, `StageCharacter` dresses it in `characters/toon.gdshader`
-   and `outline.gdshader`, loops the idle, blends between clips, and swings the tail and ears on spring bones.
+- Emberfox starts with a generated 3D model, uses a Mixamo-compatible rig and takes, then bakes selected take ranges
+  into actions.
+- Tamamo-no-Mae starts with a generated T-pose, avatar, and turnaround. Blender turns the painted silhouette into a
+  skinned 2.5D mesh with a detailed armature and hand-keyed anime actions. The source texture stays consistent across
+  clips, while the nine tails, hair, ears, hands, and limbs have independent bone controls. Spell shields, sigils, and
+  projectiles remain Godot effects, outside the character texture and rig.
+
+For the Tamamo path, `pipeline/characters/tamamo_no_mae/model.json` describes the mesh and rig, and
+`animation.json` maps game clip names to Blender actions. The editable model lives in
+`pipeline/cache/characters/tamamo_no_mae/rigged.blend`; `scripts/character.sh tamamo_no_mae` exports the actions into
+`game/characters/tamamo_no_mae/tamamo_no_mae.glb` and captures a clip sheet and close-up.
 
 ## During the migration
 
-`cache/art`, `cache/audio` and `sources/vendor` are symlinks into the old repository (`../ProgramMe/assets/`), so
-the 1.2 GB of cached renders and the Kenney CC0 packs are not copied. The rigged `.blend` and the Mixamo takes are
-large and stay out of git (`cache/` is ignored).
+`cache/art`, `cache/audio` and `sources/vendor` are symlinks into the old repository (`../ProgramMe/assets/`), so the
+1.2 GB of cached renders and the Kenney CC0 packs are not copied. The rigged `.blend` and the Mixamo takes are large and
+stay out of git (`cache/` is ignored).

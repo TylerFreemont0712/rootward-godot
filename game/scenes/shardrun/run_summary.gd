@@ -63,7 +63,32 @@ static func totals(state: Dictionary) -> Control:
 
 ## The Stats panel during a run: the score so far, the totals, and damage by spell.
 static func stats_panel(state: Dictionary) -> Control:
-	var column := Ui.vbox([Ui.label("This run", "Heading"), score(state)], 12)
+	var tamamo := Settings.character_skin == "tamamo_no_mae"
+	var portrait := TextureRect.new()
+	portrait.texture = (
+		Art.texture("skins/tamamo_no_mae/profile") if tamamo else load("res://characters/emberfox/emberfox_front.png")
+		as Texture2D
+	)
+	portrait.custom_minimum_size = Vector2(136, 136)
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var name := "Tamamo-no-Mae" if tamamo else "Emberfox"
+	var epithet := "Nine-Tail Oracle" if tamamo else "Salvage Runner"
+	var identity := Ui.vbox(
+		[Ui.label("FIELD PORTRAIT", "Faint"), Ui.label(name, "Subheading"), Ui.label(epithet, "Muted", true)], 5
+	)
+	var column := (
+		Ui
+		. vbox(
+			[
+				Ui.label("This run", "Heading"),
+				Ui.hbox([portrait, identity, Ui.spacer(), score(state)], 14),
+			],
+			12
+		)
+	)
 	var by_spell: Dictionary = state.stats.get("damage_by_spell", {})
 	if not by_spell.is_empty():
 		column.add_child(Ui.label("Damage by spell", "Subheading"))

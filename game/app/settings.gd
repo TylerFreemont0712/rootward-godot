@@ -8,6 +8,7 @@ extends RefCounted
 
 const PATH := "user://settings.json"
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
+const CHARACTER_SKINS: Array[String] = ["emberfox", "tamamo_no_mae", "vesper"]
 
 ## How fast a cast plays as code before its bolts fly; "off" skips straight to the bolts.
 static var code_speed := "normal"
@@ -15,6 +16,10 @@ static var code_speed := "normal"
 static var predictions := true
 ## Shake the stage on heavy hits.
 static var shake := true
+## The playstyle last played (Game.PLAYSTYLES): the card Shardrun unless the player chose Spellforge.
+static var playstyle := "deck"
+## The last selected battle look. Tamamo-no-Mae is the first impression on a fresh install.
+static var character_skin := "tamamo_no_mae"
 static var music_volume := 0.6
 static var sound_volume := 0.8
 ## The last language and difficulty a run was started with, offered first next time.
@@ -43,6 +48,14 @@ static func load_file(from := PATH) -> void:
 		language = chosen
 	if values.get("difficulty") is String:
 		difficulty = values.difficulty
+	if values.get("playstyle") in ["deck", "spellbook"]:
+		playstyle = values.playstyle
+	var skin: Variant = values.get("character_skin")
+	if skin is String:
+		if skin == "moonlit_kitsune":
+			character_skin = "tamamo_no_mae"
+		elif skin in CHARACTER_SKINS:
+			character_skin = skin
 
 
 static func save_file() -> void:
@@ -54,6 +67,8 @@ static func save_file() -> void:
 		"sound_volume": sound_volume,
 		"language": language,
 		"difficulty": difficulty,
+		"character_skin": character_skin,
+		"playstyle": playstyle,
 	}
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file != null:

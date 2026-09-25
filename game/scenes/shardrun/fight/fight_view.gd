@@ -32,6 +32,8 @@ var _incoming: Label
 var _end_turn: Button
 var _log: RichTextLabel
 var _code: CodeView
+## The Shardrun's hand and card slots, in a deck run; null in Spellforge.
+var _table: DeckTable
 
 
 static func create(run_session: ShardrunSession) -> FightView:
@@ -48,10 +50,20 @@ func _build() -> void:
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stage.gui_input.connect(_on_stage_input)
 	add_child(stage)
-	var bottom := Ui.hbox([_hero_panel(), _spellbook(state)], 10)
-	# The spellbook takes the height its cards need (two to a row), and the stage takes the rest.
-	var rows := ceili((state.spells as Array).size() / 2.0)
-	bottom.custom_minimum_size.y = maxf(250.0, 20.0 + rows * 168.0)
+	var bottom: HBoxContainer
+	if state.playstyle == "deck":
+		_table = DeckTable.create(session)
+		_table.wants.connect(func(command: Dictionary) -> void: _ask(command))
+		cards = _table.cards
+		for card: SpellCard in cards.values():
+			card.cast_pressed.connect(func(spell_id: String) -> void: _ask({"type": "cast", "spell_id": spell_id}))
+			card.code_pressed.connect(_explore)
+		bottom = Ui.hbox([_hero_panel(), _table], 10)
+	else:
+		bottom = Ui.hbox([_hero_panel(), _spellbook(state)], 10)
+		# The spellbook takes the height its cards need (two to a row), and the stage takes the rest.
+		var rows := ceili((state.spells as Array).size() / 2.0)
+		bottom.custom_minimum_size.y = maxf(250.0, 20.0 + rows * 168.0)
 	add_child(bottom)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var boss: bool = state.battle.kind == "boss"
@@ -114,6 +126,8 @@ func show_state(state: Dictionary) -> void:
 	var incoming := ShardrunViews.incoming(state)
 	_incoming.text = "Incoming: %d damage" % incoming if incoming > 0 else ""
 	stage.show_foes(battle.foes)
+	if _table != null:
+		_table.show_table(state)
 	for spell: Dictionary in state.spells:
 		var card: SpellCard = cards.get(spell.id)
 		if card != null:
@@ -216,6 +230,8 @@ func write_entries(entries: Array) -> void:
 func set_busy(value: bool) -> void:
 	busy = value
 	_end_turn.disabled = value
+	if _table != null:
+		_table.set_busy(value)
 	for card: SpellCard in cards.values():
 		card.set_busy(value)
 
