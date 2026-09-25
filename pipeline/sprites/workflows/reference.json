@@ -1,0 +1,18 @@
+{
+  "1": {"class_type": "CheckpointLoaderSimple", "_meta": {"title": "rw:checkpoint"}, "inputs": {"ckpt_name": "novaAnimeXL_ilV190.safetensors"}},
+  "2": {"class_type": "LoraLoader", "_meta": {"title": "rw:detail"}, "inputs": {"model": ["1", 0], "clip": ["1", 1], "lora_name": "DetialN_XL.safetensors", "strength_model": 0.6, "strength_clip": 0.6}},
+  "3": {"class_type": "CLIPTextEncode", "_meta": {"title": "rw:positive"}, "inputs": {"clip": ["2", 1], "text": ""}},
+  "4": {"class_type": "CLIPTextEncode", "_meta": {"title": "rw:negative"}, "inputs": {"clip": ["2", 1], "text": ""}},
+  "5": {"class_type": "LoadImage", "_meta": {"title": "rw:pose"}, "inputs": {"image": ""}},
+  "6": {"class_type": "ControlNetLoader", "_meta": {"title": "rw:controlnet"}, "inputs": {"control_net_name": "noobai-openpose-sdxl-fp16.safetensors"}},
+  "7": {"class_type": "ControlNetApplyAdvanced", "_meta": {"title": "rw:control"}, "inputs": {"positive": ["3", 0], "negative": ["4", 0], "control_net": ["6", 0], "image": ["5", 0], "vae": ["1", 2], "strength": 1.0, "start_percent": 0.0, "end_percent": 0.85}},
+  "8": {"class_type": "LoadImage", "_meta": {"title": "rw:source"}, "inputs": {"image": ""}},
+  "9": {"class_type": "ImageScale", "_meta": {"title": "rw:source-size"}, "inputs": {"image": ["8", 0], "upscale_method": "lanczos", "width": 1280, "height": 1120, "crop": "disabled"}},
+  "10": {"class_type": "VAEEncode", "_meta": {"title": "rw:encode"}, "inputs": {"pixels": ["9", 0], "vae": ["1", 2]}},
+  "11": {"class_type": "EmptyLatentImage", "_meta": {"title": "rw:empty"}, "inputs": {"width": 1280, "height": 1120, "batch_size": 1}},
+  "12": {"class_type": "KSampler", "_meta": {"title": "rw:sampler"}, "inputs": {"model": ["2", 0], "positive": ["7", 0], "negative": ["7", 1], "latent_image": ["10", 0], "seed": 0, "steps": 30, "cfg": 5.5, "sampler_name": "euler_ancestral", "scheduler": "karras", "denoise": 0.7}},
+  "13": {"class_type": "VAEDecode", "_meta": {"title": "rw:decode"}, "inputs": {"samples": ["12", 0], "vae": ["1", 2]}},
+  "14": {"class_type": "SaveImage", "_meta": {"title": "rw:save"}, "inputs": {"images": ["13", 0], "filename_prefix": "rootward/reference"}},
+  "15": {"class_type": "BiRefNetRMBG", "_meta": {"title": "rw:matte"}, "inputs": {"image": ["13", 0], "model": "BiRefNet_toonout", "sensitivity": 1.0, "mask_blur": 0, "mask_offset": 0, "invert_output": false, "refine_foreground": true, "background": "Color", "background_color": "#FFFFFF"}},
+  "16": {"class_type": "SaveImage", "_meta": {"title": "rw:save-clean"}, "inputs": {"images": ["15", 0], "filename_prefix": "rootward/reference-clean"}}
+}

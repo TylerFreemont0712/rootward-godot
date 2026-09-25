@@ -1,0 +1,96 @@
+{
+  "_about": "Spell sprites for the stage, redrawn by ComfyUI from the concept boards in Concept/spellAnimations/ (img2img, NovaAnimeXL). Each is a quadrant of a board: tl, tr, bl or br. The render is light on black, so the sprite's alpha is its brightness and Godot draws it additively. Bolts point right (their flight turns them), so a board that drew one pointing left sets flip.",
+  "out": "game/assets/fx/spell",
+  "style": {
+    "prefix": "masterpiece, best quality, anime vfx, game effect sprite, glowing magic effect, ",
+    "suffix": ", isolated on a pure black background, centered, high contrast, vivid colors, crisp cel shaded light, clean shapes",
+    "negative": "text, watermark, signature, border, frame, character, person, creature, animal, ground, floor, scenery, white background, gray background, gradient background, blurry, photo, 3d render, multiple objects, grid, halo, dark outline"
+  },
+  "effects": [
+    {
+      "id": "bolt-none",
+      "board": "01-elemental-bolts.png",
+      "quadrant": "bl",
+      "flip": true,
+      "size": 320,
+      "seed": 3101,
+      "prompt": "violet arcane magic arrow projectile with trailing afterimages, star sparkles, purple and white light"
+    },
+    {
+      "id": "bolt-fire",
+      "board": "04-impacts-and-bursts.png",
+      "quadrant": "tr",
+      "size": 320,
+      "seed": 3102,
+      "prompt": "fireball projectile streaking to the right, swirling orange and yellow flames, embers trailing behind"
+    },
+    {
+      "id": "bolt-frost",
+      "board": "04-impacts-and-bursts.png",
+      "quadrant": "bl",
+      "size": 320,
+      "seed": 3103,
+      "prompt": "ice crystal spear projectile pointing right, pale cyan shards and snowflakes trailing behind"
+    },
+    {
+      "id": "bolt-spark",
+      "board": "04-impacts-and-bursts.png",
+      "quadrant": "tl",
+      "size": 320,
+      "seed": 3104,
+      "prompt": "golden lightning shard projectile pointing right, bright yellow sparks and streaks trailing behind"
+    },
+    {
+      "id": "burst-none",
+      "board": "02-wards-and-barriers.png",
+      "quadrant": "br",
+      "size": 384,
+      "seed": 3201,
+      "prompt": "radial arcane impact burst, glowing violet rune circle, four pointed star flare in the centre, purple shards flying outward"
+    },
+    {
+      "id": "burst-fire",
+      "board": "02-wards-and-barriers.png",
+      "quadrant": "tr",
+      "size": 384,
+      "seed": 3202,
+      "prompt": "fire explosion impact, blossoming orange and yellow flame burst, embers flying outward"
+    },
+    {
+      "id": "burst-frost",
+      "board": "02-wards-and-barriers.png",
+      "quadrant": "bl",
+      "size": 384,
+      "seed": 3203,
+      "prompt": "ice shatter impact, radial burst of pale blue ice crystals and snowflakes, white core flash"
+    },
+    {
+      "id": "burst-spark",
+      "board": "02-wards-and-barriers.png",
+      "quadrant": "tl",
+      "size": 384,
+      "seed": 3204,
+      "prompt": "golden star burst impact, radiant eight pointed light flare, yellow sparks flying outward"
+    },
+    {
+      "id": "seal",
+      "board": "03-radial-glyph-bursts.png",
+      "quadrant": "br",
+      "size": 384,
+      "seed": 3301,
+      "denoise": 0.72,
+      "prompt": "round magic circle seal seen face on, concentric glowing violet rings with runes and a four pointed star in the centre, thin elegant lines",
+      "desaturate": true,
+      "_seal": "Drawn from board 03's root dome at a high denoise, it came back a golden magic circle; kept, and made white so the shader can colour it per element."
+    },
+    {
+      "id": "ward",
+      "board": "03-radial-glyph-bursts.png",
+      "quadrant": "tl",
+      "size": 512,
+      "seed": 3401,
+      "prompt": "curved crescent energy barrier shield, translucent teal glass with glowing veins, bright rim, small crystal shards"
+    }
+  ],
+  "_boards": "Note: 02-wards-and-barriers.png holds the radial bursts and 03-radial-glyph-bursts.png the wards; the files' names and pictures are swapped, so the entries below follow the pictures."
+}

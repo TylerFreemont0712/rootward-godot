@@ -1,0 +1,29 @@
+{
+  "_about": "Vesper's sprite skeleton: a small, cute witch about three and three-quarter heads tall (a little taller than the old game's chibi rig, which the video model held best), turned three-quarters toward the foe on screen right, both hands free. Figure units: x is 0 at the body's middle and grows toward the foe, y runs from the top of the head (0) to the soles (1). 'near' is her right side (screen left, toward the camera), 'far' her left (screen right). The far ear hides behind the head; the witch hat rises above y = 0.",
+  "canvas": [640, 560],
+  "_canvas": "8:7, 358k pixels, the old game's proven size for Wan 2.1 VACE 1.3B (trained near 400k); every side a multiple of 16. Wide, so the cast's arm has room toward the foe.",
+  "figure": 0.74,
+  "feet": 0.955,
+  "center": 0.38,
+  "hand": 0.068,
+  "rest": {
+    "nose": [0.078, 0.168],
+    "r_eye": [-0.006, 0.138],
+    "l_eye": [0.086, 0.132],
+    "r_ear": [-0.104, 0.152],
+    "neck": [-0.01, 0.262],
+    "r_shoulder": [-0.092, 0.288],
+    "l_shoulder": [0.066, 0.282],
+    "r_elbow": [-0.106, 0.405],
+    "r_wrist": [-0.088, 0.512],
+    "l_elbow": [0.094, 0.402],
+    "l_wrist": [0.118, 0.508],
+    "r_hip": [-0.055, 0.578],
+    "l_hip": [0.046, 0.574],
+    "r_knee": [-0.066, 0.772],
+    "l_knee": [0.066, 0.766],
+    "r_ankle": [-0.082, 0.966],
+    "l_ankle": [0.088, 0.958]
+  },
+  "_rest": "Arms relaxed a little away from the body, hands empty: nothing is held that the video model could drag along with a moving hand (the old game's lesson), and the far hand is the one the cast throws."
+}

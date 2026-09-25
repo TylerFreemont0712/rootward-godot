@@ -1,0 +1,9 @@
+{
+  "1": {"class_type": "LoadImage", "_meta": {"title": "rw:frames-in"}, "inputs": {"image": ""}},
+  "2": {"class_type": "RootwardPoseSheetToFrames", "_meta": {"title": "rw:cut"}, "inputs": {"sheet": ["1", 0], "columns": 8, "frames": 8}},
+  "3": {"class_type": "UpscaleModelLoader", "_meta": {"title": "rw:upscale-model"}, "inputs": {"model_name": "RealESRGAN_x4plus_anime_6B.pth"}},
+  "4": {"class_type": "ImageUpscaleWithModel", "_meta": {"title": "rw:upscale"}, "inputs": {"upscale_model": ["3", 0], "image": ["2", 0]}},
+  "5": {"class_type": "ImageScale", "_meta": {"title": "rw:downscale"}, "inputs": {"image": ["4", 0], "upscale_method": "lanczos", "width": 960, "height": 840, "crop": "disabled"}},
+  "6": {"class_type": "RootwardFramesToSheet", "_meta": {"title": "rw:sheet"}, "inputs": {"frames": ["5", 0], "columns": 8}},
+  "7": {"class_type": "SaveImage", "_meta": {"title": "rw:save"}, "inputs": {"images": ["6", 0], "filename_prefix": "rootward/upscaled"}}
+}

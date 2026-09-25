@@ -1,0 +1,9 @@
+{
+  "1": {"class_type": "LoadImage", "_meta": {"title": "rw:frames-in"}, "inputs": {"image": ""}},
+  "2": {"class_type": "RootwardPoseSheetToFrames", "_meta": {"title": "rw:cut"}, "inputs": {"sheet": ["1", 0], "columns": 8, "frames": 33}},
+  "3": {"class_type": "FrameInterpolationModelLoader", "_meta": {"title": "rw:interp-model"}, "inputs": {"model_name": "rife_v4.26.safetensors"}},
+  "4": {"class_type": "FrameInterpolate", "_meta": {"title": "rw:interp"}, "inputs": {"interp_model": ["3", 0], "images": ["2", 0], "multiplier": 2}},
+  "5": {"class_type": "BiRefNetRMBG", "_meta": {"title": "rw:matte"}, "inputs": {"image": ["4", 0], "model": "BiRefNet_toonout", "sensitivity": 1.0, "mask_blur": 0, "mask_offset": 0, "invert_output": false, "refine_foreground": true, "background": "Alpha", "background_color": "#222222"}},
+  "6": {"class_type": "RootwardFramesToSheet", "_meta": {"title": "rw:sheet"}, "inputs": {"frames": ["5", 0], "alpha": ["5", 1], "columns": 8}},
+  "7": {"class_type": "SaveImage", "_meta": {"title": "rw:save"}, "inputs": {"images": ["6", 0], "filename_prefix": "rootward/finished"}}
+}

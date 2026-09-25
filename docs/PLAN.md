@@ -96,9 +96,12 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 ### Phase 6: characters and spells in 3D
 - [ ] Emberfox as the first character: glTF, a toon shader (two tones, rim, outline), clips in an AnimationTree with
       blending, a looping idle, casts that release within about 0.4 s, the spell circle launching the bolts.
-- [ ] Vesper, the Star-Script Witch, as a new skin (ADR-0007). [x] Modelled and rigged from her concept by
-      `pipeline/blender/build_vesper.py`, with whole hands and review renders. [ ] Her clips, the export, and the skin
-      in the game, after the player's review.
+- [ ] Vesper, the Star-Script Witch, as a new skin. [x] Modelled and rigged in code (ADR-0007), then set aside for
+      a sprite version. [x] A small, cute sprite Vesper from ComfyUI (ADR-0008, `scripts/sprites.sh`): an idle and a
+      cast, in the fight and the wardrobe. [ ] Her other clips (hurt, guard, victory, death, a heavy cast).
+- [x] Spell sprites from the concept boards (ADR-0008): a bolt and a burst per element, a casting seal, a ward, each
+      animated by one shader (dissolve, reveal, wobble, shimmer), flashes, shockwaves and sparkles.
+- [ ] Spell variety: lightning called down, strikes on every foe, per-element casts and landings.
 - [ ] Spell effects as Godot particles and shaders, per element, and the ward.
 - [ ] Sound and music on audio buses with volume and mute settings.
 

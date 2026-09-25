@@ -1,0 +1,185 @@
+{
+  "_about": "Vesper's clips as keys on her rig (pipeline/sprites/rig.py). A key sets where the body moves (body), how it leans and how the head tilts (degrees), where each wrist goes (near, far) and each hand's shape (nearHand, farHand; farBend turns the fingers up). Motion prompts describe only the body, never the magic: the spell is the stage's effect, drawn over her.",
+  "poses": {},
+  "clips": {
+    "idle-breathe": {
+      "frames": 33,
+      "fps": 12,
+      "loop": true,
+      "blend": true,
+      "anchors": {
+        "first": "reference",
+        "last": "reference"
+      },
+      "keys": [
+        {
+          "t": 0
+        },
+        {
+          "t": 0.25,
+          "body": [
+            0.004,
+            -0.008
+          ],
+          "lean": -1.5,
+          "head": -3.0,
+          "near": [
+            -0.09,
+            0.5
+          ],
+          "far": [
+            0.124,
+            0.496
+          ]
+        },
+        {
+          "t": 0.5,
+          "body": [
+            0.0,
+            -0.018
+          ],
+          "lean": -2.0,
+          "head": -4.0,
+          "near": [
+            -0.094,
+            0.492
+          ],
+          "far": [
+            0.13,
+            0.488
+          ]
+        },
+        {
+          "t": 0.75,
+          "body": [
+            -0.004,
+            -0.008
+          ],
+          "lean": 0.5,
+          "head": -1.0
+        },
+        {
+          "t": 1
+        }
+      ],
+      "_keys": "A breath with a little bob: the body rises more than a real breath would, because the 1.3B model under-follows very small motions (measured in the old game), and the head tips with it.",
+      "motion": "standing in place, breathing slowly with a gentle bob, hair and the little cape swaying softly, hands empty and relaxed"
+    },
+    "cast-light": {
+      "frames": 25,
+      "fps": 16,
+      "interpolate": 2,
+      "loop": false,
+      "after": "idle-breathe",
+      "anchors": {
+        "first": "reference",
+        "last": "reference"
+      },
+      "hands": [
+        "far"
+      ],
+      "hand": "far",
+      "release": 0.4,
+      "phases": {
+        "anticipate": [
+          0,
+          0.34
+        ],
+        "release": [
+          0.36,
+          0.64
+        ],
+        "recover": [
+          0.66,
+          1
+        ]
+      },
+      "keys": [
+        {
+          "t": 0
+        },
+        {
+          "t": 0.22,
+          "body": [
+            -0.014,
+            0.008
+          ],
+          "lean": -8,
+          "head": -4,
+          "near": [
+            -0.07,
+            0.47
+          ],
+          "far": [
+            0.07,
+            0.33
+          ],
+          "farBend": -50,
+          "farHand": "relaxed"
+        },
+        {
+          "t": 0.4,
+          "body": [
+            0.03,
+            0.006
+          ],
+          "lean": 10,
+          "head": 5,
+          "near": [
+            -0.13,
+            0.46
+          ],
+          "far": [
+            0.375,
+            0.294
+          ],
+          "farBend": -30,
+          "farHand": "point"
+        },
+        {
+          "t": 0.6,
+          "body": [
+            0.026,
+            0.006
+          ],
+          "lean": 8,
+          "head": 5,
+          "near": [
+            -0.125,
+            0.465
+          ],
+          "far": [
+            0.37,
+            0.298
+          ],
+          "farBend": -30,
+          "farHand": "point"
+        },
+        {
+          "t": 0.82,
+          "body": [
+            0.006,
+            0.0
+          ],
+          "lean": 2,
+          "far": [
+            0.17,
+            0.43
+          ],
+          "farBend": -15,
+          "farHand": "relaxed"
+        },
+        {
+          "t": 1
+        }
+      ],
+      "_keys": "Chambered at the shoulder, then thrust out at shoulder height, pointing at the foe, held a beat, and recovered inward and down at the side (never a low swing across the front, which reads as an underhand toss: the old game's ADR-0030).",
+      "motion": "she pulls her free hand back to the shoulder, then thrusts her arm straight out toward the right and points, holds it, then lowers it back to her side",
+      "key_prompt": "one arm stretched straight out toward the right at shoulder height, pointing with the index finger, the other hand at her side",
+      "drawn": {
+        "12": "keys/cast-light-12.png"
+      },
+      "_drawn": "The hold is pinned to a drawing of her in it (`keypose`), the way an animator draws the key and leaves the in-betweens. Without one, the first Vesper lost her capelet mid-strike: the video model keeps the costume where a picture pins it."
+    }
+  }
+}

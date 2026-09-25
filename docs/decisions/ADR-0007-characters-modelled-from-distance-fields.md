@@ -1,6 +1,7 @@
 # ADR-0007: skins modelled in code from distance fields, with whole hands
 
-- Status: accepted (Vesper's model and rig; her clips and in-game skin come next)
+- Status: superseded for Vesper's in-game look by ADR-0008 (the player wanted more anime quality than the modelled
+  look gave); the build stays as a record and a tool
 - Date: 2026-09-25
 
 ## Context

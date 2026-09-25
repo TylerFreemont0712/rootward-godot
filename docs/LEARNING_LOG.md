@@ -126,3 +126,15 @@ toward an ellipsoid's, so a nose never casts a toon shadow.
 Each face stores which material slot it uses. Clearing an object's slot list sets every face back to slot 0, so
 putting the same materials back does not restore the look. Swap materials by assigning into the slots in place.
 
+## A video model draws a clip together (`pipeline/sprites/`, ADR-0008)
+An image model asked for frames one at a time redraws the character a little differently each time, and the sheet
+shimmers. A video model (Wan 2.1 VACE) draws every frame of a clip in one pass, with attention across time, so the
+frames are one motion. It is steered three ways at once: a skeleton per frame (the pose), one reference drawing (the
+look), and pinned frames, pictures it must keep exactly, which is how every clip starts and ends on the same drawing.
+
+## One sprite, many effects (`game/scenes/shardrun/fight/spell_sprite.gdshader`)
+A dissolve keeps each pixel while a noise texture is above a threshold that rises over time; lighting the pixels just
+above the threshold makes the edge glow, so the picture burns away instead of fading. With a reveal (an angle that
+sweeps round the centre), a wobble (UVs pushed by scrolling noise) and a shimmer, the same painted burst or seal can
+appear, hold and leave in several ways, which is cheaper than painting every frame.
+
