@@ -1,0 +1,12 @@
+{
+  "id": "vesper",
+  "name": "Vesper, the Star-Script Witch",
+  "representation": "3d-modelled",
+  "concept": "Concept/vesper-star-script-witch/",
+  "build": "pipeline/blender/build_vesper.py",
+  "rig": "Vesper_Rig",
+  "armature_name": "Vesper_Rig",
+  "objects": ["Body", "Hair", "Clothes", "Mantle", "Hat", "Book"],
+  "description": "Modelled in code from the concept sheets: every part is a signed distance field meshed through OpenVDB, cloth is one sheet thickened in Blender, the face is the head sheet's own drawing projected onto the skull. A Mixamo-named skeleton (so Emberfox's takes can be retargeted) with three bones in every finger and thumb, plus bones for the hat cone, its star, four hair locks and the book.",
+  "spell_effects": "Godot BattleFX nodes, never part of the mesh; her hands are kept clear for casting."
+}

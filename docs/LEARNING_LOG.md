@@ -102,3 +102,27 @@ looks: the same 15-pixel font is 15 pixels in a 1920x1080 window and about 20 in
 `expand` aspect, a window of another shape gets extra canvas at the sides or bottom instead of black bars, so layouts
 use anchors and containers rather than fixed positions.
 
+## Shapes as distance functions (`pipeline/blender/vesper/sdf.py`, ADR-0007)
+A signed distance field is a function that says, for any point, how far it is from a surface (negative inside). A
+sphere is `|p - c| - r`; the union of two shapes is the smaller of their two distances. The smooth minimum
+`smin(a, b, k)` is that union with the corner rounded over a width `k`, which is how an arm grows out of a shoulder
+without a seam. To see the shape you sample the field on a grid and find where it crosses zero (OpenVDB's
+`convertToQuads`); sampling only blocks near the surface keeps a 0.6 mm grid affordable.
+
+## Cloth has one face and a thickness (`pipeline/blender/vesper/cloth.py`)
+A 4 mm cloth shell meshed as two walls looks fine until the mesh is reduced: the reducer does not know the walls
+belong apart and lets them cross, so the lining shows through in patches. Keeping only the outer face, reducing that,
+and then adding the thickness (a copy of the sheet moved back along smoothed normals, joined at the edges) makes the
+inner wall follow the outer one exactly, whatever the reduction did. Blender's Solidify did the same job badly here: its
+simple mode tilts the edge vertices and folds the lining out past the hem, and its complex mode throws spikes.
+
+## Toon shading and bumps (`pipeline/blender/build_vesper.py`)
+A toon shader turns light into shadow at one threshold, so a surface's small bumps become ragged dark blotches. The
+fix is to keep the geometry and smooth only the normals the shader reads (custom normals averaged with their
+neighbours, but never across a sharp edge like a cloth's rim). A face uses a stronger version: its normals are bent
+toward an ellipsoid's, so a nose never casts a toon shadow.
+
+## `materials.clear()` resets every face (`pipeline/blender/vesper/shading.py`)
+Each face stores which material slot it uses. Clearing an object's slot list sets every face back to slot 0, so
+putting the same materials back does not restore the look. Swap materials by assigning into the slots in place.
+
