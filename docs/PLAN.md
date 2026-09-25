@@ -130,8 +130,12 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] The fight: the Program's code always on screen, new lines written in with runes, a race bar of foe tempos
       against the program's work, and the program run line by line during a cast.
 - [x] The title's Shardrun is the program run; the card Shardrun is kept for a run already underway.
+- [x] The card table (ADR-0013): a painted card frame tinted per paradigm and a card back from the art pipeline, the
+      hand held Slay the Spire style with details beside the pointed-at card, summaries as comments, the Program's run
+      ending the turn (`▶ python program.py`), a guardian's health bar at the top, a portrait of the worn skin, and
+      the fight's `.log`.
 - [ ] A balance pass by play (tempos, budget, card numbers; Brute Force is weakest played naively).
-- [ ] Cards of their own: art, and a paradigm frame; Japanese for the new text.
+- [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
 ### Later

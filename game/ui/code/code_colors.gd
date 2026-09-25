@@ -22,6 +22,8 @@ const STRING := "#9fd07a"
 const NUMBER := "#f2a541"
 const COMMENT := "#6f5e46"
 const CALL := "#82d8ff"
+## A card's plain-words summary, written as a comment the way a docstring would be: green, like most editors' comments.
+const DOC := "#86c17a"
 
 
 static func bbcode(line: String, language: String) -> String:
@@ -83,3 +85,35 @@ static func _is_digit(character: String) -> bool:
 
 static func _is_word(character: String) -> bool:
 	return (character >= "a" and character <= "z") or (character >= "A" and character <= "Z") or character == "_"
+
+
+## Plain words as comment lines of `language` ("# " or "// " before each), wrapped at `columns` characters.
+static func comment_lines(text: String, language: String, columns: int) -> PackedStringArray:
+	var mark := "# " if language == "python" else "// "
+	var lines: PackedStringArray = []
+	var line := ""
+	for word in text.split(" ", false):
+		if line != "" and mark.length() + line.length() + 1 + word.length() > columns:
+			lines.append(mark + line)
+			line = word
+		else:
+			line = word if line == "" else line + " " + word
+	if line != "":
+		lines.append(mark + line)
+	return lines
+
+
+## A card's code for a narrow box: comment lines longer than `columns` rewrapped under their own indentation and mark,
+## code lines left as they are (the box clips them).
+static func fit_code(code: String, language: String, columns: int) -> PackedStringArray:
+	var mark := "#" if language == "python" else "//"
+	var out: PackedStringArray = []
+	for line in code.strip_edges(false, true).split("\n"):
+		var body := line.strip_edges(true, false)
+		if line.length() <= columns or not body.begins_with(mark):
+			out.append(line)
+			continue
+		var indent := line.substr(0, line.length() - body.length())
+		for part in comment_lines(body.trim_prefix(mark).strip_edges(), language, columns - indent.length()):
+			out.append(indent + part)
+	return out

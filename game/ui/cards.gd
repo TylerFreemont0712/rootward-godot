@@ -19,7 +19,7 @@ static func shard(
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(facts, "Faint")], 0)], 10)
 	var body := Ui.vbox([head], 8)
 	if summary and item.has("summary"):
-		body.add_child(Ui.label(item.summary, "", true))
+		body.add_child(comment(String(item.summary), language, 34 if wide else 44))
 	var curse: Dictionary = item.get("curse", {})
 	if not curse.is_empty():
 		body.add_child(
@@ -86,3 +86,19 @@ static func relic_icon(item: Dictionary) -> Control:
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
 	icon.tooltip_text = "%s%s\n%s" % [item.name, " (cursed)" if item.get("cursed", false) else "", item.summary]
 	return icon
+
+
+## Plain words written as a comment in the run's language ("# ..." or "// ..."), green, wrapped at `columns`: a card's
+## summary reads like the docstring of the code it sits beside.
+static func comment(text: String, language: String, columns: int) -> RichTextLabel:
+	var lines: PackedStringArray = []
+	for line in CodeColors.comment_lines(text, language, columns):
+		lines.append(line.replace("[", "[lb]"))
+	var rich := RichTextLabel.new()
+	rich.bbcode_enabled = true
+	rich.fit_content = true
+	rich.scroll_active = false
+	rich.autowrap_mode = TextServer.AUTOWRAP_OFF
+	rich.add_theme_font_size_override("normal_font_size", 15)
+	rich.text = "[color=%s]%s[/color]" % [CodeColors.DOC, "\n".join(lines)]
+	return rich

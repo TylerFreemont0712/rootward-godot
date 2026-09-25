@@ -4,7 +4,7 @@ extends Control
 ##   heavy spark spell on two foes: lightning called down), turn, reward, treasure, rest, forge, end, code,
 ##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms), pack (a draft
 ##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
-##   than the Program acts first)
+##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window)
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered).
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
@@ -66,11 +66,15 @@ func _ready() -> void:
 			for shard: String in spell.shards:
 				(table.hand as Array).erase(shard)
 			await bot.send(CardTable.command(table))
-		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile":
+		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile", "hover", "log":
 			await bot.play_until("battle")
 			if ShardrunRules.is_deck(session.state) and shot in ["cast", "volley", "code"]:
 				await bot.send(bot._deal_hand(session.state))
-			elif ShardrunRules.is_deck(session.state) and shot == "table":
+			elif ShardrunRules.is_deck(session.state) and shot == "log":
+				# A whole turn played, so the log has a cast, the foes' answer and the next turn in it.
+				await bot.send(bot._deal_hand(session.state))
+				await bot.send({"type": "cast", "spell_id": "spell-1"})
+			elif ShardrunRules.is_deck(session.state) and shot in ["table", "hover"]:
 				# Two cards played into the first spell, the rest still in hand.
 				var table := CardTable.of(session.state, session.catalog)
 				for i in 2:
@@ -133,6 +137,17 @@ func _act(shot: String, screen: Control) -> void:
 			screen.call("_explore", "spell-1")
 		"dev":
 			screen.call("_open_dev")
+		"hover":
+			# The second card of the hand pointed at: it rises, straightens, grows, and shows what it does.
+			var fight := screen.get("_fight") as FightView
+			var hand := fight.find_children("*", "HandView", true, false)
+			if not hand.is_empty() and (hand[0] as HandView).cards.size() > 1:
+				var card: CardFace = (hand[0] as HandView).cards[1]
+				hand[0].call("_point", card, true)
+				card.call("_hover", true)
+		"log":
+			var fight := screen.get("_fight") as FightView
+			BattleLog.open(fight, fight.get("_entries"))
 		"pile":
 			var fight := screen.get("_fight") as FightView
 			if fight != null:

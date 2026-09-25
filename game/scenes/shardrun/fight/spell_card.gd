@@ -9,12 +9,14 @@ signal code_pressed(spell_id: String)
 var spell: Dictionary = {}
 ## Its place in the book, and the key that casts it.
 var number := 1
+## What the cast button says when it is ready ("▶ python program.py" for a Program); "" for "Cast [n]".
+var run_label := ""
 var _cost: Label
 var _preview: Label
 var _cast: Button
 var _code: Button
 var _chain: Control
-var _look: StyleBox
+var _side: VBoxContainer
 var _busy := false
 var _spent := false
 var _affordable := true
@@ -24,8 +26,8 @@ static func create(index: int, run_spell: Dictionary, catalog: Dictionary) -> Sp
 	var card := SpellCard.new()
 	card.spell = run_spell
 	card.number = index
-	card.theme_type_variation = "Card"
 	card._build(index, catalog)
+	card.set_targeted(false)
 	return card
 
 
@@ -57,7 +59,22 @@ func _build(index: int, catalog: Dictionary) -> void:
 	_code = Ui.button("</> Code", func() -> void: code_pressed.emit(spell.id))
 	_cast = Ui.button("Cast  [%d]" % index, func() -> void: cast_pressed.emit(spell.id), "PrimaryButton")
 	_cast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	add_child(Ui.vbox([header, chain, _preview, Ui.hbox([_code, _cast], 8)], 8))
+	_side = Ui.vbox([_preview, Ui.hbox([_code, _cast], 8)], 8)
+	add_child(Ui.vbox([header, chain, _side], 8))
+
+
+## Lays the spell out in a row: its cards on the left, and what it will do and its button in a column beside them.
+func side_by_side() -> void:
+	var column := _chain.get_parent()
+	var row := Ui.hbox([], 16)
+	column.add_child(row)
+	for part: Control in [_chain, _side]:
+		part.reparent(row)
+	_chain.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	_side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_side.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_side.custom_minimum_size.x = 220
+	_cast.custom_minimum_size.y = 46
 
 
 ## A Shardrun spell shows card slots instead of its chain of shards (DeckTable fills them).
@@ -71,18 +88,16 @@ func set_slots(slots: Control) -> void:
 	_chain = slots
 
 
-## The spell a click plays cards into is outlined in the shard colour.
+## The spell a click plays cards into is outlined in the shard colour. The outline is always there (in the line colour
+## when not targeted), and the text keeps a margin well inside it, so targeting never moves or crowds anything.
 func set_targeted(on: bool) -> void:
-	if _look == null:
-		_look = get_theme_stylebox("panel")
-	if not on:
-		remove_theme_stylebox_override("panel")
-		return
-	var outlined := _look.duplicate() as StyleBox
-	if outlined is StyleBoxFlat:
-		(outlined as StyleBoxFlat).border_color = UiTheme.SHARD
-		(outlined as StyleBoxFlat).set_border_width_all(2)
-	add_theme_stylebox_override("panel", outlined)
+	var look := UiTheme.box(
+		Color(0.1, 0.075, 0.07, 0.94), UiTheme.SHARD if on else UiTheme.LINE, 2, 10, Vector2(18, 14)
+	)
+	if on:
+		look.shadow_color = Color(UiTheme.SHARD, 0.22)
+		look.shadow_size = 8
+	add_theme_stylebox_override("panel", look)
 
 
 ## Shows a run view (ShardrunViews.spell_run_view), or {} while it is still running. `spent` greys the card out.
@@ -93,7 +108,7 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 		_cost.text = ""
 		_preview.text = "Reading the shards…"
 		_preview.remove_theme_color_override("font_color")
-		_cast.text = "Spent this turn" if spent else "Cast  [%d]" % number
+		_cast.text = "Spent this turn" if spent else _ready_text()
 		_update_cast()
 		return
 	var cost := int(view.cost)
@@ -101,10 +116,10 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 	if spent:
 		_cast.text = "Spent this turn"
 	elif cost > mana:
-		_cast.text = "Needs %d mana" % cost
+		_cast.text = "Needs %d◆" % cost
 		_affordable = false
 	else:
-		_cast.text = "Cast  [%d]" % number
+		_cast.text = _ready_text()
 	_update_cast()
 	if view.has("misfire"):
 		_preview.text = "Misfire: %s" % view.misfire.reason
@@ -152,6 +167,10 @@ func _show_program(view: Dictionary) -> void:
 	_preview.text = " · ".join(parts)
 	if not first.is_empty():
 		_preview.add_theme_color_override("font_color", UiTheme.WARN)
+
+
+func _ready_text() -> String:
+	return run_label if run_label != "" else "Cast  [%d]" % number
 
 
 func set_busy(busy: bool) -> void:

@@ -7,7 +7,7 @@ game runs with none of it (`Art.texture` returns null, a character without a mod
 
 | What | Source of truth | Command | Writes |
 |---|---|---|---|
-| Pictures (arenas, foes, relic icons, map pieces) | `art/manifest.json` (a style + a prompt each) | `scripts/art.sh --only '<ids>'` | `game/assets/<out>.png` |
+| Pictures (arenas, foes, relic icons, map pieces, the card frame and back, skin portraits) | `art/manifest.json` (a style + a prompt each; `init` starts from a layout sketch or an image) | `scripts/art.sh --only '<ids>'` | `game/assets/<out>.png` (the card frame also writes `cards/frame.json`, its geometry) |
 | Music, cues, sounds | `audio/manifest.json` | `scripts/audio.sh --only '<ids>'` | `game/assets/audio/<id>.ogg`, loop points in `music.json` |
 | Characters | `characters/<id>/model.json`, `animation.json`, concept art, and the rigged `.blend` | `scripts/character.sh <id>` | `game/characters/<id>/<id>.glb`, screenshots in `shots/` |
 

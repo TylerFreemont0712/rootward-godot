@@ -159,6 +159,9 @@ static func _cast(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			ShardrunBattle.draw(next, next.battle, int(effect.draw), catalog)
 			var text := "A %d-card cast draws %d more." % [played, effect.draw]
 			Shardrun.record(next, {"kind": "note", "amount": effect.draw, "text": text})
+	# A program run's turn is its Program (ADR-0012): once it has run, the foes answer and the next turn begins.
+	if next.playstyle == "program" and next.status == "battle" and next.has("battle"):
+		return _end_turn(next, catalog)
 	return {}
 
 

@@ -2,6 +2,22 @@
   "comfy_url": "http://127.0.0.1:8188",
   "styles": {
     "puppet": {"checkpoint":"","prefix":"","negative":"","width":1536,"height":1536,"steps":0,"cfg":0,"sampler":"euler","scheduler":"normal","rmbg":false,"candidates":1,"post":{"kind":"pose-strip","colors":30,"keep_fraction":0.05}},
+    "card": {
+      "checkpoint": "novaAnimeXL_ilV190.safetensors",
+      "prefix": "masterpiece, best quality, game ui asset, ",
+      "suffix": ", flat front view, symmetrical, centered, highly detailed ornament, no text",
+      "negative": "worst quality, low quality, blurry, text, letters, words, numbers, runes, watermark, signature, logo, person, character, face, creature, animal, hands, scenery, landscape, perspective, tilted, 3d room, table, photo",
+      "width": 832, "height": 1152, "steps": 30, "cfg": 6, "sampler": "euler_ancestral", "scheduler": "normal", "rmbg": false, "candidates": 4,
+      "post": {"kind": "card", "size": [480, 664]}
+    },
+    "hero-portrait": {
+      "checkpoint": "novaAnimeXL_ilV190.safetensors",
+      "prefix": "masterpiece, best quality, very aesthetic, absurdres, highly detailed anime illustration, ",
+      "suffix": ", upper body portrait, looking at viewer, detailed eyes, detailed hair, soft rim light, beautiful lighting",
+      "negative": "worst quality, low quality, blurry, text, watermark, signature, logo, chibi, deformed, bad anatomy, bad hands, extra fingers, multiple views, cropped head, 2girls, multiple girls, nsfw, cleavage",
+      "width": 1024, "height": 1024, "steps": 32, "cfg": 5.5, "sampler": "euler_ancestral", "scheduler": "normal", "rmbg": false, "candidates": 4,
+      "post": {"kind": "art", "size": [512, 512], "focus_y": 0.2}
+    },
     "chamber": {
       "checkpoint": "novaAnimeXL_ilV190.safetensors",
       "prefix": "masterpiece, best quality, scenery, no humans, ",
@@ -467,6 +483,10 @@
     {"id":"shardrun-relic-blood-contract","out":"shardrun/relic-blood-contract","seed":1553,"prompt":"(single object:1.3), game item icon, curled parchment bound by a red thread ending in a bright droplet, centered","style":"prop-fast","candidates":1,"post":{"size":[32,32],"anchor":"center","colors":20,"saturation":1.05}},
     {"id":"shardrun-relic-memory-toll","out":"shardrun/relic-memory-toll","seed":1554,"prompt":"(single object:1.3), game item icon, narrow iron gate collecting a small blue spark in its teeth, centered","style":"prop-fast","candidates":1,"post":{"size":[32,32],"anchor":"center","colors":20,"saturation":1.05}},
     {"id":"shardrun-relic-ember-infection","out":"shardrun/relic-ember-infection","seed":1555,"prompt":"(single object:1.3), game item icon, black seed with tiny red embers growing through its shell, centered","style":"prop-fast","candidates":1,"post":{"size":[32,32],"anchor":"center","colors":20,"saturation":1.05}},
-    {"id":"battle-prism-etcher-rig","out":"battle/prism-etcher","style":"puppet","prompt":"the Prism Etcher, drawn by scripts/art/puppet.py from the prism-rig pose flow","draw":{"sheet":"prism-rig"},"post":{"size":[152,144],"rows":4,"columns":5,"strips":[{"out":"battle/cast-prism-etcher","frames":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},{"out":"battle/prism-etcher","frames":[0,5,8,11,16,17,18,19]}],"idle":{"out":"battle/prism-etcher-idle","from":0,"drops":[0,1,2,2,1,0],"waist":0.76}}}
+    {"id":"battle-prism-etcher-rig","out":"battle/prism-etcher","style":"puppet","prompt":"the Prism Etcher, drawn by scripts/art/puppet.py from the prism-rig pose flow","draw":{"sheet":"prism-rig"},"post":{"size":[152,144],"rows":4,"columns":5,"strips":[{"out":"battle/cast-prism-etcher","frames":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]},{"out":"battle/prism-etcher","frames":[0,5,8,11,16,17,18,19]}],"idle":{"out":"battle/prism-etcher-idle","from":0,"drops":[0,1,2,2,1,0],"waist":0.76}}},
+    {"id": "card-frame", "out": "cards/frame", "style": "card", "seed": 6111, "prompt": "ornate fantasy trading card frame, empty card template, (intricate polished gold filigree border:1.3) with curling scrollwork and small jewels at the corners, (dark grey steel body covered in fine engraved arcane runes and circuit lines:1.2), embossed silver ribbon banner across the top, round faceted violet crystal gem set in a gold bezel in the top left corner, empty black window in the middle with a gold rim, small engraved plate below the window, engraved ornamental panel at the bottom, rich metallic detail", "init": {"layout": "card-frame", "denoise": 0.7}, "pick": 1, "post": {"kind": "card", "size": [480, 664], "card": "frame"}},
+    {"id": "card-back", "out": "cards/back", "style": "card", "seed": 6201, "prompt": "ornate fantasy trading card back, gold filigree border, dark grey steel with engraved arcane circuit patterns, a glowing violet crystal diamond emblem in the center, radiating engraved lines, symmetrical design", "init": {"layout": "card-back", "denoise": 0.62}, "post": {"kind": "card", "size": [320, 443], "card": "back"}, "pick": 3},
+    {"id": "portrait-vesper", "out": "portraits/vesper", "style": "hero-portrait", "seed": 6301, "prompt": "1girl, solo, young witch, (purple bob hair:1.3) with blunt bangs, big amber eyes, gentle smile, (navy blue witch hat:1.2) with a gold band and a gold crescent moon charm, (dark indigo capelet:1.2) with gold trim and a small blue gem brooch with a black ribbon, teal dress, brown belt, holding nothing, starry night sky background with soft violet nebula", "pick": 3},
+    {"id": "portrait-emberfox", "out": "portraits/emberfox", "style": "hero-portrait", "seed": 6401, "prompt": "1girl, solo, fox girl, (orange fox ears:1.2) with white inner fur, (bright orange bob hair:1.3) with blunt bangs and one ahoge, amber eyes, confident smile, teal green cropped jacket with navy sailor collar and orange piping, red neck ribbon, white shirt, fluffy orange fox tail, warm ember glow background with floating sparks", "pick": 1}
   ]
 }

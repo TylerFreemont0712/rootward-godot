@@ -36,7 +36,7 @@ func _build() -> void:
 	look.shadow_size = 10
 	add_theme_stylebox_override("panel", look)
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
-	custom_minimum_size.x = 600
+	custom_minimum_size.x = 720
 	_title = Ui.tint(Ui.label("PROGRAM", "Subheading"), colour) as Label
 	var school := Ui.label(String(paradigm.get("name", "")).to_upper(), "Faint")
 	_speed = Ui.tint(Ui.label("", "Subheading"), colour.lightened(0.25)) as Label

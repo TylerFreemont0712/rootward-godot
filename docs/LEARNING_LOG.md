@@ -190,3 +190,24 @@ spread over what is left, in the same proportions, without removing it from the 
 The screen test set the code speed to "off" and then booted the game, which loaded the player's saved options over it,
 so every cast played its code in real time and the test took minutes. Setting options after boot made it seconds.
 The order of setup matters whenever setup loads state.
+
+## Draw the layout, let the model paint, cut with your own lines (`pipeline/art/layouts.py`, ADR-0013)
+A diffusion model will not put a card's window where the game needs it. So the layout is drawn first in flat shapes,
+the render starts from it (img2img) and only dresses it, and the finished picture is cut with a mask drawn from the
+very same numbers. The numbers are written beside the picture for the game to read, so art and code cannot disagree.
+Wherever the game writes text, the post-process repaints the area smooth, because a model told "no text" still writes.
+
+## Tint by saturation (`game/ui/card_tint.gdshader`)
+One frame serves every paradigm: in the shader, a pixel's saturation (max minus min of its channels, over max) says
+whether it is grey steel or gold. Grey takes the paradigm's colour at its own brightness; gold and the violet crystal
+stay as painted.
+
+## Escaping a clipped parent (`game/scenes/shardrun/card_face.gd`)
+A card's details must show over the whole screen, but the card sits in a table that clips its contents. A child with
+`top_level = true` is placed in the canvas's own coordinates and drawn outside its parents' clipping, and it is still
+freed with the card; `get_global_transform() * Rect2(...)` gives where the (lifted, grown) card really is on screen.
+
+## A missing meta with a null default is still an error (`game/scenes/shardrun/fight/hand_view.gd`)
+`get_meta(name, null)` reports an error when the key is missing, because Godot reads a null default as "no default";
+ask `has_meta` first.
+

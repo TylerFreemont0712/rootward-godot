@@ -9,8 +9,6 @@ signal wants(command: Dictionary)
 ## A spell was clicked: its cards are the ones a click plays into, and its code is the one to read.
 signal targeted(spell_id: String)
 
-const DEAL_STAGGER := 0.06
-
 var session: ShardrunSession
 ## SpellCards by spell id, shared with FightView (which shows their previews and wires Cast).
 var cards: Dictionary = {}
@@ -20,7 +18,7 @@ var _table: Dictionary = {}
 var _turn := -1
 var _spell_row: HBoxContainer
 var _slots: Dictionary = {}
-var _hand: HBoxContainer
+var _hand: HandView
 var _hold: HBoxContainer
 var _draw_count: Label
 var _discard_count: Label
@@ -41,11 +39,12 @@ func _build() -> void:
 	for index in (session.state.spells as Array).size():
 		var spell: Dictionary = session.state.spells[index]
 		var card := SpellCard.create(index + 1, spell, session.catalog)
-		card.size_flags_horizontal = (
-			Control.SIZE_EXPAND_FILL if (session.state.spells as Array).size() > 1 else Control.SIZE_SHRINK_BEGIN
-		)
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if (session.state.spells as Array).size() == 1:
-			card.custom_minimum_size.x = 760
+			# One spell (a program run's Program): its cards on the left, what it will do and its run button beside them.
+			card.side_by_side()
+		if session.state.get("playstyle") == "program":
+			card.run_label = "▶  python program.py" if session.state.language == "python" else "▶  node program.js"
 		card.gui_input.connect(_on_spell_input.bind(spell.id))
 		var slots := Ui.hbox([], 6)
 		card.set_slots(slots)
@@ -53,31 +52,27 @@ func _build() -> void:
 		cards[spell.id] = card
 		_spell_row.add_child(card)
 	add_child(_spell_row)
-	_draw_count = Ui.label("", "Faint")
-	_discard_count = Ui.label("", "Faint")
-	_hand = Ui.hbox([], 8)
-	_hand.alignment = BoxContainer.ALIGNMENT_CENTER
-	_hand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_hold = Ui.hbox([], 6)
-	var hand_zone := _DropZone.new()
-	hand_zone.dropped = func(from: Dictionary) -> void:
-		_move(from, {"zone": "hand", "index": (_table.hand as Array).size()})
-	hand_zone.add_child(_hand)
-	hand_zone.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hand_zone.custom_minimum_size.y = CardFace.SIZES[CardFace.Size.HAND].y + 10
-	var draw := _pile("Draw", _draw_count)
-	var discard := _pile("Discard", _discard_count)
-	var hold := Ui.vbox([Ui.label("HOLD", "Faint"), _hold], 4)
-	add_child(Ui.hbox([draw, hand_zone, hold, discard], 12))
 	_hint = Ui.label("", "Faint")
 	_hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_hint.clip_text = true
 	add_child(_hint)
+	_draw_count = Ui.label("", "Faint")
+	_discard_count = Ui.label("", "Faint")
+	_hand = HandView.new()
+	_hand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_hand.dropped = func(from: Dictionary) -> void:
+		_move(from, {"zone": "hand", "index": (_table.hand as Array).size()})
+	_hold = Ui.hbox([], 6)
+	var draw := _pile("Draw", _draw_count)
+	var discard := _pile("Discard", _discard_count)
+	var hold := Ui.vbox([Ui.label("HOLD", "Faint"), _hold], 4)
+	hold.size_flags_vertical = Control.SIZE_SHRINK_END
+	add_child(Ui.hbox([draw, _hand, hold, discard], 12))
 
 
 func _pile(title: String, count: Label) -> Control:
 	var back := Button.new()
-	back.custom_minimum_size = Vector2(80, 108)
+	back.custom_minimum_size = Vector2(84, 116)
 	back.add_theme_stylebox_override(
 		"normal", UiTheme.box(Color("#2c1f3a"), UiTheme.SHARD.darkened(0.3), 2, 10, Vector2(6, 6))
 	)
@@ -85,17 +80,20 @@ func _pile(title: String, count: Label) -> Control:
 	back.tooltip_text = "Open %s pile" % title.to_lower()
 	back.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	back.pressed.connect(_open_pile.bind(title.to_lower()))
-	var emblem := Ui.picture("brand/shardrun", Vector2(48, 48), "◆")
-	emblem.position = Vector2(16, 16)
-	emblem.size = Vector2(48, 48)
-	emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	back.add_child(emblem)
-	var open_label := Ui.label("OPEN", "Faint")
-	open_label.position = Vector2(20, 78)
-	open_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	back.add_child(open_label)
+	# The pile is a card lying face down: the painted card back, or the emblem when there is none.
+	var art := Art.texture("cards/back")
+	var face := Ui.picture(
+		"cards/back" if art != null else "brand/shardrun", Vector2(84, 116) if art != null else Vector2(48, 48), "◆"
+	)
+	face.position = Vector2.ZERO if art != null else Vector2(18, 20)
+	face.size = Vector2(84, 116) if art != null else Vector2(48, 48)
+	face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	back.add_child(face)
+	if art != null:
+		back.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
+		back.add_theme_stylebox_override("hover", UiTheme.box(Color(1, 1, 1, 0.08), UiTheme.SHARD, 2, 10))
 	var column := Ui.vbox([Ui.label(title.to_upper(), "Faint"), back, count], 4)
-	column.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	column.size_flags_vertical = Control.SIZE_SHRINK_END
 	return column
 
 
@@ -172,23 +170,11 @@ func show_table(state: Dictionary) -> void:
 		(cards[spell.id] as SpellCard).set_targeted(spell.id == target)
 	var deal := int(battle.turn) != _turn
 	_turn = int(battle.turn)
-	Ui.clear(_hand)
+	var faces: Array[CardFace] = []
 	var hand: Array = _table.hand
 	for index in hand.size():
-		var holder := Control.new()
-		holder.custom_minimum_size = CardFace.SIZES[CardFace.Size.HAND]
-		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		var face := _card(hand[index], {"zone": "hand", "index": index}, CardFace.Size.HAND, summaries)
-		holder.add_child(face)
-		# The holder is a plain Control (so a card can rise and tilt inside it); it takes the card's real size.
-		holder.custom_minimum_size = face.get_combined_minimum_size()
-		face.mouse_entered.connect(_lift.bind(face, -14.0))
-		face.mouse_exited.connect(_lift.bind(face, 0.0))
-		_hand.add_child(holder)
-		if deal:
-			_deal(face, index)
-		elif _changed(before, {"zone": "hand", "index": index}, hand[index]):
-			_settle(face)
+		faces.append(_card(hand[index], {"zone": "hand", "index": index}, CardFace.Size.HAND, summaries))
+	_hand.hold(faces, deal)
 	Ui.clear(_hold)
 	for index in int(_table.hold_limit):
 		var at := {"zone": "hold", "index": index}
@@ -217,6 +203,8 @@ func _hint_text() -> String:
 	if (_table.hand as Array).is_empty():
 		return "Your hand is empty. Cast what you built, or end the turn to draw a new hand."
 	var spell := _spell(target)
+	if spell.is_empty() and session.state.get("playstyle") == "program":
+		return "Your Program is full: run it, or end the turn. Right-click a card to hold it for next turn."
 	if spell.is_empty():
 		return "Your spell is full or spent: cast it, or end the turn. Right-click a card to hold it for next turn."
 	return (
@@ -233,31 +221,6 @@ func _spell(id: String) -> Dictionary:
 		if spell.id == id:
 			return spell
 	return {}
-
-
-## A new hand is dealt: each card rises from below with a turn, one after another.
-func _deal(face: CardFace, index: int) -> void:
-	face.position = Vector2(-60, 120)
-	face.rotation_degrees = -10.0
-	face.modulate = Color(1, 1, 1, 0)
-	face.pivot_offset = CardFace.SIZES[CardFace.Size.HAND] * 0.5
-	var tween := face.create_tween().set_parallel().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	var delay := index * DEAL_STAGGER
-	tween.tween_property(face, "position", Vector2.ZERO, 0.34).set_delay(delay)
-	tween.tween_property(face, "rotation_degrees", 0.0, 0.34).set_delay(delay)
-	tween.tween_property(face, "modulate", Color.WHITE, 0.18).set_delay(delay)
-	if index == 0:
-		Sound.play("sfx-card", 0.5)
-
-
-func _lift(face: CardFace, height: float) -> void:
-	if not is_instance_valid(face):
-		return
-	face.pivot_offset = face.size * 0.5
-	var tween := face.create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(face, "position:y", height, 0.16)
-	tween.tween_property(face, "rotation_degrees", -2.5 if height < 0.0 else 0.0, 0.16)
-	tween.tween_property(face, "scale", Vector2.ONE * (1.045 if height < 0.0 else 1.0), 0.16)
 
 
 ## Newly played or reordered cards snap into the table with a short, readable landing beat.
@@ -327,19 +290,3 @@ func _on_spell_input(event: InputEvent, spell_id: String) -> void:
 
 func set_busy(value: bool) -> void:
 	busy = value
-
-
-## Anything dropped here that is a card goes to the end of the hand.
-class _DropZone:
-	extends PanelContainer
-
-	var dropped: Callable
-
-	func _init() -> void:
-		add_theme_stylebox_override("panel", UiTheme.box(Color(0, 0, 0, 0.18), Color(0, 0, 0, 0), 0, 12, Vector2(8, 6)))
-
-	func _can_drop_data(_at: Vector2, data: Variant) -> bool:
-		return data is Dictionary and (data as Dictionary).has("card_spot")
-
-	func _drop_data(_at: Vector2, data: Variant) -> void:
-		dropped.call((data as Dictionary).card_spot)

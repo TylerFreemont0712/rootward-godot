@@ -231,7 +231,97 @@ def chamber(name: str, width: int, height: int) -> Image.Image:
     return Image.blend(image, Image.fromarray(np.repeat(grain, 3, axis=2), "RGB"), 0.06)
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Cards (the program Shardrun's card frame and card back)
+#
+# A model asked for "a card frame" paints a lovely frame with its window anywhere. The sketch fixes the geometry
+# instead, the render only dresses it in metal and filigree, and `card_mask` then cuts the art window and the outside
+# away along the very same lines, so the game can draw a card's art behind the frame and its name on the banner. The
+# game reads the same numbers from `CARD` (written beside the frame as frame.json).
+
+CARD: dict[str, list[float]] = {
+    # Every box is [left, top, right, bottom] as shares of the card's width and height; the orb is [x, y, radius (of
+    # the width)].
+    "art": [0.075, 0.108, 0.925, 0.635],
+    "banner": [0.14, 0.052, 0.94, 0.132],
+    "orb": [0.13, 0.088, 0.105],
+    "plate": [0.2, 0.655, 0.8, 0.715],
+    "lower": [0.1, 0.74, 0.9, 0.95],
+    "radius": [0.07],
+}
+
+
+def _box(name: str, width: int, height: int) -> tuple[float, float, float, float]:
+    left, top, right, bottom = CARD[name]
+    return (left * width, top * height, right * width, bottom * height)
+
+
+def _banner(draw: ImageDraw.ImageDraw, width: int, height: int, fill: Color, edge: Color) -> None:
+    left, top, right, bottom = _box("banner", width, height)
+    notch = (bottom - top) * 0.5
+    points = [(left - notch, top), (right + notch * 0.2, top), (right - notch * 0.6, (top + bottom) / 2),
+              (right + notch * 0.2, bottom), (left - notch, bottom), (left - notch * 0.2, (top + bottom) / 2)]
+    draw.polygon(points, fill=fill, outline=edge, width=max(2, width // 160))
+
+
+def card(kind: str, width: int, height: int) -> Image.Image:
+    """The frame (or the back) in broad flat shapes: a neutral steel body the game tints with a paradigm's colour, a gold
+    border, a dark window, a ribbon banner, a violet mana orb, a plate for the speed, and an engraved lower panel."""
+    gold, gold_dark, steel, steel_dark = hex_color("#c49a45"), hex_color("#6e5324"), hex_color("#4a4d58"), hex_color("#23252d")
+    image = Image.new("RGB", (width, height), hex_color("#1a1a1f"))
+    draw = ImageDraw.Draw(image)
+    radius = CARD["radius"][0] * width
+    inset = width * 0.022
+    draw.rounded_rectangle((0, 0, width - 1, height - 1), radius, fill=gold_dark)
+    draw.rounded_rectangle((inset, inset, width - inset, height - inset), radius * 0.8, fill=gold)
+    band = width * 0.05
+    draw.rounded_rectangle((band, band, width - band, height - band), radius * 0.6, fill=steel)
+    for step in range(40):
+        # A soft vertical gradient on the body: lighter at the top, like light from above.
+        t = step / 40
+        y = band + (height - band * 2) * t
+        draw.rectangle((band + 4, y, width - band - 4, y + height / 40 + 1), fill=mix(steel, steel_dark, t))
+    if kind == "back":
+        cx, cy = width / 2, height / 2
+        draw.rounded_rectangle((band * 2, band * 2, width - band * 2, height - band * 2), radius * 0.5, outline=gold, width=max(3, width // 90))
+        for r, color in ((0.3, gold_dark), (0.26, gold), (0.2, hex_color("#2a1d4a")), (0.12, hex_color("#b48cff"))):
+            rr = r * width
+            draw.polygon([(cx, cy - rr * 1.5), (cx + rr, cy), (cx, cy + rr * 1.5), (cx - rr, cy)], fill=color)
+        return image.filter(ImageFilter.GaussianBlur(radius=width * 0.003))
+    left, top, right, bottom = _box("art", width, height)
+    rim = width * 0.012
+    draw.rounded_rectangle((left - rim, top - rim, right + rim, bottom + rim), width * 0.03, fill=gold)
+    draw.rounded_rectangle((left, top, right, bottom), width * 0.025, fill=hex_color("#0c0d12"))
+    draw.rounded_rectangle(_box("plate", width, height), width * 0.03, fill=steel_dark, outline=gold, width=max(3, width // 120))
+    draw.rounded_rectangle(_box("lower", width, height), width * 0.04, outline=gold_dark, width=max(2, width // 200))
+    _banner(draw, width, height, hex_color("#8a8d98"), gold)
+    x, y, r = CARD["orb"][0] * width, CARD["orb"][1] * height, CARD["orb"][2] * width
+    draw.ellipse((x - r * 1.18, y - r * 1.18, x + r * 1.18, y + r * 1.18), fill=gold_dark)
+    draw.ellipse((x - r * 1.08, y - r * 1.08, x + r * 1.08, y + r * 1.08), fill=gold)
+    draw.ellipse((x - r, y - r, x + r, y + r), fill=hex_color("#3a2466"))
+    draw.ellipse((x - r * 0.7, y - r * 0.8, x + r * 0.4, y - r * 0.1), fill=hex_color("#8b6ad0"))
+    return image.filter(ImageFilter.GaussianBlur(radius=width * 0.002))
+
+
+def card_mask(kind: str, width: int, height: int) -> Image.Image:
+    """Where the card is opaque: its rounded shape, less the art window (the banner and the orb stay, over the window's
+    edge). Drawn four times larger and shrunk, so the edges are smooth."""
+    scale = 4
+    w, h = width * scale, height * scale
+    mask = Image.new("L", (w, h), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle((0, 0, w - 1, h - 1), CARD["radius"][0] * w, fill=255)
+    if kind == "frame":
+        draw.rounded_rectangle(_box("art", w, h), w * 0.025, fill=0)
+        _banner(draw, w, h, 255, 255)
+        x, y, r = CARD["orb"][0] * w, CARD["orb"][1] * h, CARD["orb"][2] * w * 1.18
+        draw.ellipse((x - r, y - r, x + r, y + r), fill=255)
+    return mask.resize((width, height), Image.Resampling.LANCZOS)
+
+
 def sheet(name: str, width: int, height: int) -> Image.Image:
+    if name in ("card-frame", "card-back"):
+        return card(name.removeprefix("card-"), width, height)
     if name.startswith("chamber-") and name.removeprefix("chamber-") in CHAMBERS:
         return chamber(name.removeprefix("chamber-"), width, height)
     if name not in ARENAS:

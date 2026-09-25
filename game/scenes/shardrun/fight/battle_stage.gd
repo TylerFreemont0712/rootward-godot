@@ -28,6 +28,8 @@ var fast := false:
 var hero: HeroView
 var foes: Dictionary = {}
 var _world: Control
+## A guardian's name and health, in a wide bar across the top middle of the arena (boss fights only).
+var _boss_bar: Control
 var _backdrop: TextureRect
 var _grade: _Grade
 var _shadows: _Shadows
@@ -74,15 +76,22 @@ func set_backdrop(id: String) -> void:
 
 
 ## Replaces the foes with these (a new fight), each fading in.
-func set_foes(foe_states: Array, catalog: Dictionary, entrance := false) -> void:
+## `boss`: the first foe is a guardian, its health shown in the bar at the top instead of under its feet.
+func set_foes(foe_states: Array, catalog: Dictionary, entrance := false, boss := false) -> void:
 	for view: FoeView in foes.values():
 		view.queue_free()
 	foes.clear()
+	if _boss_bar != null:
+		_boss_bar.queue_free()
+		_boss_bar = null
 	var delay := 0.0
 	for foe: Dictionary in foe_states:
 		var view := FoeView.create(foe, catalog)
 		_world.add_child(view)
 		foes[foe.uid] = view
+		if boss and _boss_bar == null:
+			_boss_bar = view.take_card()
+			add_child(_boss_bar)
 		if entrance and not fast:
 			view.enter(delay)
 			delay += 0.18
@@ -110,6 +119,9 @@ func _layout() -> void:
 	hero.size = Vector2(hero_height * 0.75, hero_height)
 	hero.position = Vector2(size.x * HERO_X, floor_y - hero_height)
 	var feet: Array[Vector3] = [Vector3(hero.position.x + hero.size.x * 0.5, floor_y, hero_height * 0.2)]
+	if _boss_bar != null:
+		_boss_bar.size = _boss_bar.get_combined_minimum_size()
+		_boss_bar.position = Vector2((size.x - _boss_bar.size.x) * 0.5, 14.0)
 	var count := foes.size()
 	var index := 0
 	for view: FoeView in foes.values():

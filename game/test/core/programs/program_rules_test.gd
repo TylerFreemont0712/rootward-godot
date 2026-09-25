@@ -112,27 +112,27 @@ func test_the_draft_offers_paradigms_then_packs_from_the_seed() -> void:
 func test_a_slow_program_lets_faster_foes_act_first_and_only_once() -> void:
 	var state := _fight()
 	# 40 linear work: the imp (16) is faster, the golem (256) is not.
-	var cast := _cast(
-		state, ["salvo"], [{"power": 4, "element": "none"}], [{"shard": "salvo", "given": 1, "returned": 40}]
-	)
+	var work := [{"shard": "salvo", "given": 1, "returned": 40}]
+	var cast := _cast(state, ["salvo"], [{"power": 4, "element": "none"}], work)
 	var kinds := _kinds(cast)
 	assert_int(kinds.find("tempo")).is_less(kinds.find("cast"))
-	assert_int(cast.integrity).is_equal(int(state.integrity) - 5)
-	assert_array(cast.battle.acted).is_equal(["f-race-condition-imp"])
-	var ended := _step(cast, {"type": "end-turn"})
-	# The golem strikes at the end of the turn; the imp does not strike again.
-	assert_int(ended.integrity).is_equal(int(state.integrity) - 10)
-	assert_array(ended.battle.acted).is_empty()
+	# The cast ends the turn: the golem strikes after the bolts land, the imp does not strike again.
+	assert_int(kinds.rfind("enemy")).is_greater(kinds.find("cast"))
+	assert_int(kinds.count("enemy")).is_equal(2)
+	assert_int(cast.integrity).is_equal(int(state.integrity) - 10)
+	assert_bool(kinds.has("turn")).is_true()
+	assert_int(cast.battle.turn).is_equal(int(state.battle.turn) + 1)
+	assert_array(cast.battle.acted).is_empty()
 
 
 func test_a_fast_program_lands_before_anyone_moves() -> void:
 	var state := _fight()
-	var cast := _cast(
-		state, ["salvo"], [{"power": 20, "element": "none"}], [{"shard": "salvo", "given": 1, "returned": 6}]
-	)
+	var work := [{"shard": "salvo", "given": 1, "returned": 6}]
+	var cast := _cast(state, ["salvo"], [{"power": 20, "element": "none"}], work)
 	assert_bool(_kinds(cast).has("tempo")).is_false()
-	assert_int(cast.integrity).is_equal(int(state.integrity))
+	# The imp falls before it can act; only the golem strikes when the turn ends.
 	assert_int(cast.battle.foes[0].hp).is_equal(0)
+	assert_int(cast.integrity).is_equal(int(state.integrity) - 5)
 
 
 func test_a_program_over_budget_times_out() -> void:
@@ -155,7 +155,9 @@ func test_bolts_fly_where_they_are_aimed_and_overkill_is_wasted() -> void:
 	var cast := _cast(state, ["round-robin"], bolts, [{"shard": "round-robin", "given": 4, "returned": 4}])
 	assert_int(cast.battle.foes[0].hp).is_equal(0)
 	assert_int(cast.battle.foes[1].hp).is_equal(20)
-	assert_int(cast.battle.block).is_equal(4)
+	# The ward's 4 block takes the golem's end-of-turn strike.
+	var strikes := (cast.log as Array).filter(func(entry: Dictionary) -> bool: return entry.kind == "enemy")
+	assert_int(int(strikes[0].get("blocked", 0))).is_equal(4)
 	var kinds := _kinds(cast)
 	assert_bool(kinds.has("wasted")).is_true()
 	assert_int(cast.stats.damage).is_equal(30)

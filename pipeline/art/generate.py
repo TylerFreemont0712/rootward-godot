@@ -205,8 +205,26 @@ def pose_sheet(job: dict) -> Image.Image | None:
 
 
 def layout_sketch(job: dict) -> Image.Image | None:
+    """The picture an img2img render starts from: a layout sketch by name, or an image file (a skin's own drawing, say),
+    covered to the render's size."""
     init = job.get("init")
-    return layouts.sheet(init["layout"], job["width"], job["height"]) if init else None
+    if not init:
+        return None
+    if "image" in init:
+        source = Image.open(ROOT / init["image"]).convert("RGBA")
+        flat = Image.new("RGBA", source.size, init.get("matte", "#ffffff"))
+        flat.alpha_composite(source)
+        return cover(flat.convert("RGB"), job["width"], job["height"], init.get("focus_y", 0.5))
+    return layouts.sheet(init["layout"], job["width"], job["height"])
+
+
+def cover(image: Image.Image, width: int, height: int, focus_y: float = 0.5) -> Image.Image:
+    """Scaled to cover width x height and cropped, around `focus_y` of its height."""
+    scale = max(width / image.width, height / image.height)
+    scaled = image.resize((round(image.width * scale), round(image.height * scale)), Image.Resampling.LANCZOS)
+    x0 = (scaled.width - width) // 2
+    y0 = round((scaled.height - height) * focus_y)
+    return scaled.crop((x0, y0, x0 + width, y0 + height))
 
 
 def upload_image(comfy: str, image: Image.Image, name: str) -> str:
@@ -512,6 +530,49 @@ def post_picture(rgba: np.ndarray, post: dict) -> Image.Image:
     return Image.fromarray(rgba_u8, "RGBA")
 
 
+def post_art(rgba: np.ndarray, post: dict) -> Image.Image:
+    """Painted pictures kept as painted (a battle portrait): cover-cropped to `size` around `focus_y`, colours adjusted,
+    and no palette, unlike the pixel art above."""
+    image = Image.fromarray(np.round(rgba[..., :3] * 255).astype(np.uint8), "RGB")
+    width, height = post["size"]
+    small = cover(image, width, height, post.get("focus_y", 0.5))
+    rgb = adjust(np.asarray(small, dtype=np.float32) / 255, post)
+    return Image.fromarray(np.round(rgb * 255).clip(0, 255).astype(np.uint8), "RGB")
+
+
+def post_card(rgba: np.ndarray, post: dict) -> Image.Image:
+    """A card frame or back: the render at `size`, its alpha the layout's own mask (layouts.card_mask), so the window
+    and the edges fall exactly where the game expects them whatever the render painted there."""
+    width, height = post["size"]
+    image = Image.fromarray(np.round(rgba[..., :3] * 255).astype(np.uint8), "RGB").resize((width, height), Image.Resampling.LANCZOS)
+    rgb = adjust(np.asarray(image, dtype=np.float32) / 255, post)
+    if post["card"] == "frame":
+        for region in ("banner", "plate"):
+            clean_text_area(rgb, layouts._box(region, width, height))
+    out = Image.fromarray(np.round(rgb * 255).clip(0, 255).astype(np.uint8), "RGB").convert("RGBA")
+    out.putalpha(layouts.card_mask(post["card"], width, height))
+    return out
+
+
+def clean_text_area(rgb: np.ndarray, box: tuple[float, float, float, float]) -> None:
+    """Where the game writes (a card's name on the banner, its speed on the plate), whatever the render drew inside --
+    ornaments, or letters it was told not to write -- is replaced by a smooth gradient of the area's own colours,
+    top to bottom, and blended in at the edges so the painted rim stays."""
+    left, top, right, bottom = box
+    inset_x, inset_y = (right - left) * 0.04, (bottom - top) * 0.05
+    x0, x1, y0, y1 = round(left + inset_x), round(right - inset_x), round(top + inset_y), round(bottom - inset_y)
+    if x1 <= x0 or y1 <= y0:
+        return
+    area = rgb[y0:y1, x0:x1]
+    rows = np.median(area, axis=1)
+    # A smooth vertical ramp through the area's darkest-leaning row colours, a little darker, so text reads on it.
+    ramp = np.linspace(rows[: max(1, len(rows) // 3)].mean(axis=0), rows[-max(1, len(rows) // 3) :].mean(axis=0), y1 - y0) * 0.8
+    fill = np.repeat(ramp[:, None, :], x1 - x0, axis=1)
+    fade = np.minimum.outer(np.minimum(np.arange(y1 - y0), np.arange(y1 - y0)[::-1]), np.minimum(np.arange(x1 - x0), np.arange(x1 - x0)[::-1]))
+    weight = np.clip(fade / 2.0, 0, 1)[..., None]
+    rgb[y0:y1, x0:x1] = area * (1 - weight) + fill * weight
+
+
 def sheet_figures(rgba: np.ndarray, min_fraction: float) -> list[np.ndarray]:
     """The separate figures on a character sheet, top row first and left to right, each cropped with its alpha. Figures
     drawn in one render share one design, which separate renders of "the same character" never quite do."""
@@ -809,6 +870,10 @@ def process(job: dict, raw: np.ndarray) -> list[tuple[str, Image.Image]]:
         return [(f"{job['out']}-{i}", image) for i, image in enumerate(variants)]
     if kind == "picture":
         return with_copies([(job["out"], mirrored(post_picture(raw, post), post))], post)
+    if kind == "art":
+        return [(job["out"], mirrored(post_art(raw, post), post))]
+    if kind == "card":
+        return [(job["out"], post_card(raw, post))]
     if kind == "walk-cycle":
         return post_walk_cycle(sheet_alpha(raw, post), post, job)
     if kind == "walk-sheet":
@@ -892,6 +957,9 @@ def main() -> None:
                 target.parent.mkdir(parents=True, exist_ok=True)
                 image.save(target, optimize=True)
                 print(f"  wrote {target.relative_to(ROOT)} ({image.width}x{image.height})")
+            if job["post"]["kind"] == "card" and job["post"]["card"] == "frame":
+                # The frame's geometry, for the game to put a card's art, name and cost where the frame has room.
+                (OUT_DIR / f"{job['out']}.json").write_text(json.dumps(layouts.CARD, indent=1) + "\n")
     if args.sheet and sheet_entries:
         contact_sheet(sheet_entries, args.sheet)
         print(f"  sheet {args.sheet}")

@@ -92,6 +92,27 @@ func show_foe(foe_state: Dictionary) -> void:
 		_tags.add_child(_tag("stoked", UiTheme.ELEMENTS.fire, "Its next strike hits twice as hard."))
 
 
+## Hands its card over to be shown as a guardian's health bar at the top of the arena: wider, with a thicker bar, the
+## name larger and centred. The card keeps showing this foe's numbers wherever it is.
+func take_card() -> Control:
+	remove_child(_card)
+	_card.custom_minimum_size.x = 640
+	_bar.custom_minimum_size = Vector2(560, 18)
+	_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name.theme_type_variation = "Heading"
+	_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# The name alone takes the row's width, so it centres over the bar (the spacer beside it steps aside).
+	(_name.get_parent().get_child(1) as Control).visible = false
+	_tags.alignment = FlowContainer.ALIGNMENT_CENTER
+	var look := UiTheme.box(Color(0.06, 0.04, 0.05, 0.86), UiTheme.FAIL.darkened(0.3), 2, 10, Vector2(18, 10))
+	look.shadow_color = Color(UiTheme.FAIL, 0.2)
+	look.shadow_size = 10
+	_card.add_theme_stylebox_override("panel", look)
+	_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return _card
+
+
 func _tag(text: String, colour: Color, tip: String) -> Control:
 	var tag := Ui.panel(Ui.sized(Ui.tint(Ui.label(text, ""), colour), 12), "Chip")
 	tag.tooltip_text = tip

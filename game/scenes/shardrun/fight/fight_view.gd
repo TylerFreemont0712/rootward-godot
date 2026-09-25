@@ -6,17 +6,6 @@ extends VBoxContainer
 
 signal wants(command: Dictionary)
 
-const LOG_COLOURS := {
-	"hit": "#f2a541",
-	"enemy": "#e2584f",
-	"curse": "#b48cff",
-	"ward": "#5cc8b8",
-	"heal": "#8bc96a",
-	"fizzle": "#6f5e46",
-	"victory": "#8bc96a",
-	"loss": "#e2584f",
-}
-
 var session: ShardrunSession
 var stage: BattleStage
 var cards: Dictionary = {}
@@ -30,7 +19,11 @@ var _mana: Label
 var _turn: Label
 var _incoming: Label
 var _end_turn: Button
-var _log: RichTextLabel
+## Everything the rules logged in this fight, each with the turn it happened on, for the ".log" window.
+var _entries: Array[Dictionary] = []
+var _log_turn := 1
+var _portrait: TextureRect
+var _portrait_name: Label
 var _code: CodeView
 var _bottom: HBoxContainer
 var _work_area: Control
@@ -82,7 +75,7 @@ func _build() -> void:
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var boss: bool = state.battle.kind == "boss"
 	stage.set_backdrop(layer.get("boss_backdrop", layer.backdrop) if boss else layer.backdrop)
-	stage.set_foes(state.battle.foes, session.catalog, true)
+	stage.set_foes(state.battle.foes, session.catalog, true, boss)
 	show_state(state)
 
 
@@ -111,19 +104,49 @@ func _hero_panel() -> Control:
 	_turn = Ui.label("", "Muted")
 	_incoming = Ui.tint(Ui.label("", "Muted"), UiTheme.FAIL.lightened(0.15)) as Label
 	_end_turn = Ui.button("End turn  [E]", func() -> void: _ask({"type": "end-turn"}), "PrimaryButton")
-	_log = RichTextLabel.new()
-	_log.bbcode_enabled = true
-	_log.scroll_following = true
-	_log.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_log.add_theme_font_size_override("normal_font_size", 13)
-	_log.custom_minimum_size = Vector2(0, 60)
-	var integrity := Ui.hbox([Ui.label("INTEGRITY", "Faint"), _integrity_bar, _integrity], 8)
-	var column := Ui.vbox([integrity, Ui.hbox([_block, Ui.spacer(), _mana]), _turn, _incoming], 6)
-	column.add_child(_end_turn)
-	column.add_child(_log)
+	var integrity := Ui.hbox([Ui.label("INTEGRITY", "Faint"), Ui.spacer(), _integrity], 8)
+	var numbers := Ui.vbox([integrity, _integrity_bar, _block, _mana, _turn, _incoming], 4)
+	numbers.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var log_button := Ui.button(".log", func() -> void: BattleLog.open(self, _entries))
+	log_button.tooltip_text = "Everything that happened in this fight, turn by turn."
+	log_button.add_theme_font_size_override("font_size", 13)
+	log_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	var column := Ui.vbox([Ui.hbox([_avatar(), numbers], 12), _end_turn, Ui.spacer(), log_button], 8)
+	(column.get_child(2) as Control).size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := Ui.panel(column, "")
-	panel.custom_minimum_size.x = 360
+	panel.custom_minimum_size.x = 340
 	return panel
+
+
+## The Maintainer's portrait in the look they wear: a painted bust (portraits/<skin>), or the skin's own small face.
+func _avatar() -> Control:
+	_portrait = TextureRect.new()
+	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	_portrait.custom_minimum_size = Vector2(128, 128)
+	_portrait_name = Ui.tint(Ui.label("", "Faint"), UiTheme.SHARD.lightened(0.2)) as Label
+	_portrait_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var frame := PanelContainer.new()
+	var look := UiTheme.box(Color("#0e0a14"), UiTheme.SHARD.darkened(0.2), 2, 10, Vector2(3, 3))
+	look.shadow_color = Color(UiTheme.SHARD, 0.25)
+	look.shadow_size = 6
+	frame.add_theme_stylebox_override("panel", look)
+	frame.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+	frame.add_child(_portrait)
+	set_skin(Settings.character_skin)
+	return Ui.vbox([frame, _portrait_name], 4)
+
+
+## Shows the portrait of the look the Maintainer wears (the wardrobe can change it mid-fight).
+func set_skin(id: String) -> void:
+	if _portrait == null:
+		return
+	var texture := Art.texture("portraits/" + id)
+	if texture == null:
+		texture = Art.texture("sprites/%s/profile" % id)
+	_portrait.texture = texture
+	_portrait_name.text = id.to_upper()
 
 
 func _spellbook(state: Dictionary) -> Control:
@@ -247,8 +270,11 @@ func _close_code(view: CodeView) -> void:
 
 func _write_log(entries: Array[Dictionary]) -> void:
 	for entry in entries:
-		var colour: String = LOG_COLOURS.get(entry.kind, "#a58f6e")
-		_log.append_text("[color=%s]%s[/color]\n" % [colour, String(entry.get("text", "")).replace("[", "[lb]")])
+		if entry.kind == "turn":
+			_log_turn = int(entry.get("amount", _log_turn + 1))
+		var kept := entry.duplicate()
+		kept.turn_number = _log_turn
+		_entries.append(kept)
 
 
 func write_entries(entries: Array) -> void:

@@ -7,6 +7,7 @@ extends Control
 var session: ShardrunSession
 var _busy := false
 var _backdrop: TextureRect
+var _margin: MarginContainer
 var _header: PanelContainer
 var _body: Control
 var _overlay: Control
@@ -47,6 +48,7 @@ func _build() -> void:
 	for side: String in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 14)
 	add_child(margin)
+	_margin = margin
 	_header = PanelContainer.new()
 	_header.theme_type_variation = "Header"
 	_body = Control.new()
@@ -71,6 +73,7 @@ func _show(state: Dictionary) -> void:
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	_backdrop.texture = Art.texture("backgrounds/" + String(layer.backdrop))
 	var view: Control
+	_margin.add_theme_constant_override("margin_bottom", 14)
 	if state.status in Shardrun.ENDED:
 		view = _ending(state)
 		Sound.music("music-title")
@@ -80,6 +83,8 @@ func _show(state: Dictionary) -> void:
 		view = draft
 		Sound.music(layer.get("music", "music-salvage"))
 	elif state.status == "battle":
+		# A fight reaches the bottom edge: the hand rests there, its cards' lower parts off the screen.
+		_margin.add_theme_constant_override("margin_bottom", 0)
 		_fight = FightView.create(session)
 		_fight.wants.connect(send)
 		view = _fight
@@ -418,6 +423,7 @@ func _open_skins() -> void:
 func _set_battle_skin(id: String) -> void:
 	if _fight != null and is_instance_valid(_fight.stage.hero):
 		_fight.stage.hero.set_skin(id)
+		_fight.set_skin(id)
 
 
 func _open_dev() -> void:
