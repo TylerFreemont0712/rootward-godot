@@ -1,0 +1,23 @@
+{
+  "id": "copper-loop",
+  "name": "Copper Loop",
+  "rarity": "uncommon",
+  "icon": "copper-loop",
+  "summary": "Volleys of 3–6 bolts gain 50% multiplier; 2 more bolts may land.",
+  "flavor": "A loop has a sweet spot before it spirals.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "volley-size",
+        "min": 3,
+        "max": 6
+      },
+      "factor": 1.5
+    },
+    {
+      "kind": "bolt-cap",
+      "add": 2
+    }
+  ]
+}

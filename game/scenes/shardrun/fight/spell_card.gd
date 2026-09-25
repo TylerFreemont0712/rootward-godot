@@ -15,6 +15,9 @@ var _cast: Button
 var _code: Button
 var _chain: Control
 var _look: StyleBox
+var _busy := false
+var _spent := false
+var _affordable := true
 
 
 static func create(index: int, run_spell: Dictionary, catalog: Dictionary) -> SpellCard:
@@ -80,12 +83,14 @@ func set_targeted(on: bool) -> void:
 
 ## Shows a run view (ShardrunViews.spell_run_view), or {} while it is still running. `spent` greys the card out.
 func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
-	_cast.disabled = spent
+	_spent = spent
+	_affordable = true
 	if view.is_empty():
 		_cost.text = ""
 		_preview.text = "Reading the shards…"
 		_preview.remove_theme_color_override("font_color")
 		_cast.text = "Spent this turn" if spent else "Cast  [%d]" % number
+		_update_cast()
 		return
 	var cost := int(view.cost)
 	_cost.text = "%d ◆" % cost
@@ -93,9 +98,10 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 		_cast.text = "Spent this turn"
 	elif cost > mana:
 		_cast.text = "Needs %d mana" % cost
-		_cast.disabled = true
+		_affordable = false
 	else:
 		_cast.text = "Cast  [%d]" % number
+	_update_cast()
 	if view.has("misfire"):
 		_preview.text = "Misfire: %s" % view.misfire.reason
 		_preview.add_theme_color_override("font_color", UiTheme.FAIL)
@@ -117,5 +123,10 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 
 
 func set_busy(busy: bool) -> void:
-	_cast.disabled = busy or _cast.text.begins_with("Spent") or _cast.text.begins_with("Needs")
+	_busy = busy
+	_update_cast()
 	_code.disabled = busy
+
+
+func _update_cast() -> void:
+	_cast.disabled = _busy or _spent or not _affordable

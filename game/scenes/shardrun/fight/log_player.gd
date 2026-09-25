@@ -219,6 +219,11 @@ func _one(entry: Dictionary) -> void:
 			stage.popup(stage.hero.body_point() - Vector2(0, 60), "+%d block" % int(entry.amount), UiTheme.TEAL, 26)
 			numbers_changed.emit()
 			await stage.wait(360.0)
+		"mana":
+			shown.mana += int(entry.amount)
+			stage.popup(stage.hero.hand_point(), "+%d mana" % int(entry.amount), UiTheme.SHARD, 26)
+			numbers_changed.emit()
+			await stage.wait(300.0)
 		"victory":
 			stage.hero.play("victory")
 			stage.banner("Victory", UiTheme.PASS, 1100.0)

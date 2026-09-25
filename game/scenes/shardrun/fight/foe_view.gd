@@ -5,7 +5,7 @@ extends VBoxContainer
 ## is drawn.
 
 ## A foe's sprite, square, by its size in content (in the 1920x1080 design canvas).
-const SIZES := {"small": 110.0, "medium": 140.0, "large": 170.0, "huge": 200.0, "colossal": 232.0}
+const SIZES := {"small": 112.0, "medium": 150.0, "large": 195.0, "huge": 405.0, "colossal": 425.0}
 const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚"}
 
 var uid := ""
@@ -73,7 +73,7 @@ func show_foe(foe_state: Dictionary) -> void:
 	_hp.text = "%d/%d" % [int(foe_state.hp), int(foe_state.max)]
 	_shield.text = "◈ %d" % int(foe_state.shield) if int(foe_state.shield) > 0 else ""
 	var kind := ShardrunViews.intent_kind(foe_state)
-	_intent.text = "%s %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe_state)]
+	_intent.text = "%s  %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe_state)]
 	var danger := kind in ["strike", "multi"]
 	_intent.add_theme_color_override("font_color", UiTheme.FAIL.lightened(0.2) if danger else UiTheme.TEXT)
 	(_intent.get_parent() as Control).visible = alive
@@ -102,6 +102,16 @@ func _tag(text: String, colour: Color, tip: String) -> Control:
 ## The middle of the sprite, where bolts land, in the parent's coordinates.
 func target_point() -> Vector2:
 	return position + _holder.position + _holder.size * 0.5
+
+
+## How far below the top of this view the foe's feet are (the bottom of its sprite): the stage stands it there.
+func foot_offset() -> float:
+	var intent := (get_child(0) as Control).get_combined_minimum_size().y
+	return intent + get_theme_constant("separation") + _holder.custom_minimum_size.y
+
+
+func sprite_width() -> float:
+	return _holder.custom_minimum_size.x
 
 
 ## Where the foe stands, under the middle of its sprite: strikes hit the ground here.

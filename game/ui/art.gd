@@ -9,13 +9,70 @@ extends RefCounted
 
 const ROOT := "res://assets/"
 const LOOPS := "res://assets/audio/music.json"
+const RELIC_ATLAS := {
+	"clockwork-hourglass": 0,
+	"branching-key": 2,
+	"cache-jar": 3,
+	"copper-loop": 4,
+	"firewall-tile": 5,
+	"recursive-spiral": 6,
+	"frost-ledger": 7,
+	"ember-abacus": 8,
+	"null-mask": 9,
+	"star-clock": 10,
+	"compiler-die": 11,
+	"checksum-seal": 12,
+	"ward-prism": 13,
+	"thorn-battery": 14,
+	"gear-halo": 15,
+	"waveform-shell": 16,
+	"memory-tablet": 17,
+	"twin-lanterns": 18,
+	"ouroboros-cable": 19,
+	"sorting-comb": 20,
+	"portal-ring": 21,
+	"circuit-seed": 23,
+	"pendulum-pin": 24,
+	"algorithm-knot": 26,
+}
+const SHARD_ATLAS := {
+	"early-return": 8,
+	"branch-gate": 1,
+	"binary-pick": 10,
+	"index-map": 6,
+	"weakest-route": 4,
+	"reduce-sum": 9,
+	"memo-table": 7,
+	"pairwise-loop": 0,
+}
 
 static var _loops: Dictionary = {}
 
 
+## A picture by id. A WebP (the painted, high-resolution backgrounds) wins over a PNG of the same name.
 static func texture(id: String) -> Texture2D:
-	var path := ROOT + id + ".png"
-	return load(path) as Texture2D if ResourceLoader.exists(path) else null
+	for extension: String in [".webp", ".png"]:
+		var path := ROOT + id + extension
+		if ResourceLoader.exists(path):
+			return load(path) as Texture2D
+	if id.begins_with("shardrun/relic-"):
+		return _atlas("relics", int(RELIC_ATLAS.get(id.trim_prefix("shardrun/relic-"), -1)), 6, 229)
+	if id.begins_with("shardrun/shard-"):
+		return _atlas("shards", int(SHARD_ATLAS.get(id.trim_prefix("shardrun/shard-"), -1)), 4, 362)
+	return null
+
+
+static func _atlas(sheet: String, index: int, columns: int, cell: int) -> Texture2D:
+	if index < 0:
+		return null
+	var atlas := load("res://assets/concepts/%s.png" % sheet) as Texture2D
+	if atlas == null:
+		return null
+	var piece := AtlasTexture.new()
+	piece.atlas = atlas
+	piece.region = Rect2((index % columns) * cell, floori(float(index) / float(columns)) * cell, cell, cell)
+	piece.filter_clip = true
+	return piece
 
 
 static func sound(id: String) -> AudioStream:

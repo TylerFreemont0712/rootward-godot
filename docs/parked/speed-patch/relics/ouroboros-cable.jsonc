@@ -1,0 +1,26 @@
+{
+  "id": "ouroboros-cable",
+  "name": "Ouroboros Cable",
+  "rarity": "rare",
+  "icon": "ouroboros-cable",
+  "summary": "Gain 2 mana each turn and 4 block after a cast. From turn 3, bolts gain 30% multiplier.",
+  "flavor": "The output feeds the next input.",
+  "effects": [
+    {
+      "kind": "mana-per-turn",
+      "add": 2
+    },
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "turn",
+        "min": 3
+      },
+      "factor": 1.3
+    },
+    {
+      "kind": "cast-block",
+      "amount": 4
+    }
+  ]
+}

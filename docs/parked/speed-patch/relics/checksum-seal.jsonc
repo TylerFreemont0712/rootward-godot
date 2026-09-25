@@ -1,0 +1,21 @@
+{
+  "id": "checksum-seal",
+  "name": "Checksum Seal",
+  "rarity": "common",
+  "icon": "checksum-seal",
+  "summary": "Gain 3 block when you reshuffle and 2 block after a cast.",
+  "flavor": "The packet arrives intact.",
+  "effects": [
+    {
+      "kind": "reshuffle-block",
+      "amount": 3
+    },
+    {
+      "kind": "cast-block",
+      "amount": 2
+    }
+  ],
+  "playstyles": [
+    "deck"
+  ]
+}

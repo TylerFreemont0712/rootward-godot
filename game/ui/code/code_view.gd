@@ -77,6 +77,11 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if mode == "cast" and event.is_action_pressed("ui_accept"):
 		get_viewport().set_input_as_handled()
+		skip()
+
+
+func skip() -> void:
+	if mode == "cast":
 		_finish()
 
 

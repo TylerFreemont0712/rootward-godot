@@ -1,0 +1,530 @@
+{
+  "lessons": [
+    {
+      "id": "index-shift",
+      "chapter": "01 / DATA FLOW",
+      "title": "The moving index",
+      "concept": "Arrays and loop boundaries",
+      "brief": "Follow each index. The loop starts at 1, so the first item is never added.",
+      "code": [
+        "const values = [3, 5, 8, 13];",
+        "let total = 0;",
+        "for (let i = 1; i < values.length; i++) {",
+        "  total += values[i];",
+        "}",
+        "console.log(total);"
+      ],
+      "probe": {
+        "question": "What is total after i = 2?",
+        "choices": [
+          "5",
+          "8",
+          "13",
+          "16"
+        ],
+        "answer": "13"
+      },
+      "steps": [
+        "i = 1 adds values[1], which is 5.",
+        "i = 2 adds values[2], which is 8.",
+        "i = 3 adds values[3], which is 13."
+      ],
+      "explanation": "The loop visits indexes 1, 2 and 3. It adds 5 + 8 + 13.",
+      "model": [
+        "INPUT ARRAY",
+        "INDEX GATE",
+        "ACCUMULATE",
+        "STDOUT"
+      ],
+      "tokens": [
+        "3",
+        "5",
+        "8",
+        "13"
+      ]
+    },
+    {
+      "id": "filter-order",
+      "chapter": "01 / DATA FLOW",
+      "title": "Order of operations",
+      "concept": "Filter, map and reduce",
+      "brief": "Every operation receives the result of the one before it.",
+      "code": [
+        "const values = [2, 3, 4, 5];",
+        "const result = values",
+        "  .filter(n => n % 2 === 0)",
+        "  .map(n => n * 3)",
+        "  .reduce((sum, n) => sum + n, 0);",
+        "console.log(result);"
+      ],
+      "probe": {
+        "question": "What array reaches reduce?",
+        "choices": [
+          "[2,4]",
+          "[6,12]",
+          "[6,9,12,15]",
+          "[3,5]"
+        ],
+        "answer": "[6,12]"
+      },
+      "steps": [
+        "filter keeps only 2 and 4.",
+        "map triples those two values to 6 and 12.",
+        "reduce adds the remaining values from an initial 0."
+      ],
+      "explanation": "filter runs before map, so only the two even values are tripled and summed.",
+      "model": [
+        "INPUT ARRAY",
+        "FILTER",
+        "MAP",
+        "REDUCE"
+      ],
+      "tokens": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    {
+      "id": "slice-window",
+      "chapter": "01 / DATA FLOW",
+      "title": "A half open window",
+      "concept": "slice and exclusive ends",
+      "brief": "The second slice argument is an end boundary, not a count.",
+      "code": [
+        "const queue = ['A', 'B', 'C', 'D', 'E'];",
+        "const window = queue.slice(1, 4);",
+        "console.log(window.join('-'));"
+      ],
+      "probe": {
+        "question": "What is window.length?",
+        "choices": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "answer": "3"
+      },
+      "steps": [
+        "The slice starts at index 1: B.",
+        "It stops before index 4: E is excluded.",
+        "The window is B, C, D."
+      ],
+      "explanation": "slice(1, 4) takes indexes 1 through 3, giving B-C-D.",
+      "model": [
+        "QUEUE",
+        "START INDEX",
+        "END BOUNDARY",
+        "JOIN"
+      ],
+      "tokens": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    },
+    {
+      "id": "branch-chain",
+      "chapter": "01 / DATA FLOW",
+      "title": "One branch wins",
+      "concept": "if / else if precedence",
+      "brief": "An else-if chain runs only the first matching branch.",
+      "code": [
+        "const score = 12;",
+        "let rank = 'C';",
+        "if (score >= 10) {",
+        "  rank = 'B';",
+        "} else if (score >= 5) {",
+        "  rank = 'A';",
+        "}",
+        "console.log(rank);"
+      ],
+      "probe": {
+        "question": "How many assignments to rank happen after its declaration?",
+        "choices": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "answer": "1"
+      },
+      "steps": [
+        "score >= 10 is true.",
+        "The first branch sets rank to B.",
+        "The else-if branch is skipped even though its condition would be true."
+      ],
+      "explanation": "Only the first matching branch runs in an if / else-if chain.",
+      "model": [
+        "CONDITION",
+        "FIRST BRANCH",
+        "SKIP ELSE",
+        "PRINT"
+      ],
+      "tokens": [
+        "score: 12",
+        "rank: C"
+      ]
+    },
+    {
+      "id": "shared-array",
+      "chapter": "02 / STATE",
+      "title": "Two names, one array",
+      "concept": "References and mutation",
+      "brief": "An assignment can copy a reference without copying the object.",
+      "code": [
+        "const first = [1, 2];",
+        "const second = first;",
+        "second.push(3);",
+        "first[0] = 7;",
+        "console.log(second.join(','));"
+      ],
+      "probe": {
+        "question": "What is first.length after push?",
+        "choices": [
+          "2",
+          "3",
+          "4",
+          "undefined"
+        ],
+        "answer": "3"
+      },
+      "steps": [
+        "second refers to the same array as first.",
+        "push adds 3 to their shared array.",
+        "Changing first[0] also changes the array seen through second."
+      ],
+      "explanation": "Both variables refer to one mutable array, now [7, 2, 3].",
+      "model": [
+        "REFERENCE",
+        "SHARED ARRAY",
+        "MUTATE",
+        "READ"
+      ],
+      "tokens": [
+        "first",
+        "second",
+        "array"
+      ]
+    },
+    {
+      "id": "copy-array",
+      "chapter": "02 / STATE",
+      "title": "Breaking the link",
+      "concept": "Shallow copies",
+      "brief": "Spread makes a new outer array. Observe which mutation reaches the original.",
+      "code": [
+        "const original = [4, 6];",
+        "const copy = [...original];",
+        "copy.push(8);",
+        "original[0] = 1;",
+        "console.log(copy.join(','));"
+      ],
+      "probe": {
+        "question": "What is original.length after copy.push(8)?",
+        "choices": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": "2"
+      },
+      "steps": [
+        "Spread creates a new array with the same initial values.",
+        "push changes only copy.",
+        "original[0] changes only original."
+      ],
+      "explanation": "copy remains [4, 6, 8]. The arrays are separate.",
+      "model": [
+        "ORIGINAL",
+        "SPREAD COPY",
+        "MUTATE COPY",
+        "READ"
+      ],
+      "tokens": [
+        "original",
+        "copy",
+        "new array"
+      ]
+    },
+    {
+      "id": "closure-counter",
+      "chapter": "02 / STATE",
+      "title": "The counter remembers",
+      "concept": "Closures",
+      "brief": "A returned function keeps access to the local variable it closed over.",
+      "code": [
+        "function counter(start) {",
+        "  let value = start;",
+        "  return () => ++value;",
+        "}",
+        "const next = counter(4);",
+        "next();",
+        "console.log(next());"
+      ],
+      "probe": {
+        "question": "What does the first next() return?",
+        "choices": [
+          "4",
+          "5",
+          "6",
+          "undefined"
+        ],
+        "answer": "5"
+      },
+      "steps": [
+        "counter(4) creates value = 4.",
+        "The first call increments it to 5.",
+        "The next call sees the same value and increments it again."
+      ],
+      "explanation": "The closure retains value between calls. The second call returns 6.",
+      "model": [
+        "FACTORY",
+        "CAPTURED STATE",
+        "FIRST CALL",
+        "SECOND CALL"
+      ],
+      "tokens": [
+        "value: 4",
+        "next()",
+        "next()"
+      ]
+    },
+    {
+      "id": "stack-walk",
+      "chapter": "02 / STATE",
+      "title": "Last in, first out",
+      "concept": "Stacks",
+      "brief": "Trace the top of a stack through push and pop.",
+      "code": [
+        "const stack = ['A'];",
+        "stack.push('B');",
+        "stack.push('C');",
+        "const first = stack.pop();",
+        "stack.push(first + stack.pop());",
+        "console.log(stack.join(','));"
+      ],
+      "probe": {
+        "question": "What is first after stack.pop()?",
+        "choices": [
+          "A",
+          "B",
+          "C",
+          "undefined"
+        ],
+        "answer": "C"
+      },
+      "steps": [
+        "After two pushes, the stack is A, B, C.",
+        "The first pop removes C.",
+        "The next pop removes B, so C + B is pushed."
+      ],
+      "explanation": "A stack removes its most recently added value first. The final stack is A, CB.",
+      "model": [
+        "STACK",
+        "PUSH",
+        "POP",
+        "PUSH RESULT"
+      ],
+      "tokens": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    {
+      "id": "binary-search",
+      "chapter": "03 / ALGORITHMS",
+      "title": "Cut the search space",
+      "concept": "Binary search",
+      "brief": "The search interval shrinks around the target each iteration.",
+      "code": [
+        "const items = [2, 4, 7, 9, 12, 15, 19];",
+        "let lo = 0, hi = items.length - 1;",
+        "let checks = 0;",
+        "while (lo <= hi) {",
+        "  const mid = Math.floor((lo + hi) / 2);",
+        "  checks++;",
+        "  if (items[mid] === 12) break;",
+        "  if (items[mid] < 12) lo = mid + 1;",
+        "  else hi = mid - 1;",
+        "}",
+        "console.log(checks);"
+      ],
+      "probe": {
+        "question": "What is lo after the first comparison?",
+        "choices": [
+          "0",
+          "3",
+          "4",
+          "5"
+        ],
+        "answer": "4"
+      },
+      "steps": [
+        "The first midpoint is 3; items[3] is 9.",
+        "Since 9 < 12, indexes 0 through 3 are discarded.",
+        "The next midpoint is 5, then the interval narrows again."
+      ],
+      "explanation": "It checks 9, then 15, then 12: three comparisons.",
+      "model": [
+        "SORTED INPUT",
+        "MIDPOINT",
+        "SHRINK RANGE",
+        "MATCH"
+      ],
+      "tokens": [
+        "2",
+        "4",
+        "7",
+        "9",
+        "12",
+        "15",
+        "19"
+      ]
+    },
+    {
+      "id": "frequency-map",
+      "chapter": "03 / ALGORITHMS",
+      "title": "Count by key",
+      "concept": "Frequency tables",
+      "brief": "Each key stores a count that changes every time it appears.",
+      "code": [
+        "const letters = ['a', 'b', 'a', 'c', 'b', 'a'];",
+        "const counts = {};",
+        "for (const letter of letters) {",
+        "  counts[letter] = (counts[letter] || 0) + 1;",
+        "}",
+        "console.log(counts.a + counts.b * 2);"
+      ],
+      "probe": {
+        "question": "What is counts.b when the loop finishes?",
+        "choices": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "answer": "2"
+      },
+      "steps": [
+        "a appears three times.",
+        "b appears twice.",
+        "The final expression doubles b's count before adding a's."
+      ],
+      "explanation": "counts.a is 3 and counts.b is 2, so 3 + 2 * 2 is 7.",
+      "model": [
+        "INPUT STREAM",
+        "KEY LOOKUP",
+        "UPDATE COUNT",
+        "EXPRESSION"
+      ],
+      "tokens": [
+        "a",
+        "b",
+        "a",
+        "c",
+        "b",
+        "a"
+      ]
+    },
+    {
+      "id": "memo-fib",
+      "chapter": "03 / ALGORITHMS",
+      "title": "Remember the answer",
+      "concept": "Recursion and memoization",
+      "brief": "A memo table avoids repeating the same recursive work.",
+      "code": [
+        "const memo = {0: 0, 1: 1};",
+        "function fib(n) {",
+        "  if (n in memo) return memo[n];",
+        "  memo[n] = fib(n - 1) + fib(n - 2);",
+        "  return memo[n];",
+        "}",
+        "console.log(fib(6));"
+      ],
+      "probe": {
+        "question": "What value is stored in memo[4]?",
+        "choices": [
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "answer": "3"
+      },
+      "steps": [
+        "fib(2) = 1 and fib(3) = 2.",
+        "fib(4) = fib(3) + fib(2) = 3.",
+        "fib(5) = 5, then fib(6) = 8."
+      ],
+      "explanation": "Memoization caches earlier Fibonacci values. fib(6) returns 8.",
+      "model": [
+        "BASE CASES",
+        "RECURSIVE CALL",
+        "MEMO CACHE",
+        "RETURN"
+      ],
+      "tokens": [
+        "f(0)",
+        "f(1)",
+        "f(2)",
+        "f(3)",
+        "f(4)",
+        "f(5)",
+        "f(6)"
+      ]
+    },
+    {
+      "id": "queue-walk",
+      "chapter": "03 / ALGORITHMS",
+      "title": "Explore in layers",
+      "concept": "Breadth-first search",
+      "brief": "A queue visits every neighbor before going deeper.",
+      "code": [
+        "const graph = {A: ['B', 'C'], B: ['D'], C: ['E'], D: [], E: []};",
+        "const queue = ['A'], seen = [];",
+        "while (queue.length) {",
+        "  const node = queue.shift();",
+        "  seen.push(node);",
+        "  queue.push(...graph[node]);",
+        "}",
+        "console.log(seen.join(''));"
+      ],
+      "probe": {
+        "question": "What is in queue just after visiting A?",
+        "choices": [
+          "[A]",
+          "[B,C]",
+          "[D,E]",
+          "[C,B]"
+        ],
+        "answer": "[B,C]"
+      },
+      "steps": [
+        "A is removed and B, C are queued.",
+        "B is removed next and D is queued after C.",
+        "C adds E after D; the visit order is by layers."
+      ],
+      "explanation": "The queue visits A, B, C, D, E in breadth-first order.",
+      "model": [
+        "START NODE",
+        "DEQUEUE",
+        "ENQUEUE NEIGHBORS",
+        "VISIT ORDER"
+      ],
+      "tokens": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ]
+    }
+  ]
+}

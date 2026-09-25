@@ -1,0 +1,22 @@
+{
+  "id": "null-mask",
+  "name": "Null Mask",
+  "rarity": "rare",
+  "icon": "null-mask",
+  "summary": "Spells act one tier faster; O(n) or faster attacks gain 25% multiplier.",
+  "flavor": "It is already gone when the slow path arrives.",
+  "effects": [
+    {
+      "kind": "speed-boost",
+      "steps": 1
+    },
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "speed",
+        "max_complexity": "linear"
+      },
+      "factor": 1.25
+    }
+  ]
+}

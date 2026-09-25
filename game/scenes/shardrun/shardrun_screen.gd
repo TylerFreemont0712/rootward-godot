@@ -90,7 +90,8 @@ func _show(state: Dictionary) -> void:
 func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
 	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
-	var logo := Ui.tint(Ui.label(mode, "Subheading"), UiTheme.SHARD)
+	var heading := mode + (" / ARTIFICER" if state.get("playstyle", "") == "deck" else "")
+	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD)
 	var bar := ProgressBar.new()
 	bar.show_percentage = false
 	bar.custom_minimum_size = Vector2(170, 14)
@@ -109,29 +110,33 @@ func _show_header(state: Dictionary) -> void:
 	var relics := Ui.hbox([], 4)
 	for relic_id: String in state.relics:
 		relics.add_child(Cards.relic_icon(session.catalog.relics.get(relic_id, {"name": relic_id, "summary": ""})))
-	var buttons := Ui.hbox(
-		[
-			Ui.button("Deck", _open_deck) if state.get("playstyle", "") == "deck" else Ui.spacer(),
-			Ui.button("Stats", _open_stats),
-			Ui.button("Skin", _open_skins),
-			Ui.button("Options", _open_options),
-			Ui.button("Title", func() -> void: Game.go(Game.TITLE)),
-		],
-		6
+	var buttons := (
+		Ui
+		. hbox(
+			[
+				(
+					Ui.button("Deck", _open_deck)
+					if state.get("playstyle", "") == "deck" and state.status == "battle"
+					else Ui.spacer()
+				),
+				Ui.button("Stats", _open_stats),
+				Ui.button("Menu", _open_run_menu, "PrimaryButton"),
+			],
+			6
+		)
 	)
 	if state.get("sandbox", false) and not state.status in Shardrun.ENDED:
 		buttons.add_child(Ui.button("Dev", _open_dev))
-		logo.text = mode + " · DEV"
-	if not state.status in Shardrun.ENDED:
-		buttons.add_child(Ui.button("Abandon", _confirm_abandon, "DangerButton"))
+		logo.text += " · DEV"
 	var row := Ui.hbox([logo, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
 	_header.add_child(row)
 
 
 func _between(state: Dictionary) -> Control:
 	var left := Ui.vbox([], 8)
+	var map_view: MapView
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	left.size_flags_stretch_ratio = 1.25
+	left.size_flags_stretch_ratio = 2.7 if state.get("playstyle", "") == "deck" else 1.25
 	if state.status in ["reward", "rest", "forge"]:
 		var room := RoomPanel.create(session)
 		room.wants.connect(send)
@@ -140,6 +145,7 @@ func _between(state: Dictionary) -> Control:
 		left.add_child(Ui.expand(Ui.panel(scroll, ""), true))
 	else:
 		var map := MapView.new()
+		map_view = map
 		map.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		map.enter_pressed.connect(func(node_id: String) -> void: send({"type": "enter", "node_id": node_id}))
 		left.add_child(Ui.expand(Ui.panel(map, "Sunken"), true))
@@ -148,8 +154,12 @@ func _between(state: Dictionary) -> Control:
 	left.add_child(_chronicle)
 	var right: PanelContainer
 	if state.get("playstyle", "") == "deck":
-		var deck := Ui.scroll(DeckPanel.create(session))
-		right = Ui.panel(deck, "")
+		var sidebar := Ui.vbox([], 16)
+		if state.status == "map":
+			sidebar.add_child(_routes(state, map_view))
+		sidebar.add_child(DeckPanel.create(session))
+		right = Ui.panel(Ui.scroll(sidebar), "")
+		right.custom_minimum_size.x = 480
 	else:
 		var bench := Workbench.create(session)
 		bench.wants.connect(send)
@@ -158,6 +168,33 @@ func _between(state: Dictionary) -> Control:
 		right = Ui.panel(bench, "")
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return Ui.hbox([left, right], 12)
+
+
+func _routes(state: Dictionary, map_view: MapView = null) -> Control:
+	var routes := Ui.vbox([Ui.tint(Ui.label("AVAILABLE CHAMBERS", "Faint"), UiTheme.TEAL)], 6)
+	for room: Dictionary in ShardrunMap.next_rooms(state.map, state.position):
+		var name: String = MapView.NAMES.get(room.kind, room.kind)
+		var foes := ShardrunViews.room_foes(state, room, session.catalog)
+		var detail := ""
+		if not foes.is_empty():
+			detail = ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name))
+		else:
+			detail = MapView.WHAT.get(room.kind, "Continue deeper into the Machine.")
+		var button := Ui.button(
+			"%s  ·  %s" % [name, detail],
+			func() -> void:
+				if map_view != null:
+					map_view.travel_to(room.id)
+				else:
+					send({"type": "enter", "node_id": room.id})
+		)
+		if map_view != null:
+			button.mouse_entered.connect(func() -> void: map_view.focus_room(room.id))
+			button.mouse_exited.connect(func() -> void: map_view.focus_room(""))
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		routes.add_child(button)
+	return routes
 
 
 func _ending(state: Dictionary) -> Control:
@@ -320,6 +357,47 @@ func _open_options() -> void:
 	var options := OptionsPanel.create()
 	options.closed.connect(_close_overlay)
 	_open(options)
+
+
+func _open_run_menu() -> void:
+	var state := session.state
+	var column := (
+		Ui
+		. vbox(
+			[
+				Ui.hbox([Ui.label("RUN MENU", "Heading"), Ui.spacer(), Ui.button("Close", _close_overlay)], 12),
+				Ui.label(
+					"%s · Artificer · %s" % [Game.PLAYSTYLES.get(state.playstyle, "Shardrun"), state.language], "Muted"
+				),
+				Ui.panel(
+					Ui.vbox(
+						[
+							Ui.label("The run is saved after every move.", "Muted"),
+							Ui.label("Return to title whenever you want to continue later.", "Faint")
+						],
+						5
+					),
+					"Sunken"
+				),
+			],
+			12
+		)
+	)
+	var tools_row := Ui.hbox(
+		[Ui.button("Stats", _open_stats), Ui.button("Battle look", _open_skins), Ui.button("Options", _open_options)], 8
+	)
+	if state.get("playstyle", "") == "deck":
+		tools_row.add_child(Ui.button("Deck", _open_deck))
+	column.add_child(tools_row)
+	var actions := Ui.hbox(
+		[Ui.button("Return to title", func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
+	)
+	if not state.status in Shardrun.ENDED:
+		actions.add_child(Ui.button("Abandon run", _confirm_abandon, "DangerButton"))
+	column.add_child(actions)
+	var panel := Ui.panel(column, "Overlay")
+	panel.custom_minimum_size.x = 620
+	_open(panel)
 
 
 func _open_skins() -> void:

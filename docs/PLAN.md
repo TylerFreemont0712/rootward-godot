@@ -111,6 +111,11 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] A run per playstyle, chosen on the title: Shardrun (cards) and Spellforge (the spellbook) (ADR-0009).
 - [x] The table: a hand dealt each turn, cards played by click or drag into blank spells, holding, the draw and
       discard piles, cards with their code on hover; the deck between rooms and in a drawer; card rewards and melting.
+- [x] The title, run header, map sidebar, and fight controls reorganized; release-to-click makes dragging work,
+      and a cast's code uses the work surface below the unobscured arena (ADR-0010).
+- [x] Verifier, a separate code-reading course with twelve executable JavaScript lessons, checkpoint tracing,
+      exact-output predictions, sandbox grading, and saved mastery; Artificer keeps Python/JavaScript and three looks
+      (ADR-0011).
 - [ ] The build-code view (the spell's function growing card by card), card art and card animations, and a balance pass
       by play.
 

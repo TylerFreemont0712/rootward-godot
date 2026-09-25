@@ -1,0 +1,22 @@
+{
+  "id": "pendulum-pin",
+  "name": "Pendulum Pin",
+  "rarity": "rare",
+  "icon": "pendulum-pin",
+  "summary": "O(n) or faster spells gain 50% multiplier; gain 2 block at turn start.",
+  "flavor": "It swings before a slow thought resolves.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "speed",
+        "max_complexity": "linear"
+      },
+      "factor": 1.5
+    },
+    {
+      "kind": "turn-block",
+      "amount": 2
+    }
+  ]
+}

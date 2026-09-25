@@ -1,0 +1,50 @@
+{
+  "id": "reduce-sum",
+  "name": "Reduce Sum",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "reduce_sum",
+  "summary": "Fold every bolt’s power into the first bolt, making one concentrated cast.",
+  "tags": [
+    "reduce",
+    "fold"
+  ],
+  "examples": [
+    {
+      "name": "worked example",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ],
+      "expect": [
+        {
+          "power": 12,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ]
+    }
+  ]
+}

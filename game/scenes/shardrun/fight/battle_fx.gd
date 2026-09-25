@@ -25,6 +25,7 @@ const STRIKE_GROUND := 0.86
 const ARCANE := Color("#b48cff")
 
 static var _sprites: Dictionary = {}
+static var _sheets: Dictionary = {}
 static var _glint: Texture2D
 static var _soft: Texture2D
 static var _ring: Texture2D
@@ -40,11 +41,14 @@ var to_point := Vector2.ZERO
 var arc_height := 0.0
 var _layers: Dictionary = {}
 var _trail: CPUParticles2D
+var _ribbon: SpellRibbon
 var _sprited := false
 var _finishing := false
 ## Lightning drawn in code over a spark strike: jagged strokes from the sky, redrawn every few hundredths of a second.
 var _bolts: Array[PackedVector2Array] = []
 var _bolt_timer := 0.0
+## Layers drawn from an animated sheet, by layer name: the sheet's facts ({frames, columns, fps, loop, rects}).
+var _animated: Dictionary = {}
 
 
 static func spawn(
@@ -80,6 +84,27 @@ func _element_sprite(base: String) -> Texture2D:
 	return texture if texture != null else sprite(base + "-none")
 
 
+## The name of the sprite `_element_sprite` would use, so its animated sheet (if any) can be found.
+func _element_name(base: String) -> String:
+	return "%s-%s" % [base, element] if sprite("%s-%s" % [base, element]) != null else base + "-none"
+
+
+## An effect's animated sheet ({texture, frames, columns, size, fps, loop}), or {} when it has only a still picture.
+static func sheet(name: String) -> Dictionary:
+	if not _sheets.has(name):
+		var found := {}
+		var base := SPRITES % (name + "-sheet")
+		var texture_path := base.get_basename() + ".webp"
+		var facts_path := base.get_basename() + ".json"
+		if ResourceLoader.exists(texture_path) and FileAccess.file_exists(facts_path):
+			var facts: Variant = JSON.parse_string(FileAccess.get_file_as_string(facts_path))
+			if facts is Dictionary:
+				found = facts
+				found.texture = load(texture_path)
+		_sheets[name] = found
+	return _sheets[name]
+
+
 func _ready() -> void:
 	_sprited = _build()
 	if _sprited:
@@ -97,12 +122,18 @@ func set_flight_progress(value: float) -> void:
 	progress = value
 	var tangent := to_point - from_point
 	position = from_point.lerp(to_point, value) + Vector2(0.0, -arc_height * 4.0 * value * (1.0 - value))
-	rotation = tangent.angle()
+	var slope := tangent + Vector2(0.0, -arc_height * 4.0 * (1.0 - 2.0 * value))
+	rotation = slope.angle()
+	if _ribbon != null:
+		_ribbon.sample(position)
 	queue_redraw()
 
 
 ## The bolt has landed: its head goes, and its trail of sparkles is left to fade where it hung in the air.
 func finish() -> void:
+	if _ribbon != null:
+		_ribbon.release()
+		_ribbon = null
 	if _trail == null or _finishing:
 		queue_free()
 		return
@@ -162,8 +193,10 @@ func _build() -> bool:
 			var head := _element_sprite("bolt")
 			if head == null:
 				return false
-			_layer("halo", head, {"tint": Color(tint, 0.5), "distort": 0.7})
-			_layer("head", head, {"distort": 0.35, "glow": 1.15})
+			_layer_of("halo", _element_name("bolt"), {"tint": Color(tint, 0.5), "distort": 0.7})
+			_layer_of("head", _element_name("bolt"), {"distort": 0.35, "glow": 1.15})
+			_ribbon = SpellRibbon.create(get_parent(), element, tint)
+			_ribbon.z_index = z_index - 1
 			_trail = _sparkles(110, 0.6, false, 18.0, 70.0)
 			# A fast bolt moves tens of pixels a frame; emitting along a strip behind its head, not from one point,
 			# lays the trail as a stream rather than a string of clumps.
@@ -176,9 +209,11 @@ func _build() -> bool:
 				return false
 			_layer("flash", _soft_texture(), {"glow": 1.4})
 			_layer("ring", _ring_texture(), {"tint": light})
-			_layer(
+			var burst_motif := SpellImpact.create(self, element, tint, 0.7)
+			burst_motif.z_index = 2
+			_layer_of(
 				"burst",
-				burst,
+				_element_name("burst"),
 				{
 					"edge_colour": tint.lerp(Color.WHITE, 0.1),
 					"glow": 1.1,
@@ -211,7 +246,11 @@ func _build() -> bool:
 				_:
 					params.merge({"wipe_dir": 1.0, "shimmer": 0.3}, true)
 			_layer("glow", _soft_texture(), {"tint": Color(tint, 0.0)})
-			_layer("strike", strike, params)
+			var impact_motif := SpellImpact.create(self, element, tint, 1.05)
+			impact_motif.z_index = 2
+			impact_motif.visible = false
+			get_tree().create_timer(_impact_time()).timeout.connect(func() -> void: impact_motif.visible = true)
+			_layer_of("strike", _element_name("strike"), params)
 			var debris := _sparkles(40, 0.7, true, 180.0, 520.0)
 			debris.direction = Vector2.UP
 			debris.spread = 70.0
@@ -228,7 +267,7 @@ func _build() -> bool:
 			var vortex := sprite("vortex")
 			if vortex == null:
 				return false
-			_layer("vortex", vortex, {"tint": tint.lerp(Color.WHITE, 0.2), "edge_colour": light, "glow": 1.2})
+			_layer_of("vortex", "vortex", {"tint": tint.lerp(Color.WHITE, 0.2), "edge_colour": light, "glow": 1.2})
 			var inward := _sparkles(30, 0.5, false, 0.0, 10.0)
 			inward.emission_sphere_radius = VORTEX_SIZE * 0.5
 			inward.radial_accel_min = -900.0
@@ -237,7 +276,7 @@ func _build() -> bool:
 			var ward := sprite("ward")
 			if ward == null:
 				return false
-			_layer("ward", ward, {"shimmer": 0.35, "edge_colour": Color(0.75, 1.0, 0.95), "glow": 1.1})
+			_layer_of("ward", "ward", {"shimmer": 0.35, "edge_colour": Color(0.75, 1.0, 0.95), "glow": 1.1})
 			var motes := _sparkles(16, 0.9, false, 20.0, 50.0)
 			motes.emission_sphere_radius = WARD_SIZE * 0.35
 			motes.direction = Vector2.UP
@@ -248,6 +287,7 @@ func _build() -> bool:
 
 ## One frame of the effect's life, `t` from 0 to 1 (a bolt's flight, or its time).
 func _animate(t: float) -> void:
+	_advance(clampf(t / 0.9, 0.0, 1.0))
 	match kind:
 		Kind.BOLT:
 			var arrive := smoothstep(0.0, 0.06, t)
@@ -373,6 +413,36 @@ func _draw_lightning(t: float) -> void:
 		draw_polyline(_bolts[index], Color(1, 1, 1, alive), maxf(1.5, width * 0.35), true)
 
 
+## A layer drawn from sprite `sprite_name`: its animated sheet when there is one (see _advance), else its picture.
+func _layer_of(name: String, sprite_name: String, params: Dictionary) -> Sprite2D:
+	var animated := sheet(sprite_name)
+	if animated.is_empty():
+		return _layer(name, sprite(sprite_name), params)
+	var layer := _layer(name, animated.texture, params)
+	var size := float(animated.size)
+	var whole := Vector2(layer.texture.get_width(), layer.texture.get_height())
+	layer.region_enabled = true
+	layer.region_rect = Rect2(Vector2.ZERO, Vector2(size, size))
+	var cell := Vector4(0, 0, size / whole.x, size / whole.y)
+	(layer.material as ShaderMaterial).set_shader_parameter("frame_rect", cell)
+	(layer.material as ShaderMaterial).set_shader_parameter("current_rect", cell)
+	_animated[name] = animated.merged({"cell": Vector2(cell.z, cell.w)})
+	return layer
+
+
+## Shows the frame each animated layer is at: a loop by the clock, a one-shot across `life` (0 to 1) of the effect.
+func _advance(life: float) -> void:
+	for name: String in _animated:
+		var facts: Dictionary = _animated[name]
+		var count := int(facts.frames)
+		var index := int(elapsed * float(facts.fps)) % count if facts.loop else mini(count - 1, int(life * count))
+		var cell: Vector2 = facts.cell
+		var column := index % int(facts.columns)
+		var row := index / int(facts.columns)
+		var shading := (_layers[name] as Sprite2D).material as ShaderMaterial
+		shading.set_shader_parameter("current_rect", Vector4(column * cell.x, row * cell.y, cell.x, cell.y))
+
+
 func _layer(name: String, texture: Texture2D, params: Dictionary) -> Sprite2D:
 	var layer := Sprite2D.new()
 	layer.texture = texture
@@ -391,7 +461,8 @@ func _shape(name: String, size: float, spin: float, params: Dictionary, offset :
 	var layer: Sprite2D = _layers.get(name)
 	if layer == null:
 		return
-	layer.scale = Vector2.ONE * (size / float(layer.texture.get_width()))
+	var width := layer.region_rect.size.x if layer.region_enabled else float(layer.texture.get_width())
+	layer.scale = Vector2.ONE * (size / width)
 	layer.rotation = spin
 	layer.position = offset
 	var shading := layer.material as ShaderMaterial

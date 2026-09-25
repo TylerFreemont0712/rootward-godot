@@ -14,7 +14,13 @@
       "flip": true,
       "size": 320,
       "seed": 3101,
-      "prompt": "violet arcane magic arrow projectile with trailing afterimages, star sparkles, purple and white light"
+      "prompt": "violet arcane magic arrow projectile with trailing afterimages, star sparkles, purple and white light",
+      "animate": {
+        "motion": "the arcane arrowheads pulse and shimmer, the trailing afterimages flicker",
+        "frames": 13,
+        "fps": 24,
+        "loop": true
+      }
     },
     {
       "id": "bolt-fire",
@@ -22,7 +28,13 @@
       "quadrant": "tr",
       "size": 320,
       "seed": 3102,
-      "prompt": "fireball projectile streaking to the right, swirling orange and yellow flames, embers trailing behind"
+      "prompt": "fireball projectile streaking to the right, swirling orange and yellow flames, embers trailing behind",
+      "animate": {
+        "motion": "the fireball flickers and churns, its flames trailing and whipping behind it",
+        "frames": 13,
+        "fps": 24,
+        "loop": true
+      }
     },
     {
       "id": "bolt-frost",
@@ -30,7 +42,13 @@
       "quadrant": "bl",
       "size": 320,
       "seed": 3103,
-      "prompt": "ice crystal spear projectile pointing right, pale cyan shards and snowflakes trailing behind"
+      "prompt": "ice crystal spear projectile pointing right, pale cyan shards and snowflakes trailing behind",
+      "animate": {
+        "motion": "the ice spear glints, frost shards and snowflakes stream off behind it",
+        "frames": 13,
+        "fps": 24,
+        "loop": true
+      }
     },
     {
       "id": "bolt-spark",
@@ -38,7 +56,13 @@
       "quadrant": "tl",
       "size": 320,
       "seed": 3104,
-      "prompt": "golden lightning shard projectile pointing right, bright yellow sparks and streaks trailing behind"
+      "prompt": "golden lightning shard projectile pointing right, bright yellow sparks and streaks trailing behind",
+      "animate": {
+        "motion": "the golden lightning shard crackles, sparks and electric streaks flicker behind it",
+        "frames": 13,
+        "fps": 24,
+        "loop": true
+      }
     },
     {
       "id": "burst-none",
@@ -46,7 +70,12 @@
       "quadrant": "br",
       "size": 384,
       "seed": 3201,
-      "prompt": "radial arcane impact burst, glowing violet rune circle, four pointed star flare in the centre, purple shards flying outward"
+      "prompt": "radial arcane impact burst, glowing violet rune circle, four pointed star flare in the centre, purple shards flying outward",
+      "animate": {
+        "motion": "the arcane burst flashes outward, the violet rune ring spins and expands, shards fly out, then it fades away",
+        "frames": 21,
+        "fps": 26
+      }
     },
     {
       "id": "burst-fire",
@@ -54,7 +83,12 @@
       "quadrant": "tr",
       "size": 384,
       "seed": 3202,
-      "prompt": "fire explosion impact, blossoming orange and yellow flame burst, embers flying outward"
+      "prompt": "fire explosion impact, blossoming orange and yellow flame burst, embers flying outward",
+      "animate": {
+        "motion": "the fireball explosion billows outward, flames curling and swirling, then breaks apart into embers and fades away",
+        "frames": 21,
+        "fps": 26
+      }
     },
     {
       "id": "burst-frost",
@@ -62,7 +96,12 @@
       "quadrant": "bl",
       "size": 384,
       "seed": 3203,
-      "prompt": "ice shatter impact, radial burst of pale blue ice crystals and snowflakes, white core flash"
+      "prompt": "ice shatter impact, radial burst of pale blue ice crystals and snowflakes, white core flash",
+      "animate": {
+        "motion": "the ice burst shatters outward, crystals fly apart and spin, frost mist puffs out, then everything fades",
+        "frames": 21,
+        "fps": 26
+      }
     },
     {
       "id": "burst-spark",
@@ -70,7 +109,12 @@
       "quadrant": "tl",
       "size": 384,
       "seed": 3204,
-      "prompt": "golden star burst impact, radiant eight pointed light flare, yellow sparks flying outward"
+      "prompt": "golden star burst impact, radiant eight pointed light flare, yellow sparks flying outward",
+      "animate": {
+        "motion": "the golden star burst flashes, its rays stretch and flicker, sparks scatter outward, then it fades",
+        "frames": 21,
+        "fps": 26
+      }
     },
     {
       "id": "seal",
@@ -89,7 +133,13 @@
       "quadrant": "tl",
       "size": 512,
       "seed": 3401,
-      "prompt": "curved crescent energy barrier shield, translucent teal glass with glowing veins, bright rim, small crystal shards"
+      "prompt": "curved crescent energy barrier shield, translucent teal glass with glowing veins, bright rim, small crystal shards",
+      "animate": {
+        "motion": "the crystal barrier shimmers, light rippling across its surface, shards drifting slowly",
+        "frames": 17,
+        "fps": 16,
+        "loop": true
+      }
     },
     {
       "id": "strike-spark",
@@ -98,7 +148,13 @@
       "size": 512,
       "seed": 3501,
       "denoise": 0.66,
-      "prompt": "massive lightning bolt striking straight down from the sky onto the ground, jagged branching bright yellow and white electricity, blinding flash where it hits, crackling sparks, electric ring on the ground"
+      "prompt": "massive lightning bolt striking straight down from the sky onto the ground, jagged branching bright yellow and white electricity, blinding flash where it hits, crackling sparks, electric ring on the ground",
+      "animate": {
+        "motion": "the lightning bolt crackles and flickers violently, branches of electricity jumping and changing shape every frame",
+        "frames": 17,
+        "fps": 22,
+        "loop": true
+      }
     },
     {
       "id": "strike-none",
@@ -108,7 +164,13 @@
       "seed": 3502,
       "denoise": 0.55,
       "prompt": "column of violet arcane starlight falling from the sky, a beam of purple and white light with floating star crystals, glowing rune circle on the ground",
-      "recolor": "#b48cff"
+      "recolor": "#b48cff",
+      "animate": {
+        "motion": "the beam of starlight pulses and shimmers, crystals drifting upward around it",
+        "frames": 17,
+        "fps": 20,
+        "loop": true
+      }
     },
     {
       "id": "strike-fire",
@@ -117,7 +179,13 @@
       "size": 512,
       "seed": 3503,
       "denoise": 0.68,
-      "prompt": "pillar of fire erupting upward from a burning ring on the ground, roaring orange and yellow flames, embers flying"
+      "prompt": "pillar of fire erupting upward from a burning ring on the ground, roaring orange and yellow flames, embers flying",
+      "animate": {
+        "motion": "the pillar of fire roars and churns upward, flames licking and swirling, embers flying",
+        "frames": 17,
+        "fps": 22,
+        "loop": true
+      }
     },
     {
       "id": "strike-frost",
@@ -127,7 +195,13 @@
       "seed": 3504,
       "denoise": 0.62,
       "prompt": "cluster of huge jagged ice crystal spikes erupting upward from frozen ground, pale cyan and white, frost mist, a ring of frost on the ground",
-      "recolor": "#8fdcff"
+      "recolor": "#8fdcff",
+      "animate": {
+        "motion": "the ice spikes glint, frost mist swirls around their base and ice shards drift",
+        "frames": 17,
+        "fps": 20,
+        "loop": true
+      }
     },
     {
       "id": "wave",
@@ -146,9 +220,16 @@
       "size": 448,
       "seed": 3602,
       "denoise": 0.5,
-      "prompt": "swirling violet arcane vortex, spiral arms of purple light around a dark centre, glowing orbiting crystals"
+      "prompt": "swirling violet arcane vortex, spiral arms of purple light around a dark centre, glowing orbiting crystals",
+      "animate": {
+        "motion": "the vortex spins steadily, its spiral arms of light turning around the dark centre, crystals orbiting",
+        "frames": 17,
+        "fps": 20,
+        "loop": true
+      }
     }
   ],
   "_boards": "Note: 02-wards-and-barriers.png holds the radial bursts and 03-radial-glyph-bursts.png the wards; the files' names and pictures are swapped, so the entries below follow the pictures.",
-  "_strikes": "strike-* are called down onto a foe by a heavy spell of that element (lightning from the sky, a fire pillar, ice spikes, a beam of starlight); wave spreads across the floor when a volley hits several foes; vortex opens behind a heavy cast."
+  "_strikes": "strike-* are called down onto a foe by a heavy spell of that element (lightning from the sky, a fire pillar, ice spikes, a beam of starlight); wave spreads across the floor when a volley hits several foes; vortex opens behind a heavy cast.",
+  "_animate": "An effect with `animate` also ships as a sheet of frames drawn by the video model (fx.py --animate): the picture pinned as the first frame (and the last, for a loop), the motion in words. BattleFX plays the sheet when it is there."
 }

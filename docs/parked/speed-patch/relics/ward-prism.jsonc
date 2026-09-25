@@ -1,0 +1,25 @@
+{
+  "id": "ward-prism",
+  "name": "Ward Prism",
+  "rarity": "uncommon",
+  "icon": "ward-prism",
+  "summary": "Ward bolts gain 50% multiplier; mixed ward and attack volleys gain 35%.",
+  "flavor": "A defense can refract into an answer.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "ward",
+        "value": true
+      },
+      "factor": 1.5
+    },
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "mixed-roles"
+      },
+      "factor": 1.35
+    }
+  ]
+}

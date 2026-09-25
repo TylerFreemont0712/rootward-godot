@@ -1,0 +1,18 @@
+{
+  "id": "algorithm-knot",
+  "name": "Algorithm Knot",
+  "rarity": "boss",
+  "icon": "algorithm-knot",
+  "summary": "Spells act one tier faster; work is billed on a logarithmic curve.",
+  "flavor": "The hard problem folds in on itself.",
+  "effects": [
+    {
+      "kind": "speed-boost",
+      "steps": 1
+    },
+    {
+      "kind": "work-billing",
+      "curve": "log"
+    }
+  ]
+}

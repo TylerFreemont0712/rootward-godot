@@ -1,0 +1,50 @@
+{
+  "id": "binary-pick",
+  "name": "Binary Pick",
+  "rarity": "rare",
+  "cost": 1,
+  "complexity": "logarithmic",
+  "function": "binary_pick",
+  "summary": "On an ascending-power volley, binary search for the first bolt of power 8 or more. Keep it and add 3 power.",
+  "tags": [
+    "binary-search",
+    "sorted-input"
+  ],
+  "examples": [
+    {
+      "name": "worked example",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 10,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ],
+      "expect": [
+        {
+          "power": 11,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ]
+    }
+  ]
+}

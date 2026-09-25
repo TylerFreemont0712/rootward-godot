@@ -63,21 +63,31 @@ static func totals(state: Dictionary) -> Control:
 
 ## The Stats panel during a run: the score so far, the totals, and damage by spell.
 static func stats_panel(state: Dictionary) -> Control:
-	var tamamo := Settings.character_skin == "tamamo_no_mae"
+	var skin := Settings.character_skin
 	var portrait := TextureRect.new()
-	portrait.texture = (
-		Art.texture("skins/tamamo_no_mae/profile") if tamamo else load("res://characters/emberfox/emberfox_front.png")
-		as Texture2D
-	)
+	var image := {
+		"vesper": "res://assets/sprites/vesper/profile.png",
+		"emberfox": "res://characters/emberfox/emberfox_front.png",
+	}
+	var portrait_path: String = image.get(skin, image.emberfox)
+	portrait.texture = load(portrait_path) as Texture2D if ResourceLoader.exists(portrait_path) else null
 	portrait.custom_minimum_size = Vector2(136, 136)
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var name := "Tamamo-no-Mae" if tamamo else "Emberfox"
-	var epithet := "Nine-Tail Oracle" if tamamo else "Salvage Runner"
+	var names := {
+		"vesper": ["Vesper", "Star-Script Witch"],
+		"emberfox": ["Emberfox", "Salvage Runner"],
+	}
+	var identity_text: Array = names.get(skin, names.emberfox)
 	var identity := Ui.vbox(
-		[Ui.label("FIELD PORTRAIT", "Faint"), Ui.label(name, "Subheading"), Ui.label(epithet, "Muted", true)], 5
+		[
+			Ui.label("ARTIFICER · FIELD PORTRAIT", "Faint"),
+			Ui.label(identity_text[0], "Subheading"),
+			Ui.label(identity_text[1], "Muted", true)
+		],
+		5
 	)
 	var column := (
 		Ui

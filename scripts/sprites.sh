@@ -5,6 +5,7 @@
 #   scripts/sprites.sh build vesper                         sheets + clips.json into game/assets/sprites/vesper/
 #   scripts/sprites.sh preview vesper                       a contact sheet and a page that plays every clip
 #   scripts/sprites.sh fx [--only 'bolt-*'] [--reprocess]   spell sprites into game/assets/fx/spell/
+#   scripts/sprites.sh arena [--only arena-kiln]            painted arenas (candidates); then --pick arena-kiln=1
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 source "$ROOT/scripts/gpu-guard.sh"
@@ -13,11 +14,12 @@ shift
 case "$command" in
 	build | poses | preview) ;;
 	fx) if [[ " $* " != *" --reprocess "* ]]; then need_comfy; fi ;;
+	arena) if [[ " $* " != *" --pick "* ]]; then need_comfy; fi ;;
 	*) need_comfy ;;
 esac
-if [[ "$command" == "fx" ]]; then
-	uv run --project "$ROOT/pipeline" python "$ROOT/pipeline/sprites/fx.py" "$@"
+if [[ "$command" == "fx" || "$command" == "arena" ]]; then
+	uv run --project "$ROOT/pipeline" python "$ROOT/pipeline/sprites/$command.py" "$@"
 else
 	uv run --project "$ROOT/pipeline" python "$ROOT/pipeline/sprites/pipeline.py" "$command" "$@"
 fi
-if [[ "$command" == "build" || "$command" == "fx" ]]; then reimport; fi
+if [[ "$command" == "build" || "$command" == "fx" || "$command" == "arena" ]]; then reimport; fi

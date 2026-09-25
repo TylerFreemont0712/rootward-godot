@@ -17,7 +17,7 @@ func _build() -> void:
 	custom_minimum_size = Vector2(1200, 0)
 	var header := Ui.hbox(
 		[
-			Ui.vbox([Ui.label("THE FIELD WARDROBE", "Faint"), Ui.label("Choose your battle skin", "Heading")], 2),
+			Ui.vbox([Ui.label("FIELD WARDROBE", "Faint"), Ui.label("Choose your battle look", "Heading")], 2),
 			Ui.spacer(),
 			Ui.button("Close", _close)
 		],
@@ -35,13 +35,6 @@ func _build() -> void:
 					"res://characters/emberfox/emberfox_front.png"
 				),
 				_skin_card(
-					"tamamo_no_mae",
-					"Tamamo-no-Mae",
-					"Nine-Tail Oracle",
-					"Silver-white hair, shrine battle silk, and nine animated fox tails.",
-					"res://assets/skins/tamamo_no_mae/profile.png"
-				),
-				_skin_card(
 					"vesper",
 					"Vesper",
 					"Star-Script Witch",
@@ -53,17 +46,23 @@ func _build() -> void:
 		)
 	)
 	add_child(
-		Ui.vbox(
-			[
-				header,
-				Ui.label(
-					"A different silhouette, a different rhythm. Your choice appears in the fight and stats portrait.",
-					"Muted",
-					true
-				),
-				cards
-			],
-			14
+		(
+			Ui
+			. vbox(
+				[
+					header,
+					(
+						Ui
+						. label(
+							"Three looks for your hero. They share the same rules; your choice appears in fights and on your run card.",
+							"Muted",
+							true
+						)
+					),
+					cards
+				],
+				14
+			)
 		)
 	)
 
@@ -95,6 +94,8 @@ func _skin_card(id: String, title: String, epithet: String, note: String, portra
 	)
 	card.custom_minimum_size = Vector2(360, 0)
 	var plate := Ui.panel(card, "Card")
+	if chosen:
+		plate.add_theme_stylebox_override("panel", UiTheme.box(UiTheme.PANEL_2, UiTheme.TEAL, 2, 10, Vector2(14, 11)))
 	plate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return plate
 

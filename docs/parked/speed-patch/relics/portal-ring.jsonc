@@ -1,0 +1,22 @@
+{
+  "id": "portal-ring",
+  "name": "Portal Ring",
+  "rarity": "rare",
+  "icon": "portal-ring",
+  "summary": "All-target bolts gain 75% multiplier; 4 extra bolts may land.",
+  "flavor": "It opens onto every side of the room.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "target",
+        "target": "all"
+      },
+      "factor": 1.75
+    },
+    {
+      "kind": "bolt-cap",
+      "add": 4
+    }
+  ]
+}

@@ -31,20 +31,16 @@ HTTP and runs Blender as a program.
 
 ## Characters
 
-Characters export as animated glTF and use the same `StageCharacter` controller and Godot toon look. Their authoring
-paths can differ by art style:
+Two kinds of battle skin:
 
-- Emberfox starts with a generated 3D model, uses a Mixamo-compatible rig and takes, then bakes selected take ranges
-  into actions.
-- Tamamo-no-Mae starts with a generated T-pose, avatar, and turnaround. Blender turns the painted silhouette into a
-  skinned 2.5D mesh with a detailed armature and hand-keyed anime actions. The source texture stays consistent across
-  clips, while the nine tails, hair, ears, hands, and limbs have independent bone controls. Spell shields, sigils, and
-  projectiles remain Godot effects, outside the character texture and rig.
+- **3D** (Emberfox): a generated model with a Mixamo-compatible rig and takes, baked into actions and exported as
+  animated glTF by `scripts/character.sh <id>`. `StageCharacter` plays it with the toon shader and ink outline. A model
+  with hand-keyed actions can export them as named NLA tracks instead (`"representation": "2.5d-skinned-mesh"` in its
+  `model.json`).
+- **Sprite sheets** (Vesper): drawn by ComfyUI's video model on a skeleton, clip by clip (`pipeline/sprites/`,
+  `scripts/sprites.sh`, ADR-0008). `SpriteCharacter` plays them.
 
-For the Tamamo path, `pipeline/characters/tamamo_no_mae/model.json` describes the mesh and rig, and
-`animation.json` maps game clip names to Blender actions. The editable model lives in
-`pipeline/cache/characters/tamamo_no_mae/rigged.blend`; `scripts/character.sh tamamo_no_mae` exports the actions into
-`game/characters/tamamo_no_mae/tamamo_no_mae.glb` and captures a clip sheet and close-up.
+Spell shields, sigils and projectiles are Godot effects, never part of a character.
 
 ## During the migration
 

@@ -8,7 +8,7 @@ extends RefCounted
 
 const PATH := "user://settings.json"
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
-const CHARACTER_SKINS: Array[String] = ["emberfox", "tamamo_no_mae", "vesper"]
+const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox"]
 
 ## How fast a cast plays as code before its bolts fly; "off" skips straight to the bolts.
 static var code_speed := "normal"
@@ -16,10 +16,10 @@ static var code_speed := "normal"
 static var predictions := true
 ## Shake the stage on heavy hits.
 static var shake := true
-## The playstyle last played (Game.PLAYSTYLES): the card Shardrun unless the player chose Spellforge.
+## The last journey selected on the title screen.
 static var playstyle := "deck"
-## The last selected battle look. Tamamo-no-Mae is the first impression on a fresh install.
-static var character_skin := "tamamo_no_mae"
+## The last selected battle look. Vesper is the first impression on a fresh install.
+static var character_skin := "vesper"
 static var music_volume := 0.6
 static var sound_volume := 0.8
 ## The last language and difficulty a run was started with, offered first next time.
@@ -48,12 +48,13 @@ static func load_file(from := PATH) -> void:
 		language = chosen
 	if values.get("difficulty") is String:
 		difficulty = values.difficulty
-	if values.get("playstyle") in ["deck", "spellbook"]:
+	if values.get("playstyle") in ["deck", "spellbook", "verifier"]:
 		playstyle = values.playstyle
 	var skin: Variant = values.get("character_skin")
 	if skin is String:
-		if skin == "moonlit_kitsune":
-			character_skin = "tamamo_no_mae"
+		if skin in ["moonlit_kitsune", "tamamo_no_mae"]:
+			# Retired looks: their players get the default one.
+			character_skin = "vesper"
 		elif skin in CHARACTER_SKINS:
 			character_skin = skin
 

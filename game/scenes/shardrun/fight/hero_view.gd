@@ -15,7 +15,7 @@ var _flash_tween: Tween
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	custom_minimum_size = Vector2(VIEW_SIZE)
+	# No minimum: the stage sizes the Maintainer to its own height (a bigger minimum pushed her feet through the floor).
 	_build_skin()
 
 
@@ -73,8 +73,8 @@ func _build_skin() -> void:
 	camera.position = Vector3(0.0, 0.92, 6.0)
 	camera.current = true
 	_viewport.add_child(camera)
-	# Blender's +Y-facing artwork imports facing Godot's -Z. Flip Tamamo to the camera, then cant her toward the foes.
-	actor.rotation_degrees.y = 198.0 if Settings.character_skin == "tamamo_no_mae" else 35.0
+	# Cant the model toward the foes.
+	actor.rotation_degrees.y = 35.0
 	_viewport.add_child(actor)
 
 

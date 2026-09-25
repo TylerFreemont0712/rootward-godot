@@ -1,0 +1,14 @@
+{
+  "id": "clockwork-hourglass",
+  "name": "Clockwork Hourglass",
+  "rarity": "rare",
+  "icon": "clockwork-hourglass",
+  "summary": "Your spells act one Big-O tier faster.",
+  "flavor": "Its sand falls before the calculation begins.",
+  "effects": [
+    {
+      "kind": "speed-boost",
+      "steps": 1
+    }
+  ]
+}

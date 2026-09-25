@@ -1,0 +1,22 @@
+{
+  "id": "branching-key",
+  "name": "Branching Key",
+  "rarity": "uncommon",
+  "icon": "branching-key",
+  "summary": "Your first cast costs 1 less mana; O(1) spells gain 50% multiplier.",
+  "flavor": "The quickest branch opens twice.",
+  "effects": [
+    {
+      "kind": "first-cast-discount",
+      "amount": 1
+    },
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "speed",
+        "max_complexity": "constant"
+      },
+      "factor": 1.5
+    }
+  ]
+}

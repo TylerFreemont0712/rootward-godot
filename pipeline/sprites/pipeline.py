@@ -501,14 +501,25 @@ def keypose(skin_id: str, clip: str, frame: int, comfy: Comfy, candidates: int, 
     width, height = canvas(skin_id)
     scale = float(spec.get("scale_up", 2))
     big = (round(width * scale / 8) * 8, round(height * scale / 8) * 8)
+    # Drawn on the whole canvas, a pose that leaves most of it empty came back with a second girl in the space. The
+    # key is drawn in a window around the skeleton instead (as wide as tall, which is the figure's natural frame), then
+    # pasted back where the window was, on white, so the pinned frame still lines up with the clip's other frames.
+    xs = [rigmod.to_canvas(p, rig, *big)[0] for p in pose.values()]
+    middle = (min(xs) + max(xs)) / 2
+    window_w = min(big[0], round(big[1] * 0.92 / 64) * 64)
+    x0 = int(max(0, min(big[0] - window_w, round(middle - window_w / 2))))
+    skeleton = rigmod.draw_pose(pose, rig, *big).crop((x0, 0, x0 + window_w, big[1]))
+    character = skin["character"]
+    if "key_expression" in specs[clip]:
+        character = character.replace("small smile", specs[clip]["key_expression"])
     graph = Graph("reference")
-    graph.set("rw:pose", image=comfy.upload(rigmod.draw_pose(pose, rig, *big), f"{skin_id}-{clip}-{frame}-pose.png"))
-    graph.set("rw:positive", text=style(skin, "prefix") + skin["character"] + ", " + specs[clip].get("key_prompt", "")
+    graph.set("rw:pose", image=comfy.upload(skeleton, f"{skin_id}-{clip}-{frame}-pose.png"))
+    graph.set("rw:positive", text=style(skin, "prefix") + "solo, " + character + ", " + specs[clip].get("key_prompt", "")
               + style(skin, "suffix"))
     graph.set("rw:negative", text=style(skin, "negative"))
     graph.set("rw:control", strength=float(spec.get("control", 1.0)), end_percent=float(spec.get("control_end", 0.85)))
     graph.set("rw:detail", strength_model=float(spec.get("detail", 0.6)), strength_clip=float(spec.get("detail", 0.6)))
-    graph.set("rw:empty", width=big[0], height=big[1])
+    graph.set("rw:empty", width=window_w, height=big[1])
     graph.set("rw:sampler", steps=int(spec.get("steps", 30)), cfg=float(spec.get("cfg", 5.5)), denoise=1.0)
     graph.link("rw:sampler", "latent_image", "rw:empty")
     graph.remove("rw:source", "rw:source-size", "rw:encode", "rw:save")
@@ -517,7 +528,9 @@ def keypose(skin_id: str, clip: str, frame: int, comfy: Comfy, candidates: int, 
     for index in range(candidates):
         graph.set("rw:sampler", seed=seed + index)
         graph.set("rw:save-clean", filename_prefix=f"rootward/{skin_id}/{clip}-{frame}-{index}")
-        image = comfy.run(graph)["rw:save-clean"][0].convert("RGB")
+        drawn = comfy.run(graph)["rw:save-clean"][0].convert("RGB")
+        image = Image.new("RGB", big, "white")
+        image.paste(drawn, (x0, 0))
         image.save(folder / f"{clip}-{frame}-candidate-{index}.png")
         shots.append(image)
         print(f"candidate {index} (seed {seed + index})", flush=True)

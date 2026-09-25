@@ -180,6 +180,79 @@
         "12": "keys/cast-light-12.png"
       },
       "_drawn": "The hold is pinned to a drawing of her in it (`keypose`), the way an animator draws the key and leaves the in-betweens. Without one, the first Vesper lost her capelet mid-strike: the video model keeps the costume where a picture pins it."
+    },
+    "hurt": {
+      "frames": 21,
+      "fps": 16,
+      "loop": false,
+      "after": "idle-breathe",
+      "anchors": {
+        "first": "reference",
+        "last": "reference"
+      },
+      "keys": [
+        {
+          "t": 0
+        },
+        {
+          "t": 0.14,
+          "body": [
+            -0.05,
+            0.02
+          ],
+          "lean": -14,
+          "head": -12,
+          "near": [
+            -0.07,
+            0.36
+          ],
+          "far": [
+            0.05,
+            0.37
+          ]
+        },
+        {
+          "t": 0.3,
+          "body": [
+            -0.06,
+            0.03
+          ],
+          "lean": -16,
+          "head": -14,
+          "near": [
+            -0.075,
+            0.37
+          ],
+          "far": [
+            0.045,
+            0.38
+          ]
+        },
+        {
+          "t": 0.62,
+          "body": [
+            -0.025,
+            0.012
+          ],
+          "lean": -6,
+          "head": -5,
+          "near": [
+            -0.1,
+            0.46
+          ],
+          "far": [
+            0.1,
+            0.47
+          ]
+        },
+        {
+          "t": 1
+        }
+      ],
+      "_keys": "A flinch: knocked back and crouched a little, head turned down and away, both hands up in front of her chest, then she straightens back to the reference.",
+      "motion": "she flinches backward as if struck, shoulders hunched and hands raised in front of her chest, eyes squeezed shut, then straightens up again",
+      "key_prompt": "flinching backward as if struck, hunched shoulders, both hands raised in front of her chest",
+      "key_expression": "eyes squeezed shut, open mouth, pained expression"
     }
   }
 }

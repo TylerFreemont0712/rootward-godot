@@ -99,7 +99,9 @@ static func picture(id: String, size: Vector2, fallback := "") -> Control:
 	rect.custom_minimum_size = size
 	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	rect.texture_filter = (
+		CanvasItem.TEXTURE_FILTER_LINEAR if texture is AtlasTexture else CanvasItem.TEXTURE_FILTER_NEAREST
+	)
 	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return rect
 

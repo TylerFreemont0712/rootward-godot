@@ -28,6 +28,10 @@ func _ready() -> void:
 	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev")
 	var bot := ShardrunBot.new(session)
 	match shot:
+		"boss":
+			session.start(language if language != "" else "python", "beginner", "screenshot", true)
+			await bot.play_until("battle")
+			await bot.send({"type": "dev-spawn", "kind": "boss", "foes": ["kiln-warden"]})
 		"storm":
 			# A heavy spark spell against two foes: lightning called down on both, a wave across the floor.
 			session.start(language if language != "" else "python", "beginner", "screenshot", true)
@@ -41,7 +45,7 @@ func _ready() -> void:
 			for shard: String in spell.shards:
 				(table.hand as Array).erase(shard)
 			await bot.send(CardTable.command(table))
-		"fight", "cast", "volley", "turn", "code", "dev", "table":
+		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile":
 			await bot.play_until("battle")
 			if session.playstyle == "deck" and shot in ["cast", "volley", "code"]:
 				await bot.send(bot._deal_hand(session.state))
@@ -90,6 +94,7 @@ func _ready() -> void:
 func _act(shot: String, screen: Control) -> void:
 	match shot:
 		"cast":
+			Settings.code_speed = "normal"
 			screen.call("send", {"type": "cast", "spell_id": "spell-1"})
 		"volley", "storm":
 			# ROOTWARD_SHOT_SPELL picks the spell (spell-2 is the Ward).
@@ -102,3 +107,9 @@ func _act(shot: String, screen: Control) -> void:
 			screen.call("_explore", "spell-1")
 		"dev":
 			screen.call("_open_dev")
+		"pile":
+			var fight := screen.get("_fight") as FightView
+			if fight != null:
+				var table := fight.get("_table") as DeckTable
+				if table != null:
+					table.call("_open_pile", "draw")

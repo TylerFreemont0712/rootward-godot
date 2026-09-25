@@ -149,3 +149,17 @@ A ring lying on the floor is a circle seen at a slant: an ellipse. Squashing the
 the sprite inside it gives a spinning ellipse that stays flat; squashing the sprite after spinning it would tilt the
 ellipse with the spin, because a node's own scale is applied after its own rotation.
 
+## Commit a click when the mouse comes up (`game/scenes/shardrun/card_face.gd`)
+Godot starts a drag only after the pressed mouse has moved. Moving the card on mouse-down makes the rules redraw the
+table and frees that card before the drag can begin. Keep it in place until mouse-up; `_get_drag_data` cancels the
+pending click when movement becomes a drag.
+
+## Grade a code lesson by actual stdout (`game/core/verifier_course.gd`)
+An intermediate trace checkpoint and a final output prediction make code reading active. The final answer is compared
+with stdout from the real JavaScript sandbox; content supplies explanations and trace clues, not a hard-coded final
+answer. Keeping the trace optional lets a learner trade a lower score for the help needed to make progress.
+
+## Keep the arena fixed during playback (`game/scenes/shardrun/fight/fight_view.gd`)
+Replacing the work surface with a code view can change a container's minimum height and resize the stage above it.
+Measure and preserve that height through playback. An impact can use a brief shake and animated effects without
+scaling both world and effects around different pivot points.

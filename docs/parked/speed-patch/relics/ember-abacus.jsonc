@@ -1,0 +1,22 @@
+{
+  "id": "ember-abacus",
+  "name": "Ember Abacus",
+  "rarity": "uncommon",
+  "icon": "ember-abacus",
+  "summary": "Fire bolts gain 50% multiplier; the first cast costs 1 less mana.",
+  "flavor": "A small spark is easy to count.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "element",
+        "element": "fire"
+      },
+      "factor": 1.5
+    },
+    {
+      "kind": "first-cast-discount",
+      "amount": 1
+    }
+  ]
+}

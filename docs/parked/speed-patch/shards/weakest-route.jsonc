@@ -1,0 +1,50 @@
+{
+  "id": "weakest-route",
+  "name": "Weakest Route",
+  "rarity": "uncommon",
+  "cost": 1,
+  "complexity": "linear",
+  "function": "weakest_route",
+  "summary": "Send each attack bolt to the weakest foe; leave wards untouched.",
+  "tags": [
+    "loops",
+    "targeting"
+  ],
+  "examples": [
+    {
+      "name": "worked example",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "target": "weakest",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": true
+        }
+      ]
+    }
+  ]
+}

@@ -8,9 +8,15 @@ extends Control
 const FOE_SPAN := Vector2(0.58, 0.94)
 const LONE_FOE := 0.78
 const HERO_X := 0.07
-## The Maintainer's height as a share of the stage's, and the floor line everyone stands on (from the top).
-const HERO_HEIGHT := 0.76
-const FLOOR := 0.97
+## The Maintainer's height as a share of the stage's, and the floor line everyone stands on (from the top): up in the
+## painted floor, so the foes' name plates hang below their feet and everyone stands in the room rather than on
+## its edge.
+const HERO_HEIGHT := 0.6
+const FLOOR := 0.79
+## Where the painted floor meets the characters' feet in an arena picture (a share of its height): the backdrop is
+## placed so this line lies on FLOOR.
+const ART_FLOOR := 0.84
+const IMPACT := preload("res://scenes/shardrun/fight/impact_frame.gdshader")
 
 ## Every stage skips its waits and animations (tests and tools that drive the screens).
 static var instant := false
@@ -23,8 +29,12 @@ var hero: HeroView
 var foes: Dictionary = {}
 var _world: Control
 var _backdrop: TextureRect
+var _grade: _Grade
+var _shadows: _Shadows
 var _fx: Control
 var _shake_tween: Tween
+## A strike landed a moment ago: the next ones in the same volley skip the impact frame, so it stays a single beat.
+var _struck_recently := false
 
 
 func _init() -> void:
@@ -35,10 +45,13 @@ func _init() -> void:
 	add_child(_world)
 	_backdrop = TextureRect.new()
 	_backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	_backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_backdrop.stretch_mode = TextureRect.STRETCH_SCALE
 	_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_world.add_child(_backdrop)
+	_grade = _Grade.new()
+	_world.add_child(_grade)
+	_shadows = _Shadows.new()
+	_world.add_child(_shadows)
 	hero = HeroView.new()
 	_world.add_child(hero)
 	_fx = Control.new()
@@ -53,7 +66,11 @@ func _notification(what: int) -> void:
 
 func set_backdrop(id: String) -> void:
 	_backdrop.texture = Art.texture("backgrounds/" + id)
-	_backdrop.modulate = Color(0.85, 0.82, 0.8)
+	# A painted arena keeps its colours; the old pixel art was dimmed so the fighters stood out, and is drawn sharp.
+	var painted := _backdrop.texture != null and _backdrop.texture.resource_path.ends_with(".webp")
+	_backdrop.modulate = Color(0.79, 0.77, 0.76) if painted else Color(0.85, 0.82, 0.8)
+	_backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if painted else CanvasItem.TEXTURE_FILTER_NEAREST
+	_layout()
 
 
 ## Replaces the foes with these (a new fight), each fading in.
@@ -83,12 +100,16 @@ func show_foes(foe_states: Array) -> void:
 
 func _layout() -> void:
 	_world.size = size
-	_backdrop.size = size
 	_fx.size = size
+	_shadows.size = size
+	_grade.size = size
+	_grade.queue_redraw()
 	var floor_y := size.y * FLOOR
+	_place_backdrop(floor_y)
 	var hero_height := size.y * HERO_HEIGHT
 	hero.size = Vector2(hero_height * 0.75, hero_height)
 	hero.position = Vector2(size.x * HERO_X, floor_y - hero_height)
+	var feet: Array[Vector3] = [Vector3(hero.position.x + hero.size.x * 0.5, floor_y, hero_height * 0.2)]
 	var count := foes.size()
 	var index := 0
 	for view: FoeView in foes.values():
@@ -97,8 +118,27 @@ func _layout() -> void:
 		var x := size.x * lerpf(FOE_SPAN.x, FOE_SPAN.y, share)
 		if count == 1:
 			x = size.x * LONE_FOE
-		view.position = Vector2(x - view.size.x * 0.5, floor_y - view.size.y)
+		view.position = Vector2(x - view.size.x * 0.5, floor_y - view.foot_offset())
+		feet.append(Vector3(x, floor_y, view.sprite_width() * 0.36))
 		index += 1
+	_shadows.feet = feet
+	_shadows.queue_redraw()
+
+
+## The arena picture covers the stage, placed so its painted floor line lies on the stage's floor line.
+func _place_backdrop(floor_y: float) -> void:
+	var texture := _backdrop.texture
+	if texture == null:
+		_backdrop.size = size
+		_backdrop.position = Vector2.ZERO
+		return
+	var aspect := float(texture.get_width()) / float(texture.get_height())
+	var drawn := Vector2(size.x, size.x / aspect)
+	if drawn.y < size.y:
+		drawn = Vector2(size.y * aspect, size.y)
+	var top := clampf(floor_y - drawn.y * ART_FLOOR, size.y - drawn.y, 0.0)
+	_backdrop.size = drawn
+	_backdrop.position = Vector2((size.x - drawn.x) * 0.5, top)
 
 
 ## Waits `ms` of game time, or not at all when fast.
@@ -150,11 +190,16 @@ func strike(view: FoeView, element: String, arrive: Callable) -> void:
 		return
 	var colour := UiTheme.element(element)
 	var fx := BattleFX.spawn(_fx, BattleFX.Kind.STRIKE, view.foot_point(), colour, 0.8, element)
-	var impact := 0.07 if element == "spark" else 0.2
-	get_tree().create_timer(impact).timeout.connect(
+	var impact_delay := 0.07 if element == "spark" else 0.2
+	var first := not _struck_recently
+	_struck_recently = true
+	get_tree().create_timer(0.5).timeout.connect(func() -> void: _struck_recently = false)
+	get_tree().create_timer(impact_delay).timeout.connect(
 		func() -> void:
-			if element == "spark":
-				flash(Color(1.0, 0.97, 0.8, 0.55), 0.18)
+			if first:
+				impact(colour)
+			elif element == "spark":
+				flash(Color(1.0, 0.97, 0.8, 0.5), 0.16)
 			shake(0.45)
 			arrive.call()
 	)
@@ -180,6 +225,22 @@ func vortex(element: String, seconds: float) -> void:
 		return
 	var at := hero.hand_point()
 	BattleFX.spawn(_fx, BattleFX.Kind.VORTEX, at, UiTheme.element(element), seconds, element)
+
+
+## An anime impact frame: the stage drawn as an inverted silhouette on a flash of `colour` for a few frames. For the
+## blows that should feel too strong to see (a heavy strike landing).
+func impact(colour: Color, seconds := 0.07) -> void:
+	if fast:
+		return
+	var frame := ColorRect.new()
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var shading := ShaderMaterial.new()
+	shading.shader = IMPACT
+	shading.set_shader_parameter("flash", colour.lerp(Color.WHITE, 0.55))
+	frame.material = shading
+	_fx.add_child(frame)
+	get_tree().create_timer(seconds).timeout.connect(frame.queue_free)
 
 
 ## The whole stage lit for an instant (lightning), its colour's alpha the strength.
@@ -281,8 +342,10 @@ func shake(strength: float) -> void:
 	for i in 6:
 		var offset := Vector2(randf_range(-amount, amount), randf_range(-amount, amount) * 0.6)
 		_shake_tween.tween_property(_world, "position", offset, 0.035)
+		_shake_tween.parallel().tween_property(_fx, "position", offset, 0.035)
 		amount *= 0.7
 	_shake_tween.tween_property(_world, "position", Vector2.ZERO, 0.04)
+	_shake_tween.parallel().tween_property(_fx, "position", Vector2.ZERO, 0.04)
 
 
 ## Freezes the action for a moment so a heavy hit lands with weight.
@@ -298,3 +361,40 @@ func hit_stop(ms: float) -> void:
 
 func _exit_tree() -> void:
 	Engine.time_scale = 1.0
+
+
+## Soft dark ellipses on the floor under everyone's feet: the cheapest thing that makes a figure stand on a painting.
+class _Shadows:
+	extends Control
+
+	## (x, floor y, half width) per figure.
+	var feet: Array[Vector3] = []
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _draw() -> void:
+		for foot in feet:
+			for ring in 4:
+				var spread := 1.0 + ring * 0.22
+				draw_set_transform(Vector2(foot.x, foot.y), 0.0, Vector2(1.0, 0.24))
+				draw_circle(Vector2.ZERO, foot.z * spread, Color(0.02, 0.01, 0.03, 0.42 - ring * 0.09))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+## A shared near-ground haze and edge shade make painted rooms and sprite actors occupy one light space.
+class _Grade:
+	extends Control
+
+	func _init() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _draw() -> void:
+		if size.x <= 0.0 or size.y <= 0.0:
+			return
+		for step in 24:
+			var y := size.y * float(step) / 24.0
+			var t := float(step) / 23.0
+			var darkness := 0.06 + pow(t, 2.7) * 0.42
+			draw_rect(Rect2(0, y, size.x, size.y / 24.0 + 1.0), Color(0.04, 0.025, 0.05, darkness))
+		draw_rect(Rect2(0, size.y * BattleStage.FLOOR, size.x, 2.0), Color(1.0, 0.67, 0.34, 0.11))

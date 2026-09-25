@@ -1,0 +1,21 @@
+{
+  "id": "gear-halo",
+  "name": "Gear Halo",
+  "rarity": "uncommon",
+  "icon": "gear-halo",
+  "summary": "Piercing bolts gain 60% multiplier; gain 1 extra mana each turn.",
+  "flavor": "Each gear turns the next.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "pierce"
+      },
+      "factor": 1.6
+    },
+    {
+      "kind": "mana-per-turn",
+      "add": 1
+    }
+  ]
+}

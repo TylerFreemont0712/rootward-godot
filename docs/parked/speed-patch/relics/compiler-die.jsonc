@@ -1,0 +1,18 @@
+{
+  "id": "compiler-die",
+  "name": "Compiler Die",
+  "rarity": "rare",
+  "icon": "compiler-die",
+  "summary": "Widen every spell by 1 slot and make casts one tier faster.",
+  "flavor": "A lucky optimization still has to compile.",
+  "effects": [
+    {
+      "kind": "spell-capacity",
+      "add": 1
+    },
+    {
+      "kind": "speed-boost",
+      "steps": 1
+    }
+  ]
+}

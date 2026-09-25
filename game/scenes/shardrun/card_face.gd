@@ -20,6 +20,8 @@ var language := "python"
 var moved: Callable
 var pressed: Callable
 var draggable := true
+var _armed := false
+var _dragging := false
 
 
 static func create(
@@ -53,6 +55,7 @@ static func slot(at: Dictionary, label: String, size_kind: Size) -> CardFace:
 func _build(summaries: bool, size_kind: Size) -> void:
 	custom_minimum_size = SIZES[size_kind]
 	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	var rarity := UiTheme.rarity(shard.get("rarity", "common"))
 	var frame := Color(ELEMENT_FRAME.get(element_of(shard), rarity.to_html()))
 	var face := UiTheme.box(Color("#241b17"), frame.darkened(0.15), 2, 10, Vector2(7, 6))
@@ -79,9 +82,9 @@ func _build(summaries: bool, size_kind: Size) -> void:
 		var text := Ui.label(words, "Muted", true)
 		(text as Label).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		# The face keeps to four lines; the whole summary (and the code) is in the tooltip.
-		(text as Label).max_lines_visible = 4
+		(text as Label).max_lines_visible = 3
 		(text as Label).text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		text.add_theme_font_size_override("font_size", 11)
+		text.add_theme_font_size_override("font_size", 12)
 		column.add_child(text)
 	var curse: Dictionary = shard.get("curse", {})
 	if not curse.is_empty():
@@ -116,30 +119,44 @@ func _make_custom_tooltip(_for_text: String) -> Object:
 		Ui.label("%s · %s" % [shard.get("name", shard_id), ShardrunViews.complexity(shard)], "Subheading"),
 		UiTheme.rarity(shard.get("rarity", "common"))
 	)
-	var box := Ui.vbox([title, Cards.code(shard, language, 18)], 6)
+	var box := Ui.vbox([title, Cards.code(shard, language, 8)], 5)
 	if shard.has("summary"):
 		box.add_child(Ui.label(shard.summary, "Muted", true))
-	box.custom_minimum_size.x = 460
+	box.custom_minimum_size.x = 340
 	return Ui.panel(box, "Overlay")
 
 
 func _gui_input(event: InputEvent) -> void:
+	# LEARN: a click commits on release. If it committed on press, the rules would redraw and free the source card
+	# before Godot had enough mouse movement to start _get_drag_data.
 	var click := event as InputEventMouseButton
-	if click == null or not click.pressed or not pressed.is_valid():
+	if click == null or not pressed.is_valid():
 		return
-	if click.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
-		pressed.call(spot, click.button_index)
+	if click.button_index == MOUSE_BUTTON_RIGHT and click.pressed:
+		pressed.call(spot, MOUSE_BUTTON_RIGHT)
+		accept_event()
+	elif click.button_index == MOUSE_BUTTON_LEFT and click.pressed:
+		_armed = true
+		_dragging = false
+		accept_event()
+	elif click.button_index == MOUSE_BUTTON_LEFT and not click.pressed:
+		if _armed and not _dragging and Rect2(Vector2.ZERO, size).has_point(click.position):
+			pressed.call(spot, MOUSE_BUTTON_LEFT)
+		_armed = false
 		accept_event()
 
 
 func _get_drag_data(_at: Vector2) -> Variant:
 	if not draggable or shard_id == "" or not moved.is_valid():
 		return null
-	var ghost := CardFace.create(shard_id, Game.catalog, language, false, Size.SLOT)
-	ghost.modulate = Color(1, 1, 1, 0.9)
-	ghost.rotation_degrees = -4.0
+	_dragging = true
+	_armed = false
+	var ghost := CardFace.create(shard_id, Game.catalog, language, false, Size.HAND)
+	ghost.modulate = Color(1, 1, 1, 0.96)
+	ghost.rotation_degrees = -6.0
+	ghost.scale = Vector2.ONE * 1.08
 	set_drag_preview(ghost)
-	modulate = Color(1, 1, 1, 0.35)
+	modulate = Color(1, 1, 1, 0.28)
 	return {"card_spot": spot}
 
 
@@ -155,3 +172,4 @@ func _notification(what: int) -> void:
 	# A drag that ended anywhere gives the card its colour back (a successful move redraws the table anyway).
 	if what == NOTIFICATION_DRAG_END:
 		modulate = Color.WHITE
+		_dragging = false

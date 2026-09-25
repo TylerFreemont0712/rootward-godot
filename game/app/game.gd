@@ -9,9 +9,9 @@ extends RefCounted
 const SAVES_ENV := "ROOTWARD_SAVES"
 const TITLE := "res://scenes/title/title.tscn"
 const SHARDRUN := "res://scenes/shardrun/shardrun.tscn"
-## The two ways to play, by the name the player sees: Shardrun draws a hand of shard cards into blank spells every turn;
-## Spellforge builds its spells between fights. Each keeps its own run.
-const PLAYSTYLES := {"deck": "Shardrun", "spellbook": "Spellforge"}
+const VERIFIER := "res://scenes/verifier/verifier.tscn"
+## Shardrun and Spellforge keep separate combat runs; Verifier is a saved code-reading course.
+const PLAYSTYLES := {"deck": "Shardrun", "spellbook": "Spellforge", "verifier": "Verifier"}
 
 ## The rules read English content (old ADR-0018); screens show the same catalog, translated later (phase "Later").
 static var catalog: Dictionary = {}
@@ -36,7 +36,7 @@ static func boot() -> bool:
 	Settings.load_file()
 	var root := OS.get_environment(SAVES_ENV)
 	var saves := SaveStore.new(root if root != "" else SaveStore.ROOT)
-	for playstyle: String in PLAYSTYLES:
+	for playstyle: String in ["deck", "spellbook"]:
 		var run := ShardrunSession.new(catalog, saves, playstyle)
 		if loaded.ok:
 			run.load_saved()
@@ -64,6 +64,10 @@ static func reset(save_root := "") -> void:
 
 ## Plays `playstyle` from now on (and remembers it as the player's choice).
 static func use(playstyle: String) -> void:
+	if playstyle == "verifier":
+		session = sessions.deck
+		Settings.playstyle = playstyle
+		return
 	if not sessions.has(playstyle):
 		playstyle = "deck"
 	session = sessions[playstyle]

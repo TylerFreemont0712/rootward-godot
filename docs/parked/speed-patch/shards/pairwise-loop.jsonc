@@ -1,0 +1,64 @@
+{
+  "id": "pairwise-loop",
+  "name": "Pairwise Loop",
+  "rarity": "rare",
+  "cost": 2,
+  "complexity": "quadratic",
+  "function": "pairwise_loop",
+  "summary": "For each bolt, compare it with every bolt and add 1 power for each comparison. Strong but slow.",
+  "tags": [
+    "nested-loops",
+    "quadratic"
+  ],
+  "examples": [
+    {
+      "name": "worked example",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ],
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        },
+        {
+          "power": 9,
+          "element": "none",
+          "target": "front",
+          "pierce": false,
+          "ward": false
+        }
+      ]
+    }
+  ]
+}

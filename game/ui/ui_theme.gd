@@ -43,7 +43,7 @@ const RARITIES := {
 }
 
 ## Sizes are in the design canvas, 1920x1080 (project.godot); the window scales them all together.
-const BUTTON_PADDING := Vector2(12, 6)
+const BUTTON_PADDING := Vector2(15, 8)
 const FONT_DIR := "res://ui/fonts/"
 ## Neither face has kana or kanji (nor every symbol), so text falls through to what the system has, glyph by glyph.
 const SYSTEM_FALLBACKS: Array[String] = ["DejaVu Sans Mono", "DejaVu Sans", "Noto Sans CJK JP", "Noto Sans Mono"]
@@ -114,7 +114,7 @@ static func box(
 static func _build() -> Theme:
 	var theme := Theme.new()
 	theme.default_font = ui_font()
-	theme.default_font_size = 15
+	theme.default_font_size = 16
 	_labels(theme)
 	_buttons(theme)
 	_panels(theme)
@@ -136,9 +136,9 @@ static func _labels(theme: Theme) -> void:
 	theme.set_color("font_color", "Label", TEXT)
 	theme.set_color("font_shadow_color", "Label", Color(0, 0, 0, 0))
 	var crt: Array = [
-		["Title", 60, AMBER],
-		["Heading", 30, AMBER],
-		["Subheading", 22, AMBER],
+		["Title", 76, AMBER],
+		["Heading", 35, AMBER],
+		["Subheading", 26, AMBER],
 		["Narration", 20, MUTED],
 		["Big", 34, AMBER],
 	]
@@ -153,10 +153,10 @@ static func _labels(theme: Theme) -> void:
 		theme.set_constant("shadow_outline_size", variation, 6)
 	theme.set_type_variation("Muted", "Label")
 	theme.set_color("font_color", "Muted", MUTED)
-	theme.set_font_size("font_size", "Muted", 14)
+	theme.set_font_size("font_size", "Muted", 16)
 	theme.set_type_variation("Faint", "Label")
 	theme.set_color("font_color", "Faint", FAINT)
-	theme.set_font_size("font_size", "Faint", 13)
+	theme.set_font_size("font_size", "Faint", 14)
 	theme.set_type_variation("Code", "Label")
 	theme.set_font_size("font_size", "Code", 14)
 
@@ -164,12 +164,13 @@ static func _labels(theme: Theme) -> void:
 static func _buttons(theme: Theme) -> void:
 	var button := "Button"
 	var pad := BUTTON_PADDING
-	theme.set_stylebox("normal", button, box(PANEL_2, LINE, 1, 3, pad))
-	theme.set_stylebox("hover", button, box(PANEL_3, AMBER_DIM, 1, 3, pad))
-	theme.set_stylebox("pressed", button, box(PANEL_3, AMBER, 1, 3, pad))
-	theme.set_stylebox("hover_pressed", button, box(PANEL_3, AMBER, 1, 3, pad))
-	theme.set_stylebox("disabled", button, box(PANEL, LINE_SOFT, 1, 3, pad))
-	theme.set_stylebox("focus", button, box(Color.TRANSPARENT, TEAL, 1, 3, pad))
+	theme.set_stylebox("normal", button, box(PANEL_2, LINE, 1, 7, pad))
+	theme.set_stylebox("hover", button, box(PANEL_3, AMBER_DIM, 1, 7, pad))
+	theme.set_stylebox("pressed", button, box(PANEL_3, AMBER, 1, 7, pad))
+	theme.set_stylebox("hover_pressed", button, box(PANEL_3, AMBER, 1, 7, pad))
+	theme.set_stylebox("disabled", button, box(PANEL, LINE_SOFT, 1, 7, pad))
+	theme.set_stylebox("focus", button, box(Color.TRANSPARENT, TEAL, 1, 7, pad))
+	theme.set_font_size("font_size", button, 16)
 	theme.set_color("font_color", button, TEXT)
 	theme.set_color("font_hover_color", button, AMBER)
 	theme.set_color("font_pressed_color", button, AMBER)
@@ -178,14 +179,14 @@ static func _buttons(theme: Theme) -> void:
 	theme.set_color("font_disabled_color", button, FAINT)
 
 	theme.set_type_variation("PrimaryButton", button)
-	theme.set_stylebox("normal", "PrimaryButton", box(Color("#2a1f12"), AMBER_DIM, 1, 3, pad))
-	theme.set_stylebox("hover", "PrimaryButton", box(Color("#3a2a15"), AMBER, 1, 3, pad))
+	theme.set_stylebox("normal", "PrimaryButton", box(Color("#2a1f12"), AMBER_DIM, 1, 7, pad))
+	theme.set_stylebox("hover", "PrimaryButton", box(Color("#3a2a15"), AMBER, 1, 7, pad))
 	theme.set_color("font_color", "PrimaryButton", AMBER)
 	theme.set_color("font_focus_color", "PrimaryButton", AMBER)
 
 	theme.set_type_variation("DangerButton", button)
-	theme.set_stylebox("normal", "DangerButton", box(PANEL_2, FAIL.darkened(0.4), 1, 3, pad))
-	theme.set_stylebox("hover", "DangerButton", box(PANEL_3, FAIL, 1, 3, pad))
+	theme.set_stylebox("normal", "DangerButton", box(PANEL_2, FAIL.darkened(0.4), 1, 7, pad))
+	theme.set_stylebox("hover", "DangerButton", box(PANEL_3, FAIL, 1, 7, pad))
 	theme.set_color("font_color", "DangerButton", FAIL)
 	theme.set_color("font_hover_color", "DangerButton", FAIL.lightened(0.2))
 
@@ -198,14 +199,14 @@ static func _buttons(theme: Theme) -> void:
 
 
 static func _panels(theme: Theme) -> void:
-	var panel := box(Color(PANEL, 0.94), LINE, 1, 3, Vector2(14, 10))
+	var panel := box(Color(PANEL, 0.94), LINE, 1, 8, Vector2(14, 10))
 	theme.set_stylebox("panel", "PanelContainer", panel)
 	theme.set_stylebox("panel", "Panel", panel)
 	var variations := {
-		"Card": box(PANEL_2, LINE, 1, 3, Vector2(12, 9)),
-		"Sunken": box(Color("#0c0907"), LINE_SOFT, 1, 3, Vector2(10, 8)),
-		"Overlay": _shadowed(box(Color(PANEL, 0.98), AMBER_DIM, 1, 4, Vector2(20, 16))),
-		"Header": box(Color(PANEL, 0.94), LINE, 1, 3, Vector2(16, 8)),
+		"Card": box(PANEL_2, LINE, 1, 8, Vector2(14, 11)),
+		"Sunken": box(Color("#0c0907"), LINE_SOFT, 1, 8, Vector2(12, 10)),
+		"Overlay": _shadowed(box(Color(PANEL, 0.98), AMBER_DIM, 1, 10, Vector2(22, 18))),
+		"Header": box(Color(PANEL, 0.94), LINE, 1, 8, Vector2(16, 10)),
 		"Chip": box(PANEL_3, LINE, 1, 3, Vector2(8, 4)),
 	}
 	for variation: String in variations:

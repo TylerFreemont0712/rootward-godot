@@ -1,0 +1,22 @@
+{
+  "id": "frost-ledger",
+  "name": "Frost Ledger",
+  "rarity": "uncommon",
+  "icon": "frost-ledger",
+  "summary": "Frost bolts gain 50% multiplier; weaknesses take 25% more damage.",
+  "flavor": "The cold finds the weak seam.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "element",
+        "element": "frost"
+      },
+      "factor": 1.5
+    },
+    {
+      "kind": "weak-bonus",
+      "add": 0.25
+    }
+  ]
+}

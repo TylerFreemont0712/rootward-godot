@@ -4,7 +4,7 @@
       --python pipeline/blender/export_character.py -- <id>
 
 Reads `pipeline/characters/<id>/animation.json` and writes `game/characters/<id>/<id>.glb`. Emberfox clips are baked
-from Mixamo take ranges; Tamamo's hand-keyed actions are exported as named NLA tracks. Godot imports the result and
+from Mixamo take ranges; a model's hand-keyed actions are exported as named NLA tracks. Godot imports the result and
 `game/characters/character.gd` puts it on the stage.
 
 - **Clips, not takes.** Each clip (`idle-breathe`, `cast-light`, ...) is baked from its take's frames [first, last] into
@@ -14,7 +14,7 @@ from Mixamo take ranges; Tamamo's hand-keyed actions are exported as named NLA t
   `concept` UV, by a `front` mask (clean.py in the old repo made them). glTF cannot carry a mix node, so the base colour
   goes out as a vertex colour with the mask in its alpha, the drawing as the base colour texture on that UV, and the
   toon shader in Godot mixes them exactly as Blender did. The face keeps the drawing's full resolution.
-- **Bones as they are.** Tamamo's detailed 2D-plane armature, or Emberfox's Mixamo rig with spring bones.
+- **Bones as they are.** A hand-keyed armature, or Emberfox's Mixamo rig with spring bones.
 """
 
 from __future__ import annotations

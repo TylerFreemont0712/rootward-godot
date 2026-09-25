@@ -37,6 +37,7 @@ static func shard(
 		return Ui.panel(body, "Card")
 	body.custom_minimum_size.x = 300
 	listing.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	listing.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	return Ui.panel(Ui.hbox([body, listing], 14), "Card")
 
 
@@ -55,7 +56,7 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 	rich.fit_content = true
 	rich.scroll_active = false
 	rich.autowrap_mode = TextServer.AUTOWRAP_OFF
-	rich.add_theme_font_size_override("normal_font_size", 13)
+	rich.add_theme_font_size_override("normal_font_size", 15)
 	rich.text = "\n".join(painted)
 	rich.mouse_filter = Control.MOUSE_FILTER_PASS
 	var scroll := Ui.scroll(rich, true)

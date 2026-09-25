@@ -15,7 +15,14 @@ static func create() -> OptionsPanel:
 func _build() -> void:
 	custom_minimum_size = Vector2(620, 0)
 	var column := Ui.vbox([Ui.hbox([Ui.label("Options", "Heading"), Ui.spacer(), Ui.button("Close", _close)])], 14)
-	column.add_child(_row("Show each cast running as code", _speeds()))
+	column.add_child(Ui.tint(Ui.label("BATTLE PRESENTATION", "Faint"), UiTheme.TEAL))
+	column.add_child(
+		_row(
+			"Code playback speed",
+			_speeds(),
+			"The code plays on the work surface below the arena before the spell fires."
+		)
+	)
 	column.add_child(
 		_row(
 			"Show what a spell will do before you cast it",
@@ -26,6 +33,7 @@ func _build() -> void:
 	column.add_child(
 		_row("Shake the stage on heavy hits", _on_off(Settings.shake, func(on: bool) -> void: Settings.shake = on))
 	)
+	column.add_child(Ui.tint(Ui.label("AUDIO", "Faint"), UiTheme.TEAL))
 	column.add_child(_row("Music", _slider(Settings.music_volume, _set_music)))
 	column.add_child(_row("Sounds", _slider(Settings.sound_volume, _set_sound)))
 	add_child(column)

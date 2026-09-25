@@ -1,0 +1,18 @@
+{
+  "id": "twin-lanterns",
+  "name": "Twin Lanterns",
+  "rarity": "uncommon",
+  "icon": "twin-lanterns",
+  "summary": "Bolts in a volley with 2 different elements gain 60% multiplier.",
+  "flavor": "Two lights reveal more than one.",
+  "effects": [
+    {
+      "kind": "conditional-mult",
+      "when": {
+        "kind": "elements",
+        "count": 2
+      },
+      "factor": 1.6
+    }
+  ]
+}

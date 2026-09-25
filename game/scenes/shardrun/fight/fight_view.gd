@@ -32,6 +32,9 @@ var _incoming: Label
 var _end_turn: Button
 var _log: RichTextLabel
 var _code: CodeView
+var _bottom: HBoxContainer
+var _work_area: Control
+var _surface: Control
 ## The Shardrun's hand and card slots, in a deck run; null in Spellforge.
 var _table: DeckTable
 
@@ -58,18 +61,35 @@ func _build() -> void:
 		for card: SpellCard in cards.values():
 			card.cast_pressed.connect(func(spell_id: String) -> void: _ask({"type": "cast", "spell_id": spell_id}))
 			card.code_pressed.connect(_explore)
-		bottom = Ui.hbox([_hero_panel(), _table], 10)
+		_work_area = _table
+		bottom = Ui.hbox([_hero_panel(), _make_surface(_work_area)], 10)
 	else:
-		bottom = Ui.hbox([_hero_panel(), _spellbook(state)], 10)
+		_work_area = _spellbook(state)
+		bottom = Ui.hbox([_hero_panel(), _make_surface(_work_area)], 10)
 		# The spellbook takes the height its cards need (two to a row), and the stage takes the rest.
 		var rows := ceili((state.spells as Array).size() / 2.0)
 		bottom.custom_minimum_size.y = maxf(250.0, 20.0 + rows * 168.0)
+	_bottom = bottom
 	add_child(bottom)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var boss: bool = state.battle.kind == "boss"
 	stage.set_backdrop(layer.get("boss_backdrop", layer.backdrop) if boss else layer.backdrop)
 	stage.set_foes(state.battle.foes, session.catalog, true)
 	show_state(state)
+
+
+func _make_surface(content: Control) -> Control:
+	_surface = Control.new()
+	_surface.clip_contents = true
+	_surface.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_surface.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_surface.custom_minimum_size = content.get_combined_minimum_size()
+	_surface.add_child(content)
+	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	content.minimum_size_changed.connect(
+		func() -> void: _surface.custom_minimum_size = content.get_combined_minimum_size()
+	)
+	return _surface
 
 
 func _hero_panel() -> Control:
@@ -90,7 +110,9 @@ func _hero_panel() -> Control:
 	_log.add_theme_font_size_override("normal_font_size", 13)
 	_log.custom_minimum_size = Vector2(0, 60)
 	var integrity := Ui.hbox([Ui.label("INTEGRITY", "Faint"), _integrity_bar, _integrity], 8)
-	var column := Ui.vbox([integrity, Ui.hbox([_block, Ui.spacer(), _mana]), _turn, _incoming, _end_turn, _log], 6)
+	var column := Ui.vbox([integrity, Ui.hbox([_block, Ui.spacer(), _mana]), _turn, _incoming], 6)
+	column.add_child(_end_turn)
+	column.add_child(_log)
 	var panel := Ui.panel(column, "")
 	panel.custom_minimum_size.x = 360
 	return panel
@@ -140,6 +162,8 @@ func _show_numbers(numbers: Dictionary) -> void:
 	_integrity_bar.value = int(numbers.integrity)
 	_integrity.text = "%d/%d" % [int(numbers.integrity), int(numbers.integrity_max)]
 	_block.text = "◈ %d block" % int(numbers.block)
+	var mana_max := ShardrunRules.mana_per_turn(_state, session.catalog)
+	_mana.text = "%s  %d/%d mana" % [_pips(int(numbers.mana), mana_max), int(numbers.mana), mana_max]
 
 
 static func _pips(mana: int, most: int) -> String:
@@ -173,7 +197,7 @@ func present(result: Dictionary) -> void:
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)
 		var view := _code_view(spell, replay.run, "cast")
 		await view.finished
-		_close_code_soon(view)
+		_close_code(view)
 	await player.play(result.state.log)
 	_write_log(player.lines)
 
@@ -184,8 +208,7 @@ func _explore(spell_id: String) -> void:
 		return
 	var view := _code_view(spell, _previews.get(spell_id, {}), "explore")
 	await view.finished
-	if is_instance_valid(view):
-		view.queue_free()
+	_close_code(view)
 
 
 func _code_view(spell: Dictionary, run: Dictionary, mode: String) -> CodeView:
@@ -193,26 +216,21 @@ func _code_view(spell: Dictionary, run: Dictionary, mode: String) -> CodeView:
 		_code.queue_free()
 	var base := int(session.catalog.balance.base_bolt_power)
 	_code = CodeView.create(session.state.language, spell, session.catalog.shards, base, run, mode, Settings.code_speed)
-	stage.add_child(_code)
-	# Between the Maintainer and the foes, as wide as the gap allows (never narrower than 720, so short lines stay
-	# whole); with several foes it may cover the nearest while the code plays. It leaves before the bolts fly.
-	var left := stage.hero.position.x + stage.hero.size.x + 16.0
-	var right := stage.size.x - 16.0
-	for view: FoeView in stage.foes.values():
-		right = minf(right, view.position.x - 16.0)
-	var width := clampf(right - left, 720.0, 1000.0)
-	width = minf(width, stage.size.x - left - 16.0)
-	_code.position = Vector2(left, 12)
-	_code.size = Vector2(width, stage.size.y - 24)
+	# Keep the lower work surface's measured height while its contents change. A changing minimum height used to
+	# resize the arena during a cast, which looked like the camera slingshotting before the effect landed.
+	_bottom.custom_minimum_size.y = maxf(_bottom.size.y, _bottom.get_combined_minimum_size().y)
+	_work_area.hide()
+	_surface.add_child(_code)
+	_code.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	return _code
 
 
-## A finished cast's code stays up a moment with its score, then fades while the bolts fly.
-func _close_code_soon(view: CodeView) -> void:
-	var tween := view.create_tween()
-	tween.tween_interval(0.5)
-	tween.tween_property(view, "modulate", Color(1, 1, 1, 0), 0.4)
-	tween.tween_callback(view.queue_free)
+## Code lives on the work surface below the stage. Restore the cards before the spell animation begins.
+func _close_code(view: CodeView) -> void:
+	if is_instance_valid(view):
+		_surface.remove_child(view)
+		view.queue_free()
+	_work_area.show()
 
 
 func _write_log(entries: Array[Dictionary]) -> void:
@@ -243,7 +261,10 @@ func _ask(command: Dictionary) -> void:
 
 func _on_stage_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and (event as InputEventMouseButton).pressed and busy:
-		stage.fast = true
+		if _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
+			_code.skip()
+		else:
+			stage.fast = true
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -251,7 +272,10 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if key == null or not key.pressed or key.echo:
 		return
 	if key.keycode == KEY_SPACE and busy:
-		stage.fast = true
+		if _code != null and is_instance_valid(_code) and _code.mode == "cast" and _code.is_inside_tree():
+			_code.skip()
+		else:
+			stage.fast = true
 		return
 	if busy:
 		return
