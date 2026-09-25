@@ -51,7 +51,7 @@ static var _loops: Dictionary = {}
 
 ## A picture by id. A WebP (the painted, high-resolution backgrounds) wins over a PNG of the same name.
 static func texture(id: String) -> Texture2D:
-	for extension: String in [".webp", ".png"]:
+	for extension: String in [".webp", ".png", ".svg"]:
 		var path := ROOT + id + extension
 		if ResourceLoader.exists(path):
 			return load(path) as Texture2D

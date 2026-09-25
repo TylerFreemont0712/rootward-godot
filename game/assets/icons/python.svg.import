@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3a0r463q0vpv"
-path="res://.godot/imported/strike-none-sheet.webp-7c3f8581b655d771aedc3b7efd991069.ctex"
+uid="uid://bgqfwsa7itt1a"
+path="res://.godot/imported/python.svg-7f5dc7d032867012ef6203af22edd458.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/fx/spell/strike-none-sheet.webp"
-dest_files=["res://.godot/imported/strike-none-sheet.webp-7c3f8581b655d771aedc3b7efd991069.ctex"]
+source_file="res://assets/icons/python.svg"
+dest_files=["res://.godot/imported/python.svg-7f5dc7d032867012ef6203af22edd458.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

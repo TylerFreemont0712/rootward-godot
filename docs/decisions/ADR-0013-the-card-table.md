@@ -47,3 +47,16 @@ beside the numbers; a `.log` button instead of the scrolling log; a wider code p
 - Card pictures are still the old shards' icons in the frame's window; cards of their own can replace them one by one
   without touching the frame.
 - The hand's lower edge is off-screen by design, so the fight screen drops its bottom margin.
+
+## Amended (2026-09-26, after the first play)
+
+- The hand rests whole on screen (its cards no longer run off the bottom edge) and keeps clear of the piles when fanned.
+- The Program is a file: `main.py` or `main.js`, its button `py main.py` or `node main.js` with the language's mark.
+  Its name, price and hint moved into the column beside its cards, which gave the hand its height back.
+- The Maintainer's Integrity, block and mana stand in a small plate over them on the stage, and what the foes will deal
+  over the foes; in a fight the header shows the turn where its Integrity bar was. The panel keeps a larger portrait,
+  End turn and `.log`, and is narrower, so the table and the code (now 780 wide) have more room.
+- The paradigm's colour marks the header's `SHARDRUN / PARADIGM`, not the code panel's frame.
+- Fights are calmer: no impact frames, no whole-stage flashes, and softer hit and cast flashes. The heavy cast's
+  strikes (lightning and the like, called down on each foe) are gone; the spell animations that replace them are
+  ADR-0014's.

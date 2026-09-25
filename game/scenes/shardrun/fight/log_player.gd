@@ -69,10 +69,9 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var heavy := bolts.size() >= 4 or _total(bolts) >= 30
 	stage.hero.play("cast-heavy" if heavy else "cast-light")
 	stage.cast_flash(element, heavy)
-	stage.hero.flash(Color(UiTheme.element(element), 0.6), 0.4)
+	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
 	Sound.play("sfx-cast-" + element if element != "none" else "sfx-cast", 0.8)
-	# A heavy spell gathers: the stage darkens and a vortex turns at the hand, and its blows are called down on the
-	# foes (strikes) instead of flying.
+	# A heavy spell gathers: the stage darkens and a vortex turns at the hand.
 	if heavy:
 		stage.dim(0.38, 0.3)
 		stage.vortex(element, 0.62)
@@ -96,14 +95,14 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 			continue
 		var flight := _flight(hit)
 		longest = flight
-		_launch(hit, flight, volley, heavy)
+		_launch(hit, flight, volley)
 		await stage.wait(gap)
 	await stage.wait(longest + 220.0)
 	if heavy:
 		stage.dim(0.0, 0.4)
 
 
-func _launch(hit: Dictionary, flight: float, volley: Array, heavy := false) -> void:
+func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 	var from := stage.hero.hand_point()
 	if hit.kind == "ward":
 		stage.fly(
@@ -113,9 +112,6 @@ func _launch(hit: Dictionary, flight: float, volley: Array, heavy := false) -> v
 	var view: FoeView = stage.foes.get(hit.get("foe", ""))
 	if view == null:
 		_land(hit, volley)
-		return
-	if heavy:
-		stage.strike(view, hit.get("element", "none"), _land.bind(hit, volley))
 		return
 	stage.fly(from, view.target_point(), hit.get("element", "none"), flight, _land.bind(hit, volley))
 
@@ -220,7 +216,7 @@ func _one(entry: Dictionary) -> void:
 		"timeout":
 			stage.banner("Time limit exceeded", UiTheme.FAIL, 1000.0)
 			stage.popup(stage.hero.hand_point(), "%d ops" % int(entry.amount), UiTheme.FAIL, 28)
-			stage.hero.flash(Color(UiTheme.FAIL, 0.6))
+			stage.hero.flash(Color(UiTheme.FAIL, 0.3))
 			shown.mana -= int(entry.get("cost", 0))
 			numbers_changed.emit()
 			Sound.play("sfx-fail", 0.7)
@@ -232,7 +228,7 @@ func _one(entry: Dictionary) -> void:
 		"curse":
 			shown.integrity = maxi(0, int(shown.integrity) - int(entry.amount))
 			stage.popup(stage.hero.body_point(), "-%d" % int(entry.amount), UiTheme.SHARD, 30)
-			stage.hero.flash(Color(UiTheme.SHARD, 0.7))
+			stage.hero.flash(Color(UiTheme.SHARD, 0.35))
 			Sound.play("sfx-curse", 0.7)
 			numbers_changed.emit()
 			await stage.wait(520.0)
@@ -273,7 +269,7 @@ func _enemy(entry: Dictionary) -> void:
 	var at := stage.hero.body_point()
 	if amount > 0:
 		stage.hero.play("hurt")
-		stage.hero.flash(Color(UiTheme.FAIL, 0.8))
+		stage.hero.flash(Color(UiTheme.FAIL, 0.4))
 		stage.popup(at, "-%d" % amount, UiTheme.FAIL, 36)
 		var weight := float(amount) / maxf(1.0, float(shown.integrity_max))
 		stage.shake(weight * 3.0)

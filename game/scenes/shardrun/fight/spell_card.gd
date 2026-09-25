@@ -16,6 +16,7 @@ var _preview: Label
 var _cast: Button
 var _code: Button
 var _chain: Control
+var _header: HBoxContainer
 var _side: VBoxContainer
 var _busy := false
 var _spent := false
@@ -36,6 +37,7 @@ func _build(index: int, catalog: Dictionary) -> void:
 	var badge := Ui.panel(Ui.label(str(index), "Faint"), "Chip")
 	_cost = Ui.tint(Ui.label("", "Subheading"), UiTheme.SHARD) as Label
 	var header := Ui.hbox([badge, Ui.label(spell.name, "Subheading"), Ui.spacer(), _cost], 8)
+	_header = header
 	var chain := Ui.flow([], 4)
 	chain.add_child(Ui.tint(Ui.label("●", "Muted"), UiTheme.ELEMENTS.none))
 	for shard_id: String in spell.shards:
@@ -63,18 +65,32 @@ func _build(index: int, catalog: Dictionary) -> void:
 	add_child(Ui.vbox([header, chain, _side], 8))
 
 
-## Lays the spell out in a row: its cards on the left, and what it will do and its button in a column beside them.
-func side_by_side() -> void:
+## Lays the spell out in a row: its cards on the left, and beside them one column with its name and price, what it will
+## do, and its button. `note` (a hint, say) goes at the foot of that column.
+func side_by_side(note: Control = null) -> void:
 	var column := _chain.get_parent()
 	var row := Ui.hbox([], 16)
 	column.add_child(row)
 	for part: Control in [_chain, _side]:
 		part.reparent(row)
+	_header.reparent(_side)
+	_side.move_child(_header, 0)
+	if note != null:
+		_side.add_child(note)
 	_chain.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	_side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_side.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	_side.custom_minimum_size.x = 220
+	_side.custom_minimum_size.x = 240
 	_cast.custom_minimum_size.y = 46
+
+
+## The run button reads as running the file (`label`), with the language's own mark as its icon.
+func set_runner(label: String, icon: Texture2D) -> void:
+	run_label = label
+	_cast.text = label
+	_cast.icon = icon
+	_cast.add_theme_constant_override("icon_max_width", 22)
+	_cast.add_theme_constant_override("h_separation", 10)
 
 
 ## A Shardrun spell shows card slots instead of its chain of shards (DeckTable fills them).

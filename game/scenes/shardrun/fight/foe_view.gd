@@ -146,9 +146,10 @@ func top_point() -> Vector2:
 
 ## A white flash and a shake: it was hit.
 func recoil(strength := 1.0) -> void:
-	sprite.modulate = Color(3.0, 3.0, 3.0)
+	# A brief, soft brightening: a hit reads from the shake and the number, not from a white-out.
+	sprite.modulate = Color(1.45, 1.35, 1.35)
 	var tween := create_tween()
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.18)
+	tween.tween_property(sprite, "modulate", Color.WHITE, 0.14)
 	var shake := create_tween()
 	var x := sprite.position.x
 	var push := 6.0 * strength

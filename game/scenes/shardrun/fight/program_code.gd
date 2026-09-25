@@ -31,14 +31,13 @@ static func create(run_session: ShardrunSession) -> ProgramCode:
 func _build() -> void:
 	var paradigm := ProgramDraft.paradigm_of(session.catalog, String(session.state.get("paradigm", "")))
 	colour = Color(paradigm.get("colour", UiTheme.SHARD.to_html()))
-	var look := UiTheme.box(Color("#110c16").lerp(colour, 0.04), colour.darkened(0.35), 2, 10, Vector2(12, 10))
-	look.shadow_color = Color(colour, 0.18)
-	look.shadow_size = 10
-	add_theme_stylebox_override("panel", look)
+	# A plain frame: the paradigm's colour is in the header above, and in the runes the code is written with.
+	add_theme_stylebox_override("panel", UiTheme.box(Color("#110d12"), UiTheme.LINE, 2, 10, Vector2(12, 10)))
 	size_flags_vertical = Control.SIZE_EXPAND_FILL
-	custom_minimum_size.x = 720
-	_title = Ui.tint(Ui.label("PROGRAM", "Subheading"), colour) as Label
-	var school := Ui.label(String(paradigm.get("name", "")).to_upper(), "Faint")
+	custom_minimum_size.x = 780
+	var file: String = (session.state.spells as Array)[0].name
+	_title = Ui.tint(Ui.label(file, "Subheading"), UiTheme.TEXT) as Label
+	var school := Ui.label("", "Faint")
 	_speed = Ui.tint(Ui.label("", "Subheading"), colour.lightened(0.25)) as Label
 	_ops = Ui.label("", "Muted")
 	_race = RaceBar.new()

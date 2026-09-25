@@ -174,10 +174,11 @@ func _layout() -> void:
 		_frame.position = Vector2.ZERO
 		_frame.size = card_size
 	var window := box("art", card_size)
-	var side := minf(window.size.x, window.size.y) * 0.78
+	# The picture sits a little above the window's middle, well clear of the speed plate under the window.
+	var side := minf(window.size.x, window.size.y) * 0.64
 	_art.custom_minimum_size = Vector2(side, side)
 	_art.size = Vector2(side, side)
-	_art.position = window.get_center() - Vector2(side, side) * 0.5
+	_art.position = window.get_center() - Vector2(side, side) * 0.5 - Vector2(0, window.size.y * 0.05)
 	# The name may stand a little taller than the banner: its outline keeps it readable over the frame.
 	var banner := box("banner", card_size).grow_individual(0, card_size.y * 0.012, 0, card_size.y * 0.012)
 	_place(_name, Rect2(banner.position + Vector2(banner.size.x * 0.07, 0), banner.size * Vector2(0.9, 1.0)))

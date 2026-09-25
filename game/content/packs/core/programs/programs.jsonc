@@ -5,7 +5,8 @@
 {
   // What every program starts from, before its first card.
   "seed": [{ "power": 3, "element": "none" }],
-  "program": { "name": "Program", "capacity": 5 },
+  // The Program is a file: its name, and the extension the run's language gives it (main.py, main.js).
+  "program": { "name": "main", "capacity": 5 },
   // Work, in operations, above which a program times out: it lands nothing, and every foe acts. Relics may raise it.
   "budget": 4096,
   // The strongest a bolt can be, and how many a volley can hold (more are dropped as fizzled).

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Two snakes, blue and yellow, each the other turned half round: after the Python logo, simplified. -->
+  <path fill="#3776ab" d="M31 4C20 4 18 9 18 14v6h14v2H12C6 22 3 27 3 33s3 11 9 11h5v-7c0-5 4-9 9-9h12c4 0 7-3 7-7v-7c0-5-4-10-14-10z"/>
+  <circle cx="24.5" cy="11.5" r="2.6" fill="#ffffff"/>
+  <g transform="rotate(180 32 32)">
+    <path fill="#ffd43b" d="M31 4C20 4 18 9 18 14v6h14v2H12C6 22 3 27 3 33s3 11 9 11h5v-7c0-5 4-9 9-9h12c4 0 7-3 7-7v-7c0-5-4-10-14-10z"/>
+    <circle cx="24.5" cy="11.5" r="2.6" fill="#ffffff"/>
+  </g>
+</svg>

@@ -16,7 +16,6 @@ var _integrity_bar: ProgressBar
 var _integrity: Label
 var _block: Label
 var _mana: Label
-var _turn: Label
 var _incoming: Label
 var _end_turn: Button
 ## Everything the rules logged in this fight, each with the turn it happened on, for the ".log" window.
@@ -93,29 +92,46 @@ func _make_surface(content: Control) -> Control:
 	return _surface
 
 
+## The Maintainer's panel: their portrait, End turn, and the fight's log. Their numbers stand over them on the stage
+## (`_status`), and what the foes will deal over the foes.
 func _hero_panel() -> Control:
-	_integrity_bar = ProgressBar.new()
-	_integrity_bar.show_percentage = false
-	_integrity_bar.custom_minimum_size = Vector2(0, 14)
-	_integrity_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_integrity = Ui.label("", "")
-	_block = Ui.tint(Ui.label("", ""), UiTheme.TEAL) as Label
-	_mana = Ui.tint(Ui.label("", ""), UiTheme.SHARD) as Label
-	_turn = Ui.label("", "Muted")
-	_incoming = Ui.tint(Ui.label("", "Muted"), UiTheme.FAIL.lightened(0.15)) as Label
 	_end_turn = Ui.button("End turn  [E]", func() -> void: _ask({"type": "end-turn"}), "PrimaryButton")
-	var integrity := Ui.hbox([Ui.label("INTEGRITY", "Faint"), Ui.spacer(), _integrity], 8)
-	var numbers := Ui.vbox([integrity, _integrity_bar, _block, _mana, _turn, _incoming], 4)
-	numbers.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var log_button := Ui.button(".log", func() -> void: BattleLog.open(self, _entries))
 	log_button.tooltip_text = "Everything that happened in this fight, turn by turn."
 	log_button.add_theme_font_size_override("font_size", 13)
 	log_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	var column := Ui.vbox([Ui.hbox([_avatar(), numbers], 12), _end_turn, Ui.spacer(), log_button], 8)
+	var column := Ui.vbox([_avatar(), _end_turn, Ui.spacer(), log_button], 8)
 	(column.get_child(2) as Control).size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := Ui.panel(column, "")
-	panel.custom_minimum_size.x = 340
+	panel.custom_minimum_size.x = 214
+	stage.set_status(_status())
+	_incoming = Ui.tint(Ui.label("", "Subheading"), UiTheme.FAIL.lightened(0.2)) as Label
+	_incoming.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
+	_incoming.add_theme_constant_override("outline_size", 6)
+	stage.set_incoming(_incoming)
 	return panel
+
+
+## Integrity, block and mana in a small plate over the Maintainer's head, where the eye already is.
+func _status() -> Control:
+	_integrity_bar = ProgressBar.new()
+	_integrity_bar.show_percentage = false
+	_integrity_bar.custom_minimum_size = Vector2(150, 12)
+	_integrity_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_integrity_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	_integrity = Ui.label("", "")
+	_block = Ui.tint(Ui.label("", ""), UiTheme.TEAL) as Label
+	_mana = Ui.tint(Ui.label("", ""), UiTheme.SHARD.lightened(0.15)) as Label
+	for label: Label in [_integrity, _block, _mana]:
+		label.add_theme_font_size_override("font_size", 14)
+	var rows := Ui.vbox([Ui.hbox([_integrity_bar, _integrity], 6), Ui.hbox([_block, Ui.spacer(), _mana], 10)], 2)
+	var plate := Ui.panel(rows, "")
+	plate.add_theme_stylebox_override(
+		"panel", UiTheme.box(Color(0.05, 0.04, 0.06, 0.78), UiTheme.LINE, 1, 8, Vector2(10, 6))
+	)
+	plate.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	plate.custom_minimum_size.x = 250
+	return plate
 
 
 ## The Maintainer's portrait in the look they wear: a painted bust (portraits/<skin>), or the skin's own small face.
@@ -124,7 +140,7 @@ func _avatar() -> Control:
 	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	_portrait.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	_portrait.custom_minimum_size = Vector2(128, 128)
+	_portrait.custom_minimum_size = Vector2(176, 176)
 	_portrait_name = Ui.tint(Ui.label("", "Faint"), UiTheme.SHARD.lightened(0.2)) as Label
 	_portrait_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var frame := PanelContainer.new()
@@ -173,11 +189,9 @@ func show_state(state: Dictionary) -> void:
 	if battle.is_empty():
 		return
 	_show_numbers(LogPlayer.numbers_of(state))
-	var mana_max := ShardrunRules.mana_per_turn(state, session.catalog)
-	_mana.text = "%s  %d/%d mana" % [_pips(int(battle.mana), mana_max), int(battle.mana), mana_max]
-	_turn.text = "Turn %d · %s" % [int(battle.turn), battle.kind]
 	var incoming := ShardrunViews.incoming(state)
-	_incoming.text = "Incoming: %d damage" % incoming if incoming > 0 else ""
+	_incoming.text = "⚔ %d incoming" % incoming if incoming > 0 else ""
+	stage.place_status()
 	stage.show_foes(battle.foes)
 	if _table != null:
 		_table.show_table(state)
@@ -194,9 +208,9 @@ func _show_numbers(numbers: Dictionary) -> void:
 	_integrity_bar.max_value = maxi(1, int(numbers.integrity_max))
 	_integrity_bar.value = int(numbers.integrity)
 	_integrity.text = "%d/%d" % [int(numbers.integrity), int(numbers.integrity_max)]
-	_block.text = "◈ %d block" % int(numbers.block)
+	_block.text = "◈ %d" % int(numbers.block)
 	var mana_max := ShardrunRules.mana_per_turn(_state, session.catalog)
-	_mana.text = "%s  %d/%d mana" % [_pips(int(numbers.mana), mana_max), int(numbers.mana), mana_max]
+	_mana.text = "%s %d/%d" % [_pips(int(numbers.mana), mana_max), int(numbers.mana), mana_max]
 
 
 static func _pips(mana: int, most: int) -> String:

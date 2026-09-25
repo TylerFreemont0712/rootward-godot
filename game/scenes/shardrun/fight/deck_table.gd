@@ -41,10 +41,14 @@ func _build() -> void:
 		var card := SpellCard.create(index + 1, spell, session.catalog)
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if (session.state.spells as Array).size() == 1:
-			# One spell (a program run's Program): its cards on the left, what it will do and its run button beside them.
-			card.side_by_side()
+			# One spell (a program run's file): its cards on the left, what it will do and its run button beside them.
+			_hint = Ui.label("", "Faint", true)
+			_hint.add_theme_font_size_override("font_size", 12)
+			card.side_by_side(_hint)
 		if session.state.get("playstyle") == "program":
-			card.run_label = "▶  python program.py" if session.state.language == "python" else "▶  node program.js"
+			var python: bool = session.state.language == "python"
+			var run := "%s %s" % ["py" if python else "node", spell.name]
+			card.set_runner(run, Art.texture("icons/python" if python else "icons/javascript"))
 		card.gui_input.connect(_on_spell_input.bind(spell.id))
 		var slots := Ui.hbox([], 6)
 		card.set_slots(slots)
@@ -52,10 +56,11 @@ func _build() -> void:
 		cards[spell.id] = card
 		_spell_row.add_child(card)
 	add_child(_spell_row)
-	_hint = Ui.label("", "Faint")
-	_hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	_hint.clip_text = true
-	add_child(_hint)
+	if _hint == null:
+		_hint = Ui.label("", "Faint")
+		_hint.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		_hint.clip_text = true
+		add_child(_hint)
 	_draw_count = Ui.label("", "Faint")
 	_discard_count = Ui.label("", "Faint")
 	_hand = HandView.new()
@@ -200,11 +205,17 @@ func _card(id: String, at: Dictionary, size_kind: CardFace.Size, summaries: bool
 
 
 func _hint_text() -> String:
+	var spell := _spell(target)
+	if session.state.get("playstyle") == "program":
+		# Short: it sits in the file's own column.
+		var file: String = session.state.spells[0].name
+		if (_table.hand as Array).is_empty():
+			return "Hand empty: run %s, or end the turn." % file
+		if spell.is_empty():
+			return "%s is full: run it, or end the turn." % file
+		return "Click or drag cards into %s; they run left to right. Right-click holds one." % file
 	if (_table.hand as Array).is_empty():
 		return "Your hand is empty. Cast what you built, or end the turn to draw a new hand."
-	var spell := _spell(target)
-	if spell.is_empty() and session.state.get("playstyle") == "program":
-		return "Your Program is full: run it, or end the turn. Right-click a card to hold it for next turn."
 	if spell.is_empty():
 		return "Your spell is full or spent: cast it, or end the turn. Right-click a card to hold it for next turn."
 	return (

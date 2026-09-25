@@ -98,22 +98,8 @@ func _flight() -> void:
 	_label("ward", Vector2(30, 890))
 
 
-## Each element's strike in four moments (falling or rising, the impact, holding, leaving), then a wave and a vortex.
+## A wave and a vortex (the strikes called down from the sky were retired: they read as pictures, not motion).
 func _strikes() -> void:
-	var phases: Array[float] = [0.06, 0.2, 0.4, 0.7]
-	for column in ELEMENTS.size():
-		var element: String = ELEMENTS[column]
-		for row in phases.size():
-			var phase: float = phases[row]
-			# Four columns of elements, their moments side by side at half size.
-			var at := Vector2(130 + column * 460 + (row % 2) * 220, 330 + (row / 2) * 330)
-			_later(
-				CAPTURE - phase * 0.8,
-				func() -> void:
-					var fx := BattleFX.spawn(_stage, BattleFX.Kind.STRIKE, at, UiTheme.element(element), 0.8, element)
-					fx.scale = Vector2.ONE * 0.62
-			)
-		_label(element, Vector2(90 + column * 460, 20))
 	_later(
 		CAPTURE - 0.35 * 0.9,
 		func() -> void:

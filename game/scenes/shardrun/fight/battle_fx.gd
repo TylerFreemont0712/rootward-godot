@@ -6,7 +6,7 @@ extends Node2D
 ## of one shader (spell_sprite.gdshader: dissolve, reveal, wobble, shimmer) and a spray of sparkles, all moved by one
 ## timeline in `_animate`. Without them it is the older line art, drawn in `_draw`. Art is optional either way.
 
-enum Kind { WARD, CAST, BOLT, BURST, STRIKE, WAVE, VORTEX }
+enum Kind { WARD, CAST, BOLT, BURST, WAVE, VORTEX }
 
 const FOXFIRE_WARD := preload("res://assets/fx/foxfire-ward.png")
 const SPELL_SHADER := preload("res://scenes/shardrun/fight/spell_sprite.gdshader")
@@ -16,11 +16,8 @@ const BOLT_SIZE := 190.0
 const BURST_SIZE := 240.0
 const SEAL_SIZE := 210.0
 const WARD_SIZE := 300.0
-const STRIKE_SIZE := 440.0
 const WAVE_SIZE := 520.0
 const VORTEX_SIZE := 300.0
-## Where a strike's ground ring sits in its sprite (from the top), so the ring lands on the foe's feet.
-const STRIKE_GROUND := 0.86
 ## The sprites' colour for a spell with no element: the arcane violet the neutral bolts and bursts are drawn in.
 const ARCANE := Color("#b48cff")
 
@@ -44,9 +41,6 @@ var _trail: CPUParticles2D
 var _ribbon: SpellRibbon
 var _sprited := false
 var _finishing := false
-## Lightning drawn in code over a spark strike: jagged strokes from the sky, redrawn every few hundredths of a second.
-var _bolts: Array[PackedVector2Array] = []
-var _bolt_timer := 0.0
 ## Layers drawn from an animated sheet, by layer name: the sheet's facts ({frames, columns, fps, loop, rects}).
 var _animated: Dictionary = {}
 
@@ -153,20 +147,12 @@ func _process(delta: float) -> void:
 		return
 	if _sprited:
 		_animate(clampf(progress if kind == Kind.BOLT else elapsed / duration, 0.0, 1.0))
-		if kind == Kind.STRIKE and element == "spark":
-			_bolt_timer -= delta
-			if _bolt_timer <= 0.0:
-				_bolt_timer = 0.045
-				_bolts = _lightning()
-			queue_redraw()
 	else:
 		queue_redraw()
 
 
 func _draw() -> void:
 	if _sprited:
-		if kind == Kind.STRIKE and element == "spark":
-			_draw_lightning(clampf(elapsed / duration, 0.0, 1.0))
 		return
 	var t := clampf(progress if kind == Kind.BOLT else elapsed / duration, 0.0, 1.0)
 	var fade := 1.0 - smoothstep(0.62, 1.0, t)
@@ -233,31 +219,6 @@ func _build() -> bool:
 			motes.emission_sphere_radius = SEAL_SIZE * 0.55
 			motes.radial_accel_min = -520.0
 			motes.radial_accel_max = -380.0
-		Kind.STRIKE:
-			var strike := _element_sprite("strike")
-			if strike == null:
-				return false
-			var params := {"edge_colour": light, "glow": 1.15}
-			match element:
-				"fire":
-					params.merge({"wipe_dir": -1.0, "distort": 0.9, "flow": Vector2(0.0, 0.8)}, true)
-				"frost":
-					params.merge({"wipe_dir": -1.0, "grain_scale": 3.2, "edge_width": 0.05}, true)
-				_:
-					params.merge({"wipe_dir": 1.0, "shimmer": 0.3}, true)
-			_layer("glow", _soft_texture(), {"tint": Color(tint, 0.0)})
-			var impact_motif := SpellImpact.create(self, element, tint, 1.05)
-			impact_motif.z_index = 2
-			impact_motif.visible = false
-			get_tree().create_timer(_impact_time()).timeout.connect(func() -> void: impact_motif.visible = true)
-			_layer_of("strike", _element_name("strike"), params)
-			var debris := _sparkles(40, 0.7, true, 180.0, 520.0)
-			debris.direction = Vector2.UP
-			debris.spread = 70.0
-			debris.gravity = Vector2(0, 900)
-			debris.position = Vector2(0, -8)
-			get_tree().create_timer(_impact_time()).timeout.connect(func() -> void: debris.emitting = true)
-			debris.emitting = false
 		Kind.WAVE:
 			var wave := sprite("wave")
 			if wave == null:
@@ -329,28 +290,6 @@ func _animate(t: float) -> void:
 				-elapsed * 2.0,
 				{"reveal": smoothstep(0.1, 0.42, t), "dissolve": leave}
 			)
-		Kind.STRIKE:
-			var hit := _impact_time() / duration
-			var land := clampf(t / maxf(hit, 0.01), 0.0, 1.0)
-			var leave := smoothstep(0.5, 1.0, t)
-			var pop := 1.0
-			if element == "frost":
-				# Spikes erupt past their size and settle, then shatter.
-				pop = 1.0 + 0.18 * sin(clampf(t / (hit * 2.0), 0.0, 1.0) * PI)
-			var offset := Vector2(0, -STRIKE_SIZE * (STRIKE_GROUND - 0.5))
-			var flicker := 1.0 + (0.35 * sin(elapsed * 90.0) if element == "spark" else 0.0)
-			_shape(
-				"strike",
-				STRIKE_SIZE * pop,
-				0.0,
-				{"wipe": _out(land), "dissolve": leave, "glow": 1.15 * flicker},
-				offset
-			)
-			var flash := clampf((t - hit) / 0.25, 0.0, 1.0) if t >= hit else 0.0
-			var glow_alpha := (1.0 - flash) * 0.8 if t >= hit else 0.0
-			_shape(
-				"glow", 220.0 * lerpf(0.6, 1.5, flash), 0.0, {"tint": Color(tint.lerp(Color.WHITE, 0.5), glow_alpha)}
-			)
 		Kind.WAVE:
 			# A ring of the spell's colour runs out across the floor, laid flat under the foes.
 			# LEARN: squash the whole effect, not the spinning sprite: a squashed parent turns its child's spin into an
@@ -370,47 +309,6 @@ func _animate(t: float) -> void:
 			# The barrier gathers out of noise, shimmers while it holds, and crumbles away.
 			var gone := maxf(1.0 - smoothstep(0.0, 0.22, t), smoothstep(0.72, 1.0, t))
 			_shape("ward", WARD_SIZE * (1.0 + 0.02 * sin(elapsed * 8.0)), 0.0, {"dissolve": gone}, Vector2(118, 0))
-
-
-## When a strike reaches the ground: lightning is all but instant; a beam falls, a pillar or spikes rise.
-func _impact_time() -> float:
-	return 0.07 if element == "spark" else 0.2
-
-
-## Three jagged strokes from above the stage down to the ground ring, the first the brightest, with side branches.
-func _lightning() -> Array[PackedVector2Array]:
-	var strokes: Array[PackedVector2Array] = []
-	var top := Vector2(randf_range(-60, 60), -STRIKE_SIZE * 1.6)
-	for index in 3:
-		var stroke := PackedVector2Array()
-		var steps := 14
-		var start := top + Vector2(randf_range(-40, 40), 0) * index
-		for i in steps + 1:
-			var u := float(i) / steps
-			var jag := randf_range(-26.0, 26.0) * (1.0 - u * 0.6) * (1.0 if i < steps else 0.0)
-			stroke.append(start.lerp(Vector2.ZERO, u) + Vector2(jag, 0))
-		strokes.append(stroke)
-		# A branch off the main stroke, forking away and dying out.
-		if index == 0:
-			var from := stroke[randi_range(3, 8)]
-			var branch := PackedVector2Array([from])
-			var heading := Vector2(randf_range(-1.0, 1.0), 1.0).normalized()
-			for i in 5:
-				branch.append(branch[-1] + heading * 26.0 + Vector2(randf_range(-14, 14), 0))
-			strokes.append(branch)
-	return strokes
-
-
-func _draw_lightning(t: float) -> void:
-	var alive := 1.0 - smoothstep(0.28, 0.5, t)
-	if alive <= 0.0 or _bolts.is_empty():
-		return
-	for index in _bolts.size():
-		var main := index == 0
-		var width := 7.0 if main else 3.0
-		draw_polyline(_bolts[index], Color(tint, 0.35 * alive), width * 3.0, true)
-		draw_polyline(_bolts[index], Color(tint.lerp(Color.WHITE, 0.6), 0.9 * alive), width, true)
-		draw_polyline(_bolts[index], Color(1, 1, 1, alive), maxf(1.5, width * 0.35), true)
 
 
 ## A layer drawn from sprite `sprite_name`: its animated sheet when there is one (see _advance), else its picture.

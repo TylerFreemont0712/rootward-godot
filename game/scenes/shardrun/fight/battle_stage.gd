@@ -16,7 +16,6 @@ const FLOOR := 0.79
 ## Where the painted floor meets the characters' feet in an arena picture (a share of its height): the backdrop is
 ## placed so this line lies on FLOOR.
 const ART_FLOOR := 0.84
-const IMPACT := preload("res://scenes/shardrun/fight/impact_frame.gdshader")
 
 ## Every stage skips its waits and animations (tests and tools that drive the screens).
 static var instant := false
@@ -30,13 +29,14 @@ var foes: Dictionary = {}
 var _world: Control
 ## A guardian's name and health, in a wide bar across the top middle of the arena (boss fights only).
 var _boss_bar: Control
+## The Maintainer's numbers over their head, and what the foes will deal over the foes (FightView's).
+var _status: Control
+var _incoming: Control
 var _backdrop: TextureRect
 var _grade: _Grade
 var _shadows: _Shadows
 var _fx: Control
 var _shake_tween: Tween
-## A strike landed a moment ago: the next ones in the same volley skip the impact frame, so it stays a single beat.
-var _struck_recently := false
 
 
 func _init() -> void:
@@ -77,6 +77,41 @@ func set_backdrop(id: String) -> void:
 
 ## Replaces the foes with these (a new fight), each fading in.
 ## `boss`: the first foe is a guardian, its health shown in the bar at the top instead of under its feet.
+func set_status(plate: Control) -> void:
+	_status = plate
+	add_child(plate)
+	place_status.call_deferred()
+
+
+func set_incoming(label: Control) -> void:
+	_incoming = label
+	add_child(label)
+	place_status.call_deferred()
+
+
+## Stands the Maintainer's plate over their head and the foes' damage over the foes, clear of the guardian's bar.
+func place_status() -> void:
+	if _status != null and hero != null:
+		_status.size = _status.get_combined_minimum_size()
+		var x := hero.position.x + hero.size.x * 0.5 - _status.size.x * 0.5
+		_status.position = Vector2(
+			clampf(x, 8.0, size.x - _status.size.x - 8.0), maxf(8.0, hero.position.y - _status.size.y)
+		)
+	if _incoming == null or foes.is_empty():
+		return
+	_incoming.size = _incoming.get_combined_minimum_size()
+	var top := INF
+	var left := INF
+	var right := -INF
+	for view: FoeView in foes.values():
+		top = minf(top, view.position.y)
+		left = minf(left, view.position.x)
+		right = maxf(right, view.position.x + view.size.x)
+	var floor_of := 8.0 if _boss_bar == null else _boss_bar.position.y + _boss_bar.size.y + 6.0
+	var y := maxf(floor_of, top - _incoming.size.y - 4.0)
+	_incoming.position = Vector2((left + right) * 0.5 - _incoming.size.x * 0.5, y)
+
+
 func set_foes(foe_states: Array, catalog: Dictionary, entrance := false, boss := false) -> void:
 	for view: FoeView in foes.values():
 		view.queue_free()
@@ -135,6 +170,7 @@ func _layout() -> void:
 		index += 1
 	_shadows.feet = feet
 	_shadows.queue_redraw()
+	place_status()
 
 
 ## The arena picture covers the stage, placed so its painted floor line lies on the stage's floor line.
@@ -194,31 +230,6 @@ func burst(at: Vector2, element: String, scale_to := 1.4) -> void:
 	tween.chain().tween_callback(picture.queue_free)
 
 
-## A heavy spell's blow called down on a foe: lightning from the sky, a fire pillar, ice spikes or a beam of starlight
-## (the element's strike sprite), landing on its feet. `arrive` is called at the moment of impact.
-func strike(view: FoeView, element: String, arrive: Callable) -> void:
-	if fast or not BattleFX.has_sprite("strike", element):
-		arrive.call()
-		return
-	var colour := UiTheme.element(element)
-	var fx := BattleFX.spawn(_fx, BattleFX.Kind.STRIKE, view.foot_point(), colour, 0.8, element)
-	var impact_delay := 0.07 if element == "spark" else 0.2
-	var first := not _struck_recently
-	_struck_recently = true
-	get_tree().create_timer(0.5).timeout.connect(func() -> void: _struck_recently = false)
-	get_tree().create_timer(impact_delay).timeout.connect(
-		func() -> void:
-			if first:
-				impact(colour)
-			elif element == "spark":
-				flash(Color(1.0, 0.97, 0.8, 0.5), 0.16)
-			shake(0.45)
-			arrive.call()
-	)
-	if fx != null:
-		fx.z_index = 1
-
-
 ## A volley that hits several foes sends a wave across the floor under them.
 func sweep(points: Array[Vector2], element: String) -> void:
 	if fast or points.is_empty() or BattleFX.sprite("wave") == null:
@@ -237,39 +248,6 @@ func vortex(element: String, seconds: float) -> void:
 		return
 	var at := hero.hand_point()
 	BattleFX.spawn(_fx, BattleFX.Kind.VORTEX, at, UiTheme.element(element), seconds, element)
-
-
-## An anime impact frame: the stage drawn as an inverted silhouette on a flash of `colour` for a few frames. For the
-## blows that should feel too strong to see (a heavy strike landing).
-func impact(colour: Color, seconds := 0.07) -> void:
-	if fast:
-		return
-	var frame := ColorRect.new()
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var shading := ShaderMaterial.new()
-	shading.shader = IMPACT
-	shading.set_shader_parameter("flash", colour.lerp(Color.WHITE, 0.55))
-	frame.material = shading
-	_fx.add_child(frame)
-	get_tree().create_timer(seconds).timeout.connect(frame.queue_free)
-
-
-## The whole stage lit for an instant (lightning), its colour's alpha the strength.
-func flash(colour: Color, seconds := 0.2) -> void:
-	if fast:
-		return
-	var light := ColorRect.new()
-	light.color = colour
-	light.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	light.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var additive := CanvasItemMaterial.new()
-	additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
-	light.material = additive
-	_fx.add_child(light)
-	var tween := light.create_tween()
-	tween.tween_property(light, "modulate:a", 0.0, seconds)
-	tween.tween_callback(light.queue_free)
 
 
 ## The stage darkens while a heavy spell gathers (0 is none), and clears again.
@@ -339,9 +317,6 @@ func cast_flash(element: String, heavy := false) -> void:
 	var colour := UiTheme.element(element)
 	var seal := BattleFX.spawn(_fx, BattleFX.Kind.CAST, hero.hand_point(), colour, 0.82 if heavy else 0.68, element)
 	seal.scale = Vector2.ONE * (1.45 if heavy else 1.0)
-	if heavy:
-		var flare := BattleFX.spawn(_fx, BattleFX.Kind.BURST, hero.body_point(), Color(1.0, 0.73, 0.34), 0.62)
-		flare.scale = Vector2.ONE * 1.35
 
 
 func shake(strength: float) -> void:

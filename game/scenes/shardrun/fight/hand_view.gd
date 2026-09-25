@@ -1,13 +1,13 @@
 class_name HandView
 extends Control
-## The hand, held like one: fanned in a shallow arc, overlapping when it is full, resting low so their tops show. The
-## card under the mouse straightens, rises whole and grows, and its neighbours lean aside, as Slay the Spire holds its
-## hand; its details appear beside it (CardFace). A card dropped here goes to the end of the hand.
+## The hand, held like one: fanned in a shallow arc, overlapping when it is full. The card under the mouse
+## straightens, rises and grows, and its neighbours lean aside, as Slay the Spire holds its hand; its details appear
+## beside it (CardFace). A card dropped here goes to the end of the hand.
 
-## How much of a resting card shows above the hand's bottom edge, how much the pointed-at card grows, and how far (in
-## degrees) the fan turns each card from the one beside it.
-const PEEK := 0.72
+## How much the pointed-at card grows, how far (in degrees) the fan turns each card from the one beside it, and the room
+## kept at each side so a turned card never leans over the piles beside the hand.
 const GROW := 1.2
+const SIDE := 30.0
 const FAN := 3.2
 const MOVE := 0.14
 
@@ -19,7 +19,7 @@ var hovered := -1
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_PASS
-	custom_minimum_size.y = CardFace.SIZES[CardFace.Size.HAND].y * PEEK
+	custom_minimum_size.y = CardFace.SIZES[CardFace.Size.HAND].y + 14.0
 	resized.connect(_arrange.bind(false))
 
 
@@ -74,17 +74,18 @@ func _arrange(animate: bool) -> void:
 	if count == 0:
 		return
 	var card_size: Vector2 = CardFace.SIZES[CardFace.Size.HAND]
-	var room := maxf(0.0, size.x - card_size.x)
+	var room := maxf(0.0, size.x - card_size.x - SIDE * 2.0)
 	var spacing := minf(card_size.x * 0.84, room / maxf(1.0, count - 1.0))
 	var x0 := (size.x - card_size.x - spacing * (count - 1)) * 0.5
+	var top := size.y - card_size.y - 12.0
 	for index in count:
 		var card := cards[index]
 		var offset := index - (count - 1) * 0.5
-		var target := Vector2(x0 + spacing * index, size.y - card_size.y * PEEK + offset * offset * 2.2)
+		var target := Vector2(x0 + spacing * index, top + minf(10.0, offset * offset * 2.2))
 		var angle := _rest_angle(index)
 		var grow := 1.0
 		if hovered >= 0 and index == hovered:
-			target.y = size.y - card_size.y - 6.0
+			target.y = top - 8.0
 			angle = 0.0
 			grow = GROW
 		elif hovered >= 0:

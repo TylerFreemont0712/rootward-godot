@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- The yellow JS square, its letters drawn as strokes. -->
+  <rect width="64" height="64" rx="6" fill="#f7df1e"/>
+  <path d="M30 30v18c0 6-3 8-7.5 8-3 0-5-1.5-6.5-4" fill="none" stroke="#1a1a1a" stroke-width="5.5" stroke-linecap="round"/>
+  <path d="M53 34c-1.8-3-4.5-4.5-8-4.5-4.4 0-7.5 2.4-7.5 6 0 8.5 15.5 5.5 15.5 13.5 0 4-3.2 7-8.2 7-4 0-7-1.8-8.8-5" fill="none" stroke="#1a1a1a" stroke-width="5.5" stroke-linecap="round"/>
+</svg>

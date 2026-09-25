@@ -142,68 +142,6 @@
       }
     },
     {
-      "id": "strike-spark",
-      "board": "05-roots-and-ultimates.png",
-      "quadrant": "tr",
-      "size": 512,
-      "seed": 3501,
-      "denoise": 0.66,
-      "prompt": "massive lightning bolt striking straight down from the sky onto the ground, jagged branching bright yellow and white electricity, blinding flash where it hits, crackling sparks, electric ring on the ground",
-      "animate": {
-        "motion": "the lightning bolt crackles and flickers violently, branches of electricity jumping and changing shape every frame",
-        "frames": 17,
-        "fps": 22,
-        "loop": true
-      }
-    },
-    {
-      "id": "strike-none",
-      "board": "05-roots-and-ultimates.png",
-      "quadrant": "tr",
-      "size": 512,
-      "seed": 3502,
-      "denoise": 0.55,
-      "prompt": "column of violet arcane starlight falling from the sky, a beam of purple and white light with floating star crystals, glowing rune circle on the ground",
-      "recolor": "#b48cff",
-      "animate": {
-        "motion": "the beam of starlight pulses and shimmers, crystals drifting upward around it",
-        "frames": 17,
-        "fps": 20,
-        "loop": true
-      }
-    },
-    {
-      "id": "strike-fire",
-      "board": "05-roots-and-ultimates.png",
-      "quadrant": "tr",
-      "size": 512,
-      "seed": 3503,
-      "denoise": 0.68,
-      "prompt": "pillar of fire erupting upward from a burning ring on the ground, roaring orange and yellow flames, embers flying",
-      "animate": {
-        "motion": "the pillar of fire roars and churns upward, flames licking and swirling, embers flying",
-        "frames": 17,
-        "fps": 22,
-        "loop": true
-      }
-    },
-    {
-      "id": "strike-frost",
-      "board": "05-roots-and-ultimates.png",
-      "quadrant": "tr",
-      "size": 512,
-      "seed": 3504,
-      "denoise": 0.62,
-      "prompt": "cluster of huge jagged ice crystal spikes erupting upward from frozen ground, pale cyan and white, frost mist, a ring of frost on the ground",
-      "recolor": "#8fdcff",
-      "animate": {
-        "motion": "the ice spikes glint, frost mist swirls around their base and ice shards drift",
-        "frames": 17,
-        "fps": 20,
-        "loop": true
-      }
-    },
-    {
       "id": "wave",
       "board": "05-roots-and-ultimates.png",
       "quadrant": "br",
@@ -230,6 +168,5 @@
     }
   ],
   "_boards": "Note: 02-wards-and-barriers.png holds the radial bursts and 03-radial-glyph-bursts.png the wards; the files' names and pictures are swapped, so the entries below follow the pictures.",
-  "_strikes": "strike-* are called down onto a foe by a heavy spell of that element (lightning from the sky, a fire pillar, ice spikes, a beam of starlight); wave spreads across the floor when a volley hits several foes; vortex opens behind a heavy cast.",
   "_animate": "An effect with `animate` also ships as a sheet of frames drawn by the video model (fx.py --animate): the picture pinned as the first frame (and the last, for a loop), the motion in words. BattleFX plays the sheet when it is there."
 }

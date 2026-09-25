@@ -7,6 +7,8 @@ extends RefCounted
 ## While drafting, the state's status is "draft" and state.draft is {offers: [paradigm ids], round, rounds, pack:
 ## [card ids]}; `pack` is empty until a paradigm is picked.
 
+## The Program is a file named for the run's language.
+const EXTENSIONS := {"python": "py", "javascript": "js"}
 ## How often a card of each rarity turns up in a pack, relative to a common one.
 const RARITY_WEIGHTS := {"common": 1.0, "uncommon": 0.6, "rare": 0.3}
 ## A card of the chosen paradigm is this much likelier than a neutral one.
@@ -21,6 +23,8 @@ static func open(state: Dictionary, catalog: Dictionary) -> void:
 	var offers := Rng.create(state.seed, "paradigms").shuffled(ids).slice(0, int(draft.paradigms_offered))
 	state.playstyle = "program"
 	state.status = "draft"
+	for spell: Dictionary in state.spells:
+		spell.name = "%s.%s" % [spell.name, EXTENSIONS.get(state.language, "py")]
 	state.paradigm = ""
 	state.draft = {"offers": offers, "round": 0, "rounds": int(draft.rounds), "pack": []}
 	var text := "Before the descent, choose how your program thinks."

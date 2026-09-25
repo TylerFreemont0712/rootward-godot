@@ -7,7 +7,6 @@ extends Control
 var session: ShardrunSession
 var _busy := false
 var _backdrop: TextureRect
-var _margin: MarginContainer
 var _header: PanelContainer
 var _body: Control
 var _overlay: Control
@@ -48,7 +47,6 @@ func _build() -> void:
 	for side: String in ["left", "right", "top", "bottom"]:
 		margin.add_theme_constant_override("margin_" + side, 14)
 	add_child(margin)
-	_margin = margin
 	_header = PanelContainer.new()
 	_header.theme_type_variation = "Header"
 	_body = Control.new()
@@ -73,7 +71,6 @@ func _show(state: Dictionary) -> void:
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	_backdrop.texture = Art.texture("backgrounds/" + String(layer.backdrop))
 	var view: Control
-	_margin.add_theme_constant_override("margin_bottom", 14)
 	if state.status in Shardrun.ENDED:
 		view = _ending(state)
 		Sound.music("music-title")
@@ -83,8 +80,6 @@ func _show(state: Dictionary) -> void:
 		view = draft
 		Sound.music(layer.get("music", "music-salvage"))
 	elif state.status == "battle":
-		# A fight reaches the bottom edge: the hand rests there, its cards' lower parts off the screen.
-		_margin.add_theme_constant_override("margin_bottom", 0)
 		_fight = FightView.create(session)
 		_fight.wants.connect(send)
 		view = _fight
@@ -101,19 +96,27 @@ func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
 	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
 	var heading := mode + (" / ARTIFICER" if state.get("playstyle", "") == "deck" else "")
+	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD) as Label
+	# A program run's paradigm, in its own colour: the colour its cards wear.
 	var paradigm := ProgramDraft.paradigm_of(session.catalog, String(state.get("paradigm", "")))
+	var school := Ui.label("", "Subheading")
 	if state.get("playstyle", "") == "program" and not paradigm.is_empty():
-		heading += " / " + String(paradigm.name).to_upper()
-	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD)
-	var bar := ProgressBar.new()
-	bar.show_percentage = false
-	bar.custom_minimum_size = Vector2(170, 14)
-	bar.max_value = maxi(1, int(state.integrity_max))
-	bar.value = int(state.integrity)
-	bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	var integrity := Ui.hbox(
-		[Ui.label("INTEGRITY", "Faint"), bar, Ui.label("%d/%d" % [int(state.integrity), int(state.integrity_max)])], 8
-	)
+		school.text = "/ " + String(paradigm.name).to_upper()
+		school.add_theme_color_override("font_color", Color(paradigm.colour))
+	var integrity: Control
+	if state.status == "battle" and state.has("battle"):
+		# In a fight the Maintainer's Integrity stands over them on the stage; up here, the turn.
+		var battle: Dictionary = state.battle
+		integrity = Ui.label("TURN %d  ·  %s" % [int(battle.turn), String(battle.kind).to_upper()], "Subheading")
+	else:
+		var bar := ProgressBar.new()
+		bar.show_percentage = false
+		bar.custom_minimum_size = Vector2(170, 14)
+		bar.max_value = maxi(1, int(state.integrity_max))
+		bar.value = int(state.integrity)
+		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		var numbers := Ui.label("%d/%d" % [int(state.integrity), int(state.integrity_max)])
+		integrity = Ui.hbox([Ui.label("INTEGRITY", "Faint"), bar, numbers], 8)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var layers: Array = session.catalog.config.layers
 	var meta := (
@@ -141,7 +144,8 @@ func _show_header(state: Dictionary) -> void:
 	if state.get("sandbox", false) and not state.status in Shardrun.ENDED:
 		buttons.add_child(Ui.button("Dev", _open_dev))
 		logo.text += " · DEV"
-	var row := Ui.hbox([logo, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
+	var title := Ui.hbox([logo, school], 8)
+	var row := Ui.hbox([title, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
 	_header.add_child(row)
 
 
