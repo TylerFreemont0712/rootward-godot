@@ -5,7 +5,8 @@ extends Control
 ##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms), pack (a draft
 ##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
 ##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window)
-## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered).
+## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
+## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare.
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
 ## ROOTWARD_SHOT_SKIN wears a battle skin for the shot (not saved). ROOTWARD_SHOT_AFTER_MS catches the moment that many
@@ -28,7 +29,8 @@ func _ready() -> void:
 	Game.use(playstyle if playstyle != "" else "program")
 	var session := Game.session
 	session.saves.delete_run("spellbook")
-	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev")
+	var chosen := OS.get_environment("ROOTWARD_SHOT_CARDS")
+	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev" or chosen != "")
 	var bot := ShardrunBot.new(session)
 	bot.paradigm = OS.get_environment("ROOTWARD_SHOT_PARADIGM")
 	match shot:
@@ -68,7 +70,18 @@ func _ready() -> void:
 			await bot.send(CardTable.command(table))
 		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile", "hover", "log":
 			await bot.play_until("battle")
-			if ShardrunRules.is_deck(session.state) and shot in ["cast", "volley", "code"]:
+			if chosen != "":
+				var ids := chosen.split(",", false)
+				for id in ids:
+					await bot.send({"type": "dev-grant-shard", "shard_id": id})
+				await bot.send({"type": "dev-set", "mana": 9})
+				var table := CardTable.of(session.state, session.catalog)
+				var spell: Dictionary = table.spells[0]
+				spell.shards = Array(ids)
+				for id in ids:
+					(table.hand as Array).erase(id)
+				await bot.send(CardTable.command(table))
+			elif ShardrunRules.is_deck(session.state) and shot in ["cast", "volley", "code"]:
 				await bot.send(bot._deal_hand(session.state))
 			elif ShardrunRules.is_deck(session.state) and shot == "log":
 				# A whole turn played, so the log has a cast, the foes' answer and the next turn in it.

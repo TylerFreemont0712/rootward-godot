@@ -204,25 +204,37 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 	return SpellAnim.play(_fx, id, at, ramp, size, angle)
 
 
-## A bolt from `from` to `to`; `arrive` is called when it lands.
-func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callable, ward := false) -> void:
+## A bolt from `from` to `to`; `arrive` is called when it lands. It leaves slowly, curving off to one side, and speeds
+## into its mark, turned to where it is going and dragging a trail of light; a spark bolt jitters as it goes. `power`
+## sizes it, and a strong bolt flies as an orb rather than a lance.
+func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callable, ward := false, power := 0.0) -> void:
 	if fast:
 		arrive.call()
 		return
-	if SpellAnim.has("glyph-bolt"):
-		# A comet of runes along an arc, turned to face where it is going.
-		var head := SpellAnim.play(_fx, "glyph-bolt", from, "ward" if ward else element, 0.85)
-		var lift := 42.0 + randf() * 48.0
+	var ramp := "ward" if ward else element
+	var sprite := "bolt-orb" if power >= 12.0 else "bolt-lance"
+	if SpellAnim.has(sprite):
+		var size := clampf(0.55 + power / 30.0, 0.55, 1.4)
+		var head := SpellAnim.play(_fx, sprite, from, ramp, size)
+		var trail := _trail(ramp, size)
+		var across := (to - from).orthogonal().normalized()
+		var bend := across * randf_range(-1.0, 1.0) * clampf(from.distance_to(to) * 0.22, 30.0, 150.0)
+		var control := (from + to) * 0.5 + bend - Vector2(0, randf_range(0.0, 40.0))
+		var jitter := 12.0 if element == "spark" and not ward else 0.0
 		var travel := func(progress: float) -> void:
-			var bend := (from + to) * 0.5 - Vector2(0, lift * 2.0)
-			var a := from.lerp(bend, progress)
-			var b := bend.lerp(to, progress)
-			head.position = a.lerp(b, progress)
+			var a := from.lerp(control, progress)
+			var b := control.lerp(to, progress)
+			var point := a.lerp(b, progress) + across * sin(progress * TAU * 4.0) * jitter * (1.0 - progress)
+			head.position = point
 			head.rotation = (b - a).angle()
+			trail.add_point(point)
+			if trail.get_point_count() > 14:
+				trail.remove_point(0)
 		var motion := head.create_tween()
-		motion.tween_method(travel, 0.0, 1.0, ms / 1000.0)
+		motion.tween_method(travel, 0.0, 1.0, ms / 1000.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		motion.tween_callback(arrive)
 		motion.tween_callback(head.stop)
+		motion.tween_callback(_fade_trail.bind(trail))
 		return
 	var colour: Color = UiTheme.TEAL if ward else UiTheme.element(element)
 	var bolt := BattleFX.spawn(_fx, BattleFX.Kind.BOLT, from, colour, ms / 1000.0 + 0.05, "ward" if ward else element)
@@ -231,6 +243,34 @@ func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callabl
 	tween.tween_method(bolt.set_flight_progress, 0.0, 1.0, ms / 1000.0)
 	tween.tween_callback(arrive)
 	tween.tween_callback(bolt.finish)
+
+
+## A bolt's trail: a ribbon of the recent points of its flight, thin and clear at its tail, full at its head.
+func _trail(ramp: String, size: float) -> Line2D:
+	var trail := Line2D.new()
+	var colour := Color(SpellAnim.RAMPS.get(ramp, SpellAnim.RAMPS.none)[1])
+	trail.width = 14.0 * size
+	var taper := Curve.new()
+	taper.add_point(Vector2(0.0, 0.0))
+	taper.add_point(Vector2(1.0, 1.0))
+	trail.width_curve = taper
+	var shade := Gradient.new()
+	shade.set_color(0, Color(colour, 0.0))
+	shade.set_color(1, Color(colour.lightened(0.3), 0.85))
+	trail.gradient = shade
+	trail.joint_mode = Line2D.LINE_JOINT_ROUND
+	trail.antialiased = true
+	var additive := CanvasItemMaterial.new()
+	additive.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	trail.material = additive
+	_fx.add_child(trail)
+	return trail
+
+
+func _fade_trail(trail: Line2D) -> void:
+	var tween := trail.create_tween()
+	tween.tween_property(trail, "modulate:a", 0.0, 0.18)
+	tween.tween_callback(trail.queue_free)
 
 
 func burst(at: Vector2, element: String, scale_to := 1.4) -> void:

@@ -95,6 +95,13 @@ function runSpell(spell, battleJson, trace) {
     if (COUNT) {
       step.loops = counts.loops;
       step.calls = counts.calls[shard.name] || 0;
+      // The whole volley the stage returned, summed (the trace keeps only its first bolts).
+      step.power = 0;
+      step.elements = {};
+      for (const bolt of bolts) {
+        if (bolt && typeof bolt.power === "number") step.power += bolt.power;
+        if (bolt && typeof bolt.element === "string") step.elements[bolt.element] = (step.elements[bolt.element] || 0) + 1;
+      }
     }
     trace.push(step);
   }

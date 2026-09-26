@@ -41,3 +41,11 @@ loops and its recursion, was invisible, and the sandbox knew nothing of it eithe
 - Counting slows a card's run in the sandbox (a line tracer in Python); program volleys are small, and the limits hold.
 - The walk is a walk of the code, not a replay of which branch was taken: the cursor passes every line in order; the
   numbers it shows (rounds, calls, results, ops) are all measured.
+
+## Amended (2026-09-26): the volley, in colour
+
+- A counted stage also reports its whole volley's power and elements (the trace keeps only its first bolts). The code
+  panel shows it in a meter: a pip per bolt in its element's colour, sized by the bolts' strength, and the total power
+  as a big number that counts up and lands like a hit after each stage.
+- The running panel glows in the colour of the volley's element and takes the new colour, with a wash over the code,
+  when a card turns the bolts to fire, frost or spark. Notes sit on a dark plate so they read over long lines.

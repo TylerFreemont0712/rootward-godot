@@ -56,6 +56,9 @@ static func run_view(
 					# card's function was entered (more than once: it is recursive).
 					"loops": step.get("loops", {}),
 					"calls": int(step.get("calls", 1)),
+					# The whole volley after the stage, as measured: its total power and how many bolts of each element.
+					"power": float(step.get("power", 0.0)),
+					"elements": step.get("elements", {}),
 				}
 			)
 		)

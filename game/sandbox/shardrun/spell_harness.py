@@ -83,6 +83,21 @@ def loops_of(source, counts):
     return loops
 
 
+def volley_of(bolts):
+    """The whole volley a stage returned, summed (the trace keeps only its first bolts): its power and its elements."""
+    power = 0
+    elements = {}
+    for bolt in bolts:
+        if isinstance(bolt, dict):
+            value = bolt.get("power")
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                power += value
+            element = bolt.get("element")
+            if isinstance(element, str):
+                elements[element] = elements.get(element, 0) + 1
+    return {"power": power, "elements": elements}
+
+
 class ShardFailure(Exception):
     def __init__(self, shard, error):
         super().__init__(str(error))
@@ -115,6 +130,7 @@ def run_spell(spell, battle_json, trace):
         step = {"shard": shard["id"], "given": given, "returned": len(result), "bolts": kept}
         if measured is not None:
             step.update(measured)
+            step.update(volley_of(bolts))
         trace.append(step)
     return bolts
 

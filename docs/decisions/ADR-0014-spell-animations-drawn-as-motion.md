@@ -52,3 +52,9 @@ frame and a flash of the whole stage.
   the foe, hanging a beat, then dropped (about six frames of fall with a streak) and broken apart where it lands; the
   bolts after it at the same foe wait for it, so the hits land in the order the log gives them.
 - The bracket slam shows its brackets before they close, and throws fewer splinters and runes.
+- Casts draw a circle as elaborate as their power, as the old games drew higher spells (up to 11 damage and block: a
+  plain ring; up to 34: the rune circle; up to 79: a double ring with a hexagram and orbiting nodes over a circle on
+  the ground with runes rising round the caster; beyond: a grand circle with an outer ring of runes, an octagram and
+  spokes of light). Bolts are born round the circle and fly as lances (or orbs, when strong) that leave slowly, curve to
+  one side and speed into their mark with a trail; spark bolts jitter. A blow of 18 or more, or near half a foe's health,
+  lands as a critical: drawn in first, then two shockwaves, a longer hit-stop and a shake.

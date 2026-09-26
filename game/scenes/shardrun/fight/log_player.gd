@@ -12,6 +12,13 @@ const FLIGHT := {"missile": 250.0, "lance": 140.0, "rain": 380.0, "seeker": 320.
 const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted"]
 ## What a cast logs after itself, before the next thing happens: its bolts, and what fizzled or burned on the way.
 const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted", "defeat", "fizzle", "curse"]
+## A cast's magic circle by how much its volley deals (damage and block together), as the old games drew a higher spell
+## with a more elaborate circle: [the most power for the tier, animation, size]. Stronger still is the last tier.
+const TIERS: Array[Array] = [[11, "cast-sigil-1", 0.8], [34, "cast-sigil", 0.95], [79, "cast-sigil-3", 1.05]]
+const GRAND := ["cast-sigil-4", 1.15]
+## A blow at least this big (or this share of the foe's health) lands as a critical, with its own animation.
+const CRITICAL_AMOUNT := 18
+const CRITICAL_SHARE := 0.45
 ## A volley spreads its launches over about this long, one bolt every `max` ms at most and `min` at least.
 const VOLLEY := {"spread": 1300.0, "max": 190.0, "min": 45.0}
 
@@ -24,6 +31,9 @@ var lines: Array[Dictionary] = []
 var _heavy := false
 ## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
 var _crashed: Dictionary = {}
+## Where the cast's bolts are born: the middle of its circle, and how far round it they may start.
+var _circle := Vector2.ZERO
+var _circle_reach := 0.0
 
 
 func _init(on_stage: BattleStage, before: Dictionary) -> void:
@@ -76,8 +86,22 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	stage.hero.play("cast-heavy" if heavy else "cast-light")
 	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
 	Sound.play("sfx-cast-" + element if element != "none" else "sfx-cast", 0.8)
-	# The program runs: its sigil draws itself at the hand and lets go (a heavy one larger, the stage darkening).
-	var sigil := stage.spell("cast-sigil", stage.hero.hand_point(), element, 1.2 if heavy else 0.9)
+	# The program runs: its circle draws itself at the hand and lets go, more elaborate the more it will deal; the
+	# strongest also draw a circle on the ground with runes rising round the Maintainer.
+	var power := _total(bolts)
+	var tier: Array = GRAND
+	for candidate: Array in TIERS:
+		if power <= int(candidate[0]):
+			tier = candidate.slice(1)
+			break
+	var sigil := stage.spell(String(tier[0]), stage.hero.hand_point(), element, float(tier[1]))
+	if sigil == null:
+		sigil = stage.spell("cast-sigil", stage.hero.hand_point(), element, 1.2 if heavy else 0.9)
+	if tier[0] in ["cast-sigil-3", "cast-sigil-4"]:
+		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
+		stage.spell("cast-ground", feet, element, stage.hero.size.y / 440.0)
+	_circle = stage.hero.hand_point()
+	_circle_reach = (float(sigil.facts.size[0]) * 0.18 * sigil.scale.x) if sigil != null else 0.0
 	if heavy:
 		stage.dim(0.38, 0.3)
 	if sigil == null:
@@ -115,7 +139,11 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 
 
 func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
-	var from := stage.hero.hand_point()
+	# Born somewhere on the cast's circle, so a volley fans out of it rather than out of one point.
+	var angle := randf() * TAU
+	var from := _circle + Vector2(cos(angle), sin(angle)) * _circle_reach * randf_range(0.5, 1.0)
+	if _circle == Vector2.ZERO:
+		from = stage.hero.hand_point()
 	if hit.kind == "ward":
 		stage.fly(
 			from, stage.hero.body_point(), hit.get("element", "none"), flight * 0.6, _land.bind(hit, volley), true
@@ -141,7 +169,8 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 			stage.hit_stop(80.0)
 		_land(hit, volley, true)
 		return
-	stage.fly(from, view.target_point(), hit.get("element", "none"), flight, _land.bind(hit, volley))
+	var power := float(int(hit.get("amount", 0)) + int(hit.get("blocked", 0)) + int(hit.get("overkill", 0)))
+	stage.fly(from, view.target_point(), hit.get("element", "none"), flight, _land.bind(hit, volley), false, power)
 
 
 ## A bolt reaches its mark. A hit first plays its blow (brackets slamming on the foe) and lands on the frame they meet;
@@ -153,11 +182,20 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 		var aimed: FoeView = stage.foes.get(hit.get("foe", ""))
 		if aimed != null:
 			var weight := float(hit.get("amount", 0)) / maxf(1.0, float(shown.foes.get(hit.foe, {}).get("max", 1)))
-			var blow := stage.spell("hit-compile", aimed.target_point(), element, 0.75 + minf(0.6, weight * 1.2))
+			# A big blow lands as a critical: drawn in first, then breaking open with two shockwaves, a longer stop and
+			# a shake; the rest slam their brackets, larger for more damage.
+			var critical := int(hit.get("amount", 0)) >= CRITICAL_AMOUNT or weight >= CRITICAL_SHARE
+			var blow: SpellAnim = null
+			if critical:
+				blow = stage.spell("hit-critical", aimed.target_point(), element, 0.75 + minf(0.45, weight * 0.6))
+			if blow == null:
+				blow = stage.spell("hit-compile", aimed.target_point(), element, 0.75 + minf(0.6, weight * 1.2))
 			if blow != null:
 				struck = true
 				await blow.landed()
-				stage.hit_stop(30.0)
+				stage.hit_stop(95.0 if critical else 30.0)
+				if critical:
+					stage.shake(0.8)
 	match hit.kind:
 		"ward":
 			shown.block += int(hit.amount)

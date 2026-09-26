@@ -21,6 +21,7 @@ var _title: Label
 var _speed: Label
 var _ops: Label
 var _race: RaceBar
+var _meter: VolleyMeter
 var _footer: Label
 var _lines: Array[Dictionary] = []
 var _hurry := false
@@ -51,6 +52,7 @@ func _build() -> void:
 	var school := Ui.label("", "Faint")
 	_speed = Ui.tint(Ui.label("", "Subheading"), colour.lightened(0.25)) as Label
 	_ops = Ui.label("", "Muted")
+	_meter = VolleyMeter.new()
 	_race = RaceBar.new()
 	_race.colour = colour
 	_race.custom_minimum_size.y = 46
@@ -65,7 +67,7 @@ func _build() -> void:
 	_footer = Ui.label("", "Muted", true)
 	_footer.add_theme_font_size_override("font_size", 13)
 	var header := Ui.hbox([_title, school, Ui.spacer(), _speed, _ops], 10)
-	add_child(Ui.vbox([header, _race, _scroll, _footer], 6))
+	add_child(Ui.vbox([header, _meter, _race, _scroll, _footer], 6))
 
 
 ## Draws the Program as it stands: its code (new lines written in), the race, and the preview when it has one.
@@ -81,6 +83,7 @@ func show_program(state: Dictionary, view: Dictionary) -> void:
 		_reveal(first)
 		Sound.play("sfx-charge", 0.35, 1.5)
 	var work := int(fresh.get("work", 0))
+	_show_final_volley(fresh)
 	_speed.text = ProgramRules.speed_label(cards, session.catalog)
 	var budget := ProgramRules.budget(session.catalog)
 	_ops.text = "%d / %d ops" % [work, budget] if not fresh.is_empty() else "… ops"
@@ -90,6 +93,32 @@ func show_program(state: Dictionary, view: Dictionary) -> void:
 	)
 	_footer.text = _summary(fresh, cards)
 	_footer.add_theme_color_override("font_color", _summary_colour(fresh))
+
+
+## The volley the Program will make, as the preview measured it: its last stage's, or the seed's with no cards.
+func _show_final_volley(view: Dictionary) -> void:
+	var steps: Array = view.get("steps", [])
+	if not steps.is_empty():
+		var last: Dictionary = steps.back()
+		_meter.show_volley(int(last.returned), float(last.get("power", 0.0)), last.get("elements", {}))
+		return
+	var seed: Array = ProgramRules.config_of(session.catalog).seed
+	_meter.show_volley(seed.size(), _power_of(seed), _elements_of(seed))
+
+
+static func _power_of(bolts: Array) -> float:
+	var total := 0.0
+	for bolt: Dictionary in bolts:
+		total += float(bolt.get("power", 0))
+	return total
+
+
+static func _elements_of(bolts: Array) -> Dictionary:
+	var found := {}
+	for bolt: Dictionary in bolts:
+		var element: String = bolt.get("element", "none")
+		found[element] = int(found.get(element, 0)) + 1
+	return found
 
 
 ## A view belongs to these cards when its steps are theirs (a view from before the last card was played does not).
@@ -168,7 +197,10 @@ func play_cast(view: Dictionary, speed: String) -> void:
 	var steps: Array = view.get("steps", [])
 	var race: Array = view.get("race", [])
 	var budget := int(view.get("budget", ProgramRules.budget(session.catalog)))
-	_running(true)
+	var seeds: Array = (view.get("base", {}) as Dictionary).get("bolts", [])
+	_meter.show_volley(seeds.size(), _power_of(seeds), _elements_of(seeds))
+	var tint := VolleyMeter.colour_of(_elements_of(seeds))
+	_running(true, tint)
 	_passed = {}
 	_counted = 0
 	_count_ops(0, budget, race)
@@ -179,7 +211,6 @@ func play_cast(view: Dictionary, speed: String) -> void:
 		match String(line.kind):
 			"seed":
 				_focus(index)
-				var seeds: Array = (view.get("base", {}) as Dictionary).get("bolts", [])
 				_code.set_note(
 					index, "%d bolt%s" % [seeds.size(), "" if seeds.size() == 1 else "s"], UiTheme.MUTED, 0.3
 				)
@@ -199,14 +230,25 @@ func play_cast(view: Dictionary, speed: String) -> void:
 					await _walk(String(line.card), step, line_time, float(BUDGET[speed]))
 				_focus(index)
 				ops = mini(ProgramRules.WORK_CAP, ops + int(step.work))
-				var note := "n %d → %d ops · %d bolts" % [int(step.n), int(step.work), (step.bolts as Array).size()]
+				var note := "n %d → %d ops · %d bolts" % [int(step.n), int(step.work), int(step.returned)]
 				_code.set_note(index, note, _status_colour(ops, budget, race), _strength(int(step.work)))
 				_count_ops(ops, budget, race)
+				# The volley so far lands in the meter; if its element changed, the panel takes the new colour.
+				var elements: Dictionary = step.get("elements", {})
+				_meter.show_volley(int(step.returned), float(step.get("power", 0.0)), elements, true)
+				var now := VolleyMeter.colour_of(elements)
+				if not now.is_equal_approx(tint):
+					tint = now
+					_running(true, tint)
+					_code.wash(tint)
+					Sound.play("sfx-cast", 0.4, 1.4)
 				await _wait(pace)
 			"return":
 				_focus(index)
-				var last: int = int((steps.back() as Dictionary).returned) if not steps.is_empty() else 1
-				_code.set_note(index, "→ %d bolts" % last, colour.lightened(0.4), 0.7)
+				var final: Dictionary = steps.back() if not steps.is_empty() else {}
+				var power := roundi(float(final.get("power", _power_of(seeds))))
+				var note := "→ %d bolts · %d power" % [int(final.get("returned", seeds.size())), power]
+				_code.set_note(index, note, tint.lightened(0.3), 0.8)
 				Sound.play("sfx-charge", 0.5, 1.3)
 				await _wait(pace * 1.4)
 	_code.set_cursor(-1)
@@ -375,16 +417,20 @@ func _pop(label: Control, strength: float) -> void:
 	tween.tween_property(label, "modulate", Color.WHITE, 0.3)
 
 
-## While the Program runs, its panel is the brightest thing on the table.
-func _running(on: bool) -> void:
+## While the Program runs, its panel is the brightest thing on the table, glowing in the colour of its volley's
+## element (`tint`), which changes as the cards turn the bolts to fire, frost or spark.
+func _running(on: bool, tint := Color.TRANSPARENT) -> void:
 	var look := _look.duplicate() as StyleBoxFlat
 	if on:
-		look.border_color = colour.lightened(0.2)
+		var glow := tint if tint.a > 0.0 else colour
+		look.border_color = glow.lightened(0.2)
 		look.set_border_width_all(3)
-		look.shadow_color = Color(colour, 0.45)
-		look.shadow_size = 18
+		look.shadow_color = Color(glow, 0.5)
+		look.shadow_size = 20
+		look.bg_color = Color("#110d12").lerp(glow, 0.05)
 		_title.text = "%s  ▶ running" % (session.state.spells as Array)[0].name
-		_title.add_theme_color_override("font_color", colour.lightened(0.35))
+		_title.add_theme_color_override("font_color", glow.lightened(0.35))
+		_code.glow = glow
 	else:
 		_title.text = (session.state.spells as Array)[0].name
 		_title.add_theme_color_override("font_color", UiTheme.TEXT)

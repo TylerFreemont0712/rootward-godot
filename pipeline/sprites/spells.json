@@ -8,6 +8,13 @@
     {"id": "ward-hex", "motion": "ward-hex", "size": [300, 360], "frames": 34, "fps": 30, "bloom": 0.45, "seed": 3, "preview": "#33d6b6"},
     {"id": "shatter", "motion": "shatter", "size": [300, 300], "frames": 34, "fps": 30, "bloom": 0.4, "impact": 0.3, "seed": 9, "preview": "#e9dcff"},
     {"id": "claw", "motion": "claw", "size": [256, 256], "frames": 22, "fps": 30, "bloom": 0.35, "impact": 0.12, "preview": "#ff3a4a"},
-    {"id": "tempo", "motion": "tempo", "size": [192, 192], "frames": 28, "fps": 30, "bloom": 0.4, "preview": "#ffb13a"}
+    {"id": "tempo", "motion": "tempo", "size": [192, 192], "frames": 28, "fps": 30, "bloom": 0.4, "preview": "#ffb13a"},
+    {"id": "cast-sigil-1", "motion": "cast-sigil-simple", "size": [256, 256], "frames": 22, "fps": 30, "bloom": 0.45, "impact": 0.84, "preview": "#b48cff"},
+    {"id": "cast-sigil-3", "motion": "cast-sigil-complex", "size": [384, 384], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.84, "preview": "#ff8a3a"},
+    {"id": "cast-sigil-4", "motion": "cast-sigil-grand", "size": [448, 448], "frames": 44, "fps": 30, "bloom": 0.5, "impact": 0.84, "preview": "#3fb6ff"},
+    {"id": "cast-ground", "motion": "cast-ground", "size": [384, 560], "frames": 44, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.88], "preview": "#ffc83a"},
+    {"id": "bolt-lance", "motion": "bolt-lance", "size": [256, 96], "frames": 8, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#ff8a3a", "anchor": [0.84, 0.5]},
+    {"id": "bolt-orb", "motion": "bolt-orb", "size": [256, 160], "frames": 12, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#b48cff", "anchor": [0.64, 0.5]},
+    {"id": "hit-critical", "motion": "hit-critical", "size": [480, 480], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.16, "seed": 13, "preview": "#ff5a3a"}
   ]
 }

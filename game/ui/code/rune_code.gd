@@ -83,6 +83,9 @@ var glow := UiTheme.SHARD
 var cursor := -1
 ## A loop being run: the lines it spans ({from, to}) get a bracket in the gutter with a turning arrow; {} when none.
 var loop_span: Dictionary = {}
+## A wash of colour over the whole code when the volley turns to an element, fading out.
+var _wash := Color.TRANSPARENT
+var _wash_at := -10.0
 ## [{text, key, colours: PackedColorArray, born, note, note_colour, warn, rows: [{from, to, indent}], top}]
 var _lines: Array[Dictionary] = []
 var _clock := 0.0
@@ -194,6 +197,15 @@ func set_loop(from: int, to: int) -> void:
 	queue_redraw()
 
 
+## Sweeps a wash of `colour` over the code (the volley just turned to an element), and runs its highlights in it.
+func wash(colour: Color) -> void:
+	_wash = colour
+	_wash_at = _clock
+	glow = colour
+	set_process(true)
+	queue_redraw()
+
+
 func clear_loop() -> void:
 	loop_span = {}
 	queue_redraw()
@@ -201,7 +213,7 @@ func clear_loop() -> void:
 
 ## Whether anything is still moving: a rune settling, a note popping, a loop turning.
 func writing() -> bool:
-	if not loop_span.is_empty():
+	if not loop_span.is_empty() or _clock < _wash_at + 0.7:
 		return true
 	for line in _lines:
 		if float(line.born) >= 0.0 and _clock < _settled_at(line):
@@ -268,6 +280,9 @@ func _layout() -> void:
 func _draw() -> void:
 	for index in _lines.size():
 		_draw_line(index, _lines[index])
+	var washed := _clock - _wash_at
+	if washed < 0.7:
+		draw_rect(Rect2(Vector2.ZERO, size), Color(_wash, 0.22 * (1.0 - washed / 0.7)))
 
 
 func _draw_line(index: int, line: Dictionary) -> void:
@@ -319,17 +334,21 @@ func _draw_note(line: Dictionary, baseline: float) -> void:
 	var colour: Color = line.note_colour
 	var font_size := FONT_SIZE - 2
 	var shake := 0.0
+	var swell := 0.0
 	var since := _clock - float(line.get("pop_at", -10.0))
 	if since < POP_TIME:
 		var left := 1.0 - since / POP_TIME
 		var pop: float = line.get("pop", 0.0)
-		var swell := left * left * pop
+		swell = left * left * pop
 		font_size = FONT_SIZE - 2 + roundi(10.0 * swell)
 		colour = colour.lerp(Color.WHITE, 0.7 * swell)
 		shake = sin(since * 90.0) * 3.0 * swell if pop > 0.5 else 0.0
-		var width := _font.get_string_size(line.note, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
-		var glow_box := Rect2(size.x - PAD - width - 6, baseline - _ascent - 3, width + 12, _line_h + 4)
-		draw_rect(glow_box, Color(line.note_colour, 0.25 * swell))
+	# A dark plate under the note, so it reads over a long line of code, lit while it pops.
+	var width := _font.get_string_size(line.note, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+	var plate := Rect2(size.x - PAD - width - 6, baseline - _ascent - 2, width + 10, _line_h)
+	draw_rect(plate, Color(0.07, 0.05, 0.08, 0.92))
+	if swell > 0.0:
+		draw_rect(plate.grow(2.0), Color(line.note_colour, 0.25 * swell))
 	draw_string(_font, Vector2(shake, baseline), line.note, HORIZONTAL_ALIGNMENT_RIGHT, size.x - PAD, font_size, colour)
 
 

@@ -456,8 +456,220 @@ def tempo(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
     f.disc((cx, cy), w * 0.03, 0.9 * alive)
 
 
+def _ring_of_runes(f: Frame, centre: tuple[float, float], radius: float, count: int, turn: float, size: float, shown: float, value: float, first: int = 0) -> None:
+    """`count` runes around a circle, each turned to face out, appearing in order as `shown` goes 0 to 1."""
+    for i in range(count):
+        appear = span(shown, i / count * 0.8, i / count * 0.8 + 0.2)
+        angle = i * 360 / count + turn
+        at = (centre[0] + radius * math.cos(math.radians(angle)), centre[1] + radius * math.sin(math.radians(angle)))
+        f.rune(first + i, at, size, angle + 90, max(1.4, size * 0.09), value * appear)
+
+
+def _star(f: Frame, centre: tuple[float, float], radius: float, points: int, step: int, turn: float, drawn: float, width: float, value: float) -> None:
+    """A star polygon ({points/step}) drawing itself along its edges: {8/3} is an octagram; {6/2} is one triangle, and a
+    hexagram is two of them a sixth of a turn apart."""
+    corners = [(centre[0] + radius * math.cos(math.radians(turn + i * 360 / points - 90)), centre[1] + radius * math.sin(math.radians(turn + i * 360 / points - 90))) for i in range(points)]
+    path = [corners[(i * step) % points] for i in range(points + 1)]
+    edges = len(path) - 1
+    reach = drawn * edges
+    for i in range(edges):
+        part = clamp(reach - i)
+        if part <= 0:
+            break
+        a, b = path[i], path[i + 1]
+        f.lines([a, (a[0] + (b[0] - a[0]) * part, a[1] + (b[1] - a[1]) * part)], width, value)
+
+
+def cast_sigil_simple(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A small spell: one ring drawn quickly, four runes, a spark in the middle, and it lets go."""
+    cx, cy = w / 2, h / 2
+    gather = into(span(t, 0.6, 0.85), 2.0)
+    radius = w * 0.34 * (1.0 - 0.8 * gather)
+    alive = fade(t, 0.85, 0.97)
+    f.arc((cx, cy), radius, -90 + t * 120, -90 + t * 120 + 360 * out(span(t, 0.0, 0.35)), 3.4, 0.9 * alive)
+    _ring_of_runes(f, (cx, cy), radius * 0.72, 4, t * 90, w * 0.07, span(t, 0.1, 0.4), 0.9 * alive, first=2)
+    f.disc((cx, cy), w * 0.03, 0.7 * alive, blur=2)
+    release = span(t, 0.84, 1.0)
+    if release > 0:
+        f.ellipse((cx, cy), w * (0.06 + 0.3 * out(release)), w * (0.06 + 0.3 * out(release)), 2.5 * (1 - release) + 0.5, 0.8 * (1 - release))
+
+
+def cast_sigil_complex(f: Frame, t: float, w: int, h: int, rng: random.Random, grand: bool = False) -> None:
+    """A strong spell: a double ring with ticks, a hexagram drawing itself inside, runes turning against it, nodes
+    orbiting the rim, brackets snapping shut; a grand one adds an outer ring of runes, an octagram and spokes of light.
+    It gathers and lets go in a double wave."""
+    cx, cy = w / 2, h / 2
+    gather = into(span(t, 0.66, 0.86), 2.0)
+    alive = fade(t, 0.86, 0.97)
+    shrink = 1.0 - 0.8 * gather
+    r = w * (0.3 if grand else 0.4) * shrink
+    turn = t * 110
+    f.ellipse((cx, cy), r * 1.05, r * 1.05, 12, 0.4 * alive, shade=True, blur=6)
+    draw_on = out(span(t, 0.0, 0.3))
+    f.arc((cx, cy), r, -90 + turn, -90 + turn + 360 * draw_on, 4.5, 0.95 * alive)
+    f.arc((cx, cy), r * 0.93, 90 - turn, 90 - turn + 360 * draw_on, 1.8, 0.7 * alive)
+    for i in range(36):
+        # Ticks round the rim, like a dial.
+        if i / 36 > draw_on:
+            break
+        angle = math.radians(i * 10 + turn)
+        inner = r * (0.86 if i % 3 == 0 else 0.9)
+        f.lines([(cx + inner * math.cos(angle), cy + inner * math.sin(angle)), (cx + r * 0.93 * math.cos(angle), cy + r * 0.93 * math.sin(angle))], 1.6, 0.6 * alive)
+    _star(f, (cx, cy), r * 0.8, 6, 2, -turn * 0.5, out(span(t, 0.15, 0.45)), 2.2, 0.85 * alive)
+    _star(f, (cx, cy), r * 0.8, 6, 2, -turn * 0.5 + 60, out(span(t, 0.2, 0.5)), 2.2, 0.85 * alive)
+    _ring_of_runes(f, (cx, cy), r * 0.62, 12, -turn * 1.4, w * 0.055, span(t, 0.15, 0.5), 1.0 * alive)
+    for i in range(6):
+        # Nodes riding the rim.
+        angle = math.radians(i * 60 + turn * 2.2)
+        at = (cx + r * math.cos(angle), cy + r * math.sin(angle))
+        f.polygon([(at[0], at[1] - 6), (at[0] + 6, at[1]), (at[0], at[1] + 6), (at[0] - 6, at[1])], 0.95 * alive * span(t, 0.25, 0.35))
+    if grand:
+        outer = w * 0.44 * shrink
+        f.arc((cx, cy), outer, 0, 360 * out(span(t, 0.05, 0.4)), 2.2, 0.75 * alive)
+        _ring_of_runes(f, (cx, cy), outer * 0.9, 20, turn * 0.8, w * 0.045, span(t, 0.25, 0.6), 0.9 * alive, first=5)
+        _star(f, (cx, cy), r * 0.45, 8, 3, turn * 0.9, out(span(t, 0.3, 0.6)), 1.8, 0.8 * alive)
+        for i in range(8):
+            # Spokes of light pulsing outward from the rim.
+            angle = math.radians(i * 45 + turn * 0.3)
+            pulse = 0.5 + 0.5 * math.sin(t * 30 + i)
+            f.lines([(cx + r * 1.02 * math.cos(angle), cy + r * 1.02 * math.sin(angle)), (cx + outer * 0.86 * math.cos(angle), cy + outer * 0.86 * math.sin(angle))], 2.0, 0.5 * pulse * alive * span(t, 0.35, 0.5))
+    snap = overshoot(span(t, 0.3, 0.44), 2.2)
+    for side in (-1, 1):
+        x = cx + side * (w * 0.6 - (w * 0.6 - r * 1.12) * snap)
+        arm = h * 0.22 * shrink
+        f.lines([(x + side * -w * 0.06, cy - arm), (x, cy - arm), (x, cy + arm), (x + side * -w * 0.06, cy + arm)], 6, 0.9 * span(t, 0.28, 0.32) * alive)
+    f.disc((cx, cy), w * 0.04 * (1 + 0.3 * math.sin(t * 40)), 0.75 * alive, blur=2)
+    release = span(t, 0.84, 1.0)
+    if release > 0:
+        for wave, lag in ((1.0, 0.0), (0.7, 0.25)):
+            k = span(release, lag, 1.0)
+            if k > 0:
+                reach = w * (0.08 + 0.42 * out(k)) * wave
+                f.ellipse((cx, cy), reach, reach, 4 * (1 - k) + 0.5, 0.9 * (1 - k))
+
+
+def cast_sigil_grand(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    cast_sigil_complex(f, t, w, h, rng, grand=True)
+
+
+def cast_ground(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """Under a strong caster: a circle on the ground (seen at a slant), runes round it, and motes and runes rising in a
+    slow spiral around the caster, as the old games' high spells did. Its ground is at 88% of the height."""
+    cx, gy = w / 2, h * 0.88
+    alive = fade(t, 0.82, 1.0)
+    grow = out(span(t, 0.0, 0.3))
+    rx, ry = w * 0.46 * grow, w * 0.46 * 0.28 * grow
+    f.ellipse((cx, gy), rx, ry, 10, 0.35 * alive, shade=True, blur=5)
+    f.ellipse((cx, gy), rx, ry, 3.4, 0.9 * alive)
+    f.ellipse((cx, gy), rx * 0.82, ry * 0.82, 1.6, 0.6 * alive)
+    for i in range(14):
+        angle = math.radians(i * 360 / 14 + t * 80)
+        at = (cx + rx * 0.91 * math.cos(angle), gy + ry * 0.91 * math.sin(angle))
+        f.rune(i, at, h * 0.028, 0, 1.5, 0.85 * alive * span(t, 0.1 + i * 0.01, 0.2 + i * 0.01))
+    for i in range(22):
+        # A mote leaves the ring, rising and circling the caster, fading as it climbs.
+        start = (i * 0.037) % 0.6
+        life = span(t, start, start + 0.45)
+        if life <= 0 or life >= 1:
+            continue
+        angle = math.radians(i * 137 + life * 260)
+        radius = rx * (0.95 - 0.35 * life)
+        x = cx + radius * math.cos(angle)
+        y = gy + ry * math.sin(angle) - h * 0.75 * out(life, 1.6)
+        behind = math.sin(angle) < 0
+        size = 3.2 if i % 3 else 0.0
+        value = (0.5 if behind else 0.95) * (1 - life) * alive
+        if size:
+            f.disc((x, y), size, value, blur=1)
+            f.lines([(x, y), (x, y + h * 0.05)], 2, value * 0.4, blur=1)
+        else:
+            f.rune(i, (x, y), h * 0.035, 0, 1.6, value)
+
+
+def bolt_lance(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A fast bolt, heading right: a sharp lance of light with a bright core, flickering streaks along it and runes
+    shed behind. It loops."""
+    cy = h / 2
+    tip = w * 0.9
+    phase = t * 2 * math.pi
+    f.polygon([(tip, cy), (tip - w * 0.2, cy - h * 0.13), (w * 0.2, cy - h * 0.035), (w * 0.2, cy + h * 0.035), (tip - w * 0.2, cy + h * 0.13)], 0.45, blur=3)
+    f.polygon([(tip, cy), (tip - w * 0.16, cy - h * 0.07), (w * 0.34, cy), (tip - w * 0.16, cy + h * 0.07)], 1.0, blur=1)
+    for i in range(3):
+        offset = (i - 1) * h * 0.18 * (1 + 0.3 * math.sin(phase * 2 + i))
+        start = w * (0.05 + 0.15 * ((t + i * 0.33) % 1.0))
+        f.lines([(start, cy + offset), (tip - w * 0.3, cy + offset * 0.4)], 2.2, 0.55, blur=1)
+    for i in range(3):
+        drift = (t + i / 3) % 1.0
+        f.rune(i * 4 + 2, (w * (0.45 - 0.4 * drift), cy + math.sin(phase + i * 2) * h * 0.25), h * 0.2 * (1 - drift * 0.5), drift * 180, 1.6, 0.7 * (1 - drift))
+
+
+def bolt_orb(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A heavy bolt, heading right: an orb with a corona that pulses, runes orbiting it, and a short fierce tail."""
+    cx, cy = w * 0.62, h / 2
+    phase = t * 2 * math.pi
+    pulse = 1.0 + 0.12 * math.sin(phase * 2)
+    for i in range(5):
+        length = w * (0.3 + 0.08 * math.sin(phase * 3 + i))
+        offset = (i - 2) * h * 0.07
+        f.lines([(cx - length, cy + offset * 1.3), (cx, cy + offset * 0.3)], 5 - abs(i - 2), 0.4 - abs(i - 2) * 0.08, blur=2)
+    f.disc((cx, cy), h * 0.3 * pulse, 0.35, blur=6)
+    f.disc((cx, cy), h * 0.2 * pulse, 0.85, blur=2)
+    f.disc((cx, cy), h * 0.1, 1.0, blur=1)
+    f.ellipse((cx, cy), h * 0.36 * pulse, h * 0.36 * pulse, 2, 0.6)
+    for i in range(4):
+        angle = phase + i * math.pi / 2
+        at = (cx + math.cos(angle) * h * 0.4, cy + math.sin(angle) * h * 0.4 * 0.6)
+        f.rune(i * 3, at, h * 0.16, math.degrees(angle), 1.8, 0.85 if math.sin(angle) > -0.2 else 0.45)
+
+
+def hit_critical(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A blow that matters: the light is drawn in first (lines racing into the target, a ring closing), then it breaks
+    open: long spikes, a dark heart, two shockwaves one after the other, splinters thrown far, runes sprayed."""
+    cx, cy = w / 2, h / 2
+    contact = 0.16
+    if t < contact:
+        pull = into(span(t, 0.0, contact), 2)
+        ring = w * 0.45 * (1 - pull) + w * 0.05
+        f.ellipse((cx, cy), ring, ring, 3, 0.7 * span(t, 0.0, 0.05))
+        for i in range(12):
+            angle = math.radians(i * 30 + 15)
+            outer, inner = w * 0.48 * (1 - pull * 0.6), w * 0.48 * (1 - pull) + w * 0.03
+            f.lines([(cx + outer * math.cos(angle), cy + outer * math.sin(angle)), (cx + inner * math.cos(angle), cy + inner * math.sin(angle))], 2.4, 0.6 * pull)
+        return
+    after = span(t, contact, 1.0)
+    f.disc((cx, cy), w * 0.2 * (1 - out(after, 2)), 0.95 * fade(t, contact, 0.4), shade=True, blur=5)
+    burst = fade(t, contact, contact + 0.18)
+    for i in range(16):
+        angle = math.radians(i * 22.5 + (11 if i % 2 else 0))
+        reach = w * (0.47 if i % 2 == 0 else 0.3) * (0.3 + 0.7 * out(span(t, contact, contact + 0.07)))
+        f.lines([(cx + w * 0.04 * math.cos(angle), cy + w * 0.04 * math.sin(angle)), (cx + reach * math.cos(angle), cy + reach * math.sin(angle))], 6 * burst + 0.5, 0.95 * burst)
+    for lag, strength in ((0.0, 1.0), (0.14, 0.7)):
+        k = span(after, lag, 1.0)
+        if k > 0:
+            ring = w * (0.06 + 0.44 * out(k, 3))
+            f.ellipse((cx, cy), ring, ring, 12 * (1 - k) + 1, 0.95 * strength * (1 - k))
+            f.ellipse((cx, cy), ring * 0.92, ring * 0.92, 14 * (1 - k), 0.5 * strength * (1 - k), shade=True, blur=3)
+    for i in range(22):
+        angle = rng.uniform(0, 360)
+        reach = w * rng.uniform(0.25, 0.5) * out(after, 3)
+        at = (cx + reach * math.cos(math.radians(angle)), cy + reach * math.sin(math.radians(angle)) + h * 0.12 * after * after)
+        f.polygon(shard(at, w * rng.uniform(0.025, 0.05), angle, 1.0 + 2.5 * (1 - after)), 0.9 * fade(t, 0.45, 0.95))
+    for i in range(10):
+        angle = i * 36 + 10
+        reach = w * 0.3 * out(after, 2) + w * 0.05
+        at = (cx + reach * math.cos(math.radians(angle)), cy + reach * math.sin(math.radians(angle)) - h * 0.12 * after)
+        f.rune(i + 2, at, h * 0.055, angle * 2 * after, 1.6, 0.75 * fade(t, 0.5, 1.0))
+
+
 MOTIONS = {
     "cast-sigil": cast_sigil,
+    "cast-sigil-simple": cast_sigil_simple,
+    "cast-sigil-complex": cast_sigil_complex,
+    "cast-sigil-grand": cast_sigil_grand,
+    "cast-ground": cast_ground,
+    "bolt-lance": bolt_lance,
+    "bolt-orb": bolt_orb,
+    "hit-critical": hit_critical,
     "glyph-bolt": glyph_bolt,
     "hit-compile": hit_compile,
     "hit-heavy": hit_heavy,
