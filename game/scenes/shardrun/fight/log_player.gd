@@ -161,7 +161,12 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 	match hit.kind:
 		"ward":
 			shown.block += int(hit.amount)
-			if stage.spell("ward-hex", stage.hero.body_point() + Vector2(70, 0), "ward", 0.8) == null:
+			# The honeycomb (about 224 px tall as drawn) covers the Maintainer from hat to boots.
+			var cover := stage.hero.size.y * 0.92 / 224.0
+			if (
+				stage.spell("ward-hex", stage.hero.body_point() - Vector2(0, stage.hero.size.y * 0.06), "ward", cover)
+				== null
+			):
 				stage.ward_glow()
 			stage.popup(stage.hero.body_point() - Vector2(0, 60), "+%d block" % int(hit.amount), UiTheme.TEAL, 28)
 			Sound.play("sfx-ward", 0.7)

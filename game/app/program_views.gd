@@ -52,6 +52,10 @@ static func run_view(
 					"n": int(stage.get("n", step.given)),
 					"work": int(stage.get("work", 0)),
 					"bolts": ProgramRules.normalize(step.get("bolts", []), catalog),
+					# Measured in the sandbox: each loop's rounds by its line in the card's code, and how often the
+					# card's function was entered (more than once: it is recursive).
+					"loops": step.get("loops", {}),
+					"calls": int(step.get("calls", 1)),
 				}
 			)
 		)

@@ -21,7 +21,10 @@ static func check(catalog: Dictionary, languages: Array[String] = ShardrunChecks
 	]
 	var cards: Dictionary = (catalog.get("programs", {}) as Dictionary).get("cards", {})
 	if not cards.is_empty():
-		sets.append({"noun": "card", "cards": ShardrunCatalog.sorted_values(cards), "same": same_program_bolts})
+		# Program cards run counted, as a program run runs them, so the counting never changes what a card does.
+		sets.append(
+			{"noun": "card", "cards": ShardrunCatalog.sorted_values(cards), "same": same_program_bolts, "count": true}
+		)
 	for language in languages:
 		if not Sandbox.is_available(language):
 			diagnostics.append(
@@ -29,12 +32,12 @@ static func check(catalog: Dictionary, languages: Array[String] = ShardrunChecks
 			)
 			continue
 		for group in sets:
-			diagnostics.append_array(_run(language, group.noun, group.cards, group.same))
+			diagnostics.append_array(_run(language, group.noun, group.cards, group.same, group.get("count", false)))
 	return diagnostics
 
 
 ## One sandbox job running every example of these shards (or cards) in one language; `same` compares the bolts.
-static func _run(language: String, noun: String, shards: Array, same: Callable) -> Array[Dictionary]:
+static func _run(language: String, noun: String, shards: Array, same: Callable, count := false) -> Array[Dictionary]:
 	var diagnostics: Array[Dictionary] = []
 	var spells: Array[Dictionary] = []
 	var owners := {}
@@ -49,7 +52,7 @@ static func _run(language: String, noun: String, shards: Array, same: Callable) 
 				{"id": id, "shards": [shard], "bolts": example.bolts, "battle": example.get("battle", DEFAULT_BATTLE)}
 			)
 			owners[id] = [shard, example]
-	var input := {"bolts": [], "battle": DEFAULT_BATTLE, "limit": EXAMPLE_BOLT_LIMIT, "trace_limit": 1}
+	var input := {"bolts": [], "battle": DEFAULT_BATTLE, "limit": EXAMPLE_BOLT_LIMIT, "trace_limit": 1, "count": count}
 	var limits := SandboxJob.new()
 	limits.time_ms = 20000
 	limits.wall_ms = 60000

@@ -138,6 +138,8 @@ the rules' modifiers table in Stats, keyboard focus through the map.
       (ADR-0013's amendment).
 - [x] Spell animations drawn as motion (ADR-0014): the sigil, the rune comet, the bracket slam, the falling code
       blocks, the hex ward, the shatter, the claw and the clock, coloured per element in the game.
+- [x] The code walkthrough (ADR-0015): loops and recursion measured in the sandbox, each card's function walked during
+      the cast, results landing like hits, the panel drawing the eye while it runs.
 - [ ] More spell animations: one per card role (a sort, a search, a split), and per paradigm.
 - [ ] A balance pass by play (tempos, budget, card numbers; Brute Force is weakest played naively).
 - [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.

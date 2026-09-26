@@ -144,6 +144,7 @@ func input_for(state: Dictionary) -> Dictionary:
 			"battle": ShardrunRules.shard_battle(state, battle),
 			"limit": int(config.max_bolts),
 			"trace_limit": int(balance.trace_bolts),
+			"count": true,
 		}
 	return {
 		"bolts": [ShardrunRules.base_bolt(balance)],

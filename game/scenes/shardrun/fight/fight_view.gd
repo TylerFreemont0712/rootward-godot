@@ -241,7 +241,10 @@ func present(result: Dictionary) -> void:
 	player.numbers_changed.connect(func() -> void: _show_numbers(player.shown))
 	var replay: Dictionary = result.get("replay", {})
 	if not replay.is_empty() and _program != null:
+		# The program runs first, and the eye goes with it: the stage dims until its code has run.
+		stage.dim(0.45, 0.25)
 		await _program.play_cast(replay.run, Settings.code_speed)
+		stage.dim(0.0, 0.25)
 	elif not replay.is_empty() and Settings.code_speed != "off":
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)
 		var view := _code_view(spell, replay.run, "cast")

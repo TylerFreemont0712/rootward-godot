@@ -2,6 +2,35 @@ extends GdUnitTestSuite
 ## The Godot spell harness against the old server's: the same spells of real shards, in both languages, must return
 ## the same bolts, traces, work and failures (fixture from tools/fixtures/spells.ts).
 
+## A recursive card with a loop and a comprehension (map): four bolts make four calls, and only the last call, with one
+## bolt left, goes round each loop once.
+const WALK := {
+	"id": "walk",
+	"function": "walk",
+	"code":
+	{
+		"python":
+		(
+			"def walk(bolts, battle):\n"
+			+ "    if len(bolts) > 1:\n"
+			+ "        return walk(bolts[1:], battle) + bolts[:1]\n"
+			+ "    out = []\n"
+			+ "    for bolt in bolts:\n"
+			+ "        out.append(bolt)\n"
+			+ "    return [dict(b) for b in out]\n"
+		),
+		"javascript":
+		(
+			"function walk(bolts, battle) {\n"
+			+ "  if (bolts.length > 1) return walk(bolts.slice(1), battle).concat(bolts.slice(0, 1));\n"
+			+ "  const out = [];\n"
+			+ "  for (const bolt of bolts) out.push(bolt);\n"
+			+ "  return out.map((b) => ({ ...b }));\n"
+			+ "}\n"
+		),
+	},
+}
+
 var fixture: Dictionary
 var shards := {}
 
@@ -72,3 +101,26 @@ func test_an_endless_shard_times_out_alone() -> void:
 	assert_bool(runs.stuck.ok).is_false()
 	assert_str(runs.stuck.reason).contains("ran out of time")
 	assert_bool(runs.fine.ok).is_true()
+
+
+func test_a_counted_run_measures_loops_and_recursion() -> void:
+	var bolts := [{"power": 1, "element": "none"}, {"power": 2, "element": "none"}]
+	bolts.append_array([{"power": 3, "element": "none"}, {"power": 4, "element": "none"}])
+	var battle := {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": []}
+	var expected := {"python": {"5": 1, "7": 1}, "javascript": {"4": 1, "5": 1}}
+	for language: String in ["python", "javascript"]:
+		var spells: Array[Dictionary] = [{"id": "w", "shards": [WALK]}]
+		var input := {"bolts": bolts, "battle": battle, "limit": 64, "trace_limit": 4}
+		var plain: Dictionary = SpellHarness.run(language, spells, input).w
+		input.count = true
+		var counted: Dictionary = SpellHarness.run(language, spells, input).w
+		assert_bool(counted.ok).override_failure_message(str(counted.get("reason"))).is_true()
+		# Counting never changes what a card does.
+		assert_array(counted.bolts).is_equal(plain.bolts)
+		assert_bool((plain.trace[0] as Dictionary).has("loops")).is_false()
+		var step: Dictionary = counted.trace[0]
+		assert_int(int(step.calls)).override_failure_message(language).is_equal(4)
+		var loops := {}
+		for line: String in step.loops:
+			loops[line] = int(step.loops[line])
+		assert_dict(loops).override_failure_message(language).is_equal(expected[language])

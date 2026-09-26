@@ -222,3 +222,14 @@ With premultiplied alpha the blend is `out = source.rgb + behind * (1 - source.a
 in `rgb` and its shade in `a` lets one sprite both add light and darken what is behind it, so a slash can be a dark cut
 with bright edges instead of a white smear.
 
+## Counting loops with a line tracer (`game/sandbox/shardrun/spell_harness.py`, ADR-0015)
+`sys.settrace` calls a function on every line Python runs (in 3.14 even a comprehension's line, once per round). A
+loop's header runs once more than its body, the last check that ends it, so the first line of its body counts its
+rounds exactly, even when the loop is entered many times by a recursive function. Tracing only the card's own file
+keeps the harness's JSON work out of the counts.
+
+## Instrumenting code on the same line (`game/sandbox/shardrun/spell_harness.js`)
+Changing someone's code to measure it must not move it: an error on line 7 has to still say line 7. So every counter is
+added to the line it measures (after a loop's `{`, or wrapping a one-line loop as `{ counter; statement }`), never on a
+line of its own.
+

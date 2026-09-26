@@ -23,6 +23,8 @@ const FLICKER := 0.06
 const FLASH_TIME := 1.5
 ## A continuation row of a wrapped line starts this many columns further in than its line.
 const WRAP_INDENT := 4
+## How long a note's pop lasts: it swells, flashes and (when strong) shakes, then settles.
+const POP_TIME := 0.5
 ## Runes as strokes in a unit cell (x right, y down), after the elder futhark: fehu, uruz, thurisaz, ansuz, raido,
 ## kaunan, gebo, wunjo, hagalaz, naudiz, isa, jera, eihwaz, algiz, sowilo, tiwaz, berkanan, mannaz, ingwaz, dagaz.
 const RUNES: Array = [
@@ -79,6 +81,8 @@ var language := "python"
 var glow := UiTheme.SHARD
 ## The line being run during a cast (its index), or -1.
 var cursor := -1
+## A loop being run: the lines it spans ({from, to}) get a bracket in the gutter with a turning arrow; {} when none.
+var loop_span: Dictionary = {}
 ## [{text, key, colours: PackedColorArray, born, note, note_colour, warn, rows: [{from, to, indent}], top}]
 var _lines: Array[Dictionary] = []
 var _clock := 0.0
@@ -154,18 +158,55 @@ func set_cursor(index: int) -> void:
 	queue_redraw()
 
 
-func set_note(index: int, note: String, colour: Color) -> void:
+## Writes `note` at the right of line `index`. `pop` (0 to 1) makes it land like a hit: it swells, flashes white and,
+## when strong, shakes, as much as the number deserves.
+func set_note(index: int, note: String, colour: Color, pop := 0.0) -> void:
 	if index < 0 or index >= _lines.size():
 		return
 	_lines[index].note = note
 	_lines[index].note_colour = colour
+	if pop > 0.0:
+		_lines[index].pop = clampf(pop, 0.0, 1.0)
+		_lines[index].pop_at = _clock
+		set_process(true)
 	queue_redraw()
 
 
-## Whether any rune is still settling.
+## The index of the line keyed `key` (ProgramSource's keys), or -1.
+func line_of(key: String) -> int:
+	for index in _lines.size():
+		if _lines[index].key == key:
+			return index
+	return -1
+
+
+func text_of(index: int) -> String:
+	return _lines[index].text if index >= 0 and index < _lines.size() else ""
+
+
+func line_count() -> int:
+	return _lines.size()
+
+
+func set_loop(from: int, to: int) -> void:
+	loop_span = {"from": from, "to": to}
+	set_process(true)
+	queue_redraw()
+
+
+func clear_loop() -> void:
+	loop_span = {}
+	queue_redraw()
+
+
+## Whether anything is still moving: a rune settling, a note popping, a loop turning.
 func writing() -> bool:
+	if not loop_span.is_empty():
+		return true
 	for line in _lines:
 		if float(line.born) >= 0.0 and _clock < _settled_at(line):
+			return true
+		if _clock < float(line.get("pop_at", -10.0)) + POP_TIME:
 			return true
 	return false
 
@@ -268,15 +309,52 @@ func _draw_line(index: int, line: Dictionary) -> void:
 	if not settled:
 		_draw_quill(line, age)
 	if line.note != "":
-		draw_string(
-			_font,
-			Vector2(0, baseline),
-			line.note,
-			HORIZONTAL_ALIGNMENT_RIGHT,
-			size.x - PAD,
-			FONT_SIZE - 2,
-			line.note_colour
-		)
+		_draw_note(line, baseline)
+	if not loop_span.is_empty() and index == int(loop_span.from):
+		_draw_loop()
+
+
+## A note at the line's right: when it has just popped, larger, brighter and (for a strong pop) shaking, easing back.
+func _draw_note(line: Dictionary, baseline: float) -> void:
+	var colour: Color = line.note_colour
+	var font_size := FONT_SIZE - 2
+	var shake := 0.0
+	var since := _clock - float(line.get("pop_at", -10.0))
+	if since < POP_TIME:
+		var left := 1.0 - since / POP_TIME
+		var pop: float = line.get("pop", 0.0)
+		var swell := left * left * pop
+		font_size = FONT_SIZE - 2 + roundi(10.0 * swell)
+		colour = colour.lerp(Color.WHITE, 0.7 * swell)
+		shake = sin(since * 90.0) * 3.0 * swell if pop > 0.5 else 0.0
+		var width := _font.get_string_size(line.note, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var glow_box := Rect2(size.x - PAD - width - 6, baseline - _ascent - 3, width + 12, _line_h + 4)
+		draw_rect(glow_box, Color(line.note_colour, 0.25 * swell))
+	draw_string(_font, Vector2(shake, baseline), line.note, HORIZONTAL_ALIGNMENT_RIGHT, size.x - PAD, font_size, colour)
+
+
+## The loop being run: a bracket down the gutter from its header to its last line, arrows at both ends, and a turning
+## arrow by the header.
+func _draw_loop() -> void:
+	var from := int(loop_span.from)
+	var to := int(loop_span.to)
+	if from < 0 or to >= _lines.size():
+		return
+	var top := float(_lines[from].top) + 2.0
+	var bottom := float(_lines[to].top) + (_lines[to].rows as Array).size() * _line_h - 2.0
+	var x := GUTTER - 3.0
+	var colour := Color(glow.lightened(0.3), 0.9)
+	draw_line(Vector2(x, top), Vector2(x, bottom), colour, 2.0)
+	draw_line(Vector2(x, top), Vector2(x + 5, top), colour, 2.0)
+	draw_line(Vector2(x, bottom), Vector2(x + 5, bottom), colour, 2.0)
+	draw_colored_polygon(
+		PackedVector2Array([Vector2(x + 6, top), Vector2(x + 1, top - 4), Vector2(x + 1, top + 4)]), colour
+	)
+	var centre := Vector2(GUTTER - 16.0, top + _line_h * 0.4)
+	var turn := _clock * 7.0
+	draw_arc(centre, 6.0, turn, turn + TAU * 0.75, 12, colour, 2.0, true)
+	var tip := centre + Vector2(cos(turn + TAU * 0.75), sin(turn + TAU * 0.75)) * 6.0
+	draw_circle(tip, 2.2, colour)
 
 
 ## A settled stretch of a line, one draw per run of one colour.

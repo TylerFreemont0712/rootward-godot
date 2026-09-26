@@ -89,6 +89,9 @@ static func build_job(
 		"limit": input.limit,
 		"traceLimit": input.trace_limit,
 	}
+	# A program run counts its cards' loops and calls (ADR-0012); other runs never ask, so their jobs are as they were.
+	if input.get("count", false):
+		data.count = true
 	var entry: String = ENTRIES[language]
 	var files: Dictionary[String, String] = {entry: FileAccess.get_file_as_string(HARNESSES[language])}
 	var job := SandboxJob.of(language, files, entry)
