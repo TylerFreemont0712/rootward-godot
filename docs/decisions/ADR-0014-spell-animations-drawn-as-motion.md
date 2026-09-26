@@ -45,3 +45,10 @@ frame and a flash of the whole stage.
 - The old spell sprites stay as fallbacks and for Spellforge's tools; the strike sprites are deleted.
 - A painted pass over the drawn motion (the video model repainting the frames, as the sprite skins are drawn) is
   possible on top of this, per animation, if a flat drawn look ever feels too plain; the timing would stay the code's.
+
+## Amended (2026-09-26, after play)
+
+- Slower, to be seen: about half as long again throughout. The heavy blow is three blocks, each drawn in the air above
+  the foe, hanging a beat, then dropped (about six frames of fall with a streak) and broken apart where it lands; the
+  bolts after it at the same foe wait for it, so the hits land in the order the log gives them.
+- The bracket slam shows its brackets before they close, and throws fewer splinters and runes.

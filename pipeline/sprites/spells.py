@@ -263,13 +263,15 @@ def hit_compile(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
     """A bolt lands: two brackets slam shut on the target, and at the moment they meet it breaks open: a sharp star, a
     ring racing out and thinning, splinters flung out and slowing, runes scattered."""
     cx, cy = w / 2, h / 2
-    contact = 0.16
-    slam = into(span(t, 0.0, contact), 2.4)
+    contact = 0.18
+    # The brackets show where they will close before they slam, so the eye catches the blow coming.
+    slam = into(span(t, 0.05, contact), 2.4)
     if t < contact + 0.1:
         for side in (-1, 1):
             x = cx + side * (w * 0.46 - w * 0.34 * slam)
             arm = h * 0.16
-            f.lines([(x + side * w * 0.05, cy - arm), (x, cy - arm), (x, cy + arm), (x + side * w * 0.05, cy + arm)], 6, 0.9 * fade(t, contact, contact + 0.1))
+            seen = span(t, 0.0, 0.05) * fade(t, contact, contact + 0.1)
+            f.lines([(x + side * w * 0.05, cy - arm), (x, cy - arm), (x, cy + arm), (x + side * w * 0.05, cy + arm)], 6, 0.9 * seen)
     after = span(t, contact, 1.0)
     if t >= contact:
         f.disc((cx, cy), w * 0.16 * (1 - out(after, 2)), 0.9 * fade(t, contact, contact + 0.18), shade=True, blur=4)
@@ -283,58 +285,74 @@ def hit_compile(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
         ring = w * (0.08 + 0.4 * out(after, 3))
         f.ellipse((cx, cy), ring, ring, 9 * (1 - after) + 1, 0.9 * fade(t, contact, 0.8))
         f.ellipse((cx, cy), ring * 0.9, ring * 0.9, 10 * (1 - after), 0.45 * fade(t, contact, 0.7), shade=True, blur=3)
-        for i in range(14):
+        for i in range(10):
             angle = rng.uniform(0, 360)
             speed = rng.uniform(0.25, 0.48)
             reach = w * speed * out(after, 3)
             at = (cx + reach * math.cos(math.radians(angle)), cy + reach * math.sin(math.radians(angle)))
             size = w * rng.uniform(0.03, 0.06)
             f.polygon(shard(at, size, angle, 1.0 + 2.0 * (1 - after)), 0.9 * fade(t, 0.35, 0.9))
-        for i in range(8):
-            angle = i * 45 + 20
+        for i in range(6):
+            angle = i * 60 + 20
             reach = w * 0.2 * out(after, 2) + w * 0.06
             at = (cx + reach * math.cos(math.radians(angle)), cy + reach * math.sin(math.radians(angle)) - h * 0.1 * after)
             f.rune(i + 4, at, h * 0.06, angle * 2 * after, 1.6, 0.7 * fade(t, 0.4, 0.95))
 
 
 def hit_heavy(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
-    """A heavy blow: blocks of code fall one after another onto the target and crash, each splashing on the ground, the
-    last and largest shaking loose a ring of dust. Its ground is at 85% of the height."""
-    ground = h * 0.85
+    """A heavy blow: three blocks of code, each drawn in the air above the target, hanging there a beat, then dropped;
+    the last and largest is the blow. Each breaks apart where it lands, throwing splinters and a ring of dust. Its
+    ground is at 88% of the height."""
+    ground = h * 0.88
     cx = w / 2
-    drops = [(0.0, -0.12), (0.08, 0.14), (0.16, -0.02), (0.24, 0.1), (0.34, 0.0)]
-    for index, (start, dx) in enumerate(drops):
-        fall = span(t, start, start + 0.1)
-        last = index == len(drops) - 1
-        bw, bh = w * (0.3 if last else 0.2), h * (0.2 if last else 0.13)
-        x = cx + dx * w
-        if fall < 1:
-            y = -bh + (ground - bh * 0.5 + bh) * into(fall, 2.2)
-            f.lines([(x, y - h * 0.45 * fall), (x, y)], bw * 0.5, 0.3 * fall, blur=5)
-            f.lines([(x - bw * 0.3, y - h * 0.3 * fall), (x - bw * 0.3, y)], 2, 0.5 * fall)
-            f.lines([(x + bw * 0.3, y - h * 0.3 * fall), (x + bw * 0.3, y)], 2, 0.5 * fall)
-            f.polygon([(x - bw / 2, y - bh / 2), (x + bw / 2, y - bh / 2), (x + bw / 2, y + bh / 2), (x - bw / 2, y + bh / 2)], 0.35, shade=True)
-            f.lines([(x - bw / 2, y - bh / 2), (x + bw / 2, y - bh / 2), (x + bw / 2, y + bh / 2), (x - bw / 2, y + bh / 2), (x - bw / 2, y - bh / 2)], 3, 0.9)
-            f.rune(index * 2 + 3, (x, y), bh * 0.7, 0, 2.2, 0.9)
+    blocks = [
+        {"x": -0.2, "appear": 0.0, "fall": 0.12, "land": 0.24, "size": 0.2, "rune": 3},
+        {"x": 0.2, "appear": 0.1, "fall": 0.24, "land": 0.36, "size": 0.2, "rune": 7},
+        {"x": 0.0, "appear": 0.2, "fall": 0.42, "land": 0.56, "size": 0.32, "rune": 11},
+    ]
+    for index, block in enumerate(blocks):
+        big = index == len(blocks) - 1
+        bw, bh = w * block["size"], w * block["size"] * 0.66
+        x = cx + block["x"] * w
+        top = h * 0.14 + bh / 2
+        if t < block["land"]:
+            shown = span(t, block["appear"], block["appear"] + 0.07)
+            if shown <= 0:
+                continue
+            fall = span(t, block["fall"], block["land"])
+            bob = math.sin(t * 40 + index) * h * 0.006 * (1 - fall)
+            y = top + bob + (ground - bh / 2 - top) * into(fall, 2.4)
+            if fall > 0:
+                # The streak it leaves as it drops.
+                f.lines([(x, y - bh / 2 - h * 0.3 * fall), (x, y - bh / 2)], bw * 0.55, 0.28 * fall, blur=5)
+                for side in (-0.32, 0.32):
+                    f.lines([(x + side * bw, y - bh / 2 - h * 0.22 * fall), (x + side * bw, y - bh / 2)], 2, 0.5 * fall)
+            corners = [(x - bw / 2, y - bh / 2), (x + bw / 2, y - bh / 2), (x + bw / 2, y + bh / 2), (x - bw / 2, y + bh / 2)]
+            f.polygon(corners, 0.45 * shown, shade=True)
+            # Its outline draws itself round, then holds.
+            perimeter = corners + [corners[0]]
+            drawn = max(2, round(1 + 4 * shown))
+            f.lines(perimeter[:drawn], 3.4 if big else 2.8, 0.9 * min(1.0, shown * 1.5))
+            f.rune(block["rune"], (x, y), bh * 0.66, 0, 2.6 if big else 2.2, 0.95 * span(t, block["appear"] + 0.03, block["appear"] + 0.08))
             continue
-        after = span(t, start + 0.1, start + 0.1 + (0.5 if last else 0.3))
+        after = span(t, block["land"], block["land"] + (0.44 if big else 0.28))
         if after >= 1:
             continue
-        spread = w * (0.5 if last else 0.22) * out(after, 3)
-        f.ellipse((x, ground), spread, spread * 0.22, 6 * (1 - after) + 1, 0.9 * (1 - after))
-        f.ellipse((x, ground), spread * 0.8, spread * 0.18, 12, 0.5 * (1 - after), shade=True, blur=4)
-        for k in range(6 if last else 4):
-            angle = -90 + rng.uniform(-60, 60)
-            reach = h * rng.uniform(0.12, 0.3 if last else 0.18) * out(after, 2)
-            fall_back = h * 0.25 * after * after
-            at = (x + reach * math.cos(math.radians(angle)), ground + reach * math.sin(math.radians(angle)) + fall_back)
-            f.polygon(shard(at, w * 0.035, angle, 1.6), 0.85 * (1 - after))
-        f.disc((x, ground - bh * 0.3), w * (0.1 if last else 0.07) * (1 - after), 0.65 * (1 - span(after, 0, 0.3)), blur=3)
-        for k in range(5 if last else 3):
-            # Sparks thrown straight up from the crash.
+        spread = w * (0.48 if big else 0.24) * out(after, 3)
+        f.ellipse((x, ground), spread, spread * 0.2, 7 * (1 - after) + 1, 0.9 * (1 - after))
+        f.ellipse((x, ground), spread * 0.85, spread * 0.17, 14, 0.55 * (1 - after), shade=True, blur=4)
+        # The block breaks into pieces, flung up and out and falling back.
+        for k in range(7 if big else 4):
+            angle = -90 + (k - (3 if big else 1.5)) * (22 if big else 30) + rng.uniform(-8, 8)
+            reach = h * (0.28 if big else 0.16) * out(after, 2)
+            drop = h * 0.3 * after * after
+            at = (x + reach * math.cos(math.radians(angle)), ground - bh * 0.3 + reach * math.sin(math.radians(angle)) + drop)
+            f.polygon(shard(at, w * (0.045 if big else 0.032), angle + after * 200, 1.5), 0.85 * (1 - after))
+        f.disc((x, ground - bh * 0.25), w * (0.09 if big else 0.06) * (1 - after), 0.6 * (1 - span(after, 0, 0.25)), blur=3)
+        for k in range(5 if big else 3):
             rise = out(after, 2)
-            sx = x + (k - 2) * w * 0.05
-            f.lines([(sx, ground - h * 0.05 - h * 0.35 * rise), (sx, ground - h * 0.05 - h * 0.25 * rise)], 2.2, 0.8 * (1 - after))
+            sx = x + (k - (2 if big else 1)) * w * 0.05
+            f.lines([(sx, ground - h * 0.06 - h * 0.3 * rise), (sx, ground - h * 0.06 - h * 0.2 * rise)], 2.2, 0.75 * (1 - after))
 
 
 def ward_hex(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:

@@ -22,7 +22,7 @@ var shown: Dictionary = {}
 var lines: Array[Dictionary] = []
 ## The cast being played is a heavy one (many bolts, or a big total): its first blow on each foe falls from above.
 var _heavy := false
-## The foes a heavy cast's falling blow has already landed on.
+## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
 var _crashed: Dictionary = {}
 
 
@@ -109,7 +109,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 		_launch(hit, flight, volley)
 		await stage.wait(gap)
 	# The last blow lands a little after its bolt (its brackets slam first), a heavy one's crash later still.
-	await stage.wait(maxf(longest, 560.0 if _heavy else 0.0) + 360.0)
+	await stage.wait(maxf(longest, 1000.0 if _heavy else 0.0) + 400.0)
 	if heavy:
 		stage.dim(0.0, 0.4)
 
@@ -125,6 +125,10 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 	if view == null:
 		_land(hit, volley)
 		return
+	var pending: Variant = _crashed.get(hit.foe)
+	if pending is SpellAnim and is_instance_valid(pending):
+		# The foe's falling blow lands first; the bolts after it fly once it has.
+		await (pending as SpellAnim).landed()
 	if _heavy and not _crashed.has(hit.foe) and SpellAnim.has("hit-heavy"):
 		# A heavy cast's first blow on a foe does not fly: blocks of code fall on it from above.
 		_crashed[hit.foe] = true
@@ -132,6 +136,7 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 			"hit-heavy", view.foot_point(), hit.get("element", "none"), 0.9 + minf(0.5, view.sprite_width() / 400.0)
 		)
 		if crash != null:
+			_crashed[hit.foe] = crash
 			await crash.landed()
 			stage.hit_stop(80.0)
 		_land(hit, volley, true)

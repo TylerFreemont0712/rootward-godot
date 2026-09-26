@@ -20,6 +20,8 @@ var _spell_row: HBoxContainer
 var _slots: Dictionary = {}
 var _hand: HandView
 var _hold: HBoxContainer
+## The piles' face-down cards ("draw", "discard"): cards are dealt from one and discarded to the other.
+var _piles: Dictionary = {}
 var _draw_count: Label
 var _discard_count: Label
 var _hint: Label
@@ -67,12 +69,20 @@ func _build() -> void:
 	_hand.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_hand.dropped = func(from: Dictionary) -> void:
 		_move(from, {"zone": "hand", "index": (_table.hand as Array).size()})
+	_hand.draw_point = _pile_point.bind("draw")
+	_hand.discard_point = _pile_point.bind("discard")
 	_hold = Ui.hbox([], 6)
 	var draw := _pile("Draw", _draw_count)
 	var discard := _pile("Discard", _discard_count)
 	var hold := Ui.vbox([Ui.label("HOLD", "Faint"), _hold], 4)
 	hold.size_flags_vertical = Control.SIZE_SHRINK_END
 	add_child(Ui.hbox([draw, _hand, hold, discard], 12))
+
+
+## The middle of a pile's face-down card, in the canvas.
+func _pile_point(which: String) -> Vector2:
+	var back: Control = _piles.get(which)
+	return back.get_global_rect().get_center() if back != null else Vector2.ZERO
 
 
 func _pile(title: String, count: Label) -> Control:
@@ -85,6 +95,7 @@ func _pile(title: String, count: Label) -> Control:
 	back.tooltip_text = "Open %s pile" % title.to_lower()
 	back.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	back.pressed.connect(_open_pile.bind(title.to_lower()))
+	_piles[title.to_lower()] = back
 	# The pile is a card lying face down: the painted card back, or the emblem when there is none.
 	var art := Art.texture("cards/back")
 	var face := Ui.picture(
@@ -153,9 +164,14 @@ func show_table(state: Dictionary) -> void:
 	if battle.is_empty():
 		return
 	var before := _table
+	var seen := _where_cards_are()
 	_table = CardTable.of(state, session.catalog)
 	target = CardTable.target(_table, target)
 	var summaries := session.show_summaries()
+	var deal := int(battle.turn) != _turn
+	_turn = int(battle.turn)
+	# Where each card that moved came from, so it can fly from there to its new place.
+	var origins := _origins(seen, deal)
 	for spell: Dictionary in _table.spells:
 		var row: HBoxContainer = _slots.get(spell.id)
 		if row == null:
@@ -167,19 +183,12 @@ func show_table(state: Dictionary) -> void:
 				var face := _card(spell.shards[index], at, CardFace.Size.SLOT, summaries)
 				row.add_child(face)
 				if _changed(before, at, spell.shards[index]):
-					_settle(face)
+					_arrive(face, HandView._take(origins, spell.shards[index]))
 			else:
 				var empty := CardFace.slot(at, "spent" if spell.spent else "slot %d" % (index + 1), CardFace.Size.SLOT)
 				empty.moved = _move
 				row.add_child(empty)
 		(cards[spell.id] as SpellCard).set_targeted(spell.id == target)
-	var deal := int(battle.turn) != _turn
-	_turn = int(battle.turn)
-	var faces: Array[CardFace] = []
-	var hand: Array = _table.hand
-	for index in hand.size():
-		faces.append(_card(hand[index], {"zone": "hand", "index": index}, CardFace.Size.HAND, summaries))
-	_hand.hold(faces, deal)
 	Ui.clear(_hold)
 	for index in int(_table.hold_limit):
 		var at := {"zone": "hold", "index": index}
@@ -187,14 +196,84 @@ func show_table(state: Dictionary) -> void:
 			var face := _card(_table.held[index], at, CardFace.Size.SLOT, summaries)
 			_hold.add_child(face)
 			if _changed(before, at, _table.held[index]):
-				_settle(face)
+				_arrive(face, HandView._take(origins, _table.held[index]))
 		else:
 			var free := CardFace.slot(at, "hold a card", CardFace.Size.SLOT)
 			free.moved = _move
 			_hold.add_child(free)
+	var make := func(id: String, index: int) -> CardFace:
+		return _card(id, {"zone": "hand", "index": index}, CardFace.Size.HAND, summaries)
+	_hand.show_hand(_table.hand, make, deal, origins)
 	_draw_count.text = "%d cards" % (battle.draw as Array).size()
 	_discard_count.text = "%d cards" % (battle.discard as Array).size()
 	_hint.text = _hint_text()
+
+
+## Every card on the table now, with where it sits and where its middle is on screen: [{id, zone, key, point}].
+func _where_cards_are() -> Array[Dictionary]:
+	var found: Array[Dictionary] = []
+	var faces: Array = _hand.cards.duplicate()
+	for row: HBoxContainer in _slots.values():
+		faces.append_array(row.get_children())
+	faces.append_array(_hold.get_children())
+	for face: Variant in faces:
+		var card := face as CardFace
+		if card == null or card.shard_id == "" or not card.is_inside_tree() or not card.visible:
+			continue
+		var point := card.get_global_transform() * (card.size * 0.5)
+		var key := "%s:%s:%d" % [card.spot.get("zone", ""), card.spot.get("spell", ""), int(card.spot.get("index", 0))]
+		found.append({"id": card.shard_id, "zone": String(card.spot.get("zone", "")), "key": key, "point": point})
+	return found
+
+
+## The places cards left since the last update, by card id: a card no longer at its slot or hold place, or a hand card
+## of which the hand now holds fewer. At a new turn only the hold counts (the rest of the hand went to the discard).
+func _origins(seen: Array[Dictionary], deal: bool) -> Dictionary:
+	var now := {}
+	for spell: Dictionary in _table.spells:
+		for index in (spell.shards as Array).size():
+			now["spell:%s:%d" % [spell.id, index]] = spell.shards[index]
+	for index in (_table.held as Array).size():
+		now["hold::%d" % index] = _table.held[index]
+	var in_hand := {}
+	for id: String in _table.hand:
+		in_hand[id] = int(in_hand.get(id, 0)) + 1
+	var origins := {}
+	for place in seen:
+		var left: bool
+		if place.zone == "hand":
+			left = not deal and int(in_hand.get(place.id, 0)) <= 0
+			if not left:
+				in_hand[place.id] = int(in_hand.get(place.id, 0)) - 1
+		else:
+			left = now.get(place.key, "") != place.id and (not deal or place.zone == "hold")
+		if left:
+			if not origins.has(place.id):
+				origins[place.id] = []
+			(origins[place.id] as Array).append(place.point)
+	return origins
+
+
+## A card placed in a slot or the hold: it flies there from where it was (`from`, a canvas point) or, with nowhere to
+## come from, drops into place.
+func _arrive(face: CardFace, from: Variant) -> void:
+	if not from is Vector2:
+		_settle(face)
+		return
+	face.modulate = Color(1, 1, 1, 0)
+	# Its place is known once the row has laid it out.
+	await get_tree().process_frame
+	if not is_instance_valid(face) or not face.is_inside_tree():
+		return
+	var home := face.position
+	var centre := face.get_global_transform() * (face.size * 0.5)
+	face.pivot_offset = face.size * 0.5
+	face.position = home + ((from as Vector2) - centre)
+	face.scale = Vector2.ONE * 1.3
+	face.modulate = Color.WHITE
+	var tween := face.create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(face, "position", home, 0.26)
+	tween.tween_property(face, "scale", Vector2.ONE, 0.26)
 
 
 func _card(id: String, at: Dictionary, size_kind: CardFace.Size, summaries: bool) -> CardFace:

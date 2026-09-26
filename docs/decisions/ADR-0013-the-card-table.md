@@ -60,3 +60,7 @@ beside the numbers; a `.log` button instead of the scrolling log; a wider code p
 - Fights are calmer: no impact frames, no whole-stage flashes, and softer hit and cast flashes. The heavy cast's
   strikes (lightning and the like, called down on each foe) are gone; the spell animations that replace them are
   ADR-0014's.
+- The hand keeps its cards between updates: a played card flies from the hand to its slot (or back, or to the hold)
+  and the rest close the gap; a new turn's cards are dealt from the draw pile into their places one after another and
+  the old hand goes to the discard pile. The first deal of a fight waits for the hand to have its size (before, its
+  cards flew toward the Maintainer's corner of the screen).
