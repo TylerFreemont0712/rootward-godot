@@ -145,6 +145,13 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
+### Next: the game plan (proposed on 2026-09-28)
+`docs/ROADMAP.md` proposes stages 0 to 10 for two journeys: the Shardrun toward Slay the Spire's depth
+(`docs/SHARDRUN_DESIGN.md`), and the Academy, a separate course from beginner to advanced (`docs/ACADEMY_DESIGN.md`).
+Phase 8's open items are folded in: the balance pass is stage 1; cards of their own, more of each paradigm and relics
+that bend work are stage 6; spell animations per role come with stage 10. The stages become phases here once the
+player agrees.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

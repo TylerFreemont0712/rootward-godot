@@ -233,3 +233,10 @@ Changing someone's code to measure it must not move it: an error on line 7 has t
 added to the line it measures (after a loop's `{`, or wrapping a one-line loop as `{ counter; statement }`), never on a
 line of its own.
 
+## Measuring balance with a search bot (`docs/research/balance-probe/`)
+To learn whether a card game is fair, let a program play it many times. The probe's bot looks one turn ahead:
+it lists every ordered choice of cards from the hand (a depth-first search; two prefixes with the same card ids lead to
+the same programs, so the second is skipped, which keeps a hand with two Salvos from doubling the work), runs all of
+them in *one* sandbox job (starting a process costs far more than running a small function), and replays each cast
+through the pure rules to score it. What-ifs change the content in memory and reuse the same seeds, so two experiments
+see the same draws and their difference is the change's, not the luck's (a paired comparison).
