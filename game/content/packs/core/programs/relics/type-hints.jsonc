@@ -1,0 +1,9 @@
+{
+  "id": "type-hints",
+  "name": "Type Hints",
+  "tier": "common",
+  "icon": "type-hints",
+  "summary": "Bolts with an element (fire, frost or spark) land with 1 more power.",
+  "flavor": "Annotated, and a little quicker to read.",
+  "effects": [{ "kind": "element-power", "add": 1 }]
+}

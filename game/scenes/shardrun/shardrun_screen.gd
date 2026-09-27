@@ -221,9 +221,18 @@ func _ending(state: Dictionary) -> Control:
 		],
 		8
 	)
-	var panel := Ui.panel(
-		Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log), "Narration", true), buttons], 16), "Overlay"
-	)
+	var column := Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log), "Narration", true)], 16)
+	var history := session.saves.load_history()
+	if not history.is_empty() and String(history[0].get("seed", "")) == String(state.seed):
+		# What git prints after a commit: the run is in the history now (the title's git log shows them all).
+		var record: Dictionary = history[0]
+		var committed := (
+			"[main %s] %s\n%s"
+			% [RunHistory.short_hash(record), RunHistory.subject(record), RunHistory.diffstat(record)]
+		)
+		column.add_child(Ui.tint(Ui.label(committed, "Muted"), UiTheme.TEAL))
+	column.add_child(buttons)
+	var panel := Ui.panel(column, "Overlay")
 	panel.custom_minimum_size = Vector2(820, 0)
 	return Ui.centered_scroll(panel)
 

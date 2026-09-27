@@ -1,0 +1,9 @@
+{
+  "id": "sticky-note",
+  "name": "Sticky Note",
+  "tier": "common",
+  "icon": "sticky-note",
+  "summary": "Hold one more card into the next turn.",
+  "flavor": "TODO: remember this.",
+  "effects": [{ "kind": "hold", "add": 1 }]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "reduce",
+  "name": "Reduce",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element.",
+  "function": "reduce",
+  "examples": [
+    {
+      "name": "a seed and a salvo",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 33, "element": "fire" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "bisect-insert",
+  "name": "Bisect Insert",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "source",
+  "complexity": "logarithmic",
+  "big_o": "O(log n) a search",
+  "summary": "Binary-searches for where a 7-power bolt belongs and puts it there, twice. A sorted volley stays sorted; an unsorted one gets them wherever the search lands.",
+  "function": "bisect_insert",
+  "examples": [
+    {
+      "name": "into a sorted volley",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 12, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 12, "element": "none" }
+      ]
+    },
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "reference-counter",
+  "name": "Reference Counter",
+  "tier": "uncommon",
+  "icon": "reference-counter",
+  "summary": "Each foe your program breaks gives 1 more mana next turn (2 at most).",
+  "flavor": "When the count reaches zero, the memory comes back.",
+  "effects": [{ "kind": "kill-mana", "amount": 1, "max": 2 }]
+}

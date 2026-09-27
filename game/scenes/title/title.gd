@@ -288,7 +288,10 @@ func _launcher(session: ShardrunSession) -> Control:
 		actions.add_child(sandbox)
 	column.add_child(actions)
 	var looks := Ui.button("Choose from %d looks" % Settings.CHARACTER_SKINS.size(), _open_skins)
-	column.add_child(Ui.hbox([Ui.label("YOUR LOOK", "Faint"), looks], 8))
+	var history := session.saves.load_history()
+	var commits := Ui.button("git log (%d)" % history.size(), _open_git_log.bind(history))
+	commits.tooltip_text = "Every finished run, as a commit: how it ended, what it dealt, what it carried."
+	column.add_child(Ui.hbox([Ui.label("YOUR LOOK", "Faint"), looks, Ui.spacer(), commits], 8))
 	var panel := Ui.panel(column, "Card")
 	panel.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color(0.06, 0.05, 0.06, 0.85), Color(1, 1, 1, 0.06), 1, 10, Vector2(18, 14))
@@ -402,6 +405,12 @@ func _open_options() -> void:
 	var options := OptionsPanel.create()
 	options.closed.connect(func() -> void: Ui.clear(_overlay))
 	_show_overlay(options)
+
+
+func _open_git_log(history: Array[Dictionary]) -> void:
+	var view := GitLogView.create(history)
+	view.closed.connect(func() -> void: Ui.clear(_overlay))
+	_show_overlay(view)
 
 
 func _open_skins() -> void:

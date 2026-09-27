@@ -1,0 +1,9 @@
+{
+  "id": "load-balancer",
+  "name": "Load Balancer",
+  "tier": "rare",
+  "icon": "load-balancer",
+  "summary": "Damage past a foe's last HP flows on into the next foe still standing.",
+  "flavor": "No request dropped, no server idle.",
+  "effects": [{ "kind": "overkill-flows" }]
+}

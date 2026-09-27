@@ -1,0 +1,35 @@
+{
+  "id": "dedupe",
+  "name": "Dedupe",
+  "rarity": "common",
+  "cost": 0,
+  "paradigm": "search-index",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "A set remembers every power seen: a bolt whose power was seen before is dropped, and every bolt that stays gains 2.",
+  "function": "dedupe",
+  "examples": [
+    {
+      "name": "a seed and a salvo",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 8, "element": "none" }
+      ]
+    }
+  ]
+}

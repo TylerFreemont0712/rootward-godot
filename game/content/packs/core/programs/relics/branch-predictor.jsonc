@@ -1,0 +1,9 @@
+{
+  "id": "branch-predictor",
+  "name": "Branch Predictor",
+  "tier": "uncommon",
+  "icon": "branch-predictor",
+  "summary": "Every foe waits 24 more operations before it acts: your programs land first more often.",
+  "flavor": "It guesses which way the code will go, and it is usually right.",
+  "effects": [{ "kind": "tempo", "add": 24 }]
+}

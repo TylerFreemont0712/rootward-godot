@@ -1,0 +1,9 @@
+{
+  "id": "big-o-compass",
+  "name": "Big-O Compass",
+  "tier": "rare",
+  "icon": "big-o-compass",
+  "summary": "While every card of your program runs in O(n) or faster, it deals 30% more.",
+  "flavor": "It always points away from the nested loop.",
+  "effects": [{ "kind": "fast-program", "complexity": "linear", "factor": 1.3 }]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "unix-philosophy",
+  "name": "Unix Philosophy",
+  "tier": "rare",
+  "icon": "unix-philosophy",
+  "summary": "A program of one or two cards deals double damage.",
+  "flavor": "Write programs that do one thing, and do it well.",
+  "effects": [{ "kind": "small-program", "max_cards": 2, "factor": 2.0 }]
+}

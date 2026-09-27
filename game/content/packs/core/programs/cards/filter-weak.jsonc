@@ -1,0 +1,41 @@
+{
+  "id": "filter-weak",
+  "name": "Filter",
+  "rarity": "common",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Drops every bolt under 3 power; the strongest bolt that stays absorbs what was dropped. If none would stay, it keeps them all.",
+  "function": "filter_weak",
+  "examples": [
+    {
+      "name": "a salvo, filtered",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    },
+    {
+      "name": "nothing would stay",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" }
+      ]
+    }
+  ]
+}

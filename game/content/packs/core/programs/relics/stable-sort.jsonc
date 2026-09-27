@@ -1,0 +1,9 @@
+{
+  "id": "stable-sort",
+  "name": "Stable Sort",
+  "tier": "uncommon",
+  "icon": "stable-sort",
+  "summary": "When a volley lands sorted (weakest first), every attacking bolt has 1 more power.",
+  "flavor": "Equal things keep their places. Everything else knows its own.",
+  "effects": [{ "kind": "sorted-landing", "add": 1 }]
+}

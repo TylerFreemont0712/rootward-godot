@@ -1,0 +1,9 @@
+{
+  "id": "try-finally",
+  "name": "Try / Finally",
+  "tier": "uncommon",
+  "icon": "try-finally",
+  "summary": "Gain 2 block for every card of a program that runs to its end.",
+  "flavor": "Whatever happens in the try, the finally always runs.",
+  "effects": [{ "kind": "block-per-card", "amount": 2 }]
+}

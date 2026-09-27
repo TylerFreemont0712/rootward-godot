@@ -1,0 +1,9 @@
+{
+  "id": "pipeline",
+  "name": "Pipeline",
+  "tier": "epic",
+  "icon": "pipeline",
+  "summary": "A program that fills every slot deals 50% more damage.",
+  "flavor": "Every stage busy, nothing waiting, the whole line moving at once.",
+  "effects": [{ "kind": "full-program", "factor": 1.5 }]
+}

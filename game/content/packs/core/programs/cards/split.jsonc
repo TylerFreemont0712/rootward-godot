@@ -1,0 +1,37 @@
+{
+  "id": "split",
+  "name": "Split",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "source",
+  "complexity": "linear",
+  "summary": "Divides every bolt of 4 or more power into its two halves, and those halves again, until every piece is under 4. The same power in many more bolts: what Amplify likes best.",
+  "function": "split",
+  "examples": [
+    {
+      "name": "a 9 in pieces",
+      "bolts": [
+        { "power": 9, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 3, "element": "frost" },
+        { "power": 2, "element": "frost" },
+        { "power": 2, "element": "frost" },
+        { "power": 2, "element": "frost" }
+      ]
+    },
+    {
+      "name": "small bolts stay",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

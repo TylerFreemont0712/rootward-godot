@@ -1,0 +1,9 @@
+{
+  "id": "cron-job",
+  "name": "Cron Job",
+  "tier": "legendary",
+  "icon": "cron-job",
+  "summary": "Every third turn of a fight, your program costs no mana.",
+  "flavor": "*/3 * * * *. It never forgets, and it never asks.",
+  "effects": [{ "kind": "cron", "every": 3 }]
+}

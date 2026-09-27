@@ -1,0 +1,9 @@
+{
+  "id": "profiler",
+  "name": "Profiler",
+  "tier": "common",
+  "icon": "profiler",
+  "summary": "The first card of every program does no work.",
+  "flavor": "Measure before you optimise. The first line was never the slow one.",
+  "effects": [{ "kind": "free-first-work" }]
+}

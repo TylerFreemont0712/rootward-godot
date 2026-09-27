@@ -420,7 +420,7 @@ func _pick_score(id: String, paradigm: String, deck: Array) -> float:
 	# Diminishing returns on copies.
 	score -= 0.75 * deck.count(id)
 	# A drafter who knows a program needs input: sources are worth a lot while they are scarce in the deck.
-	if picks == "sources" and card.get("role", "") == "grow" and id != "pairwise":
+	if picks == "sources" and card.get("role", "") == "source" and id != "pairwise":
 		var sources := deck.filter(func(c: String) -> bool: return c in ["salvo", "fork"]).size()
 		if sources * 4 < deck.size():
 			score += 3.0

@@ -1,0 +1,46 @@
+{
+  "id": "quick-sort",
+  "name": "Quick Sort",
+  "rarity": "uncommon",
+  "cost": 0,
+  "paradigm": "divide-conquer",
+  "role": "order",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n), O(n²) sorted",
+  "worst_case": {"input": "sorted", "complexity": "quadratic"},
+  "makes": "sorted",
+  "summary": "The first bolt is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. Weakest first, for no mana. On a volley already sorted every split is lopsided, and it slows to O(n²).",
+  "function": "quick_sort",
+  "examples": [
+    {
+      "name": "a shuffled volley",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 4, "element": "frost" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "frost" },
+        { "power": 5, "element": "none" }
+      ]
+    },
+    {
+      "name": "equal powers keep their order",
+      "bolts": [
+        { "power": 3, "element": "fire" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "fire" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

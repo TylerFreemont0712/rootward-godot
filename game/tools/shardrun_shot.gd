@@ -4,7 +4,8 @@ extends Control
 ##   heavy spark spell on two foes: lightning called down), turn, reward, treasure, rest, forge, end, code,
 ##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms), pack (a draft
 ##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
-##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window)
+##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window), relics
+##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs)
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
 ## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare.
 ## It plays in its own save folder, so the player's run is never touched:
@@ -95,6 +96,15 @@ func _ready() -> void:
 				await bot.send(CardTable.command(table))
 		"reward":
 			await bot.play_until("reward")
+		"relics":
+			# A guardian beaten in a sandbox run: its reward offers epic and legendary relics.
+			session.start(language if language != "" else "python", "beginner", "screenshot", true)
+			await bot.play_until("battle")
+			await bot.send({"type": "dev-spawn", "kind": "boss", "foes": ["kiln-warden"]})
+			await bot.send({"type": "dev-end-battle", "outcome": "win"})
+		"gitlog":
+			_show_git_log(session)
+			return
 		"treasure":
 			bot.prefer = "treasure"
 			await bot.play_until("reward", 200)
@@ -127,6 +137,48 @@ func _ready() -> void:
 	set_meta("shot_ready", true)
 	shot_ready.emit()
 	_act(shot, screen)
+
+
+## The run history over a dark stage, from a few finished runs made up for the picture (a win, losses, an abandon),
+## the newest opened as its `git show`.
+func _show_git_log(session: ShardrunSession) -> void:
+	var endings := [
+		["won", "greedy", 2, ""],
+		["lost", "brute-force", 1, "Deadlock Golem"],
+		["abandoned", "dynamic", 0, ""],
+		["lost", "search-index", 2, "Root Daemon"],
+		["won", "divide-conquer", 2, ""],
+	]
+	var records: Array[Dictionary] = []
+	for index in endings.size():
+		var ending: Array = endings[index]
+		var state := session.state.duplicate(true)
+		state.seed = "shot-%d" % index
+		state.status = ending[0]
+		state.paradigm = ending[1]
+		state.layer = ending[2]
+		state.stats.damage = 400 + index * 377
+		state.stats.fights = 6 + index * 3
+		state.stats.turns = 20 + index * 9
+		state.integrity = 0 if ending[0] == "lost" else 31 + index
+		state.visited = ["a", "b", "c", "d", "e", "f", "g"].slice(0, 3 + index)
+		if ending[3] != "":
+			state.battle = {"kind": "boss", "foes": [{"name": ending[3], "hp": 50}]}
+		var day := "2026-09-%02dT%02d:1%d:00" % [24 + index, 9 + index * 2, index]
+		records.push_front(RunHistory.entry(state, session.catalog, day, "vesper"))
+	var dim := ColorRect.new()
+	dim.color = UiTheme.GROUND
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(dim)
+	var view := GitLogView.create(records)
+	var page := Ui.centered_scroll(view)
+	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(page)
+	view.call("_toggle", RunHistory.short_hash(records[0]))
+	for i in 5:
+		await get_tree().process_frame
+	set_meta("shot_ready", true)
+	shot_ready.emit()
 
 
 func _act(shot: String, screen: Control) -> void:

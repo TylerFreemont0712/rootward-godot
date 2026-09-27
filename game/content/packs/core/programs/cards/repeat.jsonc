@@ -1,0 +1,53 @@
+{
+  "id": "repeat",
+  "name": "Repeat",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "big_o": "O(k)",
+  "summary": "Copies the last bolt three more times (three 4-power bolts when the volley is empty). Put your strongest bolt last before it.",
+  "function": "repeat",
+  "examples": [
+    {
+      "name": "the seed, twice as long",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    },
+    {
+      "name": "the strongest last",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 9, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 2, "element": "none" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" }
+      ]
+    },
+    {
+      "name": "an empty volley",
+      "bolts": [],
+      "expect": [
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" }
+      ]
+    }
+  ]
+}

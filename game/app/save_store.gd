@@ -74,3 +74,37 @@ static func unusable(value: Variant) -> String:
 		if not state.has(key):
 			return "it has no %s" % key
 	return ""
+
+
+## The finished runs, one JSON object a line, oldest first (RunHistory): appending is one write, and a line cut short
+## by a crash loses only itself.
+func history_path() -> String:
+	return root.path_join("history.jsonl")
+
+
+func append_history(record: Dictionary) -> Error:
+	var made := DirAccess.make_dir_recursive_absolute(root)
+	if made != OK:
+		return made
+	var path := history_path()
+	var file := FileAccess.open(path, FileAccess.READ_WRITE if FileAccess.file_exists(path) else FileAccess.WRITE)
+	if file == null:
+		return FileAccess.get_open_error()
+	file.seek_end()
+	file.store_line(JSON.stringify(record, "", false))
+	file.close()
+	return OK
+
+
+## The finished runs, newest first; a line that does not parse is skipped.
+func load_history() -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	var path := history_path()
+	if not FileAccess.file_exists(path):
+		return out
+	var json := JSON.new()
+	for line in FileAccess.get_file_as_string(path).split("\n", false):
+		# JSON.new().parse reports a bad line through its return value, where JSON.parse_string prints an error.
+		if json.parse(line) == OK and json.data is Dictionary:
+			out.push_front(json.data)
+	return out

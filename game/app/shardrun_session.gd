@@ -91,6 +91,10 @@ func command(request: Dictionary) -> Dictionary:
 		return result
 	state = result.state
 	saves.save_run(playstyle, state)
+	if state.status in Shardrun.ENDED and not before.get("status", "") in Shardrun.ENDED:
+		# A run just ended: it goes into the history as a commit (RunHistory), never to be rewritten.
+		var finished := Time.get_datetime_string_from_system(false, true)
+		saves.append_history(RunHistory.entry(state, catalog, finished, Settings.character_skin))
 	runs.warm(state)
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": replay}

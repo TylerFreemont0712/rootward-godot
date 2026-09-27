@@ -1,0 +1,9 @@
+{
+  "id": "checksum",
+  "name": "Checksum",
+  "tier": "uncommon",
+  "icon": "checksum",
+  "summary": "When every attacking bolt shares one element (not plain), they deal 30% more.",
+  "flavor": "Every byte accounted for, and every byte the same colour.",
+  "effects": [{ "kind": "mono-element", "factor": 1.3 }]
+}

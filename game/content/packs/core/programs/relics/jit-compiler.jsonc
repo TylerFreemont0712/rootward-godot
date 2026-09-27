@@ -1,0 +1,9 @@
+{
+  "id": "jit-compiler",
+  "name": "JIT Compiler",
+  "tier": "rare",
+  "icon": "jit-compiler",
+  "summary": "A card that already ran this fight has been compiled: it does no work from then on.",
+  "flavor": "The second time through, it already knows the way.",
+  "effects": [{ "kind": "jit" }]
+}

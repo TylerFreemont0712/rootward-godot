@@ -1,0 +1,44 @@
+{
+  "id": "make-change",
+  "name": "Make Change",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "source",
+  "complexity": "linear",
+  "summary": "Greedy change-making: the strongest bolt is paid out in coins of 5 and 1, the biggest coin that fits first, and every coin is minted 1 stronger. More bolts, and more power.",
+  "function": "make_change",
+  "examples": [
+    {
+      "name": "12 in coins",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 12, "element": "spark" },
+        { "power": 4, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "spark" },
+        { "power": 6, "element": "spark" },
+        { "power": 2, "element": "spark" },
+        { "power": 2, "element": "spark" },
+        { "power": 4, "element": "none" }
+      ]
+    },
+    {
+      "name": "the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

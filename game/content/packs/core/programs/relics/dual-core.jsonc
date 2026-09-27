@@ -1,0 +1,9 @@
+{
+  "id": "dual-core",
+  "name": "Dual Core",
+  "tier": "legendary",
+  "icon": "dual-core",
+  "summary": "Your program's volley lands twice.",
+  "flavor": "Two of everything, running at once, neither waiting for the other.",
+  "effects": [{ "kind": "echo" }]
+}

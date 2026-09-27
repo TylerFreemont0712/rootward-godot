@@ -1,0 +1,43 @@
+{
+  "id": "knapsack-ward",
+  "name": "Knapsack Ward",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "guard",
+  "complexity": "pseudo",
+  "big_o": "O(n·H)",
+  "height": 12,
+  "summary": "Exhaustive Ward's question answered with a table instead of every subset: which totals can the bolts make? The smallest total of 12 or more becomes your block; the rest still fly. O(n·H), where brute force was O(2ⁿ).",
+  "function": "knapsack_ward",
+  "examples": [
+    {
+      "name": "exactly 12",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 8, "element": "none", "block": true },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 6, "element": "none" }
+      ]
+    },
+    {
+      "name": "never reaching 12",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true }
+      ]
+    }
+  ]
+}

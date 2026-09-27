@@ -1,0 +1,34 @@
+{
+  "id": "recursion-tree",
+  "name": "Recursion Tree",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "source",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep: one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
+  "function": "recursion_tree",
+  "examples": [
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

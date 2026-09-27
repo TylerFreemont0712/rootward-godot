@@ -1,0 +1,29 @@
+{
+  "id": "greedy-ward",
+  "name": "Greedy Ward",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "guard",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n)",
+  "summary": "Greedy defence: the strongest bolts become your block, biggest first, until they reach 10. The rest still fly. Quick, and it may take more than it needed.",
+  "function": "greedy_ward",
+  "examples": [
+    {
+      "name": "the two strongest guard",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 8, "element": "none", "block": true },
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none", "block": true }
+      ]
+    }
+  ]
+}

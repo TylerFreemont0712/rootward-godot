@@ -1,0 +1,9 @@
+{
+  "id": "superposition",
+  "name": "Superposition",
+  "tier": "legendary",
+  "icon": "superposition",
+  "summary": "Every bolt counts as the element each foe is weak to.",
+  "flavor": "Fire, frost and spark at once, until something looks at it.",
+  "effects": [{ "kind": "all-elements" }]
+}

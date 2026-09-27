@@ -1,0 +1,9 @@
+{
+  "id": "lazy-evaluation",
+  "name": "Lazy Evaluation",
+  "tier": "uncommon",
+  "icon": "lazy-evaluation",
+  "summary": "Power that is wasted, past a foe's last HP or at a foe already down, becomes block.",
+  "flavor": "Why compute it now, when you might never need it?",
+  "effects": [{ "kind": "wasted-to-block", "fraction": 1.0 }]
+}

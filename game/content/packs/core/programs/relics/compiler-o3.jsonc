@@ -1,0 +1,9 @@
+{
+  "id": "compiler-o3",
+  "name": "-O3",
+  "tier": "legendary",
+  "icon": "compiler-o3",
+  "summary": "Every card does half its work, and every bolt lands with 2 more power.",
+  "flavor": "Every optimisation the compiler knows, and a few it should not.",
+  "effects": [{ "kind": "work-factor", "factor": 0.5 }, { "kind": "bolt-power", "add": 2 }]
+}

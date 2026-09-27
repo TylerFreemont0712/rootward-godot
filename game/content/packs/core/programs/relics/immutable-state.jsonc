@@ -1,0 +1,9 @@
+{
+  "id": "immutable-state",
+  "name": "Immutable State",
+  "tier": "epic",
+  "icon": "immutable-state",
+  "summary": "Block is never lost between turns.",
+  "flavor": "Nothing changes it. Nothing takes it away.",
+  "effects": [{ "kind": "retain-block", "fraction": 1.0 }]
+}

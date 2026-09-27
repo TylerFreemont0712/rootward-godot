@@ -1,0 +1,27 @@
+{
+  "id": "literal",
+  "name": "Literal",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "summary": "Appends one 9-power bolt: a constant written into the code, added in O(1).",
+  "function": "literal",
+  "examples": [
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    }
+  ]
+}

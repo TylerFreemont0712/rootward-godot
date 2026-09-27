@@ -33,7 +33,8 @@
       "colour": "#b48cff",
       "summary": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
       "signature": ["divide", "merge-strike"],
-      "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify"]
+      "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify", "quick-sort", "quickselect",
+        "recursion-tree", "split"]
     },
     {
       "id": "search-index",
@@ -42,7 +43,8 @@
       "colour": "#5cc8b8",
       "summary": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
       "signature": ["prefix-sum", "binary-execute"],
-      "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill"]
+      "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill", "bisect-insert", "dedupe",
+        "two-pointers", "hash-aim"]
     },
     {
       "id": "greedy",
@@ -51,7 +53,8 @@
       "colour": "#f2a541",
       "summary": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
       "signature": ["greedy-assign", "take-max"],
-      "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge"]
+      "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge", "make-change", "huffman",
+        "load-balance", "greedy-ward"]
     },
     {
       "id": "brute-force",
@@ -60,7 +63,8 @@
       "colour": "#e2584f",
       "summary": "Try every pair, every subset. Enormous damage and perfect answers, but slow: foes act first, and a big volley times out.",
       "signature": ["pairwise", "exhaustive-kill"],
-      "pool": ["pairwise", "exhaustive-kill", "kindle", "fork", "take-max"]
+      "pool": ["pairwise", "exhaustive-kill", "kindle", "fork", "take-max", "bubble-sort", "power-set",
+        "linear-search", "exhaustive-ward"]
     },
     {
       "id": "dynamic",
@@ -69,11 +73,13 @@
       "colour": "#82d8ff",
       "summary": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
       "signature": ["tabulate", "knapsack-strike"],
-      "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill"]
+      "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill", "kadane", "lis-strike",
+        "pascal-row", "knapsack-ward"]
     }
   ],
   // Cards any pack can offer beside the paradigm's own.
-  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge", "take-max"],
+  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge",
+    "take-max", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce"],
   // Operations a foe waits before it acts: a program doing more work than this lands after the foe's move.
   "tempo_default": 48,
   "tempo": {

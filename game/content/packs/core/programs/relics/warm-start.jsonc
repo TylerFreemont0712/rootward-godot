@@ -1,0 +1,9 @@
+{
+  "id": "warm-start",
+  "name": "Warm Start",
+  "tier": "common",
+  "icon": "warm-start",
+  "summary": "The first turn of every fight gives 2 more mana.",
+  "flavor": "The caches are already warm when the first request comes in.",
+  "effects": [{ "kind": "first-turn-mana", "add": 2 }]
+}

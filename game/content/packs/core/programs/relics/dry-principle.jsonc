@@ -1,0 +1,9 @@
+{
+  "id": "dry-principle",
+  "name": "DRY Principle",
+  "tier": "uncommon",
+  "icon": "dry-principle",
+  "summary": "A second copy of a card in the same program costs no mana.",
+  "flavor": "Don't repeat yourself. Or do, if it is free.",
+  "effects": [{ "kind": "duplicate-free" }]
+}

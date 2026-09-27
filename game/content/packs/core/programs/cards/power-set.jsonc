@@ -1,0 +1,52 @@
+{
+  "id": "power-set",
+  "name": "Power Set",
+  "rarity": "rare",
+  "cost": 2,
+  "paradigm": "brute-force",
+  "role": "source",
+  "complexity": "exponential",
+  "big_o": "O(2ⁿ)",
+  "cap_n": 3,
+  "makes": "unsorted",
+  "summary": "Every non-empty subset of the first three bolts, counted as a bitmask from 1 to 7, becomes one bolt of its sum. Seven bolts from three; the rest of the volley follows.",
+  "function": "power_set",
+  "examples": [
+    {
+      "name": "the seed's seven subsets",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    },
+    {
+      "name": "the rest follows",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "spark" },
+        { "power": 9, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "spark" },
+        { "power": 5, "element": "spark" },
+        { "power": 6, "element": "spark" },
+        { "power": 7, "element": "spark" },
+        { "power": 9, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "bubble-sort",
+  "name": "Bubble Sort",
+  "rarity": "common",
+  "cost": 0,
+  "paradigm": "brute-force",
+  "role": "order",
+  "complexity": "quadratic",
+  "makes": "sorted",
+  "summary": "Walks the volley again and again, swapping neighbours that are out of order, until a pass swaps nothing: weakest first. Free, and slow, O(n²). A forge optimises it into Merge Sort.",
+  "function": "bubble_sort",
+  "forge": {"into": "merge-sort", "verb": "optimize"},
+  "examples": [
+    {
+      "name": "a shuffled volley",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 4, "element": "fire" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "fire" },
+        { "power": 5, "element": "none" }
+      ]
+    }
+  ]
+}

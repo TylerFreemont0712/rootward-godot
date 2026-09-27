@@ -1,0 +1,9 @@
+{
+  "id": "radix-sort",
+  "name": "Radix Sort",
+  "tier": "epic",
+  "icon": "radix-sort",
+  "summary": "Order cards cost no mana and do only O(n) work.",
+  "flavor": "Sort by the digits instead of comparing: the n log n wall was never a law.",
+  "effects": [{ "kind": "role-cost", "role": "order", "cost": 0 }, { "kind": "role-complexity", "role": "order", "complexity": "linear" }]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "hello-world",
+  "name": "Hello, World",
+  "tier": "common",
+  "icon": "hello-world",
+  "summary": "Draw 2 more cards on the first turn of every fight.",
+  "flavor": "Every program starts somewhere, and most start here.",
+  "effects": [{ "kind": "opening-draw", "add": 2 }]
+}

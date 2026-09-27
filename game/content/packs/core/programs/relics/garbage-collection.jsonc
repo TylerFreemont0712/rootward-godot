@@ -1,0 +1,9 @@
+{
+  "id": "garbage-collection",
+  "name": "Garbage Collection",
+  "tier": "epic",
+  "icon": "garbage-collection",
+  "summary": "Each foe your program breaks restores 4 Integrity and gives 1 more mana next turn (3 at most).",
+  "flavor": "What nothing points to anymore is swept up and handed back.",
+  "effects": [{ "kind": "kill-heal", "amount": 4 }, { "kind": "kill-mana", "amount": 1, "max": 3 }]
+}

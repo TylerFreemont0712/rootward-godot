@@ -132,3 +132,29 @@ static func _clear(root: String) -> void:
 		return
 	for name in DirAccess.get_files_at(root):
 		DirAccess.remove_absolute(root.path_join(name))
+
+
+func test_a_run_that_ends_is_committed_to_the_history_once() -> void:
+	var session := _session()
+	session.start(SandboxJob.JAVASCRIPT, "beginner", "history-run")
+	assert_array(session.saves.load_history()).is_empty()
+	await session.command({"type": "abandon"})
+	var history := session.saves.load_history()
+	assert_int(history.size()).is_equal(1)
+	assert_str(String(history[0].status)).is_equal("abandoned")
+	assert_str(String(history[0].seed)).is_equal("history-run")
+	# A refused command on a finished run commits nothing more.
+	await session.command({"type": "abandon"})
+	assert_int(session.saves.load_history().size()).is_equal(1)
+
+
+func test_the_history_lists_the_newest_first_and_skips_a_broken_line() -> void:
+	var saves := SaveStore.new(ROOT)
+	saves.append_history({"hash": "aaaaaaa1", "status": "lost"})
+	var file := FileAccess.open(saves.history_path(), FileAccess.READ_WRITE)
+	file.seek_end()
+	file.store_line("{not json")
+	file.close()
+	saves.append_history({"hash": "bbbbbbb2", "status": "won"})
+	var history := saves.load_history()
+	assert_array(history.map(func(record: Dictionary) -> String: return record.hash)).is_equal(["bbbbbbb2", "aaaaaaa1"])

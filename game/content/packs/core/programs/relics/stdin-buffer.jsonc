@@ -1,0 +1,9 @@
+{
+  "id": "stdin-buffer",
+  "name": "Stdin Buffer",
+  "tier": "common",
+  "icon": "stdin-buffer",
+  "summary": "Your program's input gains a fourth 3-power bolt.",
+  "flavor": "More input than the program asked for. It never complains.",
+  "effects": [{ "kind": "seed-bolts", "count": 1, "power": 3 }]
+}

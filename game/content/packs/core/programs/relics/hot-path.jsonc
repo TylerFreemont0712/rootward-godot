@@ -1,0 +1,9 @@
+{
+  "id": "hot-path",
+  "name": "Hot Path",
+  "tier": "epic",
+  "icon": "hot-path",
+  "summary": "The strongest attacking bolt of every program deals 2.5 times its damage.",
+  "flavor": "Ninety per cent of the time is spent in ten per cent of the code. Make that ten per cent burn.",
+  "effects": [{ "kind": "strongest-mult", "factor": 2.5 }]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "preemption",
+  "name": "Preemption",
+  "tier": "rare",
+  "icon": "preemption",
+  "summary": "Foes your program out-speeds take 30% more from it: it lands before they can move.",
+  "flavor": "The scheduler takes the time slice back mid-sentence.",
+  "effects": [{ "kind": "initiative", "factor": 1.3 }]
+}
