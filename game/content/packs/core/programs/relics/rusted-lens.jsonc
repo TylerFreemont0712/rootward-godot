@@ -1,0 +1,11 @@
+{
+  "id": "rusted-lens",
+  "name": "Rusted Lens",
+  "tier": "common",
+  "icon": "rusted-lens",
+  "summary": "Attack damage is multiplied by 0.75. Wards are unaffected. A rest can cleanse this curse instead of healing.",
+  "flavor": "It makes every target look farther away.",
+  "art_note": "An amber lens clouded with branching rust at its rim.",
+  "effects": [{ "kind": "damage-multiplier", "factor": 0.75 }],
+  "cursed": true
+}

@@ -30,7 +30,8 @@ const WORK_CAP := 1 << 30
 
 
 ## A program run's catalog: the program cards served as `shards`, one Program for the deck's spells, the basics as
-## its cards, and only the relics that work on programs. Everything else (foes, layers, balance) is the Shardrun's.
+## its cards, and the program's own relics (tiered, `programs/relics/`). Foes and balance are the Shardrun's; the
+## layers are too, with the program's own foe HP when programs.jsonc gives it.
 static func catalog_for(catalog: Dictionary) -> Dictionary:
 	var programs: Dictionary = catalog.programs
 	var config: Dictionary = (catalog.config as Dictionary).duplicate()
@@ -39,20 +40,30 @@ static func catalog_for(catalog: Dictionary) -> Dictionary:
 		"spells": [{"name": shape.name, "capacity": int(shape.capacity)}],
 		"cards": (programs.config.basics as Array).duplicate(),
 	}
-	var relics := {}
-	for relic_id: String in programs.config.relics:
-		if catalog.relics.has(relic_id):
-			relics[relic_id] = catalog.relics[relic_id]
+	var foe_hp: Array = programs.config.get("foe_hp", [])
+	if not foe_hp.is_empty():
+		var layers: Array = []
+		for index in (config.layers as Array).size():
+			var layer: Dictionary = (config.layers[index] as Dictionary).duplicate()
+			layer.foe_hp = float(foe_hp[mini(index, foe_hp.size() - 1)])
+			layers.append(layer)
+		config.layers = layers
 	var derived := catalog.duplicate()
 	derived.playstyle = "program"
 	derived.config = config
 	derived.shards = programs.cards
-	derived.relics = relics
+	derived.relics = programs.get("relics", {})
 	return derived
 
 
 static func config_of(catalog: Dictionary) -> Dictionary:
 	return catalog.programs.config
+
+
+## The volley a program starts from in this state: the seed of programs.jsonc (three plain bolts), grown by relics
+## that feed the program more input (ProgramRelics).
+static func seed(state: Dictionary, catalog: Dictionary) -> Array:
+	return ProgramRelics.seed((config_of(catalog).seed as Array).duplicate(true), state, catalog)
 
 
 ## Work units for a stage of `complexity` over a volley of `n` bolts. `cap_n` caps n (an algorithm that gives up past
@@ -77,17 +88,29 @@ static func work_units(complexity: String, n: int, cap_n := 0, height := 1) -> i
 	return size
 
 
-## Each stage's work from a run's trace ([{shard, given, returned}]): [{card, n, work}], in order.
+## Each stage's work from a run's trace ([{shard, given, returned}]): [{card, n, given, work, complexity}], in order.
+## A card's class can be its worst case on the input it gets (quick sort on a sorted volley), or a relic's for its role;
+## relics can also make a card's work free (the first card, a card compiled earlier in the fight) or cheaper.
 static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Array[Dictionary]:
-	var height := front_need(state)
+	var m := ProgramRelics.modifiers(state, catalog)
+	var ran: Array = (state.get("battle", {}) as Dictionary).get("ran", [])
+	var order := "sorted"
 	var out: Array[Dictionary] = []
-	for step: Dictionary in trace:
+	for index in trace.size():
+		var step: Dictionary = trace[index]
 		var card: Dictionary = catalog.shards.get(step.shard, {})
 		# LEARN: n is the larger of the volley in and the volley out. A card that turns 7 bolts into 21 pairs did 21
 		# pieces of work even though it was handed 7; counting only its input would make growing cards free.
 		var n := maxi(int(step.given), int(step.get("returned", step.given)))
-		var work := work_units(card.get("complexity", "linear"), n, int(card.get("cap_n", 0)), height)
-		out.append({"card": step.shard, "n": n, "given": int(step.given), "work": work})
+		var complexity := ProgramRelics.complexity(card, order, m)
+		var height := int(card.get("height", front_need(state)))
+		var work := work_units(complexity, n, int(card.get("cap_n", 0)), height)
+		if (index == 0 and m.free_first_work) or (m.jit and step.shard in ran):
+			work = 0
+		work = floori(work * float(m.work_factor))
+		out.append({"card": step.shard, "n": n, "given": int(step.given), "work": work, "complexity": complexity})
+		if card.has("makes"):
+			order = card.makes
 	return out
 
 
@@ -115,34 +138,42 @@ static func speed_label(card_ids: Array, catalog: Dictionary) -> String:
 	return TIER_LABELS[TIER_ORDER[slowest]] if not card_ids.is_empty() else "O(1)"
 
 
+## The slowest class the stages actually ran at (worst cases and relics included), as a class name.
+static func slowest_class(stage_list: Array[Dictionary]) -> String:
+	var slowest := 0
+	for stage in stage_list:
+		slowest = maxi(slowest, TIER_ORDER.find(String(stage.get("complexity", "linear"))))
+	return TIER_ORDER[slowest]
+
+
 static func big_o(card: Dictionary) -> String:
 	return card.get("big_o", TIER_LABELS.get(card.get("complexity", "linear"), "O(n)"))
 
 
-## The operations a foe waits before it acts (programs.jsonc `tempo`).
-static func tempo_of(foe: Dictionary, catalog: Dictionary) -> int:
+## The operations a foe waits before it acts (programs.jsonc `tempo`), and what relics add to it.
+static func tempo_of(foe: Dictionary, state: Dictionary, catalog: Dictionary) -> int:
 	var config := config_of(catalog)
-	return int((config.tempo as Dictionary).get(foe.get("id", ""), config.tempo_default))
+	var tempo := int((config.tempo as Dictionary).get(foe.get("id", ""), config.tempo_default))
+	return maxi(1, tempo + int(ProgramRelics.modifiers(state, catalog).tempo))
 
 
-static func budget(catalog: Dictionary) -> int:
-	return int(config_of(catalog).budget)
+## Work above which a program times out: the config's, raised or cut by relics.
+static func budget(state: Dictionary, catalog: Dictionary) -> int:
+	var m := ProgramRelics.modifiers(state, catalog)
+	return maxi(1, floori((int(config_of(catalog).budget) + int(m.budget)) * float(m.budget_factor)))
 
 
-static func cost_of(spell: Dictionary, catalog: Dictionary) -> int:
-	var total := 0
-	for id: String in spell.shards:
-		total += int((catalog.shards.get(id, {}) as Dictionary).get("cost", 0))
-	return total
+static func cost_of(state: Dictionary, spell: Dictionary, catalog: Dictionary) -> int:
+	return ProgramRelics.cost(state, spell.shards, catalog)
 
 
 ## The living foes that would act before a program of `work` lands: those whose tempo is below it and that have not
 ## acted this turn.
-static func faster_foes(battle: Dictionary, work: int, catalog: Dictionary) -> Array[Dictionary]:
+static func faster_foes(state: Dictionary, battle: Dictionary, work: int, catalog: Dictionary) -> Array[Dictionary]:
 	var acted: Array = battle.get("acted", [])
 	var out: Array[Dictionary] = []
 	for foe: Dictionary in battle.foes:
-		if int(foe.hp) > 0 and not foe.uid in acted and tempo_of(foe, catalog) < work:
+		if int(foe.hp) > 0 and not foe.uid in acted and tempo_of(foe, state, catalog) < work:
 			out.append(foe)
 	return out
 
@@ -172,7 +203,7 @@ static func lint(card_ids: Array, catalog: Dictionary) -> Array[Dictionary]:
 static func cast(
 	state: Dictionary, battle: Dictionary, spell: Dictionary, outcome: Dictionary, catalog: Dictionary
 ) -> Dictionary:
-	var cost := cost_of(spell, catalog)
+	var cost := cost_of(state, spell, catalog)
 	if cost > int(battle.mana):
 		return {
 			"code": "not-enough-mana", "message": "%s needs %d mana and you have %d." % [spell.name, cost, battle.mana]
@@ -181,15 +212,17 @@ static func cast(
 		battle.acted = []
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
 	var work := total_work(stage_list)
+	var context := landing_context(state, battle, spell, stage_list, work, catalog)
 	battle.mana -= cost
 	(battle.cast as Array).append(spell.id)
 	battle.casts += 1
 	state.stats.casts += 1
 	state.stats.mana_spent += cost
 	# Faster foes first: each acts once, now, and not again at the end of the turn.
-	for foe in faster_foes(battle, work, catalog):
-		var text := "%s moves first: %d ops is faster than your %d." % [foe.name, tempo_of(foe, catalog), work]
-		Shardrun.record(state, {"kind": "tempo", "foe": foe.uid, "amount": tempo_of(foe, catalog), "text": text})
+	for foe in faster_foes(state, battle, work, catalog):
+		var tempo := tempo_of(foe, state, catalog)
+		var text := "%s moves first: %d ops is faster than your %d." % [foe.name, tempo, work]
+		Shardrun.record(state, {"kind": "tempo", "foe": foe.uid, "amount": tempo, "text": text})
 		(battle.acted as Array).append(foe.uid)
 		ShardrunBattle.foe_act(state, battle, foe)
 		if int(state.integrity) <= 0:
@@ -199,7 +232,7 @@ static func cast(
 		var crashed := "%s crashes: %s" % [spell.name, outcome.reason]
 		Shardrun.record(state, {"kind": "fizzle", "spell": spell.id, "amount": cost, "text": crashed})
 		return {}
-	var limit := budget(catalog)
+	var limit := budget(state, catalog)
 	if work > limit:
 		var text := "%s runs out of time: %d ops against a budget of %d." % [spell.name, work, limit]
 		Shardrun.record(state, {"kind": "timeout", "spell": spell.id, "amount": work, "cost": cost, "text": text})
@@ -213,8 +246,9 @@ static func cast(
 	if curse > 0:
 		state.integrity = maxi(0, int(state.integrity) - curse)
 		Shardrun.record(state, {"kind": "curse", "amount": curse, "text": "The cast burns %d Integrity." % curse})
-	var landed := resolve(state, battle, bolts, catalog)
+	var landed := resolve(state, battle, bolts, catalog, context)
 	ShardrunBattle.cast_defense(state, battle, catalog)
+	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
 	state.stats.damage += int(landed.dealt)
 	var by_spell: Dictionary = state.stats.damage_by_spell
 	by_spell[spell.id] = int(by_spell.get(spell.id, 0)) + int(landed.dealt)
@@ -224,6 +258,28 @@ static func cast(
 	elif (battle.foes as Array).all(func(foe: Dictionary) -> bool: return int(foe.hp) == 0):
 		ShardrunBattle.win(state, battle, catalog)
 	return {}
+
+
+## What the landing needs to know about the program that made the bolts: how many cards it ran of how many slots, its
+## slowest class, and which foes it out-sped (they have not moved yet when it lands).
+static func landing_context(
+	state: Dictionary,
+	battle: Dictionary,
+	spell: Dictionary,
+	stage_list: Array[Dictionary],
+	work: int,
+	catalog: Dictionary
+) -> Dictionary:
+	var out_sped: Array = []
+	for foe: Dictionary in battle.foes:
+		if int(foe.hp) > 0 and tempo_of(foe, state, catalog) >= work:
+			out_sped.append(foe.uid)
+	return {
+		"cards": (spell.shards as Array).duplicate(),
+		"capacity": int(spell.capacity),
+		"speed": slowest_class(stage_list),
+		"out_sped": out_sped,
+	}
 
 
 ## Program output as bolts the rules accept: {power (whole, 0..max_power), element, foe?, block?}, at most max_bolts.
@@ -251,17 +307,26 @@ static func normalize(raw: Array, catalog: Dictionary) -> Array[Dictionary]:
 
 ## Lands bolts in order. A bolt with `block` shields you; any other flies at the foe its `foe` names (an index into
 ## the foes alive when the program ran), or at the front foe. Bolts at a foe already down are wasted, as is damage
-## past a foe's HP: aiming is what the strike cards are for. Returns {dealt, wasted, block}.
-static func resolve(state: Dictionary, battle: Dictionary, bolts: Array[Dictionary], catalog: Dictionary) -> Dictionary:
+## past a foe's HP: aiming is what the strike cards are for. Relics change the landing (ProgramRelics): what the bolts
+## weigh, factors for the whole program, a bonus against foes the program out-sped, overkill that flows on, waste
+## turned into block. `context` is landing_context's. Returns {dealt, wasted, block, kills}.
+static func resolve(
+	state: Dictionary, battle: Dictionary, bolts: Array[Dictionary], catalog: Dictionary, context := {}
+) -> Dictionary:
 	var balance: Dictionary = catalog.balance
 	var m := ShardrunRules.relic_modifiers(state, catalog)
+	var relics := ProgramRelics.modifiers(state, catalog)
+	var landing := ProgramRelics.landing(bolts, relics)
+	var program_factor := ProgramRelics.program_factor(landing, context, relics)
+	var hottest := ProgramRelics.strongest(landing) if float(relics.strongest_mult) != 1.0 else -1
+	var out_sped: Array = context.get("out_sped", [])
 	var alive := (battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
 	var dealt := 0
 	var wasted := 0
 	var gathered := 0
-	for index in bolts.size():
-		var bolt: Dictionary = bolts[index]
-		var power := int(bolt.power)
+	for index in landing.size():
+		var bolt: Dictionary = landing[index]
+		var power := int(bolt.power) + int(m.bolt_power)
 		var shape := {"bolt": index, "target": "front"}
 		if bolt.get("block", false):
 			battle.block += power
@@ -297,10 +362,15 @@ static func resolve(state: Dictionary, battle: Dictionary, bolts: Array[Dictiona
 			glance.text = "A %d-power bolt glances off %s." % [power, foe.name]
 			Shardrun.record(state, glance)
 			continue
-		var multiplier: float = m.damage_multiplier
+		var multiplier: float = m.damage_multiplier * program_factor
+		if index == hottest:
+			multiplier *= float(relics.strongest_mult)
+		if foe.uid in out_sped:
+			multiplier *= float(relics.initiative)
 		if foe_trait.get("kind") == "pattern-ward" and bolt.element != foe.get("pattern"):
 			multiplier *= float(balance.pattern_off_multiplier)
-		var weak: bool = bolt.element in foe.weak
+		# A relic can make every bolt the element a foe is weak to (and then nothing resists it).
+		var weak: bool = bolt.element in foe.weak or (relics.all_elements and not (foe.weak as Array).is_empty())
 		var resisted: bool = not weak and bolt.element in foe.resist
 		if weak:
 			multiplier *= float(balance.weak_multiplier) + m.weak_bonus
@@ -311,7 +381,6 @@ static func resolve(state: Dictionary, battle: Dictionary, bolts: Array[Dictiona
 		foe.shield -= blocked
 		damage -= blocked
 		var landed := mini(damage, int(foe.hp))
-		wasted += damage - landed
 		foe.hp -= landed
 		dealt += landed
 		var hit := {"kind": "hit", "foe": foe.uid, "amount": landed, "element": bolt.element}
@@ -329,7 +398,47 @@ static func resolve(state: Dictionary, battle: Dictionary, bolts: Array[Dictiona
 		Shardrun.record(state, hit)
 		if int(foe.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
-	return {"dealt": dealt, "wasted": wasted, "block": gathered}
+		var spill := damage - landed
+		if relics.overkill_flows:
+			spill = _flow(state, alive, foe, spill, bolt.element, shape)
+			dealt += (damage - landed) - spill
+		wasted += spill
+	if float(relics.wasted_to_block) > 0.0 and wasted > 0:
+		var kept := floori(wasted * float(relics.wasted_to_block))
+		if kept > 0:
+			battle.block += kept
+			gathered += kept
+			var text := "The unused %d power is kept as block." % kept
+			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
+	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
+	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills}
+
+
+## Overkill flowing on (a relic): what is left after `from` falls goes into the next foe still standing, through its
+## shield, and so on. Returns what is still left once no foe stands.
+static func _flow(
+	state: Dictionary, alive: Array, from: Dictionary, spill: int, element: String, shape: Dictionary
+) -> int:
+	var start := alive.find(from)
+	var step := 1
+	while spill > 0 and step < alive.size():
+		var next: Dictionary = alive[(start + step) % alive.size()]
+		step += 1
+		if int(next.hp) == 0:
+			continue
+		var blocked := mini(int(next.shield), spill)
+		next.shield -= blocked
+		spill -= blocked
+		var taken := mini(spill, int(next.hp))
+		next.hp -= taken
+		spill -= taken
+		var hit := {"kind": "hit", "foe": next.uid, "amount": taken, "element": element, "flowed": true}
+		hit.merge(shape)
+		hit.text = "The overflow runs on: %s takes %d." % [next.name, taken]
+		Shardrun.record(state, hit)
+		if int(next.hp) == 0:
+			Shardrun.record(state, {"kind": "defeat", "foe": next.uid, "text": "%s breaks apart." % next.name})
+	return spill
 
 
 ## What casting would do, worked out on a copy of the state: {cost, affordable, work, budget, timeout, speed,
@@ -339,17 +448,18 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	var spell := Shardrun.spell_by_id(state, spell_id)
 	if battle.is_empty() or spell.is_empty():
 		return {}
-	var cost := cost_of(spell, catalog)
+	var cost := cost_of(state, spell, catalog)
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
 	var work := total_work(stage_list)
+	var limit := budget(state, catalog)
 	var view := {
 		"cost": cost,
 		"affordable": not spell.id in battle.cast and cost <= int(battle.mana),
 		"work": work,
-		"budget": budget(catalog),
-		"timeout": work > budget(catalog),
+		"budget": limit,
+		"timeout": work > limit,
 		"speed": speed_label(spell.shards, catalog),
-		"faster": faster_foes(battle, work, catalog).map(func(foe: Dictionary) -> String: return foe.name),
+		"faster": faster_foes(state, battle, work, catalog).map(func(foe: Dictionary) -> String: return foe.name),
 		"stages": stage_list,
 		"bolts": 0,
 		"damage": 0,
@@ -365,12 +475,12 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	var copy := state.duplicate(true)
 	copy.log = []
 	var shadow: Dictionary = copy.battle
+	var context := landing_context(copy, shadow, spell, stage_list, work, catalog)
 	var bolts := normalize(outcome.bolts, catalog)
-	var before := (shadow.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0).size()
-	var landed := resolve(copy, shadow, bolts, catalog)
+	var landed := resolve(copy, shadow, bolts, catalog, context)
 	view.bolts = bolts.size()
 	view.damage = landed.dealt
 	view.wasted = landed.wasted
 	view.block = landed.block
-	view.kills = before - (shadow.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0).size()
+	view.kills = landed.kills
 	return view

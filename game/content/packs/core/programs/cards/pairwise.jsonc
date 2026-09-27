@@ -5,7 +5,7 @@
   "art": "pair-fold",
   "cost": 2,
   "paradigm": "brute-force",
-  "role": "grow",
+  "role": "source",
   "complexity": "quadratic",
   "makes": "unsorted",
   "summary": "Brute force: every pair of bolts fuses into a new bolt with their combined power, half again if their elements differ. n bolts make n(n-1)/2.",

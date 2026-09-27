@@ -3,8 +3,13 @@
 // volley; the last stage usually aims it. Every stage's work is its complexity applied to the input size the sandbox
 // really measured, and a foe whose tempo is below the program's total work acts before the program lands.
 {
-  // What every program starts from, before its first card.
-  "seed": [{ "power": 3, "element": "none" }],
+  // What every program starts from, before its first card: three plain bolts. With one, nearly every card only reshaped
+  // what Salvo made, and a hand without Salvo did almost nothing (docs/ROADMAP.md, section 2).
+  "seed": [
+    { "power": 3, "element": "none" },
+    { "power": 3, "element": "none" },
+    { "power": 3, "element": "none" }
+  ],
   // The Program is a file: its name, and the extension the run's language gives it (main.py, main.js).
   "program": { "name": "main", "capacity": 5 },
   // Work, in operations, above which a program times out: it lands nothing, and every foe acts. Relics may raise it.
@@ -88,8 +93,15 @@
     "deadlock-golem": 256,
     "root-daemon": 384
   },
-  // The relics a program run can find: the ones whose effects are about the run, not the old engine's bolts.
-  "relics": ["blood-contract", "ecc-memory", "ember-infection", "firewall", "grimoire-page", "leaking-capacitor",
-    "lens-of-types", "mana-capacitor", "overclocked-core", "patch-kit", "persistent-cache", "runic-loom", "rusted-lens",
-    "thread-pool"]
+  // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps): a first
+  // layer that takes a few turns a fight, and later ones the deck can grow into. Tuned with the balance probe.
+  "foe_hp": [1.6, 2.4, 4.4],
+  // Relics are the program's own (programs/relics/), each of a tier from common (a nudge) to legendary (a new way to
+  // play). Where a relic is found decides the tiers it can be: an elite offers only rare or better, a guardian only
+  // epic or legendary. The numbers are relative weights; a tier left out never drops there.
+  "relic_tiers": {
+    "treasure": { "common": 45, "uncommon": 35, "rare": 15, "epic": 5 },
+    "elite": { "rare": 70, "epic": 25, "legendary": 5 },
+    "boss": { "epic": 65, "legendary": 35 }
+  }
 }

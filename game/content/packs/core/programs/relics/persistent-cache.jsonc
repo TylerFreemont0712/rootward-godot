@@ -1,0 +1,10 @@
+{
+  "id": "persistent-cache",
+  "name": "Persistent Cache",
+  "tier": "uncommon",
+  "icon": "persistent-cache",
+  "summary": "Keep half your unspent block between turns, rounded down. New turn block is added afterward.",
+  "flavor": "Some preparations outlive their moment.",
+  "art_note": "A layered teal memory crystal with one bright inner shield left intact.",
+  "effects": [{ "kind": "retain-block", "fraction": 0.5 }]
+}

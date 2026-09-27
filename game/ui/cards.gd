@@ -67,10 +67,12 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 
 
 static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
-	var colour := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(item.rarity)
+	var colour := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(rank(item))
 	var title := Ui.tint(Ui.label(item.name, "Subheading"), colour)
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(40, 40), "✦")
-	var kind := "cursed relic" if item.get("cursed", false) else "%s relic" % item.rarity
+	var kind := "cursed relic" if item.get("cursed", false) else "%s relic" % rank(item)
+	if not item.get("cursed", false) and item.has("tier"):
+		kind += "  ·  tier %d" % ProgramLoot.tier_number(item)
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(kind, "Faint")], 0)], 10)
 	var body := Ui.vbox([head, Ui.label(item.summary, "", true)], 8)
 	if item.has("flavor"):
@@ -80,12 +82,20 @@ static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
 	return Ui.panel(body, "Card")
 
 
-## A relic's icon for the header, with its name and effect as a tooltip.
+## A relic's icon for the header, with its name, tier and effect as a tooltip.
 static func relic_icon(item: Dictionary) -> Control:
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(30, 30), "✦")
 	icon.mouse_filter = Control.MOUSE_FILTER_PASS
-	icon.tooltip_text = "%s%s\n%s" % [item.name, " (cursed)" if item.get("cursed", false) else "", item.summary]
+	var kind := " (cursed)" if item.get("cursed", false) else ""
+	if kind == "" and item.has("tier"):
+		kind = " (%s, tier %d)" % [item.tier, ProgramLoot.tier_number(item)]
+	icon.tooltip_text = "%s%s\n%s" % [item.name, kind, item.summary]
 	return icon
+
+
+## A relic's rank in words: a program relic's tier, or an old relic's rarity.
+static func rank(item: Dictionary) -> String:
+	return String(item.get("tier", item.get("rarity", "")))
 
 
 ## Plain words written as a comment in the run's language ("# ..." or "// ..."), green, wrapped at `columns`: a card's

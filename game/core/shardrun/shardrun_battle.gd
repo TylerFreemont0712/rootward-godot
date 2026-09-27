@@ -51,6 +51,8 @@ static func start_with(state: Dictionary, kind: String, foes: Array, catalog: Di
 		Shardrun.after_room(state, catalog)
 		return
 	var battle := new_battle(state, kind, foes, catalog)
+	if state.get("playstyle", "") == "program":
+		ProgramRelics.on_battle_start(state, battle, catalog)
 	begin_turn(battle)
 	state.battle = battle
 	state.status = "battle"
@@ -355,7 +357,9 @@ static func hit_maintainer(state: Dictionary, battle: Dictionary, foe: Dictionar
 static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
 	var m := ShardrunRules.relic_modifiers(state, catalog)
 	battle.turn += 1
-	battle.mana = ShardrunRules.mana_per_turn(state, catalog)
+	# Mana a program earned last turn for the next (ProgramRelics); no other playstyle ever sets it.
+	battle.mana = ShardrunRules.mana_per_turn(state, catalog) + int(battle.get("bonus_mana", 0))
+	battle.erase("bonus_mana")
 	battle.block = floori(int(battle.block) * float(m.retain_block)) + int(m.turn_block)
 	battle.cast = []
 	if battle.has("acted"):
@@ -512,6 +516,9 @@ static func draft_shards(state: Dictionary, kind: String, catalog: Dictionary) -
 
 ## Distinct relics the run does not hold yet, rarity by where they are found, drawn from the run's seed.
 static func draft_relics(state: Dictionary, where: String, count: int, catalog: Dictionary) -> Array:
+	# A program run's relics are tiered, with loot tables of their own (ProgramLoot); the rest is the old engine's.
+	if state.get("playstyle", "") == "program":
+		return ProgramLoot.draft_relics(state, where, count, catalog)
 	var weights_by: Dictionary = catalog.config.rewards.relics[where]
 	var rng := Rng.create(state.seed, "relic:%s:%d:%d" % [where, state.layer, (state.visited as Array).size()])
 	var pool := ShardrunCatalog.sorted_values(catalog.relics).filter(

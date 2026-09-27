@@ -39,6 +39,8 @@ const RARITIES := {
 	"common": Color("#a58f6e"),
 	"uncommon": Color("#5cc8b8"),
 	"rare": Color("#f2a541"),
+	"epic": Color("#c084fc"),
+	"legendary": Color("#ff7a3d"),
 	"boss": Color("#e2584f"),
 }
 

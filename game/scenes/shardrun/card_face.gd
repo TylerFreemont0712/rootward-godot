@@ -51,6 +51,7 @@ var _detail: CardDetail
 var _hover_time := -1.0
 var _art: Control
 var _frame: TextureRect
+var _role: RoleBadge
 var _name: Label
 var _cost: Label
 var _speed: Label
@@ -107,7 +108,6 @@ func _describe(catalog: Dictionary) -> void:
 	if shard.has("paradigm"):
 		var paradigm := ProgramDraft.paradigm_of(catalog, String(shard.paradigm)) if catalog.has("programs") else {}
 		colour = Color(paradigm.get("colour", "#8d8fa0"))
-		_tags.append(String(shard.get("role", "")).to_upper())
 		_tags.append(String(paradigm.get("name", "Neutral")))
 		if shard.has("needs"):
 			_tags.append("needs %s bolts" % shard.needs)
@@ -136,6 +136,10 @@ func _build(size_kind: Size) -> void:
 		tint.set_shader_parameter("tint", colour)
 		_frame.material = tint
 		add_child(_frame)
+	if RoleBadge.ROLES.has(String(shard.get("role", ""))):
+		# Over the frame's lower panel, so it is drawn after (above) the frame.
+		_role = RoleBadge.create(String(shard.role))
+		add_child(_role)
 	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"))
 	_cost = _text(UiTheme.ui_font(600), Color.WHITE)
 	_speed = _text(UiTheme.ui_font(600), colour.lightened(0.45))
@@ -197,6 +201,13 @@ func _layout() -> void:
 	var plate := box("plate", card_size)
 	_place(_speed, plate)
 	_fit(_speed, plate.size.y * 1.2, plate.size.x * 0.92)
+	if _role != null:
+		# A pill in the middle of the lower panel, over its filigree, leaving the ornament's ends to either side.
+		var lower := box("lower", card_size)
+		var pill := Vector2(lower.size.x * 0.78, lower.size.y * 0.5)
+		_role.position = lower.get_center() - pill * 0.5
+		_role.size = pill
+		_role.queue_redraw()
 	queue_redraw()
 
 

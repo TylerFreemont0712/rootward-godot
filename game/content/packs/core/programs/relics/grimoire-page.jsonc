@@ -1,0 +1,9 @@
+{
+  "id": "grimoire-page",
+  "name": "Grimoire Page",
+  "tier": "rare",
+  "icon": "grimoire-page",
+  "summary": "Your program gains a slot: one more card every turn.",
+  "flavor": "A page torn from a Maintainer's spellbook, still humming.",
+  "effects": [{ "kind": "spell-capacity", "add": 1 }]
+}

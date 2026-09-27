@@ -46,8 +46,15 @@ func _build(
 	var cost := Ui.tint(Ui.label("%d◆" % int(card.get("cost", 0)), "Subheading"), UiTheme.SHARD.lightened(0.2))
 	var speed := Ui.tint(Ui.label(ShardrunViews.complexity(card), "Subheading"), colour.lightened(0.35))
 	var column := Ui.vbox([Ui.hbox([name, Ui.spacer(), speed, cost], 12)], 6)
+	var kinds: Array[Control] = []
+	if RoleBadge.ROLES.has(String(card.get("role", ""))):
+		# The role first, in its own colour, as on the card's face.
+		var role := Ui.label(RoleBadge.describe(String(card.role)), "Faint")
+		kinds.append(Ui.tint(role, RoleBadge.colour_of(String(card.role)).lightened(0.1)))
 	if not tags.is_empty():
-		column.add_child(Ui.tint(Ui.label("  ·  ".join(tags), "Faint"), colour.lightened(0.1)))
+		kinds.append(Ui.tint(Ui.label("  ·  ".join(tags), "Faint"), colour.lightened(0.1)))
+	if not kinds.is_empty():
+		column.add_child(Ui.hbox(kinds, 14))
 	var painted: PackedStringArray = []
 	if summaries and card.has("summary"):
 		for line in CodeColors.comment_lines(String(card.summary), language, COLUMNS):

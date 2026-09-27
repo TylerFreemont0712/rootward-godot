@@ -38,7 +38,7 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		"relics": {},
 		"balance": balance,
 		"sandbox": sandbox,
-		"programs": {"config": {}, "cards": {}},
+		"programs": {"config": {}, "cards": {}, "relics": {}},
 	}
 	var programs_file := ""
 	var run_file := ""
@@ -47,6 +47,8 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		if DirAccess.dir_exists_absolute(programs_dir):
 			var cards: Dictionary = catalog.programs.cards
 			_load_kind(programs_dir.path_join("cards"), ProgramSchemas.card(), cards, "card", diagnostics)
+			var relics: Dictionary = catalog.programs.relics
+			_load_kind(programs_dir.path_join("relics"), ProgramSchemas.relic(), relics, "relic", diagnostics)
 			var config_file := programs_dir.path_join("programs.jsonc")
 			if FileAccess.file_exists(config_file):
 				programs_file = config_file

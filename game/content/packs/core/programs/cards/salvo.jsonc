@@ -5,7 +5,7 @@
   "art": "cascade",
   "cost": 1,
   "paradigm": "neutral",
-  "role": "grow",
+  "role": "source",
   "complexity": "linear",
   "makes": "unsorted",
   "summary": "Adds a rising run of six bolts, 1 to 6 power, after the volley.",

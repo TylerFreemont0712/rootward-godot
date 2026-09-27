@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "paradigm": "neutral",
-  "role": "grow",
+  "role": "source",
   "complexity": "linear",
   "summary": "Every bolt splits in two, each with 60% of its power (at least 1). The volley doubles.",
   "function": "fork",

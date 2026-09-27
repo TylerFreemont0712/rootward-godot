@@ -16,16 +16,16 @@ static func run_view(
 	var stages: Array = preview.get("stages", [])
 	var view := {
 		"program": true,
-		"cost": ProgramRules.cost_of(spell, catalog),
+		"cost": ProgramRules.cost_of(state, spell, catalog),
 		"affordable": bool(preview.get("affordable", false)),
 		"work": work,
-		"budget": ProgramRules.budget(catalog),
+		"budget": ProgramRules.budget(state, catalog),
 		"timeout": bool(preview.get("timeout", false)),
 		"speed": ProgramRules.speed_label(spell.shards, catalog),
 		"stages": stages,
 		"lint": ProgramRules.lint(spell.shards, catalog),
 		"race": race(state, work, catalog),
-		"base": {"bolts": (ProgramRules.config_of(catalog).seed as Array).duplicate(true)},
+		"base": {"bolts": ProgramRules.seed(state, catalog)},
 		"steps": [],
 		"console": String(run.get("console", "")),
 		"revealed": reveal,
@@ -83,7 +83,7 @@ static func race(state: Dictionary, work: int, catalog: Dictionary) -> Array[Dic
 	for foe: Dictionary in battle.get("foes", []):
 		if int(foe.hp) <= 0:
 			continue
-		var tempo := ProgramRules.tempo_of(foe, catalog)
+		var tempo := ProgramRules.tempo_of(foe, state, catalog)
 		out.append({"name": foe.name, "uid": foe.uid, "tempo": tempo, "first": tempo < work and not foe.uid in acted})
 	out.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.tempo) < int(b.tempo))
 	return out
@@ -92,7 +92,7 @@ static func race(state: Dictionary, work: int, catalog: Dictionary) -> Array[Dic
 ## The lines the code panel draws for a program, each call noted with its complexity class and, once the sandbox has
 ## measured it, its n and work; a call the lint flags is marked.
 static func code_lines(language: String, card_ids: Array, view: Dictionary, catalog: Dictionary) -> Array[Dictionary]:
-	var lines := ProgramSource.lines(language, card_ids, catalog)
+	var lines := ProgramSource.lines(language, card_ids, catalog, (view.get("base", {}) as Dictionary).get("bolts", []))
 	var steps: Array = view.get("steps", [])
 	var flagged := {}
 	for warning: Dictionary in view.get("lint", ProgramRules.lint(card_ids, catalog)):

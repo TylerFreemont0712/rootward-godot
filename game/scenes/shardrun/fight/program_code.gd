@@ -85,7 +85,7 @@ func show_program(state: Dictionary, view: Dictionary) -> void:
 	var work := int(fresh.get("work", 0))
 	_show_final_volley(fresh)
 	_speed.text = ProgramRules.speed_label(cards, session.catalog)
-	var budget := ProgramRules.budget(session.catalog)
+	var budget := ProgramRules.budget(session.state, session.catalog)
 	_ops.text = "%d / %d ops" % [work, budget] if not fresh.is_empty() else "… ops"
 	_ops.add_theme_color_override("font_color", UiTheme.FAIL if work > budget else UiTheme.MUTED)
 	_race.show_race(
@@ -102,7 +102,9 @@ func _show_final_volley(view: Dictionary) -> void:
 		var last: Dictionary = steps.back()
 		_meter.show_volley(int(last.returned), float(last.get("power", 0.0)), last.get("elements", {}))
 		return
-	var seed: Array = ProgramRules.config_of(session.catalog).seed
+	var seed: Array = (view.get("base", {}) as Dictionary).get(
+		"bolts", ProgramRules.seed(session.state, session.catalog)
+	)
 	_meter.show_volley(seed.size(), _power_of(seed), _elements_of(seed))
 
 
@@ -138,7 +140,13 @@ static func _for(view: Dictionary, cards: Array) -> bool:
 
 func _summary(view: Dictionary, cards: Array) -> String:
 	if cards.is_empty():
-		return "An empty program still casts its seed: one 3-power bolt at the front foe. Play cards to write more."
+		var seed := ProgramRules.seed(session.state, session.catalog)
+		var noun := "bolt" if seed.size() == 1 else "bolts"
+		var total := int(_power_of(seed))
+		return (
+			"An empty program still casts its seed: %d %s (%d power) at the front foe. Play cards to write more."
+			% [seed.size(), noun, total]
+		)
 	if view.is_empty():
 		return "Running it in the sandbox…"
 	if view.has("misfire"):
@@ -196,7 +204,7 @@ func play_cast(view: Dictionary, speed: String) -> void:
 	var line_time: float = STEP[speed]
 	var steps: Array = view.get("steps", [])
 	var race: Array = view.get("race", [])
-	var budget := int(view.get("budget", ProgramRules.budget(session.catalog)))
+	var budget := int(view.get("budget", ProgramRules.budget(session.state, session.catalog)))
 	var seeds: Array = (view.get("base", {}) as Dictionary).get("bolts", [])
 	_meter.show_volley(seeds.size(), _power_of(seeds), _elements_of(seeds))
 	var tint := VolleyMeter.colour_of(_elements_of(seeds))

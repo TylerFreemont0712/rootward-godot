@@ -140,7 +140,7 @@ func input_for(state: Dictionary) -> Dictionary:
 		# A program starts from its seed volley, and may grow up to the program limit (ADR-0012).
 		var config := ProgramRules.config_of(catalog)
 		return {
-			"bolts": (config.seed as Array).duplicate(true),
+			"bolts": ProgramRules.seed(state, catalog),
 			"battle": ShardrunRules.shard_battle(state, battle),
 			"limit": int(config.max_bolts),
 			"trace_limit": int(balance.trace_bolts),

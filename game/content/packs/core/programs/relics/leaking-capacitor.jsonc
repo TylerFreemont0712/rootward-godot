@@ -1,0 +1,11 @@
+{
+  "id": "leaking-capacitor",
+  "name": "Leaking Capacitor",
+  "tier": "common",
+  "icon": "leaking-capacitor",
+  "summary": "Lose 1 mana each turn (minimum 1 remains). A rest can cleanse this curse instead of healing.",
+  "flavor": "Every charge finds a way out.",
+  "art_note": "A chipped blue capacitor dripping dim luminous beads.",
+  "effects": [{ "kind": "mana-per-turn", "add": -1 }],
+  "cursed": true
+}
