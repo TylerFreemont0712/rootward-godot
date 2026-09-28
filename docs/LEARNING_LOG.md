@@ -335,3 +335,9 @@ region. The stage then sizes the visible sprite using both arena height and avai
 The code player emits the resolved card as it reads the program. A flourish can draw a motif for that card at that
 moment without changing the sandbox output or the combat log. This gives each role a visual language while the
 verified program remains the only source of damage and timing.
+
+## A scene cannot add to root while root is attaching it (`game/ui/screen_transition.gd`)
+The boot scene calls `Game.go` from `_ready`, while Godot is still attaching the boot scene to the root. Adding the
+transition curtain to root at that moment fails, leaving the lantern loading text forever. Queue root's `add_child`
+and the transition's start in that order; the deferred start happens after the curtain enters the tree, where it can
+create a tween. `game/tools/boot_check.gd` runs that actual boot path and checks it reaches the title.

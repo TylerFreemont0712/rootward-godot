@@ -15,17 +15,24 @@ static func go(path: String) -> void:
 	busy = true
 	var transition := ScreenTransition.new()
 	transition.layer = 120
-	tree.root.add_child(transition)
+	# LEARN: the boot scene may call this from _ready while root is still attaching its children.
+	# Defer both operations in order: the curtain needs to be in the tree before it can tween.
+	tree.root.add_child.call_deferred(transition)
+	transition._run.call_deferred(path)
+
+
+func _run(path: String) -> void:
+	var tree := get_tree()
 	var curtain := ColorRect.new()
 	curtain.color = Color(0.025, 0.018, 0.04, 0.0)
 	curtain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	transition.add_child(curtain)
-	await transition.create_tween().tween_property(curtain, "color:a", 1.0, 0.18).finished
+	add_child(curtain)
+	await create_tween().tween_property(curtain, "color:a", 1.0, 0.18).finished
 	var error := tree.change_scene_to_file(path)
 	if error != OK:
 		push_error("Cannot open scene: " + path)
 	await tree.process_frame
 	await tree.process_frame
-	await transition.create_tween().tween_property(curtain, "color:a", 0.0, 0.26).finished
+	await create_tween().tween_property(curtain, "color:a", 0.0, 0.26).finished
 	busy = false
-	transition.queue_free()
+	queue_free()

@@ -181,6 +181,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Casts draw a different flourish for split, sort, search, merge, element, guard and import cards.
 - [x] Title, run setup, scene changes and options refreshed; an Archives browser searches cards, relics and game terms
       from the live catalogs in both playstyles. Two mismatched old card pictures replaced.
+- [x] Boot enters the title through the new curtain safely, including when `Boot._ready` runs while root is attaching
+      the scene (`tools/boot_check.gd`).
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
