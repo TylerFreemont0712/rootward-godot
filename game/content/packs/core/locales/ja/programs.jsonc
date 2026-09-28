@@ -1289,5 +1289,21 @@
   {
     "en": "Made by another card, for this fight only.",
     "to": "ほかのカードが作ったカード。この戦いのあいだだけあります。"
+  },
+  {
+    "en": "The Quine",
+    "to": "クワイン"
+  },
+  {
+    "en": "It knows only one program: the one you just ran. It will run it again, at you.",
+    "to": "知っているプログラムはひとつだけ。あなたがいま走らせたものです。それをもう一度、あなたに向けて走らせます。"
+  },
+  {
+    "en": "The Root",
+    "to": "ルート"
+  },
+  {
+    "en": "Beneath the Kernel, the machine's own source. Everything that runs was written by something that ran first.",
+    "to": "カーネルの下にある、機械そのもののソース。動くものはすべて、先に動いた何かが書いたものです。"
   }
 ]

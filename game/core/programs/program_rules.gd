@@ -52,6 +52,11 @@ static func catalog_for(catalog: Dictionary) -> Dictionary:
 			groups.merge(encounters[layer.id], true)
 			layer.encounters = groups
 		layers.append(layer)
+	# A program run goes deeper than Spellforge: its own layers follow (the Root, docs/NewEnemies.md).
+	for extra: Dictionary in programs.config.get("layers", []):
+		var layer := extra.duplicate(true)
+		layer.foe_hp = float(foe_hp[mini(layers.size(), foe_hp.size() - 1)]) if not foe_hp.is_empty() else layer.foe_hp
+		layers.append(layer)
 	config.layers = layers
 	var derived := catalog.duplicate()
 	derived.playstyle = "program"
@@ -282,11 +287,13 @@ static func cast(
 	if not outcome.ok:
 		var crashed := "%s crashes: %s" % [spell.name, outcome.reason]
 		Shardrun.record(state, {"kind": "fizzle", "spell": spell.id, "amount": cost, "text": crashed})
+		remember(battle, spell.shards, [])
 		return {}
 	var limit := budget(state, catalog)
 	if work > limit:
 		var text := "%s runs out of time: %d ops against a budget of %d." % [spell.name, work, limit]
 		Shardrun.record(state, {"kind": "timeout", "spell": spell.id, "amount": work, "cost": cost, "text": text})
+		remember(battle, spell.shards, [])
 		return {}
 	var bolts := normalize(outcome.bolts, catalog)
 	state.stats.bolts += bolts.size()
@@ -298,6 +305,7 @@ static func cast(
 		state.integrity = maxi(0, int(state.integrity) - curse)
 		Shardrun.record(state, {"kind": "curse", "amount": curse, "text": "The cast burns %d Integrity." % curse})
 	var landed := resolve(state, battle, bolts, catalog, context)
+	remember(battle, spell.shards, bolts)
 	ShardrunBattle.cast_defense(state, battle, catalog)
 	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
 	ProgramDeck.after_cast(state, battle, int(landed.dealt), catalog)
@@ -380,6 +388,7 @@ static func resolve(
 	var wasted := 0
 	var gathered := 0
 	var locked := 0
+	var fixed := 0
 	for index in landing.size():
 		var bolt: Dictionary = landing[index]
 		var power := int(bolt.power) + int(m.bolt_power)
@@ -411,6 +420,13 @@ static func resolve(
 			absorb.merge(shape)
 			absorb.text = "%s swallows the first bolt whole." % foe.name
 			Shardrun.record(state, absorb)
+			continue
+		if fixed_point(foe, context):
+			fixed += 1
+			var same := {"kind": "absorb", "foe": foe.uid, "element": bolt.element, "word": "fixed point"}
+			same.merge(shape)
+			same.text = "%s recognises its own source: the same program cannot hurt it." % foe.name
+			Shardrun.record(state, same)
 			continue
 		if foe_trait.get("kind") == "thick-hide" and power < int(foe_trait.threshold):
 			var glance := {"kind": "glance", "foe": foe.uid, "element": bolt.element}
@@ -479,7 +495,7 @@ static func resolve(
 			var text := "The unused %d power is kept as block." % kept
 			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
 	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
-	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills, "locked": locked}
+	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills, "locked": locked, "fixed": fixed}
 
 
 ## The uids of the foes a volley's attacking bolts are aimed at (a bolt without an aim, or aimed past the last, flies
@@ -504,6 +520,50 @@ static func lock_holder(foe: Dictionary, alive: Array, targeted: Dictionary) -> 
 		if other.id == foe_trait.partner and int(other.hp) > 0 and not targeted.has(other.uid):
 			return other
 	return {}
+
+
+## The Quine's fixed point (docs/NewEnemies.md): a program of exactly the cards, in the order, of the last one that ran
+## cannot hurt it.
+static func fixed_point(foe: Dictionary, context: Dictionary) -> bool:
+	if (foe.get("trait", {}) as Dictionary).get("kind") != "quine" or not foe.has("last_cards"):
+		return false
+	# LEARN: `==` on two Arrays compares their contents in order, not whether they are the same object, so the same
+	# cards in a new list still match, and the same cards in another order do not.
+	return foe.last_cards == context.get("cards", [])
+
+
+## A Quine remembers the last program that ran: its cards (the fixed point) and the shape of what it fired, which its
+## `reprint` sends back (ShardrunBattle.foe_act). A program that crashed or timed out ran and printed nothing.
+static func remember(battle: Dictionary, cards: Array, bolts: Array[Dictionary]) -> void:
+	var attacking := 0
+	var ward := 0
+	for bolt in bolts:
+		if bolt.get("block", false):
+			ward += int(bolt.power)
+		else:
+			attacking += 1
+	for foe: Dictionary in battle.foes:
+		if (foe.get("trait", {}) as Dictionary).get("kind") == "quine":
+			foe.echo = {"bolts": attacking, "ward": ward}
+			foe.last_cards = cards.duplicate()
+
+
+## What each living Quine about to reprint would send back after this program: [{name, hits, power}]. A Quine faster
+## than the program (named in `faster`) reprints the one before it (`before`, the battle as it stands); a slower one
+## reprints this one (`after`, the battle once this program has landed).
+static func reprints(before: Dictionary, after: Dictionary, faster: Array) -> Array[Dictionary]:
+	var out: Array[Dictionary] = []
+	for index in (after.foes as Array).size():
+		var foe: Dictionary = before.foes[index] if before.foes[index].name in faster else after.foes[index]
+		var intents: Array = foe.get("intents", [])
+		if int(after.foes[index].hp) <= 0 or intents.is_empty():
+			continue
+		var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
+		if intent.kind != "reprint":
+			continue
+		var hits := mini(int((foe.get("echo", {}) as Dictionary).get("bolts", 0)), int(intent.max))
+		out.append({"name": foe.name, "hits": hits, "power": int(intent.power)})
+	return out
 
 
 ## Overkill flowing on (a relic): what is left after `from` falls goes into the next foe still standing, through its
@@ -571,10 +631,13 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	var context := landing_context(copy, shadow, spell, stage_list, work, catalog)
 	var bolts := normalize(outcome.bolts, catalog)
 	var landed := resolve(copy, shadow, bolts, catalog, context)
+	remember(shadow, spell.shards, bolts)
+	view.reprints = reprints(battle, shadow, view.faster)
 	view.bolts = bolts.size()
 	view.damage = landed.dealt
 	view.wasted = landed.wasted
 	view.block = landed.block
 	view.kills = landed.kills
 	view.locked = landed.locked
+	view.fixed = landed.fixed
 	return view

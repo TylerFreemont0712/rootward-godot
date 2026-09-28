@@ -1,0 +1,19 @@
+// The Quine (docs/NewEnemies.md): the Root's guardian. A quine is a program that prints its own source, and this one's
+// source is whatever you last ran: `print(source)` hits you once for every attacking bolt of your last program, and
+// your ward bolts become its shield at half. A program of exactly the same cards in the same order as the last one is
+// a fixed point: it cannot hurt the Quine. The counter is the lesson: lean programs echo little, and change them.
+{
+  "id": "the-quine",
+  "name": "The Quine",
+  "sprite": "the-quine",
+  "size": "colossal",
+  "hp": 150,
+  "trait": { "kind": "quine" },
+  "intents": [
+    { "kind": "reprint", "power": 2, "max": 12, "tempo": 128 },
+    { "kind": "shield", "amount": 20, "tempo": 64 },
+    { "kind": "strike", "power": 18, "tempo": 192 },
+    { "kind": "reprint", "power": 3, "max": 12, "tempo": 128 }
+  ],
+  "flavor": "It knows only one program: the one you just ran. It will run it again, at you."
+}

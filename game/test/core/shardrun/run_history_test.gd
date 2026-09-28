@@ -23,7 +23,7 @@ func _finished(status: String) -> Dictionary:
 
 func test_a_won_run_ships_a_feature_and_is_tagged() -> void:
 	var record := RunHistory.entry(_finished("won"), catalog, "2026-09-28T04:12:00", "vesper")
-	assert_str(RunHistory.subject(record)).is_equal("feat(greedy): ship it, all 3 layers cleared")
+	assert_str(RunHistory.subject(record)).is_equal("feat(greedy): ship it, all 4 layers cleared")
 	assert_str(RunHistory.oneline(record, true)).contains("(HEAD -> main, tag: shipped) feat(greedy)")
 	assert_int(RunHistory.short_hash(record).length()).is_equal(7)
 

@@ -12,7 +12,7 @@ func test_the_content_loads_without_errors() -> void:
 	assert_int((loaded.catalog.relics as Dictionary).size()).is_equal(47)
 	assert_int((loaded.catalog.foes as Dictionary).size()).is_equal(15)
 	# The program run's own foes live beside the Shardrun's, never among them (ADR-0017).
-	assert_int((loaded.catalog.programs.foes as Dictionary).size()).is_equal(2)
+	assert_int((loaded.catalog.programs.foes as Dictionary).size()).is_equal(3)
 
 
 func test_broken_content_is_reported() -> void:

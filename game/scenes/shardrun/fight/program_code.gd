@@ -165,6 +165,14 @@ func _summary(view: Dictionary, cards: Array) -> String:
 	if int(view.get("locked", 0)) > 0:
 		var noun := "bolt" if int(view.locked) == 1 else "bolts"
 		parts.append("⚠ %d %s held by a lock: hit both halves of a deadlock in one program." % [int(view.locked), noun])
+	if int(view.get("fixed", 0)) > 0:
+		var noun := "bolt does" if int(view.fixed) == 1 else "bolts do"
+		parts.append(
+			"⚠ The same program as last time: a Quine recognises it, and %d %s nothing." % [int(view.fixed), noun]
+		)
+	for echo: Dictionary in view.get("reprints", []):
+		var hits := int(echo.hits)
+		parts.append("⎘ %s will reprint %d bolts: %d damage." % [echo.name, hits, hits * int(echo.power)])
 	var caught := race.filter(func(entry: Dictionary) -> bool: return not entry.first)
 	var bonus := roundi((ProgramRules.initiative(session.state, session.catalog) - 1.0) * 100.0)
 	if not caught.is_empty() and bonus > 0:

@@ -452,6 +452,11 @@ def post_sprite(rgba: np.ndarray, post: dict) -> Image.Image:
     """Crop to the subject, fit it in `size` (anchored bottom-center, so feet sit on the tile), hard alpha, palette, outline."""
     width, height = post["size"]
     pad = 1 if post.get("outline", True) else 0
+    if "key_light" in post:
+        # A near-white background the removal kept (a halo, smoke, a hole inside a ring): every pixel whose darkest
+        # channel is above `key_light` goes, so only subjects without white parts should ask for it.
+        rgba = rgba.copy()
+        rgba[..., 3] = np.where(rgba[..., :3].min(axis=2) > post["key_light"], 0, rgba[..., 3])
     rgba = drop_fragments(rgba, post.get("keep_fraction", 0.08))
     solid = rgba[..., 3] > 0.5
     ys, xs = np.nonzero(solid)

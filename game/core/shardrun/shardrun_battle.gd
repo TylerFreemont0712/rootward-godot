@@ -335,11 +335,31 @@ static func foe_act(state: Dictionary, battle: Dictionary, foe: Dictionary) -> v
 			foe.stoked = true
 			var text := "%s stokes its fire. Its next strike hits twice as hard." % foe.name
 			Shardrun.record(state, {"kind": "stoke", "foe": foe.uid, "text": text})
+		"reprint":
+			_reprint(state, battle, foe, intent)
 		"heal":
 			var healed := mini(int(foe.max) - int(foe.hp), int(intent.amount))
 			foe.hp += healed
 			var text := "%s mends %d HP." % [foe.name, healed]
 			Shardrun.record(state, {"kind": "heal", "foe": foe.uid, "amount": healed, "text": text})
+
+
+## The Quine's `print(source)` (docs/NewEnemies.md): once for every attacking bolt of the last program that ran (at
+## most `max`), and that program's ward bolts as its own shield, at the intent's `ward` fraction.
+static func _reprint(state: Dictionary, battle: Dictionary, foe: Dictionary, intent: Dictionary) -> void:
+	var echo: Dictionary = foe.get("echo", {})
+	var shield := floori(int(echo.get("ward", 0)) * float(intent.get("ward", 0.5)))
+	if shield > 0:
+		foe.shield += shield
+		var text := "%s reprints your wards as a %d-point shield." % [foe.name, shield]
+		Shardrun.record(state, {"kind": "shield", "foe": foe.uid, "amount": shield, "text": text})
+	var times := mini(int(echo.get("bolts", 0)), int(intent.max))
+	if times == 0:
+		Shardrun.record(state, {"kind": "note", "text": "%s has no program to reprint." % foe.name})
+	var i := 0
+	while i < times and int(state.integrity) > 0:
+		hit_maintainer(state, battle, foe, int(intent.power))
+		i += 1
 
 
 static func hit_maintainer(state: Dictionary, battle: Dictionary, foe: Dictionary, power: int) -> void:

@@ -98,6 +98,8 @@ static func intent_text(foe: Dictionary) -> String:
 			return "Stoke: its next strike doubles"
 		"heal":
 			return "Heal %d" % int(intent.amount)
+		"reprint":
+			return "Reprint: %d per bolt of your last program" % int(intent.power)
 	return "Watching"
 
 
@@ -122,6 +124,15 @@ static func trait_view(foe: Dictionary) -> Dictionary:
 		"pattern-ward":
 			var pattern := ", ".join(PackedStringArray(foe_trait.pattern))
 			return {"name": "Pattern ward", "text": "Only this turn's element in %s hits at full strength." % pattern}
+		"quine":
+			return {
+				"name": "Quine",
+				"text":
+				(
+					"It reprints the last program that ran: one hit for every bolt it fired, and its wards as shield. "
+					+ "The same cards in the same order as that program cannot hurt it."
+				),
+			}
 		"deadlock":
 			return {
 				"name": "Deadlock",
@@ -216,6 +227,9 @@ static func incoming(state: Dictionary) -> int:
 			total += int(intent.power) * (2 if foe.get("stoked", false) else 1)
 		elif intent.kind == "multi":
 			total += int(intent.power) * int(intent.times)
+		elif intent.kind == "reprint":
+			var echoed := int((foe.get("echo", {}) as Dictionary).get("bolts", 0))
+			total += int(intent.power) * mini(echoed, int(intent.max))
 	return total
 
 

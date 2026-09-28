@@ -115,13 +115,51 @@
   },
   // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps). Tuned
   // with the balance probe (ADR-0016): the smart bot wins about half its runs, and every paradigm a third or more.
-  "foe_hp": [2.4, 3.6, 4.6],
+  "foe_hp": [2.4, 3.6, 4.6, 5.4],
   // A program run's own encounters for a layer, in place of the Shardrun's. The Heap's guardian is the Deadlock Golem
   // as two locks (ADR-0017): a boss that tests a quality of the program (hitting two targets at once), where the
   // one-bodied Golem's pattern ward only tested whether you drew this turn's element.
   "encounters": {
     "heap": { "boss": [["deadlock-lock-a", "deadlock-lock-b"]] }
   },
+  // A program run goes one layer deeper than Spellforge (docs/NewEnemies.md): the Root, under the Kernel, whose
+  // hallways mix the Kernel's worst bugs and whose guardian reprints your own programs. The Kernel's budget holds here.
+  // Its arenas and music are the Kernel's until the Root has its own.
+  "layers": [
+    {
+      "id": "root",
+      "name": "The Root",
+      "flavor": "Beneath the Kernel, the machine's own source. Everything that runs was written by something that ran first.",
+      "backdrop": "arena-throne",
+      "boss_backdrop": "arena-throne",
+      "ambience": "embers",
+      "music": "music-kernel",
+      "battle_music": "music-battle-kernel",
+      "boss_music": "music-guardian-final",
+      "rest_music": "music-rest",
+      "rows": 9,
+      "columns": 5,
+      "paths": 6,
+      "fixed_rows": { "0": "fight", "4": "treasure", "-1": "rest" },
+      "weights": { "fight": 46, "elite": 20, "rest": 12, "forge": 12, "treasure": 0 },
+      "elite_from_row": 2,
+      "encounters": {
+        "fight": [
+          ["stack-overflow-serpent", "segfault-specter"],
+          ["type-mimic", "race-condition-imp", "race-condition-imp"],
+          ["garbage-collector"],
+          ["regex-sphinx", "null-wraith"]
+        ],
+        "elite": [
+          ["fork-bomb", "fork-bomb"],
+          ["garbage-collector", "stack-overflow-serpent"]
+        ],
+        "boss": [
+          ["the-quine"]
+        ]
+      }
+    }
+  ],
   // A pattern ward (the Regex Sphinx) lets a bolt of the wrong element through at half, not the quarter Spellforge
   // uses. At a quarter the Golem, before it became two locks, was a test of luck that ended a third of the probe's runs.
   "pattern_off": 0.5,

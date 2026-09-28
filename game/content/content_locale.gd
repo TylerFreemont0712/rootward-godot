@@ -12,8 +12,9 @@ const FIELDS := {
 	"foe": ["name", "flavor"],
 	"relic": ["name", "summary", "flavor"],
 	"run": ["difficulties.*.name", "difficulties.*.summary", "layers.*.name", "layers.*.flavor"],
-	# The program run's own content (ADR-0018): its paradigms and what each keyword means (the keyword stays code).
-	"programs": ["paradigms.*.name", "paradigms.*.summary", "keywords.*"],
+	# The program run's own content (ADR-0018): its paradigms, what each keyword means (the keyword stays code), and
+	# the layers it goes on to after the Shardrun's.
+	"programs": ["paradigms.*.name", "paradigms.*.summary", "keywords.*", "layers.*.name", "layers.*.flavor"],
 }
 ## The program run's cards, relics and foes are translated like the Shardrun's shards, relics and foes.
 const PROGRAM_KINDS := {"cards": "shard", "relics": "relic", "foes": "foe"}

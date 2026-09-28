@@ -218,13 +218,12 @@ static func relic() -> Dictionary:
 	)
 
 
-## `shardrun/run.jsonc`: the loadout a run starts with, its difficulties, its layers, and its rewards.
-static func run_config() -> Dictionary:
+## A layer of the Salvage: its map, its look and sound, how hard its foes are, and who is met in it. A program run
+## can add layers of its own after the Shardrun's (programs.jsonc `layers`).
+static func layer() -> Dictionary:
 	var capacity := Schema.int_range(1, 8)
 	var foe_groups := Schema.list_of(Schema.list_of(Schema.ID, null, 1, 4), null, 1)
-	var shard_weights := Schema.record({"type": "number", "min": 0.0}, SHARD_RARITIES)
-	var relic_weights := Schema.record({"type": "number", "min": 0.0}, RELIC_RARITIES)
-	var layer := (
+	return (
 		Schema
 		. object(
 			{
@@ -251,6 +250,14 @@ static func run_config() -> Dictionary:
 			}
 		)
 	)
+
+
+## `shardrun/run.jsonc`: the loadout a run starts with, its difficulties, its layers, and its rewards.
+static func run_config() -> Dictionary:
+	var capacity := Schema.int_range(1, 8)
+	var shard_weights := Schema.record({"type": "number", "min": 0.0}, SHARD_RARITIES)
+	var relic_weights := Schema.record({"type": "number", "min": 0.0}, RELIC_RARITIES)
+	var layer_schema := layer()
 	var difficulty := (
 		Schema
 		. object(
@@ -290,7 +297,7 @@ static func run_config() -> Dictionary:
 					)
 				),
 				"difficulties": Schema.list_of(difficulty, null, 1),
-				"layers": Schema.list_of(layer, null, 1),
+				"layers": Schema.list_of(layer_schema, null, 1),
 				"rewards":
 				(
 					Schema

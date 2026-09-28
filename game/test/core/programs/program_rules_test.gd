@@ -286,3 +286,82 @@ static func _heap(from: Dictionary) -> Dictionary:
 		if layer.id == "heap":
 			return layer
 	return {}
+
+
+## The test fight's slow foe as a Quine (docs/NewEnemies.md) about to reprint: 2 per bolt, at most 12.
+func _quined() -> Dictionary:
+	var state := _fight()
+	var quine: Dictionary = state.battle.foes[1]
+	quine.trait = {"kind": "quine"}
+	quine.intents = [{"kind": "reprint", "power": 2, "max": 12, "ward": 0.5}]
+	return state
+
+
+## A cast, then the turn made ready for another: its mana back and its Program castable again.
+func _again(state: Dictionary, cards: Array, bolts: Array) -> Dictionary:
+	var cast := _cast(state, cards, bolts, [{"shard": cards[0], "given": 1, "returned": bolts.size()}])
+	cast.battle.cast = []
+	cast.battle.mana = 9
+	return cast
+
+
+func test_the_quine_reprints_the_last_program_at_you() -> void:
+	var state := _quined()
+	var bolts := [{"power": 1, "foe": 0}, {"power": 1, "foe": 0}, {"power": 1, "foe": 0}, {"power": 8, "block": true}]
+	var cast := _again(state, ["salvo"], bolts)
+	var quine: Dictionary = cast.battle.foes[1]
+	assert_dict(quine.echo).is_equal({"bolts": 3, "ward": 8})
+	cast.battle.block = 0
+	var before := int(cast.integrity)
+	ShardrunBattle.foe_act(cast, cast.battle, quine)
+	# Three attacking bolts come back as three hits of 2; the 8-point ward comes back as its 4-point shield.
+	assert_int(before - int(cast.integrity)).is_equal(6)
+	assert_int(int(quine.shield)).is_equal(4)
+
+
+func test_the_quine_has_nothing_to_reprint_before_a_program_runs() -> void:
+	var state := _quined()
+	var before := int(state.integrity)
+	ShardrunBattle.foe_act(state, state.battle, state.battle.foes[1])
+	assert_int(int(state.integrity)).is_equal(before)
+	assert_bool(_kinds(state).has("note")).is_true()
+
+
+func test_the_same_program_twice_cannot_hurt_the_quine() -> void:
+	var at_quine := [{"power": 5, "foe": 1}]
+	var first := _again(_quined(), ["salvo"], at_quine)
+	assert_int(int(first.battle.foes[1].hp)).is_equal(30 - 5)
+	# The same cards in the same order: a fixed point, and nothing lands on it.
+	var same := _again(first, ["salvo"], at_quine)
+	assert_int(int(same.battle.foes[1].hp)).is_equal(30 - 5)
+	assert_bool(_kinds(same).has("absorb")).is_true()
+	# One more card changes the program, and it lands again.
+	var changed := _again(same, ["salvo", "fork"], at_quine)
+	assert_int(int(changed.battle.foes[1].hp)).is_equal(30 - 10)
+
+
+func test_the_preview_warns_of_the_fixed_point_and_the_reprint() -> void:
+	var first := _again(_quined(), ["salvo"], [{"power": 5, "foe": 1}])
+	first.spells[0].shards = ["salvo"]
+	var outcome := {
+		"ok": true,
+		"bolts": [{"power": 5, "foe": 1}, {"power": 5, "foe": 1}],
+		"work": [{"shard": "salvo", "given": 1, "returned": 2}],
+	}
+	var preview := ShardrunBattle.preview_cast(first, first.spells[0].id, outcome, catalog)
+	assert_int(int(preview.fixed)).is_equal(2)
+	assert_int(int(preview.damage)).is_equal(0)
+	# The Quine is slower than this program, so it reprints this one: two bolts, two hits of 2.
+	assert_array(preview.reprints).is_equal([{"name": "deadlock-golem", "hits": 2, "power": 2}])
+
+
+func test_a_program_run_goes_on_to_the_root() -> void:
+	var layers: Array = catalog.config.layers
+	assert_int(layers.size()).is_equal(4)
+	var root: Dictionary = layers[3]
+	assert_str(String(root.id)).is_equal("root")
+	assert_array(root.encounters.boss).is_equal([["the-quine"]])
+	assert_float(float(root.foe_hp)).is_equal(5.4)
+	assert_str(String(catalog.foes["the-quine"].trait.kind)).is_equal("quine")
+	# Spellforge still ends at the Kernel.
+	assert_int((ContentLoader.load_shardrun().catalog.config.layers as Array).size()).is_equal(3)

@@ -353,3 +353,10 @@ An isolated render can look sharp but disappear when reduced into the arena or a
 accepted image in a real fight, with adjacent foes and the UI visible. This pass checked all remaining playable foes
 in boss and regular battle layouts; the relics and shards were checked in the relic row and card hand. Strong outer
 shape and one bright focal point survived reduction better than small internal ornaments.
+
+## Arrays compare by value (`game/core/programs/program_rules.gd`)
+The Quine cannot be hurt by the program that ran just before (its fixed point, `docs/NewEnemies.md`). The check is a
+plain `foe.last_cards == context.cards`. In GDScript, `==` between two Arrays compares their elements in order, not their
+identity: the Quine keeps its own `duplicate()` of last turn's card list, and a new list with the same ids in the same
+order still matches, while the same ids in another order do not. That order sensitivity is the rule itself: reordering
+a program is changing it. (Dictionaries compare by content too; for identity, `is_same()` exists.)

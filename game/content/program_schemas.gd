@@ -113,14 +113,23 @@ static func card() -> Dictionary:
 
 
 ## A program run's own foe (`packs/<pack>/programs/foes/`, ADR-0017): a Shardrun foe that may also give each intent its
-## speed (`tempo`, the operations it waits before acting), be drawn facing the other way (`mirror`), and hold a
-## deadlock (a trait no Spellforge foe has).
+## speed (`tempo`, the operations it waits before acting), be drawn facing the other way (`mirror`), hold a deadlock,
+## and echo your last program (a `reprint` intent and the `quine` trait): things no Spellforge foe does.
 static func foe() -> Dictionary:
 	var schema: Dictionary = ShardrunSchemas.foe().duplicate(true)
 	var options: Dictionary = schema.fields.intents.item.options
 	for kind: String in options:
 		options[kind].tempo = Schema.optional(ShardrunSchemas.POSITIVE)
 	schema.fields.trait.options["deadlock"] = {"partner": Schema.ID}
+	# The Quine (docs/NewEnemies.md): its `reprint` hits once per bolt of your last program, at most `max` of them, and
+	# its ward bolts become the Quine's shield (at `ward`); a program exactly like the last one cannot hurt it.
+	options["reprint"] = {
+		"power": ShardrunSchemas.POSITIVE,
+		"max": Schema.int_range(1, 32),
+		"ward": Schema.with_default(Schema.RATIO, 0.5),
+		"tempo": options.strike.tempo,
+	}
+	schema.fields.trait.options["quine"] = {}
 	return schema
 
 
@@ -272,6 +281,8 @@ static func config() -> Dictionary:
 					),
 					{}
 				),
+				# Layers a program run goes on to after the Shardrun's (the Root): Spellforge never reaches them.
+				"layers": Schema.with_default(Schema.list_of(ShardrunSchemas.layer()), []),
 				# What each keyword means, for the cards' tooltips (and their translations).
 				"keywords": Schema.record(Schema.TEXT, KEYWORDS),
 				# Initiative: how much more a foe takes from a program that lands before it moves (0.25 is 25% more).
@@ -328,7 +339,14 @@ static func check(catalog: Dictionary, file: String, diagnostics: Array[Dictiona
 		var partner := String((foe.get("trait", {}) as Dictionary).get("partner", ""))
 		if partner != "" and not foes.has(partner):
 			_error(diagnostics, 'foe "%s" is deadlocked with an unknown foe "%s"' % [foe.id, partner], file)
-	var layer_ids: Array = (catalog.config.layers as Array).map(func(layer: Dictionary) -> String: return layer.id)
+	var all_layers: Array = (catalog.config.layers as Array) + (config.layers as Array)
+	var layer_ids: Array = all_layers.map(func(layer: Dictionary) -> String: return layer.id)
+	for layer: Dictionary in config.layers:
+		for kind: String in layer.encounters:
+			for group: Array in layer.encounters[kind]:
+				for foe_id: String in group:
+					if not foes.has(foe_id):
+						_error(diagnostics, 'layer "%s" names an unknown foe "%s"' % [layer.id, foe_id], file)
 	for layer_id: String in config.encounters:
 		if not layer_id in layer_ids:
 			_error(diagnostics, 'encounters name an unknown layer "%s"' % layer_id, file)

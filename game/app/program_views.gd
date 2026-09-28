@@ -73,6 +73,9 @@ static func run_view(
 		}
 	# A deadlock holding is telegraphed whatever the difficulty shows: it is the foe's rule, not a prediction.
 	view.locked = int(preview.get("locked", 0))
+	# So is a Quine's (docs/NewEnemies.md): the bolts its fixed point stops, and what its reprint will send back.
+	view.fixed = int(preview.get("fixed", 0))
+	view.reprints = preview.get("reprints", [])
 	return view
 
 

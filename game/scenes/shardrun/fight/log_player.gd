@@ -258,7 +258,7 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 		"absorb":
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
-				stage.popup(view.top_point(), "nullified", UiTheme.SHARD, 24)
+				stage.popup(view.top_point(), String(hit.get("word", "nullified")), UiTheme.SHARD, 24)
 			Sound.play("sfx-gulp", 0.7)
 		"glance":
 			var view: FoeView = stage.foes.get(hit.foe)

@@ -7,7 +7,7 @@ extends VBoxContainer
 ## A foe's sprite, square, by its size in content (in the 1920x1080 design canvas).
 const SIZES := {"small": 112.0, "medium": 150.0, "large": 195.0, "huge": 405.0, "colossal": 425.0}
 const HEIGHTS := {"small": 0.43, "medium": 0.52, "large": 0.63, "huge": 0.72, "colossal": 0.76}
-const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚"}
+const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚", "reprint": "⎘"}
 
 var uid := ""
 var foe: Dictionary = {}
@@ -128,7 +128,7 @@ func _show_intent() -> void:
 	_intent.text = "%s  %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe)]
 	if tempo > 0:
 		_intent.text += "   ⚡%d ops" % tempo
-	var danger := kind in ["strike", "multi"]
+	var danger := kind in ["strike", "multi", "reprint"]
 	_intent.add_theme_color_override("font_color", UiTheme.FAIL.lightened(0.2) if danger else UiTheme.TEXT)
 
 
@@ -145,6 +145,10 @@ func take_card() -> Control:
 	# The name alone takes the row's width, so it centres over the bar (the spacer beside it steps aside).
 	(_name.get_parent().get_child(1) as Control).visible = false
 	_tags.alignment = FlowContainer.ALIGNMENT_CENTER
+	# Its intent goes up with it: over a colossal guardian's sprite the chip would sit under the run's header.
+	var intent := _intent.get_parent() as Control
+	remove_child(intent)
+	(_name.get_parent().get_parent() as Control).add_child(intent)
 	var look := UiTheme.box(Color(0.06, 0.04, 0.05, 0.86), UiTheme.FAIL.darkened(0.3), 2, 10, Vector2(18, 10))
 	look.shadow_color = Color(UiTheme.FAIL, 0.2)
 	look.shadow_size = 10
@@ -177,8 +181,12 @@ func target_point() -> Vector2:
 
 ## How far below the top of this view the foe's feet are (the bottom of its sprite): the stage stands it there.
 func foot_offset() -> float:
-	var intent := (get_child(0) as Control).get_combined_minimum_size().y
-	return intent + get_theme_constant("separation") + _holder.custom_minimum_size.y
+	var chip := _intent.get_parent() as Control
+	# A guardian's intent went up with its card (take_card): then the sprite is the first thing in the column.
+	var above := (
+		chip.get_combined_minimum_size().y + get_theme_constant("separation") if chip.get_parent() == self else 0.0
+	)
+	return above + _holder.custom_minimum_size.y
 
 
 func sprite_width() -> float:

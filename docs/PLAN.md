@@ -145,6 +145,17 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
+### Phase 9: guardians and the fourth layer (ADR-0024, `docs/NewEnemies.md`)
+- [x] Eight guardian designs, two a stage, each testing one quality of a deck; placeholder sprites from ComfyUI.
+- [x] The Root: a fourth layer for program runs (Spellforge keeps three), its hallways, its HP and budget.
+- [x] The Quine, the Root's guardian: `reprint` sends your last program back at you, and the same program twice
+      cannot hurt it (its fixed point); the code panel warns before you run.
+- [ ] The Unhandled Exception and INT_MAX (a catch check; a damage transform).
+- [ ] The Cache Lich and Ouroboros (per-foe state; a guard shown each turn).
+- [ ] Malloc and the Call Stack Colossus (summons; a foe made of parts).
+- [ ] The drawn guardian shown on the map from the start; the Root Compiler as the finale.
+- [ ] A balance probe over four layers; per-guardian lines on the end screen, and ranks re-tuned.
+
 ### Next: the game plan (proposed on 2026-09-28)
 `docs/ROADMAP.md` proposes stages 0 to 10 for two journeys: the Shardrun toward Slay the Spire's depth
 (`docs/SHARDRUN_DESIGN.md`), and the Academy, a separate course from beginner to advanced (`docs/ACADEMY_DESIGN.md`).
