@@ -146,13 +146,17 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
 ### Phase 9: guardians and the fourth layer (ADR-0024, `docs/NewEnemies.md`)
-- [x] Eight guardian designs, two a stage, each testing one quality of a deck; placeholder sprites from ComfyUI.
+- [x] Sixteen guardian designs, four new a stage (five a pool with the old guardians), each testing one quality of a
+      deck; placeholder sprites from ComfyUI.
 - [x] The Root: a fourth layer for program runs (Spellforge keeps three), its hallways, its HP and budget.
 - [x] The Quine, the Root's guardian: `reprint` sends your last program back at you, and the same program twice
       cannot hurt it (its fixed point); the code panel warns before you run.
 - [ ] The Unhandled Exception and INT_MAX (a catch check; a damage transform).
 - [ ] The Cache Lich and Ouroboros (per-foe state; a guard shown each turn).
 - [ ] Malloc and the Call Stack Colossus (summons; a foe made of parts).
+- [ ] The Livelock Twins, the Short Circuit and the Profiler (small changes to the landing).
+- [ ] The Thunk, Karp and the Unreachable (per-foe state, a subset-sum check, a program cut before it runs).
+- [ ] The Page Fault (one resident page of three) and the Mutator (mutants authored for every card).
 - [ ] The drawn guardian shown on the map from the start; the Root Compiler as the finale.
 - [ ] A balance probe over four layers; per-guardian lines on the end screen, and ranks re-tuned.
 

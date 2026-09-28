@@ -2,7 +2,8 @@
 
 Written on 2026-09-28, at the player's request: *"7-8 different bosses that have different mechanics that can be
 cycled for the different stages … gimmicks that are related to programming that should change how the player
-approaches a fight."* It also asked for a fourth stage after the Kernel, and a final score at the end of a run.
+approaches a fight."* It also asked for a fourth stage after the Kernel, and a final score at the end of a run. Then:
+*"how about 2 more for each level? Starting to realize that 3 is just a little bit too small of a pool."*
 
 This file is the design. What is built so far is marked **(built)**; the rest is a proposal for the player to accept,
 cut or change. Art is a placeholder from ComfyUI in each boss's in-game sprite slot (`game/assets/foes/<id>.png`,
@@ -16,10 +17,13 @@ map from the start (as in Slay the Spire), so a player can draft toward it.
 
 | Stage | Place | What its bugs are about | Guardian pool |
 |---|---|---|---|
-| 1 | The Salvage | syntax and logic | Kiln Warden (exists), **Ouroboros**, **The Unhandled Exception** |
-| 2 | The Heap | memory and data | Deadlock Golem (exists), **The Cache Lich**, **Malloc, the Heap Matron** |
-| 3 | The Kernel | systems and numbers | Root Daemon (exists), **The Call Stack Colossus**, **INT_MAX** |
-| 4 | The Root (new) | the machine's own source | **The Quine** (built), **The Root Compiler** (the finale) |
+| 1 | The Salvage | syntax and logic | Kiln Warden (exists), **Ouroboros**, **The Unhandled Exception**, **The Short Circuit**, **The Unreachable** |
+| 2 | The Heap | memory and data | Deadlock Golem (exists), **The Cache Lich**, **Malloc, the Heap Matron**, **The Page Fault**, **The Thunk** |
+| 3 | The Kernel | systems and numbers | Root Daemon (exists), **The Call Stack Colossus**, **INT_MAX**, **The Profiler**, **The Livelock Twins** |
+| 4 | The Root (new) | the machine's own source | **The Quine** (built), **The Root Compiler** (the finale), **The Mutator**, **Karp, the NP Koi**, The Halting Oracle (earlier idea) |
+
+Five a stage. Sixteen are designed here, with placeholder art for each; three existed before, and the Halting Oracle
+comes from the earlier ideas below.
 
 The rules every boss here follows (from `docs/SHARDRUN_DESIGN.md`, section 6.1):
 
@@ -123,6 +127,74 @@ teaches the idea a beginner needs first after `if`.
 **Needs:** a `throw` intent (a strike with a catch check), a per-foe counter for the growing trace, an uncatchable
 flag on a strike.
 
+### The Short Circuit
+
+> `if bolt >= 12 and ...` A knight of live wire. If the first test fails, Python never even looks at the rest.
+
+| | |
+|---|---|
+| Base HP / run HP | 95 / 228 |
+| Size | huge |
+| Weak / resist | frost / spark |
+| Tests | order: what goes *first* |
+| Counter (the lesson) | `and` and `or` short-circuit: once the first test decides, the rest is never evaluated |
+
+**The mechanic: a guard on the first bolt.** Each turn it shows a guard value (8, then 12, then 16, round and round).
+The **first** attacking bolt aimed at it is evaluated against it:
+
+- **Below the guard** (`False and ...`): the whole condition is already false, so every *later* bolt aimed at it in
+  that program is **short-circuited**. They never land (logged, and drawn as fizzling sparks).
+- **At or above** (`True and ...`): everything lands, and the first bolt deals **double**.
+
+A deck that leads with its biggest bolt is rewarded. A deck that leads with small ones loses its whole volley. Reverse,
+Take Max, `import heapq` (strongest first), Literal and Hash Merge are the tools. The default order (weakest first, the
+seed's) is exactly wrong, which is the point: the player has to think about which bolt runs first. The code panel
+shows `if 4 >= 12 and ...` with the real first bolt before you run.
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Arc | strike 8 | 64 |
+| Surge | strike 3, 3 times | 96 |
+| Ground | shield 10 | 128 |
+| Overload | strike 14 | 192 |
+
+**Needs:** a per-program check of the first bolt at a foe in the landing (the landing already walks bolts in order),
+a cycling guard value like the Regex Sphinx's pattern.
+
+### The Unreachable
+
+> A gravekeeper who plants a `return` in your function. Everything written after it is dead code.
+
+| | |
+|---|---|
+| Base HP / run HP | 105 / 252 |
+| Size | huge |
+| Weak / resist | fire / none |
+| Tests | compactness: the most from the fewest cards |
+| Counter (the lesson) | `return` ends a function: code after it never runs |
+
+**The mechanic: a `return` in your program.** Each turn it buries a `return` at a line of your Program: after slot 5,
+then 4, then 3, then 4 again. Cards placed in that slot or later are **dead code**: they are greyed in the code panel
+with the `return` drawn above them, they do not run, and they still cost their mana (you wrote them, after all). The
+seed still runs, so an empty program still does something.
+
+On a slot-3 turn the question is which three cards matter most. Imports (which are lines at the top, not slots) keep
+working, so do `const` cards held from earlier turns. It punishes long, loose combos and rewards a deck of strong
+single cards and upgrades (a + card does more per slot).
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Dig | strike 9 | 96 |
+| Bury | shield 12 | 64 |
+| Epitaph | strike 4, 2 times | 128 |
+
+**Needs:** a hook before the program runs that cuts its cards at a slot (the sandbox then runs only what is left, so
+the preview stays a real run), and the dead lines drawn in the code panel.
+
 ---
 
 ## Stage 2: the Heap
@@ -190,6 +262,71 @@ indices of the foes behind them, as inserting into a list does.
 
 **Needs:** summons (a foe added mid-fight, named in `docs/SHARDRUN_DESIGN.md` 6.2), a start-of-turn effect per living
 ally, a threshold attack.
+
+### The Page Fault
+
+> A spellbook with three pages, and only one of them is in memory at a time.
+
+| | |
+|---|---|
+| Base HP / run HP | three pages of 40 (120 / 432 in all) |
+| Size | large, three bodies |
+| Weak / resist | fire / none |
+| Tests | focus: everything at one target |
+| Counter (the lesson) | locality of reference: work on what is already in memory, or pay a page fault every time |
+
+**The mechanic: one resident page.** The Page Fault is three foes (Page A, B and C, one sprite drawn three times), and
+only one is **resident**, glowing, at a time. Bolts at the resident page land normally. A bolt at a page that is **not**
+resident is a **page fault**: it does nothing, and that page is swapped in (it becomes the resident one for the rest of
+the program) while the old one is swapped out. At the end of each turn the page that has been out longest swaps in,
+and the map of pages shows which one is next.
+
+So a volley spread across three targets thrashes, landing almost nothing. A volley aimed at one page lands whole. It
+is the exact opposite of the Deadlock Golem (which demands spread), and a deck that learned "spread everything" at the
+Golem has to learn when not to. Take Max, Binary Execute and aiming at the front all shine; Round Robin and Load
+Balance thrash.
+
+**Intents** (each page)
+
+| Intent | What | t |
+|---|---|---|
+| Read | strike 12 (resident page only) | 128 |
+| Swap | heal 8 to the pages swapped out | 96 |
+| Flutter | strike 4, 3 times | 64 |
+
+**Needs:** a group of foes with a shared "resident" flag (the Golem locks already share a partner reference), a lost
+bolt kind in the landing, a swap at end of turn.
+
+### The Thunk
+
+> A dragon too lazy to take damage now. It will take it all later, when something forces it to.
+
+| | |
+|---|---|
+| Base HP / run HP | 110 / 396 |
+| Size | colossal |
+| Weak / resist | spark / frost |
+| Tests | setup and payoff: many bolts, then one big one last |
+| Counter (the lesson) | lazy evaluation: a value is not computed until something forces it |
+
+**The mechanic: lazy damage.** Hits on the Thunk do not reduce its HP. They pile up as **pending damage** (a ghost
+bar over its real one). A bolt of **15 power or more** forces evaluation: all pending damage lands at once, with the
+forcing bolt, for **+25%**. At the end of every turn, pending damage that was never forced **halves** (unevaluated
+thunks get collected).
+
+The best program is many small bolts then one big one at the end: exactly the sorted, weakest-first order the Short
+Circuit punishes. Played in the same run, the two teach that order is a choice, not a habit. Every intent is slow, so
+the Thunk almost never moves before your program (it is lazy): Initiative is easy here.
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Yawn | heal 10 | 256 |
+| Lazy swipe | strike 13 | 192 |
+| Nap | shield 16 | 160 |
+
+**Needs:** a per-foe pending total, a force threshold checked per bolt, a decay at end of turn.
 
 ---
 
@@ -262,6 +399,80 @@ Its own attack overflows too: **Count** strikes for 16, then 32, then 64, doubli
 
 **Needs:** a per-bolt damage transform in the landing (like the thick hide's check), a doubling intent with a wrap.
 
+### The Profiler
+
+> A clockwork owl with a stopwatch for a heart. It times your program, and slow code barely scratches it.
+
+| | |
+|---|---|
+| Base HP / run HP | 200 / 920 |
+| Size | colossal |
+| Weak / resist | none / none |
+| Tests | efficiency: the complexity class of the whole program |
+| Counter (the lesson) | Big-O: the slowest stage decides how a program scales |
+
+**The mechanic: damage by complexity class.** Every program is profiled, and its damage to the Profiler is multiplied
+by its slowest class (the one the code panel already shows):
+
+| Slowest class | × damage |
+|---|---|
+| O(1), O(log n) | 1.5 |
+| O(n) | 1.25 |
+| O(n log n) | 1 |
+| O(n·H) | 0.75 |
+| O(n²) | 0.5 |
+| O(2ⁿ) | 0.25 |
+
+The code panel marks the **hot path**, the stage that did the most work, with a 🔥, so the player sees which card to
+replace. This is the game's core idea as a boss. It is hard on Brute Force, but not a key check: `import itertools`,
+`import numpy`, `functools.cache` and the refactored + forms (Quick Sort+, Fibonacci Table) all lower a program's class,
+and a forge before the Kernel's guardian becomes an optimisation pass.
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Sample | strike 12 | 96 |
+| Flame graph | strike 5, 3 times | 128 |
+| Optimise | shield 18 | 64 |
+| Regress | stoke (its next strike doubles) | 160 |
+
+**Needs:** a damage factor from the program's slowest class in the landing (the landing context already has it,
+`speed`), and the hot path mark in the code panel.
+
+### The Livelock Twins
+
+> Two dancers forever stepping aside for each other. Every time you touch one, they trade places.
+
+| | |
+|---|---|
+| Base HP / run HP | two twins of 90 (414 each) |
+| Size | large, two bodies |
+| Weak / resist | frost / fire (the second twin: fire / frost) |
+| Tests | aiming while the targets move: state that changes mid-loop |
+| Counter (the lesson) | never modify a list while you iterate over it (and livelock: both sides polite, nobody moves on) |
+
+**The mechanic: they swap on every hit.** "After You" and "No, After You" stand at index 0 and 1. Each time a bolt hits
+either of them, they **swap places**, so the list of foes changes while your volley is still landing. Bolts aimed at
+index 0 alternate between the twins. Round Robin, which aims 0, 1, 0, 1, hits the **same** twin every time. A volley
+aimed all at the front spreads perfectly.
+
+When one twin falls, the other stops yielding: it **enrages** (+50% to its strikes). So the ideal is to bring them down
+together, which means planning the landing order exactly. The code panel draws the swap arrows and the real landing
+sequence before you run, so the puzzle is readable; the lesson is that the aim you wrote and the target you hit are no
+longer the same thing once the list is mutated during the loop.
+
+**Intents** (each twin)
+
+| Intent | What | t |
+|---|---|---|
+| Step in | strike 10 | 64 |
+| After you | shield 12 | 48 |
+| Waltz | strike 4, 2 times | 96 |
+
+**Needs:** a swap of two foes' places after each hit in the landing (a few lines where the landing picks its target),
+an enrage when a partner falls (a condition on the foe AI, which `docs/SHARDRUN_DESIGN.md` 6.2 already asks for).
+
 ---
 
 ## Stage 4: the Root (new)
@@ -320,7 +531,7 @@ flexibility rather than one quality, which is right for a stage-4 guardian.
 **The mechanic: it compiles the guardians you beat.** The Root Compiler fights in three phases, changing at 2/3 and
 1/3 of its HP. Each of the first two phases **compiles in the trait and signature intent** of a guardian you beat
 earlier in this run: phase one the Salvage's, phase two the Heap's (a Kiln Warden's thick hide, a Cache Lich's cache,
-an Ouroboros's `break` guard, and so on). Because guardians cycle, the finale is different from run to run, and it
+an Ouroboros's `break` guard, a Short Circuit's guard on the first bolt, and so on; five a stage makes 25 finales). Because guardians cycle, the finale is different from run to run, and it
 only ever tests ideas the player has already met and beaten once.
 
 Phase three is its own: **self-hosting**. Its tempo becomes exactly the work your *last* program did, so it acts
@@ -334,12 +545,78 @@ Between phases it spends one turn `recompiling` (it does nothing, and its shield
 **Needs:** the run to remember the guardians beaten (a list in `state.stats`), phase thresholds, and each of the other
 bosses' traits as reusable primitives. It should be built last.
 
+### The Mutator
+
+> A stitched-together chimera that edits your code. Can you read what your own card does now?
+
+| | |
+|---|---|
+| Base HP / run HP | 160 / 864 |
+| Size | colossal |
+| Weak / resist | fire / none |
+| Tests | reading code: predicting what a changed function does |
+| Counter (the lesson) | mutation testing: change one operator and check whether your tests notice |
+
+**The mechanic: mutants.** Its `mutate` intent edits a card in your hand with a small, real change to the card's code:
+`>` becomes `>=`, `+ 1` becomes `- 1`, `sorted(...)` becomes `sorted(..., reverse=True)`, `max` becomes `min`. The card
+is tagged **mutant** and shows the edit as a red and green diff, like the forge's refactor view. The mutant runs in the
+sandbox exactly as written, so the preview tells the truth: Take Max may now take the minimum, Merge Sort may sort
+strongest first (which the Short Circuit would love), Amplify may weaken.
+
+A mutant is **killed** (restored) when it runs in a program that lands 25 or more on the Mutator: your "tests" caught
+it. Killing a mutant also deals 10 to the Mutator. Mutants left alive are restored after the fight. Some mutants are
+harmless or even useful, and a good reader will spot them and play them anyway.
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Splice | strike 16 | 128 |
+| `mutate` | mutates two cards in your hand | 96 |
+| Stitch | shield 20 | 64 |
+
+**Needs:** authored mutants per card (content, like the + forms: code in both languages and a worked example each,
+checked by `scripts/validate.sh`), a mutant tag on a card instance for the fight, the diff view on a hand card.
+
+### Karp, the NP Koi
+
+> A golden carp that sets riddles. It does not solve them; it only checks your answer.
+
+| | |
+|---|---|
+| Base HP / run HP | 170 / 918 |
+| Size | colossal |
+| Weak / resist | frost / fire |
+| Tests | exact combinations: a volley whose parts add up |
+| Counter (the lesson) | P vs NP: an answer that is hard to find is easy to check (subset sum) |
+
+**The mechanic: a certificate.** Each turn Karp names a target, say **37**. If some of the attacking bolts that land on
+it add up to **exactly** the target, that is a **certificate**: Karp checks it (the code panel shows it, `9 + 12 +
+16 = 37`), those bolts deal **double**, and Karp is **stunned** for its next action. Without a certificate its golden
+scales halve all damage.
+
+Finding a subset that sums to a number is the classic hard problem (subset sum is NP-complete), and the Artificer's
+cards already include the tools that solve it: Knapsack Strike (dynamic programming), Power Set and Exhaustive Kill
+(brute force). Varied small bolts (Prefix Sum, Pascal Row, Fibonacci Surge) make most totals reachable without any
+search at all. Checking is cheap for the rules (a table of reachable sums up to the target), which is itself the lesson.
+
+**Intents**
+
+| Intent | What | t |
+|---|---|---|
+| Splash | strike 14 | 128 |
+| Riddle | shield 18 | 64 |
+| Tail sweep | strike 6, 3 times | 160 |
+
+**Needs:** a target per turn from a seeded list (scaled to the stage), a subset-sum check over the landed bolts (a
+bitset of reachable sums), a stun, and the certificate shown in the code panel.
+
 ---
 
 ## Earlier boss ideas that also fit the pools
 
 `docs/SHARDRUN_DESIGN.md` (section 6.3) already proposed these, and they have concept sprites in `game/assets/foes/`.
-They can join a pool whenever they are built:
+The Halting Oracle fills the Root's fifth place; the others can join a pool (or replace a boss there) when built:
 
 - **The Monolith** (1): shuffles *Legacy Code* bugs into your deck; grows while undamaged.
 - **Spaghetti Hydra** (1): a cut head grows two unless the body is hit by the same program.
@@ -364,6 +641,12 @@ guardian beaten without losing Integrity, and ranks re-tuned once runs with four
 3. **The Cache Lich** and **Ouroboros**: per-foe state and a guard shown each turn.
 4. **Malloc** (summons) and **the Call Stack Colossus** (a foe made of parts): the two new systems, which the Spaghetti
    Hydra and the Fragmentation Wyrm will also use.
-5. **The boss on the map** from the start, then **the Root Compiler** once the others exist.
+5. **The Livelock Twins**, **the Short Circuit** and **the Profiler**: small changes to the landing (a swap, a check of
+   the first bolt, a factor by class).
+6. **The Thunk** and **Karp**: per-foe state and a check over the landed volley; **the Unreachable**: a hook that cuts a
+   program before it runs.
+7. **The Page Fault** (a group of foes with one resident) and **the Mutator** (mutants authored for every card: the
+   biggest content job of the sixteen).
+8. **The boss on the map** from the start, then **the Root Compiler** once the others exist.
 
 After each one, the balance probe (ADR-0016) checks that no boss's win rate differs by more than 2× across paradigms.
