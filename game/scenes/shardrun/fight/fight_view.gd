@@ -243,12 +243,21 @@ func present(result: Dictionary) -> void:
 	stage.fast = false
 	var before: Dictionary = result.before
 	var player := LogPlayer.new(stage, before)
+	for spell: Dictionary in before.get("spells", []):
+		var cards: Array[Dictionary] = []
+		for id: String in spell.shards:
+			cards.append(session.catalog.shards.get(id, {"id": id}))
+		player.cast_cards[spell.id] = cards
 	player.numbers_changed.connect(func() -> void: _show_numbers(player.shown))
 	var replay: Dictionary = result.get("replay", {})
 	if not replay.is_empty() and _program != null:
+		var flourish := func(id: String) -> void: stage.shard_effect(session.catalog.shards.get(id, {"id": id}))
+		_program.card_resolved.connect(flourish)
 		# The program runs first, and the eye goes with it: the stage dims until its code has run.
 		stage.dim(0.45, 0.25)
 		await _program.play_cast(replay.run, Settings.code_speed)
+		_program.card_resolved.disconnect(flourish)
+		player.motifs_shown = Settings.code_speed != "off"
 		stage.dim(0.0, 0.25)
 	elif not replay.is_empty() and Settings.code_speed != "off":
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)

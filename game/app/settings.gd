@@ -16,6 +16,9 @@ static var code_speed := "normal"
 static var predictions := true
 ## Shake the stage on heavy hits.
 static var shake := true
+## Calm menus and shard flourishes, while retaining the essential combat playback.
+static var reduced_motion := false
+static var fullscreen := false
 ## The last journey selected on the title screen.
 static var playstyle := "program"
 ## The last selected battle look. Vesper is the first impression on a fresh install.
@@ -41,6 +44,9 @@ static func load_file(from := PATH) -> void:
 		code_speed = speed
 	predictions = _bool(values, "predictions", predictions)
 	shake = _bool(values, "shake", shake)
+	reduced_motion = _bool(values, "reduced_motion", reduced_motion)
+	fullscreen = _bool(values, "fullscreen", fullscreen)
+	apply_display()
 	music_volume = _volume(values, "music_volume", music_volume)
 	sound_volume = _volume(values, "sound_volume", sound_volume)
 	var chosen: Variant = values.get("language")
@@ -64,6 +70,8 @@ static func save_file() -> void:
 		"code_speed": code_speed,
 		"predictions": predictions,
 		"shake": shake,
+		"reduced_motion": reduced_motion,
+		"fullscreen": fullscreen,
 		"music_volume": music_volume,
 		"sound_volume": sound_volume,
 		"language": language,
@@ -74,6 +82,13 @@ static func save_file() -> void:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file != null:
 		file.store_string(JSON.stringify(values, "\t", false))
+
+
+static func apply_display() -> void:
+	if DisplayServer.get_name() != "headless":
+		DisplayServer.window_set_mode(
+			DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
+		)
 
 
 static func _bool(values: Dictionary, key: String, fallback: bool) -> bool:

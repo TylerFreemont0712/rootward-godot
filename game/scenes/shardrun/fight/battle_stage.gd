@@ -168,6 +168,7 @@ func _layout() -> void:
 	var count := foes.size()
 	var index := 0
 	for view: FoeView in foes.values():
+		view.fit_arena(size.y, size.x * 0.40 / maxi(1, count))
 		view.size = view.get_combined_minimum_size()
 		var share := (index + 0.5) / count
 		var x := size.x * lerpf(FOE_SPAN.x, FOE_SPAN.y, share)
@@ -210,6 +211,12 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 	if fast:
 		return null
 	return SpellAnim.play(_fx, id, at, ramp, size, angle)
+
+
+func shard_effect(card: Dictionary) -> void:
+	if fast or Settings.reduced_motion:
+		return
+	ShardFlourish.play(_fx, card, hero.hand_point(), clampf(hero.size.y / 320.0, 0.65, 1.5))
 
 
 ## A bolt from `from` to `to`; `arrive` is called when it lands. It leaves slowly, curving off to one side, and speeds

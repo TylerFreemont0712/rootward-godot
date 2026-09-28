@@ -37,7 +37,7 @@
       "summary": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
       "signature": ["divide", "merge-strike"],
       "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify", "quick-sort", "quickselect",
-        "recursion-tree", "split", "import-math"]
+        "recursion-tree", "split", "import-math", "import-copy", "recursive-mirror"]
     },
     {
       "id": "search-index",
@@ -47,7 +47,7 @@
       "summary": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
       "signature": ["prefix-sum", "binary-execute"],
       "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill", "bisect-insert", "dedupe",
-        "two-pointers", "hash-aim", "import-bisect"]
+        "two-pointers", "hash-aim", "import-bisect", "import-collections", "run-length"]
     },
     {
       "id": "greedy",
@@ -57,7 +57,7 @@
       "summary": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
       "signature": ["greedy-assign", "take-max"],
       "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge", "make-change", "huffman",
-        "load-balance", "greedy-ward", "import-heapq"]
+        "load-balance", "greedy-ward", "import-heapq", "stable-partition", "chain-lightning"]
     },
     {
       "id": "brute-force",
@@ -77,13 +77,13 @@
       "summary": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
       "signature": ["tabulate", "knapsack-strike"],
       "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill", "kadane", "lis-strike",
-        "pascal-row", "knapsack-ward", "import-cache"]
+        "pascal-row", "knapsack-ward", "import-cache", "sliding-window"]
     }
   ],
   // Cards any pack can offer beside the paradigm's own.
   "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge",
     "take-max", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "global-total",
-    "generator", "release", "higher-order"],
+    "generator", "release", "higher-order", "import-operator", "fire-constant", "frost-constant", "spark-constant", "zip-ward"],
   // Programming words for what a card does in the deck (ADR-0018), shown on the card with these meanings.
   "keywords": {
     "once": "Runs once a fight: after its program it leaves the deck until the next fight.",

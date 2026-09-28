@@ -1,0 +1,60 @@
+{
+  "id": "import-operator-plus",
+  "name": "import operator+",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "import",
+  "complexity": "constant",
+  "art": "import-operator",
+  "summary": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power.",
+  "function": "import_operator_plus",
+  "keywords": [
+    "__init__"
+  ],
+  "module": "operator",
+  "line": {
+    "python": "import operator",
+    "javascript": "import { add } from \"./operator.js\";"
+  },
+  "effects": [
+    {
+      "kind": "hook-after",
+      "role": "shape"
+    }
+  ],
+  "makes": "unsorted",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "only attacks grow",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "frost",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "frost",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

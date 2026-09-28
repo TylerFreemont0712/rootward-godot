@@ -30,6 +30,9 @@ var stage: BattleStage
 var shown: Dictionary = {}
 ## The log lines played so far, for the battle log.
 var lines: Array[Dictionary] = []
+var cast_cards: Dictionary = {}
+## The walkthrough already showed these cards; with code playback off, the cast shows their motifs instead.
+var motifs_shown := false
 ## The cast being played is a heavy one (many bolts, or a big total): its first blow on each foe falls from above.
 var _heavy := false
 ## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
@@ -91,6 +94,11 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	_crashed = {}
 	stage.hero.play("cast-heavy" if heavy else "cast-light")
 	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
+	if not motifs_shown:
+		for card: Dictionary in cast_cards.get(entry.get("spell", ""), []):
+			stage.shard_effect(card)
+			if not Settings.reduced_motion:
+				await stage.wait(140.0)
 	# The program runs: its circle draws itself at the hand and lets go, more elaborate the more it will deal; the
 	# strongest also draw a circle on the ground with runes rising round the Maintainer. Each circle brings its own
 	# sound, laid out on its beats (SpellAnim).

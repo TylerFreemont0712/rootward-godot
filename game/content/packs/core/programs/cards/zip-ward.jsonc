@@ -1,0 +1,56 @@
+{
+  "id": "zip-ward",
+  "name": "Zip Ward",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "guard",
+  "complexity": "linear",
+  "art": "zip-ward",
+  "summary": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down). Existing guards pass through.",
+  "function": "zip_ward",
+  "forge": {
+    "into": "zip-ward-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "attack and defense interleave",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "fire",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "frost",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "fire",
+          "foe": 1
+        },
+        {
+          "power": 3,
+          "element": "fire",
+          "foe": 1,
+          "block": true
+        },
+        {
+          "power": 4,
+          "element": "frost",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

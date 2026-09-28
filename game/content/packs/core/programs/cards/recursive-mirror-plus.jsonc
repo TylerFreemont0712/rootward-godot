@@ -1,0 +1,55 @@
+{
+  "id": "recursive-mirror-plus",
+  "name": "Recursive Mirror+",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "source",
+  "complexity": "linear",
+  "art": "recursive-mirror",
+  "summary": "Append a reversed copy of the volley at full power. Recursion visits each bolt once; elements, targets and guards are copied.",
+  "function": "recursive_mirror_plus",
+  "makes": "unsorted",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the reflection reverses",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost",
+          "block": true
+        },
+        {
+          "power": 6,
+          "element": "frost",
+          "block": true
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

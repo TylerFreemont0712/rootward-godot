@@ -39,6 +39,7 @@ func _ready() -> void:
 	# The dev commands that set a shot up need a sandbox run.
 	var staged := chosen != "" or OS.get_environment("ROOTWARD_SHOT_FOES") != ""
 	staged = staged or OS.get_environment("ROOTWARD_SHOT_HAND") != ""
+	staged = staged or OS.get_environment("ROOTWARD_SHOT_RELICS") != ""
 	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev" or staged)
 	var bot := ShardrunBot.new(session)
 	bot.paradigm = OS.get_environment("ROOTWARD_SHOT_PARADIGM")
@@ -77,7 +78,7 @@ func _ready() -> void:
 			for shard: String in spell.shards:
 				(table.hand as Array).erase(shard)
 			await bot.send(CardTable.command(table))
-		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile", "hover", "log":
+		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile", "hover", "log", "enemy_tip", "relic_tip":
 			await bot.play_until("battle")
 			var foes := OS.get_environment("ROOTWARD_SHOT_FOES").split(",", false)
 			if not foes.is_empty():
@@ -241,3 +242,9 @@ func _act(shot: String, screen: Control) -> void:
 				var table := fight.get("_table") as DeckTable
 				if table != null:
 					table.call("_open_pile", "draw")
+		"enemy_tip", "relic_tip":
+			var desired := "Deadlock" if shot == "enemy_tip" else "Overclock"
+			for tip: HoverInfo in screen.find_children("*", "HoverInfo", true, false):
+				if desired.to_lower() in tip.title.to_lower():
+					tip.show_now()
+					break

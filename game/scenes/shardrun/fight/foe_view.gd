@@ -6,6 +6,7 @@ extends VBoxContainer
 
 ## A foe's sprite, square, by its size in content (in the 1920x1080 design canvas).
 const SIZES := {"small": 112.0, "medium": 150.0, "large": 195.0, "huge": 405.0, "colossal": 425.0}
+const HEIGHTS := {"small": 0.43, "medium": 0.52, "large": 0.63, "huge": 0.72, "colossal": 0.76}
 const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚"}
 
 var uid := ""
@@ -23,6 +24,8 @@ var _hp: Label
 var _shield: Label
 var _tags: HFlowContainer
 var _card: PanelContainer
+var _size_name := "medium"
+var _aspect := 1.0
 
 
 static func create(foe_state: Dictionary, catalog: Dictionary) -> FoeView:
@@ -36,6 +39,7 @@ static func create(foe_state: Dictionary, catalog: Dictionary) -> FoeView:
 
 func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	var size_name := String(content.get("size", "medium"))
+	_size_name = size_name
 	var flavor := String(content.get("flavor", ""))
 	alignment = BoxContainer.ALIGNMENT_END
 	add_theme_constant_override("separation", 4)
@@ -50,6 +54,18 @@ func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	_holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sprite = Ui.picture("foes/" + String(foe_state.sprite), Vector2(side, side), foe_state.name)
+	if sprite is TextureRect:
+		# LEARN: transparent margins are part of a texture's size. Crop the displayed region once so a small painted
+		# creature fills the same stage height as its peers and its visible feet meet the floor.
+		var picture := sprite as TextureRect
+		var bounds := picture.texture.get_image().get_used_rect()
+		if bounds.has_area():
+			var crop := AtlasTexture.new()
+			crop.atlas = picture.texture
+			crop.region = bounds
+			picture.texture = crop
+			_aspect = float(bounds.size.x) / float(bounds.size.y)
+		picture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	if sprite is TextureRect and bool(content.get("mirror", false)):
 		(sprite as TextureRect).flip_h = true
 	sprite.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -139,9 +155,19 @@ func take_card() -> Control:
 
 func _tag(text: String, colour: Color, tip: String) -> Control:
 	var tag := Ui.panel(Ui.sized(Ui.tint(Ui.label(text, ""), colour), 12), "Chip")
-	tag.tooltip_text = tip
-	tag.mouse_filter = Control.MOUSE_FILTER_PASS
+	HoverInfo.attach(tag, text.capitalize(), tip, "Enemy property", colour)
 	return tag
+
+
+## Resize the image itself, preserving aspect and floor alignment; text remains readable at every window size.
+func fit_arena(height: float, width: float) -> void:
+	var drawn_height := minf(height * float(HEIGHTS.get(_size_name, 0.52)), width / _aspect)
+	var drawn := Vector2(drawn_height * _aspect, drawn_height)
+	_holder.custom_minimum_size = drawn
+	sprite.custom_minimum_size = drawn
+	sprite.size = drawn
+	# Container layout is deferred; reset the outer size now so the stage places this frame using its new minimum.
+	size = get_combined_minimum_size()
 
 
 ## The middle of the sprite, where bolts land, in the parent's coordinates.

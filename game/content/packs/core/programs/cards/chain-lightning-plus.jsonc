@@ -1,0 +1,107 @@
+{
+  "id": "chain-lightning-plus",
+  "name": "Chain Lightning+",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "strike",
+  "complexity": "linear",
+  "art": "chain-lightning",
+  "summary": "Turn attacks to spark and aim them at foes in turn. Attacks already made of spark gain 4 power. Guards pass through without consuming a target.",
+  "function": "chain_lightning_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "precharged sparks bridge both locks",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "spark"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 7,
+          "element": "spark",
+          "foe": 0
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 5,
+          "element": "spark",
+          "foe": 1
+        }
+      ],
+      "battle": {
+        "foes": [
+          {
+            "hp": 30,
+            "max": 30,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "name": "Lock"
+          },
+          {
+            "hp": 30,
+            "max": 30,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "name": "Lock"
+          }
+        ],
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 6
+        }
+      }
+    },
+    {
+      "name": "no targets",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "foes": [],
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 6
+        }
+      }
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

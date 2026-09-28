@@ -3,6 +3,7 @@ extends PanelContainer
 ## The player's options, saved the moment they change (Settings). Presentation only: none of them changes a rule.
 
 signal closed
+var _tab := "Battle"
 
 
 static func create() -> OptionsPanel:
@@ -13,9 +14,36 @@ static func create() -> OptionsPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(620, 0)
-	var column := Ui.vbox([Ui.hbox([Ui.label("Options", "Heading"), Ui.spacer(), Ui.button("Close", _close)])], 14)
-	column.add_child(Ui.tint(Ui.label("BATTLE PRESENTATION", "Faint"), UiTheme.TEAL))
+	custom_minimum_size = Vector2(800, 560)
+	var column := Ui.vbox([Ui.hbox([Ui.label("OPTIONS", "Heading"), Ui.spacer(), Ui.button("Close  ×", _close)])], 20)
+	column.add_child(Ui.label("Make the Machine feel like home. Changes save automatically.", "Muted", true))
+	var tabs := Ui.hbox([], 8)
+	for tab: String in ["Battle", "Audio", "Display"]:
+		var choose := func() -> void:
+			_tab = tab
+			_rebuild()
+		tabs.add_child(Ui.choice(tab, _tab == tab, choose))
+	column.add_child(tabs)
+	add_child(column)
+	if _tab == "Audio":
+		column.add_child(_row("Music volume", _slider(Settings.music_volume, _set_music)))
+		column.add_child(_row("Sound effects", _slider(Settings.sound_volume, _set_sound)))
+		column.add_child(Ui.button("Test sound", func() -> void: Sound.play("sfx-card-place", 0.7)))
+		return
+	if _tab == "Display":
+		var display := func(on: bool) -> void:
+			Settings.fullscreen = on
+			Settings.apply_display()
+		column.add_child(_row("Fullscreen", _on_off(Settings.fullscreen, display)))
+		column.add_child(
+			_row(
+				"Reduce motion",
+				_on_off(Settings.reduced_motion, func(on: bool) -> void: Settings.reduced_motion = on),
+				"Calmer transitions and no shard flourishes. Background motion updates when you reopen the title."
+			)
+		)
+		column.add_child(Ui.label("The arena and its creatures resize with the window.", "Muted", true))
+		return
 	column.add_child(
 		_row(
 			"Code playback speed",
@@ -33,10 +61,6 @@ func _build() -> void:
 	column.add_child(
 		_row("Shake the stage on heavy hits", _on_off(Settings.shake, func(on: bool) -> void: Settings.shake = on))
 	)
-	column.add_child(Ui.tint(Ui.label("AUDIO", "Faint"), UiTheme.TEAL))
-	column.add_child(_row("Music", _slider(Settings.music_volume, _set_music)))
-	column.add_child(_row("Sounds", _slider(Settings.sound_volume, _set_sound)))
-	add_child(column)
 
 
 func _row(title: String, control: Control, note := "") -> Control:
@@ -76,9 +100,16 @@ func _slider(value: float, apply: Callable) -> Control:
 	slider.step = 0.05
 	slider.value = value
 	slider.custom_minimum_size = Vector2(300, 20)
-	slider.value_changed.connect(func(to: float) -> void: apply.call(to))
-	slider.drag_ended.connect(func(_changed: bool) -> void: _saved())
-	return slider
+	var percent := Ui.label("%d%%" % roundi(value * 100.0), "Subheading")
+	percent.custom_minimum_size.x = 70
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.value_changed.connect(
+		func(to: float) -> void:
+			apply.call(to)
+			percent.text = "%d%%" % roundi(to * 100.0)
+			_saved()
+	)
+	return Ui.hbox([slider, percent], 18)
 
 
 func _set_music(to: float) -> void:

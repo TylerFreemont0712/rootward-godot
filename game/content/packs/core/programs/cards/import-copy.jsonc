@@ -1,0 +1,93 @@
+{
+  "id": "import-copy",
+  "name": "import copy",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "import",
+  "complexity": "constant",
+  "art": "import-copy",
+  "summary": "For this fight, before each strike, append a copy of the last attack bolt with half its power, rounded up. Guards are never copied.",
+  "function": "import_copy",
+  "keywords": [],
+  "module": "copy",
+  "line": {
+    "python": "import copy",
+    "javascript": "import { copy } from \"./copy.js\";"
+  },
+  "effects": [
+    {
+      "kind": "hook-before",
+      "role": "strike"
+    }
+  ],
+  "makes": "unsorted",
+  "forge": {
+    "into": "import-copy-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "copy the final attack",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "spark",
+          "foe": 1
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "spark",
+          "foe": 1
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 4,
+          "element": "spark",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "only guards",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

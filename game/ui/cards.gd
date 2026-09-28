@@ -89,10 +89,10 @@ static func relic_icon(item: Dictionary) -> Control:
 	var kind := " (cursed)" if item.get("cursed", false) else ""
 	if kind == "" and item.has("tier"):
 		kind = " (%s, tier %d)" % [item.tier, ProgramLoot.tier_number(item)]
-	var tip := "%s%s\n%s" % [item.get("name", "?"), kind, item.get("summary", "")]
+	var title := "%s%s" % [item.get("name", "?"), kind]
+	var detail := String(item.get("flavor", ""))
 	if not item.has("tier"):
-		icon.mouse_filter = Control.MOUSE_FILTER_PASS
-		icon.tooltip_text = tip
+		HoverInfo.attach(icon, title, item.get("summary", ""), detail, UiTheme.AMBER)
 		return icon
 	var ring := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(String(item.tier))
 	var framed := PanelContainer.new()
@@ -101,8 +101,7 @@ static func relic_icon(item: Dictionary) -> Control:
 		UiTheme.box(Color(ring, 0.16), Color(ring, 0.9), 2 if item.tier == "legendary" else 1, 8, Vector2(2, 2))
 	)
 	framed.add_child(icon)
-	framed.mouse_filter = Control.MOUSE_FILTER_PASS
-	framed.tooltip_text = tip
+	HoverInfo.attach(framed, title, item.get("summary", ""), detail, ring)
 	return framed
 
 

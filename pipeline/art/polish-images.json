@@ -1,0 +1,76 @@
+{
+  "generator": "OpenAI image_gen",
+  "prompt_template": "Use case: stylized-concept. Asset: one square game card inventory icon for Rootward, a programming fantasy roguelite. Subject: {subject} Style: crisp hand-pixeled 32-bit fantasy RPG inventory art, chunky visible pixel clusters as if designed on a 64 by 64 grid, rich bronze and jewel tones, restrained highlights, strong readable silhouette, slight top-down view. Centered single object occupies 80 percent of canvas. Transparent background, no environment, no border, no lettering, no numbers, no UI, no watermark. Match vintage arcane artifact icons: bronze machinery, violet magic, teal crystals. Output square image.",
+  "assets": [
+    {
+      "id": "fire-constant",
+      "subject": "An ember-orange faceted crystal locked inside a bronze hexagonal cage, a tiny steady flame trapped at its heart, a physical constant of fire.",
+      "asset": "game/assets/shardrun/card-fire-constant.png"
+    },
+    {
+      "id": "frost-constant",
+      "subject": "A pale cyan faceted ice crystal locked inside a bronze hexagonal cage, sharp symmetrical snowflake veins and a cold blue heart, a physical constant of frost.",
+      "asset": "game/assets/shardrun/card-frost-constant.png"
+    },
+    {
+      "id": "spark-constant",
+      "subject": "A golden amber faceted crystal locked inside a bronze hexagonal cage, a crisp little zigzag spark trapped at its heart, a physical constant of lightning.",
+      "asset": "game/assets/shardrun/card-spark-constant.png"
+    },
+    {
+      "id": "import-collections",
+      "subject": "A bronze sorting tray with three compartments. Similar red crystals gather together in one, blue in another, violet in another, with one larger gem formed from several smaller fragments. A magical collection and grouping device.",
+      "asset": "game/assets/shardrun/card-import-collections.png"
+    },
+    {
+      "id": "import-operator",
+      "subject": "A compact enchanted bronze arithmetic mechanism with an unmistakable large plus-shaped golden crystal in its center, a small lavender bolt on each side being strengthened by passing through it.",
+      "asset": "game/assets/shardrun/card-import-operator.png"
+    },
+    {
+      "id": "import-copy",
+      "subject": "Two matching lavender crystals, the one on the right half as large, connected by a looping bronze copying mechanism. Magical duplication, large original and smaller echo.",
+      "asset": "game/assets/shardrun/card-import-copy.png"
+    },
+    {
+      "id": "sliding-window",
+      "subject": "A brass rectangular lens gliding along a short row of five cyan crystals, enclosing exactly three adjacent crystals in one luminous window. A magical sliding inspection window, compact connected device.",
+      "asset": "game/assets/shardrun/card-sliding-window.png"
+    },
+    {
+      "id": "run-length",
+      "subject": "Three small adjacent red crystals being fused into a single larger red crystal through a bronze compression clasp, with a separate untouched blue gem next to it. Run length compression made physical.",
+      "asset": "game/assets/shardrun/card-run-length.png"
+    },
+    {
+      "id": "stable-partition",
+      "subject": "A bronze two-channel sorting gate separating a short line of bright crystals into two neat queues: large gold attack crystals above and small dim teal crystals below. Order within each queue is preserved.",
+      "asset": "game/assets/shardrun/card-stable-partition.png"
+    },
+    {
+      "id": "zip-ward",
+      "subject": "One violet energy crystal splitting into a sharp orange attack arrowhead and a rounded cyan shield-shaped gem, linked by interlocking bronze zipper teeth. Equal attack and defense.",
+      "asset": "game/assets/shardrun/card-zip-ward.png"
+    },
+    {
+      "id": "chain-lightning",
+      "subject": "Three small bronze target rings with glowing amber crystal centers linked in sequence by two crisp zigzag golden sparks, clearly one lightning chain through three targets.",
+      "asset": "game/assets/shardrun/card-chain-lightning.png"
+    },
+    {
+      "id": "recursive-mirror",
+      "subject": "A bronze-framed violet magic mirror with three nested smaller mirror reflections and a row of small lavender crystals reflected in reverse order. Compact magical recursion artifact.",
+      "asset": "game/assets/shardrun/card-recursive-mirror.png"
+    },
+    {
+      "id": "fork",
+      "subject": "One violet crystal at the bottom branching through a bronze Y-shaped channel into two identical violet crystals at the top. Arcane duplication of spell bolts. This is a programming fork, never table cutlery.",
+      "asset": "game/assets/shardrun/card-fork.png"
+    },
+    {
+      "id": "higher-order",
+      "subject": "A small open antique bronze-bound spellbook conjuring exactly two floating lavender quills or feather-shaped crystals above its pages. A spell that creates two smaller spells. No modern electronics.",
+      "asset": "game/assets/shardrun/card-higher-order.png"
+    }
+  ]
+}

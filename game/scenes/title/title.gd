@@ -14,7 +14,7 @@ const MODES: Array[Dictionary] = [
 ]
 const HOW_TO: Array[String] = [
 	"A card is a function: it takes a list of bolts and the battle, and returns bolts.",
-	"The cards you play, in order, are one program. It starts from a seed bolt; watch its code being written.",
+	"The cards you play, in order, are one program. It starts from three seed bolts; watch its code being written.",
 	"Every card has a speed, O(log n) to O(2ⁿ). A foe whose tempo beats your program's work acts before it lands.",
 	"Some cards need sorted bolts. Order matters: sort first, then search.",
 	"Relics bend the rules for the rest of a run. Guardians guard the best of them.",
@@ -24,6 +24,8 @@ const MENU_WIDTH := 820.0
 var _menu: VBoxContainer
 var _overlay: Control
 var _backdrop: TextureRect
+var _setup := false
+var _menu_motion: Tween
 
 
 func _ready() -> void:
@@ -47,6 +49,7 @@ func _ready() -> void:
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_overlay)
 	_build(content_ok)
+	_reveal()
 	Sound.music("music-title")
 
 
@@ -67,9 +70,10 @@ func _scene() -> void:
 	_backdrop.modulate = Color(0.78, 0.74, 0.74)
 	add_child(_backdrop)
 	_backdrop.resized.connect(func() -> void: _backdrop.pivot_offset = _backdrop.size * 0.5)
-	var drift := create_tween().set_loops().set_trans(Tween.TRANS_SINE)
-	drift.tween_property(_backdrop, "scale", Vector2.ONE * 1.06, 24.0)
-	drift.tween_property(_backdrop, "scale", Vector2.ONE, 24.0)
+	if not Settings.reduced_motion:
+		var drift := create_tween().set_loops().set_trans(Tween.TRANS_SINE)
+		drift.tween_property(_backdrop, "scale", Vector2.ONE * 1.06, 24.0)
+		drift.tween_property(_backdrop, "scale", Vector2.ONE, 24.0)
 	var shade := TextureRect.new()
 	var fade := GradientTexture2D.new()
 	fade.gradient = Gradient.new()
@@ -93,7 +97,8 @@ func _scene() -> void:
 	hero.offset_bottom = -60
 	hero.offset_right = 380
 	add_child(hero)
-	add_child(_embers())
+	if not Settings.reduced_motion:
+		add_child(_embers())
 
 
 func _embers() -> CPUParticles2D:
@@ -124,10 +129,10 @@ func _embers() -> CPUParticles2D:
 
 func _build(content_ok: bool) -> void:
 	Ui.clear(_menu)
-	var emblem := Ui.picture("brand/shardrun", Vector2(84, 84), "")
+	var emblem := Ui.picture("brand/shardrun", Vector2(100, 100), "")
 	var logo := Ui.vbox(
 		[
-			Ui.label("ROOTWARD", "Title"),
+			Ui.sized(Ui.label("ROOTWARD", "Title"), 104),
 			Ui.tint(Ui.label("PROGRAM THE SPELL. SURVIVE THE MACHINE.", "Faint"), UiTheme.TEAL)
 		],
 		0
@@ -137,6 +142,12 @@ func _build(content_ok: bool) -> void:
 	if not content_ok:
 		_menu.add_child(_broken())
 		return
+	if not _setup:
+		_home()
+		return
+	_menu.add_child(
+		Ui.hbox([Ui.button("‹  Main menu", _show_home), Ui.spacer(), Ui.label("PREPARE YOUR DESCENT", "Muted")])
+	)
 	var problem: String = Game.session.saves.problem
 	if problem != "":
 		_menu.add_child(Ui.panel(Ui.tint(Ui.label(problem, "", true), UiTheme.WARN), "Card"))
@@ -179,10 +190,147 @@ func _build(content_ok: bool) -> void:
 	)
 	_menu.add_child(_course_launcher() if Settings.playstyle == "verifier" else _launcher(Game.session))
 	var footer := Ui.hbox(
-		[Ui.button("How to play", _open_how_to), Ui.button("Options", _open_options), Ui.button("Quit", Game.quit)], 8
+		[
+			Ui.button("How to play", _open_how_to),
+			Ui.button("Archives", _open_archive),
+			Ui.button("Options", _open_options)
+		],
+		8
 	)
 	_menu.add_child(footer)
 	_menu.add_child(Ui.tint(Ui.label("THE WORLD  /  COMING LATER", "Faint"), UiTheme.FAINT))
+
+
+func _home() -> void:
+	_menu.add_child(Ui.spacer(0, 20))
+	_menu.add_child(Ui.sized(Ui.label("A spell is a program.\nWhat will you write?", "Narration"), 30))
+	_menu.add_child(Ui.spacer(0, 18))
+	if Game.session.in_progress() and Settings.playstyle != "verifier":
+		var where: String = ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name
+		_menu.add_child(
+			_action(
+				"Continue your journey",
+				where + " · your run awaits",
+				"01",
+				func() -> void: Game.go(Game.SHARDRUN),
+				true
+			)
+		)
+		_menu.add_child(_action("Begin a new journey", "Choose your path, language and challenge", "02", _show_setup))
+	else:
+		_menu.add_child(_action("Begin your journey", "Draft a deck. Build a spell. Descend.", "01", _show_setup, true))
+	_menu.add_child(
+		_action("The Archives", "Explore cards, relics and the language of the Machine", "◇", _open_archive)
+	)
+	_menu.add_child(_action("Options", "Sound, display and the pace of your spells", "⚙", _open_options))
+	_menu.add_child(Ui.spacer(0, 8))
+	_menu.add_child(
+		Ui.hbox(
+			[
+				Ui.button("How to play", _open_how_to),
+				Ui.button("Wardrobe", _open_skins),
+				Ui.button("Run history", _open_git_log.bind(Game.session.saves.load_history())),
+				Ui.button("Quit", Game.quit)
+			],
+			8
+		)
+	)
+	_menu.add_child(Ui.spacer(0, 16))
+	var cards: Dictionary = Game.catalog.programs.cards
+	var count := (
+		cards.values().filter(func(card: Dictionary) -> bool: return not String(card.id).ends_with("-plus")).size()
+	)
+	_menu.add_child(
+		Ui.tint(
+			Ui.label(
+				"%d CARDS   /   %d RELICS   /   ENDLESS PROGRAMS" % [count, Game.catalog.programs.relics.size()],
+				"Faint"
+			),
+			UiTheme.TEAL
+		)
+	)
+
+
+func _action(title: String, subtitle: String, mark: String, callback: Callable, primary := false) -> Button:
+	var button := Ui.button("", callback)
+	button.custom_minimum_size = Vector2(0, 100)
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var colour := UiTheme.AMBER if primary else UiTheme.SHARD
+	for state: String in ["normal", "hover", "pressed", "focus"]:
+		var lit := state != "normal"
+		var background := Color(0.12, 0.09, 0.16, 0.94) if lit else Color(0.045, 0.035, 0.065, 0.86)
+		var style := UiTheme.box(background, Color(colour, 0.9 if lit else 0.35), 1, 12)
+		style.border_width_left = 4 if primary else 2
+		button.add_theme_stylebox_override(state, style)
+	var text := Ui.vbox(
+		[
+			Ui.sized(Ui.tint(Ui.label(title, "Subheading"), colour if primary else UiTheme.TEXT), 26),
+			Ui.label(subtitle, "Muted", true)
+		],
+		5
+	)
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var row := Ui.hbox(
+		[Ui.tint(Ui.sized(Ui.label(mark), 25), colour), text, Ui.tint(Ui.sized(Ui.label("›"), 32), colour)], 22
+	)
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side: String in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 24 if side in ["left", "right"] else 14)
+	margin.add_child(row)
+	button.add_child(margin)
+	HoverInfo._ignore_mouse(margin)
+	return button
+
+
+func _show_setup() -> void:
+	_setup = true
+	_build(true)
+	_reveal()
+
+
+func _show_home() -> void:
+	_setup = false
+	_build(true)
+	_reveal()
+
+
+func _reveal() -> void:
+	if Settings.reduced_motion:
+		return
+	if _menu_motion != null:
+		_menu_motion.kill()
+	_menu.modulate.a = 0.0
+	_menu_motion = create_tween()
+	_menu_motion.tween_property(_menu, "modulate:a", 1.0, 0.3)
+
+
+func _open_archive() -> void:
+	var archive := ArchivePanel.create(Game.catalog)
+	archive.closed.connect(_close_overlay)
+	_show_overlay(archive)
+
+
+func _close_overlay() -> void:
+	if Settings.reduced_motion:
+		Ui.clear(_overlay)
+		return
+	var motion := create_tween()
+	motion.tween_property(_overlay, "modulate:a", 0.0, 0.12)
+	motion.tween_callback(
+		func() -> void:
+			Ui.clear(_overlay)
+			_overlay.modulate.a = 1.0
+	)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		if _overlay.get_child_count() > 0:
+			_close_overlay()
+		elif _setup:
+			_show_home()
+		get_viewport().set_input_as_handled()
 
 
 func _section(number: String, title: String) -> Control:
@@ -403,7 +551,7 @@ func _open_how_to() -> void:
 
 func _open_options() -> void:
 	var options := OptionsPanel.create()
-	options.closed.connect(func() -> void: Ui.clear(_overlay))
+	options.closed.connect(_close_overlay)
 	_show_overlay(options)
 
 
@@ -422,6 +570,7 @@ func _open_skins() -> void:
 
 func _show_overlay(panel: Control) -> void:
 	Ui.clear(_overlay)
+	_overlay.modulate.a = 1.0
 	var dim := ColorRect.new()
 	dim.color = Color(0, 0, 0, 0.55)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -429,6 +578,9 @@ func _show_overlay(panel: Control) -> void:
 	var page := Ui.centered_scroll(panel)
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.add_child(page)
+	if not Settings.reduced_motion:
+		page.modulate.a = 0.0
+		page.create_tween().tween_property(page, "modulate:a", 1.0, 0.22)
 
 
 func _broken() -> Control:

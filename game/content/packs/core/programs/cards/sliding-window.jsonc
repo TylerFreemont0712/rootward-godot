@@ -1,0 +1,65 @@
+{
+  "id": "sliding-window",
+  "name": "Sliding Window",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "art": "sliding-window",
+  "summary": "Each bolt gains the power of the previous two bolts. Uses the original powers and a rolling sum; keeps elements, targets and guards.",
+  "function": "sliding_window",
+  "makes": "unsorted",
+  "forge": {
+    "into": "sliding-window-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "window slides after three",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "frost",
+          "foe": 1
+        }
+      ],
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 15,
+          "element": "frost",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

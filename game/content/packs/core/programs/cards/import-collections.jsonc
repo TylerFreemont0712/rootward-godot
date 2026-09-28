@@ -1,0 +1,98 @@
+{
+  "id": "import-collections",
+  "name": "import collections",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "import",
+  "complexity": "constant",
+  "art": "import-collections",
+  "summary": "For this fight, after each source, combine bolts sharing an element, target and guard status. Their power adds together; first-seen order is kept.",
+  "function": "import_collections",
+  "keywords": [],
+  "module": "collections",
+  "line": {
+    "python": "import collections",
+    "javascript": "import { groupBolts } from \"./collections.js\";"
+  },
+  "effects": [
+    {
+      "kind": "hook-after",
+      "role": "source"
+    }
+  ],
+  "makes": "unsorted",
+  "forge": {
+    "into": "import-collections-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "merge by element",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "keep guards and targets separate",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

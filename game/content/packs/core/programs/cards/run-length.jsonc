@@ -1,0 +1,84 @@
+{
+  "id": "run-length",
+  "name": "Run Length",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "shape",
+  "complexity": "linear",
+  "art": "run-length",
+  "summary": "Combine adjacent bolts with the same element, target and guard status. Add their powers.",
+  "function": "run_length",
+  "makes": "unsorted",
+  "forge": {
+    "into": "run-length-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "only neighboring runs merge",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        }
+      ],
+      "expect": [
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "guards remain separate",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        }
+      ],
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

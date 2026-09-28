@@ -1,0 +1,182 @@
+[
+  {
+    "en": "Chain Lightning",
+    "to": "連鎖雷撃"
+  },
+  {
+    "en": "Turn attacks to spark and aim them at foes in turn. Attacks already made of spark gain 2 power. Guards pass through without consuming a target.",
+    "to": "攻撃弾を雷属性にして敵に順番に割り当てる。元から雷属性の弾の威力は2増える。防御弾はそのまま通し、割り当て順を進めない。"
+  },
+  {
+    "en": "Chain Lightning+",
+    "to": "連鎖雷撃+"
+  },
+  {
+    "en": "Turn attacks to spark and aim them at foes in turn. Attacks already made of spark gain 4 power. Guards pass through without consuming a target.",
+    "to": "攻撃弾を雷属性にして敵に順番に割り当てる。元から雷属性の弾の威力は4増える。防御弾はそのまま通し、割り当て順を進めない。"
+  },
+  {
+    "en": "Ember Constant",
+    "to": "炎の定数"
+  },
+  {
+    "en": "Appends one 6-power fire bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力6の炎属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "Ember Constant+",
+    "to": "炎の定数+"
+  },
+  {
+    "en": "Appends one 9-power fire bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力9の炎属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "Rime Constant",
+    "to": "霜の定数"
+  },
+  {
+    "en": "Appends one 6-power frost bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力6の霜属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "Rime Constant+",
+    "to": "霜の定数+"
+  },
+  {
+    "en": "Appends one 9-power frost bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力9の霜属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "Spark Constant",
+    "to": "雷の定数"
+  },
+  {
+    "en": "Appends one 6-power spark bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力6の雷属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "Spark Constant+",
+    "to": "雷の定数+"
+  },
+  {
+    "en": "Appends one 9-power spark bolt. const: stays in your hand until played, without using a hold slot.",
+    "to": "威力9の雷属性の弾を1つ追加する。const：使うまで手札に残り、保留枠を使わない。"
+  },
+  {
+    "en": "import collections",
+    "to": "import collections"
+  },
+  {
+    "en": "For this fight, after each source, combine bolts sharing an element, target and guard status. Their power adds together; first-seen order is kept.",
+    "to": "この戦闘中、ソースカードの後で属性・標的・防御の指定が同じ弾をまとめる。威力を合計し、最初に現れた順序を保つ。"
+  },
+  {
+    "en": "import collections+",
+    "to": "import collections+"
+  },
+  {
+    "en": "import copy",
+    "to": "import copy"
+  },
+  {
+    "en": "For this fight, before each strike, append a copy of the last attack bolt with half its power, rounded up. Guards are never copied.",
+    "to": "この戦闘中、ストライクカードの前に最後の攻撃弾をコピーし、威力を半分（切り上げ）にして末尾へ追加する。防御弾はコピーしない。"
+  },
+  {
+    "en": "import copy+",
+    "to": "import copy+"
+  },
+  {
+    "en": "import operator",
+    "to": "import operator"
+  },
+  {
+    "en": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power.",
+    "to": "この戦闘中、シェイプカードの後で各攻撃弾の威力を1増やす。防御弾の威力は変わらない。"
+  },
+  {
+    "en": "import operator+",
+    "to": "import operator+"
+  },
+  {
+    "en": "Recursive Mirror",
+    "to": "再帰の鏡"
+  },
+  {
+    "en": "Append a reversed copy of the volley at half power, rounded up. Recursion visits each bolt once; elements, targets and guards are copied.",
+    "to": "弾列を逆順にしたコピーを末尾に追加する。威力は半分（切り上げ）。再帰で各弾を一度ずつ訪ね、属性・標的・防御の指定もコピーする。"
+  },
+  {
+    "en": "Recursive Mirror+",
+    "to": "再帰の鏡+"
+  },
+  {
+    "en": "Append a reversed copy of the volley at full power. Recursion visits each bolt once; elements, targets and guards are copied.",
+    "to": "弾列を逆順にしたコピーを末尾に追加する。威力は元のまま。再帰で各弾を一度ずつ訪ね、属性・標的・防御の指定もコピーする。"
+  },
+  {
+    "en": "Run Length",
+    "to": "連長圧縮"
+  },
+  {
+    "en": "Combine adjacent bolts with the same element, target and guard status. Add their powers.",
+    "to": "属性・標的・防御の指定が同じ隣り合う弾をまとめ、威力を合計する。"
+  },
+  {
+    "en": "Run Length+",
+    "to": "連長圧縮+"
+  },
+  {
+    "en": "Combine adjacent bolts with the same element, target and guard status. Add their powers plus 2 per merge.",
+    "to": "属性・標的・防御の指定が同じ隣り合う弾をまとめ、威力を合計する。まとめるたびに威力をさらに2加える。"
+  },
+  {
+    "en": "Sliding Window",
+    "to": "スライディングウィンドウ"
+  },
+  {
+    "en": "Each bolt gains the power of the previous two bolts. Uses the original powers and a rolling sum; keeps elements, targets and guards.",
+    "to": "各弾に、その直前の2弾の元の威力を加える。移動和を使い、属性・標的・防御の指定を保つ。"
+  },
+  {
+    "en": "Sliding Window+",
+    "to": "スライディングウィンドウ+"
+  },
+  {
+    "en": "Each bolt gains the power of the previous two bolts and 2 extra power. Uses the original powers and a rolling sum; keeps elements, targets and guards.",
+    "to": "各弾に、その直前の2弾の元の威力を加える。さらに威力を2加える。移動和を使い、属性・標的・防御の指定を保つ。"
+  },
+  {
+    "en": "Stable Partition",
+    "to": "安定分割"
+  },
+  {
+    "en": "Move attack bolts of at least 6 power to the front. Keep the relative order in both groups. Sets up strong opening hits without sorting.",
+    "to": "威力6以上の攻撃弾を先頭へ移す。それぞれのグループ内の順序を保つ。ソートせずに強い攻撃から始められる。"
+  },
+  {
+    "en": "Stable Partition+",
+    "to": "安定分割+"
+  },
+  {
+    "en": "Move attack bolts of at least 4 power to the front. Keep the relative order in both groups. Sets up strong opening hits without sorting.",
+    "to": "威力4以上の攻撃弾を先頭へ移す。それぞれのグループ内の順序を保つ。ソートせずに強い攻撃から始められる。"
+  },
+  {
+    "en": "Zip Ward",
+    "to": "ジップ結界"
+  },
+  {
+    "en": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down). Existing guards pass through.",
+    "to": "各攻撃弾を、威力の半分（切り上げ）の攻撃弾と半分（切り捨て）の防御弾に分ける。既存の防御弾はそのまま通す。"
+  },
+  {
+    "en": "Zip Ward+",
+    "to": "ジップ結界+"
+  },
+  {
+    "en": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down) +2. Existing guards pass through.",
+    "to": "各攻撃弾を、威力の半分（切り上げ）の攻撃弾と半分（切り捨て）の防御弾に分ける。防御弾の威力をさらに2加える。既存の防御弾はそのまま通す。"
+  }
+]

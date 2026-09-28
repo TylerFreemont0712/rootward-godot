@@ -1,0 +1,70 @@
+{
+  "id": "stable-partition-plus",
+  "name": "Stable Partition+",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "order",
+  "complexity": "linear",
+  "art": "stable-partition",
+  "summary": "Move attack bolts of at least 4 power to the front. Keep the relative order in both groups. Sets up strong opening hits without sorting.",
+  "function": "stable_partition_plus",
+  "makes": "unsorted",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "stable groups",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "spark"
+        },
+        {
+          "power": 9,
+          "element": "frost",
+          "block": true
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 8,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "spark"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "frost",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty input",
+      "bolts": [],
+      "expect": []
+    }
+  ]
+}

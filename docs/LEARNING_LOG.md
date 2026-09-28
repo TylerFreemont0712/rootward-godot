@@ -319,3 +319,19 @@ it is presentation, never decides an outcome, and twenty hits of a volley should
 ## A gzip stream from Godot (`Fixtures.save_json_gz`)
 `PackedByteArray.compress(FileAccess.COMPRESSION_GZIP)` writes a plain gzip stream, the kind `decompress_dynamic`
 reads; `FileAccess.open_compressed` writes Godot's own block format, which is not gzip.
+
+## A tooltip above a clipping arena (`game/ui/hover_info.gd`)
+An enemy name lives inside a stage that clips its children. Putting a popup inside that stage cuts it off. A
+`CanvasLayer` attached to the hovered control draws above the stage while still sharing its lifetime. The popup
+recomputes its position from the control's rectangle and clamps to the viewport; keyboard focus calls the same show
+path as hovering.
+
+## Pictures have invisible dimensions (`game/scenes/shardrun/fight/foe_view.gd`)
+The PNG's width includes transparent margins, so setting a `TextureRect` to a particular size does not set the
+creature's visible size. `Image.get_used_rect()` finds the pixels that matter, and an `AtlasTexture` displays that
+region. The stage then sizes the visible sprite using both arena height and available width, preserving its aspect.
+
+## A card event can drive art without deciding combat (`game/scenes/shardrun/fight/shard_flourish.gd`)
+The code player emits the resolved card as it reads the program. A flourish can draw a motif for that card at that
+moment without changing the sandbox output or the combat log. This gives each role a visual language while the
+verified program remains the only source of damage and timing.

@@ -1,0 +1,50 @@
+{
+  "id": "frost-constant",
+  "name": "Rime Constant",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "art": "frost-constant",
+  "summary": "Appends one 6-power frost bolt. const: stays in your hand until played, without using a hold slot.",
+  "function": "frost_constant",
+  "keywords": [
+    "const"
+  ],
+  "forge": {
+    "into": "frost-constant-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "an elemental seed",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "frost"
+        }
+      ]
+    },
+    {
+      "name": "from an empty volley",
+      "bolts": [],
+      "expect": [
+        {
+          "power": 6,
+          "element": "frost"
+        }
+      ]
+    }
+  ]
+}

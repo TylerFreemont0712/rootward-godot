@@ -108,4 +108,4 @@ static func quit() -> void:
 
 
 static func go(scene: String) -> void:
-	(Engine.get_main_loop() as SceneTree).change_scene_to_file.call_deferred(scene)
+	ScreenTransition.go(scene)

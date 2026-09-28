@@ -88,6 +88,8 @@ func _pile_point(which: String) -> Vector2:
 func _pile(title: String, count: Label) -> Control:
 	var back := Button.new()
 	back.custom_minimum_size = Vector2(84, 116)
+	# A long discard count used to stretch this button while the painted back stayed 84 px wide.
+	back.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	back.add_theme_stylebox_override(
 		"normal", UiTheme.box(Color("#2c1f3a"), UiTheme.SHARD.darkened(0.3), 2, 10, Vector2(6, 6))
 	)
@@ -105,10 +107,21 @@ func _pile(title: String, count: Label) -> Control:
 	face.size = Vector2(84, 116) if art != null else Vector2(48, 48)
 	face.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	back.add_child(face)
+	back.resized.connect(func() -> void: back.pivot_offset = back.size * 0.5)
+	var lift: Array[Tween] = []
+	var hover := func(over: bool) -> void:
+		if not lift.is_empty() and lift[0].is_valid():
+			lift[0].kill()
+		var motion := back.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		lift.assign([motion])
+		motion.tween_property(back, "scale", Vector2.ONE * (1.06 if over else 1.0), 0.14)
+	back.mouse_entered.connect(hover.bind(true))
+	back.mouse_exited.connect(hover.bind(false))
 	if art != null:
 		back.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 		back.add_theme_stylebox_override("hover", UiTheme.box(Color(1, 1, 1, 0.08), UiTheme.SHARD, 2, 10))
 	var column := Ui.vbox([Ui.label(title.to_upper(), "Faint"), back, count], 4)
+	count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.size_flags_vertical = Control.SIZE_SHRINK_END
 	return column
 

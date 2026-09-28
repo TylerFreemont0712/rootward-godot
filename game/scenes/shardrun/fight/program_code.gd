@@ -1,5 +1,7 @@
 class_name ProgramCode
 extends PanelContainer
+
+signal card_resolved(card_id: String)
 ## The fight's Program, always on the table (ADR-0012): the code its played cards make, written in with runes as each
 ## card lands (RuneCode); the race between its work and each foe's tempo; and what it will do.
 ##
@@ -262,6 +264,8 @@ func play_cast(view: Dictionary, speed: String) -> void:
 				# The volley so far lands in the meter; if its element changed, the panel takes the new colour.
 				var elements: Dictionary = step.get("elements", {})
 				_meter.show_volley(int(step.returned), float(step.get("power", 0.0)), elements, true)
+				if not _hurry:
+					card_resolved.emit(String(line.card))
 				var now := VolleyMeter.colour_of(elements)
 				if not now.is_equal_approx(tint):
 					tint = now

@@ -173,6 +173,15 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       content strings); the interface is stage 0's.
 - [ ] A guided first run (stage 6).
 
+### Polish pass: the run and its front door (2026-09-28, ADR-0022)
+- [x] Enemy properties and owned relics explain themselves in hover windows; enemy art scales with the arena and the
+      discard pile's hover stays centred on its card.
+- [x] Three more Imports, three elemental Constants and six combination cards, each with Python and JavaScript code,
+      worked examples, a +, Japanese content text and its own themed picture.
+- [x] Casts draw a different flourish for split, sort, search, merge, element, guard and import cards.
+- [x] Title, run setup, scene changes and options refreshed; an Archives browser searches cards, relics and game terms
+      from the live catalogs in both playstyles. Two mismatched old card pictures replaced.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

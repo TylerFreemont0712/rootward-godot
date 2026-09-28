@@ -417,6 +417,7 @@ func _open_run_menu() -> void:
 	)
 	if ShardrunRules.is_deck(state):
 		tools_row.add_child(Ui.button("Deck", _open_deck))
+	tools_row.add_child(Ui.button("Archives", _open_archive))
 	column.add_child(tools_row)
 	var actions := Ui.hbox(
 		[Ui.button("Return to title", func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
@@ -427,6 +428,12 @@ func _open_run_menu() -> void:
 	var panel := Ui.panel(column, "Overlay")
 	panel.custom_minimum_size.x = 620
 	_open(panel)
+
+
+func _open_archive() -> void:
+	var archive := ArchivePanel.create(Game.catalog)
+	archive.closed.connect(_close_overlay)
+	_open(archive)
 
 
 func _open_skins() -> void:
