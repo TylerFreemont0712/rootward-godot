@@ -19,8 +19,9 @@ and no saves:
 - **What-ifs** (`variant=`) change the content in memory before the run starts; the repository is never touched:
   `sources4` (two more Salvos in the starting deck: four in ten cards instead of two in eight), `salvo-pool` (Salvo
   draftable), `curve` (Act 2 HP ×1.8 and Act 3 ×3.6 instead of ×2.6 and ×6.8), `seed3` (programs start from three
-  3-power bolts), `golem` (bolts off a pattern ward do half instead of a quarter). `picks=sources` makes the drafter
-  value Salvo and Fork while they are scarce in the deck.
+  3-power bolts), `golem` (bolts off a pattern ward do half instead of a quarter, the content's own value since
+  ADR-0016), `ward-quarter` (a quarter again, as before ADR-0016). `foe_hp=a,b,c` sets a program run's foe HP by
+  layer. `picks=sources` makes the drafter value Salvo and Fork while they are scarce in the deck.
 
 Seeds are chosen so the paradigm is offered, and the same seeds are used across what-ifs (a paired comparison: the
 same draws, so a difference is the change's and less the luck's).
@@ -35,7 +36,8 @@ python3 docs/research/balance-probe/compare.py /tmp/probe                       
 ```
 
 Options: `paradigms=a,b`, `seeds=N`, `offset=N`, `difficulty=beginner|programmer`, `policy=smart|dealt`,
-`picks=plain|sources`, `variant=a,b`, `hp_weight=2.5` (Integrity against foe HP in the bot's judgement). A run takes
+`picks=plain|sources`, `variant=a,b`, `foe_hp=a,b,c`, `hp_weight=2.5` (Integrity against foe HP in the bot's
+judgement). A run takes
 20 to 80 seconds; one process per paradigm in parallel is the quick way (the sandbox runs out of process, so they do
 not contend much). `compare.py` expects the baseline as `runs_beginner_<paradigm>.jsonl` and each what-if as
 `exp_<name>.jsonl`.
@@ -81,3 +83,33 @@ in the race more often (29% against 18%). With the gentler curve it won 43% of r
 to 67%). Its cost is Act 1, already too easy and now a formality (1.2 turns a fight, half an Integrity lost), so the
 curve has to rise at the start as it falls later. Stage 1 starts from there.
 <!-- whatif:end -->
+
+## After stage 1's content (ADR-0016), 2026-09-28
+
+With the 25 new cards, the 42 tiered relics and their loot tables, and the three-bolt seed, a program run got its own
+foe HP by layer and its own pattern ward. `curves.py` makes the table; each row is five to eight seeds of every
+paradigm, the same seeds throughout (*lost most to* names the fights that ended the lost runs):
+
+| setting | runs | won | worst-best paradigm | beat boss 1, 2 | act 1 fights: turns, HP lost | act 1 boss: turns, HP lost | Salvo in hand | empty turns | foe first | reorder wins | lost most to |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| x1.6, x2.4, x4.4 (the first guess) | 40 | 62% | 25-100% | 100%, 90% | 1.3, 0.8 | 2.7, 3.7 | 1.7x | 5% | 19% | 48% | root-daemon 7, garbage-collector + segfault-specter 4, deadlock-golem 4 |
+| x2.6, x3.8, x4.6 | 25 | 48% | 20-80% | 100%, 64% | 1.5, 1.4 | 3.7, 6.6 | 1.6x | 5% | 22% | 51% | deadlock-golem 9, root-daemon 2, segfault-specter + race-condition-imp 2 |
+| x3.0, x4.4, x5.2 | 25 | 48% | 20-60% | 100%, 72% | 1.6, 1.4 | 4.4, 8.9 | 2.1x | 4% | 23% | 54% | deadlock-golem 6, root-daemon 3, garbage-collector + segfault-specter 2 |
+| x2.4, x3.6, x4.6 | 30 | 53% | 33-67% | 100%, 67% | 1.5, 1.2 | 3.3, 6.9 | 1.6x | 5% | 22% | 51% | deadlock-golem 10, root-daemon 3, stack-overflow-serpent + dangling-pointer 1 |
+| x2.4, x3.6, x4.6, ward x0.5 (chosen) | 30 | 53% | 33-83% | 100%, 83% | 1.5, 1.2 | 3.1, 5.6 | 1.7x | 5% | 23% | 51% | root-daemon 6, deadlock-golem 4, garbage-collector + segfault-specter 2 |
+| the same, dealt-order bot | 30 | 3% | 0-17% | 57%, 7% | 2.8, 7.5 | 9.4, 32.5 | 1.6x | 0% | 39% | - | kiln-warden 8, deadlock-golem 5, memory-leak-ooze + race-condition-imp 4 |
+
+The content holds the chosen row, so it needs no options. The rows before it are `foe_hp=` with
+`variant=ward-quarter`, and the last is `policy=dealt`:
+
+```
+for p in greedy brute-force dynamic divide-conquer search-index; do
+  godot --headless --path game -s "$PWD/docs/research/balance-probe/probe_balance.gd" -- paradigms=$p seeds=6 \
+      foe_hp=2.4,3.6,4.6 variant=ward-quarter out=/tmp/probe/quarter/runs_beginner_$p.jsonl < /dev/null &
+done; wait
+python3 docs/research/balance-probe/curves.py "x2.4, x3.6, x4.6=/tmp/probe/quarter" "chosen=/tmp/probe/chosen"
+```
+
+Reading it: the curve sets the win rate and how many runs pass the second guardian, while Act 1 barely moves (the smart
+bot's fights take 1.3 to 1.6 turns on every curve). Softening the ward keeps the win rate and moves the losses off the
+Golem. ADR-0016 has the choice and what stage 1's targets it meets.

@@ -368,7 +368,7 @@ static func resolve(
 		if foe.uid in out_sped:
 			multiplier *= float(relics.initiative)
 		if foe_trait.get("kind") == "pattern-ward" and bolt.element != foe.get("pattern"):
-			multiplier *= float(balance.pattern_off_multiplier)
+			multiplier *= float(config_of(catalog).get("pattern_off", balance.pattern_off_multiplier))
 		# A relic can make every bolt the element a foe is weak to (and then nothing resists it).
 		var weak: bool = bolt.element in foe.weak or (relics.all_elements and not (foe.weak as Array).is_empty())
 		var resisted: bool = not weak and bolt.element in foe.resist

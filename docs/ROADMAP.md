@@ -209,18 +209,19 @@ Done when `scripts/balance.sh` reproduces the baseline within noise and the titl
 
 The goal: a program always has input, the difficulty climbs instead of cliffs, and speed earns something.
 
-- [ ] Card roles on every card face (Source, Shape, Order, Strike, Guard).
-- [ ] Input: programs start from a stronger seed (three bolts did best in the what-ifs), given by the class's
-      starter relic; Literal, Repeat and Read Input as neutral sources; Salvo and the new sources in the draft
-      (SHARDRUN_DESIGN 3.1).
-- [ ] The curve reshaped, harder at the start and gentler later: Act 1 fights of two to four turns that cost a
-      little; Act 2 and 3 HP brought within reach (the what-ifs tried ×1.8 and ×3.6 in place of ×2.6 and ×6.8).
+- [x] Card roles on every card face (Source, Shape, Order, Strike, Guard).
+- [x] Input: programs start from three 3-power bolts (the seed of `programs.jsonc`; relics can add to it); Literal,
+      Repeat and other sources as cards; Salvo and the new sources in the draft (SHARDRUN_DESIGN 3.1). Read Input is
+      still an idea.
+- [x] The curve reshaped for the program run alone (`programs.jsonc` `foe_hp`), tuned with the probe (ADR-0016),
+      with a pattern ward that lets the wrong element through at half (`pattern_off`) until the Golem's rework.
 - [ ] The Deadlock Golem reworked as two locks, damage blocked unless one program hits both: the first foe whose
       mechanic reads your program, and the test of the hook stage 4 builds on.
-- [ ] The speed race's other half: Initiative (+25% against foes you out-speed), a speed per intent, a budget per act.
-- [ ] Run history, first version: every finished run kept in `user://`, readable by `scripts/balance.sh` beside the
-      bot's runs.
-- [ ] ADR-0017.
+- [ ] The speed race's other half as rules: Initiative (+25% against foes you out-speed), a speed per intent, a budget
+      per act. (Initiative exists as the Preemption relic.)
+- [x] Run history, first version: every finished run kept in `user://shardrun/history.jsonl` and shown as `git log`
+      (reading it in `scripts/balance.sh` beside the bot's runs is still to do).
+- [x] ADR-0016 (stages 1 and 6 together).
 
 Done when, for 40 smart runs on Beginner: 40-60% won and every paradigm at 25% or more; the dealt-order bot beats the
 Act 1 boss in 70% of runs; Act 1 fights average two to four turns and three to eight Integrity; a turn's damage with
@@ -294,9 +295,11 @@ The goal: Vesper becomes a class of Slay the Spire's depth, and the class frame 
 
 - [ ] The class frame: pool, starter deck and relic, mechanic, archetypes, character, unlocks.
 - [ ] Imports and keywords; fight state for `global`, accumulators and generators (SHARDRUN_DESIGN 3.3, 3.4).
-- [ ] About 45 cards (six to eight per paradigm with a source each, and neutral ones), every one with its `+`; about
-      20 relics that bend work, speed and order (SHARDRUN_DESIGN 7, 8).
-- [ ] Card art for every card; Japanese for every card.
+- [x] About 45 cards (48: six to eight per paradigm, sources among them, and neutral ones) and 28 new relics that bend
+      work, speed and order, tiered common to legendary (SHARDRUN_DESIGN 7, 8).
+- [ ] Every card's `+` version.
+- [ ] Card art for every card (the 25 new ones have theirs; the first 23 still borrow old shard pictures); Japanese for
+      every card.
 - [ ] A guided first run: the first fights teach one idea each (a source first, sort before search, aim last), and
       the preview says what a reorder would change (SHARDRUN_DESIGN 3.6).
 - [ ] ADR-0022.

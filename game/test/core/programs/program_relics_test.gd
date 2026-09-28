@@ -246,3 +246,14 @@ func test_the_preview_says_what_a_relic_will_do() -> void:
 	var cast := _cast(state, ["salvo"], bolts, outcome.work, catalog)
 	assert_int(int(preview.damage)).is_equal(50 - _hp(cast)[0] - _hp(cast)[1])
 	assert_int(int(preview.kills)).is_equal(1)
+
+
+func test_a_pattern_ward_lets_the_wrong_element_through_at_the_programs_rate() -> void:
+	var state := _fight(base)
+	var golem: Dictionary = state.battle.foes[1]
+	golem.trait = {"kind": "pattern-ward", "pattern": ["fire"]}
+	golem.pattern = "fire"
+	var bolts := [{"power": 10, "element": "frost", "foe": 1}, {"power": 10, "element": "fire", "foe": 1}]
+	var cast := _cast(state, ["salvo"], bolts, _work("salvo"), base)
+	var off := float(ProgramRules.config_of(base).get("pattern_off", 0.25))
+	assert_int(_hp(cast)[1]).is_equal(30 - floori(10 * off * 1.5) - 10)

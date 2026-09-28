@@ -149,8 +149,25 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 `docs/ROADMAP.md` proposes stages 0 to 10 for two journeys: the Shardrun toward Slay the Spire's depth
 (`docs/SHARDRUN_DESIGN.md`), and the Academy, a separate course from beginner to advanced (`docs/ACADEMY_DESIGN.md`).
 Phase 8's open items are folded in: the balance pass is stage 1; cards of their own, more of each paradigm and relics
-that bend work are stage 6; spell animations per role come with stage 10. The stages become phases here once the
-player agrees.
+that bend work are stage 6; spell animations per role come with stage 10. The player chose to start with the
+Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
+
+### Phase 9: a deeper Shardrun (ROADMAP stages 1 and 6, ADR-0016)
+- [x] Roles on every program card's face (source, shape, order, strike, guard), and first in its details.
+- [x] Programs start from three 3-power bolts; a program run has its own foe HP by layer and pattern ward, tuned
+      with the probe (53% of the smart bot's runs won, every paradigm a third or more).
+- [x] Program relics of the run's own, tiered common to legendary, and loot tables by place (an elite offers only
+      rare or better, a guardian epic or legendary); the fourteen old ones tiered, Spellforge's untouched.
+- [x] The program's relic effects (`ProgramRelics`), the same in preview and cast; 28 new relics (42 in all).
+- [x] 25 new cards (48 in all), real algorithms with worked examples in both languages; `worst_case` and `height`.
+- [x] Pictures for the new cards and relics from the art pipeline.
+- [x] Every finished run kept as a commit and shown as `git log` from the title; its commit line at the run's end.
+- [x] Fifteen enemy concepts with briefs and game-ready sprites (`Concept/Enemies/`), for four or five layers.
+- [x] Fights: every hit of a long volley reaches the bars before the screen settles (a heavy cast's later bolts died
+      on a check against a freed animation, leaving a foe at a tenth of its HP until the final redraw).
+- [ ] The Deadlock Golem reworked as two locks; Initiative and speed per intent as rules (stage 1).
+- [ ] Imports and keywords, fight state, a guided first run, pictures of their own for the first 23 cards, Japanese
+      for the new text (stage 6).
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

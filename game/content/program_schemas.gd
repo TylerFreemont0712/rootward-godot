@@ -208,6 +208,8 @@ static func config() -> Dictionary:
 				),
 				# Foe HP by layer for a program run (the Shardrun's own layers keep theirs for Spellforge). Missing: theirs.
 				"foe_hp": Schema.optional(Schema.list_of({"type": "number", "positive": true}, null, 1)),
+				# What a bolt of the wrong element does against a pattern ward in a program run (Spellforge keeps its own).
+				"pattern_off": Schema.optional({"type": "number", "min": 0.0, "max": 1.0}),
 			}
 		)
 	)

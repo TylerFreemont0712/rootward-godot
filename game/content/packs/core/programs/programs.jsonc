@@ -99,9 +99,14 @@
     "deadlock-golem": 256,
     "root-daemon": 384
   },
-  // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps): a first
-  // layer that takes a few turns a fight, and later ones the deck can grow into. Tuned with the balance probe.
-  "foe_hp": [1.6, 2.4, 4.4],
+  // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps). Tuned
+  // with the balance probe (ADR-0016): the smart bot wins about half its runs, and every paradigm a third or more.
+  "foe_hp": [2.4, 3.6, 4.6],
+  // A pattern ward (the Regex Sphinx, the Deadlock Golem) lets a bolt of the wrong element through at half, not the
+  // quarter Spellforge uses: at a quarter the Golem was a test of whether you drew this turn's element, and it ended
+  // a third of the probe's runs, seven in ten of those lost. Until its rework (SHARDRUN_DESIGN 6.3), half keeps it a
+  // fight about elements, not luck.
+  "pattern_off": 0.5,
   // Relics are the program's own (programs/relics/), each of a tier from common (a nudge) to legendary (a new way to
   // play). Where a relic is found decides the tiers it can be: an elite offers only rare or better, a guardian only
   // epic or legendary. The numbers are relative weights; a tier left out never drops there.

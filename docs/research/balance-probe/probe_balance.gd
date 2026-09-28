@@ -16,6 +16,8 @@ var hp_weight := 2.5
 var variants: PackedStringArray = []
 var policy := "smart"
 var picks := "plain"
+## A program run's foe HP by layer, in place of programs.jsonc's (`foe_hp=2.8,4.2,4.8`).
+var foe_hp: Array = []
 
 
 func _initialize() -> void:
@@ -26,6 +28,8 @@ func _initialize() -> void:
 			policy = arg.substr(7)
 		elif arg.begins_with("picks="):
 			picks = arg.substr(6)
+		elif arg.begins_with("foe_hp="):
+			foe_hp = Array(arg.substr(7).split(",")).map(func(text: String) -> float: return float(text))
 	var raw: Dictionary = ContentLoader.load_shardrun().catalog
 	_apply_variants(raw)
 	catalog = ProgramRules.catalog_for(raw)
@@ -76,6 +80,8 @@ func _initialize() -> void:
 ## What-if changes to the content, in memory only: the repository is never touched.
 func _apply_variants(raw: Dictionary) -> void:
 	var config: Dictionary = raw.programs.config
+	if not foe_hp.is_empty():
+		config.foe_hp = foe_hp
 	for variant: String in variants:
 		match variant:
 			"sources4":
@@ -92,8 +98,11 @@ func _apply_variants(raw: Dictionary) -> void:
 					{"power": 3, "element": "none"}, {"power": 3, "element": "none"}, {"power": 3, "element": "none"}
 				]
 			"golem":
-				# The Deadlock Golem's pattern ward softened: off-pattern bolts do half, not a quarter.
-				raw.balance.pattern_off_multiplier = 0.5
+				# A pattern ward softened: off-pattern bolts do half, not a quarter (the content's own value since ADR-0016).
+				config.pattern_off = 0.5
+			"ward-quarter":
+				# A pattern ward as Spellforge has it, as program runs had it before ADR-0016: off-pattern bolts do a quarter.
+				config.pattern_off = raw.balance.pattern_off_multiplier
 
 
 ## A seed whose draft offers `paradigm`.
