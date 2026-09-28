@@ -82,15 +82,28 @@ static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
 	return Ui.panel(body, "Card")
 
 
-## A relic's icon for the header, with its name, tier and effect as a tooltip.
+## A relic's icon for the header, with its name, tier and effect as a tooltip. A tiered relic (a program run's) sits in
+## a ring of its tier's colour, so a legendary one stands out in a row of commons; a curse's ring is the curse colour.
 static func relic_icon(item: Dictionary) -> Control:
-	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(30, 30), "✦")
-	icon.mouse_filter = Control.MOUSE_FILTER_PASS
+	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.get("id", ""))), Vector2(30, 30), "✦")
 	var kind := " (cursed)" if item.get("cursed", false) else ""
 	if kind == "" and item.has("tier"):
 		kind = " (%s, tier %d)" % [item.tier, ProgramLoot.tier_number(item)]
-	icon.tooltip_text = "%s%s\n%s" % [item.name, kind, item.summary]
-	return icon
+	var tip := "%s%s\n%s" % [item.get("name", "?"), kind, item.get("summary", "")]
+	if not item.has("tier"):
+		icon.mouse_filter = Control.MOUSE_FILTER_PASS
+		icon.tooltip_text = tip
+		return icon
+	var ring := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(String(item.tier))
+	var framed := PanelContainer.new()
+	framed.add_theme_stylebox_override(
+		"panel",
+		UiTheme.box(Color(ring, 0.16), Color(ring, 0.9), 2 if item.tier == "legendary" else 1, 8, Vector2(2, 2))
+	)
+	framed.add_child(icon)
+	framed.mouse_filter = Control.MOUSE_FILTER_PASS
+	framed.tooltip_text = tip
+	return framed
 
 
 ## A relic's rank in words: a program relic's tier, or an old relic's rarity.

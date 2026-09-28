@@ -7,7 +7,8 @@ extends Control
 ##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window), relics
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs)
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
-## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare.
+## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare; ROOTWARD_SHOT_RELICS
+## (ids) grants those relics first, in such a run (the header's relics, rung by tier).
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
 ## ROOTWARD_SHOT_SKIN wears a battle skin for the shot (not saved). ROOTWARD_SHOT_AFTER_MS catches the moment that many
@@ -120,6 +121,9 @@ func _ready() -> void:
 			await bot.play_until("reward")
 			await bot.send(bot._reward_move(session.state))
 			await bot.play_until("map", 10)
+	if session.state.get("sandbox", false):
+		for relic_id in OS.get_environment("ROOTWARD_SHOT_RELICS").split(",", false):
+			await bot.send({"type": "dev-grant-relic", "relic_id": relic_id})
 	var skin := OS.get_environment("ROOTWARD_SHOT_SKIN")
 	if skin in Settings.CHARACTER_SKINS:
 		Settings.character_skin = skin
@@ -172,6 +176,7 @@ func _show_git_log(session: ShardrunSession) -> void:
 	add_child(dim)
 	var view := GitLogView.create(records)
 	var page := Ui.centered_scroll(view)
+	page.theme = UiTheme.shared()
 	page.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(page)
 	view.call("_toggle", RunHistory.short_hash(records[0]))

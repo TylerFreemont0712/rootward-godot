@@ -18,6 +18,14 @@ func test_everything_the_content_names_is_there() -> void:
 	for relic: Dictionary in catalog.relics.values():
 		if Art.texture("shardrun/relic-" + relic.icon) == null:
 			missing.append("shardrun/relic-" + relic.icon)
+	# The program run's own relics and cards (ADR-0016): every relic's icon and every card's picture.
+	for relic: Dictionary in catalog.programs.relics.values():
+		var icon := "shardrun/relic-" + String(relic.get("icon", relic.id))
+		if Art.texture(icon) == null:
+			missing.append(icon)
+	for card: Dictionary in catalog.programs.cards.values():
+		if Art.texture(ShardrunViews.art(card)) == null:
+			missing.append(ShardrunViews.art(card))
 	assert_array(missing).override_failure_message("missing: %s" % [missing]).is_empty()
 
 

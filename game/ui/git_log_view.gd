@@ -45,6 +45,8 @@ func _build() -> void:
 	_text.add_theme_font_override("normal_font", UiTheme.ui_font())
 	_text.add_theme_font_size_override("normal_font_size", 15)
 	_text.meta_clicked.connect(_toggle)
+	# A terminal does not underline its lines; the hand cursor over them says they can be clicked.
+	_text.meta_underlined = false
 	var plate := PanelContainer.new()
 	plate.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color(0.03, 0.03, 0.04, 0.96), Color(1, 1, 1, 0.08), 1, 8, Vector2(18, 14))
