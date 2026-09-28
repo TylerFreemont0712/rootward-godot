@@ -1,0 +1,37 @@
+{
+  "id": "tabulate-plus",
+  "name": "Tabulate+",
+  "rarity": "uncommon",
+  "art": "tabulate",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "makes": "sorted",
+  "summary": "Bottom-up dynamic programming: each bolt becomes the best total collectable up to it without taking two neighbours, plus 1. The totals only grow, so the volley comes out sorted.",
+  "function": "tabulate_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a salvo tabulated",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 12, "element": "none" },
+        { "power": 16, "element": "none" }
+      ]
+    }
+  ]
+}

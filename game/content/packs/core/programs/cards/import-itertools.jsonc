@@ -1,0 +1,30 @@
+{
+  "id": "import-itertools",
+  "name": "import itertools",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "brute-force",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you.",
+  "function": "import_itertools",
+  "module": "itertools",
+  "line": {"python": "import itertools", "javascript": "import { combinations } from \"./itertools.js\";"},
+  "effects": [{"kind": "card-cost", "cards": ["pairwise", "exhaustive-kill", "power-set", "exhaustive-ward"], "add": -1}],
+  "forge": {"into": "import-itertools-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

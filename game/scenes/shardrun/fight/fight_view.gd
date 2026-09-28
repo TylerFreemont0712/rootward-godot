@@ -193,6 +193,11 @@ func show_state(state: Dictionary) -> void:
 	_incoming.text = "⚔ %d incoming" % incoming if incoming > 0 else ""
 	stage.place_status()
 	stage.show_foes(battle.foes)
+	if state.get("playstyle", "") == "program":
+		var tempos := {}
+		for foe: Dictionary in battle.foes:
+			tempos[foe.uid] = ProgramRules.tempo_of(foe, state, session.catalog)
+		stage.show_tempos(tempos)
 	if _table != null:
 		_table.show_table(state)
 	if _program != null:

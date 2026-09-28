@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Finds the strongest bolt and turns it into block for you, 2 stronger. The rest still fly.",
   "function": "ward",
+  "forge": {"into": "ward-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the strongest guards",

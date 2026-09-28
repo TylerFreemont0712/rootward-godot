@@ -2,7 +2,6 @@
   "id": "salvo",
   "name": "Salvo",
   "rarity": "common",
-  "art": "cascade",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",
@@ -10,6 +9,7 @@
   "makes": "unsorted",
   "summary": "Adds a rising run of six bolts, 1 to 6 power, after the volley.",
   "function": "salvo",
+  "forge": {"into": "salvo-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the seed and a salvo",

@@ -12,8 +12,11 @@
   ],
   // The Program is a file: its name, and the extension the run's language gives it (main.py, main.js).
   "program": { "name": "main", "capacity": 5 },
-  // Work, in operations, above which a program times out: it lands nothing, and every foe acts. Relics may raise it.
-  "budget": 4096,
+  // Work, in operations, above which a program times out: it lands nothing, and every foe acts. One per layer: the
+  // Kernel gives you a short time slice, so a late program has to be efficient (ADR-0017). Relics may raise it.
+  "budget": [4096, 2048, 1024],
+  // Initiative: a foe your program lands before (its tempo is not below the program's work) takes 25% more from it.
+  "initiative": 0.25,
   // The strongest a bolt can be, and how many a volley can hold (more are dropped as fizzled).
   "max_power": 9999,
   "max_bolts": 128,
@@ -34,7 +37,7 @@
       "summary": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
       "signature": ["divide", "merge-strike"],
       "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify", "quick-sort", "quickselect",
-        "recursion-tree", "split"]
+        "recursion-tree", "split", "import-math"]
     },
     {
       "id": "search-index",
@@ -44,7 +47,7 @@
       "summary": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
       "signature": ["prefix-sum", "binary-execute"],
       "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill", "bisect-insert", "dedupe",
-        "two-pointers", "hash-aim"]
+        "two-pointers", "hash-aim", "import-bisect"]
     },
     {
       "id": "greedy",
@@ -54,7 +57,7 @@
       "summary": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
       "signature": ["greedy-assign", "take-max"],
       "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge", "make-change", "huffman",
-        "load-balance", "greedy-ward"]
+        "load-balance", "greedy-ward", "import-heapq"]
     },
     {
       "id": "brute-force",
@@ -64,7 +67,7 @@
       "summary": "Try every pair, every subset. Enormous damage and perfect answers, but slow: foes act first, and a big volley times out.",
       "signature": ["pairwise", "exhaustive-kill"],
       "pool": ["pairwise", "exhaustive-kill", "kindle", "fork", "take-max", "bubble-sort", "power-set",
-        "linear-search", "exhaustive-ward"]
+        "linear-search", "exhaustive-ward", "import-itertools"]
     },
     {
       "id": "dynamic",
@@ -74,38 +77,53 @@
       "summary": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
       "signature": ["tabulate", "knapsack-strike"],
       "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill", "kadane", "lis-strike",
-        "pascal-row", "knapsack-ward"]
+        "pascal-row", "knapsack-ward", "import-cache"]
     }
   ],
   // Cards any pack can offer beside the paradigm's own.
   "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge",
-    "take-max", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce"],
-  // Operations a foe waits before it acts: a program doing more work than this lands after the foe's move.
+    "take-max", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "global-total",
+    "generator", "release", "higher-order"],
+  // Programming words for what a card does in the deck (ADR-0018), shown on the card with these meanings.
+  "keywords": {
+    "once": "Runs once a fight: after its program it leaves the deck until the next fight.",
+    "volatile": "If it is still in your hand at the end of the turn, it is gone until the next fight.",
+    "const": "Stays in your hand from turn to turn, without taking a hold slot.",
+    "__init__": "Always in your opening hand.",
+    "lambda": "Made by another card, for this fight only."
+  },
+  // Operations a foe waits before it acts: a program doing more work than this lands after the foe's move. Each intent
+  // has its own speed (ADR-0017), listed here in the order of the foe's intents: a jab is quick, a slam slow. (A foe
+  // of the program run's own, in programs/foes/, gives each intent its `tempo` there.)
   "tempo_default": 48,
   "tempo": {
-    "race-condition-imp": 16,
-    "tally-wisp": 24,
-    "dangling-pointer": 24,
-    "null-wraith": 32,
-    "off-by-one-goblin": 48,
-    "memory-leak-ooze": 64,
-    "type-mimic": 48,
-    "segfault-specter": 40,
-    "stack-overflow-serpent": 64,
-    "regex-sphinx": 96,
-    "garbage-collector": 128,
-    "fork-bomb": 96,
-    "kiln-warden": 160,
-    "deadlock-golem": 256,
-    "root-daemon": 384
+    "race-condition-imp": [12, 20],
+    "tally-wisp": [28, 20, 16],
+    "dangling-pointer": [32, 16],
+    "null-wraith": [36, 20, 28],
+    "off-by-one-goblin": [24, 56],
+    "memory-leak-ooze": [96, 64, 48],
+    "type-mimic": [32, 56, 48],
+    "segfault-specter": [64, 24],
+    "stack-overflow-serpent": [48, 96, 40],
+    "regex-sphinx": [112, 48, 64, 96],
+    "garbage-collector": [64, 160, 80],
+    "fork-bomb": [48, 160, 64],
+    "kiln-warden": [200, 96, 128, 160, 80],
+    "deadlock-golem": [128, 320, 192, 256, 128],
+    "root-daemon": [192, 448, 256, 160, 512, 512]
   },
   // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps). Tuned
   // with the balance probe (ADR-0016): the smart bot wins about half its runs, and every paradigm a third or more.
   "foe_hp": [2.4, 3.6, 4.6],
-  // A pattern ward (the Regex Sphinx, the Deadlock Golem) lets a bolt of the wrong element through at half, not the
-  // quarter Spellforge uses: at a quarter the Golem was a test of whether you drew this turn's element, and it ended
-  // a third of the probe's runs, seven in ten of those lost. Until its rework (SHARDRUN_DESIGN 6.3), half keeps it a
-  // fight about elements, not luck.
+  // A program run's own encounters for a layer, in place of the Shardrun's. The Heap's guardian is the Deadlock Golem
+  // as two locks (ADR-0017): a boss that tests a quality of the program (hitting two targets at once), where the
+  // one-bodied Golem's pattern ward only tested whether you drew this turn's element.
+  "encounters": {
+    "heap": { "boss": [["deadlock-lock-a", "deadlock-lock-b"]] }
+  },
+  // A pattern ward (the Regex Sphinx) lets a bolt of the wrong element through at half, not the quarter Spellforge
+  // uses. At a quarter the Golem, before it became two locks, was a test of luck that ended a third of the probe's runs.
   "pattern_off": 0.5,
   // Relics are the program's own (programs/relics/), each of a tier from common (a nudge) to legendary (a new way to
   // play). Where a relic is found decides the tiers it can be: an elite offers only rare or better, a guardian only

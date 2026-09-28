@@ -1,0 +1,71 @@
+{
+  "id": "divide-plus",
+  "name": "Divide+",
+  "rarity": "rare",
+  "art": "divide",
+  "cost": 2,
+  "paradigm": "divide-conquer",
+  "role": "shape",
+  "complexity": "linearithmic",
+  "summary": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 2 stronger (3 with import math): about 2 log₂ n each.",
+  "function": "divide_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "eight bolts, three levels",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" }
+      ],
+      "expect": [
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" }
+      ]
+    },
+    {
+      "name": "one bolt stays",
+      "bolts": [
+        { "power": 4, "element": "none" }
+      ],
+      "expect": [
+        { "power": 4, "element": "none" }
+      ]
+    },
+    {
+      "name": "with import math",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "imports": ["math"]},
+      "expect": [
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 10, "element": "none" }
+      ]
+    }
+  ]
+}

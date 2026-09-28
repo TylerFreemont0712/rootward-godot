@@ -10,6 +10,7 @@
   "cap_n": 10,
   "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you; the rest still fly. Perfect, and slow.",
   "function": "exhaustive_ward",
+  "forge": {"into": "exhaustive-ward-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "exactly 12",

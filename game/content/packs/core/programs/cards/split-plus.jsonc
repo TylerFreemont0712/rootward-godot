@@ -1,0 +1,39 @@
+{
+  "id": "split-plus",
+  "name": "Split+",
+  "rarity": "common",
+  "art": "split",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "source",
+  "complexity": "linear",
+  "summary": "Divides every bolt of 4 or more power into its two halves, and those halves again, until each is under 4. Every piece gains 1.",
+  "function": "split_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a 9 in pieces",
+      "bolts": [
+        { "power": 9, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 4, "element": "frost" },
+        { "power": 3, "element": "frost" },
+        { "power": 3, "element": "frost" },
+        { "power": 3, "element": "frost" }
+      ]
+    },
+    {
+      "name": "small bolts stay, 1 stronger",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "id": "greedy-ward-plus",
+  "name": "Greedy Ward+",
+  "rarity": "common",
+  "art": "greedy-ward",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "guard",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n)",
+  "summary": "Greedy defence: the strongest bolts become your block, biggest first, until they reach 14.",
+  "function": "greedy_ward_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the three strongest guard",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "block": true },
+        { "power": 8, "element": "none", "block": true },
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none", "block": true }
+      ]
+    }
+  ]
+}

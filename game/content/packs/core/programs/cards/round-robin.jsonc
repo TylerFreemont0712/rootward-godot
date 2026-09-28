@@ -2,13 +2,13 @@
   "id": "round-robin",
   "name": "Round Robin",
   "rarity": "common",
-  "art": "spectrum-wheel",
   "cost": 0,
   "paradigm": "neutral",
   "role": "strike",
   "complexity": "linear",
   "summary": "Deals the bolts out to the foes in turn, like cards: the first foe, the second, the third, the first again.",
   "function": "round_robin",
+  "forge": {"into": "round-robin-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "dealt out",

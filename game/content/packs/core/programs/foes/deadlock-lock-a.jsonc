@@ -1,0 +1,17 @@
+// The Deadlock Golem of a program run (ADR-0017): two bodies, each holding a lock the other needs. Damage to one is
+// blocked unless the same program hits both; once one breaks, the other is free. The counter is the lesson: acquire
+// both locks, spread the volley (Round Robin, Load Balance, Sweep). Spellforge keeps the one-bodied deadlock-golem.
+{
+  "id": "deadlock-lock-a",
+  "name": "Golem Lock A",
+  "sprite": "deadlock-golem",
+  "size": "large",
+  "hp": 70,
+  "trait": { "kind": "deadlock", "partner": "deadlock-lock-b" },
+  "intents": [
+    { "kind": "strike", "power": 9, "tempo": 256 },
+    { "kind": "shield", "amount": 10, "tempo": 96 },
+    { "kind": "strike", "power": 7, "tempo": 192 }
+  ],
+  "flavor": "It holds Lock A and waits for Lock B. Its twin holds Lock B and waits for Lock A. Neither will ever let go."
+}

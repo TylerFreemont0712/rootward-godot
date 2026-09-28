@@ -2,8 +2,9 @@ class_name RoleBadge
 extends Control
 ## A program card's role on its face: a glyph and a word in the role's colour, on a dark plate in the frame's lower
 ## panel. It says what a card is for before its code is read: it makes bolts (source), changes them (shape), puts them
-## in order (order), aims them at foes (strike), or turns them into block (guard). A program is usually written in
-## that order, so the badges of a good program read like a sentence.
+## in order (order), aims them at foes (strike), or turns them into block (guard); an import is a line at the top of
+## the program that holds for the fight (ADR-0018). A program is usually written in that order, so the badges of a good
+## program read like a sentence.
 
 const ROLES := {
 	"source": {"word": "SOURCE", "colour": "#8fdc6b", "hint": "makes bolts"},
@@ -11,6 +12,7 @@ const ROLES := {
 	"order": {"word": "ORDER", "colour": "#ffd166", "hint": "puts the volley in order"},
 	"strike": {"word": "STRIKE", "colour": "#ff7a59", "hint": "aims bolts at foes"},
 	"guard": {"word": "GUARD", "colour": "#7fb8ff", "hint": "turns bolts into block"},
+	"import": {"word": "IMPORT", "colour": "#ff9ecf", "hint": "a line at the top, for the rest of the fight"},
 }
 
 var role := ""
@@ -60,7 +62,7 @@ func _draw() -> void:
 
 
 ## The role's glyph in a square of `side` around `centre`: a burst (source), nested diamonds (shape), rising bars
-## (order), a crosshair (strike), a shield (guard).
+## (order), a crosshair (strike), a shield (guard), an arrow into a tray (import).
 func _glyph(centre: Vector2, side: float, tint: Color) -> void:
 	var r := side * 0.5
 	var line := maxf(1.2, side * 0.11)
@@ -102,6 +104,27 @@ func _glyph(centre: Vector2, side: float, tint: Color) -> void:
 			)
 			draw_polyline(shield, tint, line, true)
 			draw_line(centre + Vector2(0, -r * 0.55), centre + Vector2(0, r * 0.55), tint, line, true)
+		"import":
+			var tray := PackedVector2Array(
+				[
+					centre + Vector2(-r * 0.85, r * 0.2),
+					centre + Vector2(-r * 0.85, r * 0.85),
+					centre + Vector2(r * 0.85, r * 0.85),
+					centre + Vector2(r * 0.85, r * 0.2),
+				]
+			)
+			draw_polyline(tray, tint, line, true)
+			draw_line(centre + Vector2(0, -r), centre + Vector2(0, r * 0.35), tint, line, true)
+			draw_colored_polygon(
+				PackedVector2Array(
+					[
+						centre + Vector2(-r * 0.4, r * 0.05),
+						centre + Vector2(r * 0.4, r * 0.05),
+						centre + Vector2(0, r * 0.5),
+					]
+				),
+				tint
+			)
 
 
 static func _diamond(centre: Vector2, r: float) -> PackedVector2Array:

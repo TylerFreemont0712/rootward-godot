@@ -142,6 +142,14 @@ func show_foes(foe_states: Array) -> void:
 	_layout.call_deferred()
 
 
+## Each foe's speed this turn, by uid (a program run's), on its intent.
+func show_tempos(tempos: Dictionary) -> void:
+	for uid: String in tempos:
+		var view: FoeView = foes.get(uid)
+		if view != null:
+			view.show_tempo(int(tempos[uid]))
+
+
 func _layout() -> void:
 	_world.size = size
 	_fx.size = size

@@ -1,0 +1,26 @@
+{
+  "id": "charge-plus",
+  "name": "Charge+",
+  "rarity": "common",
+  "art": "charge",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Sets every bolt to spark, 2 stronger. Foes weak to spark take half again as much.",
+  "function": "charge_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "spark" },
+        { "power": 6, "element": "spark" }
+      ]
+    }
+  ]
+}

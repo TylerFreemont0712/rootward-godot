@@ -2,7 +2,6 @@
   "id": "knapsack-strike",
   "name": "Knapsack Strike",
   "rarity": "rare",
-  "art": "compound",
   "cost": 2,
   "paradigm": "dynamic",
   "role": "strike",
@@ -10,6 +9,7 @@
   "big_o": "O(n·H)",
   "summary": "Dynamic programming over sums: finds the smallest total a subset of bolts can make that still kills the front foe (exactly, if it can). Those fly at it; the rest at the next foe.",
   "function": "knapsack_strike",
+  "forge": {"into": "knapsack-strike-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "an exact kill",

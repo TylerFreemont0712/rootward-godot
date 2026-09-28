@@ -1,0 +1,50 @@
+{
+  "id": "linear-search-plus",
+  "name": "Linear Search+",
+  "rarity": "uncommon",
+  "art": "linear-search",
+  "cost": 1,
+  "paradigm": "brute-force",
+  "role": "strike",
+  "complexity": "linear",
+  "big_o": "O(n·m)",
+  "summary": "For each foe, weakest first, checks every bolt for the weakest one that kills it alone: no sorting needed. The bolts left over go at the toughest foe.",
+  "function": "linear_search_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "exact kills from an unsorted volley",
+      "bolts": [
+        { "power": 12, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 16, "element": "none" },
+        { "power": 20, "element": "none" },
+        { "power": 5, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [{"name": "Tally Wisp", "hp": 16, "max": 16, "shield": 0, "weak": ["frost"], "resist": ["fire"]}, {"name": "Off-by-One Goblin", "hp": 9, "max": 22, "shield": 2, "weak": ["spark"], "resist": []}]},
+      "expect": [
+        { "power": 12, "element": "none", "foe": 1 },
+        { "power": 16, "element": "none", "foe": 0 },
+        { "power": 3, "element": "none", "foe": 0 },
+        { "power": 20, "element": "none", "foe": 0 },
+        { "power": 5, "element": "none", "foe": 0 }
+      ]
+    },
+    {
+      "name": "three foes",
+      "bolts": [
+        { "power": 20, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 11, "element": "none" },
+        { "power": 2, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [{"name": "Tally Wisp", "hp": 16, "max": 16, "shield": 0, "weak": ["frost"], "resist": ["fire"]}, {"name": "Off-by-One Goblin", "hp": 9, "max": 22, "shield": 2, "weak": ["spark"], "resist": []}, {"name": "Golem", "hp": 30, "max": 40, "shield": 0, "weak": [], "resist": []}]},
+      "expect": [
+        { "power": 11, "element": "none", "foe": 1 },
+        { "power": 20, "element": "none", "foe": 0 },
+        { "power": 3, "element": "none", "foe": 2 },
+        { "power": 2, "element": "none", "foe": 2 }
+      ]
+    }
+  ]
+}

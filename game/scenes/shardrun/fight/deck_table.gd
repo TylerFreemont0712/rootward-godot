@@ -206,6 +206,10 @@ func show_table(state: Dictionary) -> void:
 	_hand.show_hand(_table.hand, make, deal, origins)
 	_draw_count.text = "%d cards" % (battle.draw as Array).size()
 	_discard_count.text = "%d cards" % (battle.discard as Array).size()
+	# A program run's `once` and `volatile` cards leave for the rest of the fight (ADR-0018).
+	var gone := (battle.get("gone", []) as Array).size()
+	if gone > 0:
+		_discard_count.text += " · %d gone" % gone
 	_hint.text = _hint_text()
 
 

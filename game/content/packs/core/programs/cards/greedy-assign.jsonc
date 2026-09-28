@@ -2,13 +2,13 @@
   "id": "greedy-assign",
   "name": "Greedy Assign",
   "rarity": "uncommon",
-  "art": "seeker",
   "cost": 1,
   "paradigm": "greedy",
   "role": "strike",
   "complexity": "linearithmic",
   "summary": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would die. The rest go at the toughest.",
   "function": "greedy_assign",
+  "forge": {"into": "greedy-assign-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "spread over three",

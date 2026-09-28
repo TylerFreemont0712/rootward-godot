@@ -215,10 +215,10 @@ The goal: a program always has input, the difficulty climbs instead of cliffs, a
       still an idea.
 - [x] The curve reshaped for the program run alone (`programs.jsonc` `foe_hp`), tuned with the probe (ADR-0016),
       with a pattern ward that lets the wrong element through at half (`pattern_off`) until the Golem's rework.
-- [ ] The Deadlock Golem reworked as two locks, damage blocked unless one program hits both: the first foe whose
-      mechanic reads your program, and the test of the hook stage 4 builds on.
-- [ ] The speed race's other half as rules: Initiative (+25% against foes you out-speed), a speed per intent, a budget
-      per act. (Initiative exists as the Preemption relic.)
+- [x] The Deadlock Golem reworked as two locks, damage blocked unless one program hits both: the first foe whose
+      mechanic reads your program, and the test of the hook stage 4 builds on (ADR-0017).
+- [x] The speed race's other half as rules: Initiative (+25% against foes you out-speed), a speed per intent, a budget
+      per act (ADR-0017).
 - [x] Run history, first version: every finished run kept in `user://shardrun/history.jsonl` and shown as `git log`
       (reading it in `scripts/balance.sh` beside the bot's runs is still to do).
 - [x] ADR-0016 (stages 1 and 6 together).
@@ -294,12 +294,13 @@ difference and the idea of the fix, and a concept left alone for a week comes ba
 The goal: Vesper becomes a class of Slay the Spire's depth, and the class frame exists for the others.
 
 - [ ] The class frame: pool, starter deck and relic, mechanic, archetypes, character, unlocks.
-- [ ] Imports and keywords; fight state for `global`, accumulators and generators (SHARDRUN_DESIGN 3.3, 3.4).
+- [x] Imports and keywords; fight state for `global`, accumulators and generators (SHARDRUN_DESIGN 3.3, 3.4;
+      ADR-0018). `pure`, `async` and `recursive` wait for the foes that use them (stage 4).
 - [x] About 45 cards (48: six to eight per paradigm, sources among them, and neutral ones) and 28 new relics that bend
       work, speed and order, tiered common to legendary (SHARDRUN_DESIGN 7, 8).
-- [ ] Every card's `+` version.
-- [ ] Card art for every card (the 25 new ones have theirs; the first 23 still borrow old shard pictures); Japanese for
-      every card.
+- [x] Every card's `+` version, a refactor shown at the forge as a diff (ADR-0018).
+- [x] Card art for every card (`shardrun/card-<id>`; a + shows its card's).
+- [ ] Japanese for every card.
 - [ ] A guided first run: the first fights teach one idea each (a source first, sort before search, aim last), and
       the preview says what a reorder would change (SHARDRUN_DESIGN 3.6).
 - [ ] ADR-0022.

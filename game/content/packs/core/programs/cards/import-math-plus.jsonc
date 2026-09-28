@@ -1,0 +1,31 @@
+{
+  "id": "import-math-plus",
+  "name": "import math+",
+  "rarity": "uncommon",
+  "art": "import-math",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "For the rest of the fight, recursion reaches further: Divide adds 2 a level instead of 1, Merge Strike's merges add 40% instead of 20%, and Recursion Tree grows a level deeper.",
+  "function": "import_math_plus",
+  "keywords": ["__init__"],
+  "module": "math",
+  "line": {"python": "import math", "javascript": "const { log2 } = Math;"},
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "lambda",
+  "name": "Lambda",
+  "rarity": "common",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "An anonymous function: every bolt gains 2 power. It costs nothing, and runs once.",
+  "function": "lambda_card",
+  "keywords": ["lambda", "once"],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 7, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 11, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    }
+  ]
+}

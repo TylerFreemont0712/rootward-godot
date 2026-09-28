@@ -11,6 +11,7 @@
   "makes": "sorted",
   "summary": "The first bolt is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. Weakest first, for no mana. On a volley already sorted every split is lopsided, and it slows to O(n²).",
   "function": "quick_sort",
+  "forge": {"into": "quick-sort-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a shuffled volley",

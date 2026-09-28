@@ -8,6 +8,8 @@
   "complexity": "linear",
   "summary": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element.",
   "function": "reduce",
+  "keywords": ["once"],
+  "forge": {"into": "reduce-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a seed and a salvo",

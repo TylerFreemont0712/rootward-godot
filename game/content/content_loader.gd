@@ -38,7 +38,7 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		"relics": {},
 		"balance": balance,
 		"sandbox": sandbox,
-		"programs": {"config": {}, "cards": {}, "relics": {}},
+		"programs": {"config": {}, "cards": {}, "relics": {}, "foes": {}},
 	}
 	var programs_file := ""
 	var run_file := ""
@@ -49,6 +49,9 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 			_load_kind(programs_dir.path_join("cards"), ProgramSchemas.card(), cards, "card", diagnostics)
 			var relics: Dictionary = catalog.programs.relics
 			_load_kind(programs_dir.path_join("relics"), ProgramSchemas.relic(), relics, "relic", diagnostics)
+			# The program run's own foes (ADR-0017), beside the Shardrun's: the old engine's catalog stays as it was.
+			var foes: Dictionary = catalog.programs.foes
+			_load_kind(programs_dir.path_join("foes"), ProgramSchemas.foe(), foes, "foe", diagnostics)
 			var config_file := programs_dir.path_join("programs.jsonc")
 			if FileAccess.file_exists(config_file):
 				programs_file = config_file

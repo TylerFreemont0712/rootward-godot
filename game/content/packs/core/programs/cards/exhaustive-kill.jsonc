@@ -2,7 +2,6 @@
   "id": "exhaustive-kill",
   "name": "Exhaustive Kill",
   "rarity": "rare",
-  "art": "siege-breaker",
   "cost": 2,
   "paradigm": "brute-force",
   "role": "strike",
@@ -10,6 +9,7 @@
   "cap_n": 12,
   "summary": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill (2ⁿ subsets). The rest go at the next foe.",
   "function": "exhaustive_kill",
+  "forge": {"into": "exhaustive-kill-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "no overkill on the front foe",

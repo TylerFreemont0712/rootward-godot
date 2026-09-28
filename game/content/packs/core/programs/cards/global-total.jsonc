@@ -1,0 +1,31 @@
+{
+  "id": "global-total",
+  "name": "global total",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "For the rest of the fight, every program adds the damage it lands to a global total. Release turns the total into a bolt.",
+  "function": "global_total",
+  "keywords": ["__init__"],
+  "module": "total",
+  "line": {"python": "total = 0  # global: kept between programs", "javascript": "let total = 0; // global: kept between programs"},
+  "effects": [{"kind": "global", "name": "total"}],
+  "forge": {"into": "global-total-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

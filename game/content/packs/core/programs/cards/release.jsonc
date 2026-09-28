@@ -1,0 +1,43 @@
+{
+  "id": "release",
+  "name": "Release",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "summary": "Appends one bolt of half the fight's global total (the damage every program landed since `global total` was imported), then the total starts again from 0. Without the global, nothing.",
+  "function": "release",
+  "spends": "total",
+  "forge": {"into": "release-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "forty landed so far",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "globals": {"total": 40}},
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 20, "element": "none" }
+      ]
+    },
+    {
+      "name": "no global, no bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

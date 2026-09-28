@@ -1,0 +1,29 @@
+{
+  "id": "pairwise-plus",
+  "name": "Pairwise+",
+  "rarity": "rare",
+  "art": "pairwise",
+  "cost": 2,
+  "paradigm": "brute-force",
+  "role": "source",
+  "complexity": "quadratic",
+  "makes": "unsorted",
+  "summary": "Brute force: every pair of bolts fuses into a new bolt with their combined power, doubled when their elements differ. A volley of n makes n(n-1)/2.",
+  "function": "pairwise_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "three bolts, three pairs",
+      "bolts": [
+        { "power": 4, "element": "fire" },
+        { "power": 2, "element": "none" },
+        { "power": 6, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 12, "element": "fire" },
+        { "power": 10, "element": "fire" },
+        { "power": 16, "element": "fire" }
+      ]
+    }
+  ]
+}

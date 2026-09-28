@@ -2,7 +2,6 @@
   "id": "sweep",
   "name": "Sweep",
   "rarity": "uncommon",
-  "art": "scatter",
   "cost": 1,
   "paradigm": "greedy",
   "role": "strike",
@@ -10,6 +9,7 @@
   "big_o": "O(n·m)",
   "summary": "Area: every bolt hits every foe, at half its power (at least 1).",
   "function": "sweep",
+  "forge": {"into": "sweep-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "two bolts, two foes",

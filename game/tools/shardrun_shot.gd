@@ -8,7 +8,11 @@ extends Control
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs)
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
 ## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare; ROOTWARD_SHOT_RELICS
-## (ids) grants those relics first, in such a run (the header's relics, rung by tier).
+## (ids) grants those relics first, in such a run (the header's relics, rung by tier). ROOTWARD_SHOT_FOES (ids) puts
+## those foes in the fight instead (ROOTWARD_SHOT_KIND: fight, elite or boss), and ROOTWARD_SHOT_HAND (ids) adds those
+## cards to the hand:
+##   ROOTWARD_SHOT=fight ROOTWARD_SHOT_KIND=boss ROOTWARD_SHOT_FOES=deadlock-lock-a,deadlock-lock-b \
+##       ROOTWARD_SHOT_CARDS=salvo,merge-strike scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/locks.png 60
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
 ## ROOTWARD_SHOT_SKIN wears a battle skin for the shot (not saved). ROOTWARD_SHOT_AFTER_MS catches the moment that many
@@ -32,7 +36,10 @@ func _ready() -> void:
 	var session := Game.session
 	session.saves.delete_run("spellbook")
 	var chosen := OS.get_environment("ROOTWARD_SHOT_CARDS")
-	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev" or chosen != "")
+	# The dev commands that set a shot up need a sandbox run.
+	var staged := chosen != "" or OS.get_environment("ROOTWARD_SHOT_FOES") != ""
+	staged = staged or OS.get_environment("ROOTWARD_SHOT_HAND") != ""
+	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev" or staged)
 	var bot := ShardrunBot.new(session)
 	bot.paradigm = OS.get_environment("ROOTWARD_SHOT_PARADIGM")
 	match shot:
@@ -72,6 +79,12 @@ func _ready() -> void:
 			await bot.send(CardTable.command(table))
 		"fight", "cast", "volley", "turn", "code", "dev", "table", "pile", "hover", "log":
 			await bot.play_until("battle")
+			var foes := OS.get_environment("ROOTWARD_SHOT_FOES").split(",", false)
+			if not foes.is_empty():
+				var kind := OS.get_environment("ROOTWARD_SHOT_KIND")
+				await bot.send({"type": "dev-spawn", "kind": kind if kind != "" else "fight", "foes": Array(foes)})
+			for id in OS.get_environment("ROOTWARD_SHOT_HAND").split(",", false):
+				await bot.send({"type": "dev-grant-shard", "shard_id": id})
 			if chosen != "":
 				var ids := chosen.split(",", false)
 				for id in ids:
@@ -208,11 +221,15 @@ func _act(shot: String, screen: Control) -> void:
 		"dev":
 			screen.call("_open_dev")
 		"hover":
-			# The second card of the hand pointed at: it rises, straightens, grows, and shows what it does.
+			# A card of the hand pointed at (the second, or ROOTWARD_SHOT_POINT's): it rises, straightens, grows, and
+			# shows what it does.
 			var fight := screen.get("_fight") as FightView
 			var hand := fight.find_children("*", "HandView", true, false)
-			if not hand.is_empty() and (hand[0] as HandView).cards.size() > 1:
-				var card: CardFace = (hand[0] as HandView).cards[1]
+			var point := (
+				int(OS.get_environment("ROOTWARD_SHOT_POINT")) if OS.has_environment("ROOTWARD_SHOT_POINT") else 1
+			)
+			if not hand.is_empty() and (hand[0] as HandView).cards.size() > point:
+				var card: CardFace = (hand[0] as HandView).cards[point]
 				hand[0].call("_point", card, true)
 				card.call("_hover", true)
 		"log":

@@ -269,3 +269,34 @@ function. The bolts launched after that animation ended never flew, so their dam
 final redraw showed the truth. `is_instance_valid()` first: it is safe on anything. And wait for the events themselves
 (a counter of bolts still in the air) rather than for a guess at how long they take; a test plays a real volley in real
 time (`test/scenes/fight_playback_test.gd`) and was seen to fail on the old code before the fix.
+
+## A hook runs around code that does not know it (`game/sandbox/shardrun/spell_harness.py`, `.js`)
+`import heapq` makes every strike card see the volley strongest first, but no strike card was changed: the harness
+calls the import's own function on the volley just before each card of the role it hooks (and `bisect` just after
+each source). This is the idea behind decorators and middleware: behaviour wrapped around a function from outside, so
+the function stays simple and the wrapper can be added or taken away. The hook is real code in the sandbox, so the
+volley a strike card is given is exactly what `heapq.nlargest` returned.
+
+## Importing twice does nothing more (`game/core/programs/program_deck.gd`)
+Python keeps every imported module in `sys.modules`; a second `import heapq` finds it there and only binds the name
+again. The game follows the language: imports count by module, so a card and its + (or two copies) never stack their
+effects. A rule that copies the language's own rule is one less rule to learn.
+
+## A line diff is a longest common subsequence (`game/ui/code/code_diff.gd`)
+The forge shows a refactor the way `git diff` does. The lines both versions share, in order, are their longest common
+subsequence (a small dynamic programming table, filled from the ends); every other line is a removal or an addition.
+The table is n by m lines, which is nothing for a card's function; `git` uses Myers' algorithm, which finds the same
+kind of answer faster on long files.
+
+## A warning about orphans that are only queued frees (`game/test/scenes/shardrun_screen_test.gd`)
+gdUnit counts nodes that are outside the tree when a test ends as "possible orphans". `Ui.clear` removes a panel's
+children and `queue_free`s them, and a queued node is freed at the end of the frame, so a test that ends straight after
+a redraw sees them all. `Node.print_orphan_nodes()` two frames later listed none. Letting two frames pass at the end of
+the screen tests turned 173 warnings into 0, and the suite's exit code into 0: the warnings were real messages about a
+timing, not leaks, and measuring said which.
+
+## One engine's proven content stays that engine's (`game/content/packs/core/programs/foes/`)
+A test compares the Shardrun's content with the catalog the old TypeScript engine built, key by key. A speed written
+into a shared foe's intents, or a new foe in the shared folder, would change that catalog, so the program run keeps
+its own: its foes in `programs/foes/`, its intent speeds in `programs.jsonc`. The same shape as program relics: a
+feature that is new lives beside what is proven, never inside it.

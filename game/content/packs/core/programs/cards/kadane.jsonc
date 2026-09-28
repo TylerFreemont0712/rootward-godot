@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Kadane's algorithm scores each bolt as its power minus 3 and keeps a running best: the stretch of neighbouring bolts with the highest score fuses into one bolt of its whole power, 1 stronger for every bolt in it.",
   "function": "kadane",
+  "forge": {"into": "kadane-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the strong end of a salvo",

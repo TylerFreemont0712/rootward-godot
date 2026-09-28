@@ -12,7 +12,9 @@ func test_everything_the_content_names_is_there() -> void:
 		for key: String in ["music", "battle_music", "boss_music"]:
 			if layer.has(key) and Art.music(layer[key]) == null:
 				missing.append("audio/" + layer[key])
-	for foe: Dictionary in catalog.foes.values():
+	var foes: Array = (catalog.foes as Dictionary).values()
+	foes.append_array((catalog.programs.foes as Dictionary).values())
+	for foe: Dictionary in foes:
 		if Art.texture("foes/" + foe.sprite) == null:
 			missing.append("foes/" + foe.sprite)
 	for relic: Dictionary in catalog.relics.values():

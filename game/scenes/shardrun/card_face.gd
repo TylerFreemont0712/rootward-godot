@@ -52,6 +52,7 @@ var _hover_time := -1.0
 var _art: Control
 var _frame: TextureRect
 var _role: RoleBadge
+var _keywords: KeywordChips
 var _name: Label
 var _cost: Label
 var _speed: Label
@@ -140,6 +141,9 @@ func _build(size_kind: Size) -> void:
 		# Over the frame's lower panel, so it is drawn after (above) the frame.
 		_role = RoleBadge.create(String(shard.role))
 		add_child(_role)
+	if not (shard.get("keywords", []) as Array).is_empty():
+		_keywords = KeywordChips.create(shard.keywords)
+		add_child(_keywords)
 	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"))
 	_cost = _text(UiTheme.ui_font(600), Color.WHITE)
 	_speed = _text(UiTheme.ui_font(600), colour.lightened(0.45))
@@ -208,6 +212,12 @@ func _layout() -> void:
 		_role.position = lower.get_center() - pill * 0.5
 		_role.size = pill
 		_role.queue_redraw()
+	if _keywords != null:
+		# Along the bottom of the picture's window, under the picture.
+		var chips := Vector2(window.size.x * 0.96, maxf(13.0, window.size.y * 0.14))
+		_keywords.position = Vector2(window.get_center().x - chips.x * 0.5, window.end.y - chips.y * 1.15)
+		_keywords.size = chips
+		_keywords.queue_redraw()
 	queue_redraw()
 
 
@@ -298,7 +308,12 @@ func _process(delta: float) -> void:
 		var into: String = (_catalog.shards.get(forge.get("into", ""), {}) as Dictionary).get(
 			"name", forge.get("into", "")
 		)
-		_detail = CardDetail.create(shard, shard_id, language, _summaries, colour, _tags, into)
+		var meanings: Dictionary = (
+			(_catalog.get("programs", {}) as Dictionary).get("config", {}).get("keywords", {})
+			if _catalog.has("programs")
+			else {}
+		)
+		_detail = CardDetail.create(shard, shard_id, language, _summaries, colour, _tags, into, meanings)
 		_detail.top_level = true
 		_detail.z_index = 100
 		_detail.z_as_relative = false

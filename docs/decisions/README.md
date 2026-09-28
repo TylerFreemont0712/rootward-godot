@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0017**.
+The next number is **ADR-0019**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -19,3 +19,5 @@ The next number is **ADR-0017**.
 - [ADR-0014](ADR-0014-spell-animations-drawn-as-motion.md): spell animations drawn as motion in the pipeline, light and shade coloured in the game; the strikes retired.
 - [ADR-0015](ADR-0015-the-code-walkthrough-and-measured-loops.md): the sandbox measures loops and recursion; the cast walks through the code.
 - [ADR-0016](ADR-0016-a-deeper-shardrun.md): a deeper Shardrun: tiered relics of its own, roles on cards, a three-bolt seed, twice the cards, a git log.
+- [ADR-0017](ADR-0017-the-speed-race-whole-and-the-golem-as-two-locks.md): Initiative, a speed per intent and a budget per layer as rules; the Golem as two locks; a program run's foes of its own.
+- [ADR-0018](ADR-0018-imports-keywords-and-refactors.md): imports and fight state, keywords, every card's + as a refactor read as a diff, a picture for every card.

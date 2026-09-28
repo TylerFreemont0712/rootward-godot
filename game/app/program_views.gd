@@ -23,7 +23,7 @@ static func run_view(
 		"timeout": bool(preview.get("timeout", false)),
 		"speed": ProgramRules.speed_label(spell.shards, catalog),
 		"stages": stages,
-		"lint": ProgramRules.lint(spell.shards, catalog),
+		"lint": ProgramRules.lint(spell.shards, catalog, ProgramRelics.modifiers(state, catalog).hooks),
 		"race": race(state, work, catalog),
 		"base": {"bolts": ProgramRules.seed(state, catalog)},
 		"steps": [],
@@ -71,11 +71,13 @@ static func run_view(
 			"wasted": preview.wasted,
 			"kills": preview.kills,
 		}
+	# A deadlock holding is telegraphed whatever the difficulty shows: it is the foe's rule, not a prediction.
+	view.locked = int(preview.get("locked", 0))
 	return view
 
 
 ## Every living foe's tempo against the program's work, quickest first: [{name, uid, tempo, first}], `first` when it
-## will act before the program lands.
+## will act before the program lands (the others the program lands before: they take Initiative's bonus).
 static func race(state: Dictionary, work: int, catalog: Dictionary) -> Array[Dictionary]:
 	var battle: Dictionary = state.get("battle", {})
 	var acted: Array = battle.get("acted", [])
@@ -89,13 +91,16 @@ static func race(state: Dictionary, work: int, catalog: Dictionary) -> Array[Dic
 	return out
 
 
-## The lines the code panel draws for a program, each call noted with its complexity class and, once the sandbox has
-## measured it, its n and work; a call the lint flags is marked.
-static func code_lines(language: String, card_ids: Array, view: Dictionary, catalog: Dictionary) -> Array[Dictionary]:
-	var lines := ProgramSource.lines(language, card_ids, catalog, (view.get("base", {}) as Dictionary).get("bolts", []))
+## The lines the code panel draws for a program, its imports at the top, each call noted with its complexity class and,
+## once the sandbox has measured it, its n and work; a call the lint flags is marked.
+static func code_lines(state: Dictionary, card_ids: Array, view: Dictionary, catalog: Dictionary) -> Array[Dictionary]:
+	var hooks: Array = ProgramRelics.modifiers(state, catalog).hooks
+	var seed: Array = (view.get("base", {}) as Dictionary).get("bolts", [])
+	var imports := ProgramDeck.imports(state, catalog)
+	var lines := ProgramSource.lines(String(state.language), card_ids, catalog, seed, imports, hooks)
 	var steps: Array = view.get("steps", [])
 	var flagged := {}
-	for warning: Dictionary in view.get("lint", ProgramRules.lint(card_ids, catalog)):
+	for warning: Dictionary in view.get("lint", ProgramRules.lint(card_ids, catalog, hooks)):
 		flagged[int(warning.index)] = true
 	for line in lines:
 		if line.kind != "call":

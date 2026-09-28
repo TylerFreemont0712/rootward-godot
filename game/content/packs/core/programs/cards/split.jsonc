@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Divides every bolt of 4 or more power into its two halves, and those halves again, until every piece is under 4. The same power in many more bolts: what Amplify likes best.",
   "function": "split",
+  "forge": {"into": "split-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a 9 in pieces",

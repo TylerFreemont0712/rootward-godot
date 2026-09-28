@@ -151,8 +151,12 @@ static func _cast(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 	# won the fight took the battle with it; one whose curse lost the run leaves nothing to draw for.
 	if ShardrunRules.is_deck(next) and next.has("battle") and int(next.integrity) > 0:
 		var played := (spell.shards as Array).size()
-		(next.battle.discard as Array).append_array(spell.shards)
-		spell.shards = []
+		if next.playstyle == "program":
+			# Imports stay in force, `once` cards are gone for the fight, made cards join the draw pile (ADR-0018).
+			ProgramDeck.spend(next, next.battle, spell, catalog)
+		else:
+			(next.battle.discard as Array).append_array(spell.shards)
+			spell.shards = []
 		for effect: Dictionary in ShardrunRules.relic_modifiers(next, catalog).draw_on_cast:
 			if played < int(effect.min_cards):
 				continue

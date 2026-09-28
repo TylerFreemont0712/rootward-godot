@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "A set remembers every power seen: a bolt whose power was seen before is dropped, and every bolt that stays gains 2.",
   "function": "dedupe",
+  "forge": {"into": "dedupe-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a seed and a salvo",

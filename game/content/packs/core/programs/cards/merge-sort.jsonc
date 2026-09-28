@@ -2,7 +2,6 @@
   "id": "merge-sort",
   "name": "Merge Sort",
   "rarity": "common",
-  "art": "confluence",
   "cost": 1,
   "paradigm": "neutral",
   "role": "order",
@@ -10,6 +9,8 @@
   "makes": "sorted",
   "summary": "Sorts the volley weakest first: split it in half, sort each half, merge them back. Searches need this.",
   "function": "merge_sort",
+  "keywords": ["const"],
+  "forge": {"into": "merge-sort-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a jumbled volley",

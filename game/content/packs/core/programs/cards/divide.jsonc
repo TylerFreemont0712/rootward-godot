@@ -2,13 +2,13 @@
   "id": "divide",
   "name": "Divide",
   "rarity": "rare",
-  "art": "prism",
   "cost": 2,
   "paradigm": "divide-conquer",
   "role": "shape",
   "complexity": "linearithmic",
   "summary": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger: about log₂ n each.",
   "function": "divide",
+  "forge": {"into": "divide-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "eight bolts, three levels",
@@ -94,6 +94,30 @@
           "power": 4,
           "element": "none"
         }
+      ]
+    },
+    {
+      "name": "with import math",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "imports": ["math"]},
+      "expect": [
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 7, "element": "none" }
       ]
     }
   ]

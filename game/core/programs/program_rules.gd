@@ -31,7 +31,7 @@ const WORK_CAP := 1 << 30
 
 ## A program run's catalog: the program cards served as `shards`, one Program for the deck's spells, the basics as
 ## its cards, and the program's own relics (tiered, `programs/relics/`). Foes and balance are the Shardrun's; the
-## layers are too, with the program's own foe HP when programs.jsonc gives it.
+## layers are too, with the program's own foe HP and encounters where programs.jsonc gives them.
 static func catalog_for(catalog: Dictionary) -> Dictionary:
 	var programs: Dictionary = catalog.programs
 	var config: Dictionary = (catalog.config as Dictionary).duplicate()
@@ -41,18 +41,27 @@ static func catalog_for(catalog: Dictionary) -> Dictionary:
 		"cards": (programs.config.basics as Array).duplicate(),
 	}
 	var foe_hp: Array = programs.config.get("foe_hp", [])
-	if not foe_hp.is_empty():
-		var layers: Array = []
-		for index in (config.layers as Array).size():
-			var layer: Dictionary = (config.layers[index] as Dictionary).duplicate()
+	var encounters: Dictionary = programs.config.get("encounters", {})
+	var layers: Array = []
+	for index in (config.layers as Array).size():
+		var layer: Dictionary = (config.layers[index] as Dictionary).duplicate()
+		if not foe_hp.is_empty():
 			layer.foe_hp = float(foe_hp[mini(index, foe_hp.size() - 1)])
-			layers.append(layer)
-		config.layers = layers
+		if encounters.has(layer.id):
+			var groups: Dictionary = (layer.encounters as Dictionary).duplicate()
+			groups.merge(encounters[layer.id], true)
+			layer.encounters = groups
+		layers.append(layer)
+	config.layers = layers
 	var derived := catalog.duplicate()
 	derived.playstyle = "program"
 	derived.config = config
 	derived.shards = programs.cards
 	derived.relics = programs.get("relics", {})
+	# The program run's own foes join the Shardrun's (ADR-0017).
+	var foes: Dictionary = (catalog.foes as Dictionary).duplicate()
+	foes.merge(programs.get("foes", {}))
+	derived.foes = foes
 	return derived
 
 
@@ -99,6 +108,7 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 	for index in trace.size():
 		var step: Dictionary = trace[index]
 		var card: Dictionary = catalog.shards.get(step.shard, {})
+		order = hooked(order, m.hooks, "before", card, catalog).order
 		# LEARN: n is the larger of the volley in and the volley out. A card that turns 7 bolts into 21 pairs did 21
 		# pieces of work even though it was handed 7; counting only its input would make growing cards free.
 		var n := maxi(int(step.given), int(step.get("returned", step.given)))
@@ -111,7 +121,20 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 		out.append({"card": step.shard, "n": n, "given": int(step.given), "work": work, "complexity": complexity})
 		if card.has("makes"):
 			order = card.makes
+		order = hooked(order, m.hooks, "after", card, catalog).order
 	return out
+
+
+## The volley's order once an import's hooks have run `when` a card of this card's role runs (bisect sorts after each
+## source, heapq hands strikes the strongest first): {order, by (the import's name, or "")}.
+static func hooked(order: String, hooks: Array, when: String, card: Dictionary, catalog: Dictionary) -> Dictionary:
+	var result := {"order": order, "by": ""}
+	for hook: Dictionary in hooks:
+		if hook.when == when and hook.role == card.get("role", ""):
+			var by: Dictionary = catalog.shards.get(hook.card, {})
+			if by.has("makes"):
+				result = {"order": by.makes, "by": by.get("name", hook.card)}
+	return result
 
 
 static func total_work(stage_list: Array[Dictionary]) -> int:
@@ -129,13 +152,14 @@ static func front_need(state: Dictionary) -> int:
 	return 1
 
 
-## The slowest complexity class among a program's cards, as its label ("O(n log n)").
+## The slowest complexity class among a program's steps (its imports are not steps), as its label ("O(n log n)").
 static func speed_label(card_ids: Array, catalog: Dictionary) -> String:
 	var slowest := 0
-	for id: String in card_ids:
+	var steps := ProgramDeck.steps(card_ids, catalog)
+	for id: String in steps:
 		var card: Dictionary = catalog.shards.get(id, {})
 		slowest = maxi(slowest, TIER_ORDER.find(card.get("complexity", "linear")))
-	return TIER_LABELS[TIER_ORDER[slowest]] if not card_ids.is_empty() else "O(1)"
+	return TIER_LABELS[TIER_ORDER[slowest]] if not steps.is_empty() else "O(1)"
 
 
 ## The slowest class the stages actually ran at (worst cases and relics included), as a class name.
@@ -150,17 +174,34 @@ static func big_o(card: Dictionary) -> String:
 	return card.get("big_o", TIER_LABELS.get(card.get("complexity", "linear"), "O(n)"))
 
 
-## The operations a foe waits before it acts (programs.jsonc `tempo`), and what relics add to it.
+## The operations a foe waits before it acts this turn: the speed of the intent it is about to carry out (ADR-0017),
+## from the intent itself (a program foe's) or programs.jsonc (a Shardrun foe's, one per intent), else the default,
+## and what relics add to it.
 static func tempo_of(foe: Dictionary, state: Dictionary, catalog: Dictionary) -> int:
 	var config := config_of(catalog)
-	var tempo := int((config.tempo as Dictionary).get(foe.get("id", ""), config.tempo_default))
+	var at := int(foe.get("intent_index", 0))
+	var tempo := int(config.tempo_default)
+	var speeds: Array = (config.tempo as Dictionary).get(foe.get("id", ""), [])
+	if not speeds.is_empty():
+		tempo = int(speeds[at % speeds.size()])
+	var intents: Array = foe.get("intents", [])
+	if not intents.is_empty():
+		tempo = int((intents[at % intents.size()] as Dictionary).get("tempo", tempo))
 	return maxi(1, tempo + int(ProgramRelics.modifiers(state, catalog).tempo))
 
 
-## Work above which a program times out: the config's, raised or cut by relics.
+## Work above which a program times out: the config's for this layer, raised or cut by relics.
 static func budget(state: Dictionary, catalog: Dictionary) -> int:
 	var m := ProgramRelics.modifiers(state, catalog)
-	return maxi(1, floori((int(config_of(catalog).budget) + int(m.budget)) * float(m.budget_factor)))
+	var by_layer: Array = config_of(catalog).budget
+	var base := int(by_layer[clampi(int(state.get("layer", 0)), 0, by_layer.size() - 1)])
+	return maxi(1, floori((base + int(m.budget)) * float(m.budget_factor)))
+
+
+## How much a foe the program lands before takes: Initiative (programs.jsonc), made stronger by relics.
+static func initiative(state: Dictionary, catalog: Dictionary) -> float:
+	var relics := ProgramRelics.modifiers(state, catalog)
+	return (1.0 + float(config_of(catalog).get("initiative", 0.0))) * float(relics.initiative)
 
 
 static func cost_of(state: Dictionary, spell: Dictionary, catalog: Dictionary) -> int:
@@ -178,20 +219,30 @@ static func faster_foes(state: Dictionary, battle: Dictionary, work: int, catalo
 	return out
 
 
-## What the code panel warns about, by card index: a card that needs a sorted volley after one that left it unsorted.
-## The seed is one bolt, so it starts sorted. [{index, message}]
-static func lint(card_ids: Array, catalog: Dictionary) -> Array[Dictionary]:
+## What the code panel warns about, by step (a program's cards but its imports): a card that needs a sorted volley
+## after one that left it unsorted, an import's hook included. The seed's bolts are equal, so it starts sorted.
+## [{index, message}]
+static func lint(card_ids: Array, catalog: Dictionary, hooks: Array = []) -> Array[Dictionary]:
 	var warnings: Array[Dictionary] = []
 	var order := "sorted"
 	var culprit := "the seed"
-	for index in card_ids.size():
-		var card: Dictionary = catalog.shards.get(card_ids[index], {})
+	var steps := ProgramDeck.steps(card_ids, catalog)
+	for index in steps.size():
+		var card: Dictionary = catalog.shards.get(steps[index], {})
+		var before := hooked(order, hooks, "before", card, catalog)
+		if before.by != "":
+			order = before.order
+			culprit = before.by
 		if card.get("needs", "") == "sorted" and order != "sorted":
 			var message := "%s needs a sorted volley, and %s left it unsorted." % [card.get("name", "?"), culprit]
 			warnings.append({"index": index, "message": message})
 		if card.has("makes"):
 			order = card.makes
 			culprit = card.get("name", "?")
+		var after := hooked(order, hooks, "after", card, catalog)
+		if after.by != "":
+			order = after.order
+			culprit = after.by
 	return warnings
 
 
@@ -249,6 +300,7 @@ static func cast(
 	var landed := resolve(state, battle, bolts, catalog, context)
 	ShardrunBattle.cast_defense(state, battle, catalog)
 	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
+	ProgramDeck.after_cast(state, battle, int(landed.dealt), catalog)
 	state.stats.damage += int(landed.dealt)
 	var by_spell: Dictionary = state.stats.damage_by_spell
 	by_spell[spell.id] = int(by_spell.get(spell.id, 0)) + int(landed.dealt)
@@ -307,9 +359,10 @@ static func normalize(raw: Array, catalog: Dictionary) -> Array[Dictionary]:
 
 ## Lands bolts in order. A bolt with `block` shields you; any other flies at the foe its `foe` names (an index into
 ## the foes alive when the program ran), or at the front foe. Bolts at a foe already down are wasted, as is damage
-## past a foe's HP: aiming is what the strike cards are for. Relics change the landing (ProgramRelics): what the bolts
-## weigh, factors for the whole program, a bonus against foes the program out-sped, overkill that flows on, waste
-## turned into block. `context` is landing_context's. Returns {dealt, wasted, block, kills}.
+## past a foe's HP: aiming is what the strike cards are for. A foe the program out-sped takes more (Initiative). Relics
+## change the landing (ProgramRelics): what the bolts weigh, factors for the whole program, a stronger Initiative,
+## overkill that flows on, waste turned into block. `context` is landing_context's. Returns {dealt, wasted, block,
+## kills}.
 static func resolve(
 	state: Dictionary, battle: Dictionary, bolts: Array[Dictionary], catalog: Dictionary, context := {}
 ) -> Dictionary:
@@ -320,10 +373,13 @@ static func resolve(
 	var program_factor := ProgramRelics.program_factor(landing, context, relics)
 	var hottest := ProgramRelics.strongest(landing) if float(relics.strongest_mult) != 1.0 else -1
 	var out_sped: Array = context.get("out_sped", [])
+	var first := initiative(state, catalog)
 	var alive := (battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
+	var targeted := targets(landing, alive)
 	var dealt := 0
 	var wasted := 0
 	var gathered := 0
+	var locked := 0
 	for index in landing.size():
 		var bolt: Dictionary = landing[index]
 		var power := int(bolt.power) + int(m.bolt_power)
@@ -362,11 +418,20 @@ static func resolve(
 			glance.text = "A %d-power bolt glances off %s." % [power, foe.name]
 			Shardrun.record(state, glance)
 			continue
+		var holder := lock_holder(foe, alive, targeted)
+		if not holder.is_empty():
+			locked += 1
+			var held := {"kind": "locked", "foe": foe.uid, "amount": power, "element": bolt.element}
+			held.merge(shape)
+			held.text = "%s holds its lock: this program never touches %s." % [foe.name, holder.name]
+			Shardrun.record(state, held)
+			continue
 		var multiplier: float = m.damage_multiplier * program_factor
 		if index == hottest:
 			multiplier *= float(relics.strongest_mult)
-		if foe.uid in out_sped:
-			multiplier *= float(relics.initiative)
+		var first_strike: bool = foe.uid in out_sped
+		if first_strike:
+			multiplier *= first
 		if foe_trait.get("kind") == "pattern-ward" and bolt.element != foe.get("pattern"):
 			multiplier *= float(config_of(catalog).get("pattern_off", balance.pattern_off_multiplier))
 		# A relic can make every bolt the element a foe is weak to (and then nothing resists it).
@@ -385,6 +450,8 @@ static func resolve(
 		dealt += landed
 		var hit := {"kind": "hit", "foe": foe.uid, "amount": landed, "element": bolt.element}
 		hit.merge(shape)
+		if first_strike and first != 1.0:
+			hit.initiative = true
 		if weak:
 			hit.affinity = "weak"
 		elif resisted:
@@ -394,7 +461,8 @@ static func resolve(
 		if damage > landed:
 			hit.overkill = damage - landed
 		var shield_note := " (%d into its shield)" % blocked if blocked > 0 else ""
-		hit.text = "%s takes %d%s." % [foe.name, landed, shield_note]
+		var lead := "Initiative: " if hit.has("initiative") else ""
+		hit.text = "%s%s takes %d%s." % [lead, foe.name, landed, shield_note]
 		Shardrun.record(state, hit)
 		if int(foe.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
@@ -411,7 +479,31 @@ static func resolve(
 			var text := "The unused %d power is kept as block." % kept
 			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
 	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
-	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills}
+	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills, "locked": locked}
+
+
+## The uids of the foes a volley's attacking bolts are aimed at (a bolt without an aim, or aimed past the last, flies
+## at the front foe).
+static func targets(bolts: Array[Dictionary], alive: Array) -> Dictionary:
+	var aimed := {}
+	for bolt in bolts:
+		if bolt.get("block", false) or alive.is_empty():
+			continue
+		var at := int(bolt.get("foe", 0))
+		aimed[(alive[at] if at < alive.size() else alive[0]).uid] = true
+	return aimed
+
+
+## A deadlocked foe's partner while it still holds the lock: standing, and not hit by this program. {} when the foe
+## can be hurt (no lock, its partner broken, or both hit at once).
+static func lock_holder(foe: Dictionary, alive: Array, targeted: Dictionary) -> Dictionary:
+	var foe_trait: Dictionary = foe.get("trait", {})
+	if foe_trait.get("kind") != "deadlock":
+		return {}
+	for other: Dictionary in alive:
+		if other.id == foe_trait.partner and int(other.hp) > 0 and not targeted.has(other.uid):
+			return other
+	return {}
 
 
 ## Overkill flowing on (a relic): what is left after `from` falls goes into the next foe still standing, through its
@@ -442,7 +534,7 @@ static func _flow(
 
 
 ## What casting would do, worked out on a copy of the state: {cost, affordable, work, budget, timeout, speed,
-## faster: [foe names], bolts, damage, wasted, block, kills, misfire?}.
+## faster: [foe names], bolts, damage, wasted, block, kills, locked (bolts a deadlock held), misfire?}.
 static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, catalog: Dictionary) -> Dictionary:
 	var battle: Dictionary = state.get("battle", {})
 	var spell := Shardrun.spell_by_id(state, spell_id)
@@ -466,6 +558,7 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 		"wasted": 0,
 		"block": 0,
 		"kills": 0,
+		"locked": 0,
 	}
 	if not outcome.ok:
 		view.misfire = outcome.reason
@@ -483,4 +576,5 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	view.wasted = landed.wasted
 	view.block = landed.block
 	view.kills = landed.kills
+	view.locked = landed.locked
 	return view

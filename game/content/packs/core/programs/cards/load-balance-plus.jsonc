@@ -1,0 +1,32 @@
+{
+  "id": "load-balance-plus",
+  "name": "Load Balance+",
+  "rarity": "uncommon",
+  "art": "load-balance",
+  "cost": 0,
+  "paradigm": "greedy",
+  "role": "strike",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n + n·m)",
+  "summary": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after the bolts already given. It costs nothing.",
+  "function": "load_balance_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "spread evenly",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 4, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [{"name": "Tally Wisp", "hp": 16, "max": 16, "shield": 0, "weak": ["frost"], "resist": ["fire"]}, {"name": "Off-by-One Goblin", "hp": 9, "max": 22, "shield": 2, "weak": ["spark"], "resist": []}]},
+      "expect": [
+        { "power": 9, "element": "none", "foe": 0 },
+        { "power": 5, "element": "none", "foe": 1 },
+        { "power": 4, "element": "none", "foe": 0 },
+        { "power": 2, "element": "none", "foe": 1 }
+      ]
+    }
+  ]
+}

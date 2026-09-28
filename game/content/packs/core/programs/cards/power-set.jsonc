@@ -11,6 +11,8 @@
   "makes": "unsorted",
   "summary": "Every non-empty subset of the first three bolts, counted as a bitmask from 1 to 7, becomes one bolt of its sum. Seven bolts from three; the rest of the volley follows.",
   "function": "power_set",
+  "keywords": ["volatile"],
+  "forge": {"into": "power-set-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the seed's seven subsets",

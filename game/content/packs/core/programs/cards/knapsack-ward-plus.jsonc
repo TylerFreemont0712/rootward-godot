@@ -1,0 +1,45 @@
+{
+  "id": "knapsack-ward-plus",
+  "name": "Knapsack Ward+",
+  "rarity": "uncommon",
+  "art": "knapsack-ward",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "guard",
+  "complexity": "pseudo",
+  "big_o": "O(n·H)",
+  "height": 16,
+  "summary": "Exhaustive Ward's question answered with a table: which totals can a subset make? The smallest of 16 or more becomes your block.",
+  "function": "knapsack_ward_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "17, the least over 16",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none", "block": true },
+        { "power": 8, "element": "none", "block": true },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 6, "element": "none" }
+      ]
+    },
+    {
+      "name": "never reaching 16",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true }
+      ]
+    }
+  ]
+}

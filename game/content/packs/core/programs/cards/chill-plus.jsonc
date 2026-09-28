@@ -1,0 +1,26 @@
+{
+  "id": "chill-plus",
+  "name": "Chill+",
+  "rarity": "common",
+  "art": "chill",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Sets every bolt to frost, 2 stronger. Foes weak to frost take half again as much.",
+  "function": "chill_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "frost" },
+        { "power": 6, "element": "frost" }
+      ]
+    }
+  ]
+}

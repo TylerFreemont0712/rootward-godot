@@ -135,6 +135,8 @@ static func enter_room(state: Dictionary, node: Dictionary, catalog: Dictionary)
 		"forge":
 			state.status = "forge"
 			var text := "An abandoned forge, still warm. A shard can be reworked, or a spell widened."
+			if state.get("playstyle", "") == "program":
+				text = "An abandoned forge, still warm. A card can be refactored, or the Program widened."
 			record(state, {"kind": "enter", "text": text})
 		"treasure":
 			record(state, {"kind": "enter", "text": "A sealed cache, left behind by an earlier Maintainer."})

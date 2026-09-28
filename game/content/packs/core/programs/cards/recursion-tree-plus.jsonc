@@ -1,0 +1,82 @@
+{
+  "id": "recursion-tree-plus",
+  "name": "Recursion Tree+",
+  "rarity": "uncommon",
+  "art": "recursion-tree",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "source",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "A function that calls itself twice grows a tree four levels deep (five with import math): one 5-power bolt at the root, two 4s, four 3s, eight 2s, added after the volley.",
+  "function": "recursion_tree_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" }
+      ]
+    },
+    {
+      "name": "with import math",
+      "bolts": [],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "imports": ["math"]},
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,7 @@
   "makes": "unsorted",
   "summary": "Builds Pascal's triangle bottom-up, each entry the sum of the two above it, down to row 5, and adds that row as bolts: 1, 5, 10, 10, 5, 1.",
   "function": "pascal_row",
+  "forge": {"into": "pascal-row-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "after the seed",

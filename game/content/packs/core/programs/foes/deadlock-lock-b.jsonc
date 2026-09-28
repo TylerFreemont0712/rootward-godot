@@ -1,0 +1,17 @@
+// The other half of the program run's Deadlock Golem (see deadlock-lock-a).
+{
+  "id": "deadlock-lock-b",
+  "name": "Golem Lock B",
+  "sprite": "deadlock-golem",
+  "size": "large",
+  "hp": 70,
+  "mirror": true,
+  "trait": { "kind": "deadlock", "partner": "deadlock-lock-a" },
+  "intents": [
+    { "kind": "multi", "power": 3, "times": 3, "tempo": 128 },
+    { "kind": "stoke", "tempo": 160 },
+    { "kind": "strike", "power": 8, "tempo": 320 },
+    { "kind": "shield", "amount": 8, "tempo": 96 }
+  ],
+  "flavor": "It holds Lock B and waits for Lock A. Hit both in one program and the knot comes undone."
+}

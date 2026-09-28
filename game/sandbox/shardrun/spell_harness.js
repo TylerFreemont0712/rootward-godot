@@ -63,12 +63,32 @@ Object.defineProperty(Array.prototype, "__each", {
   enumerable: false,
 });
 
-function load(shard) {
+function load(shard, counted = COUNT) {
   // Each shard is compiled in its own function scope, fresh for every spell, so shards never collide or keep state.
-  const source = COUNT ? instrument(shard.source) : shard.source;
+  // A hook is never counted: its loops are not the card's.
+  const source = counted ? instrument(shard.source) : shard.source;
   const fn = new Function("__loop", "__call", source + "\nreturn typeof " + shard.name + " === \"function\" ? " + shard.name + " : undefined;")(loop, call);
   if (typeof fn !== "function") throw new Error(shard.id + " does not define " + shard.name + "(bolts, battle)");
   return fn;
+}
+
+// A program run's imports may hook a role (ADR-0018): the import's own function runs on the volley before or after
+// every card of that role (heapq hands each strike the strongest bolt first; bisect sorts what each source made).
+const HOOKS = DATA.hooks || [];
+
+function hooked(when, role, bolts, battleJson) {
+  for (const hook of HOOKS) {
+    if (hook.when !== when || hook.role !== role) continue;
+    const shard = SHARDS[hook.shard];
+    try {
+      const result = load(shard, false)(bolts, JSON.parse(battleJson));
+      if (!Array.isArray(result)) throw new TypeError(shard.name + " must return an array of bolts, not " + typeof result);
+      bolts = JSON.parse(JSON.stringify(result.slice(0, DATA.limit)));
+    } catch (error) {
+      throw { shard, error };
+    }
+  }
+  return bolts;
 }
 
 function runSpell(spell, battleJson, trace) {
@@ -79,6 +99,7 @@ function runSpell(spell, battleJson, trace) {
     let snapshot;
     let given;
     let returned;
+    bolts = hooked("before", shard.role, bolts, battleJson);
     try {
       const fn = load(shard);
       given = bolts.length;
@@ -90,8 +111,8 @@ function runSpell(spell, battleJson, trace) {
     } catch (error) {
       throw { shard, error };
     }
-    bolts = JSON.parse(snapshot);
-    const step = { shard: shard.id, given, returned, bolts: JSON.parse(snapshot).slice(0, DATA.traceLimit) };
+    bolts = hooked("after", shard.role, JSON.parse(snapshot), battleJson);
+    const step = { shard: shard.id, given, returned, bolts: JSON.parse(JSON.stringify(bolts)).slice(0, DATA.traceLimit) };
     if (COUNT) {
       step.loops = counts.loops;
       step.calls = counts.calls[shard.name] || 0;

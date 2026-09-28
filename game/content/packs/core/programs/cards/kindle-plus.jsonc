@@ -1,0 +1,26 @@
+{
+  "id": "kindle-plus",
+  "name": "Kindle+",
+  "rarity": "common",
+  "art": "kindle",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Sets every bolt to fire, 2 stronger. Foes weak to fire take half again as much.",
+  "function": "kindle_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "fire" },
+        { "power": 6, "element": "fire" }
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Every bolt splits in two, each with 60% of its power (at least 1). The volley doubles.",
   "function": "fork",
+  "forge": {"into": "fork-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "two bolts become four",

@@ -1,0 +1,35 @@
+{
+  "id": "greedy-assign-plus",
+  "name": "Greedy Assign+",
+  "rarity": "uncommon",
+  "art": "greedy-assign",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "strike",
+  "complexity": "linearithmic",
+  "summary": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would fall. Every bolt it aims gains 1.",
+  "function": "greedy_assign_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "spread over three",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 8, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [{"name": "Tally Wisp", "hp": 16, "max": 16, "shield": 0, "weak": [], "resist": []}, {"name": "Imp", "hp": 5, "max": 14, "shield": 0, "weak": [], "resist": []}, {"name": "Golem", "hp": 40, "max": 40, "shield": 4, "weak": [], "resist": []}]},
+      "expect": [
+        { "power": 10, "element": "none", "foe": 1 },
+        { "power": 9, "element": "none", "foe": 0 },
+        { "power": 7, "element": "none", "foe": 0 },
+        { "power": 5, "element": "none", "foe": 0 },
+        { "power": 3, "element": "none", "foe": 2 },
+        { "power": 2, "element": "none", "foe": 2 }
+      ]
+    }
+  ]
+}

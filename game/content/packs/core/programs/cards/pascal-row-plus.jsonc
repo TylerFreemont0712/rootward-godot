@@ -1,0 +1,37 @@
+{
+  "id": "pascal-row-plus",
+  "name": "Pascal Row+",
+  "rarity": "rare",
+  "art": "pascal-row",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "source",
+  "complexity": "constant",
+  "big_o": "O(k²)",
+  "makes": "unsorted",
+  "summary": "Builds Pascal's triangle bottom-up, each entry the sum of the two above it, down to row 6, and adds the row as bolts: 1, 6, 15, 20, 15, 6, 1.",
+  "function": "pascal_row_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 15, "element": "none" },
+        { "power": 20, "element": "none" },
+        { "power": 15, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 1, "element": "none" }
+      ]
+    }
+  ]
+}

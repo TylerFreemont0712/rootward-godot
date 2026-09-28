@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Adds 3 power to every bolt. The more bolts, the more it adds.",
   "function": "amplify",
+  "forge": {"into": "amplify-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "every bolt",

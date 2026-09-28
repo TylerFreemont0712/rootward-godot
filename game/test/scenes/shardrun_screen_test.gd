@@ -82,6 +82,7 @@ func test_a_shardrun_is_played_card_by_card_through_the_screen() -> void:
 	var tables := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckTable)
 	var decks := run_screen.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is DeckPanel)
 	assert_int(tables.size() + decks.size()).is_greater(0)
+	await _settle()
 
 
 func test_a_program_run_is_drafted_and_fought_through_the_screen() -> void:
@@ -123,6 +124,14 @@ func test_a_program_run_is_drafted_and_fought_through_the_screen() -> void:
 	]:
 		assert_bool(seen.has(key)).override_failure_message("never saw " + key).is_true()
 	assert_int(written).is_greater(0)
+	await _settle()
+
+
+## Lets the frames pass that free what the screen let go (Ui.clear queues it), so gdUnit does not count those nodes
+## as orphans: after two frames there are none.
+func _settle() -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
 
 
 func test_a_cast_with_its_code_playing_reaches_the_stage() -> void:

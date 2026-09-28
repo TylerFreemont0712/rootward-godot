@@ -105,11 +105,34 @@ class ShardFailure(Exception):
         self.error = error
 
 
+# A program run's imports may hook a role (ADR-0018): the import's own function runs on the volley before or after
+# every card of that role (heapq hands each strike the strongest bolt first; bisect sorts what each source made).
+# LEARN: a hook is a function called around other functions without them knowing (a decorator's idea): the cards stay
+# as they are, and what an import changes is the data they are handed.
+HOOKS = DATA.get("hooks", [])
+
+
+def hooked(when, role, bolts, battle_json):
+    for hook in HOOKS:
+        if hook["when"] != when or hook["role"] != role:
+            continue
+        shard = SHARDS[hook["shard"]]
+        try:
+            result = load(shard)(bolts, json.loads(battle_json))
+            if not isinstance(result, list):
+                raise TypeError(shard["name"] + " must return a list of bolts, not " + type(result).__name__)
+            bolts = json.loads(json.dumps(result[: DATA["limit"]], allow_nan=False))
+        except Exception as error:
+            raise ShardFailure(shard, error)
+    return bolts
+
+
 def run_spell(spell, battle_json, trace):
     # A spell can bring its own starting bolts and battle (content validation runs every worked example in one job).
     bolts = json.loads(json.dumps(spell.get("bolts", DATA["bolts"])))
     for index in spell["shards"]:
         shard = SHARDS[index]
+        bolts = hooked("before", shard.get("role"), bolts, battle_json)
         try:
             function = load(shard)
             given = len(bolts)
@@ -125,8 +148,8 @@ def run_spell(spell, battle_json, trace):
             snapshot = json.dumps(result[: DATA["limit"]], allow_nan=False)
         except Exception as error:
             raise ShardFailure(shard, error)
-        bolts = json.loads(snapshot)
-        kept = json.loads(snapshot)[: DATA["traceLimit"]]
+        bolts = hooked("after", shard.get("role"), json.loads(snapshot), battle_json)
+        kept = json.loads(json.dumps(bolts))[: DATA["traceLimit"]]
         step = {"shard": shard["id"], "given": given, "returned": len(result), "bolts": kept}
         if measured is not None:
             step.update(measured)

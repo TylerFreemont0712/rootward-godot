@@ -10,6 +10,7 @@
   "makes": "sorted",
   "summary": "A min-heap: take the two weakest bolts, fuse them into one 1 stronger than both together, push it back, until three bolts remain. Huffman's greedy step; they come out weakest first.",
   "function": "huffman",
+  "forge": {"into": "huffman-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a salvo into three",

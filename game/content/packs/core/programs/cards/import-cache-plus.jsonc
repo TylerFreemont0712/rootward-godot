@@ -1,0 +1,32 @@
+{
+  "id": "import-cache-plus",
+  "name": "functools.cache+",
+  "rarity": "rare",
+  "art": "import-cache",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "For the rest of the fight, a card that already ran does no work: its answers are remembered. Memoisation, as one line.",
+  "function": "import_cache_plus",
+  "keywords": ["__init__"],
+  "module": "functools",
+  "line": {"python": "from functools import cache", "javascript": "const cache = new Map();"},
+  "effects": [{"kind": "jit"}],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

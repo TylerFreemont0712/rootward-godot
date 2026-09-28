@@ -122,6 +122,15 @@ static func trait_view(foe: Dictionary) -> Dictionary:
 		"pattern-ward":
 			var pattern := ", ".join(PackedStringArray(foe_trait.pattern))
 			return {"name": "Pattern ward", "text": "Only this turn's element in %s hits at full strength." % pattern}
+		"deadlock":
+			return {
+				"name": "Deadlock",
+				"text":
+				(
+					"It holds a lock its twin needs: damage to it is blocked unless the same program hits both. "
+					+ "Once one breaks, the other is free."
+				),
+			}
 	return {}
 
 
@@ -216,4 +225,8 @@ static func complexity(shard: Dictionary) -> String:
 
 ## The picture of a shard or a program card: its own, or the one its `art` borrows.
 static func art(shard: Dictionary, id := "") -> String:
+	# A program card has a picture of its own (card-<id>, ADR-0018; a + shares its card's by `art`); an old shard, a
+	# shard's.
+	if shard.has("paradigm"):
+		return "shardrun/card-" + String(shard.get("art", shard.get("id", id)))
 	return "shardrun/shard-" + String(shard.get("art", shard.get("id", id)))

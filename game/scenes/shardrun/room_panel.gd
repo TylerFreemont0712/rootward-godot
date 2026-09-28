@@ -143,11 +143,18 @@ func _forge() -> void:
 		"Do one thing here: rework a %s (upgrade it, or repair a broken one), widen a spell by one slot, " % thing
 	)
 	text += "melt a card out of your deck, " if deck else ""
-	text += "or widen your Program by a slot." if state.playstyle == "program" else "or bind a new spell to your book."
+	text += "or bind a new spell to your book."
+	if state.playstyle == "program":
+		text = "Do one thing here: refactor a card, melt a card out of your deck, or widen your Program by a slot."
 	add_child(Ui.label(text, "Narration", true))
 	if deck:
 		_melt(state, catalog)
-	if not (options.shards as Array).is_empty():
+	if state.playstyle == "program" and not (options.shards as Array).is_empty():
+		# A program run's upgrades are refactors, read as a diff (ADR-0018).
+		var refactor := ForgeView.create(session, options.shards)
+		refactor.wants.connect(func(command: Dictionary) -> void: wants.emit(command))
+		add_child(refactor)
+	elif not (options.shards as Array).is_empty():
 		add_child(Ui.label("Rework a %s" % thing, "Subheading"))
 		var row := Ui.flow([], 8)
 		for shard_id: String in options.shards:
@@ -162,7 +169,7 @@ func _forge() -> void:
 			row.add_child(button)
 		add_child(row)
 	if not (options.spells as Array).is_empty():
-		add_child(Ui.label("Widen a spell", "Subheading"))
+		add_child(Ui.label("Widen the Program" if state.playstyle == "program" else "Widen a spell", "Subheading"))
 		var row := Ui.flow([], 8)
 		for spell_id: String in options.spells:
 			var spell := Shardrun.spell_by_id(state, spell_id)

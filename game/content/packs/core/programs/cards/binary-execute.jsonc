@@ -2,7 +2,6 @@
   "id": "binary-execute",
   "name": "Binary Execute",
   "rarity": "rare",
-  "art": "execution",
   "cost": 2,
   "paradigm": "search-index",
   "role": "strike",
@@ -11,6 +10,7 @@
   "needs": "sorted",
   "summary": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it. Only those bolts fly. On unsorted data it picks wrong.",
   "function": "binary_execute",
+  "forge": {"into": "binary-execute-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "exact kills from a sorted volley",

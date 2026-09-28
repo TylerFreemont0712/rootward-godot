@@ -1,0 +1,30 @@
+{
+  "id": "literal-plus",
+  "name": "Literal+",
+  "rarity": "common",
+  "art": "literal",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "summary": "Appends one 12-power bolt: a constant written into the code, added in O(1).",
+  "function": "literal_plus",
+  "keywords": ["const"],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "after the seed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 12, "element": "none" }
+      ]
+    }
+  ]
+}

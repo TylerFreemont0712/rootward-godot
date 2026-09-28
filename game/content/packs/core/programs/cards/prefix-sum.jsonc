@@ -2,7 +2,6 @@
   "id": "prefix-sum",
   "name": "Prefix Sum",
   "rarity": "uncommon",
-  "art": "prefix-charge",
   "cost": 1,
   "paradigm": "search-index",
   "role": "shape",
@@ -10,6 +9,7 @@
   "makes": "sorted",
   "summary": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted.",
   "function": "prefix_sum",
+  "forge": {"into": "prefix-sum-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a salvo summed",

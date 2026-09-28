@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Sets every bolt to spark, 1 stronger. Foes weak to spark take half again as much.",
   "function": "charge",
+  "forge": {"into": "charge-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "every bolt",

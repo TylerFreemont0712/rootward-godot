@@ -10,6 +10,8 @@ const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke
 
 var uid := ""
 var foe: Dictionary = {}
+## In a program run, the operations the foe waits before its intent this turn (shown on the intent), else -1.
+var tempo := -1
 ## The picture moves (recoil, lunge) inside a plain holder, which the box lays out; moving the picture itself would be
 ## undone the next time the box sorts its children.
 var sprite: Control
@@ -27,12 +29,14 @@ static func create(foe_state: Dictionary, catalog: Dictionary) -> FoeView:
 	var view := FoeView.new()
 	view.uid = foe_state.uid
 	var content: Dictionary = catalog.foes.get(foe_state.id, {})
-	view._build(foe_state, String(content.get("size", "medium")), String(content.get("flavor", "")))
+	view._build(foe_state, content)
 	view.show_foe(foe_state)
 	return view
 
 
-func _build(foe_state: Dictionary, size_name: String, flavor: String) -> void:
+func _build(foe_state: Dictionary, content: Dictionary) -> void:
+	var size_name := String(content.get("size", "medium"))
+	var flavor := String(content.get("flavor", ""))
 	alignment = BoxContainer.ALIGNMENT_END
 	add_theme_constant_override("separation", 4)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -46,6 +50,8 @@ func _build(foe_state: Dictionary, size_name: String, flavor: String) -> void:
 	_holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sprite = Ui.picture("foes/" + String(foe_state.sprite), Vector2(side, side), foe_state.name)
+	if sprite is TextureRect and bool(content.get("mirror", false)):
+		(sprite as TextureRect).flip_h = true
 	sprite.mouse_filter = Control.MOUSE_FILTER_PASS
 	sprite.tooltip_text = flavor
 	_holder.add_child(sprite)
@@ -72,10 +78,7 @@ func show_foe(foe_state: Dictionary) -> void:
 	_bar.value = int(foe_state.hp)
 	_hp.text = "%d/%d" % [int(foe_state.hp), int(foe_state.max)]
 	_shield.text = "◈ %d" % int(foe_state.shield) if int(foe_state.shield) > 0 else ""
-	var kind := ShardrunViews.intent_kind(foe_state)
-	_intent.text = "%s  %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe_state)]
-	var danger := kind in ["strike", "multi"]
-	_intent.add_theme_color_override("font_color", UiTheme.FAIL.lightened(0.2) if danger else UiTheme.TEXT)
+	_show_intent()
 	(_intent.get_parent() as Control).visible = alive
 	Ui.clear(_tags)
 	for element: String in foe_state.get("weak", []):
@@ -90,6 +93,27 @@ func show_foe(foe_state: Dictionary) -> void:
 		_tags.add_child(_tag("now: " + element, UiTheme.element(element), "This turn, %s hits in full." % element))
 	if foe_state.get("stoked", false):
 		_tags.add_child(_tag("stoked", UiTheme.ELEMENTS.fire, "Its next strike hits twice as hard."))
+
+
+## The intent's speed in a program run: it acts before a program that does more work than this.
+func show_tempo(value: int) -> void:
+	tempo = value
+	(_intent.get_parent() as Control).tooltip_text = (
+		"It acts after %d operations: a program doing more work than that lands after it moves." % value
+		if value > 0
+		else ""
+	)
+	_show_intent()
+
+
+## What it will do next, and in a program run how soon.
+func _show_intent() -> void:
+	var kind := ShardrunViews.intent_kind(foe)
+	_intent.text = "%s  %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe)]
+	if tempo > 0:
+		_intent.text += "   ⚡%d ops" % tempo
+	var danger := kind in ["strike", "multi"]
+	_intent.add_theme_color_override("font_color", UiTheme.FAIL.lightened(0.2) if danger else UiTheme.TEXT)
 
 
 ## Hands its card over to be shown as a guardian's health bar at the top of the arena: wider, with a thicker bar, the

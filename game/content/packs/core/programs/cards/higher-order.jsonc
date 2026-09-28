@@ -1,0 +1,32 @@
+{
+  "id": "higher-order",
+  "name": "Higher Order",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "map(f, bolts): every bolt gains 1 power. It also writes two Lambdas onto your draw pile, for the next turn: free cards that run once.",
+  "function": "higher_order",
+  "adds": {"card": "lambda", "count": 2},
+  "forge": {"into": "higher-order-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "every bolt",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 7, "element": "none" }
+      ],
+      "expect": [
+        { "power": 4, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 8, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@
   "big_o": "O(n) average",
   "summary": "Finds the median bolt without sorting the volley: every bolt at or above it flies at the toughest foe, the rest at the weakest.",
   "function": "quickselect",
+  "forge": {"into": "quickselect-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the strong half at the toughest",

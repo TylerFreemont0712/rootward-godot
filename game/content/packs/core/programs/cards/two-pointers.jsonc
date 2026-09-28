@@ -10,6 +10,7 @@
   "makes": "unsorted",
   "summary": "On a sorted volley, one pointer at each end: the weakest and the strongest bolt fuse, then the next pair inward. Half as many bolts, all of about the same power.",
   "function": "two_pointers",
+  "forge": {"into": "two-pointers-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a sorted salvo",

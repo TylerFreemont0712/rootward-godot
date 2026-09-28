@@ -9,6 +9,7 @@
   "big_o": "O(n²)",
   "summary": "Dynamic programming finds the longest sequence of bolts that keeps rising (not necessarily neighbours): it flies at the front foe, every bolt in it stronger by the sequence's length. Every other bolt becomes block.",
   "function": "lis_strike",
+  "forge": {"into": "lis-strike-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a seed and a salvo",

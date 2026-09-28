@@ -1,0 +1,48 @@
+{
+  "id": "import-heapq",
+  "name": "import heapq",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "import",
+  "complexity": "constant",
+  "makes": "unsorted",
+  "summary": "For the rest of the fight, every strike card is handed the volley strongest first: a heap pops the biggest bolt in turn, before each aim, for free.",
+  "function": "import_heapq",
+  "module": "heapq",
+  "line": {"python": "import heapq", "javascript": "import { nlargest } from \"./heapq.js\";"},
+  "effects": [{"kind": "hook-before", "role": "strike"}],
+  "forge": {"into": "import-heapq-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "strongest first",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 7, "element": "none" }
+      ],
+      "expect": [
+        { "power": 9, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" }
+      ]
+    },
+    {
+      "name": "equal bolts keep their order",
+      "bolts": [
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "frost" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 6, "element": "none" },
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "frost" }
+      ]
+    }
+  ]
+}

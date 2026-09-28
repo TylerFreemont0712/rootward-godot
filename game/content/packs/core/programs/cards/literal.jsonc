@@ -8,6 +8,8 @@
   "complexity": "constant",
   "summary": "Appends one 9-power bolt: a constant written into the code, added in O(1).",
   "function": "literal",
+  "keywords": ["const"],
+  "forge": {"into": "literal-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "after the seed",

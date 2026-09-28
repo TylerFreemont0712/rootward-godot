@@ -9,6 +9,7 @@
   "big_o": "O(k)",
   "summary": "Copies the last bolt three more times (three 4-power bolts when the volley is empty). Put your strongest bolt last before it.",
   "function": "repeat",
+  "forge": {"into": "repeat-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the seed, twice as long",

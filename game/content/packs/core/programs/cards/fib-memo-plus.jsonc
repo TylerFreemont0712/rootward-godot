@@ -1,0 +1,36 @@
+{
+  "id": "fib-memo-plus",
+  "name": "Fibonacci Table+",
+  "rarity": "rare",
+  "art": "fib-memo",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "The Fibonacci surge from a table built once: each bolt gains fib(i) for its place i, up to fib(20), in O(n).",
+  "function": "fib_memo_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a salvo, the same surge",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 14, "element": "none" }
+      ]
+    }
+  ]
+}

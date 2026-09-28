@@ -1,0 +1,31 @@
+{
+  "id": "salvo-plus",
+  "name": "Salvo+",
+  "rarity": "common",
+  "art": "salvo",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "Adds a rising run of six bolts, 2 to 7 power, after the volley.",
+  "function": "salvo_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the seed and a salvo",
+      "bolts": [
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 7, "element": "none" }
+      ]
+    }
+  ]
+}

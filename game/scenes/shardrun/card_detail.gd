@@ -10,7 +10,7 @@ const COLUMNS := 74
 const CODE_SIZE := 13
 
 
-## `forge_into` names the card a forge turns it into ("" when none does).
+## `forge_into` names the card a forge turns it into ("" when none does); `meanings` says what each keyword means.
 static func create(
 	card: Dictionary,
 	id: String,
@@ -18,10 +18,11 @@ static func create(
 	summaries: bool,
 	colour: Color,
 	tags: Array[String],
-	forge_into: String
+	forge_into: String,
+	meanings: Dictionary = {}
 ) -> CardDetail:
 	var detail := CardDetail.new()
-	detail._build(card, id, language, summaries, colour, tags, forge_into)
+	detail._build(card, id, language, summaries, colour, tags, forge_into, meanings)
 	return detail
 
 
@@ -32,7 +33,8 @@ func _build(
 	summaries: bool,
 	colour: Color,
 	tags: Array[String],
-	forge_into: String
+	forge_into: String,
+	meanings: Dictionary
 ) -> void:
 	var look := UiTheme.box(Color(0.07, 0.05, 0.09, 0.97), colour.darkened(0.15), 2, 10, Vector2(14, 12))
 	look.shadow_color = Color(0, 0, 0, 0.55)
@@ -55,6 +57,16 @@ func _build(
 		kinds.append(Ui.tint(Ui.label("  ·  ".join(tags), "Faint"), colour.lightened(0.1)))
 	if not kinds.is_empty():
 		column.add_child(Ui.hbox(kinds, 14))
+	# Each keyword with what it means (ADR-0018), in its colour on the card's face.
+	for keyword: String in card.get("keywords", []):
+		var meaning := String(meanings.get(keyword, ""))
+		var line := Ui.label("%s · %s" % [keyword, meaning] if meaning != "" else keyword, "Faint", true)
+		column.add_child(Ui.tint(line, KeywordChips.colour_of(keyword)))
+	if card.get("role", "") == "import":
+		var imported := Ui.label(
+			"Play it into the Program: it becomes a line at the top and holds for the rest of the fight.", "Faint", true
+		)
+		column.add_child(Ui.tint(imported, RoleBadge.colour_of("import")))
 	var painted: PackedStringArray = []
 	if summaries and card.has("summary"):
 		for line in CodeColors.comment_lines(String(card.summary), language, COLUMNS):

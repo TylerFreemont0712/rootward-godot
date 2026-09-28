@@ -1,0 +1,32 @@
+{
+  "id": "generator",
+  "name": "Generator",
+  "rarity": "rare",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "A generator that never runs out: for the rest of the fight, every program starts with two more 3-power bolts, yielded one at a time.",
+  "function": "generator",
+  "module": "generator",
+  "line": {"python": "from sources import spring  # yields a 3-power bolt forever", "javascript": "import { spring } from \"./sources.js\"; // yields a 3-power bolt forever"},
+  "effects": [{"kind": "seed-bolts", "count": 2, "power": 3}],
+  "forge": {"into": "generator-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "two more bolts",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "id": "exhaustive-ward-plus",
+  "name": "Exhaustive Ward+",
+  "rarity": "rare",
+  "art": "exhaustive-ward",
+  "cost": 1,
+  "paradigm": "brute-force",
+  "role": "guard",
+  "complexity": "exponential",
+  "big_o": "O(2ⁿ)",
+  "cap_n": 10,
+  "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard; the rest still fly.",
+  "function": "exhaustive_ward_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "17, the least over 16",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none", "block": true },
+        { "power": 8, "element": "none", "block": true },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 6, "element": "none" }
+      ]
+    },
+    {
+      "name": "never reaching 16",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true }
+      ]
+    }
+  ]
+}

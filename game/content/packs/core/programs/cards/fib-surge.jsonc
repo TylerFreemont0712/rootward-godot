@@ -2,7 +2,6 @@
   "id": "fib-surge",
   "name": "Fibonacci Surge",
   "rarity": "uncommon",
-  "art": "resonate",
   "cost": 1,
   "paradigm": "dynamic",
   "role": "shape",

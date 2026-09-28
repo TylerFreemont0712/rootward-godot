@@ -2,13 +2,13 @@
   "id": "merge-strike",
   "name": "Merge Strike",
   "rarity": "rare",
-  "art": "fuse",
   "cost": 2,
   "paradigm": "divide-conquer",
   "role": "strike",
   "complexity": "linear",
   "summary": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20%. It flies at the toughest foe.",
   "function": "merge_strike",
+  "forge": {"into": "merge-strike-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "four bolts into one",
@@ -72,6 +72,19 @@
           }
         ]
       }
+    },
+    {
+      "name": "with import math",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 5, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "imports": ["math"]},
+      "expect": [
+        { "power": 39, "element": "none", "foe": 0 }
+      ]
     }
   ]
 }

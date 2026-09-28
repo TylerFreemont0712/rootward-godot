@@ -6,7 +6,8 @@ var base: Dictionary
 
 
 func before() -> void:
-	base = ProgramRules.catalog_for(ContentLoader.load_shardrun().catalog)
+	# Initiative off, so each relic's numbers are its own (ADR-0017; program_rules_test covers Initiative).
+	base = ProgramCatalogs.without_initiative(ProgramRules.catalog_for(ContentLoader.load_shardrun().catalog))
 
 
 ## The catalog with one more relic, `test`, doing `effects`.

@@ -1,0 +1,66 @@
+{
+  "id": "quick-sort-plus",
+  "name": "Quick Sort+",
+  "rarity": "uncommon",
+  "art": "quick-sort",
+  "cost": 0,
+  "paradigm": "divide-conquer",
+  "role": "order",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n), O(n²) sorted",
+  "makes": "sorted",
+  "summary": "The median of the first, middle and last bolts is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. O(n log n), even on a sorted volley.",
+  "function": "quick_sort_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a shuffled volley",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 4, "element": "frost" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "frost" },
+        { "power": 5, "element": "none" }
+      ]
+    },
+    {
+      "name": "equal powers keep their order",
+      "bolts": [
+        { "power": 3, "element": "fire" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "fire" },
+        { "power": 3, "element": "none" }
+      ]
+    },
+    {
+      "name": "an already sorted volley",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ]
+    }
+  ]
+}

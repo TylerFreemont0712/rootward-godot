@@ -9,6 +9,7 @@
   "big_o": "O(n + m)",
   "summary": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt then looks its target up in O(1). A bolt no foe is weak to flies at the front foe.",
   "function": "hash_aim",
+  "forge": {"into": "hash-aim-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "each to its weakness",

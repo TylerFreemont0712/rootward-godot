@@ -10,10 +10,20 @@ bible's bestiary. Numbers are starting points in the foe files' units (HP before
 with the balance probe like everything else.
 
 `concepts/overview.png` shows the fifteen at a glance, one candidate each: the one that became the sprite. The picks
-(candidate numbers, as in the file names): Mantis 2, Tortoise 1, Moth 0, Hare 1, Stag 2, Raven 2, Crab 1, Slime 1,
-Hound 0, Monolith 2, Hydra 0, Wyrm 0, Hoarder 2, Scheduler 2, Oracle 1. Three came out further from their brief than
-the rest and are worth a second pass before they go in: the Hare has no afterimages (it reads as an armoured rabbit
-knight), the Hydra is a two-headed coil of snake rather than knotted cables, and the Wyrm is not visibly in segments.
+(candidate numbers, as in the file names): Mantis 2, Tortoise 1, Moth 0, Hare 0, Stag 2, Raven 2, Crab 1, Slime 1,
+Hound 0, Monolith 2, Hydra 0 (its head 1), Wyrm 0, Hoarder 2, Scheduler 2, Oracle 1.
+
+**Second pass (2026-09-28).** Three had drifted from their brief. Each got two more rounds of prompts:
+
+- **The Hare** is now a glazed ceramic nesting doll whose back opens on a smaller hare inside: recursion you can see.
+  The first pass (an armoured rabbit knight with no afterimages) is replaced; no prompt produced afterimages.
+- **The Hydra** is built from parts, as its mechanic is: the body keeps the first pass (a coil of cable-necked
+  snakes, `11-spaghetti-hydra-*`), and a head of its own (`11-spaghetti-hydra-head-*`, a snake head on a black cable
+  neck with a plug for a tongue, sprite `foes/spaghetti-hydra-head`) is drawn once for each of its three heads. The
+  image model would not draw a headless knot of cables: every "body" came back a creature.
+- **The Wyrm** keeps its first pass. Asked for a head alone or a lone segment, the model drew whole dragons, or small
+  armoured figures. When it goes in, its five segments should be five foes sharing one segment sprite that the stage
+  draws apart (the parts approach the Hydra uses), and that sprite is better modelled in Blender than prompted.
 
 ## Where they go
 
@@ -70,8 +80,9 @@ Numbers: small, HP 18, tempo 32. Intents: heal allies 4, minify (hide intents), 
 Needs: hidden intents in the view (the race bar and the foe panels show `?`).
 
 **4. Recursive Hare** (`concepts/04-recursive-hare-*.png`)
-Look: A long-legged forest hare with nested ceramic plates and small afterimages that repeat its pose. Its silhouette
-should feel quick and uncanny rather than serpent-like.
+Look (original brief): A long-legged forest hare with nested ceramic plates and small afterimages that repeat its pose.
+Its silhouette should feel quick and uncanny rather than serpent-like. Look (second pass): a glazed ceramic nesting-doll
+hare whose back opens on a smaller hare inside; its splits are the smaller dolls.
 Numbers: medium, HP 32, tempo 20. Intents: kick 5, kick twice 3 × 2.
 Needs: summons (a split spawns two foes with the remaining HP halved), in the rules' own resolve.
 
@@ -108,8 +119,9 @@ A towering stone monolith golem, carved with glowing runes and moss, tiny eyes, 
 Numbers: huge, guardian, HP 140, tempo 384. Intents: shuffle Legacy Code, slam 12, grow (+10 HP if untouched).
 Needs: bug cards; damage-taken-this-turn on the foe.
 
-**11. Spaghetti Hydra** (`concepts/11-spaghetti-hydra-*.png`)
-A hydra whose necks are tangled, knotted cables, each ending in a small angry snake head.
+**11. Spaghetti Hydra** (`concepts/11-spaghetti-hydra-*.png`, and its head, `11-spaghetti-hydra-head-*.png`)
+A hydra whose necks are tangled, knotted cables, each ending in a small angry snake head. Built from parts: the body,
+and one head sprite drawn for each head, so a head cut off (or grown back) is a foe of its own.
 Numbers: huge, guardian, a body of 120 HP and three heads of 20. Intents per head: bite 5; the body: coil 10.
 Needs: multi-body foes (parts that share a fate) and a rule that reads which parts a program hit.
 

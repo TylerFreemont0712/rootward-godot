@@ -70,8 +70,7 @@ static func build_job(
 		for shard: Dictionary in spell.shards:
 			if not index_of.has(shard.id):
 				index_of[shard.id] = shards.size()
-				var name := function_name(shard, language)
-				shards.append({"id": shard.id, "name": name, "source": shard.code[language]})
+				shards.append(_entry(shard, language))
 			indexes.append(index_of[shard.id])
 		var program := {"id": spell.id, "shards": indexes}
 		# A spell may start from its own bolts and battle instead of the job's (content validation's worked examples).
@@ -80,6 +79,16 @@ static func build_job(
 		if spell.has("battle"):
 			program.battle = spell.battle
 		programs.append(program)
+	# A program run's imports can hook the cards of a role (ADR-0018): their functions run before or after each one.
+	var hooks: Array[Dictionary] = []
+	for hook: Dictionary in input.get("hooks", []):
+		var shard: Dictionary = hook.card
+		if shard.is_empty() or not (shard.get("code", {}) as Dictionary).has(language):
+			continue
+		if not index_of.has(shard.id):
+			index_of[shard.id] = shards.size()
+			shards.append(_entry(shard, language))
+		hooks.append({"shard": index_of[shard.id], "when": hook.when, "role": hook.role})
 	var data := {
 		"marker": marker,
 		"shards": shards,
@@ -89,6 +98,8 @@ static func build_job(
 		"limit": input.limit,
 		"traceLimit": input.trace_limit,
 	}
+	if not hooks.is_empty():
+		data.hooks = hooks
 	# A program run counts its cards' loops and calls (ADR-0012); other runs never ask, so their jobs are as they were.
 	if input.get("count", false):
 		data.count = true
@@ -103,6 +114,14 @@ static func build_job(
 	# Written as JavaScript would, so shard code sees 4 rather than 4.0 (see JsJson).
 	job.stdin = JsJson.stringify(data)
 	return job
+
+
+## A shard as the harness takes it: its id, function name and source, and a program card's role (for hooks).
+static func _entry(shard: Dictionary, language: String) -> Dictionary:
+	var entry := {"id": shard.id, "name": function_name(shard, language), "source": shard.code[language]}
+	if shard.has("role"):
+		entry.role = shard.role
+	return entry
 
 
 ## Each spell's run from a finished job, keyed by spell id.

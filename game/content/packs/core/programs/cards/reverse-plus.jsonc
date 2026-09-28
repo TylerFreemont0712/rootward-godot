@@ -1,0 +1,32 @@
+{
+  "id": "reverse-plus",
+  "name": "Reverse+",
+  "rarity": "common",
+  "art": "reverse",
+  "cost": 0,
+  "paradigm": "neutral",
+  "role": "order",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "Turns the volley around in place, two pointers swapping from the ends in. It stays in your hand from turn to turn.",
+  "function": "reverse_plus",
+  "keywords": ["const"],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "strongest first",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "spark" }
+      ],
+      "expect": [
+        { "power": 4, "element": "spark" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 1, "element": "none" }
+      ]
+    }
+  ]
+}

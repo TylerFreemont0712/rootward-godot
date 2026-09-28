@@ -4,7 +4,8 @@ extends RefCounted
 ## Integrity, a program slot, curses) are applied by the shared rules as they always were; the kinds here are the
 ## program's: the input a program starts from, what its cards cost and how much work they do, how long foes wait, the
 ## budget, and what the volley does when it lands. ProgramRules asks for them at each step, the same in a preview as in
-## a cast, so a relic never makes the cast differ from what its preview said.
+## a cast, so a relic never makes the cast differ from what its preview said. An import is a relic for the rest of its
+## fight (ADR-0018): its effects count from the program whose top it is written at.
 
 
 ## Every program relic effect the run holds, summed into one Dictionary. Pure: the state and the catalog in, numbers
@@ -40,14 +41,20 @@ static func modifiers(state: Dictionary, catalog: Dictionary) -> Dictionary:
 		"strongest_mult": 1.0,
 		"echo": false,
 		"all_elements": false,
+		"card_cost": {},
+		"hooks": [],
+		"globals": [],
 	}
 	for relic_id: String in state.get("relics", []):
 		for effect: Dictionary in (catalog.relics.get(relic_id, {}) as Dictionary).get("effects", []):
 			_apply(m, effect)
+	for card_id: String in ProgramDeck.imports(state, catalog):
+		for effect: Dictionary in (catalog.shards.get(card_id, {}) as Dictionary).get("effects", []):
+			_apply(m, effect, card_id)
 	return m
 
 
-static func _apply(m: Dictionary, effect: Dictionary) -> void:
+static func _apply(m: Dictionary, effect: Dictionary, source := "") -> void:
 	match effect.kind:
 		"seed-bolts":
 			(m.seed_bolts as Array).append({"count": int(effect.count), "power": int(effect.power)})
@@ -76,6 +83,15 @@ static func _apply(m: Dictionary, effect: Dictionary) -> void:
 		"kill-mana":
 			m.kill_mana += int(effect.amount)
 			m.kill_mana_max += int(effect.max)
+		"card-cost":
+			for id: String in effect.cards:
+				m.card_cost[id] = int(m.card_cost.get(id, 0)) + int(effect.add)
+		"hook-before", "hook-after":
+			var when: String = "before" if effect.kind == "hook-before" else "after"
+			(m.hooks as Array).append({"card": source, "when": when, "role": effect.role})
+		"global":
+			if not effect.name in m.globals:
+				(m.globals as Array).append(effect.name)
 
 
 # --- Before the program runs ------------------------------------------------------------------------------------------
@@ -104,7 +120,7 @@ static func cost(state: Dictionary, card_ids: Array, catalog: Dictionary) -> int
 	var seen := {}
 	for id: String in card_ids:
 		var card: Dictionary = catalog.shards.get(id, {})
-		var price := int(card.get("cost", 0))
+		var price := maxi(0, int(card.get("cost", 0)) + int((m.card_cost as Dictionary).get(id, 0)))
 		if (m.role_cost as Dictionary).has(card.get("role", "")):
 			price = mini(price, int(m.role_cost[card.role]))
 		if m.duplicate_free and seen.has(id):

@@ -1,0 +1,58 @@
+{
+  "id": "repeat-plus",
+  "name": "Repeat+",
+  "rarity": "common",
+  "art": "repeat",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "source",
+  "complexity": "constant",
+  "big_o": "O(k)",
+  "summary": "Copies the last bolt four more times (four 4-power bolts when the volley is empty).",
+  "function": "repeat_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the seed and four more",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    },
+    {
+      "name": "the strongest last",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 9, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 2, "element": "none" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" },
+        { "power": 9, "element": "fire" }
+      ]
+    },
+    {
+      "name": "an empty volley",
+      "bolts": [],
+      "expect": [
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 4, "element": "none" }
+      ]
+    }
+  ]
+}

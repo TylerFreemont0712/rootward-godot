@@ -53,7 +53,7 @@ func finished(state: Dictionary, spell: Dictionary) -> Dictionary:
 	var input := input_for(state)
 	if input.is_empty():
 		return {}
-	if (spell.shards as Array).is_empty():
+	if _steps(spell).is_empty():
 		return empty_run(input)
 	return _done.get(key_of(state, spell, input), {})
 
@@ -68,7 +68,7 @@ func runs_for(state: Dictionary, spells: Array) -> Dictionary:
 	var missing: Array[Dictionary] = []
 	var keys := {}
 	for spell: Dictionary in spells:
-		if (spell.shards as Array).is_empty():
+		if _steps(spell).is_empty():
 			results[spell.id] = empty_run(input)
 			continue
 		var key := key_of(state, spell, input)
@@ -95,10 +95,11 @@ func _run_batch(language: String, spells: Array[Dictionary], input: Dictionary, 
 	var programs: Array[Dictionary] = []
 	for spell in spells:
 		var shards: Array[Dictionary] = []
-		for shard_id: String in spell.shards:
+		var steps := _steps(spell)
+		for shard_id: String in steps:
 			if catalog.shards.has(shard_id):
 				shards.append(catalog.shards[shard_id])
-		if shards.size() != (spell.shards as Array).size():
+		if shards.size() != steps.size():
 			runs[spell.id] = _failure("one of its shards no longer exists")
 		else:
 			programs.append({"id": spell.id, "shards": shards})
@@ -106,8 +107,16 @@ func _run_batch(language: String, spells: Array[Dictionary], input: Dictionary, 
 		_flying[keys[program.id]] = true
 	if not programs.is_empty():
 		var job_limits := limits
+		# The hooks travel as card ids in the input (its key); the harness needs their code.
+		var job_input := input.duplicate()
+		var hooks: Array = []
+		for hook: Dictionary in input.get("hooks", []):
+			var hooked := hook.duplicate()
+			hooked.card = catalog.shards.get(hook.card, {})
+			hooks.append(hooked)
+		job_input.hooks = hooks
 		var ran: Dictionary = await Background.run(
-			func() -> Dictionary: return SpellHarness.run(language, programs, input, job_limits)
+			func() -> Dictionary: return SpellHarness.run(language, programs, job_input, job_limits)
 		)
 		runs.merge(ran)
 	for program in programs:
@@ -137,14 +146,20 @@ func input_for(state: Dictionary) -> Dictionary:
 		return {}
 	var balance: Dictionary = catalog.balance
 	if state.get("playstyle") == "program":
-		# A program starts from its seed volley, and may grow up to the program limit (ADR-0012).
+		# A program starts from its seed volley, and may grow up to the program limit (ADR-0012). Its cards see the
+		# modules imported and the fight's globals, and its imports' hooks run around the cards of their role
+		# (ADR-0018).
 		var config := ProgramRules.config_of(catalog)
+		var seen := ShardrunRules.shard_battle(state, battle)
+		seen.imports = ProgramDeck.modules(state, catalog)
+		seen.globals = (battle.get("globals", {}) as Dictionary).duplicate()
 		return {
 			"bolts": ProgramRules.seed(state, catalog),
-			"battle": ShardrunRules.shard_battle(state, battle),
+			"battle": seen,
 			"limit": int(config.max_bolts),
 			"trace_limit": int(balance.trace_bolts),
 			"count": true,
+			"hooks": ProgramRelics.modifiers(state, catalog).hooks,
 		}
 	return {
 		"bolts": [ShardrunRules.base_bolt(balance)],
@@ -152,6 +167,11 @@ func input_for(state: Dictionary) -> Dictionary:
 		"limit": int(balance.max_pipeline_bolts),
 		"trace_limit": int(balance.trace_bolts),
 	}
+
+
+## The cards of a spell that run as its steps: a program's imports are lines at its top, not steps (ADR-0018).
+func _steps(spell: Dictionary) -> Array:
+	return ProgramDeck.steps(spell.shards, catalog)
 
 
 static func key_of(state: Dictionary, spell: Dictionary, input: Dictionary) -> String:

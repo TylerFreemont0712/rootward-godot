@@ -1,0 +1,30 @@
+{
+  "id": "import-numpy",
+  "name": "import numpy",
+  "rarity": "rare",
+  "cost": 2,
+  "paradigm": "neutral",
+  "role": "import",
+  "complexity": "constant",
+  "summary": "For the rest of the fight, shape cards do O(1) work: the whole volley changes in one vectorised step instead of bolt by bolt.",
+  "function": "import_numpy",
+  "module": "numpy",
+  "line": {"python": "import numpy as np", "javascript": "import * as np from \"./numpy.js\";"},
+  "effects": [{"kind": "role-complexity", "role": "shape", "complexity": "constant"}],
+  "forge": {"into": "import-numpy-plus", "verb": "upgrade"},
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ]
+    }
+  ]
+}

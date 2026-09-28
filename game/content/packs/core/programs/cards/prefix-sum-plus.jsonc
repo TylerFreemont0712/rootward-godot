@@ -1,0 +1,37 @@
+{
+  "id": "prefix-sum-plus",
+  "name": "Prefix Sum+",
+  "rarity": "uncommon",
+  "art": "prefix-sum",
+  "cost": 0,
+  "paradigm": "search-index",
+  "role": "shape",
+  "complexity": "linear",
+  "makes": "sorted",
+  "summary": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted. It costs nothing.",
+  "function": "prefix_sum_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a salvo summed",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 13, "element": "none" },
+        { "power": 18, "element": "none" },
+        { "power": 24, "element": "none" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "id": "kadane-plus",
+  "name": "Kadane+",
+  "rarity": "uncommon",
+  "art": "kadane",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "role": "shape",
+  "complexity": "linear",
+  "summary": "Kadane's algorithm scores each bolt as its power minus 3 and keeps a running best: the strongest run of neighbours fuses into one bolt, 2 stronger for every bolt in it.",
+  "function": "kadane_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the strong end of a salvo",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 21, "element": "none" }
+      ]
+    },
+    {
+      "name": "a gap breaks the run",
+      "bolts": [
+        { "power": 9, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 8, "element": "none" },
+        { "power": 7, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 9, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 19, "element": "none" }
+      ]
+    }
+  ]
+}

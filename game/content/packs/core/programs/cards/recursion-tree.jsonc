@@ -9,6 +9,7 @@
   "makes": "unsorted",
   "summary": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep: one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
   "function": "recursion_tree",
+  "forge": {"into": "recursion-tree-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "after the seed",
@@ -28,6 +29,28 @@
         { "power": 4, "element": "none" },
         { "power": 3, "element": "none" },
         { "power": 3, "element": "none" }
+      ]
+    },
+    {
+      "name": "with import math",
+      "bolts": [],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 6}, "foes": [{"name": "Training Dummy", "hp": 20, "max": 20, "shield": 0, "weak": [], "resist": []}], "imports": ["math"]},
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "none" }
       ]
     }
   ]

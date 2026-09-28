@@ -1,0 +1,41 @@
+{
+  "id": "lis-strike-plus",
+  "name": "LIS Strike+",
+  "rarity": "rare",
+  "art": "lis-strike",
+  "cost": 2,
+  "paradigm": "dynamic",
+  "role": "strike",
+  "complexity": "quadratic",
+  "big_o": "O(n²)",
+  "summary": "Dynamic programming finds the longest rising sequence of bolts: they fly at the front foe, each 2 stronger for every bolt in the sequence. The rest ward.",
+  "function": "lis_strike_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a seed and a salvo",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 6, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 13, "element": "none", "foe": 0 },
+        { "power": 14, "element": "none", "foe": 0 },
+        { "power": 15, "element": "none", "foe": 0 },
+        { "power": 16, "element": "none", "foe": 0 },
+        { "power": 17, "element": "none", "foe": 0 },
+        { "power": 18, "element": "none", "foe": 0 }
+      ]
+    }
+  ]
+}

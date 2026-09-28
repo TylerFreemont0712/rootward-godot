@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Drops every bolt under 3 power; the strongest bolt that stays absorbs what was dropped. If none would stay, it keeps them all.",
   "function": "filter_weak",
+  "forge": {"into": "filter-weak-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a salvo, filtered",

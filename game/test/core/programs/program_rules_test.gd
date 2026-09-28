@@ -2,10 +2,13 @@ extends GdUnitTestSuite
 ## The Shardrun's programs (ADR-0012): the draft, work by complexity class, foe tempo, the budget, and the resolver.
 
 var catalog: Dictionary
+## The content's own, Initiative included.
+var content: Dictionary
 
 
 func before() -> void:
-	catalog = ProgramRules.catalog_for(ContentLoader.load_shardrun().catalog)
+	content = ProgramRules.catalog_for(ContentLoader.load_shardrun().catalog)
+	catalog = ProgramCatalogs.without_initiative(content)
 
 
 func _step(state: Dictionary, command: Dictionary) -> Dictionary:
@@ -187,3 +190,99 @@ func test_lint_warns_when_a_sorted_card_follows_an_unsorted_one() -> void:
 func test_a_program_run_never_binds_a_second_program() -> void:
 	var state := _drafted()
 	assert_bool(ShardrunRules.bindable_spell(state, catalog, true).is_empty()).is_true()
+
+
+func test_a_foe_the_program_lands_before_takes_initiatives_bonus() -> void:
+	var state := _fight()
+	# 40 linear work: the imp (16) moves first and takes the bolt plainly; the golem (256) is caught before it moves.
+	var bolts := [{"power": 8, "element": "none", "foe": 0}, {"power": 8, "element": "none", "foe": 1}]
+	var outcome := {"ok": true, "bolts": bolts, "work": [{"shard": "salvo", "given": 1, "returned": 40}]}
+	var next := state.duplicate(true)
+	next.spells[0].shards = ["salvo"]
+	var cast := Shardrun.step(next, {"type": "cast", "spell_id": next.spells[0].id, "outcome": outcome}, content)
+	var bonus := float(ProgramRules.config_of(content).initiative)
+	assert_float(bonus).is_greater(0.0)
+	assert_int(int(cast.state.battle.foes[0].hp)).is_equal(20 - 8)
+	assert_int(int(cast.state.battle.foes[1].hp)).is_equal(30 - floori(8 * (1.0 + bonus)))
+	var hits := (cast.state.log as Array).filter(func(entry: Dictionary) -> bool: return entry.kind == "hit")
+	assert_bool(hits[0].has("initiative")).is_false()
+	assert_bool(hits[1].get("initiative", false)).is_true()
+
+
+func test_each_intent_has_its_own_speed() -> void:
+	var state := _fight()
+	var imp: Dictionary = state.battle.foes[0]
+	# A Shardrun foe's speeds are in programs.jsonc, one for each intent, in order.
+	var speeds: Array = ProgramRules.config_of(catalog).tempo[imp.id]
+	for at in speeds.size():
+		imp.intent_index = at
+		assert_int(ProgramRules.tempo_of(imp, state, catalog)).is_equal(int(speeds[at]))
+	# A program foe's intent carries its own.
+	imp.intents = [{"kind": "strike", "power": 4, "tempo": 7}]
+	imp.intent_index = 0
+	assert_int(ProgramRules.tempo_of(imp, state, catalog)).is_equal(7)
+
+
+func test_the_budget_shrinks_with_each_layer() -> void:
+	var state := _fight()
+	var by_layer: Array = ProgramRules.config_of(catalog).budget
+	for layer in by_layer.size() + 2:
+		state.layer = layer
+		assert_int(ProgramRules.budget(state, catalog)).is_equal(int(by_layer[mini(layer, by_layer.size() - 1)]))
+	assert_int(int(by_layer[-1])).is_less(int(by_layer[0]))
+
+
+## The test fight's two foes as the halves of a deadlock: each holds the lock the other needs.
+func _deadlocked() -> Dictionary:
+	var state := _fight()
+	var foes: Array = state.battle.foes
+	foes[0].trait = {"kind": "deadlock", "partner": foes[1].id}
+	foes[1].trait = {"kind": "deadlock", "partner": foes[0].id}
+	return state
+
+
+func test_a_deadlock_holds_unless_one_program_hits_both_halves() -> void:
+	var state := _deadlocked()
+	var work := [{"shard": "salvo", "given": 1, "returned": 2}]
+	# Everything at the first half: its twin was never touched, so the lock holds and nothing lands.
+	var one_sided := _cast(state, ["salvo"], [{"power": 9, "foe": 0}, {"power": 9, "foe": 0}], work)
+	assert_int(int(one_sided.battle.foes[0].hp)).is_equal(20)
+	assert_int(_kinds(one_sided).count("locked")).is_equal(2)
+	# One bolt at each: both locks are taken in the same program, and both halves are hurt.
+	var both := _cast(state, ["salvo"], [{"power": 9, "foe": 0}, {"power": 9, "foe": 1}], work)
+	assert_int(int(both.battle.foes[0].hp)).is_equal(20 - 9)
+	assert_int(int(both.battle.foes[1].hp)).is_equal(30 - 9)
+	assert_bool(_kinds(both).has("locked")).is_false()
+
+
+func test_a_broken_half_frees_its_twin() -> void:
+	var state := _deadlocked()
+	state.battle.foes[1].hp = 0
+	var cast := _cast(state, ["salvo"], [{"power": 9, "foe": 0}], [{"shard": "salvo", "given": 1, "returned": 1}])
+	assert_int(int(cast.battle.foes[0].hp)).is_equal(20 - 9)
+
+
+func test_the_preview_counts_the_bolts_a_lock_holds() -> void:
+	var state := _deadlocked()
+	var outcome := {
+		"ok": true, "bolts": [{"power": 5, "foe": 1}], "work": [{"shard": "salvo", "given": 1, "returned": 1}]
+	}
+	state.spells[0].shards = ["salvo"]
+	var preview := ShardrunBattle.preview_cast(state, state.spells[0].id, outcome, catalog)
+	assert_int(int(preview.locked)).is_equal(1)
+	assert_int(int(preview.damage)).is_equal(0)
+
+
+func test_a_program_run_meets_the_golem_as_two_locks() -> void:
+	assert_array(_heap(catalog).encounters.boss).is_equal([["deadlock-lock-a", "deadlock-lock-b"]])
+	# Spellforge's Heap keeps its one-bodied Golem.
+	assert_array(_heap(ContentLoader.load_shardrun().catalog).encounters.boss).is_equal([["deadlock-golem"]])
+	for id: String in ["deadlock-lock-a", "deadlock-lock-b"]:
+		assert_str(String(catalog.foes[id].trait.kind)).is_equal("deadlock")
+
+
+static func _heap(from: Dictionary) -> Dictionary:
+	for layer: Dictionary in from.config.layers:
+		if layer.id == "heap":
+			return layer
+	return {}

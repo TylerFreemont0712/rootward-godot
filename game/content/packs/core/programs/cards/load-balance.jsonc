@@ -9,6 +9,7 @@
   "big_o": "O(n log n + n·m)",
   "summary": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after what is already aimed at it. The damage spreads evenly.",
   "function": "load_balance",
+  "forge": {"into": "load-balance-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "spread evenly",

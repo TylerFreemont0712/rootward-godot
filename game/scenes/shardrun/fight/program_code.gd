@@ -75,7 +75,7 @@ func show_program(state: Dictionary, view: Dictionary) -> void:
 	var spell: Dictionary = (state.spells as Array)[0]
 	var cards: Array = spell.shards
 	var fresh := view if _for(view, cards) else {}
-	_lines = ProgramViews.code_lines(state.language, cards, fresh, session.catalog)
+	_lines = ProgramViews.code_lines(state, cards, fresh, session.catalog)
 	# The code already there when the fight is drawn is simply there; only what is played from now on is written in.
 	var first := _code.show_lines(_lines, _drawn)
 	_drawn = true
@@ -156,19 +156,36 @@ func _summary(view: Dictionary, cards: Array) -> String:
 	var parts: Array[String] = []
 	for warning: Dictionary in view.get("lint", []):
 		parts.append("⚠ " + String(warning.message))
-	var first: Array = (view.get("race", []) as Array).filter(func(entry: Dictionary) -> bool: return entry.first)
+	var race: Array = view.get("race", [])
+	var first := race.filter(func(entry: Dictionary) -> bool: return entry.first)
 	if not first.is_empty():
-		var names := ", ".join(first.map(func(entry: Dictionary) -> String: return entry.name))
-		parts.append("⚡ %s %s before it lands." % [names, "acts" if first.size() == 1 else "act"])
+		parts.append("⚡ %s %s before it lands." % [_names(first), "acts" if first.size() == 1 else "act"])
+	if int(view.get("locked", 0)) > 0:
+		var noun := "bolt" if int(view.locked) == 1 else "bolts"
+		parts.append("⚠ %d %s held by a lock: hit both halves of a deadlock in one program." % [int(view.locked), noun])
+	var caught := race.filter(func(entry: Dictionary) -> bool: return not entry.first)
+	var bonus := roundi((ProgramRules.initiative(session.state, session.catalog) - 1.0) * 100.0)
+	if not caught.is_empty() and bonus > 0:
+		var verb := "moves" if caught.size() == 1 else "move"
+		parts.append("» Initiative: it lands before %s %s, +%d%% damage." % [_names(caught), verb, bonus])
 	if view.has("result"):
 		var result: Dictionary = view.result
-		var outcome := "→ %d bolts · %d damage" % [int(result.bolts), int(result.damage)]
+		var noun := "bolt" if int(result.bolts) == 1 else "bolts"
+		var outcome := "→ %d %s · %d damage" % [int(result.bolts), noun, int(result.damage)]
 		if int(result.block) > 0:
 			outcome += " · %d block" % int(result.block)
 		if int(result.wasted) > 0:
 			outcome += " · %d wasted" % int(result.wasted)
 		parts.append(outcome)
 	return "\n".join(parts)
+
+
+## Race entries' names as a list: "A", "A and B", "A, B and C".
+static func _names(entries: Array) -> String:
+	var names: PackedStringArray = entries.map(func(entry: Dictionary) -> String: return entry.name)
+	if names.size() <= 1:
+		return "".join(names)
+	return "%s and %s" % [", ".join(names.slice(0, names.size() - 1)), names[names.size() - 1]]
 
 
 func _summary_colour(view: Dictionary) -> Color:
@@ -495,7 +512,8 @@ class RaceBar:
 		var above := true
 		for entry: Dictionary in _race:
 			var x := _x(int(entry.tempo))
-			var tint := UiTheme.FAIL.lightened(0.15) if entry.first else UiTheme.MUTED
+			# Red: it acts before the program lands. Gold: the program lands first (Initiative). Grey: nothing known yet.
+			var tint := UiTheme.FAIL.lightened(0.15) if entry.first else (UiTheme.AMBER if _known else UiTheme.MUTED)
 			draw_colored_polygon(
 				PackedVector2Array([Vector2(x, y - 2), Vector2(x - 5, y - 11), Vector2(x + 5, y - 11)]), tint
 			)

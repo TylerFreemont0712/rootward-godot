@@ -1,0 +1,9 @@
+{
+  "id": "overclock",
+  "name": "Overclock",
+  "tier": "common",
+  "icon": "overclock",
+  "summary": "Your programs may do 1024 more operations before they time out, in every layer.",
+  "flavor": "Voids the warranty. Runs anyway.",
+  "effects": [{ "kind": "budget", "add": 1024 }]
+}

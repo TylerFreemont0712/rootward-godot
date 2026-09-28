@@ -9,9 +9,9 @@ signal numbers_changed
 
 ## Flight times by how a bolt flies: straight, a lance that pierces, a rain on everyone, a seeker that picks a target.
 const FLIGHT := {"missile": 250.0, "lance": 140.0, "rain": 380.0, "seeker": 320.0}
-const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted"]
+const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", "wasted"]
 ## What a cast logs after itself, before the next thing happens: its bolts, and what fizzled or burned on the way.
-const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "ward", "wasted", "defeat", "fizzle", "curse"]
+const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", "wasted", "defeat", "fizzle", "curse"]
 ## A cast's magic circle by how much its volley deals (damage and block together), as the old games drew a higher spell
 ## with a more elaborate circle: [the most power for the tier, animation, size]. Stronger still is the last tier.
 const TIERS: Array[Array] = [[11, "cast-sigil-1", 0.8], [34, "cast-sigil", 0.95], [79, "cast-sigil-3", 1.05]]
@@ -253,6 +253,13 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 			if view != null:
 				stage.popup(view.top_point(), "glance", UiTheme.MUTED, 24)
 			Sound.play("sfx-glance", 0.7)
+		"locked":
+			# A deadlock held (ADR-0017): the bolt rings off a lock whose partner this program never touched.
+			var view: FoeView = stage.foes.get(hit.foe)
+			if view != null:
+				stage.popup(view.top_point(), "locked", UiTheme.WARN, 26)
+				view.recoil(0.5)
+			Sound.play("sfx-glance", 0.8, 0.7)
 		"wasted":
 			# A program's bolt aimed at a foe that already fell (ADR-0012): it sails through the empty air.
 			var view: FoeView = stage.foes.get(hit.foe)
@@ -416,7 +423,8 @@ func _flight(hit: Dictionary) -> float:
 
 
 static func _hit_text(hit: Dictionary) -> String:
-	var text := str(int(hit.amount))
+	# » marks Initiative: the program landed before this foe moved.
+	var text := ("»" if hit.get("initiative", false) else "") + str(int(hit.amount))
 	match hit.get("affinity", ""):
 		"weak":
 			text += "!"
@@ -431,6 +439,8 @@ static func _hit_colour(hit: Dictionary) -> Color:
 			return UiTheme.WARN
 		"resist":
 			return UiTheme.MUTED
+	if hit.get("initiative", false):
+		return UiTheme.AMBER
 	return UiTheme.element(hit.get("element", "none")).lightened(0.1)
 
 

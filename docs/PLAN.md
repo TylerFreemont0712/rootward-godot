@@ -165,9 +165,12 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Fifteen enemy concepts with briefs and game-ready sprites (`Concept/Enemies/`), for four or five layers.
 - [x] Fights: every hit of a long volley reaches the bars before the screen settles (a heavy cast's later bolts died
       on a check against a freed animation, leaving a foe at a tenth of its HP until the final redraw).
-- [ ] The Deadlock Golem reworked as two locks; Initiative and speed per intent as rules (stage 1).
-- [ ] Imports and keywords, fight state, a guided first run, pictures of their own for the first 23 cards, Japanese
-      for the new text (stage 6).
+- [x] The Deadlock Golem reworked as two locks; Initiative, speed per intent and a budget per layer as rules (stage 1,
+      ADR-0017).
+- [x] Imports and keywords, fight state, every card's + read as a diff at the forge, pictures of their own for every
+      card (stage 6, ADR-0018); a second pass on three enemy concepts.
+- [ ] Japanese for the new text.
+- [ ] A guided first run (stage 6).
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

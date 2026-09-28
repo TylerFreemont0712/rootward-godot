@@ -9,6 +9,7 @@
   "big_o": "O(n log n)",
   "summary": "Greedy defence: the strongest bolts become your block, biggest first, until they reach 10. The rest still fly. Quick, and it may take more than it needed.",
   "function": "greedy_ward",
+  "forge": {"into": "greedy-ward-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the two strongest guard",

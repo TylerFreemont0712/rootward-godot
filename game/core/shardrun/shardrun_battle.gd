@@ -52,6 +52,7 @@ static func start_with(state: Dictionary, kind: String, foes: Array, catalog: Di
 		return
 	var battle := new_battle(state, kind, foes, catalog)
 	if state.get("playstyle", "") == "program":
+		ProgramDeck.on_battle_start(battle)
 		ProgramRelics.on_battle_start(state, battle, catalog)
 	begin_turn(battle)
 	state.battle = battle
@@ -375,14 +376,17 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 			return
 	if ShardrunRules.is_deck(state):
 		# What was not cast this turn is let go, the hand and anything still in a spell, except what was held: that
-		# starts the new hand, and a full hand is drawn on top of it.
-		var discard: Array = battle.discard
-		discard.append_array(battle.hand)
-		for spell: Dictionary in state.spells:
-			discard.append_array(spell.shards)
-		battle.hand = (battle.held as Array).duplicate()
-		battle.held = []
-		clear_spells(state)
+		# starts the new hand, and a full hand is drawn on top of it. A program run's keywords decide more (ADR-0018).
+		if state.get("playstyle", "") == "program":
+			ProgramDeck.end_turn(state, battle, catalog)
+		else:
+			var discard: Array = battle.discard
+			discard.append_array(battle.hand)
+			for spell: Dictionary in state.spells:
+				discard.append_array(spell.shards)
+			battle.hand = (battle.held as Array).duplicate()
+			battle.held = []
+			clear_spells(state)
 		draw(state, battle, ShardrunRules.hand_size(state, catalog), catalog)
 	for foe: Dictionary in battle.foes:
 		foe.intent_index = (int(foe.intent_index) + 1) % (foe.intents as Array).size()
@@ -415,6 +419,8 @@ static func deal(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> 
 		return
 	clear_spells(state)
 	battle.draw = Rng.create(state.seed, "deck:%d" % state.revision).shuffled(state.deck)
+	if state.get("playstyle", "") == "program":
+		battle.draw = ProgramDeck.innate_first(battle.draw, catalog)
 	battle.hand = []
 	battle.discard = []
 	battle.held = []

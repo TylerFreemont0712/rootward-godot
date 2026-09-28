@@ -2,7 +2,6 @@
   "id": "take-max",
   "name": "Take Max",
   "rarity": "uncommon",
-  "art": "apex",
   "cost": 1,
   "paradigm": "greedy",
   "role": "shape",
@@ -10,6 +9,7 @@
   "makes": "sorted",
   "summary": "Keeps only the three strongest bolts and makes each half again as strong. Focus beats volume. Comes out weakest first.",
   "function": "take_max",
+  "forge": {"into": "take-max-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "the three strongest",

@@ -2,7 +2,6 @@
   "id": "pairwise",
   "name": "Pairwise",
   "rarity": "rare",
-  "art": "pair-fold",
   "cost": 2,
   "paradigm": "brute-force",
   "role": "source",
@@ -10,6 +9,7 @@
   "makes": "unsorted",
   "summary": "Brute force: every pair of bolts fuses into a new bolt with their combined power, half again if their elements differ. n bolts make n(n-1)/2.",
   "function": "pairwise",
+  "forge": {"into": "pairwise-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "three bolts, three pairs",

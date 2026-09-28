@@ -2,7 +2,6 @@
   "id": "hash-merge",
   "name": "Hash Merge",
   "rarity": "uncommon",
-  "art": "crosslink",
   "cost": 1,
   "paradigm": "search-index",
   "role": "shape",
@@ -10,6 +9,7 @@
   "makes": "unsorted",
   "summary": "A hash map from element to bolt: bolts of the same element fuse into one, 1 stronger for every bolt it swallowed. Fewer, bigger bolts.",
   "function": "hash_merge",
+  "forge": {"into": "hash-merge-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "two elements",

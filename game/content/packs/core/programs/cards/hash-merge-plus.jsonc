@@ -1,0 +1,29 @@
+{
+  "id": "hash-merge-plus",
+  "name": "Hash Merge+",
+  "rarity": "uncommon",
+  "art": "hash-merge",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "shape",
+  "complexity": "linear",
+  "makes": "unsorted",
+  "summary": "A hash map from element to bolt: bolts of the same element fuse into one, 2 stronger for every bolt it swallows.",
+  "function": "hash_merge_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "two elements",
+      "bolts": [
+        { "power": 3, "element": "fire" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "fire" },
+        { "power": 1, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 12, "element": "fire" },
+        { "power": 2, "element": "none" }
+      ]
+    }
+  ]
+}

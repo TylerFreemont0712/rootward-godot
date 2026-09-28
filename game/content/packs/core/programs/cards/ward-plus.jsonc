@@ -1,0 +1,28 @@
+{
+  "id": "ward-plus",
+  "name": "Ward+",
+  "rarity": "common",
+  "art": "ward",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "guard",
+  "complexity": "linear",
+  "summary": "Finds the strongest bolt and turns it into block for you, 4 stronger. The rest still fly.",
+  "function": "ward_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the strongest guards",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 2, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 11, "element": "none", "block": true },
+        { "power": 2, "element": "none" }
+      ]
+    }
+  ]
+}

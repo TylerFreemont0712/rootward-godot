@@ -1,0 +1,50 @@
+{
+  "id": "import-bisect-plus",
+  "name": "import bisect+",
+  "rarity": "uncommon",
+  "art": "import-bisect",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "import",
+  "complexity": "constant",
+  "makes": "sorted",
+  "summary": "For the rest of the fight, every bolt a source card makes is put in its sorted place by a binary search: the volley stays sorted, weakest first, with no sort card.",
+  "function": "import_bisect_plus",
+  "keywords": ["__init__"],
+  "module": "bisect",
+  "line": {"python": "import bisect", "javascript": "import { insort } from \"./bisect.js\";"},
+  "effects": [{"kind": "hook-after", "role": "source"}],
+  "draftable": false,
+  "examples": [
+    {
+      "name": "weakest first",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 9, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 7, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 7, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    },
+    {
+      "name": "equal bolts keep their order",
+      "bolts": [
+        { "power": 4, "element": "fire" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "frost" }
+      ]
+    }
+  ]
+}

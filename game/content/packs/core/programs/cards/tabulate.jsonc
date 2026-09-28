@@ -2,7 +2,6 @@
   "id": "tabulate",
   "name": "Tabulate",
   "rarity": "uncommon",
-  "art": "tally",
   "cost": 1,
   "paradigm": "dynamic",
   "role": "shape",
@@ -10,6 +9,7 @@
   "makes": "sorted",
   "summary": "Bottom-up dynamic programming: each bolt becomes the best total collectable up to it without taking two neighbours. The table only grows.",
   "function": "tabulate",
+  "forge": {"into": "tabulate-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "a salvo tabulated",

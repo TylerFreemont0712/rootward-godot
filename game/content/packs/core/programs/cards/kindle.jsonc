@@ -8,6 +8,7 @@
   "complexity": "linear",
   "summary": "Sets every bolt to fire, 1 stronger. Foes weak to fire take half again as much.",
   "function": "kindle",
+  "forge": {"into": "kindle-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "every bolt",

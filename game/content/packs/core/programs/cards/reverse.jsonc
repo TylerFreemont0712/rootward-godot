@@ -9,6 +9,7 @@
   "makes": "unsorted",
   "summary": "Turns the volley around, the last bolt first. A sorted volley comes out strongest first.",
   "function": "reverse",
+  "forge": {"into": "reverse-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "strongest first",

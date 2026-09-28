@@ -10,6 +10,7 @@
   "height": 12,
   "summary": "Exhaustive Ward's question answered with a table instead of every subset: which totals can the bolts make? The smallest total of 12 or more becomes your block; the rest still fly. O(n·H), where brute force was O(2ⁿ).",
   "function": "knapsack_ward",
+  "forge": {"into": "knapsack-ward-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "exactly 12",

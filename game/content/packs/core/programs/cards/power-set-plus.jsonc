@@ -1,0 +1,61 @@
+{
+  "id": "power-set-plus",
+  "name": "Power Set+",
+  "rarity": "rare",
+  "art": "power-set",
+  "cost": 2,
+  "paradigm": "brute-force",
+  "role": "source",
+  "complexity": "exponential",
+  "big_o": "O(2ⁿ)",
+  "cap_n": 4,
+  "makes": "unsorted",
+  "summary": "Every non-empty subset of the first four bolts, counted as a bitmask from 1 to 15, becomes a bolt of its sum. 2ⁿ subsets: fifteen bolts from four.",
+  "function": "power_set_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the seed's seven subsets",
+      "bolts": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 9, "element": "none" }
+      ]
+    },
+    {
+      "name": "the rest follows",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "spark" },
+        { "power": 9, "element": "none" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 3, "element": "none" },
+        { "power": 4, "element": "spark" },
+        { "power": 5, "element": "spark" },
+        { "power": 6, "element": "spark" },
+        { "power": 7, "element": "spark" },
+        { "power": 9, "element": "none" },
+        { "power": 10, "element": "none" },
+        { "power": 11, "element": "none" },
+        { "power": 12, "element": "none" },
+        { "power": 13, "element": "none" },
+        { "power": 14, "element": "none" },
+        { "power": 15, "element": "none" },
+        { "power": 16, "element": "none" }
+      ]
+    }
+  ]
+}

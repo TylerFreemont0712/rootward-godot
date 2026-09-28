@@ -9,6 +9,7 @@
   "big_o": "O(n·m)",
   "summary": "For each foe, weakest first, checks every bolt for the weakest one that kills it alone: no sorting needed, n checks per foe. The bolts left over fly at the front foe.",
   "function": "linear_search",
+  "forge": {"into": "linear-search-plus", "verb": "upgrade"},
   "examples": [
     {
       "name": "exact kills from an unsorted volley",

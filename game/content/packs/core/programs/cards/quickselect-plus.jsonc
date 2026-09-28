@@ -1,0 +1,36 @@
+{
+  "id": "quickselect-plus",
+  "name": "Quickselect+",
+  "rarity": "uncommon",
+  "art": "quickselect",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "strike",
+  "complexity": "linear",
+  "big_o": "O(n) average",
+  "summary": "Finds the median bolt without sorting: every bolt at or above it flies at the toughest foe, 2 stronger; the rest at the weakest.",
+  "function": "quickselect_plus",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the strong half at the toughest",
+      "bolts": [
+        { "power": 4, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 6, "element": "none" },
+        { "power": 2, "element": "none" },
+        { "power": 5, "element": "none" },
+        { "power": 3, "element": "none" }
+      ],
+      "battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [{"name": "Tally Wisp", "hp": 16, "max": 16, "shield": 0, "weak": ["frost"], "resist": ["fire"]}, {"name": "Off-by-One Goblin", "hp": 9, "max": 22, "shield": 2, "weak": ["spark"], "resist": []}]},
+      "expect": [
+        { "power": 6, "element": "none", "foe": 0 },
+        { "power": 1, "element": "none", "foe": 1 },
+        { "power": 8, "element": "none", "foe": 0 },
+        { "power": 2, "element": "none", "foe": 1 },
+        { "power": 7, "element": "none", "foe": 0 },
+        { "power": 3, "element": "none", "foe": 1 }
+      ]
+    }
+  ]
+}
