@@ -23,6 +23,7 @@ foes to face the player.
 
 ## Consequences
 
-The first pass changes six foes, four relics and four shards. It keeps their ids and behavior. The remaining assets
-stay on the checklist for later passes. Any future sideways sprite can use the same `mirror` content field without
-adding a special case to the renderer.
+The first pass changes six foes, four relics and four shards. The second changes three foes, two relics and two
+shards (`pipeline/art/sprite-polish-pass-2.json`). They keep their ids and behavior. The remaining assets stay on the
+checklist for later passes. Any future sideways sprite can use the same `mirror` content field without adding a
+special case to the renderer.

@@ -187,6 +187,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 ### Art polish in small passes (ADR-0023)
 - [x] Pass 1: six early foes repainted in Vesper's anime/chibi finish, facing the player from the right side of the
       arena; four older relics and four older shards redrawn as larger, clearer bronze-and-magic icons.
+- [x] Pass 2: three more playable foes (Fork Bomb, Type Mimic, Segfault Specter), two relics and two shards, reviewed
+      together at their actual battle and Spellforge sizes.
 - [ ] Continue through the remaining foes, relics and shards in reviewable groups, checking each in the battle or
       catalog at its actual size and keeping its identity and element colors.
 

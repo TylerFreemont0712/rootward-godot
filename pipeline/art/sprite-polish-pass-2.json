@@ -1,0 +1,73 @@
+{
+  "generator": "OpenAI image_gen",
+  "intent": "Second small art repaint: three more playable foes and four recognizable old icons.",
+  "prompt_templates": {
+    "foe-left": "Edit the first reference into a finished enemy sprite for Rootward. Use the second reference, Vesper, only for character art quality: clean anime/chibi contours, dimensional controlled cel shading and appealing clarity. Subject: {subject} Place the foe on the RIGHT of a side-view battle and pose it decisively facing SCREEN LEFT toward the player; eyes, mouth and main threatening gesture lead left. Preserve recognizable identity, colors and overall scale from the source. One full-body creature centered, entire silhouette visible, sufficiently simple to read at 170 pixels tall. Transparent background, no floor, no scenery, no text, no frame, no UI, no watermark.",
+    "inventory": "Edit the first reference image into a finished Rootward inventory icon. The second reference is the newer card art style reference only. Subject: {subject} Improve the old art's shape and quality while preserving its elemental palette and identity. Crisp high-quality hand-pixelled fantasy RPG object, deliberate blocky pixel clusters, bronze machinery, richly saturated magic, bright focal center and dark readable contour. Must remain distinct when shown only 30 pixels wide in a relic row or shard chip. One object filling 82% of a square canvas, transparent background, no scenery, no frame, no lettering, no UI, no watermark."
+  },
+  "assets": [
+    {
+      "kind": "enemy",
+      "id": "fork-bomb",
+      "asset": "game/assets/foes/fork-bomb.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Fork Bomb: a cheeky round dark-navy clockwork bomb creature with two orange glowing eyes, a dangerous toothy grin, stubby metal feet and a sparking lit fuse; a faint duplicate spark near it hints at copying itself. Keep the recognizable black bomb body and gold-orange face.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "type-mimic",
+      "asset": "game/assets/foes/type-mimic.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Type Mimic: a compact red-brown treasure chest monster with a large fanged open lid, one long pink tongue, a single top eye and blue elemental sparks licking from its corners. Keep the original chest silhouette, shifting magic and comic menace.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "segfault-specter",
+      "asset": "game/assets/foes/segfault-specter.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Segfault Specter: a torn smoky gray hooded ghost with a sharply glowing red fractured core, one pale mask fragment, spiky black tendrils and subtle magenta glitch sparks. Keep original hood, red face and spectral shape.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-mana-capacitor",
+      "asset": "game/assets/shardrun/relic-mana-capacitor.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Mana Capacitor relic: a small violet crystal battery held by a squat bronze casing, with a single luminous power reservoir visible through an opening. Distinct capsule silhouette, instantly reads as stored arcane energy.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-prismatic-dynamo",
+      "asset": "game/assets/shardrun/relic-prismatic-dynamo.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Prismatic Dynamo relic: a compact square bronze generator with one clear rainbow prism spinning in the center and four tiny cyan electrical contacts. Distinct from a mirror or coin.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-kindle",
+      "asset": "game/assets/shardrun/shard-kindle.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Kindle shard: one narrow red-orange ember crystal with a living flame tip and a small bronze socket at its base, bold vertical silhouette.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-ward",
+      "asset": "game/assets/shardrun/shard-ward.png",
+      "original_reference": "same asset before pass 2",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Ward shard: a circular violet and teal protective focus, with one solid turquoise shield emblem in the middle, thin bronze ring and four violet facets. Strong clear shield reading at small size.",
+      "prompt_variant": "inventory"
+    }
+  ]
+}
