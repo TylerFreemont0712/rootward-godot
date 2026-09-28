@@ -300,7 +300,8 @@ The goal: Vesper becomes a class of Slay the Spire's depth, and the class frame 
       work, speed and order, tiered common to legendary (SHARDRUN_DESIGN 7, 8).
 - [x] Every card's `+` version, a refactor shown at the forge as a diff (ADR-0018).
 - [x] Card art for every card (`shardrun/card-<id>`; a + shows its card's).
-- [ ] Japanese for every card.
+- [x] Japanese for every card, relic, foe and paradigm of the program run (`locales/ja/programs.jsonc`; the
+      interface itself waits for stage 0's translation plumbing).
 - [ ] A guided first run: the first fights teach one idea each (a source first, sort before search, aim last), and
       the preview says what a reorder would change (SHARDRUN_DESIGN 3.6).
 - [ ] ADR-0022.

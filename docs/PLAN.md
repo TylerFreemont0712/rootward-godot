@@ -169,7 +169,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       ADR-0017).
 - [x] Imports and keywords, fight state, every card's + read as a diff at the forge, pictures of their own for every
       card (stage 6, ADR-0018); a second pass on three enemy concepts.
-- [ ] Japanese for the new text.
+- [x] Japanese for the program run's content: every card and its +, relic, foe, paradigm and keyword (653 of 653
+      content strings); the interface is stage 0's.
 - [ ] A guided first run (stage 6).
 
 ### Later

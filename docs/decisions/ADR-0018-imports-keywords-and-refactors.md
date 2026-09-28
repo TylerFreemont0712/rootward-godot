@@ -53,4 +53,6 @@ programmer would use, and an upgrade a refactor you can read.
   strong, Lambdas may be generous.
 - The card faces show more (keywords, the import badge) at the same sizes; the chips are legible on a hand card and a
   slot, small on a deck grid.
-- Japanese for the new text is the next step (stage 6's "Japanese for every card").
+- Japanese: the content overlays now cover the program run too (`ContentLocale` reads `catalog.programs`), and every
+  card, relic, foe, paradigm and keyword has its translation (`locales/ja/programs.jsonc`, 653 of 653 content
+  strings; names that are code stay code). The interface is not translated yet: that is stage 0's plumbing.

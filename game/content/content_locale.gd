@@ -12,7 +12,11 @@ const FIELDS := {
 	"foe": ["name", "flavor"],
 	"relic": ["name", "summary", "flavor"],
 	"run": ["difficulties.*.name", "difficulties.*.summary", "layers.*.name", "layers.*.flavor"],
+	# The program run's own content (ADR-0018): its paradigms and what each keyword means (the keyword stays code).
+	"programs": ["paradigms.*.name", "paradigms.*.summary", "keywords.*"],
 }
+## The program run's cards, relics and foes are translated like the Shardrun's shards, relics and foes.
+const PROGRAM_KINDS := {"cards": "shard", "relics": "relic", "foes": "foe"}
 const ENTRY := {
 	"type": "object",
 	"fields": {"en": {"type": "text"}, "to": {"type": "text"}, "note": {"type": "text", "optional": true}},
@@ -56,6 +60,7 @@ static func localize(catalog: Dictionary, strings: Dictionary) -> Dictionary:
 				_translate(item, path.split("."), strings)
 	for path: String in FIELDS.run:
 		_translate(out.config, path.split("."), strings)
+	_program_parts(out, func(node: Variant, path: String) -> void: _translate(node, path.split("."), strings))
 	return out
 
 
@@ -68,8 +73,22 @@ static func coverage(catalog: Dictionary, strings: Dictionary) -> Dictionary:
 				_collect(item, path.split("."), english)
 	for path: String in FIELDS.run:
 		_collect(catalog.config, path.split("."), english)
+	_program_parts(catalog, func(node: Variant, path: String) -> void: _collect(node, path.split("."), english))
 	var missing: Array = english.keys().filter(func(text: String) -> bool: return not strings.has(text))
 	return {"total": english.size(), "translated": english.size() - missing.size(), "missing": missing}
+
+
+## Calls `each(node, path)` for every translatable field of the program run's content, when the catalog has it.
+static func _program_parts(catalog: Dictionary, each: Callable) -> void:
+	var programs: Dictionary = catalog.get("programs", {})
+	if programs.is_empty():
+		return
+	for kind: String in PROGRAM_KINDS:
+		for item: Dictionary in (programs.get(kind, {}) as Dictionary).values():
+			for path: String in FIELDS[PROGRAM_KINDS[kind]]:
+				each.call(item, path)
+	for path: String in FIELDS.programs:
+		each.call(programs.get("config", {}), path)
 
 
 static func _translate(node: Variant, path: PackedStringArray, strings: Dictionary) -> void:
@@ -93,19 +112,24 @@ static func _collect(node: Variant, path: PackedStringArray, into: Dictionary) -
 	)
 
 
-## Calls `leaf(holder, key)` for every value at `path`, where `*` walks every element of a list.
+## Calls `leaf(holder, key)` for every value at `path`, where `*` walks every element of a list or every value of a
+## Dictionary.
 static func _visit(node: Variant, path: PackedStringArray, leaf: Callable) -> void:
 	if path.is_empty():
 		return
 	var head := path[0]
 	var rest := path.slice(1)
 	if head == "*":
+		var keys: Array = []
 		if node is Array:
-			for i in (node as Array).size():
-				if rest.is_empty():
-					leaf.call(node, i)
-				else:
-					_visit(node[i], rest, leaf)
+			keys = range((node as Array).size())
+		elif node is Dictionary:
+			keys = (node as Dictionary).keys()
+		for key: Variant in keys:
+			if rest.is_empty():
+				leaf.call(node, key)
+			else:
+				_visit(node[key], rest, leaf)
 		return
 	if not node is Dictionary or not (node as Dictionary).has(head):
 		return
