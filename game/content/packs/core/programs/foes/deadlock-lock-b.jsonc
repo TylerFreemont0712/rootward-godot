@@ -5,7 +5,6 @@
   "sprite": "deadlock-golem",
   "size": "large",
   "hp": 70,
-  "mirror": true,
   "trait": { "kind": "deadlock", "partner": "deadlock-lock-a" },
   "intents": [
     { "kind": "multi", "power": 3, "times": 3, "tempo": 128 },

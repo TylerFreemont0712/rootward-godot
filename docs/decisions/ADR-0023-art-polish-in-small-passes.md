@@ -24,6 +24,9 @@ foes to face the player.
 ## Consequences
 
 The first pass changes six foes, four relics and four shards. The second changes three foes, two relics and two
-shards (`pipeline/art/sprite-polish-pass-2.json`). They keep their ids and behavior. The remaining assets stay on the
-checklist for later passes. Any future sideways sprite can use the same `mirror` content field without adding a
-special case to the renderer.
+shards (`pipeline/art/sprite-polish-pass-2.json`). The third changes the six remaining playable foes, three older
+relics and three older shards (`pipeline/art/sprite-polish-pass-3.json`). All fifteen playable foes now share the
+finished character-art standard and face the player. They keep their ids and behavior. Older inventory icons and
+unused enemy concepts stay on the checklist for later passes. The second Deadlock Lock's old mirror setting was
+removed after a program battle review showed it turning away from the player. Any future sideways sprite can use the
+same `mirror` content field without adding a special case to the renderer.

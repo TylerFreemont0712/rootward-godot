@@ -1,0 +1,145 @@
+{
+  "generator": "OpenAI image_gen",
+  "intent": "Third and fourth small art runs: finish all fifteen playable foe portraits and expand the older relic and shard icon refresh.",
+  "prompt_templates": {
+    "boss-left": "EDIT THE FIRST reference sprite into a polished final enemy asset for a dark magical salvage roguelike. Preserve the exact creature identity and recognizable motif of the first image. Use the SECOND and THIRD references for finished character-art quality, line weight, clean cel shading, saturated jewel accents, and crisp readable silhouette. Full creature visible head to toe, no cropping, centered on a truly transparent background. Strong contours and restrained detail so the silhouette works when reduced to around 150 pixels. This enemy stands on the RIGHT side of a 2D battle scene against a heroine on the LEFT: explicitly turn its face, eyes, shoulders, forward arm/claw and attack pose toward SCREEN LEFT. Three-quarter view facing LEFT, not front view and not facing right. No text, UI, ground, frame, shadow slab, duplicate, speech bubble or scenery. Subject: {subject}",
+    "foe-left": "EDIT THE FIRST reference sprite into a polished final enemy asset for a dark magical salvage roguelike. Preserve the recognizable creature concept from the first reference. Use the SECOND and THIRD references for finished character-art quality, line weight, crisp cel shading, saturated jewel accents, and a readable silhouette. Full creature visible head to toe, centered on a truly transparent background, no cropping. Distinct bold outline and simplified shape language so it works at 120 to 180 pixels in game. This enemy appears on the RIGHT side of a 2D battle opposite a heroine on the LEFT. Explicitly turn its face, pupils, snout or mouth, shoulders and forward claw/attack pose toward SCREEN LEFT. Three-quarter LEFT facing pose, not facing right. No lettering, UI, terrain, floor, frame, duplicate, labels or other characters. Subject: {subject}",
+    "inventory": "Edit the FIRST reference image into a finished Rootward inventory icon. Keep the identity and elemental palette of the source. The SECOND reference establishes the game's high-quality hand-pixelled fantasy RPG look: deliberate visible pixel clusters, bronze and jewel materials, saturated bright magical center, dark crisp contour. Subject: {subject} Draw ONE isolated object on a truly TRANSPARENT background. Very bold simple silhouette that remains distinct when shown 28 to 32 pixels wide inside the game. Subject fills about 82 percent of a square canvas, no scenery, no pedestal, no border/frame, no text, no UI, no watermark."
+  },
+  "assets": [
+    {
+      "kind": "enemy",
+      "id": "deadlock-golem",
+      "asset": "game/assets/foes/deadlock-golem.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A hulking stone and iron golem built from TWO interlocking padlocks; two blue cyan magical keyholes and chains visually communicating deadlock. Heavy asymmetrical shoulders, stone fists, one fist reaching threateningly toward SCREEN LEFT. Cool slate gray and electric cyan.",
+      "prompt_variant": "boss-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "kiln-warden",
+      "asset": "game/assets/foes/kiln-warden.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A furnace guardian, squat and imposing with black volcanic brick armor, glowing orange kiln core, vents and horn-like smoke stacks. Its face and forward claw look and reach toward SCREEN LEFT. Hot ember orange against charcoal armor.",
+      "prompt_variant": "boss-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "root-daemon",
+      "asset": "game/assets/foes/root-daemon.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A final boss, tall imposing dark crimson daemon grown from gnarled black roots and old machine parts, glowing red central heart and crown of antler-like branches, long rooted claws reaching toward SCREEN LEFT. Clear face aimed toward SCREEN LEFT, threatening but readable, restrained red glow.",
+      "prompt_variant": "boss-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "garbage-collector",
+      "asset": "game/assets/foes/garbage-collector.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A squat menacing clockwork scavenger automaton, cylindrical antique boiler torso and round orange furnace mouth, rusted rivets, mismatched mechanical arms with one broad scoop claw raised toward SCREEN LEFT. Little ember and scrap details. Distinctly a junk collecting machine, not a second golem. Copper orange, oily iron, mint teal patina.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "regex-sphinx",
+      "asset": "game/assets/foes/regex-sphinx.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A catlike sphinx guardian of magical patterns, Egyptian inspired sitting creature with warm golden body, navy indigo headdress and turquoise jewel collar; glowing precise rune lines on brow and chest. Its feline snout, gaze, front paw, and wing-like ornament should visibly turn toward SCREEN LEFT, wise and slightly mischievous. Keep silhouette like seated sphinx, not human.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "enemy",
+      "id": "stack-overflow-serpent",
+      "asset": "game/assets/foes/stack-overflow-serpent.png",
+      "original_reference": "same asset before pass 3",
+      "style_references": [
+        "game/assets/sprites/vesper/profile.png",
+        "game/assets/foes/fork-bomb.png"
+      ],
+      "subject": "A whimsical dangerous coiled serpent made of many stacked glowing orange coral rings, each successive loop climbing higher like an overflowing tower. Distinct snake head perched atop the coils, eyes and open fanged mouth clearly facing SCREEN LEFT, upper neck striking LEFT. Deep plum shadow, coral orange glow, a few sparks. Preserve original tower-of-coils motif.",
+      "prompt_variant": "foe-left"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-ember-heart",
+      "asset": "game/assets/shardrun/relic-ember-heart.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Ember Heart relic: a coal-black metal anatomical heart or heart-shaped furnace with one vivid molten orange core, ember flame at top and three little bronze clamps. Strong unique heart silhouette, dark border.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-storm-bottle",
+      "asset": "game/assets/shardrun/relic-storm-bottle.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Storm Bottle relic: a little rectangular corked glass bottle with a captured zigzag cyan lightning bolt and violet storm clouds inside, thick warm bronze frame, one luminous strike readable at small size.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-rime-crown",
+      "asset": "game/assets/shardrun/relic-rime-crown.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Rime Crown relic: an icy cobalt blue crown with three crisp crystalline spikes and one pale cyan central gem, frosted silver-blue band, distinct coronet silhouette.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-amplify",
+      "asset": "game/assets/shardrun/shard-amplify.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Amplify shard: a narrow fiery amber crystal shaped like a bright rising tapered lens, tiny bronze socket at its base, bold orange core and gold radiating rays. Its magical effect is increasing power, visually more intense than the smaller Kindle ember.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-prism",
+      "asset": "game/assets/shardrun/shard-prism.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Prism shard: a sharply triangular pale cyan crystal prism with a dark blue outline and a tiny fractured rainbow light ray passing through one edge. Clean recognizable triangle silhouette distinct from a square dynamo.",
+      "prompt_variant": "inventory"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-scatter",
+      "asset": "game/assets/shardrun/shard-scatter.png",
+      "original_reference": "same asset before pass 3",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Scatter shard: a compact cluster of five little violet amethyst fragments bursting outward around a brighter central gem, strongly reads as one magic projectile dividing into several, with bronze holding ring behind.",
+      "prompt_variant": "inventory"
+    }
+  ],
+  "review_screenshots": [
+    "shots/polish/enemy-art-pass4-bosses.png",
+    "shots/polish/enemy-art-pass4-daemon.png",
+    "shots/polish/enemy-art-pass4-regulars.png",
+    "shots/polish/icon-art-pass3.png",
+    "shots/polish/shard-art-pass3.png",
+    "shots/polish/deadlock-locks-direction-fixed.png"
+  ]
+}

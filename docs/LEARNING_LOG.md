@@ -347,3 +347,9 @@ Foes stand on the right and should look left toward the player. A repaint may be
 the existing `FoeView` can flip its texture when content says `mirror`. That field first existed only on program foes,
 so adding it to a shared foe failed validation and made the whole catalog unloadable. Putting it in the shared foe
 schema lets both playstyles use the same display rule, and a battle screenshot verifies the result.
+
+## Review sprite art where the player sees it (`pipeline/art/sprite-polish-pass-3.json`)
+An isolated render can look sharp but disappear when reduced into the arena or a 30-pixel relic row. Review the
+accepted image in a real fight, with adjacent foes and the UI visible. This pass checked all remaining playable foes
+in boss and regular battle layouts; the relics and shards were checked in the relic row and card hand. Strong outer
+shape and one bright focal point survived reduction better than small internal ornaments.

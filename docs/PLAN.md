@@ -185,12 +185,19 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       the scene (`tools/boot_check.gd`).
 
 ### Art polish in small passes (ADR-0023)
+- [x] [ArtUpdate.md](ArtUpdate.md) lists every enemy, relic and shard image with checked newer art and unchecked
+      older art for the remaining passes.
 - [x] Pass 1: six early foes repainted in Vesper's anime/chibi finish, facing the player from the right side of the
       arena; four older relics and four older shards redrawn as larger, clearer bronze-and-magic icons.
 - [x] Pass 2: three more playable foes (Fork Bomb, Type Mimic, Segfault Specter), two relics and two shards, reviewed
       together at their actual battle and Spellforge sizes.
-- [ ] Continue through the remaining foes, relics and shards in reviewable groups, checking each in the battle or
-      catalog at its actual size and keeping its identity and element colors.
+- [x] Pass 3: the six remaining playable foes (Deadlock Golem, Kiln Warden, Root Daemon, Garbage Collector, Regex
+      Sphinx, Stack Overflow Serpent) face the player and read clearly at battle size. All fifteen playable foes now
+      share the finished character-art standard. The program run's second Deadlock Lock also faces the player.
+- [x] Pass 3 icons: Ember Heart, Storm Bottle, Rime Crown, Amplify, Prism and Scatter repainted and checked in the
+      relic row and card hand at real display size.
+- [ ] Continue through older relics, shards and unused enemy concepts in later reviewable groups, keeping their
+      identities and element colors.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
