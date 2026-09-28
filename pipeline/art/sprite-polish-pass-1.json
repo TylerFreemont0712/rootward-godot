@@ -1,0 +1,149 @@
+{
+  "generator": "OpenAI image_gen",
+  "intent": "First small art repaint: preserve recognizable identities while raising sprite quality and icon readability.",
+  "prompt_templates": {
+    "anime-chibi": "Edit the first reference image into a finished enemy sprite for Rootward, a fantasy programming roguelite. The second reference, Vesper, is the style and quality reference only; do not include Vesper in the output. Subject: {subject} Match Vesper's polished anime/chibi game sprite quality: clean confident dark linework, controlled smooth cel shading, dimensional colored highlights, appealing face, cohesive painterly colors, crisp readable silhouette. One full-body enemy only, centered with feet fully visible, three-quarter front view suitable for a side-view battle, occupying 85% of a square canvas. Keep the creature's original identity while increasing detail and resolution. Transparent background, no floor, no scenery, no frame, no text, no UI, no watermark. Single sprite image, not a spritesheet.",
+    "anime-chibi-left": "Edit the first reference image into a finished enemy sprite for Rootward. The second reference Vesper is for polished anime/chibi linework, palette quality and cel shading ONLY; never include Vesper. Subject: {subject} The enemy stands on the RIGHT of the battle and faces screen LEFT toward the player: strong three-quarter-left pose, eyes and main attacking gesture directed left. Keep its original identity, increase resolution and detail to Vesper's quality. Clean dark contour, controlled cel shading and a simple readable silhouette even when displayed 150 pixels tall. One full-body enemy centered and filling 82% of square canvas, complete lower body visible. Transparent background, no floor, no scenery, no text, no frame, no UI, no watermark, not a spritesheet.",
+    "inventory-pixel": "Edit the first reference image into a finished inventory icon for Rootward. The second reference is a style and material reference only. Subject: {subject} Retain the original item's core identity and colors while improving readability in a 40-pixel-wide game slot. Match the newer card icons: high-quality hand-pixelled fantasy RPG art, intentional bold pixel clusters, bronze metal, jewel tones, one clear object, crisp outer contour and restrained highlights. No scene, no person, no pile of objects. Centered icon fills about 80% of square canvas. Transparent background, no frame, no lettering, no numbers, no UI, no watermark.",
+    "inventory-pixel-2": "Edit the first reference image into a finished inventory icon for Rootward. The second reference is a style and material reference only. Subject: {subject} Retain the original item's identity and palette while improving readability in a 40-pixel-wide game slot. Match the newer card icons: high-quality hand-pixelled fantasy RPG art, intentional bold pixel clusters, bronze metal, jewel tones, one clear object, crisp outer contour and restrained highlights. No scene, no person, no pile of objects. Centered icon fills about 80% of square canvas. Transparent background, no frame, no lettering, no numbers, no UI, no watermark.",
+    "pose-left": "Pose correction edit of the first reference sprite; keep its exact character design, colors, outfit or flame markings, polished anime/chibi cel shading, and transparent background. The second reference Vesper is only a style reference. Subject: {subject}. This enemy stands on the RIGHT of a side-view battle. Turn its head and torso into a decisive three-quarter view facing SCREEN LEFT, with both pupils looking LEFT toward the hero and the forward gesture or flame movement also aimed LEFT. Keep full body visible, centered, strong clear silhouette at 150-pixel display height. Transparent background, no scenery, no floor, no frame, no words, no UI, no watermark."
+  },
+  "assets": [
+    {
+      "kind": "enemy",
+      "id": "tally-wisp",
+      "asset": "game/assets/foes/tally-wisp.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Tally Wisp: a mischievous tiny living flame, teardrop body with a bright amber core and flame crown, expressive wide eyes; warm orange/yellow, faint teal accounting-rune motes. Preserve the source sprite's adorable upright flame silhouette.",
+      "prompt_variant": "anime-chibi",
+      "display_direction": "eyes and flame motion toward left",
+      "final_pose_prompt_variant": "pose-left",
+      "final_pose_subject": "the polished bright orange Tally Wisp, with large friendly flame eyes, a yellow-orange face, flickering flame crown, tiny cyan counting sigils and motes"
+    },
+    {
+      "kind": "enemy",
+      "id": "off-by-one-goblin",
+      "asset": "game/assets/foes/off-by-one-goblin.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Off-by-One Goblin: small impish green goblin, oversized leaf-like ears, cheeky grin, dark plum scrap armor and nimble little hands; a single asymmetrical counting charm conveys the programming theme. Preserve recognizable lime green face and purple outfit.",
+      "prompt_variant": "anime-chibi",
+      "display_direction": "eyes and claw toward left",
+      "final_pose_prompt_variant": "pose-left",
+      "final_pose_subject": "the polished lime-green Off-by-One Goblin, with giant ears, purple scavenger clothing, cheeky fanged grin, and a single gold 0 counter charm"
+    },
+    {
+      "kind": "enemy",
+      "id": "race-condition-imp",
+      "asset": "game/assets/foes/race-condition-imp.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Race Condition Imp: tiny fast crimson-magenta imp with pointed horns, long whip tail, bright eyes, clutching one glowing cyan chronometer orb; agile mid-dash pose. Preserve the source's magenta body and cyan orb.",
+      "prompt_variant": "anime-chibi",
+      "display_direction": "flipped left by mirror:true in foe content"
+    },
+    {
+      "kind": "enemy",
+      "id": "memory-leak-ooze",
+      "asset": "game/assets/foes/memory-leak-ooze.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Memory Leak Ooze: jade green gelatinous creature with one large single mauve eye and bits of glowing code trapped inside; puddle-like edges, slightly sinister but charming. Original green/teal palette and one-eyed silhouette.",
+      "prompt_variant": "anime-chibi-left",
+      "display_direction": "faces left"
+    },
+    {
+      "kind": "enemy",
+      "id": "dangling-pointer",
+      "asset": "game/assets/foes/dangling-pointer.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Dangling Pointer: tiny ghostly cyan-blue creature shaped like a floating arrowhead with trailing broken glowing threads, alert pale eyes and little spectral hands. Its head and pointing gesture lead toward screen left.",
+      "prompt_variant": "anime-chibi-left",
+      "display_direction": "faces left"
+    },
+    {
+      "kind": "enemy",
+      "id": "null-wraith",
+      "asset": "game/assets/foes/null-wraith.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/sprites/vesper/profile.png",
+      "subject": "Null Wraith: a small dark hooded spectral figure with a hollow violet face, two violet glowing eyes, shredded smoke-like cloak and purple nullfire wisps; ominous, clearly readable silhouette.",
+      "prompt_variant": "anime-chibi-left",
+      "display_direction": "faces left"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-clipboard",
+      "asset": "game/assets/shardrun/relic-clipboard.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Clipboard relic: a compact bronze-framed enchanted field clipboard with violet parchment, a prominent gilded clip, and one tiny cyan checkmark sigil; keep silhouette unmistakably a clipboard.",
+      "prompt_variant": "inventory-pixel"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-cracked-mirror",
+      "asset": "game/assets/shardrun/relic-cracked-mirror.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Cracked Mirror relic: a small ornate bronze hand mirror with a deliberately fractured pale blue reflective face and subtle violet magical glow; shape clearly a mirror, never a phone or screen.",
+      "prompt_variant": "inventory-pixel"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-fork",
+      "asset": "game/assets/shardrun/shard-fork.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Fork shard: an arcane bronze and amethyst focus crystal whose central violet energy channel branches into two distinct prongs, representing a spell splitting into two bolts. It is a magical shard, not a dining utensil.",
+      "prompt_variant": "inventory-pixel"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-arc",
+      "asset": "game/assets/shardrun/shard-arc.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Arc shard: a narrow faceted golden crystal wrapped by one vivid electric blue lightning arc, strong simple silhouette and distinct bright spark point.",
+      "prompt_variant": "inventory-pixel"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-arcane-seal",
+      "asset": "game/assets/shardrun/relic-arcane-seal.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Arcane Seal relic: a coin-sized engraved golden seal, warm bronze outer rim, central vivid white-violet ward sigil like a simple cross inside a circle, magical glint. Read as a portable protective seal, not a button.",
+      "prompt_variant": "inventory-pixel-2"
+    },
+    {
+      "kind": "relic",
+      "id": "relic-patch-kit",
+      "asset": "game/assets/shardrun/relic-patch-kit.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Patch Kit relic: a compact round bronze tool case with a visible pale-pink patch plate, four tiny gear teeth, and one turquoise repair gem; unmistakably a repair kit, not a face.",
+      "prompt_variant": "inventory-pixel-2"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-sieve",
+      "asset": "game/assets/shardrun/shard-sieve.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Sieve shard: a small bronze and ivory arcane filtering plate with a clear grid of tiny holes and three bright colored motes passing through; the frame is shaped like a square spell component, readable at tiny size.",
+      "prompt_variant": "inventory-pixel-2"
+    },
+    {
+      "kind": "shard",
+      "id": "shard-chill",
+      "asset": "game/assets/shardrun/shard-chill.png",
+      "source_reference": "same asset before this pass",
+      "style_reference": "game/assets/shardrun/card-fire-constant.png",
+      "subject": "Chill shard: one faceted icy blue crystal with white frosted edges and a concentrated deep-cyan core, a few restrained snowflake sparks; a clean vertical shard silhouette.",
+      "prompt_variant": "inventory-pixel-2"
+    }
+  ]
+}

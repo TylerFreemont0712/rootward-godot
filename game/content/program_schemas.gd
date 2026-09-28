@@ -121,7 +121,6 @@ static func foe() -> Dictionary:
 	for kind: String in options:
 		options[kind].tempo = Schema.optional(ShardrunSchemas.POSITIVE)
 	schema.fields.trait.options["deadlock"] = {"partner": Schema.ID}
-	schema.fields.mirror = Schema.optional(Schema.BOOL)
 	return schema
 
 

@@ -184,6 +184,12 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Boot enters the title through the new curtain safely, including when `Boot._ready` runs while root is attaching
       the scene (`tools/boot_check.gd`).
 
+### Art polish in small passes (ADR-0023)
+- [x] Pass 1: six early foes repainted in Vesper's anime/chibi finish, facing the player from the right side of the
+      arena; four older relics and four older shards redrawn as larger, clearer bronze-and-magic icons.
+- [ ] Continue through the remaining foes, relics and shards in reviewable groups, checking each in the battle or
+      catalog at its actual size and keeping its identity and element colors.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

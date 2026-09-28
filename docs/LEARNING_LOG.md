@@ -341,3 +341,9 @@ The boot scene calls `Game.go` from `_ready`, while Godot is still attaching the
 transition curtain to root at that moment fails, leaving the lantern loading text forever. Queue root's `add_child`
 and the transition's start in that order; the deferred start happens after the curtain enters the tree, where it can
 create a tween. `game/tools/boot_check.gd` runs that actual boot path and checks it reaches the title.
+
+## Orientation belongs to foe content (`game/content/shardrun_schemas.gd`)
+Foes stand on the right and should look left toward the player. A repaint may be excellent yet face the wrong way;
+the existing `FoeView` can flip its texture when content says `mirror`. That field first existed only on program foes,
+so adding it to a shared foe failed validation and made the whole catalog unloadable. Putting it in the shared foe
+schema lets both playstyles use the same display rule, and a battle screenshot verifies the result.

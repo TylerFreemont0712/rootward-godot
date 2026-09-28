@@ -131,6 +131,7 @@ static func foe() -> Dictionary:
 				"id": Schema.ID,
 				"name": Schema.TEXT,
 				"sprite": Schema.ID,
+				"mirror": Schema.optional(Schema.BOOL),
 				"size": Schema.with_default(Schema.one_of(FOE_SIZES), "medium"),
 				"hp": POSITIVE,
 				"weak": Schema.list_of(element(), []),
