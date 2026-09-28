@@ -1,0 +1,19 @@
+{
+  "id": "heap",
+  "out": "music-heap",
+  "title": "Things Live in the Leaks",
+  "role": "The Heap's map: caverns of memory never freed. Darkly whimsical, curious, a little crooked.",
+  "theme": "The motif in E minor with a chromatic neighbour (E B E G F# E, E D# E): the theme gone slightly wrong.",
+  "bpm": 96,
+  "key": "E minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (marimba), verse 8, bridge 8 (G major, a playful march), verse 8, outro 2",
+  "style": "mysterious playful cavern exploration, video game map music, instrumental, no vocals, pizzicato strings, bass clarinet melody, marimba, celesta, soft brushed frame drum, darkly whimsical, clear close recording, E minor, 96 BPM",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "verse",
+    "occurrence": 2
+  },
+  "pick": "yue2-1001-1101-s32-29aac2"
+}

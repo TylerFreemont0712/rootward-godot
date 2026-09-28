@@ -1,0 +1,15 @@
+{
+  "id": "victory",
+  "out": "cue-victory",
+  "title": "Victory",
+  "role": "A fight won: a short fanfare of the motif, over in about four seconds.",
+  "theme": "The motif as a fanfare (D A D F# E D), resolving up to the high D.",
+  "bpm": 120,
+  "key": "D major",
+  "meter": "4/4",
+  "form": "silence 1, intro 3 (the fanfare), outro 1 (the chord rings)",
+  "style": "short triumphant orchestral victory fanfare, video game battle won, instrumental, no vocals, bright french horns and trumpets, strings, timpani roll, cymbal, D major, 120 BPM",
+  "lyrics": "",
+  "kind": "cue",
+  "pick": "yue2-1000-1100-s32-5de625"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "defeat",
+  "out": "cue-defeat",
+  "title": "Kernel Panic, Softly",
+  "role": "A run lost: the motif falls apart on a piano, in about five seconds.",
+  "theme": "The motif descending in A minor, ending on a bare low A.",
+  "bpm": 70,
+  "key": "A minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 3, outro 1",
+  "style": "short sorrowful piano ending, video game defeat, instrumental, no vocals, solo felt piano, soft strings, melancholy, A minor, 70 BPM",
+  "lyrics": "",
+  "kind": "cue",
+  "pick": "yue2-1001-1101-s32-84e455"
+}

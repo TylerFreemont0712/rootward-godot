@@ -31,10 +31,23 @@ func test_everything_the_content_names_is_there() -> void:
 	assert_array(missing).override_failure_message("missing: %s" % [missing]).is_empty()
 
 
+func test_every_layer_names_music_that_is_there_and_loops() -> void:
+	var loops: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Art.LOOPS))
+	var missing: Array[String] = []
+	for layer: Dictionary in ContentLoader.load_shardrun().catalog.config.layers:
+		for key: String in ["music", "battle_music", "boss_music", "rest_music"]:
+			var id := String(layer.get(key, ""))
+			if id != "" and (Art.music(id) == null or not loops.has(id)):
+				missing.append("%s.%s: %s" % [layer.id, key, id])
+	assert_array(missing).override_failure_message("missing: %s" % [missing]).is_empty()
+
+
 func test_music_loops_at_its_loop_point() -> void:
+	var loops: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Art.LOOPS))
 	var stream := Art.music("music-battle-salvage") as AudioStreamOggVorbis
 	assert_bool(stream.loop).is_true()
-	assert_float(stream.loop_offset).is_equal_approx(7.2927, 0.0001)
+	assert_float(stream.loop_offset).is_equal_approx(float(loops["music-battle-salvage"].loopStart), 0.0001)
+	assert_float(stream.loop_offset).is_greater(1.0)
 
 
 func test_missing_art_is_null() -> void:

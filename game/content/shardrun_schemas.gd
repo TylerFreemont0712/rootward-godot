@@ -237,6 +237,7 @@ static func run_config() -> Dictionary:
 				"music": Schema.optional(Schema.ID),
 				"battle_music": Schema.optional(Schema.ID),
 				"boss_music": Schema.optional(Schema.ID),
+				"rest_music": Schema.optional(Schema.ID),
 				"rows": Schema.int_range(3, 15),
 				"columns": Schema.int_range(2, 7),
 				"paths": Schema.int_range(1, 8),

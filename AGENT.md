@@ -2,8 +2,9 @@
 
 Rootward is a programming roguelite in Godot 4.7.2 (typed GDScript, desktop, no server). Every spell is real code the
 player's shards are made of, run in a sandbox. This repository is a **rewrite**: the TypeScript game in
-`~/personal-project/ProgramMe` (tag `checkpoint-before-godot`) is the reference for behaviour and the source of
-content and art, but nothing in its code or docs binds this one except the game's concept and what the player loves.
+`~/personal-project/ProgramMe` (tag `checkpoint-before-godot`) is where the game came from and a source of content and
+art, but nothing in its code, docs or behaviour binds this one except the game's concept and what the player loves
+(ADR-0021): this engine is free to do better.
 
 The player is the sole player and the maintainer, and is using the game to become a better programmer. Their
 daughters are meant to play it too, in Japanese. The game and the codebase are both learning artifacts.
@@ -28,9 +29,10 @@ Then say in one short message what you are picking up, ask any blocking question
   given, no network, a time limit and a memory cap. No telemetry.
 - **Protect what the player loves.** The Shardrun is the main mode, now as programs (ADR-0012): a paradigm drafted,
   cards that are real algorithms played in order into one Program, its measured work racing the foes' tempo. Its rules
-  are new and have their own tests. Spellforge (the spellbook) and the card run it grew from keep the rules ported
-  faithfully and proven against fixtures from the TypeScript engine. Experiments go behind an option or their own
-  playstyle.
+  are new and have their own tests. Spellforge (the spellbook) and the card run it grew from are tested against
+  reference results (`game/test/fixtures/`) that are the game's own: a rule changed on purpose re-records them from
+  this engine (`ROOTWARD_GOLDEN=update`) and the diff is reviewed with the change. Experiments go behind an option or
+  their own playstyle.
 - **Small slices.** Every step leaves tests green and the game launchable. Commit after each meaningful step with a
   conventional message. Never push unless asked.
 - **Strict quality.** Typed GDScript (untyped declarations are errors), small files, clear names, tests first for
@@ -51,7 +53,7 @@ and a short summary: what changed, how it was verified, what is next.
 ## 4. Things not to do
 - Do not write the player's solutions for them; hints, not answers.
 - No multiplayer, accounts, cloud sync, monetization, mobile, or real-time combat.
-- Do not commit `WIP.md`. Do not touch the old repo except to read it and to run its code for fixtures.
+- Do not commit `WIP.md`. Do not change the old repo; read it for its content, art and how it played.
 - Never stop the player's running launcher (port 7331) of the old game.
 - Never run ComfyUI and Blender at the same time: the GPU has 8 GB.
 

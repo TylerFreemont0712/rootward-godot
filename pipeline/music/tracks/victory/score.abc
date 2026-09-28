@@ -1,0 +1,23 @@
+X:1
+T:Victory
+M:4/4
+L:1/16
+Q:1/4=120
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:D
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"D"z16|"G"z16|"D"z16|
+V: Ins
+d4 A2d2 f4 e2d2|g4 b4 a4 c'4|d'16|
+% outro
+V: Vocal
+"D"z16|
+V: Ins
+z16|

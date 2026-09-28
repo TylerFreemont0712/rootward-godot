@@ -220,7 +220,7 @@ func _tile(mode: Dictionary) -> Control:
 			if click != null and click.pressed and click.button_index == MOUSE_BUTTON_LEFT and not chosen:
 				Game.use(mode.id)
 				Settings.save_file()
-				Sound.play("sfx-card", 0.5)
+				Sound.play("sfx-card-place", 0.5)
 				_build(true)
 	)
 	return tile

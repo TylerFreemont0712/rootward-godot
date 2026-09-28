@@ -705,6 +705,10 @@ def draw(spec: dict) -> tuple[list[np.ndarray], dict]:
         "anchor": spec.get("anchor", [0.5, 0.5]),
         "impact": float(spec.get("impact", 0.0)),
     }
+    # The sound that belongs to it (docs/SOUND_DESIGN.md), started with its first frame by the game.
+    if spec.get("sound"):
+        facts["sound"] = spec["sound"]
+        facts["element_layer"] = bool(spec.get("element_layer", False))
     return out_frames, facts
 
 

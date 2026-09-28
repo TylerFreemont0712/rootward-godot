@@ -1,0 +1,16 @@
+{
+  "id": "bonus-keep-me-a-light",
+  "out": "music-bonus-keep-me-a-light",
+  "kind": "bonus",
+  "title": "Keep Me a Light",
+  "role": "A bonus track, not yet in the game: the soundtrack's song. Sung, orchestral, with layered harmonies and a choir; somewhere it could play is the end of a won run, over the credits.",
+  "theme": "Someone going down to the root of a broken world, promising to come home: a light kept in the window above, the song they share, every word they were taught a little piece of light. The chorus opens on the soundtrack's motif (1 5 1 b3 2 1), and the last chorus rises a whole step into D minor, the soundtrack's home key, where it is the very melody of Salvage Skirmish.",
+  "reference": "The player's request: the feel of the vocal theme of a PlayStation role-playing game they loved as a child (The Legend of Dragoon's 'If You Still Believe', by Dennis Martin, sung by Elsa Raven, which sources give as C minor at about 84 BPM), 'the semi-harmonic and orchestral vocals'. Nothing of it is used: the melody, the words and the chords are this track's own; only the kind of song is shared (a slow minor-key ballad for a female voice, harmonies and a choir over an orchestra).",
+  "bpm": 80,
+  "key": "C minor, the last chorus in D minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (the chorus's first line on a high solo instrument), verse 9 (low and close, a pickup bar), pre-chorus 4 (climbing to the leading tone), chorus 8 (the motif), interlude 3 (a solo string instrument), verse 9, pre-chorus 4, chorus 8, bridge 8 (falling then rising, pivoting through Bb and Gm to A), chorus 10 (a whole step up, with a tag), outro 4 (the motif high, ending on D major)",
+  "style": "symphonic power ballad, cinematic orchestral pop, emotional female vocal, clear soaring soprano lead, lush layered vocal harmonies, ethereal choir, grand piano, sweeping string orchestra, harp, french horns, timpani swells, bittersweet and hopeful, English, C minor, 80 BPM",
+  "lyrics": "[Verse]\nBeneath the rust and ashes\nBeneath the sleeping stone\nI keep the spark you gave me\nSo I never walk alone\n\n[Pre-Chorus]\nAnd though the night is long\nI hear you in the song\n\n[Chorus]\nKeep me a light in the window\nSing me the song that we know\nDown where the old roots are sleeping\nI will come home, I will come home\n\n[Verse]\nAnd line by line I write it\nA spell against the night\nAnd every word you taught me\nIs a little piece of light\n\n[Pre-Chorus]\nAnd though the way is long\nI hear you in the song\n\n[Chorus]\nKeep me a light in the window\nSing me the song that we know\nDown where the old roots are sleeping\nI will come home, I will come home\n\n[Bridge]\nIf I should fall\nIf every star goes out\nSing me back through the silence\nSing me home\n\n[Chorus]\nKeep me a light in the window\nSing me the song that we know\nDown where the old roots are sleeping\nI will come home, I will come home\nI will come home\n",
+  "pick": "yue2-1001-1101-s32-e707b4"
+}

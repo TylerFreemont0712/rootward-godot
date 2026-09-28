@@ -1,1 +1,1 @@
-{"frames": 32, "columns": 8, "size": [288, 288], "fps": 30.0, "loop": false, "anchor": [0.5, 0.5], "impact": 0.18}
+{"frames": 32, "columns": 8, "size": [288, 288], "fps": 30.0, "loop": false, "anchor": [0.5, 0.5], "impact": 0.18, "sound": "sfx-hit-compile", "element_layer": true}

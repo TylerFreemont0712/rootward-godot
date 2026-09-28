@@ -91,9 +91,9 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	_crashed = {}
 	stage.hero.play("cast-heavy" if heavy else "cast-light")
 	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
-	Sound.play("sfx-cast-" + element if element != "none" else "sfx-cast", 0.8)
 	# The program runs: its circle draws itself at the hand and lets go, more elaborate the more it will deal; the
-	# strongest also draw a circle on the ground with runes rising round the Maintainer.
+	# strongest also draw a circle on the ground with runes rising round the Maintainer. Each circle brings its own
+	# sound, laid out on its beats (SpellAnim).
 	var power := _total(bolts)
 	var tier: Array = GRAND
 	for candidate: Array in TIERS:
@@ -111,6 +111,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	if heavy:
 		stage.dim(0.38, 0.3)
 	if sigil == null:
+		Sound.play("sfx-cast-sigil", 0.8)
 		stage.cast_flash(element, heavy)
 		if heavy:
 			stage.vortex(element, 0.62)
@@ -220,8 +221,8 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 				== null
 			):
 				stage.ward_glow()
+				Sound.play("sfx-ward-hex", 0.7)
 			stage.popup(stage.hero.body_point() - Vector2(0, 60), "+%d block" % int(hit.amount), UiTheme.TEAL, 28)
-			Sound.play("sfx-ward", 0.7)
 		"hit":
 			var foe: Dictionary = shown.foes.get(hit.foe, {})
 			var view: FoeView = stage.foes.get(hit.foe)
@@ -239,7 +240,10 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 				if weight >= 0.25 or amount >= 25:
 					stage.shake(weight + 0.3)
 					stage.hit_stop(70.0)
-				Sound.play("sfx-hit-heavy" if weight >= 0.25 else "sfx-hit", 0.8, randf_range(0.95, 1.08))
+				# A blow that played its animation played that animation's sound, so the two cannot disagree (a
+				# critical picture under a light hit's sound); only a blow shown without one sounds here.
+				if not struck and not crashed:
+					Sound.play("sfx-hit-compile", 0.8, randf_range(0.95, 1.08))
 			for later: Dictionary in volley:
 				if later.kind == "defeat" and later.foe == hit.foe and int(foe.get("hp", 1)) == 0:
 					_defeat(later)
@@ -247,25 +251,25 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
 				stage.popup(view.top_point(), "nullified", UiTheme.SHARD, 24)
-			Sound.play("sfx-glance", 0.7, 0.8)
+			Sound.play("sfx-gulp", 0.7)
 		"glance":
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
 				stage.popup(view.top_point(), "glance", UiTheme.MUTED, 24)
-			Sound.play("sfx-glance", 0.7)
+			Sound.play("sfx-ricochet", 0.7)
 		"locked":
 			# A deadlock held (ADR-0017): the bolt rings off a lock whose partner this program never touched.
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
 				stage.popup(view.top_point(), "locked", UiTheme.WARN, 26)
 				view.recoil(0.5)
-			Sound.play("sfx-glance", 0.8, 0.7)
+			Sound.play("sfx-lock", 0.8)
 		"wasted":
 			# A program's bolt aimed at a foe that already fell (ADR-0012): it sails through the empty air.
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
 				stage.popup(view.top_point() + Vector2(0, 30), "wasted %d" % int(hit.amount), UiTheme.FAINT, 20)
-			Sound.play("sfx-glance", 0.4, 1.3)
+			Sound.play("sfx-whiff", 0.5)
 	numbers_changed.emit()
 	_in_flight = maxi(0, _in_flight - 1)
 
@@ -276,8 +280,8 @@ func _defeat(entry: Dictionary) -> void:
 		return
 	view.set_meta("defeated", true)
 	view.defeat()
-	stage.spell("shatter", view.target_point(), "none", 0.9 + minf(0.6, view.sprite_width() / 300.0))
-	Sound.play("sfx-shatter", 0.8)
+	if stage.spell("shatter", view.target_point(), "none", 0.9 + minf(0.6, view.sprite_width() / 300.0)) == null:
+		Sound.play("sfx-shatter", 0.8)
 
 
 func _one(entry: Dictionary) -> void:
@@ -299,7 +303,7 @@ func _one(entry: Dictionary) -> void:
 			if view != null:
 				view.show_foe(foe)
 				stage.popup(view.top_point(), "+%d shield" % int(entry.amount), UiTheme.TEAL, 26)
-			Sound.play("sfx-ward", 0.6, 0.8)
+			Sound.play("sfx-foe-shield", 0.6)
 			await stage.wait(460.0)
 		"stoke":
 			var view: FoeView = stage.foes.get(entry.foe)
@@ -309,18 +313,20 @@ func _one(entry: Dictionary) -> void:
 			if view != null:
 				view.show_foe(foe)
 				stage.popup(view.top_point(), "stoked!", UiTheme.ELEMENTS.fire, 26)
-			Sound.play("sfx-charge", 0.7)
+			Sound.play("sfx-stoke", 0.7)
 			await stage.wait(460.0)
 		"heal":
 			await _heal(entry)
 		"tempo":
 			# A foe quicker than the program acts before it lands (ADR-0012); its action is the next entry.
 			var view: FoeView = stage.foes.get(entry.foe)
+			var clock: SpellAnim = null
 			if view != null:
 				view.recoil(0.4)
-				stage.spell("tempo", view.top_point() - Vector2(0, 40), "tempo", 0.8)
+				clock = stage.spell("tempo", view.top_point() - Vector2(0, 40), "tempo", 0.8)
 				stage.popup(view.top_point() - Vector2(0, 24), "⚡ faster  %d ops" % int(entry.amount), UiTheme.WARN, 26)
-			Sound.play("sfx-charge", 0.6, 1.25)
+			if clock == null:
+				Sound.play("sfx-tempo", 0.6)
 			await stage.wait(560.0)
 		"timeout":
 			stage.banner("Time limit exceeded", UiTheme.FAIL, 1000.0)
@@ -328,11 +334,11 @@ func _one(entry: Dictionary) -> void:
 			stage.hero.flash(Color(UiTheme.FAIL, 0.3))
 			shown.mana -= int(entry.get("cost", 0))
 			numbers_changed.emit()
-			Sound.play("sfx-fail", 0.7)
+			Sound.play("sfx-timeout", 0.7)
 			await stage.wait(1100.0)
 		"fizzle":
 			stage.popup(stage.hero.hand_point(), "fizzle", UiTheme.MUTED, 26)
-			Sound.play("sfx-fail", 0.6)
+			Sound.play("sfx-glitch", 0.6)
 			await stage.wait(420.0)
 		"curse":
 			shown.integrity = maxi(0, int(shown.integrity) - int(entry.amount))
@@ -354,12 +360,12 @@ func _one(entry: Dictionary) -> void:
 		"victory":
 			stage.hero.play("victory")
 			stage.banner("Victory", UiTheme.PASS, 1100.0)
-			Sound.play("cue-victory", 0.8)
+			Sound.cue("cue-victory", 0.8)
 			await stage.wait(1300.0)
 		"loss":
 			stage.hero.play("death")
 			stage.banner("Kernel panic", UiTheme.FAIL, 1400.0)
-			Sound.play("cue-defeat", 0.8)
+			Sound.cue("cue-defeat", 0.8)
 			await stage.wait(1600.0)
 		"defeat":
 			_defeat(entry)
@@ -377,18 +383,18 @@ func _enemy(entry: Dictionary) -> void:
 	shown.block = maxi(0, int(shown.block) - blocked)
 	var at := stage.hero.body_point()
 	if amount > 0:
-		stage.spell("claw", at, "foe", 0.85)
+		if stage.spell("claw", at, "foe", 0.85) == null:
+			Sound.play("sfx-claw", 0.8)
 		stage.hero.play("hurt")
 		stage.hero.flash(Color(UiTheme.FAIL, 0.4))
 		stage.popup(at, "-%d" % amount, UiTheme.FAIL, 36)
 		var weight := float(amount) / maxf(1.0, float(shown.integrity_max))
 		stage.shake(weight * 3.0)
-		Sound.play("sfx-hurt", 0.8)
 	if blocked > 0:
 		if amount == 0:
 			stage.hero.play("guard")
 		stage.popup(at + Vector2(-60, -40), "%d blocked" % blocked, UiTheme.TEAL, 24)
-		Sound.play("sfx-ward", 0.5, 1.2)
+		Sound.play("sfx-clang", 0.6)
 	numbers_changed.emit()
 	await stage.wait(360.0)
 

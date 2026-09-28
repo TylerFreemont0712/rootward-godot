@@ -300,3 +300,22 @@ A test compares the Shardrun's content with the catalog the old TypeScript engin
 into a shared foe's intents, or a new foe in the shared folder, would change that catalog, so the program run keeps
 its own: its foes in `programs/foes/`, its intent speeds in `programs.jsonc`. The same shape as program relics: a
 feature that is new lives beside what is proven, never inside it.
+
+## Reference results that can be re-recorded (`game/test/support/fixtures.gd`)
+A golden test compares what the engine does with a recording. If the recording can only come from somewhere else (the
+old engine), every deliberate change breaks it for good. `Fixtures.expect(holder, key, got)` compares, or, with
+`ROOTWARD_GOLDEN=update`, stores `got` in the recording, and the suite writes the file in `after()`: the change and
+the fixture's diff are committed together, and the diff is the review of what changed.
+
+## A filter whose cutoff moves (`pipeline/audio/synth.py`, `svf`)
+Noise swept through a band-pass whose centre glides is the rush, whistle and tear of most of the fight's sounds. The
+Chamberlin state-variable filter is two integrators in a loop, `f = 2 sin(pi fc / fs)` per sample, so the cutoff can
+change every sample; it is stable only below about a sixth of the sample rate, so the cutoff is clamped there.
+
+## Randomness in presentation (`game/app/sound.gd`)
+The rules take all their randomness from `Rng`, seeded, so a run replays. A sound's take is chosen with `randi()`:
+it is presentation, never decides an outcome, and twenty hits of a volley should not be one sample twenty times.
+
+## A gzip stream from Godot (`Fixtures.save_json_gz`)
+`PackedByteArray.compress(FileAccess.COMPRESSION_GZIP)` writes a plain gzip stream, the kind `decompress_dynamic`
+reads; `FileAccess.open_compressed` writes Godot's own block format, which is not gzip.

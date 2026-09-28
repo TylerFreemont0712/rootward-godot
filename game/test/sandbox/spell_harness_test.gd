@@ -1,6 +1,7 @@
 extends GdUnitTestSuite
-## The Godot spell harness against the old server's: the same spells of real shards, in both languages, must return
-## the same bolts, traces, work and failures (fixture from tools/fixtures/spells.ts).
+## The spell harness against its recorded runs (game/test/fixtures/spells.json, first recorded from the old game's
+## server): the same spells of real shards, in both languages, return the same bolts, traces, work and failures.
+## Re-recording keeps the spells and inputs and records what this sandbox returns.
 
 ## A recursive card with a loop and a comprehension (map): four bolts make four calls, and only the last call, with one
 ## bolt left, goes round each loop once.
@@ -41,6 +42,11 @@ func before() -> void:
 		shards[shard.id] = shard
 
 
+func after() -> void:
+	if Fixtures.updating():
+		Fixtures.save_json("spells", fixture)
+
+
 func _spells() -> Array[Dictionary]:
 	var spells: Array[Dictionary] = []
 	for spell: Dictionary in fixture.spells:
@@ -56,10 +62,13 @@ func _pipeline_input(index: int) -> Dictionary:
 	return {"bolts": raw.bolts, "battle": raw.battle, "limit": int(raw.limit), "trace_limit": int(raw.traceLimit)}
 
 
-func test_every_spell_matches_the_old_server() -> void:
+func test_every_spell_runs_as_recorded() -> void:
 	var spells := _spells()
 	for case: Dictionary in fixture.cases:
 		var runs := SpellHarness.run(case.language, spells, _pipeline_input(int(case.input)))
+		if Fixtures.updating():
+			_record(case, runs)
+			continue
 		for spell_id: String in case.runs:
 			var want: Dictionary = case.runs[spell_id]
 			var got: Dictionary = runs[spell_id]
@@ -79,6 +88,23 @@ func test_every_spell_matches_the_old_server() -> void:
 				assert_str(got.get("shard", "")).is_equal(want.get("shard", ""))
 				if want.has("line"):
 					assert_int(got.get("line", -1)).override_failure_message(where + ": line").is_equal(int(want.line))
+
+
+## What this sandbox returned for each spell of a case, in the recordings' shape: its verdict, trace and console, and
+## its bolts and work or why it failed.
+func _record(case: Dictionary, runs: Dictionary) -> void:
+	for spell_id: String in case.runs:
+		var got: Dictionary = runs[spell_id]
+		var recorded := {"ok": got.ok, "trace": got.trace, "console": got.console}
+		if got.ok:
+			recorded.bolts = got.bolts
+			recorded.work = got.work
+		else:
+			recorded.reason = got.reason
+			for key: String in ["shard", "line"]:
+				if got.has(key):
+					recorded[key] = got[key]
+		case.runs[spell_id] = recorded
 
 
 func test_function_names_follow_each_language() -> void:

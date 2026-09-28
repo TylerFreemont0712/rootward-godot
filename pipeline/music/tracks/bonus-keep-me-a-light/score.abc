@@ -1,0 +1,106 @@
+X:1
+T:Keep Me a Light
+M:4/4
+L:1/16
+Q:1/4=80
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Cm
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Cm"z16|"Ab"z16|"Eb"z16|"G"z16|
+V: Ins
+c'4 g2c'2 e'4 d'2c'2|f'6 e'6 c'4|b4 g2b2 e'4 d'2c'2|d'12 z4|
+% verse
+V: Vocal
+"Cm"z12 z2G,2|"Cm"C6 D2 E6 D2|"Bb"C8 B,4 z2G,2|"Ab"E6 F2 G6 F2|
+V: Ins
+Z4|
+V: Vocal
+"Eb"E12 z2C2|"Fm"F6 G2 A6 G2|"Cm"G8 E4 C2D2|"Ab"C6 D2 E6 F2|
+V: Ins
+Z4|
+V: Vocal
+"G"G12 z2G2|
+V: Ins
+Z|
+% pre-chorus
+V: Vocal
+"Ab"A6 G2 A6 B2|"Bb"d12 z2B2|"Ab"c6 B2 c6 d2|"G"=B12 z4|
+V: Ins
+Z4|
+% chorus
+V: Vocal
+"Cm"c4 G2c2 e4 d2c2|"Ab"f6 e6 z4|"Eb"B4 G2B2 e4 d2c2|"Bb"d12 z4|
+V: Ins
+Z4|
+V: Vocal
+"Ab"e4 c2e2 f4 e2c2|"Fm"f8 c4 z4|"G"d2d2 f4 d8|"Cm"d2d2 e4 c8|
+V: Ins
+Z4|
+% interlude
+V: Vocal
+"Ab"z16|"Fm"z16|"G"z16|
+V: Ins
+e4 c2e2 f4 e2c2|f8 c4 z4|=B12 z4|
+% verse
+V: Vocal
+"Cm"z12 z2G,2|"Cm"C6 D2 E6 D2|"Bb"C8 B,4 z2G,2|"Ab"E6 F2 G6 F2|
+V: Ins
+Z4|
+V: Vocal
+"Eb"E12 z2C2|"Fm"F6 G2 A6 G2|"Cm"G8 E4 C2D2|"Ab"C6 D2 E6 F2|
+V: Ins
+Z4|
+V: Vocal
+"G"G12 z2G2|
+V: Ins
+Z|
+% pre-chorus
+V: Vocal
+"Ab"A6 G2 A6 B2|"Bb"d12 z2B2|"Ab"c6 B2 c6 d2|"G"=B12 z4|
+V: Ins
+Z4|
+% chorus
+V: Vocal
+"Cm"c4 G2c2 e4 d2c2|"Ab"f6 e6 z4|"Eb"B4 G2B2 e4 d2c2|"Bb"d12 z4|
+V: Ins
+Z4|
+V: Vocal
+"Ab"e4 c2e2 f4 e2c2|"Fm"f8 c4 z4|"G"d2d2 f4 d8|"Cm"d2d2 e4 c8|
+V: Ins
+Z4|
+% bridge
+V: Vocal
+"Ab"z8 e2d2 c4|"Bb"B12 z4|"Eb"z2G2 B2B2 e6 d2|"Cm"c12 z4|
+V: Ins
+Z4|
+V: Vocal
+"Ab"c4 c2d2 e6 d2|"Bb"f8 d4 z4|"Gm"f4 e4 d8-|"A"d8 z8|
+V: Ins
+Z4|
+% chorus
+V: Vocal
+K:Dm
+"Dm"d4 A2d2 f4 e2d2|"Bb"g6 f6 z4|"F"c4 A2c2 f4 e2d2|"C"e12 z4|
+V: Ins
+K:Dm
+Z4|
+V: Vocal
+"Bb"f4 d2f2 g4 f2d2|"Gm"g8 d4 z4|"A"e2e2 g4 e8|"Dm"e2e2 f4 d8|
+V: Ins
+Z4|
+V: Vocal
+"Bb"z8 "C"e2e2 g4|"Dm"f16|
+V: Ins
+Z2|
+% outro
+V: Vocal
+"Dm"z16|"Bb"z16|"A"z16|"D"z16|
+V: Ins
+d'4 a2d'2 f'4 e'2d'2|g'6 f'6 d'4|e'12 ^c'4|d'16|

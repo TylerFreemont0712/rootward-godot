@@ -1,0 +1,19 @@
+{
+  "id": "battle-heap",
+  "out": "music-battle-heap",
+  "title": "Use After Free",
+  "role": "Every fight in the Heap: nimble, crooked and urgent; lighter than the Salvage's fights, more nervous.",
+  "theme": "The motif syncopated (E. B E G F#. E): the theme dancing on its toes.",
+  "bpm": 144,
+  "key": "E minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (marimba ostinato), verse 8, chorus 8 (arpeggios climbing), verse 8, interlude 8 (staccato breakdown, building), outro 2",
+  "style": "nimble eerie orchestral battle music, video game combat, instrumental, no vocals, fast marimba ostinato, staccato strings, bassoon and clarinet melody, frame drums and snare, syncopated and crooked, energetic and clear, E minor, 144 BPM",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "interlude",
+    "occurrence": 1
+  },
+  "pick": "yue2-1000-1100-s32-c29878"
+}

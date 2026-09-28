@@ -84,10 +84,13 @@ func _show(state: Dictionary) -> void:
 		_fight.wants.connect(send)
 		view = _fight
 		var boss: bool = state.battle.kind == "boss"
-		Sound.music(layer.get("boss_music", "music-guardian") if boss else layer.get("battle_music", "music-battle"))
+		Sound.music(
+			layer.get("boss_music", "music-guardian") if boss else layer.get("battle_music", "music-battle-salvage")
+		)
 	else:
 		view = _between(state)
-		Sound.music(layer.get("music", "music-salvage"))
+		var resting: bool = state.status == "rest"
+		Sound.music(layer.get("rest_music", "music-rest") if resting else layer.get("music", "music-salvage"))
 	view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_body.add_child(view)
 
@@ -314,7 +317,7 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 				"sfx-curse" if "relic" in kinds and after.get("reward", {}).has("cursed_relic") else "sfx-open", 0.8
 			)
 		"arrange", "purge", "draft-card":
-			Sound.play("sfx-card", 0.5)
+			Sound.play("sfx-card-place", 0.5)
 
 
 func is_busy() -> bool:

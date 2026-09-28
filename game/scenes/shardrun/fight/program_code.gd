@@ -81,7 +81,7 @@ func show_program(state: Dictionary, view: Dictionary) -> void:
 	_drawn = true
 	if first >= 0:
 		_reveal(first)
-		Sound.play("sfx-charge", 0.35, 1.5)
+		Sound.play("sfx-glyph", 0.5)
 	var work := int(fresh.get("work", 0))
 	_show_final_volley(fresh)
 	_speed.text = ProgramRules.speed_label(cards, session.catalog)
@@ -247,7 +247,8 @@ func play_cast(view: Dictionary, speed: String) -> void:
 				var step: Dictionary = steps[slot]
 				_focus(index)
 				_code.set_note(index, "▶ running…", UiTheme.MUTED)
-				Sound.play("sfx-card", 0.3, 1.2 + 0.05 * slot)
+				# Each step's rune a little higher than the last: the program climbing through its lines.
+				Sound.play("sfx-glyph", 0.35, 0.9 + 0.06 * slot)
 				await _wait(pace * 0.5)
 				# A card's function is walked the first time it runs; the same card again only shows its result.
 				if not walked.has(line.card) and not _hurry:
@@ -266,7 +267,8 @@ func play_cast(view: Dictionary, speed: String) -> void:
 					tint = now
 					_running(true, tint)
 					_code.wash(tint)
-					Sound.play("sfx-cast", 0.4, 1.4)
+					var element := VolleyMeter.dominant(elements)
+					Sound.play("sfx-element-" + element if element in SpellAnim.ELEMENT_LAYERS else "sfx-glyph", 0.4)
 				await _wait(pace)
 			"return":
 				_focus(index)
@@ -274,7 +276,7 @@ func play_cast(view: Dictionary, speed: String) -> void:
 				var power := roundi(float(final.get("power", _power_of(seeds))))
 				var note := "→ %d bolts · %d power" % [int(final.get("returned", seeds.size())), power]
 				_code.set_note(index, note, tint.lightened(0.3), 0.8)
-				Sound.play("sfx-charge", 0.5, 1.3)
+				Sound.play("sfx-glyph", 0.6, 0.75)
 				await _wait(pace * 1.4)
 	_code.set_cursor(-1)
 	_running(false)
@@ -429,7 +431,7 @@ func _count_ops(ops: int, budget: int, race: Array) -> void:
 		)
 		_footer.add_theme_color_override("font_color", UiTheme.WARN)
 		_pop(_footer, 0.6)
-		Sound.play("sfx-charge", 0.6, 0.9)
+		Sound.play("sfx-tempo", 0.45)
 
 
 ## A label lands like a hit: it swells and flashes, then settles.

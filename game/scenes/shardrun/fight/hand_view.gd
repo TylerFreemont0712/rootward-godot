@@ -77,7 +77,7 @@ func show_hand(ids: Array, make: Callable, deal: bool, origins: Dictionary) -> v
 	for index in cards.size():
 		move_child(cards[index], index)
 	if dealt > 0:
-		Sound.play("sfx-card", 0.5)
+		Sound.play("sfx-card-flick", 0.5)
 	if size.x > 1.0 and is_inside_tree():
 		_fly_in.call_deferred()
 

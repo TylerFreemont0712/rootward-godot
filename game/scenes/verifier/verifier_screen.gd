@@ -223,7 +223,7 @@ func _step() -> void:
 	_trace.add_child(Ui.label("%02d  %s" % [_revealed, steps[_revealed - 1]], "Muted", true))
 	if _revealed == steps.size():
 		(_trace.get_child(1) as Button).disabled = true
-	Sound.play("sfx-card", 0.35)
+	Sound.play("sfx-glyph", 0.35)
 
 
 func _submit_answer() -> void:

@@ -47,13 +47,18 @@ func show_volley(bolts: int, power: float, elements: Dictionary, pop := false) -
 
 ## The colour of a volley: its commonest element's (violet for none).
 static func colour_of(elements: Dictionary) -> Color:
+	return Color(SpellAnim.RAMPS.get(dominant(elements), SpellAnim.RAMPS.none)[1])
+
+
+## The element most of a volley's power is in ("none" for none).
+static func dominant(elements: Dictionary) -> String:
 	var best := "none"
 	var most := -1
 	for element: String in elements:
 		if int(elements[element]) > most:
 			most = int(elements[element])
 			best = element
-	return Color(SpellAnim.RAMPS.get(best, SpellAnim.RAMPS.none)[1])
+	return best
 
 
 func _process(delta: float) -> void:

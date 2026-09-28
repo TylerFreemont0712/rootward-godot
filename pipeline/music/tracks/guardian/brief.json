@@ -1,0 +1,19 @@
+{
+  "id": "guardian",
+  "out": "music-guardian",
+  "title": "The Guardian",
+  "role": "The guardians of the first layers (the Kiln Warden, the Deadlock Golem): heavy, stern, a wall to climb.",
+  "theme": "The motif at its darkest, in the low brass (G D G Bb A G).",
+  "bpm": 120,
+  "key": "G minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (timpani and low strings), verse 8, chorus 8 (the climb), verse 8, interlude 8 (a heavier second phase, long notes), outro 2",
+  "style": "dark epic orchestral boss battle, video game guardian fight, instrumental, no vocals, stern low brass and trombone melody, pounding taiko and timpani, driving low string ostinato, anvil hits, soaring high string answers, heavy and dramatic, clear powerful mix, G minor, 120 BPM",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "interlude",
+    "occurrence": 1
+  },
+  "pick": "yue2-1000-1100-s32-3eac41"
+}

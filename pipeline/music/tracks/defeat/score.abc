@@ -1,0 +1,23 @@
+X:1
+T:Kernel Panic, Softly
+M:4/4
+L:1/16
+Q:1/4=70
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Am
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Am"z16|"F"z16|"Am"z16|
+V: Ins
+e4 d2c2 B4 A4|c8 B8|A,16|
+% outro
+V: Vocal
+"Am"z16|
+V: Ins
+z16|

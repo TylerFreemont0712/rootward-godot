@@ -1,1 +1,1 @@
-{"frames": 36, "columns": 8, "size": [480, 480], "fps": 30.0, "loop": false, "anchor": [0.5, 0.5], "impact": 0.16}
+{"frames": 36, "columns": 8, "size": [480, 480], "fps": 30.0, "loop": false, "anchor": [0.5, 0.5], "impact": 0.16, "sound": "sfx-hit-critical", "element_layer": true}

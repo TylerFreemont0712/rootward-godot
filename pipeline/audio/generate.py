@@ -209,7 +209,8 @@ def render(comfy: str, job: dict, seed: int) -> bytes:
 
 
 def recorded_layers(job: dict) -> list[dict]:
-    """A recorded effect's source layers; a single `source` is the compact form for one unmodified layer."""
+    """A recorded effect's layers: recordings (`source`) or made ingredients (`synth`, pipeline/audio/synth.py); a
+    single `source` is the compact form for one unmodified layer."""
     if job.get("layers"):
         return job["layers"]
     if job.get("source"):
@@ -217,13 +218,22 @@ def recorded_layers(job: dict) -> list[dict]:
     return []
 
 
+def variant_count(job: dict) -> int:
+    """How many takes of the sound to write (`<out>-1` ... `<out>-N`); 0 writes the one `<out>`."""
+    return int(job.get("variants", 0))
+
+
 def ensure_raws(comfy: str, job: dict, force: bool, reprocess_only: bool) -> list[Path] | None:
     """One raw FLAC per candidate, each with its own seed (seed, seed + 1, ...), rendering only what is missing or stale.
     A candidate is its own render rather than a batch, so candidates differ in their plan as well as their details."""
     layers = recorded_layers(job)
     if layers:
-        # Recorded sounds need no GPU; every layer is mixed, trimmed, levelled and encoded below.
-        sources = [ROOT / "pipeline" / "sources" / layer["source"] for layer in layers]
+        # Recorded sounds need no GPU; every layer is mixed, trimmed, levelled and encoded below. A made ingredient
+        # has no file, and a source that differs by take (`{v}`) is checked for every take.
+        sources = [ROOT / "pipeline" / "sources" / layer["source"].format(v=v)
+                   for layer in layers if "source" in layer for v in range(max(1, variant_count(job)))]
+        if not sources:
+            return [DEFAULT_MANIFEST]
         missing = [source for source in sources if not source.exists()]
         if missing:
             names = ", ".join(str(source.relative_to(ROOT / "pipeline" / "sources")) for source in missing)
@@ -288,20 +298,40 @@ def retime(audio: np.ndarray, rate: float) -> np.ndarray:
     return np.column_stack(channels).astype(np.float32)
 
 
-def mix_recorded(job: dict) -> np.ndarray:
-    """Build one designed effect from timed, pitched and levelled CC0 recordings.
+LAYER_KEYS = {"source", "synth", "delay_ms", "gain_db", "rate", "reverse", "pan", "vary"}
+
+
+def mix_recorded(job: dict, variant: int = 0) -> np.ndarray:
+    """Build one designed effect from timed, pitched and levelled layers: CC0 recordings, and ingredients made in
+    pipeline/audio/synth.py. A layer's `vary` gives ranges its settings are drawn from, differently for each take of
+    the sound (`variant`), and `{v}` in its source picks a different recording for each take.
 
     LEARN: keeping the recipe in the manifest makes the mix reproducible and lets a sound gain weight or sparkle
     without adding opaque edited source files to the repository.
     """
+    import synth  # the ingredients (pipeline/audio/synth.py, beside this file)
+
     prepared: list[tuple[int, np.ndarray]] = []
-    for layer in recorded_layers(job):
-        audio = decode(ROOT / "pipeline" / "sources" / layer["source"])
-        if layer.get("reverse", False):
+    for index, layer in enumerate(recorded_layers(job)):
+        rng = np.random.default_rng(int(job["seed"]) + 101 * variant + 7 * index)
+        settings = dict(layer)
+        for key, (low, high) in layer.get("vary", {}).items():
+            settings[key] = float(settings.get(key, 0 if key in ("delay_ms", "gain_db", "pan") else 1)) + rng.uniform(low, high)
+        if "synth" in layer:
+            args = {key: value for key, value in layer.items() if key not in LAYER_KEYS}
+            audio = synth.make(layer["synth"], int(rng.integers(1 << 30)), **args)
+        else:
+            audio = decode(ROOT / "pipeline" / "sources" / layer["source"].format(v=variant))
+        if settings.get("reverse", False):
             audio = audio[::-1].copy()
-        audio = retime(audio, float(layer.get("rate", 1)))
-        audio *= np.float32(10 ** (float(layer.get("gain_db", 0)) / 20))
-        delay = max(0, round(float(layer.get("delay_ms", 0)) / 1000 * SAMPLE_RATE))
+        audio = retime(audio, float(settings.get("rate", 1)))
+        audio *= np.float32(10 ** (float(settings.get("gain_db", 0)) / 20))
+        pan = float(settings.get("pan", 0))
+        if pan:
+            # Equal-power balance: the centre keeps its level, a hard side keeps one ear.
+            angle = (np.clip(pan, -1, 1) + 1) * np.pi / 4
+            audio = audio * np.float32([np.cos(angle), np.sin(angle)]) * np.float32(np.sqrt(2))
+        delay = max(0, round(float(settings.get("delay_ms", 0)) / 1000 * SAMPLE_RATE))
         prepared.append((delay, audio))
     frames = max(delay + len(audio) for delay, audio in prepared)
     mixed = np.zeros((frames, 2), dtype=np.float32)
@@ -513,10 +543,25 @@ def post_cue(audio: np.ndarray, job: dict) -> tuple[np.ndarray, str]:
     return level(clip, post), f"{len(clip) / SAMPLE_RATE:.1f}s cue"
 
 
-def process(job: dict, raw: Path) -> tuple[np.ndarray, str, dict | None]:
+def post_timeline(audio: np.ndarray, job: dict) -> tuple[np.ndarray, str]:
+    """A sound laid out on its animation's beats (docs/SOUND_DESIGN.md): its first sample is the animation's first
+    frame, so nothing is trimmed from the front; it is cleaned, faded at its end, and levelled."""
+    post = job["post"]
+    audio = clean_audio(audio, post)
+    end = ending(audio, post.get("threshold_db", -50))
+    clip = audio[: max(end, round(0.05 * SAMPLE_RATE))].copy()
+    fade_out = min(len(clip), round(post.get("fade_ms", 120) / 1000 * SAMPLE_RATE))
+    clip[len(clip) - fade_out:] *= np.linspace(1, 0, fade_out, dtype=np.float32)[:, None]
+    return level(clip, post), f"{len(clip) / SAMPLE_RATE:.2f}s timeline"
+
+
+def process(job: dict, raw: Path, variant: int = 0) -> tuple[np.ndarray, str, dict | None]:
     layers = recorded_layers(job)
-    audio = mix_recorded(job) if layers else decode(raw)
+    audio = mix_recorded(job, variant) if layers else decode(raw)
     kind = job["post"]["kind"]
+    if kind == "timeline":
+        processed, note = post_timeline(audio, job)
+        return processed, f"{note}, {len(layers)} layers", None
     if kind == "bgm":
         return post_bgm(clean_audio(audio, job["post"]), job)
     if kind == "loop":
@@ -606,6 +651,20 @@ def main() -> None:
         if raws is None:
             continue
         candidates = []
+        if variant_count(job):
+            # A sound heard many times over (a volley's hits) is written as several takes; the game picks one.
+            for variant in range(variant_count(job)):
+                audio, note, _ = process(job, raws[0], variant)
+                preview = CACHE_DIR / job["id"] / f"variant_{variant + 1}.ogg"
+                encode(audio, preview, job["post"])
+                candidates.append({"index": variant, "seed": f"take {variant + 1}", "note": note, "file": preview})
+                print(f"  {job['id']}-{variant + 1}: {note}")
+                if not args.no_write:
+                    target = OUT_DIR / f"{job['out']}-{variant + 1}.ogg"
+                    encode(audio, target, job["post"])
+                    print(f"  wrote {target.relative_to(ROOT)}")
+            entries.append({"job": job, "candidates": candidates})
+            continue
         for index, raw in enumerate(raws):
             audio, note, meta = process(job, raw)
             if recorded_layers(job):

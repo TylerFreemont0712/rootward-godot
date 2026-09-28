@@ -1,11 +1,11 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0019**.
+The next number is **ADR-0022**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
-- [ADR-0003](ADR-0003-shardrun-rules-port.md): the Shardrun rules are ported line for line, and proven by replay.
+- [ADR-0003](ADR-0003-shardrun-rules-port.md): the Shardrun rules are ported line for line, and proven by replay (superseded by ADR-0021).
 - [ADR-0004](ADR-0004-content-as-jsonc.md): content is JSONC with code in real source files, checked by a small schema language.
 - [ADR-0005](ADR-0005-asset-pipeline-and-3d-characters.md): one pipeline into Godot, and characters as real-time 3D.
 - [ADR-0006](ADR-0006-screens-and-the-run-session.md): the screens are built in code, and one session owns the run.
@@ -21,3 +21,6 @@ The next number is **ADR-0019**.
 - [ADR-0016](ADR-0016-a-deeper-shardrun.md): a deeper Shardrun: tiered relics of its own, roles on cards, a three-bolt seed, twice the cards, a git log.
 - [ADR-0017](ADR-0017-the-speed-race-whole-and-the-golem-as-two-locks.md): Initiative, a speed per intent and a budget per layer as rules; the Golem as two locks; a program run's foes of its own.
 - [ADR-0018](ADR-0018-imports-keywords-and-refactors.md): imports and fight state, keywords, every card's + as a refactor read as a diff, a picture for every card.
+- [ADR-0019](ADR-0019-the-soundtrack-composed-as-scores.md): the soundtrack composed as scores, performed by YuE2, measured and picked.
+- [ADR-0020](ADR-0020-sounds-made-on-their-animations.md): sounds made on their animations' beats; cues stand in for the music.
+- [ADR-0021](ADR-0021-the-rules-are-the-games-own.md): the rules are the game's own; the reference results are re-recordable.

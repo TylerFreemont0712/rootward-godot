@@ -1,0 +1,59 @@
+X:1
+T:Salvage Skirmish
+M:4/4
+L:1/16
+Q:1/4=132
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Dm
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Dm"z16|"Dm"z16|"Bb"z16|"A"z16|
+V: Ins
+D2D2A2D2 d2D2A2D2|D2D2A2D2 d2D2c2A2|B,2B,2F2B,2 d2B,2F2B,2|^C2E2A2^c2 e4 A4|
+% verse
+V: Vocal
+"Dm"z16|"Bb"z16|"C"z16|"Dm"z16|
+V: Ins
+d4 A2d2 f4 e2d2|f4 g2f2 e4 d4|e4 c2e2 g4 f2e2|d8 z4 A4|
+V: Vocal
+"Dm"z16|"Bb"z16|"Gm"z16|"A"z16|
+V: Ins
+d4 A2d2 f4 a4|b4 a2g2 f4 d4|g4 f2e2 d4 e4|^c8 e4 A4|
+% chorus
+V: Vocal
+"Dm"z16|"Bb"z16|"C"z16|"F"z16|
+V: Ins
+d4 A2d2 f4 e2d2|f4 g2f2 e4 d4|e4 c2e2 g4 c'4|a8 f4 c4|
+V: Vocal
+"Gm"z16|"Bb"z16|"A"z16|"Dm"z16|
+V: Ins
+d'4 c'2b2 a4 g4|f4 g2a2 b4 a4|^c'4 a4 e4 ^c4|d12 z4|
+% interlude
+V: Vocal
+"F"z16|"C"z16|"Bb"z16|"F"z16|
+V: Ins
+c'8 a4 f4|g8 e4 c4|d4 f4 b4 d'4|c'12 a4|
+V: Vocal
+"Gm"z16|"Bb"z16|"C"z16|"A"z16|
+V: Ins
+b8 g4 d4|f4 g4 a4 b4|c'4 d'4 e'4 c'4|a4 ^c'4 e'4 ^c'4|
+% chorus
+V: Vocal
+"Dm"z16|"Bb"z16|"C"z16|"F"z16|
+V: Ins
+d'4 a2d'2 f'4 e'2d'2|f'4 g'2f'2 e'4 d'4|e'4 c'2e'2 g'4 c'4|a8 f4 c4|
+V: Vocal
+"Gm"z16|"Bb"z16|"A"z16|"A"z16|
+V: Ins
+d'4 c'2b2 a4 g4|f4 g2a2 b4 a4|^c'4 a4 e4 ^c4|A2^c2e2a2 ^c'4 A4|
+% outro
+V: Vocal
+"Dm"z16|"Dm"z16|
+V: Ins
+d4 A2d2 f4 e2d2|d8 z8|

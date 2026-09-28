@@ -1,0 +1,19 @@
+{
+  "id": "battle-kernel",
+  "out": "music-battle-kernel",
+  "title": "Kernel Panic",
+  "role": "Every fight in the Kernel, the deepest layer: relentless and urgent, the Machine's core fighting back.",
+  "theme": "The motif in the brass (C G C Eb D C) over a machine-like ostinato.",
+  "bpm": 148,
+  "key": "C minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (string ostinato), verse 8, chorus 8 (the line climbs into the stratosphere), verse 8, interlude 8 (half-time, building), outro 2",
+  "style": "relentless hybrid orchestral battle music, video game combat in a machine core, instrumental, no vocals, driving staccato strings ostinato, powerful brass melody, taiko and snare drums, pulsing synth bass, epic and urgent, bright clear mix, C minor, 148 BPM",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "interlude",
+    "occurrence": 1
+  },
+  "pick": "yue2-1001-1101-s32-c2aef1"
+}

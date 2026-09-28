@@ -1,0 +1,19 @@
+{
+  "id": "rest",
+  "out": "music-rest",
+  "title": "A Quiet Alcove",
+  "role": "Rest rooms: the one safe place in a layer. A lullaby; the theme at peace.",
+  "theme": "The motif in F major as a lullaby (F C F A G F).",
+  "bpm": 76,
+  "key": "F major",
+  "meter": "3/4",
+  "form": "silence 1, intro 2 (harp), verse 8, bridge 8, verse 8, outro 2",
+  "style": "gentle lullaby, video game rest area, instrumental, no vocals, fingerpicked acoustic guitar, soft flute melody, harp, warm cello, peaceful and safe, intimate clear recording, F major, 76 BPM, 3/4",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "verse",
+    "occurrence": 2
+  },
+  "pick": "yue2-1001-1101-s32-44ef18"
+}

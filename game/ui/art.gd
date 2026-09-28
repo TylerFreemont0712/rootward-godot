@@ -5,7 +5,7 @@ extends RefCounted
 ##
 ##   Art.texture("backgrounds/arena-salvage")   # Texture2D or null
 ##   Art.music("music-battle-salvage")          # loops where music.json says it does
-##   Art.sound("sfx-hit")
+##   Art.sound("sfx-gulp")                      # one file; Sound.play also finds numbered takes
 
 const ROOT := "res://assets/"
 const LOOPS := "res://assets/audio/music.json"

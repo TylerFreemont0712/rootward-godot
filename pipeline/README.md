@@ -9,7 +9,8 @@ game runs with none of it (`Art.texture` returns null, a character without a mod
 |---|---|---|---|
 | Pictures (arenas, foes, relic icons, map pieces, the card frame and back, skin portraits) | `art/manifest.json` (a style + a prompt each; `init` starts from a layout sketch or an image) | `scripts/art.sh --only '<ids>'` | `game/assets/<out>.png` (the card frame also writes `cards/frame.json`, its geometry) |
 | Spell animations (a cast, a bolt, hits, a ward, a shatter, a claw) | `sprites/spells.json`, the motions in `sprites/spells.py` | `scripts/sprites.sh spells [--only '<ids>'] [--sheet]` (no GPU) | `game/assets/fx/spells/<id>.png` + `.json` |
-| Music, cues, sounds | `audio/manifest.json` | `scripts/audio.sh --only '<ids>'` | `game/assets/audio/<id>.ogg`, loop points in `music.json` |
+| Music and its cues (composed: a brief and an ABC score each, performed by YuE2) | `music/tracks/<id>/` | `music/README.md`: `perform.py`, `listen.py`, `master.py` | `game/assets/audio/<out>.ogg`, loop points in `music.json` |
+| Sounds (timelines on their animations' beats) and the treasure cue | `audio/manifest.json`, ingredients in `audio/synth.py` | `scripts/audio.sh --only '<ids>'`; `audio/beats.py` draws them against their beats | `game/assets/audio/<id>.ogg` (`<id>-1` ... for takes) |
 | Characters | `characters/<id>/model.json`, `animation.json`, concept art, and the rigged `.blend` | `scripts/character.sh <id>` | `game/characters/<id>/<id>.glb`, screenshots in `shots/` |
 
 `--reprocess` re-runs only the post-processing on cached renders (no GPU, no ComfyUI), which is how a change to a

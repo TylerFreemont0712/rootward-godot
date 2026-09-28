@@ -22,25 +22,6 @@
     "headroom_db": 3
   },
   "styles": {
-    "music": {
-      "candidates": 1,
-      "seconds": 150,
-      "lyrics": "[instrumental]",
-      "post": {
-        "kind": "bgm",
-        "intro_bars": 4,
-        "tail_bars": 4,
-        "crossfade_ms": 150,
-        "lufs": -20,
-        "peak": -1.5,
-        "bitrate": 160,
-        "highpass_hz": 48,
-        "lowpass_hz": 15000,
-        "denoise_db": 5,
-        "low_shelf_db": -2.5
-      },
-      "audio_codes": false
-    },
     "cue": {
       "candidates": 1,
       "seconds": 8,
@@ -96,165 +77,21 @@
         "lowpass_hz": 12000,
         "denoise_db": 3
       }
+    },
+    "timeline": {
+      "candidates": 1,
+      "post": {
+        "kind": "timeline",
+        "fade_ms": 120,
+        "threshold_db": -50,
+        "lufs": -16,
+        "peak": -1.5,
+        "bitrate": 128,
+        "highpass_hz": 40
+      }
     }
   },
   "assets": [
-    {
-      "id": "music-title",
-      "out": "audio/music-title",
-      "style": "music",
-      "seed": 58101,
-      "bpm": 76,
-      "keyscale": "D major",
-      "tags": "Acoustic chamber fantasy adventure theme. A beautiful memorable piano melody, solo flute answering, plucked harp arpeggios and expressive acoustic cello. Real players in a small scoring room, clear piano hammer and harp string attacks, expressive dynamics, breathing between phrases, a hopeful rising refrain. Intimate, warm, wondrous, instrumental."
-    },
-    {
-      "id": "music-bastion",
-      "out": "audio/music-bastion",
-      "style": "music",
-      "seed": 58201,
-      "bpm": 104,
-      "keyscale": "G major",
-      "tags": "Rustic acoustic folk dance in a welcoming fantasy village. Nimble fiddle and wooden flute trade a cheerful singable melody over lute strumming, acoustic guitar, upright bass and soft tambourine. Small live ensemble, woody string attacks, lively human timing, clear natural recording, instrumental.",
-      "audio_codes": true
-    },
-    {
-      "id": "music-battle",
-      "out": "audio/music-battle",
-      "style": "music",
-      "seed": 58301,
-      "bpm": 138,
-      "keyscale": "E minor",
-      "tags": "Energetic acoustic fantasy battle music. Agile spiccato violin and cello figures, a bold live French horn melody answered by woodwinds, timpani strikes and tight frame drums. Articulated rhythmic phrases with rests, dramatic dynamic contrast, a memorable heroic refrain. Clear orchestral recording, instrumental."
-    },
-    {
-      "id": "music-battle-salvage",
-      "out": "audio/music-battle-salvage",
-      "style": "music",
-      "seed": 58311,
-      "bpm": 132,
-      "keyscale": "D minor",
-      "tags": "Driving acoustic adventure battle in ruined workshops. Short rhythmic cello bow strokes, hammered metal accents, a defiant French horn tune answered by violin, deep tom strikes and a plucked bass. Real acoustic instruments with clear separated attacks, a memorable determined melody, dynamic and heroic, instrumental.",
-      "audio_codes": true
-    },
-    {
-      "id": "music-battle-heap",
-      "out": "audio/music-battle-heap",
-      "style": "music",
-      "seed": 58321,
-      "bpm": 124,
-      "keyscale": "E minor",
-      "tags": "Nimble eerie acoustic fantasy combat. Bass clarinet and bassoon trade a crooked melody over pizzicato strings, crisp marimba droplets and quick frame drums. Small live chamber ensemble, playful dark counterpoint, breathing between phrases, energetic clear transients and natural room sound, instrumental."
-    },
-    {
-      "id": "music-battle-kernel",
-      "out": "audio/music-battle-kernel",
-      "style": "music",
-      "seed": 58331,
-      "bpm": 116,
-      "keyscale": "C minor",
-      "tags": "Grave acoustic orchestral battle in an ancient cathedral. Articulated low cello rhythms, bold trombone and horn phrases, timpani strikes and occasional tubular bells, high violins rising to a noble defiant refrain. Dramatic pauses and dynamic contrast, clear acoustic orchestral recording, instrumental.",
-      "audio_codes": true
-    },
-    {
-      "id": "music-salvage",
-      "out": "audio/music-salvage",
-      "style": "music",
-      "seed": 58401,
-      "bpm": 80,
-      "keyscale": "A minor",
-      "tags": "Curious melancholy acoustic fantasy exploration. A lyrical solo cello and wooden flute melody over plucked harp, sparse piano and delicate wooden percussion. Ruined workshops and forgotten stories, a memorable warm minor-key tune with space between phrases, natural string texture and clear acoustic recording, instrumental."
-    },
-    {
-      "id": "music-focus",
-      "out": "audio/music-focus",
-      "style": "music",
-      "seed": 58501,
-      "bpm": 70,
-      "keyscale": "F major",
-      "seconds": 180,
-      "tags": "Quiet acoustic chamber music for contemplation. A gentle memorable felt piano melody, individually plucked harp strings, a soft wooden clarinet response and occasional pizzicato cello. Slow breathing phrases, spacious arrangement, real acoustic instruments, clear intimate room sound, thoughtful and warm, instrumental.",
-      "audio_codes": true
-    },
-    {
-      "id": "music-foundry",
-      "out": "audio/music-foundry",
-      "style": "music",
-      "seed": 58601,
-      "bpm": 92,
-      "keyscale": "D minor",
-      "tags": "Steady industrious acoustic fantasy workshop music. A determined cello and French horn melody, rhythmic plucked strings, hammered dulcimer, wooden mallet accents and gentle low drum beats. Warm woody timbres, clear note attacks, a memorable rising refrain, small live acoustic ensemble, instrumental."
-    },
-    {
-      "id": "music-heap",
-      "out": "audio/music-heap",
-      "style": "music",
-      "seed": 58701,
-      "bpm": 84,
-      "keyscale": "E minor",
-      "tags": "Mysterious acoustic cavern exploration. Bass clarinet, pizzicato cello and marimba play a strange gentle melody, with sparse harp droplets and soft brushed frame drum. Intimate live chamber ensemble, quiet natural resonance, spacious thoughtful phrases, darkly playful and curious, instrumental."
-    },
-    {
-      "id": "music-kernel",
-      "out": "audio/music-kernel",
-      "style": "music",
-      "seed": 58811,
-      "bpm": 78,
-      "candidates": 2,
-      "keyscale": "C minor",
-      "tags": "Instrumental acoustic orchestral fantasy exploration soundtrack. A noble cello melody in C minor over a flowing piano ostinato, plucked harp, clarinet and French horn answering phrases. An ancient stone sanctuary, solemn and mysterious, dignified measured forward motion. Clear natural orchestral recording, expressive articulated strings, a developed main theme and contrasting middle section.",
-      "audio_codes": false
-    },
-    {
-      "id": "music-guardian",
-      "out": "audio/music-guardian",
-      "style": "music",
-      "seed": 58901,
-      "bpm": 126,
-      "keyscale": "C minor",
-      "tags": "Dramatic acoustic orchestral boss battle. Powerful live horns and trombones trade a stern memorable melody over tightly articulated low strings, pounding timpani and large taiko strikes, with soaring violin answers. Strong rhythmic rests and dynamic contrast, clear natural brass and percussion attacks, epic, instrumental.",
-      "audio_codes": true
-    },
-    {
-      "id": "cue-victory",
-      "out": "audio/cue-victory",
-      "style": "designed",
-      "seed": 61001,
-      "candidates": 4,
-      "pick": 3,
-      "seconds": 6,
-      "bpm": 132,
-      "keyscale": "D major",
-      "post": {
-        "max_seconds": 4.2,
-        "fade_ms": 900,
-        "highpass_hz": 90,
-        "lufs": -17,
-        "peak": -2.5
-      },
-      "tags": "A short triumphant acoustic victory fanfare. Bright real French horns and trumpets play three rising notes and resolve together on a warm major chord, with a single timpani strike and a delicate cymbal flourish. Natural brass breath and room resonance, a decisive uplifting ending.",
-      "negative": "Electronic hum, buzzer, synthesizer, distorted brass, speech, vocals, singing, noisy recording."
-    },
-    {
-      "id": "cue-defeat",
-      "out": "audio/cue-defeat",
-      "style": "designed",
-      "seed": 62001,
-      "bpm": 66,
-      "keyscale": "A minor",
-      "post": {
-        "max_seconds": 4.5,
-        "fade_ms": 1300,
-        "highpass_hz": 85,
-        "lufs": -20,
-        "peak": -3
-      },
-      "tags": "Three gentle descending notes played on a real acoustic piano, ending in a soft melancholy minor chord. Felt hammer attacks, natural vibrating strings, warm quiet room resonance fading into silence. A short sorrowful game ending.",
-      "candidates": 3,
-      "pick": 1,
-      "seconds": 6,
-      "negative": "Electronic hum, buzzing, synthesizer, speech, vocals, singing, noisy recording."
-    },
     {
       "id": "cue-treasure",
       "out": "audio/cue-treasure",
@@ -283,188 +120,211 @@
       }
     },
     {
-      "id": "sfx-charge",
-      "out": "audio/sfx-charge",
-      "style": "recorded",
-      "layers": [
-        {
-          "source": "vendor/kenney-rpg-audio/Audio/knifeSlice2.ogg",
-          "reverse": true,
-          "rate": 0.72,
-          "gain_db": -2
-        },
-        {
-          "source": "vendor/kenney-rpg-audio/Audio/bookFlip2.ogg",
-          "reverse": true,
-          "rate": 1.3,
-          "gain_db": -10
-        }
-      ],
-      "post": {
-        "max_seconds": 0.42,
-        "attack_ms": 55,
-        "fade_ms": 55,
-        "highpass_hz": 320,
-        "lowpass_hz": 6500,
-        "lufs": -23,
-        "bitrate": 128
-      }
-    },
-    {
-      "id": "sfx-cast",
-      "out": "audio/sfx-cast",
-      "style": "designed",
-      "seed": 42001,
-      "candidates": 6,
-      "tags": "A fast swoosh followed by a deep resonant impact and a shimmering ringing tail. A single magical energy blast sound effect.",
-      "post": {
-        "max_seconds": 1.25,
-        "hold_ms": 70,
-        "decay_ms": 500,
-        "lufs": -17
-      },
-      "seconds": 3
-    },
-    {
-      "id": "sfx-cast-fire",
-      "out": "audio/sfx-cast-fire",
-      "style": "designed",
-      "seed": 22201,
-      "candidates": 2,
-      "tags": "A single fireball bursts into life and rushes past. A deep forceful fire whoosh with a brief heavy ignition thump, fluttering flames and tiny dry embers crackling in its fading wake. Close detailed fiery fantasy spell sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1.35,
-        "hold_ms": 80,
-        "decay_ms": 430,
-        "lufs": -17
-      },
-      "pick": 1
-    },
-    {
-      "id": "sfx-cast-frost",
-      "out": "audio/sfx-cast-frost",
-      "style": "designed",
-      "seed": 32301,
-      "candidates": 3,
-      "tags": "Ice cracking and ice crystals shattering with a fast cold wind whoosh. A single sharp icy burst followed by delicate crystalline tinkling and an airy fading tail. Close detailed ice magic sound effect.",
-      "post": {
-        "max_seconds": 1.45,
-        "hold_ms": 80,
-        "decay_ms": 450,
-        "lufs": -18,
-        "lowpass_hz": 10500,
-        "start_seconds": 0.22
-      },
-      "pick": 1
-    },
-    {
-      "id": "sfx-cast-spark",
-      "out": "audio/sfx-cast-spark",
-      "style": "designed",
-      "seed": 22401,
-      "candidates": 2,
-      "tags": "A single short burst of electricity leaps through the air. A sharp electrical snap with a deep punch beneath it, branching irregular crackles and a brief sizzling airy decay. Powerful close lightning spell sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1.05,
-        "hold_ms": 45,
-        "decay_ms": 270,
-        "lufs": -18,
-        "lowpass_hz": 9500
-      },
-      "pick": 1
-    },
-    {
-      "id": "sfx-hit",
-      "out": "audio/sfx-hit",
-      "style": "designed",
-      "seed": 22501,
-      "candidates": 2,
-      "tags": "A single heavy magical impact on stone and leather. A solid rounded punch with a brief dry crack, a few tiny fragments scatter, and a low airy resonance quickly fades. Close detailed fantasy combat impact sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1,
-        "hold_ms": 45,
-        "decay_ms": 250,
-        "lufs": -16,
-        "peak": -2.5
-      },
-      "pick": 0
-    },
-    {
       "id": "sfx-hit-heavy",
       "out": "audio/sfx-hit-heavy",
-      "style": "designed",
-      "seed": 22601,
-      "candidates": 2,
-      "tags": "A single powerful magical slam into ancient stone. Deep weighty impact with a sharp gritty crack, a burst of crumbling stone fragments and a short low resonant rumble fading into the room. Close fantasy combat sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1.5,
-        "hold_ms": 90,
-        "decay_ms": 380,
-        "lufs": -15.5,
-        "peak": -2.5
-      },
-      "pick": 0
-    },
-    {
-      "id": "sfx-ward",
-      "out": "audio/sfx-ward",
-      "style": "designed",
-      "seed": 61901,
-      "candidates": 4,
-      "tags": "A magical protective barrier forms with a deep airy impact, an expanding rush of wind and many delicate glass fragments shimmering outward. A brief crystalline shell closing, layered tiny irregular sparkling impacts decaying naturally. Isolated fantasy shield sound effect.",
-      "post": {
-        "max_seconds": 2.1,
-        "hold_ms": 180,
-        "decay_ms": 800,
-        "lufs": -17.5
-      },
-      "pick": 2
-    },
-    {
-      "id": "sfx-glance",
-      "out": "audio/sfx-glance",
-      "style": "designed",
-      "seed": 22701,
-      "candidates": 2,
-      "tags": "A single blow glances off a magical glass shield. A short rounded impact followed by a delicate resonant glass ripple and a small scattering of shimmering particles. Muted, hollow, protective, quick natural decay. Fantasy shield impact sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1.2,
-        "hold_ms": 50,
-        "decay_ms": 310,
-        "lufs": -18.5
-      },
-      "pick": 0
+      "style": "timeline",
+      "about": "hit-heavy (1600 ms): three blocks appear (0, 160, 320), fall and land (384, 576, 896), the last the blow",
+      "beats": [
+        0,
+        160,
+        320,
+        384,
+        576,
+        896
+      ],
+      "seed": 70600,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.1,
+          "note": "D7",
+          "gain_db": -20
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.1,
+          "note": "E7",
+          "delay_ms": 160,
+          "gain_db": -20
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.1,
+          "note": "A6",
+          "delay_ms": 320,
+          "gain_db": -19
+        },
+        {
+          "synth": "whiff",
+          "length": 0.19,
+          "delay_ms": 196,
+          "gain_db": -16
+        },
+        {
+          "synth": "whiff",
+          "length": 0.19,
+          "delay_ms": 388,
+          "gain_db": -16
+        },
+        {
+          "synth": "whiff",
+          "length": 0.22,
+          "delay_ms": 676,
+          "gain_db": -14
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_000.ogg",
+          "delay_ms": 384,
+          "gain_db": -6,
+          "rate": 0.85,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_001.ogg",
+          "delay_ms": 386,
+          "gain_db": -12
+        },
+        {
+          "synth": "sub_boom",
+          "length": 0.25,
+          "delay_ms": 384,
+          "gain_db": -12
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_002.ogg",
+          "delay_ms": 576,
+          "gain_db": -6,
+          "rate": 0.85,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_003.ogg",
+          "delay_ms": 578,
+          "gain_db": -12
+        },
+        {
+          "synth": "sub_boom",
+          "length": 0.25,
+          "delay_ms": 576,
+          "gain_db": -12
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_004.ogg",
+          "delay_ms": 896,
+          "gain_db": -3,
+          "rate": 0.7,
+          "vary": {
+            "rate": [
+              -0.04,
+              0.04
+            ]
+          }
+        },
+        {
+          "synth": "sub_boom",
+          "start": 80,
+          "end": 30,
+          "length": 0.8,
+          "delay_ms": 896,
+          "gain_db": -4
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
+          "delay_ms": 898,
+          "gain_db": -7
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.45,
+          "count": 30,
+          "delay_ms": 900,
+          "gain_db": -10
+        },
+        {
+          "synth": "ring_sweep",
+          "length": 0.4,
+          "low": 400,
+          "high": 3000,
+          "delay_ms": 900,
+          "gain_db": -16
+        }
+      ]
     },
     {
       "id": "sfx-shatter",
       "out": "audio/sfx-shatter",
-      "style": "designed",
-      "seed": 22801,
-      "candidates": 2,
-      "tags": "A magical crystal creature dissolves into dust. One brittle glass crack with a low hollow collapse, then many tiny irregular crystal fragments scatter and tinkle, fading softly into airy dust. Detailed fantasy disintegration sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 1.85,
-        "hold_ms": 130,
-        "decay_ms": 600,
-        "lufs": -18
-      },
-      "pick": 0
-    },
-    {
-      "id": "sfx-hurt",
-      "out": "audio/sfx-hurt",
-      "style": "designed",
-      "seed": 22901,
-      "candidates": 2,
-      "tags": "A single forceful punch against thick leather armor, with a deep rounded body thud, a sharp woody crack and a brief cloth rustle settling afterward. Close physical combat impact, dry and weighty, no vocal sounds, isolated sound effect, no music.",
-      "post": {
-        "max_seconds": 0.85,
-        "hold_ms": 40,
-        "decay_ms": 230,
-        "lufs": -16,
-        "peak": -2.5
-      },
-      "pick": 1
+      "style": "timeline",
+      "about": "shatter (1133 ms): cracks run out (0-295), it bursts (340), pieces tumble, runes rise (363 on)",
+      "beats": [
+        0,
+        295,
+        340
+      ],
+      "seed": 70800,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "crackle",
+          "length": 0.3,
+          "gain_db": -10
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
+          "delay_ms": 120,
+          "gain_db": -16,
+          "rate": 1.4
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_004.ogg",
+          "delay_ms": 230,
+          "gain_db": -14,
+          "rate": 1.2
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
+          "delay_ms": 338,
+          "gain_db": -4
+        },
+        {
+          "synth": "release",
+          "size": 0.9,
+          "note": "A5",
+          "delay_ms": 338,
+          "gain_db": -6
+        },
+        {
+          "synth": "sub_boom",
+          "length": 0.4,
+          "delay_ms": 340,
+          "gain_db": -10
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.7,
+          "count": 40,
+          "decay": 0.5,
+          "delay_ms": 360,
+          "gain_db": -10
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.5,
+          "note": "D6",
+          "delay_ms": 380,
+          "gain_db": -15
+        }
+      ]
     },
     {
       "id": "sfx-heal",
@@ -498,24 +358,6 @@
         "lufs": -20
       },
       "pick": 0
-    },
-    {
-      "id": "sfx-card",
-      "out": "audio/sfx-card",
-      "style": "recorded",
-      "source": "vendor/kenney-rpg-audio/Audio/bookPlace1.ogg",
-      "post": {
-        "lufs": -20
-      }
-    },
-    {
-      "id": "sfx-draw",
-      "out": "audio/sfx-draw",
-      "style": "recorded",
-      "source": "vendor/kenney-rpg-audio/Audio/bookFlip2.ogg",
-      "post": {
-        "lufs": -20
-      }
     },
     {
       "id": "sfx-step",
@@ -618,21 +460,6 @@
       "pick": 1
     },
     {
-      "id": "sfx-fail",
-      "out": "audio/sfx-fail",
-      "style": "designed",
-      "seed": 23401,
-      "candidates": 2,
-      "tags": "A short hollow wooden knock followed by a soft descending breath of air and a muted low glass resonance. A gentle magical attempt fizzles out, subdued and clear. Intimate fantasy interface sound effect, isolated, no music.",
-      "post": {
-        "max_seconds": 0.8,
-        "hold_ms": 60,
-        "decay_ms": 260,
-        "lufs": -20
-      },
-      "pick": 1
-    },
-    {
       "id": "sfx-open",
       "out": "audio/sfx-open",
       "style": "recorded",
@@ -645,6 +472,1373 @@
         "lowpass_hz": 7500,
         "lufs": -24
       }
+    },
+    {
+      "id": "sfx-cast-sigil-1",
+      "out": "audio/sfx-cast-sigil-1",
+      "style": "timeline",
+      "about": "cast-sigil-1 (733 ms): a ring draws (0-257), four runes (73-238), it gathers (440-616) and lets go (616)",
+      "beats": [
+        0,
+        73,
+        238,
+        440,
+        616
+      ],
+      "seed": 70000,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.26,
+          "note": "D6",
+          "gain_db": -12
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 73,
+          "gain_db": -14
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#6",
+          "delay_ms": 128,
+          "gain_db": -14
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 183,
+          "gain_db": -14
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 238,
+          "gain_db": -14
+        },
+        {
+          "synth": "gather",
+          "length": 0.18,
+          "delay_ms": 436,
+          "gain_db": -10
+        },
+        {
+          "synth": "release",
+          "size": 0.6,
+          "note": "D6",
+          "delay_ms": 612,
+          "gain_db": -3
+        }
+      ]
+    },
+    {
+      "id": "sfx-cast-sigil",
+      "out": "audio/sfx-cast-sigil",
+      "style": "timeline",
+      "about": "cast-sigil (1000 ms): the circle draws (0-360), twelve runes (80-355), brackets snap (~360), it gathers (620-860) and lets go (860)",
+      "beats": [
+        0,
+        80,
+        355,
+        360,
+        620,
+        860
+      ],
+      "seed": 70100,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.36,
+          "note": "D6",
+          "gain_db": -11
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 80,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 105,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E6",
+          "delay_ms": 130,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#6",
+          "delay_ms": 155,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 180,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "delay_ms": 205,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 230,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E7",
+          "delay_ms": 255,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#7",
+          "delay_ms": 280,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A7",
+          "delay_ms": 305,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B7",
+          "delay_ms": 330,
+          "gain_db": -16
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 355,
+          "gain_db": -16
+        },
+        {
+          "synth": "bracket_clack",
+          "delay_ms": 350,
+          "gain_db": -8
+        },
+        {
+          "synth": "gather",
+          "length": 0.24,
+          "delay_ms": 620,
+          "gain_db": -8
+        },
+        {
+          "synth": "release",
+          "size": 0.9,
+          "note": "D6",
+          "delay_ms": 856,
+          "gain_db": -2
+        }
+      ]
+    },
+    {
+      "id": "sfx-cast-sigil-3",
+      "out": "audio/sfx-cast-sigil-3",
+      "style": "timeline",
+      "about": "cast-sigil-3 (1200 ms): rings and a hexagram draw (0-600), twelve runes (180-600), brackets snap (~460), it gathers (790-1010), lets go in two waves (1008, 1056)",
+      "beats": [
+        0,
+        180,
+        460,
+        790,
+        1008,
+        1056
+      ],
+      "seed": 70200,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.4,
+          "note": "D6",
+          "gain_db": -10
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.45,
+          "note": "A5",
+          "delay_ms": 120,
+          "gain_db": -14
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 180,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 215,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E6",
+          "delay_ms": 250,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#6",
+          "delay_ms": 285,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 320,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "delay_ms": 355,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 390,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E7",
+          "delay_ms": 425,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#7",
+          "delay_ms": 460,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A7",
+          "delay_ms": 495,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B7",
+          "delay_ms": 530,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 565,
+          "gain_db": -17
+        },
+        {
+          "synth": "bracket_clack",
+          "weight": 1.3,
+          "delay_ms": 455,
+          "gain_db": -6
+        },
+        {
+          "synth": "gather",
+          "length": 0.24,
+          "delay_ms": 770,
+          "gain_db": -6
+        },
+        {
+          "synth": "release",
+          "size": 1.2,
+          "note": "D6",
+          "delay_ms": 1004,
+          "gain_db": -1
+        },
+        {
+          "synth": "sub_boom",
+          "delay_ms": 1004,
+          "gain_db": -8
+        },
+        {
+          "synth": "release",
+          "size": 0.7,
+          "note": "A6",
+          "delay_ms": 1056,
+          "gain_db": -7
+        }
+      ]
+    },
+    {
+      "id": "sfx-cast-sigil-4",
+      "out": "audio/sfx-cast-sigil-4",
+      "style": "timeline",
+      "about": "cast-sigil-4 (1467 ms): the grand circle, an outer ring of twenty runes (367-880), brackets (~560), gathers (970-1260), two waves (1232, 1291)",
+      "beats": [
+        0,
+        367,
+        560,
+        970,
+        1232,
+        1291
+      ],
+      "seed": 70300,
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.6,
+          "note": "D6",
+          "gain_db": -9
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.7,
+          "note": "A5",
+          "delay_ms": 70,
+          "gain_db": -13
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.5,
+          "note": "D7",
+          "delay_ms": 360,
+          "gain_db": -15
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 180,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D6",
+          "delay_ms": 215,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E6",
+          "delay_ms": 250,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#6",
+          "delay_ms": 285,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 320,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "delay_ms": 355,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 390,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E7",
+          "delay_ms": 425,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#7",
+          "delay_ms": 460,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A7",
+          "delay_ms": 495,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B7",
+          "delay_ms": 530,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 565,
+          "gain_db": -17
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 367,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A6",
+          "delay_ms": 393,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "delay_ms": 419,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "delay_ms": 445,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 471,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "delay_ms": 497,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E7",
+          "delay_ms": 523,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "E7",
+          "delay_ms": 549,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#7",
+          "delay_ms": 575,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "F#7",
+          "delay_ms": 601,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "A7",
+          "delay_ms": 627,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B7",
+          "delay_ms": 653,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B7",
+          "delay_ms": 679,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 705,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 731,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 757,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 783,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 809,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 835,
+          "gain_db": -19
+        },
+        {
+          "synth": "rune_tick",
+          "note": "D8",
+          "delay_ms": 861,
+          "gain_db": -19
+        },
+        {
+          "synth": "ward_hum",
+          "length": 0.9,
+          "note": "D3",
+          "delay_ms": 300,
+          "gain_db": -14
+        },
+        {
+          "synth": "bracket_clack",
+          "weight": 1.5,
+          "delay_ms": 550,
+          "gain_db": -5
+        },
+        {
+          "synth": "gather",
+          "length": 0.3,
+          "delay_ms": 935,
+          "gain_db": -5
+        },
+        {
+          "synth": "release",
+          "size": 1.5,
+          "note": "D6",
+          "delay_ms": 1228
+        },
+        {
+          "synth": "sub_boom",
+          "start": 80,
+          "end": 30,
+          "length": 0.8,
+          "delay_ms": 1228,
+          "gain_db": -6
+        },
+        {
+          "synth": "release",
+          "size": 0.9,
+          "note": "A6",
+          "delay_ms": 1290,
+          "gain_db": -6
+        }
+      ]
+    },
+    {
+      "id": "sfx-hit-compile",
+      "out": "audio/sfx-hit-compile",
+      "style": "timeline",
+      "about": "hit-compile (1067 ms): brackets slam in (53-192) and meet (192): a crystal break, splinters, a ring racing out",
+      "beats": [
+        53,
+        192
+      ],
+      "seed": 70400,
+      "variants": 4,
+      "layers": [
+        {
+          "synth": "gather",
+          "length": 0.14,
+          "bright": 5000,
+          "delay_ms": 52,
+          "gain_db": -16
+        },
+        {
+          "synth": "bracket_clack",
+          "delay_ms": 186,
+          "gain_db": -6
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
+          "delay_ms": 188,
+          "gain_db": -8,
+          "vary": {
+            "rate": [
+              -0.06,
+              0.06
+            ]
+          }
+        },
+        {
+          "synth": "sub_boom",
+          "start": 95,
+          "end": 45,
+          "length": 0.18,
+          "delay_ms": 190,
+          "gain_db": -12
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.3,
+          "count": 22,
+          "delay_ms": 195,
+          "gain_db": -10
+        },
+        {
+          "synth": "ring_sweep",
+          "length": 0.3,
+          "delay_ms": 200,
+          "gain_db": -18
+        }
+      ]
+    },
+    {
+      "id": "sfx-hit-critical",
+      "out": "audio/sfx-hit-critical",
+      "style": "timeline",
+      "about": "hit-critical (1200 ms): light races in (0-192), it breaks open (192), a second shockwave (333), splinters thrown far",
+      "beats": [
+        0,
+        192,
+        333
+      ],
+      "seed": 70500,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "gather",
+          "length": 0.19,
+          "bright": 9000,
+          "gain_db": -6
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.18,
+          "note": "A6",
+          "delay_ms": 10,
+          "gain_db": -16
+        },
+        {
+          "synth": "release",
+          "size": 1.2,
+          "note": "D6",
+          "delay_ms": 190,
+          "gain_db": -1
+        },
+        {
+          "synth": "bracket_clack",
+          "weight": 1.4,
+          "delay_ms": 188,
+          "gain_db": -5
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
+          "delay_ms": 190,
+          "gain_db": -6
+        },
+        {
+          "synth": "sub_boom",
+          "start": 90,
+          "end": 32,
+          "length": 0.7,
+          "delay_ms": 190,
+          "gain_db": -5
+        },
+        {
+          "synth": "sub_boom",
+          "start": 70,
+          "end": 35,
+          "length": 0.4,
+          "delay_ms": 333,
+          "gain_db": -10
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
+          "delay_ms": 333,
+          "gain_db": -9
+        },
+        {
+          "synth": "ring_sweep",
+          "length": 0.35,
+          "delay_ms": 336,
+          "gain_db": -14
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.7,
+          "count": 48,
+          "decay": 0.6,
+          "delay_ms": 200,
+          "gain_db": -9
+        }
+      ]
+    },
+    {
+      "id": "sfx-ward-hex",
+      "out": "audio/sfx-ward-hex",
+      "style": "timeline",
+      "about": "ward-hex (1133 ms): thirteen tiles lock into a shield (155-495, one every 28 ms), a pulse runs across it (476-703), it breaks up (884 on)",
+      "beats": [
+        155,
+        495,
+        476,
+        703,
+        884
+      ],
+      "seed": 70700,
+      "layers": [
+        {
+          "synth": "whiff",
+          "length": 0.16,
+          "delay_ms": 10,
+          "gain_db": -18
+        },
+        {
+          "synth": "whiff",
+          "length": 0.14,
+          "delay_ms": 60,
+          "gain_db": -20
+        },
+        {
+          "synth": "tile_lock",
+          "note": "A6",
+          "delay_ms": 155,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "D7",
+          "delay_ms": 183,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "F#6",
+          "delay_ms": 212,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "A6",
+          "delay_ms": 240,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "E7",
+          "delay_ms": 268,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "D7",
+          "delay_ms": 296,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "B6",
+          "delay_ms": 325,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "A6",
+          "delay_ms": 353,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "D7",
+          "delay_ms": 381,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "F#6",
+          "delay_ms": 410,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "A6",
+          "delay_ms": 438,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "E7",
+          "delay_ms": 466,
+          "gain_db": -12
+        },
+        {
+          "synth": "tile_lock",
+          "note": "D7",
+          "delay_ms": 495,
+          "gain_db": -12
+        },
+        {
+          "synth": "ward_hum",
+          "length": 0.3,
+          "note": "D3",
+          "delay_ms": 450,
+          "gain_db": -8
+        },
+        {
+          "synth": "bell",
+          "note": "D6",
+          "length": 0.8,
+          "delay_ms": 476,
+          "gain_db": -18
+        },
+        {
+          "synth": "dissolve",
+          "length": 0.45,
+          "delay_ms": 880,
+          "gain_db": -12
+        }
+      ]
+    },
+    {
+      "id": "sfx-claw",
+      "out": "audio/sfx-claw",
+      "style": "timeline",
+      "about": "claw (733 ms): three slashes torn across (0, 51, 103), each drawing over 88 ms",
+      "beats": [
+        0,
+        51,
+        103
+      ],
+      "seed": 70900,
+      "variants": 3,
+      "layers": [
+        {
+          "synth": "slash",
+          "gain_db": -4
+        },
+        {
+          "synth": "slash",
+          "high": 8000,
+          "delay_ms": 51,
+          "gain_db": -5
+        },
+        {
+          "synth": "slash",
+          "low": 1000,
+          "delay_ms": 103,
+          "gain_db": -3
+        },
+        {
+          "source": "vendor/kenney-rpg-audio/Audio/knifeSlice.ogg",
+          "gain_db": -12,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPunch_medium_00{v}.ogg",
+          "delay_ms": 60,
+          "gain_db": -10
+        }
+      ]
+    },
+    {
+      "id": "sfx-tempo",
+      "out": "audio/sfx-tempo",
+      "style": "timeline",
+      "about": "tempo (933 ms): a clock face draws (0-187), its hand sweeps round (140-653), ticking faster",
+      "beats": [
+        0,
+        140,
+        653
+      ],
+      "seed": 71000,
+      "post": {
+        "lufs": -18
+      },
+      "layers": [
+        {
+          "synth": "shimmer",
+          "length": 0.18,
+          "note": "D7",
+          "gain_db": -20
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 140,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "E5",
+          "delay_ms": 215,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 282,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "E5",
+          "delay_ms": 342,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 395,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "E5",
+          "delay_ms": 442,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 484,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "E5",
+          "delay_ms": 522,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 557,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "E5",
+          "delay_ms": 590,
+          "gain_db": -8
+        },
+        {
+          "synth": "bell",
+          "note": "D6",
+          "length": 1.0,
+          "delay_ms": 640,
+          "gain_db": -10
+        }
+      ]
+    },
+    {
+      "id": "sfx-element-fire",
+      "out": "audio/sfx-element-fire",
+      "style": "timeline",
+      "about": "fire's layer, at a cast's release or a blow's contact: a flare catching",
+      "seed": 71100,
+      "variants": 2,
+      "post": {
+        "lufs": -20
+      },
+      "layers": [
+        {
+          "synth": "flare",
+          "length": 0.35
+        }
+      ]
+    },
+    {
+      "id": "sfx-element-frost",
+      "out": "audio/sfx-element-frost",
+      "style": "timeline",
+      "about": "frost's layer: ice crackling as it forms",
+      "seed": 71200,
+      "variants": 2,
+      "post": {
+        "lufs": -20
+      },
+      "layers": [
+        {
+          "synth": "crackle",
+          "length": 0.35
+        }
+      ]
+    },
+    {
+      "id": "sfx-element-spark",
+      "out": "audio/sfx-element-spark",
+      "style": "timeline",
+      "about": "spark's layer: two zaps",
+      "seed": 71300,
+      "variants": 2,
+      "post": {
+        "lufs": -20
+      },
+      "layers": [
+        {
+          "synth": "zap"
+        },
+        {
+          "synth": "zap",
+          "length": 0.1,
+          "delay_ms": 40,
+          "gain_db": -4
+        }
+      ]
+    },
+    {
+      "id": "sfx-ricochet",
+      "out": "audio/sfx-ricochet",
+      "style": "timeline",
+      "about": "a blow glances off thick hide: a hard tick and a bright ping flying off",
+      "seed": 71400,
+      "variants": 2,
+      "layers": [
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactMetal_light_00{v}.ogg",
+          "gain_db": -6,
+          "rate": 1.3
+        },
+        {
+          "synth": "rune_tick",
+          "note": "B6",
+          "length": 0.2,
+          "delay_ms": 5,
+          "gain_db": -6
+        },
+        {
+          "synth": "whiff",
+          "length": 0.15,
+          "delay_ms": 15,
+          "gain_db": -12
+        }
+      ]
+    },
+    {
+      "id": "sfx-gulp",
+      "out": "audio/sfx-gulp",
+      "style": "timeline",
+      "about": "a bolt swallowed (nullified): a hollow gulp into silence",
+      "seed": 71500,
+      "layers": [
+        {
+          "synth": "gulp"
+        }
+      ]
+    },
+    {
+      "id": "sfx-lock",
+      "out": "audio/sfx-lock",
+      "style": "timeline",
+      "about": "a deadlock holds (the Golem's locks): a heavy lock's clank and a chain's rattle",
+      "seed": 71600,
+      "variants": 2,
+      "layers": [
+        {
+          "source": "vendor/kenney-rpg-audio/Audio/metalLatch.ogg",
+          "gain_db": -3
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactMetal_heavy_00{v}.ogg",
+          "delay_ms": 10,
+          "gain_db": -8,
+          "rate": 0.8
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.25,
+          "count": 12,
+          "low": 1500,
+          "high": 4000,
+          "delay_ms": 40,
+          "gain_db": -14
+        }
+      ]
+    },
+    {
+      "id": "sfx-whiff",
+      "out": "audio/sfx-whiff",
+      "style": "timeline",
+      "about": "a bolt flies at a fallen foe: a faint whiff of air past nothing",
+      "seed": 71700,
+      "post": {
+        "lufs": -24
+      },
+      "layers": [
+        {
+          "synth": "whiff"
+        }
+      ]
+    },
+    {
+      "id": "sfx-glitch",
+      "out": "audio/sfx-glitch",
+      "style": "timeline",
+      "about": "a program crashes (fizzle): an electrical sputter that dies",
+      "seed": 71800,
+      "layers": [
+        {
+          "synth": "glitch",
+          "length": 0.5,
+          "gain_db": -2
+        },
+        {
+          "source": "vendor/kenney-interface-sounds/Audio/glitch_002.ogg",
+          "gain_db": -8
+        }
+      ]
+    },
+    {
+      "id": "sfx-timeout",
+      "out": "audio/sfx-timeout",
+      "style": "timeline",
+      "about": "a program times out: fast ticks cut off by a flat buzzer",
+      "seed": 71900,
+      "layers": [
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 45,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 90,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 135,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 180,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 225,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 270,
+          "gain_db": -8
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A5",
+          "delay_ms": 315,
+          "gain_db": -8
+        },
+        {
+          "synth": "buzzer",
+          "length": 0.4,
+          "delay_ms": 360,
+          "gain_db": -6
+        }
+      ]
+    },
+    {
+      "id": "sfx-stoke",
+      "out": "audio/sfx-stoke",
+      "style": "timeline",
+      "about": "a foe stokes its fire: a forge bellows' breath into a fire's whoomph",
+      "seed": 72000,
+      "layers": [
+        {
+          "synth": "bellows",
+          "length": 0.45,
+          "gain_db": -6
+        },
+        {
+          "synth": "flare",
+          "delay_ms": 380,
+          "gain_db": -2
+        }
+      ]
+    },
+    {
+      "id": "sfx-foe-shield",
+      "out": "audio/sfx-foe-shield",
+      "style": "timeline",
+      "about": "a foe raises a shield: a heavy slab grinding up, a dull clunk",
+      "seed": 72100,
+      "variants": 2,
+      "layers": [
+        {
+          "synth": "paper",
+          "length": 0.25,
+          "low": 200,
+          "high": 900,
+          "attack": 0.08,
+          "gain_db": -10
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactMining_00{v}.ogg",
+          "delay_ms": 200,
+          "gain_db": -4,
+          "rate": 0.8
+        },
+        {
+          "synth": "sub_boom",
+          "length": 0.3,
+          "delay_ms": 200,
+          "gain_db": -12
+        }
+      ]
+    },
+    {
+      "id": "sfx-clang",
+      "out": "audio/sfx-clang",
+      "style": "timeline",
+      "about": "a strike blocked by the ward: a blow meeting the hex shield, a bright glassy clang, damped",
+      "seed": 72200,
+      "variants": 2,
+      "layers": [
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
+          "gain_db": -4
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactBell_heavy_00{v}.ogg",
+          "gain_db": -14,
+          "rate": 1.6
+        },
+        {
+          "synth": "tile_lock",
+          "note": "D7",
+          "gain_db": -10
+        }
+      ]
+    },
+    {
+      "id": "sfx-card-slide",
+      "out": "audio/sfx-card-slide",
+      "style": "timeline",
+      "about": "a card slides across the table",
+      "seed": 72300,
+      "variants": 3,
+      "post": {
+        "lufs": -24
+      },
+      "layers": [
+        {
+          "synth": "paper",
+          "length": 0.14,
+          "low": 1500,
+          "high": 6000,
+          "attack": 0.03
+        }
+      ]
+    },
+    {
+      "id": "sfx-card-place",
+      "out": "audio/sfx-card-place",
+      "style": "timeline",
+      "about": "a card is set down: a crisp snap",
+      "seed": 72400,
+      "variants": 3,
+      "post": {
+        "lufs": -22
+      },
+      "layers": [
+        {
+          "synth": "paper",
+          "length": 0.05,
+          "low": 1200,
+          "high": 5000,
+          "attack": 0.001
+        },
+        {
+          "synth": "clock_tick",
+          "note": "A4",
+          "delay_ms": 2,
+          "gain_db": -12
+        }
+      ]
+    },
+    {
+      "id": "sfx-card-flick",
+      "out": "audio/sfx-card-flick",
+      "style": "timeline",
+      "about": "a card is dealt: a quick flick",
+      "seed": 72500,
+      "variants": 3,
+      "post": {
+        "lufs": -24
+      },
+      "layers": [
+        {
+          "synth": "paper",
+          "length": 0.07,
+          "low": 2500,
+          "high": 8000,
+          "attack": 0.005
+        }
+      ]
+    },
+    {
+      "id": "sfx-glyph",
+      "out": "audio/sfx-glyph",
+      "style": "timeline",
+      "about": "a line is written in the Program: a soft glyph typed, a light rune tick with a faint key click",
+      "seed": 72600,
+      "variants": 3,
+      "post": {
+        "lufs": -24
+      },
+      "layers": [
+        {
+          "synth": "rune_tick",
+          "note": "D7",
+          "length": 0.06,
+          "gain_db": -4
+        },
+        {
+          "source": "vendor/kenney-interface-sounds/Audio/click_001.ogg",
+          "gain_db": -14,
+          "rate": 1.2,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
+        }
+      ]
     }
   ]
 }

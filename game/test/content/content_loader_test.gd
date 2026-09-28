@@ -1,6 +1,5 @@
 extends GdUnitTestSuite
-## The game's own content loads clean, and loads into exactly the catalog the old engine built from its YAML
-## (fixture shardrun-catalog.json), defaults and all.
+## The game's own content loads clean, and broken content is reported with where it broke.
 
 const SCRATCH := "user://test-content"
 
@@ -14,14 +13,6 @@ func test_the_content_loads_without_errors() -> void:
 	assert_int((loaded.catalog.foes as Dictionary).size()).is_equal(15)
 	# The program run's own foes live beside the Shardrun's, never among them (ADR-0017).
 	assert_int((loaded.catalog.programs.foes as Dictionary).size()).is_equal(2)
-
-
-func test_the_catalog_is_the_old_engines() -> void:
-	var catalog: Dictionary = ContentLoader.load_shardrun().catalog
-	var want: Dictionary = Fixtures.load_json("shardrun-catalog")
-	for part: String in ["config", "shards", "foes", "relics", "balance"]:
-		var difference := Fixtures.diff(catalog[part], want[part], part)
-		assert_str(difference).override_failure_message(difference).is_empty()
 
 
 func test_broken_content_is_reported() -> void:

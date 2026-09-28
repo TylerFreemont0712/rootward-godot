@@ -366,7 +366,7 @@ func _move(from: Dictionary, to: Dictionary) -> void:
 func _propose(next: Dictionary, at: Dictionary) -> void:
 	if next.is_empty():
 		return
-	Sound.play("sfx-card", 0.55, randf_range(0.95, 1.08))
+	Sound.play("sfx-card-place", 0.55, randf_range(0.95, 1.08))
 	if at.get("zone", "") == "spell":
 		targeted.emit(String(at.spell))
 	wants.emit(CardTable.command(next))

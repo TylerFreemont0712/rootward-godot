@@ -1,0 +1,59 @@
+X:1
+T:Kernel Panic
+M:4/4
+L:1/16
+Q:1/4=148
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Cm
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"G"z16|
+V: Ins
+C2C2C2C2 C2C2G,2C2|A,2A,2A,2A,2 A,2A,2E,2A,2|B,2B,2B,2B,2 B,2B,2F,2B,2|G,2G,2G,2G,2 =B,2D2G2=B2|
+% verse
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"G"z16|
+V: Ins
+c4 G2c2 e4 d2c2|e4 f2e2 d4 c4|d4 B2d2 f4 e2d2|d8 =B4 G4|
+V: Vocal
+"Cm"z16|"Ab"z16|"Fm"z16|"G"z16|
+V: Ins
+c4 G2c2 e4 g4|a4 g2f2 e4 c4|f4 e2d2 c4 d4|=B8 d4 G4|
+% chorus
+V: Vocal
+"Ab"z16|"Bb"z16|"Cm"z16|"Cm"z16|
+V: Ins
+c'4 a4 e4 a4|d'4 b4 f4 b4|e'4 c'4 g4 c'4|g'8 e'8|
+V: Vocal
+"Ab"z16|"Bb"z16|"G"z16|"G"z16|
+V: Ins
+a'4 g'4 f'4 e'4|d'4 c'4 b4 a4|g4 =b4 d'4 g'4|=b4 g4 d4 =B4|
+% verse
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"G"z16|
+V: Ins
+c4 G2c2 e4 d2c2|e4 f2e2 d4 c4|d4 B2d2 f4 e2d2|d8 =B4 G4|
+V: Vocal
+"Cm"z16|"Ab"z16|"Fm"z16|"G"z16|
+V: Ins
+c4 G2c2 e4 g4|a4 g2f2 e4 c4|f4 e2d2 c4 d4|=B8 d4 G4|
+% interlude
+V: Vocal
+"Cm"z16|"Cm"z16|"Ab"z16|"Ab"z16|
+V: Ins
+c8 e8|g8 c'8|A8 c8|e8 a8|
+V: Vocal
+"Fm"z16|"Fm"z16|"G"z16|"G"z16|
+V: Ins
+F8 A8|c8 f8|=B8 d8|g8 =b8|
+% outro
+V: Vocal
+"Cm"z16|"Cm"z16|
+V: Ins
+c4 G2c2 e4 d2c2|c16|

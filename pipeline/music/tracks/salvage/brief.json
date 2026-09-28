@@ -1,0 +1,19 @@
+{
+  "id": "salvage",
+  "out": "music-salvage",
+  "title": "Rust and Roots",
+  "role": "The Salvage's map and its rooms: the first layer, walked most. Curious and a little melancholy, never sleepy; it must not tire over a long map.",
+  "theme": "The motif in A minor (A E A C B A), as a lilting waltz: the first place the player meets it after the title.",
+  "bpm": 108,
+  "key": "A minor",
+  "meter": "3/4",
+  "form": "silence 1, intro 4 (harp), verse 8 (cello), verse 8 (flute answers), bridge 8 (C major, warmer), verse 8, bridge 8 (its ending turns back home), outro 2",
+  "style": "melancholy acoustic fantasy exploration, video game map music, instrumental, no vocals, solo cello melody, wooden flute, plucked harp, soft piano, gentle waltz, ruined workshop, curious and warm, clear intimate recording, A minor, 108 BPM, 3/4",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "bridge",
+    "occurrence": 2
+  },
+  "pick": "yue2-1000-1100-s32-96c337"
+}

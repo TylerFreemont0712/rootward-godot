@@ -1,0 +1,20 @@
+{
+  "id": "title",
+  "out": "music-title",
+  "title": "Rootward",
+  "role": "The title screen and the menus between runs: the main theme, in full. Warm, wondrous, a little melancholy; it should make a player want to go down again.",
+  "theme": "The main theme's motif is D A D F# E D (1 5 1 3 2 1): every other track quotes it, in minor, inverted, slowed or driven.",
+  "reference": "The old music-title was a pleasant meander (it repeated almost nothing: 0.11) with a centroid of 490 Hz and nothing above 5 kHz: no tune to remember, and muffled.",
+  "bpm": 84,
+  "key": "D major",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (harp arpeggios), verse 8 (the theme, solo), verse 8 (the theme, strings), bridge 8 (B minor, rising), chorus 8 (the theme an octave up, full), outro 4",
+  "loop": {
+    "from": "verse",
+    "to": "chorus",
+    "occurrence": 1
+  },
+  "style": "orchestral folk fantasy main theme, video game title music, instrumental, no vocals, warm solo cello and flute melody, plucked harp arpeggios, gentle strings swelling, soft timpani, hopeful and wondrous, bright clear recording, D major, 84 BPM",
+  "lyrics": "",
+  "pick": "yue2-1000-1100-s32-76c210"
+}

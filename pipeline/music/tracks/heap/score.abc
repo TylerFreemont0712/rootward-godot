@@ -1,0 +1,50 @@
+X:1
+T:Things Live in the Leaks
+M:4/4
+L:1/16
+Q:1/4=96
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Em
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Em"z16|"C"z16|"Am"z16|"B"z16|
+V: Ins
+E2B,2E2G2 B2G2E2B,2|C2G,2C2E2 G2E2C2G,2|A,2E2A2c2 e2c2A2E2|B,2^D2F2B2 ^d2B2F2^D2|
+% verse
+V: Vocal
+"Em"z16|"C"z16|"Am"z16|"B"z16|
+V: Ins
+e4 B2e2 g4 f2e2|e2^d2e2g2 c'8|a4 g2e2 c4 A4|^d8 B8|
+V: Vocal
+"Em"z16|"C"z16|"F#dim"z16|"B"z16|
+V: Ins
+e4 B2e2 g4 b4|c'4 b2a2 g4 e4|a4 c'4 ^d4 f4|B,2^D2F2B2 ^d4 B4|
+% bridge
+V: Vocal
+"G"z16|"D"z16|"Em"z16|"C"z16|
+V: Ins
+g2d2B2d2 g4 b4|a2f2d2f2 a4 d'4|b4 g4 e4 g4|c'8 e'8|
+V: Vocal
+"G"z16|"D"z16|"C"z16|"B"z16|
+V: Ins
+d'2b2g2b2 d'4 g'4|f'4 e'4 d'4 a4|g4 e4 c4 e4|^d8 f4 B4|
+% verse
+V: Vocal
+"Em"z16|"C"z16|"Am"z16|"B"z16|
+V: Ins
+e4 B2e2 g4 f2e2|e2^d2e2g2 c'8|a4 g2e2 c4 A4|^d8 B8|
+V: Vocal
+"Em"z16|"C"z16|"F#dim"z16|"B"z16|
+V: Ins
+e4 B2e2 g4 b4|c'4 b2a2 g4 e4|a4 c'4 ^d4 f4|B,2^D2F2B2 ^d4 B4|
+% outro
+V: Vocal
+"Em"z16|"Em"z16|
+V: Ins
+E2B,2E2G2 B2G2E2B,2|E16|

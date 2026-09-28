@@ -11,6 +11,9 @@ signal impact
 
 const ROOT := "res://assets/fx/spells/"
 const SHADER := preload("res://scenes/shardrun/fight/spell_anim.gdshader")
+const SOUND_VOLUME := 0.8
+## The ramps that are elements, and so add their layer (sfx-element-fire ...) to a cast or a blow at its impact.
+const ELEMENT_LAYERS: Array[String] = ["fire", "frost", "spark"]
 ## Each ramp's dark, mid and hot colours. The hot end is a pale tint of the colour, so a blow is vivid, not blinding.
 const RAMPS := {
 	"none": ["#1c0b3a", "#9b6cff", "#eadcff"],
@@ -75,6 +78,12 @@ static func play(parent: Node, id: String, at: Vector2, ramp := "none", size := 
 	shading.set_shader_parameter("hot", Color(colours[2]))
 	anim.material = shading
 	parent.add_child(anim)
+	# The sound that belongs to it starts with its first frame: it was laid out on this animation's beats
+	# (docs/SOUND_DESIGN.md), so a blow's crack lands on the frame the blow does. An element tints it at its impact.
+	if found.has("sound"):
+		Sound.play(String(found.sound), SOUND_VOLUME)
+	if bool(found.get("element_layer", false)) and ramp in ELEMENT_LAYERS:
+		anim.impact.connect(func() -> void: Sound.play("sfx-element-" + ramp, SOUND_VOLUME * 0.8), CONNECT_ONE_SHOT)
 	return anim
 
 

@@ -1,6 +1,6 @@
 # ADR-0003: the Shardrun rules are ported line for line, and proven by replay
 
-- Status: accepted
+- Status: superseded by ADR-0021 (the rules are the game's own; the replays stay as re-recordable reference results)
 - Date: 2026-09-24
 
 ## Context

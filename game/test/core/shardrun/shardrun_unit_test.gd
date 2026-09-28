@@ -1,16 +1,22 @@
 extends GdUnitTestSuite
-## The old engine's own unit tests (ProgramMe packages/core/test/shardrun.test.ts, 73 cases), replayed: every call they
-## made into the rules was recorded with its arguments and result (tools/fixtures/record/), and each is made again here.
-## Their hand-made edge cases (foe traits, single relics, tiny custom catalogs) prove the port as the seeded runs do.
+## Hand-made edge cases of the rules (foe traits, single relics, tiny custom catalogs): calls into the rules with their
+## arguments and results (game/test/fixtures/shardrun-unit.json.gz, first recorded from the TypeScript engine's own
+## unit tests), each made again here. Re-recording keeps the calls and records what this engine returns.
 
+var recording: Dictionary
 var catalogs: Array
 var calls: Array
 
 
 func before() -> void:
-	var recording: Dictionary = Fixtures.load_json_gz("shardrun-unit")
+	recording = Fixtures.load_json_gz("shardrun-unit")
 	catalogs = recording.catalogs.map(func(catalog: Variant) -> Variant: return _decode(catalog))
 	calls = recording.calls
+
+
+func after() -> void:
+	if Fixtures.updating():
+		Fixtures.save_json_gz("shardrun-unit", recording)
 
 
 func test_every_recorded_call_matches() -> void:
@@ -22,6 +28,10 @@ func test_every_recorded_call_matches() -> void:
 			continue
 		var args: Array = (call.args as Array).map(func(arg: Variant) -> Variant: return _arg(arg))
 		var got: Variant = _invoke(call.fn, args)
+		if Fixtures.updating():
+			call.result = _encode(got)
+			replayed += 1
+			continue
 		var difference := Fixtures.diff(got, Fixtures.snake(_decode(call.get("result"))), call.fn)
 		if difference != "":
 			failures.append("call %d %s: %s" % [i, call.fn, difference])
@@ -77,7 +87,21 @@ func _invoke(fn: String, a: Array) -> Variant:
 	return "unknown function %s" % fn
 
 
-## Non-finite numbers were written as {"$num": "Infinity"}; everything else is plain JSON.
+## Non-finite numbers are written as {"$num": "Infinity"}; everything else is plain JSON.
+static func _encode(value: Variant) -> Variant:
+	if value is float and not is_finite(value):
+		return {"$num": "NaN" if is_nan(value) else ("Infinity" if value > 0 else "-Infinity")}
+	if value is Dictionary:
+		var result := {}
+		for key: Variant in value:
+			result[key] = _encode(value[key])
+		return result
+	if value is Array:
+		return (value as Array).map(func(item: Variant) -> Variant: return _encode(item))
+	return value
+
+
+## A recorded value as the engine's: {"$num": ...} back to the non-finite float it stands for.
 static func _decode(value: Variant) -> Variant:
 	if value is Dictionary:
 		var dictionary: Dictionary = value

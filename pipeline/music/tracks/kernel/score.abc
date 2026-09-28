@@ -1,0 +1,50 @@
+X:1
+T:The Kernel
+M:4/4
+L:1/16
+Q:1/4=72
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Cm
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"G"z16|
+V: Ins
+C,2G,2C2E2 G2E2C2G,2|A,,2E,2A,2C2 E2C2A,2E,2|B,,2F,2B,2D2 F2D2B,2F,2|G,,2D,2G,2=B,2 D2=B,2G,2D,2|
+% verse
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"Cm"z16|
+V: Ins
+c8 G4 c4|e8 d4 c4|d8 B4 F4|c12 z4|
+V: Vocal
+"Cm"z16|"Fm"z16|"G"z16|"Cm"z16|
+V: Ins
+c8 G4 c4|f8 e4 d4|d8 =B4 G4|c16|
+% bridge
+V: Vocal
+"Ab"z16|"Eb"z16|"Fm"z16|"Cm"z16|
+V: Ins
+e8 c4 A4|g8 e4 B4|a8 f4 c4|g12 z4|
+V: Vocal
+"Ab"z16|"Bb"z16|"G"z16|"G"z16|
+V: Ins
+e8 a4 c'4|d'8 b4 f4|d'4 =b4 g4 d4|=B8 d8|
+% verse
+V: Vocal
+"Cm"z16|"Ab"z16|"Bb"z16|"Cm"z16|
+V: Ins
+c8 G4 c4|e8 d4 c4|d8 B4 F4|c12 z4|
+V: Vocal
+"Cm"z16|"Fm"z16|"G"z16|"Cm"z16|
+V: Ins
+c8 G4 c4|f8 e4 d4|d8 =B4 G4|c16|
+% outro
+V: Vocal
+"Cm"z16|"Cm"z16|
+V: Ins
+C,2G,2C2E2 G2E2C2G,2|C16|

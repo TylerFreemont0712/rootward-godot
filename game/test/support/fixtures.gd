@@ -1,18 +1,59 @@
 class_name Fixtures
 extends RefCounted
-## Loads the differential fixtures written by tools/fixtures/*.ts from the TypeScript engine, and compares them.
+## The reference results the engine is tested against (game/test/fixtures/): recorded inputs, and what the engine did
+## with them. They were first recorded from the TypeScript engine; they are the game's own (ADR-0021), so a change
+## made on purpose re-records them from this engine, and the diff of the fixtures is reviewed with the change:
+##
+##   ROOTWARD_GOLDEN=update scripts/test.sh -a res://test/core/shardrun/shardrun_runs_test.gd
+##
+## A suite checks each result through `expect`, which compares, or, when re-recording, stores what the engine did in
+## its place; the suite's `after` then writes the file.
+
+const ROOT := "res://test/fixtures/"
+
+
+## Whether this run re-records the fixtures instead of checking them.
+static func updating() -> bool:
+	return OS.get_environment("ROOTWARD_GOLDEN") == "update"
+
+
+## `got` against `holder[key]`: the first difference, or "". When re-recording, `got` is stored in its place and
+## there is no difference. `snaked` compares with the recorded value's keys in snake_case (the TypeScript engine's
+## recordings are camelCase; what this engine records is already snake_case, which `snake` leaves alone).
+static func expect(holder: Dictionary, key: String, got: Variant, path := "$", snaked := false) -> String:
+	if updating():
+		holder[key] = got
+		return ""
+	return diff(got, snake(holder[key]) if snaked else holder[key], path)
 
 
 static func load_json(name: String) -> Variant:
-	var path := "res://test/fixtures/%s.json" % name
+	var path := ROOT + "%s.json" % name
 	var text := FileAccess.get_file_as_string(path)
-	assert(text != "", "missing fixture %s (run node tools/fixtures/%s.ts)" % [path, name])
+	assert(text != "", "missing fixture %s" % path)
 	return JSON.parse_string(text)
+
+
+## Writes a fixture back after re-recording: keys sorted and floats at full precision, so it reads back exactly and
+## its diff shows only what changed. Plain fixtures are indented to be read; gzipped ones are compact.
+static func save_json(name: String, value: Variant) -> void:
+	var file := FileAccess.open(ROOT + "%s.json" % name, FileAccess.WRITE)
+	file.store_string(JSON.stringify(value, "\t", true, true) + "\n")
+	file.close()
+
+
+static func save_json_gz(name: String, value: Variant) -> void:
+	# LEARN: PackedByteArray.compress(GZIP) writes a plain gzip stream, which decompress_dynamic reads back;
+	# FileAccess.open_compressed would write Godot's own block format instead.
+	var bytes := JSON.stringify(value, "", true, true).to_utf8_buffer().compress(FileAccess.COMPRESSION_GZIP)
+	var file := FileAccess.open(ROOT + "%s.json.gz" % name, FileAccess.WRITE)
+	file.store_buffer(bytes)
+	file.close()
 
 
 ## A gzipped fixture (`<name>.json.gz`), for the big ones.
 static func load_json_gz(name: String) -> Variant:
-	var bytes := FileAccess.get_file_as_bytes("res://test/fixtures/%s.json.gz" % name)
+	var bytes := FileAccess.get_file_as_bytes(ROOT + "%s.json.gz" % name)
 	assert(not bytes.is_empty(), "missing fixture %s.json.gz" % name)
 	return JSON.parse_string(bytes.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP).get_string_from_utf8())
 
@@ -23,7 +64,8 @@ static func word(value: float) -> int:
 	return roundi(value * Rng.TWO_32)
 
 
-## The TypeScript engine's camelCase keys as this game's snake_case, all the way down. Values are left alone.
+## The TypeScript engine's camelCase keys as this game's snake_case, all the way down. Values are left alone, and so
+## are keys already snake_case (what this engine records).
 static func snake(value: Variant) -> Variant:
 	if value is Dictionary:
 		var result := {}

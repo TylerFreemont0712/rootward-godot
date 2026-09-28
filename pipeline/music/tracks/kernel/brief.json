@@ -1,0 +1,19 @@
+{
+  "id": "kernel",
+  "out": "music-kernel",
+  "title": "The Kernel",
+  "role": "The Kernel's map: the ancient core of the Machine, a cathedral of code. Solemn and vast, awe more than dread.",
+  "theme": "The motif slowed to half notes in C minor (C G C Eb D C): the theme become a hymn.",
+  "bpm": 72,
+  "key": "C minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (low harp and bells), verse 8 (horn), bridge 8 (strings rise, Ab major), verse 8 (full), outro 2",
+  "style": "solemn mysterious orchestral exploration, video game map music, ancient machine cathedral, instrumental, no vocals, noble french horn and low strings melody, pipe organ, tubular bells, harp, slow and vast, dignified, clear orchestral recording, C minor, 72 BPM",
+  "lyrics": "",
+  "loop": {
+    "from": "verse",
+    "to": "verse",
+    "occurrence": 2
+  },
+  "pick": "yue2-1001-1101-s32-421372"
+}

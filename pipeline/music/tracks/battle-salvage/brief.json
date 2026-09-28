@@ -1,0 +1,19 @@
+{
+  "id": "battle-salvage",
+  "out": "music-battle-salvage",
+  "title": "Salvage Skirmish",
+  "role": "Every fight in the Salvage, the first layer: the track a run hears most. Driving and heroic, never frantic; it must sit under hit sounds without masking them.",
+  "reference": "The old music-battle-salvage: its driving repeated-note strings and its A-B-A shape are what the player liked. It was dark and boomy (61% of its energy under 150 Hz, almost nothing above 5 kHz), sat on one D pedal, and dropped out at 13 s.",
+  "bpm": 132,
+  "key": "D minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (the ostinato alone), verse 8 (the motif), chorus 8 (the motif climbs), interlude 8 (lyrical, in F), chorus 8 (an octave up, ending on the dominant), outro 2",
+  "loop": {
+    "from": "verse",
+    "to": "chorus",
+    "occurrence": 2
+  },
+  "style": "epic orchestral battle music, video game soundtrack, instrumental, no vocals, fast driving spiccato violin ostinato, staccato cellos and basses, heroic solo violin melody, french horns, snare and taiko drums, timpani, bright clear mix, D minor, 132 BPM",
+  "lyrics": "",
+  "pick": "yue2-1000-1100-s32-1630eb"
+}

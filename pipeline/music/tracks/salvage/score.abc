@@ -1,0 +1,68 @@
+X:1
+T:Rust and Roots
+M:3/4
+L:1/16
+Q:1/4=108
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Am
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Am"z12|"F"z12|"C"z12|"E"z12|
+V: Ins
+A,2E2A2 c2A2E2|F,2C2F2 A2F2C2|C2G2c2 e2c2G2|E,2B,2E2 ^G2E2B,2|
+% verse
+V: Vocal
+"Am"z12|"F"z12|"C"z12|"G"z12|
+V: Ins
+A4 E2A2 c4|B2A2 F4 A4|G4 E2G2 c4|d8 B4|
+V: Vocal
+"Am"z12|"Dm"z12|"E"z12|"Am"z12|
+V: Ins
+A4 E2A2 c2e2|f4 e2d2 A4|^G4 B2d2 e4|A12|
+% verse
+V: Vocal
+"Am"z12|"F"z12|"C"z12|"G"z12|
+V: Ins
+e4 c2e2 a4|g2f2 c4 f4|e4 c2e2 g4|d8 G4|
+V: Vocal
+"F"z12|"Dm"z12|"E"z12|"Am"z12|
+V: Ins
+c4 f4 a4|g4 f2e2 d4|e4 ^G4 B4|A8 z4|
+% bridge
+V: Vocal
+"C"z12|"G"z12|"Am"z12|"Em"z12|
+V: Ins
+e8 g4|d8 B4|c8 e4|B8 G4|
+V: Vocal
+"F"z12|"C"z12|"Dm"z12|"E"z12|
+V: Ins
+A4 c4 f4|e4 d4 c4|d4 f4 a4|^g8 e4|
+% verse
+V: Vocal
+"Am"z12|"F"z12|"C"z12|"G"z12|
+V: Ins
+A4 E2A2 c4|B2A2 F4 A4|G4 E2G2 c4|d8 B4|
+V: Vocal
+"Am"z12|"Dm"z12|"E"z12|"Am"z12|
+V: Ins
+A4 E2A2 c2e2|f4 e2d2 A4|^G4 B2d2 e4|A12|
+% bridge
+V: Vocal
+"C"z12|"G"z12|"Am"z12|"Em"z12|
+V: Ins
+g8 e4|f8 d4|e8 c4|d8 B4|
+V: Vocal
+"F"z12|"C"z12|"Dm"z12|"E"z12|
+V: Ins
+c4 A4 F4|G4 c4 e4|f4 e4 d4|B8 ^G4|
+% outro
+V: Vocal
+"Am"z12|"Am"z12|
+V: Ins
+A,2E2A2 c2A2E2|A12|

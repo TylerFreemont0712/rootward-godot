@@ -5,6 +5,8 @@ name = "rootward-pipeline"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "faster-whisper==1.2.1",
+    "librosa==1.0.0",
     "numpy==2.5.3",
     "pillow==12.3.0",
     "soundfile==0.13.1",
