@@ -93,6 +93,14 @@ func duration() -> float:
 	return float(facts.frames) / float(facts.fps)
 
 
+## An animation taken off the stage before its blow still lets go of whoever waits for it (`landed()`): an awaited
+## signal that never fires would hold that code forever.
+func _exit_tree() -> void:
+	if not _landed:
+		_landed = true
+		impact.emit()
+
+
 ## A looping animation fades out quickly and goes.
 func stop() -> void:
 	if _stopping:

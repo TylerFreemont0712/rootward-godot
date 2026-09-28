@@ -21,6 +21,9 @@ const CRITICAL_AMOUNT := 18
 const CRITICAL_SHARE := 0.45
 ## A volley spreads its launches over about this long, one bolt every `max` ms at most and `min` at least.
 const VOLLEY := {"spread": 1300.0, "max": 190.0, "min": 45.0}
+## The longest a cast waits (in real time) for its bolts to land before it lets the log move on regardless: a guard
+## against an animation that never finishes, never a pace.
+const LANDING_CAP_MS := 8000
 
 var stage: BattleStage
 ## {integrity, integrity_max, block, mana, foes: {uid: foe}} as currently drawn.
@@ -34,6 +37,9 @@ var _crashed: Dictionary = {}
 ## Where the cast's bolts are born: the middle of its circle, and how far round it they may start.
 var _circle := Vector2.ZERO
 var _circle_reach := 0.0
+## Bolts launched and not landed yet. The cast's playback ends when this is back to zero, so every hit is on the bars
+## before the screen draws the true state.
+var _in_flight := 0
 
 
 func _init(on_stage: BattleStage, before: Dictionary) -> void:
@@ -124,16 +130,21 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var gap := clampf(VOLLEY.spread / maxf(1.0, bolts.size()), VOLLEY.min, VOLLEY.max)
 	if heavy:
 		gap *= 1.35
-	var longest := 0.0
 	for hit: Dictionary in volley:
 		if not hit.kind in BOLT_KINDS:
 			continue
-		var flight := _flight(hit)
-		longest = flight
-		_launch(hit, flight, volley)
+		_in_flight += 1
+		_launch(hit, _flight(hit), volley)
 		await stage.wait(gap)
-	# The last blow lands a little after its bolt (its brackets slam first), a heavy one's crash later still.
-	await stage.wait(maxf(longest, 1000.0 if _heavy else 0.0) + 400.0)
+	# LEARN: wait for the landings themselves, not for a guess at how long they take. A heavy cast's later bolts wait
+	# for the blow falling on their foe, every blow waits for its brackets to slam, and hit-stops stretch all of it; a
+	# fixed wait let the log move on with hits still to come, and the screen then drew the true state over a bar that
+	# still showed the foe alive.
+	var deadline := Time.get_ticks_msec() + LANDING_CAP_MS
+	while _in_flight > 0 and stage.is_inside_tree() and Time.get_ticks_msec() < deadline:
+		await stage.get_tree().process_frame
+	# A beat after the last blow, before the foes answer.
+	await stage.wait(400.0)
 	if heavy:
 		stage.dim(0.0, 0.4)
 
@@ -154,7 +165,10 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 		_land(hit, volley)
 		return
 	var pending: Variant = _crashed.get(hit.foe)
-	if pending is SpellAnim and is_instance_valid(pending):
+	# LEARN: validity first. `is` on an object that has been freed is a script error that stops this function, and the
+	# falling blow frees itself when its animation ends: a bolt launched after that never flew, and its damage never
+	# reached the bar. is_instance_valid is safe on anything, freed or not an object at all.
+	if is_instance_valid(pending) and pending is SpellAnim:
 		# The foe's falling blow lands first; the bolts after it fly once it has.
 		await (pending as SpellAnim).landed()
 	if _heavy and not _crashed.has(hit.foe) and SpellAnim.has("hit-heavy"):
@@ -246,6 +260,7 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 				stage.popup(view.top_point() + Vector2(0, 30), "wasted %d" % int(hit.amount), UiTheme.FAINT, 20)
 			Sound.play("sfx-glance", 0.4, 1.3)
 	numbers_changed.emit()
+	_in_flight = maxi(0, _in_flight - 1)
 
 
 func _defeat(entry: Dictionary) -> void:

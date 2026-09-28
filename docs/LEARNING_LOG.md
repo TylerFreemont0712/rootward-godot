@@ -240,3 +240,32 @@ the same programs, so the second is skipped, which keeps a hand with two Salvos 
 them in *one* sandbox job (starting a process costs far more than running a small function), and replays each cast
 through the pure rules to score it. What-ifs change the content in memory and reuse the same seeds, so two experiments
 see the same draws and their difference is the change's, not the luck's (a paired comparison).
+
+## A weighted draw that never comes up empty (`game/core/programs/program_loot.gd`)
+An elite's loot table weighs rare, epic and legendary relics 70/25/5. If the run already holds every rare, rolling "rare"
+and then finding nothing would leave the reward empty. So a tier with nothing left to give is taken out of the draw
+before the roll: the remaining weights (25 and 5) keep their proportion, and a relic always comes out while one exists.
+
+## One path for the preview and the cast (`game/core/programs/program_relics.gd`)
+Every relic effect is applied inside the same functions the preview and the cast both call (`stages`, `cost_of`,
+`resolve`...), never in a screen and never only in one of the two. A preview that is computed differently from the
+real thing will drift the moment someone adds a relic; one shared path cannot.
+
+## A worst case is about the input, not only its size (`quick-sort.jsonc`, `ProgramRelics.complexity`)
+Quick sort with its first element as pivot is O(n log n) on shuffled input and O(n²) on input that is already sorted:
+every split leaves one side empty. The rules already track whether the volley is sorted as cards run (the lint's
+`needs`/`makes`), so a card can declare `worst_case: {input: "sorted", complexity: "quadratic"}` and be billed for it.
+
+## An append-only history (`game/app/save_store.gd`, `game/core/shardrun/run_history.gd`)
+Finished runs go into a JSON Lines file, one object per line. Adding a run is one append; nothing ever rewrites the
+file, so a crash can at worst cut the last line short, and the reader skips a line that does not parse. It is also
+the git idea the history borrows: commits are only ever added. `JSON.new().parse()` reports a bad line through its
+return value, where `JSON.parse_string()` prints an error for it.
+
+## Check that it exists before asking what it is (`game/scenes/shardrun/fight/log_player.gd`)
+The foe "left at a tenth of its HP until the end" bug: `pending is SpellAnim and is_instance_valid(pending)` asked
+the type of an animation that had already freed itself, and `is` on a freed object is a script error that stops the
+function. The bolts launched after that animation ended never flew, so their damage never reached the bar, and only the
+final redraw showed the truth. `is_instance_valid()` first: it is safe on anything. And wait for the events themselves
+(a counter of bolts still in the air) rather than for a guess at how long they take; a test plays a real volley in real
+time (`test/scenes/fight_playback_test.gd`) and was seen to fail on the old code before the fix.
