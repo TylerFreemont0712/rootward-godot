@@ -52,8 +52,9 @@ programming touch.
 - **A deck run's map fills the screen.** The deck no longer sits beside it: it lies face down at the map's foot and a
   click opens it in a modal (the fight's own deck panel: every card, its details and code on hover), as the header's
   Deck button now does outside fights too. Reward, rest and forge rooms keep the deck beside them, where it is used.
-- **The route drawer** at the right holds the layer, the room pointed at, the rooms you can enter next (pointing finds
-  one on the map, clicking goes there) and the legend. It folds away with its "Route" tab and stays as you left it;
+- **The route drawer** at the right holds the layer, the rooms you can enter next (pointing finds one on the map,
+  clicking goes there), then the room pointed at, then the legend: the details box grows and shrinks below the list,
+  so it never moves the list you are pointing into. It folds away with its "Route" tab and stays as you left it;
   folded, the legend lies along the map's foot beside the deck.
 - **A longer climb.** Rows are 196 pixels apart (a layer is two to two and a half windows tall) in a column at most 960
   pixels wide, centred.

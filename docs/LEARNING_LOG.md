@@ -408,3 +408,11 @@ reachable totals (`came[total] = [value's position, total before]`), one pass pe
 steps and can walk back to the bolts that made the total. That is the lesson the boss teaches: finding the answer may
 be hard in general, but checking a proposed answer (the volley you landed) is cheap. Keys are visited from a snapshot
 (`came.keys()` before the loop adds to it), so one value is never used twice in the same total.
+
+## A wrapped label's first size is a guess (`game/scenes/shardrun/card_detail.gd`)
+A card's details are placed beside it from their own size, every frame. But a label that wraps, and rich text that fits
+its content, only know their height after a layout pass has given them a width: on the first frame Merge Sort's details
+measured 797 px tall, on the second 445. Placed from the guess, the panel appeared in one spot and snapped to another
+on every hover, and beside a hand card that lifts as it is pointed at, it slid along. The fix waits: the details stay
+transparent until two frames agree on their size and on where the card is (with a cap of 20 frames), and once shown
+they stay shown. Measuring before showing is the general cure for layout that settles over frames.

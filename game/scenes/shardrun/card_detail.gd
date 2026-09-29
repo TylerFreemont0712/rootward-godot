@@ -9,6 +9,15 @@ const CODE_LINES := 13
 const COLUMNS := 74
 const CODE_SIZE := 13
 
+## Frames it waits for its card to hold still before it shows anyway.
+const PATIENCE := 20
+
+## Its size and its card's place last frame (place_beside shows it only once they hold still).
+var _last_box := Vector2(-1, -1)
+var _last_rect := Rect2()
+var _waited := 0
+var _shown := false
+
 
 ## `forge_into` names the card a forge turns it into ("" when none does); `meanings` says what each keyword means.
 static func create(
@@ -106,6 +115,18 @@ func _build(
 ## bottom level with the card's but never off the screen.
 func place_beside(rect: Rect2, screen: Vector2) -> void:
 	var box := get_combined_minimum_size()
+	# LEARN: a label that wraps, and rich text that fits its content, only know their height after a layout pass has
+	# given them their width, so the first frame's size is a guess (Merge Sort's details measure 797 px, then 445).
+	# Shown only once two frames agree on its size and on where the card is (a hand card lifts as it is pointed at),
+	# the details never appear at a guessed place and slide or snap to the real one; after a few frames they show
+	# anyway, beside a card that never holds still.
+	var still := box == _last_box and rect.position.distance_to(_last_rect.position) < 0.5
+	_waited += 1
+	# Once shown it stays shown: a card nudged later (the hand making room) moves it without a blink.
+	_shown = _shown or still or _waited >= PATIENCE
+	modulate.a = 1.0 if _shown else 0.0
+	_last_box = box
+	_last_rect = rect
 	size = box
 	var x := rect.end.x + 14.0
 	if x + box.x > screen.x - 8.0:

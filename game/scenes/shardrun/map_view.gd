@@ -120,9 +120,11 @@ func _init() -> void:
 	_next = Ui.vbox([], 4)
 	_side.add_child(Ui.vbox([_title, _subtitle], 2))
 	_side.add_child(_flavor)
-	_side.add_child(Ui.panel(_detail_text, "Card"))
+	# The rooms ahead first, then the details of the one pointed at: a details box that grows and shrinks below them
+	# never moves the list you are pointing into.
 	_side.add_child(Ui.tint(Ui.label("NEXT ROOMS", "Faint"), UiTheme.TEAL))
 	_side.add_child(_next)
+	_side.add_child(Ui.panel(_detail_text, "Card"))
 	_side.add_child(Ui.expand(Ui.spacer(0, 1), true))
 	_side.add_child(Ui.label("ROOMS", "Faint"))
 	for kind: String in LEGEND:
