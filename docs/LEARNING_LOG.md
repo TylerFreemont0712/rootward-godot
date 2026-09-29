@@ -378,3 +378,8 @@ The Hydra body and separate head each looked finished, but both originally ended
 review exposed the mismatch. The head now has a recessed socket for the body's pins; the edit also needed a second
 pass to remove a faint halo outside the transparent cutout. Multi-part sprites need a shared connector design as
 well as a shared palette.
+
+## Judge shard art after reduction (`docs/images/artupdate-shards-pass6.png`)
+The full-size concepts for Crowd Surge, Headcount, Take Two, Transduce and Triage had the intended objects, but their
+small enemy details, gate and crystal geometry collapsed at 32 pixels. Keep those older icons until a simpler drawing
+reads in the actual card hand. A strong silhouette survived reduction for thirteen other shard replacements.

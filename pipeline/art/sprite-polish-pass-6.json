@@ -1,0 +1,33 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "intent": "Replace older shard icons whose shapes did not communicate their effects at card size.",
+  "style_reference": "game/assets/shardrun/card-fire-constant.png",
+  "shared_prompt": "Isolated transparent 32-pixel fantasy roguelite shard icon in Rootward's chunky pixel art, bronze, jewel light, crisp dark contour and limited palette. One bold centered silhouette with hard pixel edges, no scene, card frame, writing or watermark.",
+  "icons": {
+    "shard-attune": "one crystal tuning fork pulsing energy to smaller bolts",
+    "shard-backdraft": "a firebolt amplified by bellows into a much larger flame",
+    "shard-blood-price": "blood droplet feeding a power crystal above a cracked heart",
+    "shard-cascade": "three ascending bolts, each larger than the last",
+    "shard-compound": "a small multiplication crystal reflected into a larger square crystal",
+    "shard-focus": "three bolts converging into one central bolt",
+    "shard-frontload": "one oversized first bolt followed by deliberately tiny bolts",
+    "shard-fuse": "three attack bolts merging into one broad bolt",
+    "shard-guard-echo": "one attack bolt followed by its smaller shield echo",
+    "shard-last-stand": "a cracked half-empty heart behind a defiant flaring bolt",
+    "shard-mirror-power": "one strong bolt shared into three equally strong bolts",
+    "shard-resonant-run": "three same-colored bolts increasing in size along one rhythm",
+    "shard-time-dilation": "hourglass with a spark growing as sand falls"
+  },
+  "rejected_at_32_pixels": [
+    "shard-crowd-surge",
+    "shard-headcount",
+    "shard-take-two",
+    "shard-transduce",
+    "shard-triage"
+  ],
+  "review_image": "docs/images/artupdate-shards-pass6.png",
+  "review_screenshots": [
+    "shots/polish/shards-pass6-a.png",
+    "shots/polish/shards-pass6-b.png"
+  ]
+}

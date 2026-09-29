@@ -217,6 +217,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Pass 5: all sixteen older enemy concepts repainted from their briefs, including the Hydra's separate mating
       body and head; five relics and six shards rebuilt around literal, readable objects and reviewed at game size
       (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-5.json`).
+- [x] Pass 6: thirteen older shard icons with unclear effects rebuilt around distinct action silhouettes and reviewed
+      at 32 pixels and in the Shardrun hand (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-6.json`).
 - [ ] Continue through the remaining older relics and shards in reviewable groups, keeping their meanings and colors.
 
 ### Later
