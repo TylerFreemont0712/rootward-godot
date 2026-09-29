@@ -6,7 +6,10 @@ well as playable foes.
 
 Last reviewed: 2026-09-29. Keep this list current as later small art passes are accepted.
 
-## Enemies (15/31 updated)
+## Enemies (31/31 updated)
+
+The [older foe roster](images/artupdate-older-foes-roster.png) shows this pass at its intended battle scale. The
+Spaghetti Hydra has a separate body and head sprite, ready for its proposed multi-part encounter.
 
 - [x] [dangling-pointer.png](../game/assets/foes/dangling-pointer.png)
 - [x] [deadlock-golem.png](../game/assets/foes/deadlock-golem.png)
@@ -24,22 +27,22 @@ Last reviewed: 2026-09-29. Keep this list current as later small art passes are 
 - [x] [tally-wisp.png](../game/assets/foes/tally-wisp.png)
 - [x] [type-mimic.png](../game/assets/foes/type-mimic.png)
 
-- [ ] [archive-crab.png](../game/assets/foes/archive-crab.png)
-- [ ] [fragmentation-wyrm.png](../game/assets/foes/fragmentation-wyrm.png)
-- [ ] [glassback-stag.png](../game/assets/foes/glassback-stag.png)
-- [ ] [halting-oracle.png](../game/assets/foes/halting-oracle.png)
-- [ ] [irq-hound.png](../game/assets/foes/irq-hound.png)
-- [ ] [needlecap-mantis.png](../game/assets/foes/needlecap-mantis.png)
-- [ ] [recursive-hare.png](../game/assets/foes/recursive-hare.png)
-- [ ] [scriptwing-moth.png](../game/assets/foes/scriptwing-moth.png)
-- [ ] [scrollback-raven.png](../game/assets/foes/scrollback-raven.png)
-- [ ] [shardshell-tortoise.png](../game/assets/foes/shardshell-tortoise.png)
-- [ ] [spaghetti-hydra-head.png](../game/assets/foes/spaghetti-hydra-head.png)
-- [ ] [spaghetti-hydra.png](../game/assets/foes/spaghetti-hydra.png)
-- [ ] [syntax-slime.png](../game/assets/foes/syntax-slime.png)
-- [ ] [the-hoarder.png](../game/assets/foes/the-hoarder.png)
-- [ ] [the-monolith.png](../game/assets/foes/the-monolith.png)
-- [ ] [the-scheduler.png](../game/assets/foes/the-scheduler.png)
+- [x] [archive-crab.png](../game/assets/foes/archive-crab.png)
+- [x] [fragmentation-wyrm.png](../game/assets/foes/fragmentation-wyrm.png)
+- [x] [glassback-stag.png](../game/assets/foes/glassback-stag.png)
+- [x] [halting-oracle.png](../game/assets/foes/halting-oracle.png)
+- [x] [irq-hound.png](../game/assets/foes/irq-hound.png)
+- [x] [needlecap-mantis.png](../game/assets/foes/needlecap-mantis.png)
+- [x] [recursive-hare.png](../game/assets/foes/recursive-hare.png)
+- [x] [scriptwing-moth.png](../game/assets/foes/scriptwing-moth.png)
+- [x] [scrollback-raven.png](../game/assets/foes/scrollback-raven.png)
+- [x] [shardshell-tortoise.png](../game/assets/foes/shardshell-tortoise.png)
+- [x] [spaghetti-hydra-head.png](../game/assets/foes/spaghetti-hydra-head.png)
+- [x] [spaghetti-hydra.png](../game/assets/foes/spaghetti-hydra.png)
+- [x] [syntax-slime.png](../game/assets/foes/syntax-slime.png)
+- [x] [the-hoarder.png](../game/assets/foes/the-hoarder.png)
+- [x] [the-monolith.png](../game/assets/foes/the-monolith.png)
+- [x] [the-scheduler.png](../game/assets/foes/the-scheduler.png)
 
 ## New guardian pool (16/16 updated)
 
@@ -64,10 +67,10 @@ at that size; the playable Quine was also [checked in battle](images/artupdate-q
 - [x] [mutator.png](../game/assets/foes/mutator.png) — Root
 - [x] [karp.png](../game/assets/foes/karp.png) — Root
 
-## Relics (12/76 updated)
+## Relics (17/76 updated)
 
-The new icon shapes were also [compared at 32 pixels](images/artupdate-icon-readability.png) and checked in their
-respective run headers or card hands.
+The new icon shapes were also compared at 32 pixels ([pass 4](images/artupdate-icon-readability.png),
+[pass 5](images/artupdate-older-icons.png)) and checked in their respective run headers or card hands.
 
 - [x] [relic-arcane-seal.png](../game/assets/shardrun/relic-arcane-seal.png)
 - [x] [relic-clipboard.png](../game/assets/shardrun/relic-clipboard.png)
@@ -79,10 +82,10 @@ respective run headers or card hands.
 - [x] [relic-rime-crown.png](../game/assets/shardrun/relic-rime-crown.png)
 - [x] [relic-storm-bottle.png](../game/assets/shardrun/relic-storm-bottle.png)
 
-- [ ] [relic-amortized-ledger.png](../game/assets/shardrun/relic-amortized-ledger.png)
-- [ ] [relic-big-o-compass.png](../game/assets/shardrun/relic-big-o-compass.png)
+- [x] [relic-amortized-ledger.png](../game/assets/shardrun/relic-amortized-ledger.png)
+- [x] [relic-big-o-compass.png](../game/assets/shardrun/relic-big-o-compass.png)
 - [ ] [relic-blood-contract.png](../game/assets/shardrun/relic-blood-contract.png)
-- [ ] [relic-blood-engine.png](../game/assets/shardrun/relic-blood-engine.png)
+- [x] [relic-blood-engine.png](../game/assets/shardrun/relic-blood-engine.png)
 - [ ] [relic-branch-predictor.png](../game/assets/shardrun/relic-branch-predictor.png)
 - [ ] [relic-bulwark-engine.png](../game/assets/shardrun/relic-bulwark-engine.png)
 - [ ] [relic-cache-hit.png](../game/assets/shardrun/relic-cache-hit.png)
@@ -120,7 +123,7 @@ respective run headers or card hands.
 - [ ] [relic-pipeline.png](../game/assets/shardrun/relic-pipeline.png)
 - [ ] [relic-preemption.png](../game/assets/shardrun/relic-preemption.png)
 - [ ] [relic-profiler.png](../game/assets/shardrun/relic-profiler.png)
-- [ ] [relic-radix-sort.png](../game/assets/shardrun/relic-radix-sort.png)
+- [x] [relic-radix-sort.png](../game/assets/shardrun/relic-radix-sort.png)
 - [ ] [relic-read-ahead-buffer.png](../game/assets/shardrun/relic-read-ahead-buffer.png)
 - [ ] [relic-rearview-lens.png](../game/assets/shardrun/relic-rearview-lens.png)
 - [ ] [relic-reference-counter.png](../game/assets/shardrun/relic-reference-counter.png)
@@ -141,13 +144,13 @@ respective run headers or card hands.
 - [ ] [relic-try-finally.png](../game/assets/shardrun/relic-try-finally.png)
 - [ ] [relic-tuning-fork.png](../game/assets/shardrun/relic-tuning-fork.png)
 - [ ] [relic-type-hints.png](../game/assets/shardrun/relic-type-hints.png)
-- [ ] [relic-unix-philosophy.png](../game/assets/shardrun/relic-unix-philosophy.png)
+- [x] [relic-unix-philosophy.png](../game/assets/shardrun/relic-unix-philosophy.png)
 - [ ] [relic-wardstone.png](../game/assets/shardrun/relic-wardstone.png)
 - [ ] [relic-warm-cache.png](../game/assets/shardrun/relic-warm-cache.png)
 - [ ] [relic-warm-start.png](../game/assets/shardrun/relic-warm-start.png)
 - [ ] [relic-wider-aperture.png](../game/assets/shardrun/relic-wider-aperture.png)
 
-## Shards (15/72 updated)
+## Shards (21/72 updated)
 
 - [x] [shard-amplify.png](../game/assets/shardrun/shard-amplify.png)
 - [x] [shard-arc.png](../game/assets/shardrun/shard-arc.png)
@@ -161,7 +164,7 @@ respective run headers or card hands.
 
 - [ ] [shard-adapt.png](../game/assets/shardrun/shard-adapt.png)
 - [ ] [shard-alternating-current.png](../game/assets/shardrun/shard-alternating-current.png)
-- [ ] [shard-apex.png](../game/assets/shardrun/shard-apex.png)
+- [x] [shard-apex.png](../game/assets/shardrun/shard-apex.png)
 - [ ] [shard-attune.png](../game/assets/shardrun/shard-attune.png)
 - [ ] [shard-backdraft.png](../game/assets/shardrun/shard-backdraft.png)
 - [ ] [shard-blood-price.png](../game/assets/shardrun/shard-blood-price.png)
@@ -176,7 +179,7 @@ respective run headers or card hands.
 - [ ] [shard-crosslink.png](../game/assets/shardrun/shard-crosslink.png)
 - [ ] [shard-crowd-surge.png](../game/assets/shardrun/shard-crowd-surge.png)
 - [ ] [shard-double-tap.png](../game/assets/shardrun/shard-double-tap.png)
-- [ ] [shard-echo.png](../game/assets/shardrun/shard-echo.png)
+- [x] [shard-echo.png](../game/assets/shardrun/shard-echo.png)
 - [ ] [shard-entrench.png](../game/assets/shardrun/shard-entrench.png)
 - [ ] [shard-execution.png](../game/assets/shardrun/shard-execution.png)
 - [ ] [shard-exploit.png](../game/assets/shardrun/shard-exploit.png)
@@ -185,11 +188,11 @@ respective run headers or card hands.
 - [ ] [shard-fortify.png](../game/assets/shardrun/shard-fortify.png)
 - [ ] [shard-frontload.png](../game/assets/shardrun/shard-frontload.png)
 - [ ] [shard-fuse.png](../game/assets/shardrun/shard-fuse.png)
-- [ ] [shard-glass-cannon.png](../game/assets/shardrun/shard-glass-cannon.png)
+- [x] [shard-glass-cannon.png](../game/assets/shardrun/shard-glass-cannon.png)
 - [ ] [shard-guard-echo.png](../game/assets/shardrun/shard-guard-echo.png)
 - [ ] [shard-headcount.png](../game/assets/shardrun/shard-headcount.png)
 - [ ] [shard-last-stand.png](../game/assets/shardrun/shard-last-stand.png)
-- [ ] [shard-lazy-fork.png](../game/assets/shardrun/shard-lazy-fork.png)
+- [x] [shard-lazy-fork.png](../game/assets/shardrun/shard-lazy-fork.png)
 - [ ] [shard-lodestone.png](../game/assets/shardrun/shard-lodestone.png)
 - [ ] [shard-mirror-power.png](../game/assets/shardrun/shard-mirror-power.png)
 - [ ] [shard-monochrome.png](../game/assets/shardrun/shard-monochrome.png)
@@ -208,7 +211,7 @@ respective run headers or card hands.
 - [ ] [shard-rewind.png](../game/assets/shardrun/shard-rewind.png)
 - [ ] [shard-seeker.png](../game/assets/shardrun/shard-seeker.png)
 - [ ] [shard-siege-breaker.png](../game/assets/shardrun/shard-siege-breaker.png)
-- [ ] [shard-singularity.png](../game/assets/shardrun/shard-singularity.png)
+- [x] [shard-singularity.png](../game/assets/shardrun/shard-singularity.png)
 - [ ] [shard-siphon.png](../game/assets/shardrun/shard-siphon.png)
 - [ ] [shard-spectrum-wheel.png](../game/assets/shardrun/shard-spectrum-wheel.png)
 - [ ] [shard-superconductor.png](../game/assets/shardrun/shard-superconductor.png)
@@ -217,7 +220,7 @@ respective run headers or card hands.
 - [ ] [shard-temper.png](../game/assets/shardrun/shard-temper.png)
 - [ ] [shard-thermal-shock.png](../game/assets/shardrun/shard-thermal-shock.png)
 - [ ] [shard-time-dilation.png](../game/assets/shardrun/shard-time-dilation.png)
-- [ ] [shard-tithe.png](../game/assets/shardrun/shard-tithe.png)
+- [x] [shard-tithe.png](../game/assets/shardrun/shard-tithe.png)
 - [ ] [shard-transduce.png](../game/assets/shardrun/shard-transduce.png)
 - [ ] [shard-triage.png](../game/assets/shardrun/shard-triage.png)
 - [ ] [shard-vengeance.png](../game/assets/shardrun/shard-vengeance.png)

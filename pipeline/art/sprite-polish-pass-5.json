@@ -1,0 +1,37 @@
+{
+  "generator": "OpenAI image_gen",
+  "intent": "Finish the sixteen older foe concepts and replace eleven older inventory icons whose meaning was unclear at card or relic size.",
+  "foe_brief": "Concept/Enemies/ENEMY_BRIEFS.md",
+  "foe_method": "Each earlier game/assets/foes/<id>.png supplied identity; a finished Kiln Warden or Fork Bomb sprite supplied crisp linework, cel shading and left-facing battle pose. Transparent full-body cutouts retain each concept's color and defining feature.",
+  "foes": [
+    "archive-crab", "fragmentation-wyrm", "glassback-stag", "halting-oracle",
+    "irq-hound", "needlecap-mantis", "recursive-hare", "scriptwing-moth",
+    "scrollback-raven", "shardshell-tortoise", "spaghetti-hydra-head", "spaghetti-hydra",
+    "syntax-slime", "the-hoarder", "the-monolith", "the-scheduler"
+  ],
+  "hydra_parts": "The shared body has three exposed two-pin cable ends; the separate head has a recessed two-hole rear socket. The head edit received a second transparency cleanup to remove an unwanted halo.",
+  "icon_reference": "game/assets/shardrun/card-fire-constant.png supplies bronze, jewel and chunky pixel-art materials. Each object is isolated on alpha and designed for 32 px display.",
+  "icons": {
+    "relic-amortized-ledger": "open ledger showing a large charge reduced to a single coin",
+    "relic-big-o-compass": "large brass compass pointing away from a crossed-out loop",
+    "relic-blood-engine": "black iron turbine powered by one vivid blood droplet",
+    "relic-radix-sort": "three ordered gemstone beads on an abacus",
+    "relic-unix-philosophy": "single precision chisel making one bright mark",
+    "shard-apex": "one peak crystal above discarded small shards",
+    "shard-echo": "two identical bolts linked by a violet echo ring",
+    "shard-glass-cannon": "crystal cannon firing as its glass shield breaks",
+    "shard-lazy-fork": "forked crystal with one chipped branch",
+    "shard-singularity": "three bolts collapsing into a high-contrast dark vortex",
+    "shard-tithe": "balance scale trading one large crystal for two smaller ones"
+  },
+  "review_images_in_docs": [
+    "docs/images/artupdate-older-foes-roster.png",
+    "docs/images/artupdate-older-icons.png"
+  ],
+  "review_screenshots": [
+    "shots/polish/older-shards-pass5.png",
+    "shots/polish/older-program-relics-pass5.png",
+    "shots/polish/older-deck-relics-pass5.png",
+    "shots/polish/older-ledger-pass5.png"
+  ]
+}

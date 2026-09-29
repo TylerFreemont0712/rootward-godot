@@ -372,3 +372,9 @@ was also checked in the Root arena.
 Waiting two frames inside the longer screen tests was not enough: the suite's `after_test` queued the entire screen
 for deletion after those waits. gdUnit counted 31 possible orphans even though all 195 assertions passed. Waiting
 two frames after teardown removed that warning in the affected suite.
+
+## Multi-part art needs mating shapes (`game/assets/foes/spaghetti-hydra-head.png`)
+The Hydra body and separate head each looked finished, but both originally ended in projecting plug pins. Side-by-side
+review exposed the mismatch. The head now has a recessed socket for the body's pins; the edit also needed a second
+pass to remove a faint halo outside the transparent cutout. Multi-part sprites need a shared connector design as
+well as a shared palette.

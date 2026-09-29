@@ -214,8 +214,10 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Pass 4: all sixteen new guardian placeholders repainted, with the Quine checked in a Root boss fight; three
       relics and six shards redrawn around clearer 32-pixel silhouettes and checked in their run layouts
       (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-4.json`).
-- [ ] Continue through older relics, shards and unused enemy concepts in later reviewable groups, keeping their
-      identities and element colors.
+- [x] Pass 5: all sixteen older enemy concepts repainted from their briefs, including the Hydra's separate mating
+      body and head; five relics and six shards rebuilt around literal, readable objects and reviewed at game size
+      (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-5.json`).
+- [ ] Continue through the remaining older relics and shards in reviewable groups, keeping their meanings and colors.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
