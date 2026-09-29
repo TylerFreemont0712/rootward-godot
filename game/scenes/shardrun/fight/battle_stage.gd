@@ -122,6 +122,7 @@ func set_foes(foe_states: Array, catalog: Dictionary, entrance := false, boss :=
 	var delay := 0.0
 	for foe: Dictionary in foe_states:
 		var view := FoeView.create(foe, catalog)
+		view.guardian = boss
 		_world.add_child(view)
 		foes[foe.uid] = view
 		if boss and _boss_bar == null:

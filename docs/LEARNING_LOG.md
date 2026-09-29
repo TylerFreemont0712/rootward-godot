@@ -383,3 +383,15 @@ well as a shared palette.
 The full-size concepts for Crowd Surge, Headcount, Take Two, Transduce and Triage had the intended objects, but their
 small enemy details, gate and crystal geometry collapsed at 32 pixels. Keep those older icons until a simpler drawing
 reads in the actual card hand. A strong silhouette survived reduction for thirteen other shard replacements.
+
+## A glide that ignores the frame rate (`game/scenes/shardrun/map_view.gd`)
+The map's scroll eases toward where it was asked to go. The usual `lerp(current, target, 0.15)` every frame moves 15%
+of the gap per frame, so a 144 Hz screen glides more than twice as fast as a 60 Hz one. Keeping `exp(-rate * delta)` of
+the gap instead (`lerpf(target, current, exp(-GLIDE * delta))`) gives the same curve per second at any frame rate: two
+frames of 1/120 s leave exactly what one frame of 1/60 s does, because e^(-a)·e^(-b) = e^(-(a+b)).
+
+## A stable nudge without the run's Rng (`game/scenes/shardrun/map_canvas.gd`)
+Rooms sit a little off the grid so the map reads as a place. Drawing those offsets from the run's `Rng` would change
+the stream the rules depend on (and the reference results). `hash(room_id)` is the same number on every run for the
+same String, so its low bytes make a nudge that never moves and never touches the rules.
+

@@ -7,9 +7,13 @@ extends VBoxContainer
 ## A foe's sprite, square, by its size in content (in the 1920x1080 design canvas).
 const SIZES := {"small": 112.0, "medium": 150.0, "large": 195.0, "huge": 405.0, "colossal": 425.0}
 const HEIGHTS := {"small": 0.43, "medium": 0.52, "large": 0.63, "huge": 0.72, "colossal": 0.76}
+## Every foe but a guardian drawn this much of its size: at full size the hallway foes crowded the arena.
+const HALLWAY_SCALE := 0.9
 const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚", "reprint": "⎘"}
 
 var uid := ""
+## Part of a guardian fight: drawn at full size (HALLWAY_SCALE is for everything else).
+var guardian := false
 var foe: Dictionary = {}
 ## In a program run, the operations the foe waits before its intent this turn (shown on the intent), else -1.
 var tempo := -1
@@ -165,7 +169,8 @@ func _tag(text: String, colour: Color, tip: String) -> Control:
 
 ## Resize the image itself, preserving aspect and floor alignment; text remains readable at every window size.
 func fit_arena(height: float, width: float) -> void:
-	var drawn_height := minf(height * float(HEIGHTS.get(_size_name, 0.52)), width / _aspect)
+	var share := float(HEIGHTS.get(_size_name, 0.52)) * (1.0 if guardian else HALLWAY_SCALE)
+	var drawn_height := minf(height * share, width / _aspect)
 	var drawn := Vector2(drawn_height * _aspect, drawn_height)
 	_holder.custom_minimum_size = drawn
 	sprite.custom_minimum_size = drawn

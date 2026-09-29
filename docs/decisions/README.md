@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0025**.
+The next number is **ADR-0026**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -27,3 +27,4 @@ The next number is **ADR-0025**.
 - [ADR-0022](ADR-0022-polish-as-presentation.md): readable trait and relic help, a live content archive, and shard-specific effects as presentation around proven rules.
 - [ADR-0023](ADR-0023-art-polish-in-small-passes.md): enemy sprites use Vesper's character finish; relic and shard icons keep their pixel-art inventory language, reviewed in small groups.
 - [ADR-0024](ADR-0024-the-root-and-a-guardian-pool.md): a fourth layer for program runs, the Root, and its guardian the Quine; guardians cycle by pool.
+- [ADR-0025](ADR-0025-the-map-as-a-scroll.md): the layer map as a scroll, rooms apart by hue and outline, every layer's guardian in sight; hallway foes at 90%.

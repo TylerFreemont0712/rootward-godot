@@ -157,7 +157,9 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [ ] The Livelock Twins, the Short Circuit and the Profiler (small changes to the landing).
 - [ ] The Thunk, Karp and the Unreachable (per-foe state, a subset-sum check, a program cut before it runs).
 - [ ] The Page Fault (one resident page of three) and the Mutator (mutants authored for every card).
-- [ ] The drawn guardian shown on the map from the start; the Root Compiler as the finale.
+- [x] The drawn guardian shown on the map from the start (ADR-0025: the map as a scroll, every layer's guardian on
+      its rail).
+- [ ] The Root Compiler as the finale.
 - [ ] A balance probe over four layers; per-guardian lines on the end screen, and ranks re-tuned.
 
 ### Next: the game plan (proposed on 2026-09-28)

@@ -43,6 +43,15 @@ const RARITIES := {
 	"legendary": Color("#ff7a3d"),
 	"boss": Color("#e2584f"),
 }
+## The map's rooms, a hue each far apart on the wheel, so a kind reads at a glance (MapMarkers adds a shape each too).
+const ROOMS := {
+	"fight": Color("#d8c6a2"),
+	"elite": Color("#ec5a4f"),
+	"boss": Color("#ff8a3d"),
+	"rest": Color("#7fd06f"),
+	"forge": Color("#b48cff"),
+	"treasure": Color("#f5cb4a"),
+}
 
 ## Sizes are in the design canvas, 1920x1080 (project.godot); the window scales them all together.
 const BUTTON_PADDING := Vector2(15, 8)
@@ -66,6 +75,10 @@ static func element(name: String) -> Color:
 
 static func rarity(name: String) -> Color:
 	return RARITIES.get(name, MUTED)
+
+
+static func room(kind: String) -> Color:
+	return ROOMS.get(kind, ROOMS.fight)
 
 
 ## The UI face (IBM Plex Mono), 400 or 600.

@@ -170,6 +170,45 @@ static func node_states(state: Dictionary) -> Dictionary:
 	return states
 
 
+## The rooms still ahead of you on some path (by id), the room you stand in not among them; every room before the
+## first step of a layer.
+static func reachable(state: Dictionary) -> Dictionary:
+	var ahead := {}
+	var frontier: Array = []
+	for node: Dictionary in ShardrunMap.next_rooms(state.map, state.position):
+		frontier.append(node.id)
+	while not frontier.is_empty():
+		var id: String = frontier.pop_back()
+		if ahead.has(id):
+			continue
+		ahead[id] = true
+		for edge: Array in state.map.edges:
+			if edge[0] == id:
+				frontier.append(edge[1])
+	return ahead
+
+
+## Each layer's guardian, bottom layer first: {layer, foes, where}, `where` being "beaten", "current" or "ahead". A
+## guardian is drawn from the seed like any encounter, so the one shown is the one that waits.
+static func guardians(state: Dictionary, catalog: Dictionary) -> Array[Dictionary]:
+	var shown: Array[Dictionary] = []
+	var layers: Array = catalog.config.layers
+	for index in layers.size():
+		var layer: Dictionary = layers[index]
+		var boss := {"id": ShardrunMap.boss_id(index), "kind": "boss"}
+		var foes: Array[Dictionary] = []
+		for foe_id: String in ShardrunRules.encounter_for(state.seed, boss, layer):
+			if catalog.foes.has(foe_id):
+				foes.append(catalog.foes[foe_id])
+		var where := "current"
+		if index < int(state.layer):
+			where = "beaten"
+		elif index > int(state.layer):
+			where = "ahead"
+		shown.append({"layer": layer, "foes": foes, "where": where})
+	return shown
+
+
 ## The foes waiting in a room, by name, before it is entered.
 static func room_foes(state: Dictionary, node: Dictionary, catalog: Dictionary) -> Array[Dictionary]:
 	var foes: Array[Dictionary] = []
