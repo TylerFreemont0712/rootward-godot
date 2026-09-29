@@ -384,6 +384,11 @@ The full-size concepts for Crowd Surge, Headcount, Take Two, Transduce and Triag
 small enemy details, gate and crystal geometry collapsed at 32 pixels. Keep those older icons until a simpler drawing
 reads in the actual card hand. A strong silhouette survived reduction for thirteen other shard replacements.
 
+## Give similar effects different silhouettes (`docs/images/artupdate-shards-pass7.png`)
+The second full shard pass pairs readable forms with mechanics: shields convert or preserve defense, linked bolts show
+pairing, and large targets show foe selection. Effects that depend on a crowd or target still need distinct anchors;
+compare both names together in the hand as well as at card size, and simplify again if their silhouettes converge.
+
 ## A glide that ignores the frame rate (`game/scenes/shardrun/map_view.gd`)
 The map's scroll eases toward where it was asked to go. The usual `lerp(current, target, 0.15)` every frame moves 15%
 of the gap per frame, so a 144 Hz screen glides more than twice as fast as a 60 Hz one. Keeping `exp(-rate * delta)` of

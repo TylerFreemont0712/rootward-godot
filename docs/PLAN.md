@@ -221,7 +221,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-5.json`).
 - [x] Pass 6: thirteen older shard icons with unclear effects rebuilt around distinct action silhouettes and reviewed
       at 32 pixels and in the Shardrun hand (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-6.json`).
-- [ ] Continue through the remaining older relics and shards in reviewable groups, keeping their meanings and colors.
+- [x] Pass 7 shards: all thirty-eight remaining shard icons replaced with clearer effect silhouettes and reviewed at
+      32 pixels and in five Shardrun hands (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-7.json`).
+- [ ] Continue through the fifty-five unchecked older relics in reviewable groups, keeping their meanings and colors.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

@@ -1,0 +1,68 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "intent": "Finish the remaining older shard icons and make a readability-focused start on older relics.",
+  "style_reference": "game/assets/shardrun/card-fire-constant.png",
+  "shared_prompt": "Isolated transparent 32-pixel Rootward inventory icon, chunky pixel art, bronze and jewel materials, crisp dark contours, one bold centered silhouette and very few large forms; no words, numerals, UI or watermark.",
+  "shards": {
+    "shard-adapt": "neutral bolt changing into the front foe's elemental color",
+    "shard-alternating-current": "two differently colored bolts linked by alternating current",
+    "shard-bulwark": "blue ward shield enclosing an attack bolt",
+    "shard-charge": "bright bolt with a large power orb locked into it",
+    "shard-confluence": "fire, frost and spark crystals joining into one central crystal",
+    "shard-counterweight": "attack bolt balanced against two ward shields",
+    "shard-crosslink": "two same-element bolts joined by a crosswise link",
+    "shard-crowd-surge": "cluster of large enemy heads behind one oversized bolt",
+    "shard-double-tap": "one bolt followed by its exact duplicate",
+    "shard-entrench": "large ward shield planted in a stone trench",
+    "shard-execution": "cracked enemy skull selected by a gold target and bolt",
+    "shard-exploit": "bright attack bolt striking through a broken shield",
+    "shard-flash-freeze": "firebolt changing into a frost ward",
+    "shard-fortify": "ward shield absorbing three strengthening sparks",
+    "shard-headcount": "enemy heads gathered around a large power bolt",
+    "shard-lodestone": "magnetic crystal pulling a bolt toward a rear target",
+    "shard-monochrome": "same-colored bolts held inside one single-color ring",
+    "shard-overclock": "fast power crystal with a small cracked heart",
+    "shard-overflow": "one large bolt splitting into three smaller bolts",
+    "shard-patience": "hourglass building a stronger bolt from falling sand",
+    "shard-pierce": "spear-like bolt passing through a shield",
+    "shard-rebuke": "ward shield reversing into a flying attack bolt",
+    "shard-reserve-tap": "attack bolt drawing power from an intact shield",
+    "shard-resonate": "bolt doubled by a bright echo outline",
+    "shard-rewind": "looping arrow returning the last bolt to the front",
+    "shard-seeker": "curved bolt trail approaching a small enemy inside a target ring",
+    "shard-siege-breaker": "gold bolt smashing through a large castle shield",
+    "shard-siphon": "weak bolt drained into a ward shield while others fly on",
+    "shard-spectrum-wheel": "three-part fire, frost and spark jewel wheel",
+    "shard-superconductor": "frost crystal transforming into a piercing spark bolt",
+    "shard-take-two": "exactly two matching bolts inside a clear bronze loop",
+    "shard-tally": "three bolts beside a bold group of tally cuts",
+    "shard-temper": "uneven crystal refined into a neat faceted crystal",
+    "shard-thermal-shock": "frost crystal exploding into a firebolt",
+    "shard-transduce": "bolt compressed through a bronze ring while retaining a bright aura",
+    "shard-triage": "large full-heart enemy head selected by a thick target ring",
+    "shard-vengeance": "cracked heart beside a flaring gold bolt",
+    "shard-weave": "blue ward shield interlaced with a gold attack bolt"
+  },
+  "relics": {
+    "relic-ecc-memory": "memory crystal repaired by a bright spare shard",
+    "relic-ember-infection": "dark heart overtaken by a spreading ember",
+    "relic-feedback-loop": "bright bolt circling through a thick bronze loop",
+    "relic-garbage-collection": "bronze bin gathering dark memory cubes in a green sweep"
+  },
+  "rejected": {
+    "relic-firewall": "Too similar to the accepted Bulwark Engine icon at 32 pixels."
+  },
+  "review_images": [
+    "docs/images/artupdate-shards-pass7.png",
+    "docs/images/artupdate-relics-pass7.png"
+  ],
+  "review_screenshots": [
+    "shots/polish/shards-pass7-1.png",
+    "shots/polish/shards-pass7-2.png",
+    "shots/polish/shards-pass7-3.png",
+    "shots/polish/shards-pass7-4.png",
+    "shots/polish/shards-pass7-5.png",
+    "shots/polish/relics-pass7.png"
+  ],
+  "remaining": "55 older relic icons remain unchecked; image generation stopped after the built-in image service reached its usage limit."
+}
