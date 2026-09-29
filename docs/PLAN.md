@@ -94,7 +94,7 @@ Not yet (next candidates): the screens in Japanese (content is translated; the i
 the rules' modifiers table in Stats, keyboard focus through the map.
 
 ### Phase 6: characters and spells in 3D
-- [ ] Emberfox as the first character: glTF, a toon shader (two tones, rim, outline), clips in an AnimationTree with
+- [~] Set aside for sprites (ADR-0008); the glTF pipeline still works. Emberfox as the first character: glTF, a toon shader (two tones, rim, outline), clips in an AnimationTree with
       blending, a looping idle, casts that release within about 0.4 s, the spell circle launching the bolts.
 - [ ] Vesper, the Star-Script Witch, as a new skin. [x] Modelled and rigged in code (ADR-0007), then set aside for
       a sprite version. [x] A small, cute sprite Vesper from ComfyUI (ADR-0008, `scripts/sprites.sh`): an idle and a
@@ -104,8 +104,8 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] Spell variety (ADR-0009): heavy spells call their element's strike down on each foe (lightning, a fire pillar,
       ice spikes, starlight) under a darkened stage and a vortex at the hand; a volley on several foes sends a wave
       across the floor.
-- [ ] Spell effects as Godot particles and shaders, per element, and the ward.
-- [ ] Sound and music on audio buses with volume and mute settings.
+- [x] Spell effects as shaders and drawn motion per element and the ward (ADR-0008, ADR-0014).
+- [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)
 - [x] A run per playstyle, chosen on the title: Shardrun (cards) and Spellforge (the spellbook) (ADR-0009).
@@ -141,8 +141,8 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] The code walkthrough (ADR-0015): loops and recursion measured in the sandbox, each card's function walked during
       the cast, results landing like hits, the panel drawing the eye while it runs.
 - [ ] More spell animations: one per card role (a sort, a search, a split), and per paradigm.
-- [ ] A balance pass by play (tempos, budget, card numbers; Brute Force is weakest played naively).
-- [ ] Cards of their own: pictures made for each card (the frame is done); Japanese for the new text.
+- [x] A first balance pass (ADR-0016, ADR-0017); the four-layer probe is Phase 9's last item.
+- [x] Cards of their own: a picture for each card and Japanese for the text (ADR-0018, Phase 9).
 - [ ] More of each paradigm (graph search, heaps, two pointers, backtracking), and relics that bend work and tempo.
 
 ### Phase 9: guardians and the fourth layer (ADR-0024, `docs/NewEnemies.md`)

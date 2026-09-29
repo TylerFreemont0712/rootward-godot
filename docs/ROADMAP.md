@@ -10,6 +10,11 @@ different styles of play". This file is the plan; two companions hold the design
 
 Once the player agrees, the stages below become phases in `docs/PLAN.md`, and each gets its ADR as it lands.
 
+> **Status, 2026-09-29.** Sections 1 and 2 are a snapshot from 2026-09-28 (three layers, fifteen foes, one run in 40
+> won). Since then stages 1 and 6 have landed (ADR-0016, 0017, 0018), and the fourth layer, sixteen guardians and the
+> map as a scroll (ADR-0024 to 0026). `docs/PLAN.md` is the live checklist; read this file for direction and the
+> Academy, not for current numbers.
+
 ## In one screen
 
 - **Two journeys, one foundation.** The **Shardrun** becomes a roguelite with Slay the Spire's depth (classes, a
