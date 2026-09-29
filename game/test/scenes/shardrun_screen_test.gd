@@ -27,6 +27,8 @@ func after_test() -> void:
 	Game.session.saves.delete_run("deck")
 	Game.session.saves.delete_run("program")
 	Game.reset()
+	# LEARN: queue_free completes at frame end; let screen and UI children leave before gdUnit counts orphans.
+	await _settle()
 
 
 func _open() -> ShardrunScreen:

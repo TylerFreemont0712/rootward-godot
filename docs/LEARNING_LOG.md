@@ -360,3 +360,15 @@ plain `foe.last_cards == context.cards`. In GDScript, `==` between two Arrays co
 identity: the Quine keeps its own `duplicate()` of last turn's card list, and a new list with the same ids in the same
 order still matches, while the same ids in another order do not. That order sensitivity is the rule itself: reordering
 a program is changing it. (Dictionaries compare by content too; for identity, `is_same()` exists.)
+
+## An icon can be beautiful and still name the wrong thing (`docs/ArtUpdate.md`)
+At 32 pixels, the old Priority Queue looked like a brush and Cross Product like a framed eye. The fourth art pass
+starts with the object's meaning: ranked gems for a queue, crossing axes for a product, and visible tally cuts for
+a census. Compare each candidate at the actual card and relic size, beside other icons, before checking it off.
+Guardian concepts that are not playable yet can be reviewed together at intended battle scale; the playable Quine
+was also checked in the Root arena.
+
+## Test teardown needs a frame after `queue_free` (`game/test/scenes/shardrun_screen_test.gd`)
+Waiting two frames inside the longer screen tests was not enough: the suite's `after_test` queued the entire screen
+for deletion after those waits. gdUnit counted 31 possible orphans even though all 195 assertions passed. Waiting
+two frames after teardown removed that warning in the affected suite.

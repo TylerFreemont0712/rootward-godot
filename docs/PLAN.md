@@ -211,6 +211,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       share the finished character-art standard. The program run's second Deadlock Lock also faces the player.
 - [x] Pass 3 icons: Ember Heart, Storm Bottle, Rime Crown, Amplify, Prism and Scatter repainted and checked in the
       relic row and card hand at real display size.
+- [x] Pass 4: all sixteen new guardian placeholders repainted, with the Quine checked in a Root boss fight; three
+      relics and six shards redrawn around clearer 32-pixel silhouettes and checked in their run layouts
+      (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-4.json`).
 - [ ] Continue through older relics, shards and unused enemy concepts in later reviewable groups, keeping their
       identities and element colors.
 

@@ -1,0 +1,37 @@
+{
+  "generator": "OpenAI image_gen",
+  "intent": "Repaint the sixteen new guardian placeholders and replace inventory icons whose small silhouettes obscure their meaning.",
+  "boss_reference": "Each original game/assets/foes/<id>.png is the identity reference; game/assets/foes/kiln-warden.png is the finished linework and shading reference. Full transparent subject, facing screen left toward the player.",
+  "icon_reference": "game/assets/shardrun/card-fire-constant.png supplies bronze, jewel, and chunky pixel-art material. Each new object has one bold silhouette designed for 32 px display and a transparent background.",
+  "bosses": [
+    "ouroboros", "unhandled-exception", "short-circuit", "unreachable",
+    "cache-lich", "malloc-matron", "page-fault", "thunk",
+    "call-stack-colossus", "int-max", "profiler", "livelock-dancer",
+    "the-quine", "root-compiler", "mutator", "karp"
+  ],
+  "icons": {
+    "relic-dry-principle": "two duplicate scrolls gathered by one clasp, replacing a spoon-like silhouette",
+    "relic-dependency-bundle": "three scrolls tied into a bundle, replacing a vial-like silhouette",
+    "relic-hello-world": "first message from a small terminal, replacing a generic orb",
+    "shard-priority-queue": "three ranked crystal tokens, replacing a brush-like silhouette",
+    "shard-cross-product": "two crystal axes crossing, replacing a framed eye-like silhouette",
+    "shard-ramp": "three rising steps, replacing a rock-like silhouette",
+    "shard-census": "stone tablet with large tally cuts, replacing a crate-like silhouette",
+    "shard-pair-fold": "two leaves folding around a shared hinge, replacing a single tile",
+    "shard-prefix-charge": "three crystal cells accumulating charge, replacing a dense board"
+  },
+  "review_screenshots": [
+    "shots/polish/new-guardian-quine.png",
+    "shots/polish/new-guardian-roster.png",
+    "shots/polish/shard-readability-pass4.png",
+    "shots/polish/final-shard-readability-pass4.png",
+    "shots/polish/relic-readability-pass4.png",
+    "shots/polish/dependency-bundle-pass4.png",
+    "shots/polish/hello-world-pass4.png"
+  ],
+  "review_images_in_docs": [
+    "docs/images/artupdate-guardian-roster.png",
+    "docs/images/artupdate-quine-battle.png",
+    "docs/images/artupdate-icon-readability.png"
+  ]
+}

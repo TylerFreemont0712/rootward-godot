@@ -1,9 +1,10 @@
 # Art update checklist
 
-Checked images have been repainted and reviewed in the game at their display size. Unchecked images still use the
-earlier, smaller concept art. The enemy list includes unused concepts as well as playable foes.
+Checked images have been repainted and reviewed at their intended display size, in the game when that content is
+playable. Unchecked images still use the earlier, smaller concept art. The enemy list includes unused concepts as
+well as playable foes.
 
-Last reviewed: 2026-09-28. Keep this list current as later small art passes are accepted.
+Last reviewed: 2026-09-29. Keep this list current as later small art passes are accepted.
 
 ## Enemies (15/31 updated)
 
@@ -40,7 +41,33 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [the-monolith.png](../game/assets/foes/the-monolith.png)
 - [ ] [the-scheduler.png](../game/assets/foes/the-scheduler.png)
 
-## Relics (9/76 updated)
+## New guardian pool (16/16 updated)
+
+These bosses were added in [NewEnemies.md](NewEnemies.md). The checkbox records finished art reviewed at battle size,
+not whether the boss mechanic is built. The [roster review](images/artupdate-guardian-roster.png) shows all sixteen
+at that size; the playable Quine was also [checked in battle](images/artupdate-quine-battle.png).
+
+- [x] [ouroboros.png](../game/assets/foes/ouroboros.png) — Salvage
+- [x] [unhandled-exception.png](../game/assets/foes/unhandled-exception.png) — Salvage
+- [x] [short-circuit.png](../game/assets/foes/short-circuit.png) — Salvage
+- [x] [unreachable.png](../game/assets/foes/unreachable.png) — Salvage
+- [x] [cache-lich.png](../game/assets/foes/cache-lich.png) — Heap
+- [x] [malloc-matron.png](../game/assets/foes/malloc-matron.png) — Heap
+- [x] [page-fault.png](../game/assets/foes/page-fault.png) — Heap
+- [x] [thunk.png](../game/assets/foes/thunk.png) — Heap
+- [x] [call-stack-colossus.png](../game/assets/foes/call-stack-colossus.png) — Kernel
+- [x] [int-max.png](../game/assets/foes/int-max.png) — Kernel
+- [x] [profiler.png](../game/assets/foes/profiler.png) — Kernel
+- [x] [livelock-dancer.png](../game/assets/foes/livelock-dancer.png) — Kernel (the Twins share this sprite)
+- [x] [the-quine.png](../game/assets/foes/the-quine.png) — Root
+- [x] [root-compiler.png](../game/assets/foes/root-compiler.png) — Root
+- [x] [mutator.png](../game/assets/foes/mutator.png) — Root
+- [x] [karp.png](../game/assets/foes/karp.png) — Root
+
+## Relics (12/76 updated)
+
+The new icon shapes were also [compared at 32 pixels](images/artupdate-icon-readability.png) and checked in their
+respective run headers or card hands.
 
 - [x] [relic-arcane-seal.png](../game/assets/shardrun/relic-arcane-seal.png)
 - [x] [relic-clipboard.png](../game/assets/shardrun/relic-clipboard.png)
@@ -64,9 +91,9 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [relic-compiler-o3.png](../game/assets/shardrun/relic-compiler-o3.png)
 - [ ] [relic-cron-job.png](../game/assets/shardrun/relic-cron-job.png)
 - [ ] [relic-debugger-duck.png](../game/assets/shardrun/relic-debugger-duck.png)
-- [ ] [relic-dependency-bundle.png](../game/assets/shardrun/relic-dependency-bundle.png)
+- [x] [relic-dependency-bundle.png](../game/assets/shardrun/relic-dependency-bundle.png)
 - [ ] [relic-drill-bit.png](../game/assets/shardrun/relic-drill-bit.png)
-- [ ] [relic-dry-principle.png](../game/assets/shardrun/relic-dry-principle.png)
+- [x] [relic-dry-principle.png](../game/assets/shardrun/relic-dry-principle.png)
 - [ ] [relic-dual-core.png](../game/assets/shardrun/relic-dual-core.png)
 - [ ] [relic-duplex-core.png](../game/assets/shardrun/relic-duplex-core.png)
 - [ ] [relic-ecc-memory.png](../game/assets/shardrun/relic-ecc-memory.png)
@@ -76,7 +103,7 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [relic-garbage-collection.png](../game/assets/shardrun/relic-garbage-collection.png)
 - [ ] [relic-generator.png](../game/assets/shardrun/relic-generator.png)
 - [ ] [relic-grimoire-page.png](../game/assets/shardrun/relic-grimoire-page.png)
-- [ ] [relic-hello-world.png](../game/assets/shardrun/relic-hello-world.png)
+- [x] [relic-hello-world.png](../game/assets/shardrun/relic-hello-world.png)
 - [ ] [relic-hot-path.png](../game/assets/shardrun/relic-hot-path.png)
 - [ ] [relic-immutable-state.png](../game/assets/shardrun/relic-immutable-state.png)
 - [ ] [relic-jit-compiler.png](../game/assets/shardrun/relic-jit-compiler.png)
@@ -120,7 +147,7 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [relic-warm-start.png](../game/assets/shardrun/relic-warm-start.png)
 - [ ] [relic-wider-aperture.png](../game/assets/shardrun/relic-wider-aperture.png)
 
-## Shards (9/72 updated)
+## Shards (15/72 updated)
 
 - [x] [shard-amplify.png](../game/assets/shardrun/shard-amplify.png)
 - [x] [shard-arc.png](../game/assets/shardrun/shard-arc.png)
@@ -140,12 +167,12 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [shard-blood-price.png](../game/assets/shardrun/shard-blood-price.png)
 - [ ] [shard-bulwark.png](../game/assets/shardrun/shard-bulwark.png)
 - [ ] [shard-cascade.png](../game/assets/shardrun/shard-cascade.png)
-- [ ] [shard-census.png](../game/assets/shardrun/shard-census.png)
+- [x] [shard-census.png](../game/assets/shardrun/shard-census.png)
 - [ ] [shard-charge.png](../game/assets/shardrun/shard-charge.png)
 - [ ] [shard-compound.png](../game/assets/shardrun/shard-compound.png)
 - [ ] [shard-confluence.png](../game/assets/shardrun/shard-confluence.png)
 - [ ] [shard-counterweight.png](../game/assets/shardrun/shard-counterweight.png)
-- [ ] [shard-cross-product.png](../game/assets/shardrun/shard-cross-product.png)
+- [x] [shard-cross-product.png](../game/assets/shardrun/shard-cross-product.png)
 - [ ] [shard-crosslink.png](../game/assets/shardrun/shard-crosslink.png)
 - [ ] [shard-crowd-surge.png](../game/assets/shardrun/shard-crowd-surge.png)
 - [ ] [shard-double-tap.png](../game/assets/shardrun/shard-double-tap.png)
@@ -168,12 +195,12 @@ Last reviewed: 2026-09-28. Keep this list current as later small art passes are 
 - [ ] [shard-monochrome.png](../game/assets/shardrun/shard-monochrome.png)
 - [ ] [shard-overclock.png](../game/assets/shardrun/shard-overclock.png)
 - [ ] [shard-overflow.png](../game/assets/shardrun/shard-overflow.png)
-- [ ] [shard-pair-fold.png](../game/assets/shardrun/shard-pair-fold.png)
+- [x] [shard-pair-fold.png](../game/assets/shardrun/shard-pair-fold.png)
 - [ ] [shard-patience.png](../game/assets/shardrun/shard-patience.png)
 - [ ] [shard-pierce.png](../game/assets/shardrun/shard-pierce.png)
-- [ ] [shard-prefix-charge.png](../game/assets/shardrun/shard-prefix-charge.png)
-- [ ] [shard-priority-queue.png](../game/assets/shardrun/shard-priority-queue.png)
-- [ ] [shard-ramp.png](../game/assets/shardrun/shard-ramp.png)
+- [x] [shard-prefix-charge.png](../game/assets/shardrun/shard-prefix-charge.png)
+- [x] [shard-priority-queue.png](../game/assets/shardrun/shard-priority-queue.png)
+- [x] [shard-ramp.png](../game/assets/shardrun/shard-ramp.png)
 - [ ] [shard-rebuke.png](../game/assets/shardrun/shard-rebuke.png)
 - [ ] [shard-reserve-tap.png](../game/assets/shardrun/shard-reserve-tap.png)
 - [ ] [shard-resonant-run.png](../game/assets/shardrun/shard-resonant-run.png)
