@@ -1,0 +1,155 @@
+// Japanese for the new guardian pool and its summoned foes.
+[
+  {
+    "en": "The Cache Lich",
+    "to": "キャッシュのリッチ"
+  },
+  {
+    "en": "Six glowing cubes orbit it. Ask it something it already knows and it does not even look up.",
+    "to": "六つの光る立方体が体のまわりを回る。知っていることを聞いても、顔も上げない。"
+  },
+  {
+    "en": "The Call Stack Colossus",
+    "to": "コールスタックの巨人"
+  },
+  {
+    "en": "A tower of stone frames. Only the top one can be touched, and every turn it calls itself again.",
+    "to": "石のわくを重ねた塔。いちばん上だけに手が届き、毎ターン自分自身を呼び出す。"
+  },
+  {
+    "en": "The Halting Oracle",
+    "to": "停止を見通す予言者"
+  },
+  {
+    "en": "It knows whether your program halts. It only has to be right about the one you run.",
+    "to": "きみのプログラムが止まるかを知っている。今走らせる一つだけ当てればいい。"
+  },
+  {
+    "en": "Heap Block",
+    "to": "ヒープ・ブロック"
+  },
+  {
+    "en": "Sixteen bytes, and nobody holds the pointer any more.",
+    "to": "十六バイトのかたまり。もうだれもその場所を指していない。"
+  },
+  {
+    "en": "INT_MAX",
+    "to": "INT_MAX"
+  },
+  {
+    "en": "Its chest is a counter that has been going up for a very long time. Hit it too hard and the number wraps.",
+    "to": "胸のカウンターはずっと増え続けている。強くたたきすぎると、数字がぐるりと戻る。"
+  },
+  {
+    "en": "Karp, the NP Koi",
+    "to": "カープ、NPの鯉"
+  },
+  {
+    "en": "A golden carp that sets riddles. It does not solve them; it only checks your answer.",
+    "to": "金色の鯉がなぞなぞを出す。自分では解かず、きみの答えが合っているかだけ調べる。"
+  },
+  {
+    "en": "After You",
+    "to": "お先にどうぞ"
+  },
+  {
+    "en": "Two dancers forever stepping aside for each other.",
+    "to": "二人の踊り手が、いつまでも相手に道をゆずり合っている。"
+  },
+  {
+    "en": "No, After You",
+    "to": "いえ、お先にどうぞ"
+  },
+  {
+    "en": "Every time you touch one, they trade places.",
+    "to": "片方にふれるたび、二人は場所を入れ替える。"
+  },
+  {
+    "en": "Malloc, the Heap Matron",
+    "to": "ヒープの母、マロック"
+  },
+  {
+    "en": "A spider of glass and brass. Every turn she allocates another block, and she never frees anything.",
+    "to": "ガラスと真ちゅうのクモ。毎ターン新しいブロックを作り、一つも手放さない。"
+  },
+  {
+    "en": "The Mutator",
+    "to": "ミューテーター"
+  },
+  {
+    "en": "A stitched-together chimera that edits your code. Can you read what your own card does now?",
+    "to": "つぎはぎのキメラがきみのコードを書きかえる。自分のカードが今どう動くか読めるかな？"
+  },
+  {
+    "en": "Ouroboros",
+    "to": "ウロボロス"
+  },
+  {
+    "en": "while True: it goes around once more, unless you give it a reason to break.",
+    "to": "while True: 止める理由をあげないかぎり、もう一周、また一周。"
+  },
+  {
+    "en": "Page A",
+    "to": "ページA"
+  },
+  {
+    "en": "A spellbook with three pages, and only one of them is in memory at a time.",
+    "to": "三ページある呪文書。一度に記憶へ置けるのは、そのうち一ページだけ。"
+  },
+  {
+    "en": "Page B",
+    "to": "ページB"
+  },
+  {
+    "en": "Page C",
+    "to": "ページC"
+  },
+  {
+    "en": "The Profiler",
+    "to": "プロファイラー"
+  },
+  {
+    "en": "A clockwork owl with a stopwatch for a heart. It times your program, and slow code barely scratches it.",
+    "to": "心臓の代わりにストップウォッチを持つ機械のフクロウ。遅いコードでは、かすり傷しかつけられない。"
+  },
+  {
+    "en": "The Root Compiler",
+    "to": "ルート・コンパイラ"
+  },
+  {
+    "en": "The first program: the one that compiles all the others. It has read every guardian you broke on the way down.",
+    "to": "最初のプログラム。ほかのすべてを組み立てたもの。ここまで倒した番人のことを全部読んでいる。"
+  },
+  {
+    "en": "The Short Circuit",
+    "to": "ショートサーキット"
+  },
+  {
+    "en": "if bolt >= 12 and ...: if the first test fails, Python never looks at the rest.",
+    "to": "if bolt >= 12 and ...: 最初の条件が違えば、Pythonは残りを調べない。"
+  },
+  {
+    "en": "The Thunk",
+    "to": "サンク"
+  },
+  {
+    "en": "A dragon too lazy to take damage now. It will take it all later, when something forces it to.",
+    "to": "今はダメージを受け取るのが面倒なドラゴン。だれかが急がせると、まとめて受け取る。"
+  },
+  {
+    "en": "The Unhandled Exception",
+    "to": "処理されない例外"
+  },
+  {
+    "en": "raise ValueError(\"…\"). Catch one, and it goes back where it came from.",
+    "to": "raise ValueError(\"…\")。つかまえて投げ返せば、来たところへ戻る。"
+  },
+  {
+    "en": "The Unreachable",
+    "to": "到達不能"
+  },
+  {
+    "en": "A gravekeeper who plants a return in your function. Everything written after it is dead code.",
+    "to": "関数の中にreturnを植える墓守。その後ろに書いたコードは決して動かない。"
+  }
+]

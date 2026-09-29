@@ -1,0 +1,235 @@
+// Trial prose keyed by the English line, as with the rest of the content.
+[
+  {
+    "en": "Chapter 1: The Pocket Shardrunner Arrives",
+    "to": "第一章：ポケット・シャードランナー参上！"
+  },
+  {
+    "en": "Pip tumbles out of a pocket of sparks. “Perfect landing! The floor disagrees, but I am ignoring it.”",
+    "to": "火花のポケットからピップがころんと飛び出す。「かんぺきな着地！ 床の意見は聞かないぞ！」"
+  },
+  {
+    "en": "Chapter 2: In Which Order Matters",
+    "to": "第二章：順番が大事だった件"
+  },
+  {
+    "en": "Pip straightens his scarf. “I meant to let that one get close. Ahem. Now we make the program smarter.”",
+    "to": "ピップがマフラーを直す。「わざと近づけたんだぞ。えへん。今度はプログラムをかしこくしよう！」"
+  },
+  {
+    "en": "Chapter 3: A Furnace and a Breather",
+    "to": "第三章：炉とひと休み"
+  },
+  {
+    "en": "The forge glows. Pip produces a tiny hammer from nowhere. “Please do not ask where I kept this.”",
+    "to": "炉が光る。ピップはどこからか小さな金づちを出す。「どこにしまっていたかは聞かないでね」"
+  },
+  {
+    "en": "Chapter 4: The Guardian at the Return",
+    "to": "第四章：returnの先にいる番人"
+  },
+  {
+    "en": "Pip peers at the final room. “One guardian. One little program. I am only slightly nervous.”",
+    "to": "ピップは最後の部屋をのぞく。「番人が一人、プログラムが一つ。ぼくはほんの少しだけドキドキだ！」"
+  },
+  {
+    "en": "I am Pip, the Pocket Shardrunner! These cards are real functions, not pretend spells. Put them in order and the Machine runs the program you wrote. Come on; I will point, you will do.",
+    "to": "ぼくはポケット・シャードランナーのピップ！ カードは本物の関数（かんすう）。順番に並べると、きみのプログラムが動く。ぼくが指さすから、きみがやってみて！"
+  },
+  {
+    "en": "In real code: a program is a sequence of function calls.",
+    "to": "本当のコードでは、プログラムは関数を呼ぶ順番でできている。"
+  },
+  {
+    "en": "This is our tiny map. The Route drawer names the next room; the guardian rail shows who waits above. Round rooms are fights, violet hexagons are forges, green diamonds are rests. Choose the first fight.",
+    "to": "これが小さな地図。ルートの引き出しには次の部屋、番人の列には上で待つ相手がいる。丸は戦い、紫の六角形は炉、緑のひし形は休けい所。最初の戦いを選んでね。"
+  },
+  {
+    "en": "In real code: a route is a path through a graph.",
+    "to": "本当のコードでは、道すじはグラフの中の経路（けいろ）。"
+  },
+  {
+    "en": "Those are your cards in hand. Drag Ember Constant into the Program slot, or click the card and then the slot. The blue mana number is your budget for playing cards this turn. You choose the line; I will not place it for you.",
+    "to": "手にあるのがカードだよ。エンバー・コンスタントをプログラムのわくへドラッグしてね。カードとわくを順にクリックしてもいいよ。青いマナはこのターンに使える分。置くのはきみだ！"
+  },
+  {
+    "en": "In real code: the card becomes a function call in main.py.",
+    "to": "本当のコードでは、そのカードがmain.pyの関数呼び出しになる。"
+  },
+  {
+    "en": "Look at the code panel: there is the line you placed, its cost and what it will make. The preview uses the real sandbox. It is a promise about this exact cast, so read it before pressing Run.",
+    "to": "コードの画面を見て。今置いた行と、かかるマナ、できることが見える。予想は本物の実行結果（じっこうけっか）。走らせる前に読んでみよう。"
+  },
+  {
+    "en": "In real code: inspect inputs and expected output before running.",
+    "to": "本当のコードでも、動かす前に入力と予想する出力を見る。"
+  },
+  {
+    "en": "Run the Program. Watch the walkthrough light up the function you chose, then follow the bolts to the foe. If you want another look, the code and battle log stay available.",
+    "to": "プログラムを走らせて！ コードの行が光ってから、ボルトが敵へ飛ぶところを見よう。もう一度見たければ、コードと戦いの記録を開けるよ。"
+  },
+  {
+    "en": "In real code: execution follows the calls in order.",
+    "to": "本当のコードでも、関数は並べた順に動く。"
+  },
+  {
+    "en": "See? The cast landed as the preview said. I call that “Pip-level certainty.” The Machine calls it deterministic execution. Now the foe gets a turn, so we must plan the next one.",
+    "to": "見た？ 予想どおりに当たった！ ぼくは「ピップ級の確実さ」と呼ぶ。機械は「決まったとおりの実行」と呼ぶけどね。次のターンを考えよう。"
+  },
+  {
+    "en": "In real code: the same input gives the same result here.",
+    "to": "本当のコードでは、ここでは同じ入力から同じ結果が出る。"
+  },
+  {
+    "en": "Cards have roles: source makes bolts, shape changes them, order sorts them, strike aims them and guard turns them into block. A search that needs sorted bolts fails if you put it before the sort. My scarf learned that the hard way.",
+    "to": "カードには役目がある。ソースはボルトを作り、シェイプは形を変え、オーダーは並べ、ストライクはねらい、ガードは防ぐ。並べる前に探すと失敗するよ。ぼくのマフラーみたいにね。"
+  },
+  {
+    "en": "In real code: a function may require an invariant such as sorted input.",
+    "to": "本当のコードでは、関数が「入力は整列（せいれつ）ずみ」を必要とすることがある。"
+  },
+  {
+    "en": "Place Quick Sort before Binary Execute if both are in your hand. Read the warning in the code panel when a card needs sorted input. If the draw is different, place the sort you have and keep the idea: order changes the answer.",
+    "to": "クイックソートをバイナリー・エグゼキュートより前に置こう。並んだ入力が必要なら、コードの警告（けいこく）が教えてくれる。手が違っても、まず並べるカードを置いてみて。"
+  },
+  {
+    "en": "In real code: preconditions must hold when a function runs.",
+    "to": "本当のコードでは、関数を動かすときに前提条件（ぜんていじょうけん）が必要だ。"
+  },
+  {
+    "en": "Run it and watch Work. O(1), O(n), O(n log n) and O(2ⁿ) describe how effort grows as the volley grows. The number here is measured from the real card run, not a guess printed on its face.",
+    "to": "走らせて仕事量（しごとりょう）を見よう。O(1)、O(n)、O(n log n)、O(2ⁿ)は、ボルトが増えたときの手間の増え方だ。ここに出る数は本物の実行から測るよ。"
+  },
+  {
+    "en": "In real code: Big-O describes how work scales with input size.",
+    "to": "本当のコードでは、Big-Oは入力が増えたときの手間の増え方を表す。"
+  },
+  {
+    "en": "The bar has a hard budget. A program over that limit times out: it spends mana and lands nothing. Try a cheaper line next turn if the preview warns you. Even my pockets cannot hold infinite work.",
+    "to": "バーには上限がある。こえると時間切れで、マナだけ使って何も当たらない。予想が警告したら、次は軽い行にしよう。ぼくのポケットだって無限じゃないよ。"
+  },
+  {
+    "en": "In real code: a time limit stops an expensive computation.",
+    "to": "本当のコードでも、重すぎる計算は時間制限で止まる。"
+  },
+  {
+    "en": "The foe has a speed too. If its tempo beats your Work, it acts before your bolts land. A faster program wins Initiative and hits harder. We lost that race once on purpose. Probably.",
+    "to": "敵にも速さがある。敵のテンポが仕事量より速いと、ボルトより先に動く。速いプログラムなら先手（せんて）を取って強く当てられる。さっきはわざと負けたんだ。たぶん。"
+  },
+  {
+    "en": "In real code: faster algorithms can change which action finishes first.",
+    "to": "本当のコードでも、速いアルゴリズムは終わる順番を変える。"
+  },
+  {
+    "en": "Guard cards make block, not damage. The foe chips show shields, patterns and other states; look there before choosing a target. A blocked bolt or damage past a foe’s last HP is wasted overkill.",
+    "to": "ガードのカードはダメージではなくブロックを作る。敵の小さな印には盾（たて）や状態が見えるよ。最後のHPをこえたダメージはむだになる。ねらいを決める前に見てね。"
+  },
+  {
+    "en": "In real code: inspect state and avoid work that changes nothing.",
+    "to": "本当のコードでは、状態を見て、意味のない計算を減らす。"
+  },
+  {
+    "en": "Finish this fight using the hand and Program. Try a guard if you need one. If a plan fails, change one card at a time and watch the preview. I will cheer from a safe distance of three pixels.",
+    "to": "手とプログラムでこの戦いを終わらせよう。必要ならガードも使ってね。うまくいかなければカードを一枚ずつ変え、予想を見よう。ぼくは安全な三ピクセル先で応援する！"
+  },
+  {
+    "en": "In real code: change one variable, then observe the result.",
+    "to": "本当のコードでは、一つ変えてから結果をたしかめる。"
+  },
+  {
+    "en": "Victory! A relic changes the rules for the rest of a run. This one is a small helper, not a trophy for my landing. Pick it, then we will visit a forge.",
+    "to": "勝った！ 遺物（いぶつ）はこの冒険のルールを少し変える。これはぼくの着地の賞ではないよ。選んだら炉へ行こう。"
+  },
+  {
+    "en": "In real code: a persistent modifier changes later executions.",
+    "to": "本当のコードでは、残りつづける設定が次の実行を変える。"
+  },
+  {
+    "en": "Choose the offered relic. Its icon appears in the header so you can inspect it later. The Archives can show every relic, including those you have not found.",
+    "to": "出ている遺物を選んでね。あとで見直せるよう、絵が画面の上に出る。図鑑ではまだ拾っていない遺物も見られるよ。"
+  },
+  {
+    "en": "In real code: a modifier can affect every later call.",
+    "to": "本当のコードでは、一つの設定があとの呼び出し全部に効く。"
+  },
+  {
+    "en": "On the map, step into the violet forge. Your deck pile opens the cards you carry. The little “+” means refactored code: the same idea, made clearer or faster.",
+    "to": "地図の紫の炉へ進もう。デッキの山を開けば持っているカードが見られる。「＋」はコードを直した印。同じ考えを、もっと分かりやすく速くするんだ。"
+  },
+  {
+    "en": "In real code: refactoring changes implementation while keeping the goal.",
+    "to": "本当のコードでは、リファクタリングは目的を保って中身を直す。"
+  },
+  {
+    "en": "Choose Fibonacci Surge at the forge and read its red-and-green diff before you confirm. Naive recursion repeats work; memoisation remembers answers. Do the refactor yourself.",
+    "to": "炉でフィボナッチ・サージを選び、決める前に赤と緑の差分（さぶん）を読もう。素直な再帰（さいき）は同じ計算をくり返す。メモ化は答えを覚える。きみが直してね。"
+  },
+  {
+    "en": "In real code: memoisation trades memory for less repeated work.",
+    "to": "本当のコードでは、メモ化は記憶を使ってくり返しを減らす。"
+  },
+  {
+    "en": "Now the green rest room. Its calm matters after a hard fight. Caches remember work too, but a rest restores you; the two ideas share a word only by accident, says Pip, who definitely did not nap in a cache.",
+    "to": "次は緑の休けい所。苦しい戦いのあとには大事だよ。キャッシュは計算を覚えるけど、休けいは体を回復する。ぼくはキャッシュの中で昼寝なんてしてないぞ。"
+  },
+  {
+    "en": "In real code: a cache stores a previous result for reuse.",
+    "to": "本当のコードでは、キャッシュは前の答えをしまって使い直す。"
+  },
+  {
+    "en": "Choose Rest to recover Integrity. Keywords such as const and once change how a card behaves; Imports affect the whole fight. Those are bigger lessons: search either word in the Archives after the Trial.",
+    "to": "「休む」を選んでHPを回復しよう。constやonceのキーワードはカードの動きを変え、Importは戦い全体に効く。くわしくはトライアルのあと図鑑で探してみてね。"
+  },
+  {
+    "en": "In real code: imports make helpers available; keywords mark special behavior.",
+    "to": "本当のコードでは、importで道具を使い、キーワードで特別な動きを示す。"
+  },
+  {
+    "en": "At the start of a full Shardrun you choose a paradigm, then draft cards from packs. Here I prepared a tiny deck so you could learn by playing. The deck pile shows every card, and the Archives explain each one.",
+    "to": "ふつうのシャードランでは、最初にパラダイムを選び、カードを引いてデッキを作る。今回は遊びながら覚えられるよう、ぼくが小さなデッキを用意したよ。山を開けば全部見られる。"
+  },
+  {
+    "en": "In real code: a paradigm is a strategy for solving a class of problems.",
+    "to": "本当のコードでは、パラダイムは問題を解く作戦の一つ。"
+  },
+  {
+    "en": "The guardian is the last room, marked at the top of the map and on the rail. It has one trick. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
+    "to": "番人は地図のてっぺん、列の最後にいる。仕掛けが一つあるよ。行動の予告と状態の印を見て、走らせる前にコード画面の警告も読もう。"
+  },
+  {
+    "en": "In real code: inspect the conditions before committing a run.",
+    "to": "本当のコードでは、動かす前に条件を調べる。"
+  },
+  {
+    "en": "Enter the guardian room. You know the controls now. I will name the cards and say why, but you decide their order. If this fight goes wrong, we return to its start with a hint.",
+    "to": "番人の部屋へ。もう操作は知っているね。ぼくはカードの名前と理由を言うけど、順番はきみが決めて。負けてもこの戦いの始めに戻ってヒントを出すよ。"
+  },
+  {
+    "en": "In real code: a saved checkpoint lets you retry from a known state.",
+    "to": "本当のコードでは、チェックポイントがあれば同じ状態からやり直せる。"
+  },
+  {
+    "en": "Try a source before a strike, or sort before a search. Check the preview: does this Program beat the guardian’s tempo and stay inside the budget? Place the cards, then run when you are ready.",
+    "to": "ソースをストライクより前に、またはソートを探すカードより前に置こう。予想を見て、番人より速く、上限以内かをたしかめて。準備ができたら走らせよう。"
+  },
+  {
+    "en": "In real code: order, cost and output belong in one plan.",
+    "to": "本当のコードでは、順番、手間、出力をまとめて考える。"
+  },
+  {
+    "en": "Finish the guardian. If you lose, I will rewind this fight, not your learning. Try a faster card, block the next hit or aim to avoid overkill. Hint first; answers stay yours.",
+    "to": "番人を倒そう。負けたらこの戦いだけ巻き戻すよ。学んだことは消えない。速いカード、次の攻撃を防ぐガード、むだを減らすねらい方を試して。答えはきみのものだ。"
+  },
+  {
+    "en": "In real code: debug by reading the trace and changing the plan.",
+    "to": "本当のコードでは、記録を読んで作戦を直す。"
+  },
+  {
+    "en": "You did it! The score counts progress, combat, your build, survival and tempo. A full run has more layers and many choices. This Trial was our first chapter. Pip bows; the scarf bows half a second late.",
+    "to": "やったね！ スコアには進んだ道、戦い、組み方、生き残り、速さが入る。本当の冒険にはもっと先があるよ。これは最初の一章。ピップがおじぎして、マフラーは半秒おくれておじぎした。"
+  },
+  {
+    "en": "In real code: measure a result, then improve one part at a time.",
+    "to": "本当のコードでは、結果を測って一つずつ良くする。"
+  }
+]

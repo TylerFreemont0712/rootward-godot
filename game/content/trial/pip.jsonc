@@ -1,0 +1,372 @@
+// Pip’s Trial: real Shardrun commands, a fixed tiny map, and one session event per step.
+{
+  "id": "pip-trial",
+  "seed": "pip-trial-v1",
+  "setup": {
+    "paradigm": "dynamic",
+    "deck": [
+      "fire-constant",
+      "quick-sort",
+      "binary-execute",
+      "fib-surge",
+      "ward",
+      "merge-strike",
+      "spark-constant",
+      "import-cache",
+      "charge",
+      "fork"
+    ],
+    "map": {
+      "nodes": [
+        {
+          "id": "l0-r0-c0",
+          "row": 0,
+          "col": 2,
+          "kind": "fight"
+        },
+        {
+          "id": "l0-r1-c0",
+          "row": 1,
+          "col": 2,
+          "kind": "forge"
+        },
+        {
+          "id": "l0-r2-c0",
+          "row": 2,
+          "col": 2,
+          "kind": "rest"
+        },
+        {
+          "id": "l0-boss",
+          "row": 3,
+          "col": 2,
+          "kind": "boss"
+        }
+      ],
+      "edges": [
+        [
+          "l0-r0-c0",
+          "l0-r1-c0"
+        ],
+        [
+          "l0-r1-c0",
+          "l0-r2-c0"
+        ],
+        [
+          "l0-r2-c0",
+          "l0-boss"
+        ]
+      ]
+    },
+    "rooms": {
+      "l0-r0-c0": {
+        "foes": [
+          {
+            "id": "tally-wisp",
+            "hp": 30
+          }
+        ],
+        "hand": [
+          "fire-constant",
+          "quick-sort",
+          "binary-execute",
+          "ward",
+          "charge"
+        ],
+        "draw": [
+          "quick-sort",
+          "binary-execute",
+          "fire-constant",
+          "merge-strike",
+          "ward",
+          "charge",
+          "spark-constant"
+        ],
+        "reward": {
+          "relics": [
+            "overclock"
+          ]
+        }
+      },
+      "l0-boss": {
+        "foes": [
+          {
+            "id": "kiln-warden",
+            "hp": 24
+          }
+        ],
+        "hand": [
+          "fire-constant",
+          "quick-sort",
+          "binary-execute",
+          "ward",
+          "charge"
+        ],
+        "draw": [
+          "fire-constant",
+          "merge-strike",
+          "ward",
+          "charge",
+          "spark-constant",
+          "fib-memo",
+          "quick-sort",
+          "binary-execute"
+        ]
+      }
+    }
+  },
+  "chapters": [
+    {
+      "id": "arrival",
+      "title": "Chapter 1: The Pocket Shardrunner Arrives",
+      "scene": "Pip tumbles out of a pocket of sparks. “Perfect landing! The floor disagrees, but I am ignoring it.”"
+    },
+    {
+      "id": "order",
+      "title": "Chapter 2: In Which Order Matters",
+      "scene": "Pip straightens his scarf. “I meant to let that one get close. Ahem. Now we make the program smarter.”"
+    },
+    {
+      "id": "workshop",
+      "title": "Chapter 3: A Furnace and a Breather",
+      "scene": "The forge glows. Pip produces a tiny hammer from nowhere. “Please do not ask where I kept this.”"
+    },
+    {
+      "id": "guardian",
+      "title": "Chapter 4: The Guardian at the Return",
+      "scene": "Pip peers at the final room. “One guardian. One little program. I am only slightly nervous.”"
+    }
+  ],
+  "steps": [
+    {
+      "id": "hello",
+      "chapter": "arrival",
+      "anchor": "map",
+      "event": "coach-next",
+      "say": "I am Pip, the Pocket Shardrunner! These cards are real functions, not pretend spells. Put them in order and the Machine runs the program you wrote. Come on; I will point, you will do.",
+      "code": "In real code: a program is a sequence of function calls.",
+      "action_seconds": 5
+    },
+    {
+      "id": "map",
+      "chapter": "arrival",
+      "anchor": "map",
+      "event": "enter",
+      "say": "This is our tiny map. The Route drawer names the next room; the guardian rail shows who waits above. Round rooms are fights, violet hexagons are forges, green diamonds are rests. Choose the first fight.",
+      "code": "In real code: a route is a path through a graph.",
+      "action_seconds": 12
+    },
+    {
+      "id": "hand",
+      "chapter": "arrival",
+      "anchor": "hand",
+      "event": "compose",
+      "say": "Those are your cards in hand. Drag Ember Constant into the Program slot, or click the card and then the slot. The blue mana number is your budget for playing cards this turn. You choose the line; I will not place it for you.",
+      "code": "In real code: the card becomes a function call in main.py.",
+      "action_seconds": 22
+    },
+    {
+      "id": "code",
+      "chapter": "arrival",
+      "anchor": "code",
+      "event": "coach-next",
+      "say": "Look at the code panel: there is the line you placed, its cost and what it will make. The preview uses the real sandbox. It is a promise about this exact cast, so read it before pressing Run.",
+      "code": "In real code: inspect inputs and expected output before running.",
+      "action_seconds": 10
+    },
+    {
+      "id": "run",
+      "chapter": "arrival",
+      "anchor": "program",
+      "event": "cast",
+      "say": "Run the Program. Watch the walkthrough light up the function you chose, then follow the bolts to the foe. If you want another look, the code and battle log stay available.",
+      "code": "In real code: execution follows the calls in order.",
+      "action_seconds": 17
+    },
+    {
+      "id": "walk",
+      "chapter": "arrival",
+      "anchor": "code",
+      "event": "coach-next",
+      "say": "See? The cast landed as the preview said. I call that “Pip-level certainty.” The Machine calls it deterministic execution. Now the foe gets a turn, so we must plan the next one.",
+      "code": "In real code: the same input gives the same result here.",
+      "action_seconds": 5
+    },
+    {
+      "id": "order-intro",
+      "chapter": "order",
+      "anchor": "hand",
+      "event": "coach-next",
+      "say": "Cards have roles: source makes bolts, shape changes them, order sorts them, strike aims them and guard turns them into block. A search that needs sorted bolts fails if you put it before the sort. My scarf learned that the hard way.",
+      "code": "In real code: a function may require an invariant such as sorted input.",
+      "action_seconds": 7
+    },
+    {
+      "id": "sort",
+      "chapter": "order",
+      "anchor": "hand",
+      "event": "compose",
+      "say": "Place Quick Sort before Binary Execute if both are in your hand. Read the warning in the code panel when a card needs sorted input. If the draw is different, place the sort you have and keep the idea: order changes the answer.",
+      "code": "In real code: preconditions must hold when a function runs.",
+      "action_seconds": 22
+    },
+    {
+      "id": "work",
+      "chapter": "order",
+      "anchor": "code",
+      "event": "cast",
+      "say": "Run it and watch Work. O(1), O(n), O(n log n) and O(2ⁿ) describe how effort grows as the volley grows. The number here is measured from the real card run, not a guess printed on its face.",
+      "code": "In real code: Big-O describes how work scales with input size.",
+      "action_seconds": 19
+    },
+    {
+      "id": "budget",
+      "chapter": "order",
+      "anchor": "code",
+      "event": "coach-next",
+      "say": "The bar has a hard budget. A program over that limit times out: it spends mana and lands nothing. Try a cheaper line next turn if the preview warns you. Even my pockets cannot hold infinite work.",
+      "code": "In real code: a time limit stops an expensive computation.",
+      "action_seconds": 10
+    },
+    {
+      "id": "race",
+      "chapter": "order",
+      "anchor": "foe",
+      "event": "coach-next",
+      "say": "The foe has a speed too. If its tempo beats your Work, it acts before your bolts land. A faster program wins Initiative and hits harder. We lost that race once on purpose. Probably.",
+      "code": "In real code: faster algorithms can change which action finishes first.",
+      "action_seconds": 14
+    },
+    {
+      "id": "defense",
+      "chapter": "order",
+      "anchor": "foe",
+      "event": "coach-next",
+      "say": "Guard cards make block, not damage. The foe chips show shields, patterns and other states; look there before choosing a target. A blocked bolt or damage past a foe’s last HP is wasted overkill.",
+      "code": "In real code: inspect state and avoid work that changes nothing.",
+      "action_seconds": 12
+    },
+    {
+      "id": "win-fight",
+      "chapter": "order",
+      "anchor": "foe",
+      "event": "battle-won",
+      "say": "Finish this fight using the hand and Program. Try a guard if you need one. If a plan fails, change one card at a time and watch the preview. I will cheer from a safe distance of three pixels.",
+      "code": "In real code: change one variable, then observe the result.",
+      "action_seconds": 36,
+      "room": "l0-r0-c0"
+    },
+    {
+      "id": "workshop-intro",
+      "chapter": "workshop",
+      "anchor": "relic",
+      "event": "coach-next",
+      "say": "Victory! A relic changes the rules for the rest of a run. This one is a small helper, not a trophy for my landing. Pick it, then we will visit a forge.",
+      "code": "In real code: a persistent modifier changes later executions.",
+      "action_seconds": 5
+    },
+    {
+      "id": "relic",
+      "chapter": "workshop",
+      "anchor": "relic",
+      "event": "claim-relic",
+      "say": "Choose the offered relic. Its icon appears in the header so you can inspect it later. The Archives can show every relic, including those you have not found.",
+      "code": "In real code: a modifier can affect every later call.",
+      "action_seconds": 14
+    },
+    {
+      "id": "forge-room",
+      "chapter": "workshop",
+      "anchor": "map",
+      "event": "enter",
+      "say": "On the map, step into the violet forge. Your deck pile opens the cards you carry. The little “+” means refactored code: the same idea, made clearer or faster.",
+      "code": "In real code: refactoring changes implementation while keeping the goal.",
+      "action_seconds": 12
+    },
+    {
+      "id": "forge",
+      "chapter": "workshop",
+      "anchor": "forge",
+      "event": "forge",
+      "say": "Choose Fibonacci Surge at the forge and read its red-and-green diff before you confirm. Naive recursion repeats work; memoisation remembers answers. Do the refactor yourself.",
+      "code": "In real code: memoisation trades memory for less repeated work.",
+      "action_seconds": 22
+    },
+    {
+      "id": "rest-room",
+      "chapter": "workshop",
+      "anchor": "map",
+      "event": "enter",
+      "say": "Now the green rest room. Its calm matters after a hard fight. Caches remember work too, but a rest restores you; the two ideas share a word only by accident, says Pip, who definitely did not nap in a cache.",
+      "code": "In real code: a cache stores a previous result for reuse.",
+      "action_seconds": 12
+    },
+    {
+      "id": "rest",
+      "chapter": "workshop",
+      "anchor": "rest",
+      "event": "rest",
+      "say": "Choose Rest to recover Integrity. Keywords such as const and once change how a card behaves; Imports affect the whole fight. Those are bigger lessons: search either word in the Archives after the Trial.",
+      "code": "In real code: imports make helpers available; keywords mark special behavior.",
+      "action_seconds": 14
+    },
+    {
+      "id": "draft",
+      "chapter": "workshop",
+      "anchor": "deck",
+      "event": "coach-next",
+      "say": "At the start of a full Shardrun you choose a paradigm, then draft cards from packs. Here I prepared a tiny deck so you could learn by playing. The deck pile shows every card, and the Archives explain each one.",
+      "code": "In real code: a paradigm is a strategy for solving a class of problems.",
+      "action_seconds": 10
+    },
+    {
+      "id": "guardian-intro",
+      "chapter": "guardian",
+      "anchor": "guardian",
+      "event": "coach-next",
+      "say": "The guardian is the last room, marked at the top of the map and on the rail. It has one trick. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
+      "code": "In real code: inspect the conditions before committing a run.",
+      "action_seconds": 5
+    },
+    {
+      "id": "guardian-room",
+      "chapter": "guardian",
+      "anchor": "map",
+      "event": "enter",
+      "say": "Enter the guardian room. You know the controls now. I will name the cards and say why, but you decide their order. If this fight goes wrong, we return to its start with a hint.",
+      "code": "In real code: a saved checkpoint lets you retry from a known state.",
+      "action_seconds": 14
+    },
+    {
+      "id": "guardian-plan",
+      "chapter": "guardian",
+      "anchor": "hand",
+      "event": "compose",
+      "say": "Try a source before a strike, or sort before a search. Check the preview: does this Program beat the guardian’s tempo and stay inside the budget? Place the cards, then run when you are ready.",
+      "code": "In real code: order, cost and output belong in one plan.",
+      "action_seconds": 24
+    },
+    {
+      "id": "guardian-win",
+      "chapter": "guardian",
+      "anchor": "foe",
+      "event": "battle-won",
+      "say": "Finish the guardian. If you lose, I will rewind this fight, not your learning. Try a faster card, block the next hit or aim to avoid overkill. Hint first; answers stay yours.",
+      "code": "In real code: debug by reading the trace and changing the plan.",
+      "action_seconds": 46,
+      "room": "l0-boss"
+    },
+    {
+      "id": "score",
+      "chapter": "guardian",
+      "anchor": "score",
+      "event": "coach-next",
+      "say": "You did it! The score counts progress, combat, your build, survival and tempo. A full run has more layers and many choices. This Trial was our first chapter. Pip bows; the scarf bows half a second late.",
+      "code": "In real code: measure a result, then improve one part at a time.",
+      "action_seconds": 10,
+      "force": {
+        "status": "won"
+      }
+    }
+  ]
+}

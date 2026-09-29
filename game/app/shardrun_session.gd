@@ -17,22 +17,29 @@ signal changed
 var catalog: Dictionary
 var saves: SaveStore
 var playstyle: String
+var save_key: String
+var trial_content: Dictionary = {}
 var runs: SpellRuns
 var state: Dictionary = {}
 ## A command is being worked out; another one waits its turn rather than racing it.
 var busy := false
 
 
-func _init(run_catalog: Dictionary, save_store: SaveStore, run_playstyle := "spellbook") -> void:
+func _init(run_catalog: Dictionary, save_store: SaveStore, run_playstyle := "spellbook", run_save_key := "") -> void:
 	catalog = run_catalog
 	saves = save_store
 	playstyle = run_playstyle
+	save_key = run_save_key if run_save_key != "" else run_playstyle
+	if save_key == "trial":
+		var loaded := TrialContent.load_trial()
+		if loaded.ok:
+			trial_content = loaded.value
 	runs = SpellRuns.new(catalog)
 
 
 ## Picks up the saved run, if there is one. `saves.problem` says why a save could not be used.
 func load_saved() -> void:
-	state = saves.load_run(playstyle)
+	state = saves.load_run(save_key)
 	runs.warm(state)
 
 
@@ -53,7 +60,9 @@ func start(language: String, difficulty: String, seed := "", sandbox := false) -
 	}
 	var before := state
 	state = Shardrun.start(catalog, options)
-	saves.save_run(playstyle, state)
+	if save_key == "trial" and not trial_content.is_empty():
+		state = TrialRules.begin(state, trial_content)
+	saves.save_run(save_key, state)
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": {}}
 
@@ -68,6 +77,12 @@ func command(request: Dictionary) -> Dictionary:
 		return Shardrun.refuse("no-run", "There is no run underway.")
 	while busy:
 		await changed
+	if save_key == "trial" and request.type == "trial-next":
+		var previous := state
+		state = TrialRules.coach_next(state, trial_content)
+		saves.save_run(save_key, state)
+		changed.emit()
+		return {"ok": true, "before": previous, "state": state, "replay": {}}
 	busy = true
 	var before := state
 	var sent := request
@@ -90,8 +105,10 @@ func command(request: Dictionary) -> Dictionary:
 		changed.emit()
 		return result
 	state = result.state
-	saves.save_run(playstyle, state)
-	if state.status in Shardrun.ENDED and not before.get("status", "") in Shardrun.ENDED:
+	if save_key == "trial":
+		state = TrialRules.after_command(before, state, request, trial_content, catalog)
+	saves.save_run(save_key, state)
+	if save_key != "trial" and state.status in Shardrun.ENDED and not before.get("status", "") in Shardrun.ENDED:
 		# A run just ended: it goes into the history as a commit (RunHistory), never to be rewritten.
 		var finished := Time.get_datetime_string_from_system(false, true)
 		saves.append_history(RunHistory.entry(state, catalog, finished, Settings.character_skin))

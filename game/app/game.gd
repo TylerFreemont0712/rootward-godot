@@ -23,6 +23,8 @@ static var diagnostics: Array[Dictionary] = []
 ## The run of the playstyle being played; `sessions` holds both, by playstyle.
 static var session: ShardrunSession
 static var sessions: Dictionary = {}
+static var trial_session: ShardrunSession
+static var trial_active := false
 static var profiles: ProfileStore
 static var profile: Dictionary = {}
 static var _loaded := false
@@ -117,6 +119,12 @@ static func _load_sessions(content_ok: bool, saves: SaveStore) -> void:
 		if content_ok:
 			run.load_saved()
 		sessions[playstyle] = run
+	var trial_catalog := ProgramRules.catalog_for(catalog) if content_ok else catalog
+	trial_session = ShardrunSession.new(trial_catalog, saves, "program", "trial")
+	if content_ok:
+		trial_session.load_saved()
+	trial_session.changed.connect(_trial_changed)
+	trial_active = false
 	use(Settings.playstyle)
 	# The card Shardrun is only offered while a run of it is underway (ADR-0012).
 	if Settings.playstyle == "deck" and not (sessions.deck as ShardrunSession).in_progress():
@@ -130,6 +138,8 @@ static func reset(save_root := "") -> void:
 	diagnostics = []
 	session = null
 	sessions = {}
+	trial_session = null
+	trial_active = false
 	profiles = null
 	profile = {}
 	if save_root != "":
@@ -146,6 +156,53 @@ static func use(playstyle: String) -> void:
 		playstyle = "program"
 	session = sessions[playstyle]
 	Settings.playstyle = playstyle
+
+
+static func start_trial() -> bool:
+	if trial_session == null or trial_session.trial_content.is_empty():
+		return false
+	trial_session.start(Settings.language, Settings.difficulty, String(trial_session.trial_content.seed))
+	trial_active = true
+	_trial_changed()
+	return true
+
+
+static func resume_trial() -> bool:
+	if trial_session == null or not trial_session.has_run():
+		return false
+	if trial_session.state.get("trial", {}).get("done", false):
+		return false
+	trial_active = true
+	return true
+
+
+static func skip_trial() -> void:
+	if profile.is_empty():
+		return
+	var tutorial: Dictionary = profile.get("tutorial", {})
+	tutorial.trial_done = true
+	tutorial.trial_skipped = true
+	tutorial.trial_step = ""
+	profile.tutorial = tutorial
+	profiles.save_profile(profile)
+	trial_active = false
+	if trial_session != null:
+		trial_session.saves.delete_run("trial")
+		trial_session.state = {}
+
+
+static func _trial_changed() -> void:
+	if profile.is_empty() or trial_session == null or not trial_session.has_run():
+		return
+	var progress: Dictionary = trial_session.state.get("trial", {})
+	if progress.is_empty():
+		return
+	var tutorial: Dictionary = profile.get("tutorial", {})
+	tutorial.trial_step = String(progress.get("step_id", ""))
+	if progress.get("done", false):
+		tutorial.trial_done = true
+	profile.tutorial = tutorial
+	profiles.save_profile(profile)
 
 
 ## Whether sandbox runs and their dev tools are offered: always when the game runs from the Godot editor binary (as it

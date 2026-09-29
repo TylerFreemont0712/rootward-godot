@@ -75,6 +75,14 @@ static func coverage(catalog: Dictionary, strings: Dictionary) -> Dictionary:
 	for path: String in FIELDS.run:
 		_collect(catalog.config, path.split("."), english)
 	_program_parts(catalog, func(node: Variant, path: String) -> void: _collect(node, path.split("."), english))
+	var trial := TrialContent.load_trial()
+	if trial.ok:
+		for chapter: Dictionary in trial.value.chapters:
+			english[chapter.title] = true
+			english[chapter.scene] = true
+		for step: Dictionary in trial.value.steps:
+			english[step.say] = true
+			english[step.code] = true
 	var missing: Array = english.keys().filter(func(text: String) -> bool: return not strings.has(text))
 	return {"total": english.size(), "translated": english.size() - missing.size(), "missing": missing}
 
