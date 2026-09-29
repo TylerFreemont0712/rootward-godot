@@ -16,7 +16,11 @@ const PARTS := ["progress", "combat", "build", "survival", "tempo", "completion"
 static func ending(state: Dictionary, title_variation := "Title") -> Control:
 	var said: Array = ENDINGS.get(state.status, ["The run", UiTheme.AMBER])
 	var title := Ui.tint(Ui.label(said[0], title_variation), said[1])
-	return Ui.vbox([title, score(state)], 12)
+	var name := String(Game.profile.get("name", "Player"))
+	var greeting := (
+		"%s、おつかれさま！" % name if Game.profile.get("preferred_language", "en") == "ja" else "Well played, %s." % name
+	)
+	return Ui.vbox([Ui.label(greeting, "Subheading"), title, score(state)], 12)
 
 
 static func score(state: Dictionary) -> Control:

@@ -23,6 +23,8 @@ static var diagnostics: Array[Dictionary] = []
 ## The run of the playstyle being played; `sessions` holds both, by playstyle.
 static var session: ShardrunSession
 static var sessions: Dictionary = {}
+static var profiles: ProfileStore
+static var profile: Dictionary = {}
 static var _loaded := false
 
 
@@ -36,20 +38,28 @@ static func boot() -> bool:
 	catalog = loaded.catalog
 	diagnostics = loaded.diagnostics
 	Settings.load_file()
-	var root := OS.get_environment(SAVES_ENV)
-	var saves := SaveStore.new(root if root != "" else SaveStore.ROOT)
-	for playstyle in COMBAT:
-		var run_catalog := catalog
-		if playstyle == "program" and loaded.ok:
-			run_catalog = ProgramRules.catalog_for(catalog)
-		var run := ShardrunSession.new(run_catalog, saves, playstyle)
-		if loaded.ok:
-			run.load_saved()
-		sessions[playstyle] = run
-	use(Settings.playstyle)
-	# The card Shardrun is only offered while a run of it is underway (ADR-0012).
-	if Settings.playstyle == "deck" and not (sessions.deck as ShardrunSession).in_progress():
-		use("program")
+	var override_root := OS.get_environment(SAVES_ENV)
+	profiles = ProfileStore.new(override_root.path_join("profiles") if override_root != "" else ProfileStore.ROOT)
+	var existing := profiles.list_profiles()
+	if existing.is_empty():
+		var legacy := override_root if override_root != "" else SaveStore.ROOT
+		var migrated := profiles.migrate_legacy(legacy, Settings.language, Settings.difficulty)
+		if migrated.ok:
+			profile = migrated.profile
+		else:
+			var created := profiles.create("Player 1")
+			if created.ok:
+				profile = created.profile
+				profile.needs_name = true
+				profiles.save_profile(profile)
+	else:
+		profile = profiles.active()
+		if profile.has("migration_root") and not profile.get("migration_verified", false):
+			profiles.confirm_migration(String(profile.id))
+	if not profile.is_empty():
+		select_profile(String(profile.id), false)
+	else:
+		_load_sessions(loaded.ok, SaveStore.new(override_root if override_root != "" else SaveStore.ROOT))
 	Sound.set_volumes(Settings.music_volume, Settings.sound_volume)
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree != null and tree.root.get_node_or_null("Lifecycle") == null:
@@ -59,6 +69,60 @@ static func boot() -> bool:
 	return loaded.ok
 
 
+static func select_profile(id: String, remember := true) -> bool:
+	if profiles == null or not profiles.activate(id):
+		return false
+	profile = profiles.get_profile(id)
+	Settings.character_skin = String(profile.get("avatar", "vesper"))
+	var overrides: Dictionary = profile.get("settings", {})
+	Settings.language = String(overrides.get("language", SandboxJob.PYTHON))
+	Settings.difficulty = String(overrides.get("difficulty", "beginner"))
+	TranslationServer.set_locale(String(profile.get("preferred_language", "en")))
+	_load_sessions(
+		diagnostics.all(func(d: Dictionary) -> bool: return d.severity != "error"), SaveStore.new(profiles.run_root(id))
+	)
+	if remember:
+		Settings.save_file()
+	return true
+
+
+static func remember_profile_settings() -> void:
+	if profile.is_empty() or profiles == null:
+		return
+	profile.settings = {"language": Settings.language, "difficulty": Settings.difficulty}
+	profiles.save_profile(profile)
+
+
+static func remember_avatar() -> void:
+	if profile.is_empty() or profiles == null:
+		return
+	profile.avatar = Settings.character_skin
+	profiles.save_profile(profile)
+
+
+static func display_catalog() -> Dictionary:
+	if profile.get("preferred_language", "en") != "ja":
+		return catalog
+	var overlay := ContentLocale.load_overlay("ja")
+	return ContentLocale.localize(catalog, overlay.strings)
+
+
+static func _load_sessions(content_ok: bool, saves: SaveStore) -> void:
+	sessions = {}
+	for playstyle in COMBAT:
+		var run_catalog := catalog
+		if playstyle == "program" and content_ok:
+			run_catalog = ProgramRules.catalog_for(catalog)
+		var run := ShardrunSession.new(run_catalog, saves, playstyle)
+		if content_ok:
+			run.load_saved()
+		sessions[playstyle] = run
+	use(Settings.playstyle)
+	# The card Shardrun is only offered while a run of it is underway (ADR-0012).
+	if Settings.playstyle == "deck" and not (sessions.deck as ShardrunSession).in_progress():
+		use("program")
+
+
 ## Forget everything, so the next `boot()` loads afresh (tests, and a tool that sets up its own run).
 static func reset(save_root := "") -> void:
 	_loaded = false
@@ -66,6 +130,8 @@ static func reset(save_root := "") -> void:
 	diagnostics = []
 	session = null
 	sessions = {}
+	profiles = null
+	profile = {}
 	if save_root != "":
 		OS.set_environment(SAVES_ENV, save_root)
 

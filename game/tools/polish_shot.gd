@@ -5,14 +5,25 @@ signal shot_ready
 
 
 func _ready() -> void:
-	Game.reset("user://polish-shot-saves")
+	var moment := OS.get_environment("ROOTWARD_POLISH")
+	Game.reset("user://polish-shot-saves/" + (moment if moment != "" else "title"))
 	Game.boot()
+	if moment in ["profiles", "profile-rename", "profile-delete", "profile-ja"]:
+		var first := Game.profiles.rename(String(Game.profile.id), "Joe")
+		if first.ok:
+			Game.select_profile(String(first.profile.id))
+		var japanese := Game.profiles.create("ゆき", "ja", "vesper")
+		Game.profiles.create("Guest")
+		if moment == "profile-ja":
+			Game.select_profile(String(japanese.profile.id))
+		else:
+			Game.select_profile(String(first.profile.id))
 	Settings.reduced_motion = true
 	var title: Control = (load(Game.TITLE) as PackedScene).instantiate()
 	add_child(title)
 	for i in 4:
 		await get_tree().process_frame
-	match OS.get_environment("ROOTWARD_POLISH"):
+	match moment:
 		"archive", "relics", "glossary", "shards":
 			title.call("_open_archive")
 			var archives := title.find_children("*", "ArchivePanel", true, false)
@@ -31,6 +42,10 @@ func _ready() -> void:
 			title.call("_open_options")
 		"setup":
 			title.call("_show_setup")
+		"profile-rename":
+			title.call("_edit_profile", String(Game.profile.id))
+		"profile-delete":
+			title.call("_confirm_delete_profile")
 	for i in 6:
 		await get_tree().process_frame
 	set_meta("shot_ready", true)

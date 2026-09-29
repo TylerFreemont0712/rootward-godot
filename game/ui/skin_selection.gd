@@ -102,6 +102,7 @@ func _skin_card(id: String, title: String, epithet: String, note: String, portra
 
 func _choose(id: String) -> void:
 	Settings.character_skin = id
+	Game.remember_avatar()
 	Settings.save_file()
 	skin_selected.emit(id)
 	closed.emit()

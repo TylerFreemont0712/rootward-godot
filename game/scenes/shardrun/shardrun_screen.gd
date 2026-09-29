@@ -404,7 +404,7 @@ func _open_run_menu() -> void:
 
 
 func _open_archive() -> void:
-	var archive := ArchivePanel.create(Game.catalog)
+	var archive := ArchivePanel.create(Game.display_catalog())
 	archive.closed.connect(_close_overlay)
 	_open(archive)
 

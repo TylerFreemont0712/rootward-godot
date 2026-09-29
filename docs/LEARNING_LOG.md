@@ -426,3 +426,8 @@ measured 797 px tall, on the second 445. Placed from the guess, the panel appear
 on every hover, and beside a hand card that lifts as it is pointed at, it slid along. The fix waits: the details stay
 transparent until two frames agree on their size and on where the card is (with a cap of 20 frames), and once shown
 they stay shown. Measuring before showing is the general cure for layout that settles over frames.
+## A copied save may be played before migration is confirmed (`game/app/profile_store.gd`)
+The migration copies each legacy file and compares its bytes before publishing the new profile. On the next launch,
+the copied run may already have changed because the player continued it. The confirmation therefore checks that the
+copy still exists while retaining the original byte comparison as the migration proof. The source folder stays in
+place, so a recovery path is available even if a later run becomes unreadable.

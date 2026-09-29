@@ -51,6 +51,8 @@ func _ready() -> void:
 	_build(content_ok)
 	_reveal()
 	Sound.music("music-title")
+	if Game.profile.get("needs_name", false):
+		call_deferred("_edit_profile", String(Game.profile.id), true)
 
 
 ## The picture behind the menu: the title art drifting slowly closer, darkened on the menu's side, the chosen skin
@@ -139,19 +141,32 @@ func _build(content_ok: bool) -> void:
 	)
 	_menu.add_child(Ui.hbox([emblem, logo], 16))
 	_menu.add_child(Ui.spacer(0, 8))
+	_menu.add_child(_profile_bar())
 	if not content_ok:
 		_menu.add_child(_broken())
 		return
 	if not _setup:
 		_home()
 		return
-	_menu.add_child(
-		Ui.hbox([Ui.button("‹  Main menu", _show_home), Ui.spacer(), Ui.label("PREPARE YOUR DESCENT", "Muted")])
+	(
+		_menu
+		. add_child(
+			(
+				Ui
+				. hbox(
+					[
+						Ui.button(_text("‹  Main menu", "‹  メインメニュー"), _show_home),
+						Ui.spacer(),
+						Ui.label(_text("PREPARE YOUR DESCENT", "冒険のじゅんび"), "Muted"),
+					]
+				)
+			)
+		)
 	)
 	var problem: String = Game.session.saves.problem
 	if problem != "":
 		_menu.add_child(Ui.panel(Ui.tint(Ui.label(problem, "", true), UiTheme.WARN), "Card"))
-	_menu.add_child(_section("01", "Choose your journey"))
+	_menu.add_child(_section("01", _text("Choose your journey", "遊び方を選ぶ")))
 	var modes := Ui.hbox([], 8)
 	for mode in MODES:
 		var run: ShardrunSession = Game.sessions.get(mode.id)
@@ -160,77 +175,141 @@ func _build(content_ok: bool) -> void:
 		modes.add_child(_tile(mode))
 	_menu.add_child(modes)
 	if Settings.playstyle == "program":
-		_menu.add_child(_section("02", "Paradigms  /  algorithms"))
+		_menu.add_child(_section("02", _text("Paradigms  /  algorithms", "パラダイムとアルゴリズム")))
+		(
+			_menu
+			. add_child(
+				(
+					Ui
+					. label(
+						_text(
+							"Cards are real algorithms. Play them in order to write one program a turn; faster code acts first.",
+							"カードは本物のアルゴリズム。順番に並べてプログラムを作ろう。速いコードが先に動くよ。"
+						),
+						"Muted",
+						true
+					)
+				)
+			)
+		)
+	elif Settings.playstyle == "deck":
+		_menu.add_child(_section("02", _text("Artificer  /  foundations", "クラフトのきほん")))
 		_menu.add_child(
 			Ui.label(
-				"Cards are real algorithms. Play them in order to write one program a turn; faster code acts first.",
+				_text("Build real functions from shard cards in Python or JavaScript.", "シャードのカードを組み合わせて本物の関数を作ろう。"),
 				"Muted",
 				true
 			)
 		)
-	elif Settings.playstyle == "deck":
-		_menu.add_child(_section("02", "Artificer  /  foundations"))
-		_menu.add_child(Ui.label("Build real functions from shard cards in Python or JavaScript.", "Muted", true))
 	elif Settings.playstyle == "verifier":
-		_menu.add_child(_section("02", "Verifier  /  code reading"))
+		_menu.add_child(_section("02", _text("Verifier  /  code reading", "コードを読む練習")))
 		_menu.add_child(
 			Ui.label(
-				"A separate course: trace state, predict exact output, and unlock data structures and algorithms.",
+				_text(
+					"A separate course: trace state, predict exact output, and unlock data structures and algorithms.",
+					"別のコースで変数を追い、出力を予想して、データ構造とアルゴリズムを学ぼう。"
+				),
 				"Muted",
 				true
 			)
 		)
 	else:
-		_menu.add_child(_section("02", "Artificer workshop"))
+		_menu.add_child(_section("02", _text("Artificer workshop", "クラフト工房")))
 		_menu.add_child(
-			Ui.label("Arrange functions between encounters and keep each spell in your book.", "Muted", true)
+			Ui.label(
+				_text(
+					"Arrange functions between encounters and keep each spell in your book.", "戦いの間に関数を組み合わせ、呪文を本に残そう。"
+				),
+				"Muted",
+				true
+			)
 		)
 	_menu.add_child(
-		_section("03", "Prepare your descent" if Settings.playstyle != "verifier" else "Enter the code lab")
+		_section(
+			"03",
+			(
+				_text("Prepare your descent", "冒険のじゅんび")
+				if Settings.playstyle != "verifier"
+				else _text("Enter the code lab", "コード研究室へ")
+			)
+		)
 	)
 	_menu.add_child(_course_launcher() if Settings.playstyle == "verifier" else _launcher(Game.session))
 	var footer := Ui.hbox(
 		[
-			Ui.button("How to play", _open_how_to),
-			Ui.button("Archives", _open_archive),
-			Ui.button("Options", _open_options)
+			Ui.button(_text("How to play", "遊び方"), _open_how_to),
+			Ui.button(_text("Archives", "図鑑"), _open_archive),
+			Ui.button(_text("Options", "設定"), _open_options)
 		],
 		8
 	)
 	_menu.add_child(footer)
-	_menu.add_child(Ui.tint(Ui.label("THE WORLD  /  COMING LATER", "Faint"), UiTheme.FAINT))
+	_menu.add_child(Ui.tint(Ui.label(_text("THE WORLD  /  COMING LATER", "世界編  /  これから"), "Faint"), UiTheme.FAINT))
 
 
 func _home() -> void:
 	_menu.add_child(Ui.spacer(0, 20))
-	_menu.add_child(Ui.sized(Ui.label("A spell is a program.\nWhat will you write?", "Narration"), 30))
+	var greeting := "%s, %s" % [_text("Welcome", "おかえり"), Game.profile.get("name", "Player")]
+	_menu.add_child(Ui.tint(Ui.label(greeting, "Subheading"), UiTheme.TEAL))
+	_menu.add_child(
+		Ui.sized(
+			Ui.label(_text("A spell is a program.\nWhat will you write?", "魔法はプログラム。\n今日は何を書こう？"), "Narration"), 30
+		)
+	)
 	_menu.add_child(Ui.spacer(0, 18))
 	if Game.session.in_progress() and Settings.playstyle != "verifier":
 		var where: String = ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name
 		_menu.add_child(
 			_action(
-				"Continue your journey",
-				where + " · your run awaits",
+				_text("Continue your journey", "つづきから遊ぶ"),
+				where + _text(" · your run awaits", " · 冒険のつづきが待っている"),
 				"01",
 				func() -> void: Game.go(Game.SHARDRUN),
 				true
 			)
 		)
-		_menu.add_child(_action("Begin a new journey", "Choose your path, language and challenge", "02", _show_setup))
+		_menu.add_child(
+			_action(
+				_text("Begin a new journey", "新しく始める"),
+				_text("Choose your path, language and challenge", "遊び方、言語、難しさを選ぼう"),
+				"02",
+				_show_setup
+			)
+		)
 	else:
-		_menu.add_child(_action("Begin your journey", "Draft a deck. Build a spell. Descend.", "01", _show_setup, true))
+		_menu.add_child(
+			_action(
+				_text("Begin your journey", "冒険を始める"),
+				_text("Draft a deck. Build a spell. Descend.", "デッキを作り、呪文を組んで、出発！"),
+				"01",
+				_show_setup,
+				true
+			)
+		)
 	_menu.add_child(
-		_action("The Archives", "Explore cards, relics and the language of the Machine", "◇", _open_archive)
+		_action(
+			_text("The Archives", "図鑑"),
+			_text("Explore cards, relics and the language of the Machine", "カードや遺物、機械のことばを見てみよう"),
+			"◇",
+			_open_archive
+		)
 	)
-	_menu.add_child(_action("Options", "Sound, display and the pace of your spells", "⚙", _open_options))
+	_menu.add_child(
+		_action(
+			_text("Options", "設定"),
+			_text("Sound, display and the pace of your spells", "音、画面、呪文の速さを変える"),
+			"⚙",
+			_open_options
+		)
+	)
 	_menu.add_child(Ui.spacer(0, 8))
 	_menu.add_child(
 		Ui.hbox(
 			[
-				Ui.button("How to play", _open_how_to),
-				Ui.button("Wardrobe", _open_skins),
-				Ui.button("Run history", _open_git_log.bind(Game.session.saves.load_history())),
-				Ui.button("Quit", Game.quit)
+				Ui.button(_text("How to play", "遊び方"), _open_how_to),
+				Ui.button(_text("Wardrobe", "衣装"), _open_skins),
+				Ui.button(_text("Run history", "冒険の記録"), _open_git_log.bind(Game.session.saves.load_history())),
+				Ui.button(_text("Quit", "おわる"), Game.quit)
 			],
 			8
 		)
@@ -243,10 +322,50 @@ func _home() -> void:
 	_menu.add_child(
 		Ui.tint(
 			Ui.label(
-				"%d CARDS   /   %d RELICS   /   ENDLESS PROGRAMS" % [count, Game.catalog.programs.relics.size()],
+				(
+					_text("%d CARDS   /   %d RELICS   /   ENDLESS PROGRAMS", "%d カード   /   %d 遺物   /   無限のプログラム")
+					% [count, Game.catalog.programs.relics.size()]
+				),
 				"Faint"
 			),
 			UiTheme.TEAL
+		)
+	)
+
+
+func _text(english: String, japanese: String) -> String:
+	return japanese if Game.profile.get("preferred_language", "en") == "ja" else english
+
+
+func _profile_bar() -> Control:
+	var row := Ui.hbox([Ui.label(_text("PLAYER", "プレイヤー"), "Faint")], 7)
+	for player in Game.profiles.list_profiles():
+		var id := String(player.id)
+		var choose := func() -> void:
+			if Game.select_profile(id):
+				get_tree().reload_current_scene.call_deferred()
+		var button := Ui.choice(String(player.name), id == Game.profile.get("id", ""), choose)
+		row.add_child(button)
+	row.add_child(Ui.button(_text("+ New player", "＋ 新しいプレイヤー"), func() -> void: _edit_profile()))
+	row.add_child(Ui.button(_text("Rename", "名前を変える"), func() -> void: _edit_profile(String(Game.profile.id))))
+	row.add_child(Ui.button(_text("Delete", "消す"), _confirm_delete_profile))
+	var scroll := Ui.scroll(row)
+	scroll.custom_minimum_size.y = 52
+	return scroll
+
+
+func _edit_profile(id := "", required := false) -> void:
+	_show_overlay(
+		ProfilePanel.editor(
+			id, required, func() -> void: get_tree().reload_current_scene.call_deferred(), _close_overlay
+		)
+	)
+
+
+func _confirm_delete_profile() -> void:
+	_show_overlay(
+		ProfilePanel.delete_confirmation(
+			func() -> void: get_tree().reload_current_scene.call_deferred(), _close_overlay
 		)
 	)
 
@@ -306,7 +425,7 @@ func _reveal() -> void:
 
 
 func _open_archive() -> void:
-	var archive := ArchivePanel.create(Game.catalog)
+	var archive := ArchivePanel.create(Game.display_catalog())
 	archive.closed.connect(_close_overlay)
 	_show_overlay(archive)
 
@@ -342,12 +461,19 @@ func _tile(mode: Dictionary) -> Control:
 	var open: bool = mode.id != ""
 	var chosen: bool = open and Settings.playstyle == mode.id
 	var name := Ui.tint(Ui.label(String(mode.name).to_upper(), "Heading"), UiTheme.SHARD if chosen else UiTheme.AMBER)
-	var column := Ui.vbox([name, Ui.label(mode.line, "Muted", true)], 2)
+	var japanese_lines := {
+		"program": "パラダイムを選び、プログラムを書いて、敵より速く動こう。",
+		"deck": "進行中のカードの冒険。ここから続けよう。",
+		"spellbook": "呪文を組み立てる工房。戦いの間に編み直そう。",
+		"verifier": "本物のコードを読み、出力を予想するコース。",
+	}
+	var line := _text(String(mode.line), japanese_lines.get(mode.id, String(mode.line)))
+	var column := Ui.vbox([name, Ui.label(line, "Muted", true)], 2)
 	column.custom_minimum_size.y = 86
 	var run: ShardrunSession = Game.sessions.get(mode.id)
 	if run != null and run.in_progress():
 		var where: String = ShardrunRules.layer_of(run.state, run.catalog).name
-		column.add_child(Ui.tint(Ui.label("Run underway · %s" % where, "Faint"), UiTheme.TEAL))
+		column.add_child(Ui.tint(Ui.label(_text("Run underway · %s", "冒険の途中 · %s") % where, "Faint"), UiTheme.TEAL))
 	var tile := Ui.panel(column, "Card")
 	tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var look := UiTheme.box(
@@ -389,40 +515,50 @@ func _launcher(session: ShardrunSession) -> Control:
 				NAMES.get(state.language, state.language)
 			]
 		)
-		var go := Ui.button("Continue", func() -> void: Game.go(Game.SHARDRUN), "PrimaryButton")
+		var go := Ui.button(_text("Continue", "つづける"), func() -> void: Game.go(Game.SHARDRUN), "PrimaryButton")
 		go.custom_minimum_size = Vector2(200, 46)
 		go.call_deferred("grab_focus")
 		column.add_child(Ui.hbox([go, Ui.label(where, "Muted")], 14))
 	elif session.has_run():
 		var score := int(session.score().get("total", 0))
-		column.add_child(Ui.label("Last run: %s · score %d" % [session.state.status, score], "Faint"))
+		column.add_child(
+			Ui.label(_text("Last run: %s · score %d", "前回: %s · スコア %d") % [session.state.status, score], "Faint")
+		)
 	var usable := Game.languages()
 	var language := Settings.language
-	var languages := Ui.hbox([Ui.label("RUNTIME", "Faint")], 6)
+	var languages := Ui.hbox([Ui.label(_text("RUNTIME", "実行する言語"), "Faint")], 6)
 	for available in SandboxJob.LANGUAGES:
 		var pick := func() -> void:
 			Settings.language = available
+			Game.remember_profile_settings()
 			Settings.save_file()
 			_build(true)
 		var button := Ui.choice(NAMES[available], Settings.language == available, pick)
 		button.disabled = not available in usable
 		languages.add_child(button)
 	column.add_child(languages)
-	var choices := Ui.hbox([Ui.label("CHALLENGE", "Faint")], 6)
+	var choices := Ui.hbox([Ui.label(_text("CHALLENGE", "難しさ"), "Faint")], 6)
+	var shown_difficulties: Array = Game.display_catalog().config.difficulties
 	for difficulty: Dictionary in session.catalog.config.difficulties:
 		var pick := func() -> void:
 			Settings.difficulty = difficulty.id
+			Game.remember_profile_settings()
 			Settings.save_file()
 			_build(true)
-		var button := Ui.choice(difficulty.name, Settings.difficulty == difficulty.id, pick)
-		button.tooltip_text = difficulty.summary
+		var shown: Dictionary = (
+			shown_difficulties.filter(func(item: Dictionary) -> bool: return item.id == difficulty.id).front()
+		)
+		var button := Ui.choice(shown.name, Settings.difficulty == difficulty.id, pick)
+		button.tooltip_text = shown.summary
 		choices.add_child(button)
 	column.add_child(choices)
 	if usable.is_empty():
 		var missing := "No sandbox is installed, so no spell can run. Run scripts/fetch-sandbox.sh, then restart."
 		column.add_child(Ui.tint(Ui.label(missing, "", true), UiTheme.FAIL))
 	var start := Ui.button(
-		"New run" if session.in_progress() else "Descend", _start, "" if session.in_progress() else "PrimaryButton"
+		_text("New run", "新しい冒険") if session.in_progress() else _text("Descend", "出発する"),
+		_start,
+		"" if session.in_progress() else "PrimaryButton"
 	)
 	start.custom_minimum_size = Vector2(200, 46 if not session.in_progress() else 38)
 	start.disabled = not language in usable
@@ -430,16 +566,16 @@ func _launcher(session: ShardrunSession) -> Control:
 		start.call_deferred("grab_focus")
 	var actions := Ui.hbox([start], 8)
 	if Game.dev_tools():
-		var sandbox := Ui.button("Sandbox run", _start_sandbox)
+		var sandbox := Ui.button(_text("Sandbox run", "実験モード"), _start_sandbox)
 		sandbox.tooltip_text = "A run with the dev drawer: grant shards and relics, spawn foes, jump layers."
 		sandbox.disabled = start.disabled
 		actions.add_child(sandbox)
 	column.add_child(actions)
-	var looks := Ui.button("Choose from %d looks" % Settings.CHARACTER_SKINS.size(), _open_skins)
+	var looks := Ui.button(_text("Choose from %d looks", "%d 種類から選ぶ") % Settings.CHARACTER_SKINS.size(), _open_skins)
 	var history := session.saves.load_history()
 	var commits := Ui.button("git log (%d)" % history.size(), _open_git_log.bind(history))
 	commits.tooltip_text = "Every finished run, as a commit: how it ended, what it dealt, what it carried."
-	column.add_child(Ui.hbox([Ui.label("YOUR LOOK", "Faint"), looks, Ui.spacer(), commits], 8))
+	column.add_child(Ui.hbox([Ui.label(_text("YOUR LOOK", "すがた"), "Faint"), looks, Ui.spacer(), commits], 8))
 	var panel := Ui.panel(column, "Card")
 	panel.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color(0.06, 0.05, 0.06, 0.85), Color(1, 1, 1, 0.06), 1, 10, Vector2(18, 14))
@@ -499,6 +635,9 @@ func _start_sandbox() -> void:
 
 
 func _begin(sandbox: bool) -> void:
+	if Game.profile.get("needs_name", false):
+		_edit_profile(String(Game.profile.id), true)
+		return
 	var difficulties: Array = Game.catalog.config.difficulties
 	var known := difficulties.any(func(d: Dictionary) -> bool: return d.id == Settings.difficulty)
 	Game.session.start(Settings.language, Settings.difficulty if known else String(difficulties[0].id), "", sandbox)

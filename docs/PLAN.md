@@ -227,6 +227,16 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       variants, including the five forged upgrades (`game/ui/archive_panel.gd`, `game/app/shardrun_views.gd`).
 - [ ] Continue through the fifty-five unchecked older relics in reviewable groups, keeping their meanings and colors.
 
+### Profiles and Pip's Trial (ADR-0027)
+- [x] Local profiles with names, preferred UI language, avatar, personal code language and difficulty, Trial flags,
+      run snapshots and finished-run history. The title has a one-click picker, short creation/rename forms and a
+      named delete confirmation; the title and run summary greet the player.
+- [x] Old saves copied and byte-verified into the first profile, with the old folder retained and the name requested.
+      `ROOTWARD_SAVES` continues to work; a corrupt profile cannot hide other players.
+- [ ] A short fixed Trial offered on a new player's first Shardrun and from a title button, replayable and skippable.
+- [ ] Pip's chapters, interactive lessons, real sandbox commands, defeat rewind, and a profile-specific `trial.json`.
+- [ ] English and Japanese Trial text, whole-run tests, a 10–15 minute timing check and screenshots at both sizes.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).
