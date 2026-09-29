@@ -69,3 +69,24 @@ func test_archive_filters_new_constants_and_exposes_upgrades() -> void:
 	archive.queue_free()
 	await get_tree().process_frame
 	await get_tree().process_frame
+
+
+func test_archive_shards_tab_lists_every_base_shard_and_upgrade_art() -> void:
+	var catalog: Dictionary = ContentLoader.load_shardrun().catalog
+	var archive := ArchivePanel.create(catalog)
+	add_child(archive)
+	archive.set("_mode", "spellbook")
+	archive.set("_kind", "cards")
+	archive.call("_rebuild")
+	var list := archive.get("_list") as VBoxContainer
+	assert_int(list.get_child_count()).is_equal(72)
+	assert_str((archive.get("_count") as Label).text).contains("72 shards")
+	var buttons := archive.find_children("*", "Button", true, false)
+	assert_bool(buttons.any(func(button: Button) -> bool: return button.text == "Shards")).is_true()
+	archive.set("_upgraded", true)
+	archive.call("_show_entry", catalog.shards.amplify)
+	var pictures := archive.find_children("*", "TextureRect", true, false)
+	assert_bool(pictures.any(func(picture: TextureRect) -> bool: return picture.texture != null)).is_true()
+	archive.queue_free()
+	await get_tree().process_frame
+	await get_tree().process_frame

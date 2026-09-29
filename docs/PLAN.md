@@ -223,6 +223,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       at 32 pixels and in the Shardrun hand (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-6.json`).
 - [x] Pass 7 shards: all thirty-eight remaining shard icons replaced with clearer effect silhouettes and reviewed at
       32 pixels and in five Shardrun hands (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-7.json`).
+- [x] The Archives labels the Spellforge list “Shards”, exposes all 72 base entries, and resolves art for all 77 shard
+      variants, including the five forged upgrades (`game/ui/archive_panel.gd`, `game/app/shardrun_views.gd`).
 - [ ] Continue through the fifty-five unchecked older relics in reviewable groups, keeping their meanings and colors.
 
 ### Later

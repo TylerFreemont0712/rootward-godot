@@ -31,6 +31,16 @@ func test_everything_the_content_names_is_there() -> void:
 	assert_array(missing).override_failure_message("missing: %s" % [missing]).is_empty()
 
 
+func test_every_shard_and_forge_upgrade_has_art() -> void:
+	var catalog: Dictionary = ContentLoader.load_shardrun().catalog
+	var missing: Array[String] = []
+	for shard_id: String in catalog.shards:
+		var art_id := ShardrunViews.art(catalog.shards[shard_id], shard_id)
+		if Art.texture(art_id) == null:
+			missing.append("%s (%s)" % [shard_id, art_id])
+	assert_array(missing).override_failure_message("missing shard art: %s" % [missing]).is_empty()
+
+
 func test_every_layer_names_music_that_is_there_and_loops() -> void:
 	var loops: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Art.LOOPS))
 	var missing: Array[String] = []

@@ -46,7 +46,7 @@ func _build() -> void:
 			_kind = kind
 			_selected = ""
 			_rebuild()
-		tabs.add_child(Ui.choice(kind.capitalize(), _kind == kind, choose))
+		tabs.add_child(Ui.choice(_kind_name(kind), _kind == kind, choose))
 	tabs.add_child(Ui.spacer())
 	for mode: String in ["program", "spellbook"]:
 		var choose := func() -> void:
@@ -136,7 +136,7 @@ func _refresh() -> void:
 			continue
 		shown.append(item)
 	shown.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return String(a.name).naturalnocasecmp_to(b.name) < 0)
-	_count.text = "%d %s · select an entry to inspect it" % [shown.size(), _kind]
+	_count.text = "%d %s · select an entry to inspect it" % [shown.size(), _kind_name(_kind).to_lower()]
 	if shown.is_empty():
 		Ui.clear(_details)
 		_details.add_child(Ui.label("No matches. Try another name or clear your filters.", "Muted", true))
@@ -205,3 +205,9 @@ func _show_entry(base: Dictionary) -> void:
 func _rebuild() -> void:
 	Ui.clear(self)
 	_build()
+
+
+func _kind_name(kind: String) -> String:
+	if kind == "cards" and _mode == "spellbook":
+		return "Shards"
+	return kind.capitalize()

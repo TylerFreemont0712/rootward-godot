@@ -13,13 +13,17 @@ func _ready() -> void:
 	for i in 4:
 		await get_tree().process_frame
 	match OS.get_environment("ROOTWARD_POLISH"):
-		"archive", "relics", "glossary":
+		"archive", "relics", "glossary", "shards":
 			title.call("_open_archive")
 			var archives := title.find_children("*", "ArchivePanel", true, false)
 			var archive := archives[0] as ArchivePanel
 			var page := OS.get_environment("ROOTWARD_POLISH")
 			if page == "archive":
 				archive.set("_query", "constant")
+			elif page == "shards":
+				archive.set("_mode", "spellbook")
+				archive.set("_kind", "cards")
+				archive.set("_selected", "adapt")
 			else:
 				archive.set("_kind", page)
 			archive.call("_rebuild")

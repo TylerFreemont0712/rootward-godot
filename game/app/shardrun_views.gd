@@ -291,4 +291,8 @@ static func art(shard: Dictionary, id := "") -> String:
 	# shard's.
 	if shard.has("paradigm"):
 		return "shardrun/card-" + String(shard.get("art", shard.get("id", id)))
-	return "shardrun/shard-" + String(shard.get("art", shard.get("id", id)))
+	var shard_art := String(shard.get("art", shard.get("id", id)))
+	if not shard.has("art") and shard_art.ends_with("-plus"):
+		# LEARN: a forged shard changes its effect, not its identity; keep the base shard's picture.
+		shard_art = shard_art.trim_suffix("-plus")
+	return "shardrun/shard-" + shard_art

@@ -389,6 +389,11 @@ The second full shard pass pairs readable forms with mechanics: shields convert 
 pairing, and large targets show foe selection. Effects that depend on a crowd or target still need distinct anchors;
 compare both names together in the hand as well as at card size, and simplify again if their silhouettes converge.
 
+## A forged shard keeps its base icon (`game/app/shardrun_views.gd`)
+The Archives hides `-plus` shards as duplicate rows and opens each upgrade from its base shard. The upgraded entry has
+no separate icon, so `ShardrunViews.art` removes `-plus` and displays the base picture. The same resolver now checks
+all 77 catalog shard variants, while Spellforge labels the card list “Shards” and counts its 72 base entries.
+
 ## A glide that ignores the frame rate (`game/scenes/shardrun/map_view.gd`)
 The map's scroll eases toward where it was asked to go. The usual `lerp(current, target, 0.15)` every frame moves 15%
 of the gap per frame, so a 144 Hz screen glides more than twice as fast as a 60 Hz one. Keeping `exp(-rate * delta)` of
