@@ -1,0 +1,18 @@
+// The Root Compiler (docs/NewEnemies.md, stage 4, the finale). It fights in three phases, changing at 2/3 and 1/3 of its
+// HP, with a turn spent recompiling between them. The first two compile in the trait and intents (power x1.5) of the
+// guardians you beat in the Salvage and the Heap this run; the third is its own: self-hosting, its tempo exactly the
+// work your last program did.
+{
+  "id": "root-compiler",
+  "name": "The Root Compiler",
+  "sprite": "root-compiler",
+  "size": "colossal",
+  "hp": 280,
+  "trait": { "kind": "compiler", "phases": [0.6667, 0.3333], "power": 1.5 },
+  "intents": [
+    { "kind": "strike", "power": 20, "self_hosting": true, "name": "Bootstrap" },
+    { "kind": "shield", "amount": 25, "tempo": 64, "name": "Link" },
+    { "kind": "multi", "power": 8, "times": 3, "self_hosting": true, "name": "Emit" }
+  ],
+  "flavor": "The first program: the one that compiles all the others. It has read every guardian you broke on the way down."
+}

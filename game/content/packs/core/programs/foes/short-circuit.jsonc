@@ -1,0 +1,20 @@
+// The Short Circuit (docs/NewEnemies.md, stage 1). The first attacking bolt at it is tested against this turn's guard:
+// below it (`False and ...`) every later bolt at it in that program never lands; at or above, everything lands and the
+// first bolt deals double. Lead with the biggest bolt.
+{
+  "id": "short-circuit",
+  "name": "The Short Circuit",
+  "sprite": "short-circuit",
+  "size": "huge",
+  "hp": 95,
+  "weak": ["frost"],
+  "resist": ["spark"],
+  "trait": { "kind": "short-circuit", "guards": [8, 12, 16], "bonus": 2.0 },
+  "intents": [
+    { "kind": "strike", "power": 8, "tempo": 64, "name": "Arc" },
+    { "kind": "multi", "power": 3, "times": 3, "tempo": 96, "name": "Surge" },
+    { "kind": "shield", "amount": 10, "tempo": 128, "name": "Ground" },
+    { "kind": "strike", "power": 14, "tempo": 192, "name": "Overload" }
+  ],
+  "flavor": "if bolt >= 12 and ...: if the first test fails, Python never looks at the rest."
+}

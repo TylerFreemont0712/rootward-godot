@@ -18,6 +18,8 @@
   points a run of the game at another folder.
 - Check all content and run every shard's worked examples in the sandbox: `scripts/validate.sh` (`--no-exec` to skip
   the sandbox). Translation coverage: `scripts/locale.sh ja [--missing]`.
+- The Mutator's census (which mutants of each program card still run, ADR-0026): `scripts/mutants.sh`, after changing
+  any program card's code (loading warns when it is stale).
 - Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
 - Assets (pipeline/README.md): `scripts/art.sh --only '<ids>'`, `scripts/audio.sh --only '<ids>'` (`--reprocess` for
   post-processing only, no GPU), `scripts/character.sh <id>` (Blender export, import, screenshots in `shots/`).

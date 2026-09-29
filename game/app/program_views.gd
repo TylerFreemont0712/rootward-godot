@@ -76,6 +76,8 @@ static func run_view(
 	# So is a Quine's (docs/NewEnemies.md): the bolts its fixed point stops, and what its reprint will send back.
 	view.fixed = int(preview.get("fixed", 0))
 	view.reprints = preview.get("reprints", [])
+	# So are the guardians' (ADR-0026): a loop's guard, a riddle, a prediction, dead code, a throw to catch.
+	view.notes = preview.get("notes", [])
 	return view
 
 
@@ -118,4 +120,10 @@ static func code_lines(state: Dictionary, card_ids: Array, view: Dictionary, cat
 		if flagged.has(slot):
 			line.warn = true
 			line.note_colour = UiTheme.WARN
+		# After an Unreachable's `return` (ADR-0026) a call is dead code: it does not run.
+		var cut := ProgramGuardians.dead_from(state.get("battle", {}))
+		if cut >= 0 and slot >= cut:
+			line.note = "dead code: after the return at slot %d" % (cut + 1)
+			line.note_colour = UiTheme.FAINT
+			line.dead = true
 	return lines

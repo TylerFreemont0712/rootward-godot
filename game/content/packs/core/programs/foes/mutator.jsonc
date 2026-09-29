@@ -1,0 +1,18 @@
+// The Mutator (docs/NewEnemies.md, stage 4). `mutate` edits two cards of your deck with a small, real change to their
+// code (`>` becomes `>=`, `max` becomes `min`...), shown as a diff; a mutant runs exactly as written. A program that
+// lands 25 or more on the Mutator kills the mutants in it (your tests caught them): each is restored and deals 10.
+{
+  "id": "mutator",
+  "name": "The Mutator",
+  "sprite": "mutator",
+  "size": "colossal",
+  "hp": 160,
+  "weak": ["fire"],
+  "trait": { "kind": "mutator", "kill_at": 25, "kill_damage": 10 },
+  "intents": [
+    { "kind": "strike", "power": 16, "tempo": 128, "name": "Splice" },
+    { "kind": "mutate", "count": 2, "tempo": 96, "name": "mutate" },
+    { "kind": "shield", "amount": 20, "tempo": 64, "name": "Stitch" }
+  ],
+  "flavor": "A stitched-together chimera that edits your code. Can you read what your own card does now?"
+}

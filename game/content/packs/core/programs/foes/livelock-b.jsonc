@@ -1,0 +1,18 @@
+// The Livelock Twins, "No, After You" (docs/NewEnemies.md, stage 3): the mirror of After You, weak where it resists.
+{
+  "id": "livelock-b",
+  "name": "No, After You",
+  "sprite": "livelock-dancer",
+  "mirror": true,
+  "size": "large",
+  "hp": 90,
+  "weak": ["fire"],
+  "resist": ["frost"],
+  "trait": { "kind": "livelock", "partner": "livelock-a", "enrage": 1.5 },
+  "intents": [
+    { "kind": "strike", "power": 10, "tempo": 64, "name": "Step in" },
+    { "kind": "shield", "amount": 12, "tempo": 48, "name": "After you" },
+    { "kind": "multi", "power": 4, "times": 2, "tempo": 96, "name": "Waltz" }
+  ],
+  "flavor": "Every time you touch one, they trade places."
+}

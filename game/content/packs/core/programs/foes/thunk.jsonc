@@ -1,0 +1,19 @@
+// The Thunk (docs/NewEnemies.md, stage 2). Hits do not reduce its HP: they pile up as pending damage. A bolt of 15 power
+// or more forces evaluation: everything pending lands at once, with the forcing bolt, at +25%. Pending damage never
+// forced halves at the end of each turn. Many small bolts, then one big one last.
+{
+  "id": "thunk",
+  "name": "The Thunk",
+  "sprite": "thunk",
+  "size": "colossal",
+  "hp": 110,
+  "weak": ["spark"],
+  "resist": ["frost"],
+  "trait": { "kind": "lazy", "force": 15, "bonus": 1.25, "decay": 0.5 },
+  "intents": [
+    { "kind": "heal", "amount": 10, "tempo": 256, "name": "Yawn" },
+    { "kind": "strike", "power": 13, "tempo": 192, "name": "Lazy swipe" },
+    { "kind": "shield", "amount": 16, "tempo": 160, "name": "Nap" }
+  ],
+  "flavor": "A dragon too lazy to take damage now. It will take it all later, when something forces it to."
+}

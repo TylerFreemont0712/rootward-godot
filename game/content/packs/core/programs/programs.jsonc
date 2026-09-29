@@ -116,11 +116,25 @@
   // Foe HP for each layer of a program run, in place of the Shardrun's (1, 2.6, 6.8, which Spellforge keeps). Tuned
   // with the balance probe (ADR-0016): the smart bot wins about half its runs, and every paradigm a third or more.
   "foe_hp": [2.4, 3.6, 4.6, 5.4],
-  // A program run's own encounters for a layer, in place of the Shardrun's. The Heap's guardian is the Deadlock Golem
-  // as two locks (ADR-0017): a boss that tests a quality of the program (hitting two targets at once), where the
-  // one-bodied Golem's pattern ward only tested whether you drew this turn's element.
+  // A program run's own encounters for a layer, in place of the Shardrun's. Each layer's guardian is drawn from a pool
+  // of five by the run's seed (docs/NewEnemies.md, ADR-0026), and shown on the map from the start. The Heap's Deadlock
+  // Golem comes as two locks (ADR-0017): a boss that tests a quality of the program (hitting two targets at once).
   "encounters": {
-    "heap": { "boss": [["deadlock-lock-a", "deadlock-lock-b"]] }
+    "salvage": {
+      "boss": [["kiln-warden"], ["ouroboros"], ["unhandled-exception"], ["short-circuit"], ["unreachable"]]
+    },
+    "heap": {
+      "boss": [
+        ["deadlock-lock-a", "deadlock-lock-b"],
+        ["cache-lich"],
+        ["malloc-matron"],
+        ["page-fault-a", "page-fault-b", "page-fault-c"],
+        ["thunk"]
+      ]
+    },
+    "kernel": {
+      "boss": [["root-daemon"], ["call-stack-colossus"], ["int-max"], ["profiler"], ["livelock-a", "livelock-b"]]
+    }
   },
   // A program run goes one layer deeper than Spellforge (docs/NewEnemies.md): the Root, under the Kernel, whose
   // hallways mix the Kernel's worst bugs and whose guardian reprints your own programs. The Kernel's budget holds here.
@@ -154,9 +168,7 @@
           ["fork-bomb", "fork-bomb"],
           ["garbage-collector", "stack-overflow-serpent"]
         ],
-        "boss": [
-          ["the-quine"]
-        ]
+        "boss": [["the-quine"], ["root-compiler"], ["mutator"], ["karp"], ["halting-oracle"]]
       }
     }
   ],

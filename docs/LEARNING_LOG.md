@@ -395,3 +395,16 @@ Rooms sit a little off the grid so the map reads as a place. Drawing those offse
 the stream the rules depend on (and the reference results). `hash(room_id)` is the same number on every run for the
 same String, so its low bytes make a nudge that never moves and never touches the rules.
 
+
+## Wrapping into a signed byte (`game/core/programs/guardian_landing.gd`)
+INT_MAX stores each bolt's damage in a signed byte, -128 to 127. The wrap is one line: `posmod(damage + 128, 256) - 128`.
+Shifting by 128 moves the range to 0..255, `posmod` wraps any number into it (unlike `%`, it never returns a negative),
+and shifting back gives what two's complement hardware does: 128 becomes -128, 200 becomes -56. Its Count intent
+doubles 16, 32, 64, and 128 is exactly where it wraps too, so the boss's own overflow is the same rule.
+
+## Hard to find, easy to check (`game/core/programs/guardian_landing.gd`)
+Karp asks for bolts that add up to exactly its target: subset sum, an NP-complete problem. The check builds a table of
+reachable totals (`came[total] = [value's position, total before]`), one pass per value, so it costs values × target
+steps and can walk back to the bolts that made the total. That is the lesson the boss teaches: finding the answer may
+be hard in general, but checking a proposed answer (the volley you landed) is cheap. Keys are visited from a snapshot
+(`came.keys()` before the loop adds to it), so one value is never used twice in the same total.

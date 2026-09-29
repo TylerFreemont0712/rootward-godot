@@ -1,0 +1,18 @@
+// Malloc, the Heap Matron (docs/NewEnemies.md, stage 2). `malloc()` allocates a Heap Block beside her; each living block
+// gives her 3 shield at the start of every turn, and at 5 blocks she runs Out of Memory: 6 per block, and every block is
+// freed. Breaking a block yourself is `free()`: 3 block for you. When she falls, her blocks are freed with her.
+{
+  "id": "malloc-matron",
+  "name": "Malloc, the Heap Matron",
+  "sprite": "malloc-matron",
+  "size": "huge",
+  "hp": 95,
+  "resist": ["spark"],
+  "trait": { "kind": "allocator", "shield_per": 3, "limit": 5, "oom_power": 6 },
+  "intents": [
+    { "kind": "summon", "foe": "heap-block", "tempo": 48, "name": "malloc()" },
+    { "kind": "strike", "power": 10, "tempo": 160, "name": "Bite" },
+    { "kind": "realloc", "amount": 4, "tempo": 128, "name": "realloc()" }
+  ],
+  "flavor": "A spider of glass and brass. Every turn she allocates another block, and she never frees anything."
+}

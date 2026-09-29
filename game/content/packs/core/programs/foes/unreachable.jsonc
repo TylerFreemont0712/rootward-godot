@@ -1,0 +1,18 @@
+// The Unreachable (docs/NewEnemies.md, stage 1). Each turn it buries a `return` at a slot of your Program: cards in
+// that slot or later are dead code. They do not run and still cost their mana. Imports are lines at the top and keep
+// working. The most from the fewest cards.
+{
+  "id": "unreachable",
+  "name": "The Unreachable",
+  "sprite": "unreachable",
+  "size": "huge",
+  "hp": 105,
+  "weak": ["fire"],
+  "trait": { "kind": "unreachable", "returns": [5, 4, 3, 4] },
+  "intents": [
+    { "kind": "strike", "power": 9, "tempo": 96, "name": "Dig" },
+    { "kind": "shield", "amount": 12, "tempo": 64, "name": "Bury" },
+    { "kind": "multi", "power": 4, "times": 2, "tempo": 128, "name": "Epitaph" }
+  ],
+  "flavor": "A gravekeeper who plants a return in your function. Everything written after it is dead code."
+}

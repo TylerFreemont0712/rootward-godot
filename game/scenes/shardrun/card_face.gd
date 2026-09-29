@@ -73,6 +73,24 @@ static func create(
 	return card
 
 
+## The Mutator edited this card for the fight (ADR-0026): a chip on its face, the edit among its tags, and the code its
+## details show is the mutant's, the code that will run.
+func mark_mutant(battle: Dictionary) -> void:
+	var mutant: Dictionary = (battle.get("mutants", {}) as Dictionary).get(shard_id, {})
+	if mutant.is_empty():
+		return
+	shard = shard.duplicate(true)
+	(shard.code as Dictionary)[language] = ProgramGuardians.code_of(shard, language, battle)
+	_tags.append("MUTANT: %s" % String(mutant.get("name", "edited")))
+	var chip := Ui.panel(Ui.sized(Ui.tint(Ui.label("MUTANT", ""), UiTheme.FAIL), 11), "Chip")
+	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(chip)
+	# Over the art's top right corner, clear of the cost (top left) and the name.
+	chip.size = chip.get_combined_minimum_size()
+	var window := box("art", custom_minimum_size)
+	chip.position = Vector2(window.end.x - chip.size.x - 2.0, window.position.y + 2.0)
+
+
 ## An empty place a card can be dropped into (the Program's open slot, the hold's free place).
 static func slot(at: Dictionary, label: String, size_kind: Size) -> CardFace:
 	var card := CardFace.new()

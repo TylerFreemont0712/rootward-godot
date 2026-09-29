@@ -5,8 +5,8 @@ cycled for the different stages … gimmicks that are related to programming tha
 approaches a fight."* It also asked for a fourth stage after the Kernel, and a final score at the end of a run. Then:
 *"how about 2 more for each level? Starting to realize that 3 is just a little bit too small of a pool."*
 
-This file is the design. What is built so far is marked **(built)**; the rest is a proposal for the player to accept,
-cut or change. Art is a placeholder from ComfyUI in each boss's in-game sprite slot (`game/assets/foes/<id>.png`,
+This file is the design. All sixteen are built (ADR-0026): each layer's pool of five is drawn by the run's seed. Where
+the build differs from the design, ADR-0026 says so. Art is a placeholder from ComfyUI in each boss's in-game sprite slot (`game/assets/foes/<id>.png`,
 prompts in `pipeline/art/manifest.json` under `foe-<id>`). Better art comes later.
 
 ## How bosses cycle

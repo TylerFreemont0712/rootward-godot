@@ -1,0 +1,18 @@
+// The Page Fault, page C (docs/NewEnemies.md, stage 2): one of three pages, only one resident at a time. A bolt at
+// a page that is not resident is a page fault: it does nothing and swaps that page in. A swapped-out page cannot strike;
+// its Swap mends the pages swapped out. At the end of each turn the page out longest swaps in.
+{
+  "id": "page-fault-c",
+  "name": "Page C",
+  "sprite": "page-fault",
+  "size": "large",
+  "hp": 40,
+  "weak": ["fire"],
+  "trait": { "kind": "paged", "group": "page-fault" },
+  "intents": [
+    { "kind": "strike", "power": 12, "tempo": 128, "name": "Read" },
+    { "kind": "mend-swapped", "amount": 8, "tempo": 96, "name": "Swap" },
+    { "kind": "multi", "power": 4, "times": 3, "tempo": 64, "name": "Flutter" }
+  ],
+  "flavor": "A spellbook with three pages, and only one of them is in memory at a time."
+}

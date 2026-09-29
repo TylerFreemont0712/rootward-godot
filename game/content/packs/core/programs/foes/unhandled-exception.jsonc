@@ -1,0 +1,20 @@
+// The Unhandled Exception (docs/NewEnemies.md, stage 1). Its throws are caught by block at least their power: you take
+// nothing, the block is spent, and the exception bounces back at 150%. A throw not caught hits, and the stack trace
+// grows (+2 to every later throw, at most +8). `finally:` is a plain strike: nothing catches it.
+{
+  "id": "unhandled-exception",
+  "name": "The Unhandled Exception",
+  "sprite": "unhandled-exception",
+  "size": "huge",
+  "hp": 90,
+  "weak": ["spark"],
+  "resist": ["fire"],
+  "trait": { "kind": "stack-trace", "grow": 2, "max": 8, "bounce": 1.5 },
+  "intents": [
+    { "kind": "throw", "power": 10, "tempo": 128, "name": "raise ValueError" },
+    { "kind": "shield", "amount": 10, "tempo": 96, "name": "try:" },
+    { "kind": "throw", "power": 13, "tempo": 160, "name": "raise TypeError" },
+    { "kind": "strike", "power": 9, "tempo": 64, "name": "finally:" }
+  ],
+  "flavor": "raise ValueError(\"…\"). Catch one, and it goes back where it came from."
+}

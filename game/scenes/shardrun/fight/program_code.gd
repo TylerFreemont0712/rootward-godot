@@ -145,10 +145,13 @@ func _summary(view: Dictionary, cards: Array) -> String:
 		var seed := ProgramRules.seed(session.state, session.catalog)
 		var noun := "bolt" if seed.size() == 1 else "bolts"
 		var total := int(_power_of(seed))
-		return (
+		var empty := (
 			"An empty program still casts its seed: %d %s (%d power) at the front foe. Play cards to write more."
 			% [seed.size(), noun, total]
 		)
+		for note: String in view.get("notes", []):
+			empty += "\n" + note
+		return empty
 	if view.is_empty():
 		return "Running it in the sandbox…"
 	if view.has("misfire"):
@@ -173,6 +176,8 @@ func _summary(view: Dictionary, cards: Array) -> String:
 	for echo: Dictionary in view.get("reprints", []):
 		var hits := int(echo.hits)
 		parts.append("⎘ %s will reprint %d bolts: %d damage." % [echo.name, hits, hits * int(echo.power)])
+	for note: String in view.get("notes", []):
+		parts.append(note)
 	var caught := race.filter(func(entry: Dictionary) -> bool: return not entry.first)
 	var bonus := roundi((ProgramRules.initiative(session.state, session.catalog) - 1.0) * 100.0)
 	if not caught.is_empty() and bonus > 0:

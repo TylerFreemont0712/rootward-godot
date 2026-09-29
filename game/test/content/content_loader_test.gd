@@ -12,7 +12,8 @@ func test_the_content_loads_without_errors() -> void:
 	assert_int((loaded.catalog.relics as Dictionary).size()).is_equal(47)
 	assert_int((loaded.catalog.foes as Dictionary).size()).is_equal(15)
 	# The program run's own foes live beside the Shardrun's, never among them (ADR-0017).
-	assert_int((loaded.catalog.programs.foes as Dictionary).size()).is_equal(3)
+	# The Golem's two locks, and the guardian pool (ADR-0026): sixteen guardians, the Heap Block and the pages.
+	assert_int((loaded.catalog.programs.foes as Dictionary).size()).is_equal(23)
 
 
 func test_broken_content_is_reported() -> void:

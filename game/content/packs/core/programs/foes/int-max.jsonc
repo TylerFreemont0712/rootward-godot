@@ -1,0 +1,19 @@
+// INT_MAX, the Overflow Titan (docs/NewEnemies.md, stage 3). Every bolt's damage to it is a signed byte: above 127 it
+// wraps (128 is -128, 200 is -56), and a negative number heals it. Its Count doubles each time it is used, 16, 32, 64,
+// and at 128 it wraps too: an overflow fault stuns it instead, and the count starts over.
+{
+  "id": "int-max",
+  "name": "INT_MAX",
+  "sprite": "int-max",
+  "size": "colossal",
+  "hp": 210,
+  "weak": ["frost"],
+  "resist": ["fire"],
+  "trait": { "kind": "int8" },
+  "intents": [
+    { "kind": "count", "power": 16, "wrap": 128, "tempo": 160, "name": "Count" },
+    { "kind": "shield", "amount": 20, "tempo": 96, "name": "Cool down" },
+    { "kind": "multi", "power": 6, "times": 3, "tempo": 128, "name": "Carry the one" }
+  ],
+  "flavor": "Its chest is a counter that has been going up for a very long time. Hit it too hard and the number wraps."
+}

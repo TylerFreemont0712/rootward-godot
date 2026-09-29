@@ -274,7 +274,8 @@ func test_the_preview_counts_the_bolts_a_lock_holds() -> void:
 
 
 func test_a_program_run_meets_the_golem_as_two_locks() -> void:
-	assert_array(_heap(catalog).encounters.boss).is_equal([["deadlock-lock-a", "deadlock-lock-b"]])
+	# The Golem, as two locks, is one of the Heap's pool of five (ADR-0026).
+	assert_array(_heap(catalog).encounters.boss).contains([["deadlock-lock-a", "deadlock-lock-b"]])
 	# Spellforge's Heap keeps its one-bodied Golem.
 	assert_array(_heap(ContentLoader.load_shardrun().catalog).encounters.boss).is_equal([["deadlock-golem"]])
 	for id: String in ["deadlock-lock-a", "deadlock-lock-b"]:
@@ -360,7 +361,7 @@ func test_a_program_run_goes_on_to_the_root() -> void:
 	assert_int(layers.size()).is_equal(4)
 	var root: Dictionary = layers[3]
 	assert_str(String(root.id)).is_equal("root")
-	assert_array(root.encounters.boss).is_equal([["the-quine"]])
+	assert_array(root.encounters.boss).contains([["the-quine"], ["root-compiler"]])
 	assert_float(float(root.foe_hp)).is_equal(5.4)
 	assert_str(String(catalog.foes["the-quine"].trait.kind)).is_equal("quine")
 	# Spellforge still ends at the Kernel.

@@ -1,0 +1,28 @@
+// The Profiler (docs/NewEnemies.md, stage 3). Every program's damage to it is multiplied by the program's slowest
+// complexity class: 1.5 for O(1) and O(log n), down to 0.25 for O(2^n). The code panel marks the hot path.
+{
+  "id": "profiler",
+  "name": "The Profiler",
+  "sprite": "profiler",
+  "size": "colossal",
+  "hp": 200,
+  "trait": {
+    "kind": "profiler",
+    "factors": {
+      "constant": 1.5,
+      "logarithmic": 1.5,
+      "linear": 1.25,
+      "linearithmic": 1.0,
+      "pseudo": 0.75,
+      "quadratic": 0.5,
+      "exponential": 0.25
+    }
+  },
+  "intents": [
+    { "kind": "strike", "power": 12, "tempo": 96, "name": "Sample" },
+    { "kind": "multi", "power": 5, "times": 3, "tempo": 128, "name": "Flame graph" },
+    { "kind": "shield", "amount": 18, "tempo": 64, "name": "Optimise" },
+    { "kind": "stoke", "tempo": 160, "name": "Regress" }
+  ],
+  "flavor": "A clockwork owl with a stopwatch for a heart. It times your program, and slow code barely scratches it."
+}

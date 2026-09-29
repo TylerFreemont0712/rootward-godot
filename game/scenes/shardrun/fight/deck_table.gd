@@ -297,6 +297,9 @@ func _card(id: String, at: Dictionary, size_kind: CardFace.Size, summaries: bool
 	var face := CardFace.create(id, session.catalog, session.state.language, summaries, size_kind, at)
 	face.moved = _move
 	face.pressed = _press
+	var battle: Dictionary = session.state.get("battle", {})
+	if (battle.get("mutants", {}) as Dictionary).has(id):
+		face.mark_mutant(battle)
 	return face
 
 

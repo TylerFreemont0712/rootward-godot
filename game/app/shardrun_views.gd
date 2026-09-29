@@ -87,20 +87,25 @@ static func intent_text(foe: Dictionary) -> String:
 	if intents.is_empty():
 		return "Watching"
 	var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
+	# The guardian pool's intents and states (ADR-0026) have words of their own.
+	var special := GuardianViews.intent_text(foe, intent)
+	if special != "":
+		return special
+	var text := "Watching"
 	match intent.kind:
 		"strike":
-			return "Strike for %d" % (int(intent.power) * (2 if foe.get("stoked", false) else 1))
+			text = "Strike for %d" % (int(intent.power) * (2 if foe.get("stoked", false) else 1))
 		"multi":
-			return "Strike %d times for %d" % [int(intent.times), int(intent.power)]
+			text = "Strike %d times for %d" % [int(intent.times), int(intent.power)]
 		"shield":
-			return "Shield %d" % int(intent.amount)
+			text = "Shield %d" % int(intent.amount)
 		"stoke":
-			return "Stoke: its next strike doubles"
+			text = "Stoke: its next strike doubles"
 		"heal":
-			return "Heal %d" % int(intent.amount)
+			text = "Heal %d" % int(intent.amount)
 		"reprint":
-			return "Reprint: %d per bolt of your last program" % int(intent.power)
-	return "Watching"
+			text = "Reprint: %d per bolt of your last program" % int(intent.power)
+	return GuardianViews.named(intent, text)
 
 
 static func intent_kind(foe: Dictionary) -> String:
@@ -142,7 +147,7 @@ static func trait_view(foe: Dictionary) -> Dictionary:
 					+ "Once one breaks, the other is free."
 				),
 			}
-	return {}
+	return GuardianViews.trait_view(foe)
 
 
 ## Each room's place in the walk: "current", "visited", "open" (enterable now), "passed" or "ahead".
@@ -262,6 +267,10 @@ static func incoming(state: Dictionary) -> int:
 			continue
 		var intents: Array = foe.intents
 		var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
+		var pool := GuardianViews.incoming(foe, intent)
+		if pool >= 0:
+			total += pool
+			continue
 		if intent.kind == "strike":
 			total += int(intent.power) * (2 if foe.get("stoked", false) else 1)
 		elif intent.kind == "multi":

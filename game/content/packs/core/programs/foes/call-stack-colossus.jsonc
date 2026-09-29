@@ -1,0 +1,17 @@
+// The Call Stack Colossus (docs/NewEnemies.md, stage 3). A stack of frames, each with its own HP; bolts land on the top
+// frame, a broken frame is popped, and damage past a frame is lost. Every turn nothing was popped it pushes another
+// eval() frame; at 8 frames it overflows (25 to you) and drops back to 4. Its HP is the frames' sum.
+{
+  "id": "call-stack-colossus",
+  "name": "The Call Stack Colossus",
+  "sprite": "call-stack-colossus",
+  "size": "colossal",
+  "hp": 145,
+  "trait": { "kind": "call-stack", "frames": [50, 35, 30, 30], "push": 30, "overflow": 8, "overflow_power": 25, "reset": 4 },
+  "intents": [
+    { "kind": "strike", "power": 14, "tempo": 192, "name": "Crush" },
+    { "kind": "multi", "power": 5, "times": 3, "tempo": 128, "name": "Unwind" },
+    { "kind": "shield", "amount": 18, "tempo": 96, "name": "return" }
+  ],
+  "flavor": "A tower of stone frames. Only the top one can be touched, and every turn it calls itself again."
+}

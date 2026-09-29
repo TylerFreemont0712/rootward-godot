@@ -73,6 +73,71 @@ static func _run(language: String, noun: String, shards: Array, same: Callable, 
 	return diagnostics
 
 
+## The Mutator's census (ADR-0026): for every program card, the mutation operators (ProgramMutants) whose mutant still
+## runs all of the card's worked examples in `language` without crashing or hanging. A mutant may return other bolts
+## (that is the point of it); one that fails would make the whole program fail, a harsher edit than the Mutator means,
+## so the fight only draws mutants from this list. One sandbox job a card. Returns {card id: [operator indices]}.
+## Blocks.
+static func mutant_census(catalog: Dictionary, language: String) -> Dictionary:
+	var census := {}
+	var cards: Dictionary = (catalog.get("programs", {}) as Dictionary).get("cards", {})
+	for card: Dictionary in ShardrunCatalog.sorted_values(cards):
+		var code := String((card.code as Dictionary).get(language, ""))
+		var spells: Array[Dictionary] = []
+		var by_op := {}
+		for op in ProgramMutants.OPERATORS.size():
+			var mutant := ProgramMutants.mutate(code, language, op)
+			if mutant.is_empty() or int(mutant.op) != op:
+				continue
+			var mine := _mutant_spells(card, language, String(mutant.code), op)
+			by_op[op] = mine
+			spells.append_array(mine)
+		var safe: Array[int] = []
+		if spells.is_empty():
+			census[card.id] = safe
+			continue
+		var runs := _run_quick(language, spells)
+		for op: int in by_op:
+			var mine: Array[Dictionary] = by_op[op]
+			if mine.all(
+				func(spell: Dictionary) -> bool: return (runs.get(spell.id, {}) as Dictionary).get("ok", false)
+			):
+				safe.append(op)
+		census[card.id] = safe
+	return census
+
+
+static func _mutant_spells(card: Dictionary, language: String, code: String, op: int) -> Array[Dictionary]:
+	var changed := card.duplicate(true)
+	changed.code[language] = code
+	var spells: Array[Dictionary] = []
+	for i in (card.examples as Array).size():
+		var example: Dictionary = card.examples[i]
+		(
+			spells
+			. append(
+				{
+					"id": "%s~%d#%d" % [card.id, op, i],
+					"shards": [changed],
+					"bolts": example.bolts,
+					"battle": example.get("battle", DEFAULT_BATTLE),
+				}
+			)
+		)
+	return spells
+
+
+## A job with a short leash: a mutant that loops forever times out quickly (the harness then runs each spell alone, so
+## the timeout lands on that mutant) instead of holding the census up.
+static func _run_quick(language: String, spells: Array[Dictionary]) -> Dictionary:
+	var input := {"bolts": [], "battle": DEFAULT_BATTLE, "limit": EXAMPLE_BOLT_LIMIT, "trace_limit": 1, "count": true}
+	var limits := SandboxJob.new()
+	limits.time_ms = 1500
+	limits.wall_ms = 4000
+	limits.output_kb = 2048
+	return SpellHarness.run(language, spells, input, limits)
+
+
 ## A program card's bolts ({power, element, foe?, block?}) match when every field does, the power within a rounding
 ## error and `block: false` the same as no block at all.
 static func same_program_bolts(actual: Array, expected: Array) -> bool:

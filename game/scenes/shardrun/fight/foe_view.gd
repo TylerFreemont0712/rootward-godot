@@ -9,7 +9,27 @@ const SIZES := {"small": 112.0, "medium": 150.0, "large": 195.0, "huge": 405.0, 
 const HEIGHTS := {"small": 0.43, "medium": 0.52, "large": 0.63, "huge": 0.72, "colossal": 0.76}
 ## Every foe but a guardian drawn this much of its size: at full size the hallway foes crowded the arena.
 const HALLWAY_SCALE := 0.9
-const INTENT_GLYPHS := {"strike": "⚔", "multi": "⚔", "shield": "◈", "stoke": "▲", "heal": "✚", "reprint": "⎘"}
+const MINION_SCALE := 0.6
+const INTENT_GLYPHS := {
+	"strike": "⚔",
+	"multi": "⚔",
+	"shield": "◈",
+	"stoke": "▲",
+	"heal": "✚",
+	"reprint": "⎘",
+	"loop": "↻",
+	"throw": "⚠",
+	"count": "⚔",
+	"summon": "✚",
+	"realloc": "✚",
+	"mend-swapped": "✚",
+	"mutate": "🧬",
+	"idle": "·",
+}
+## The guardian pool's chips (GuardianViews.chips), by tone.
+const TONES := {
+	"warn": UiTheme.WARN, "teal": UiTheme.TEAL, "shard": UiTheme.SHARD, "faint": UiTheme.FAINT, "fire": Color("#ff9147")
+}
 
 var uid := ""
 ## Part of a guardian fight: drawn at full size (HALLWAY_SCALE is for everything else).
@@ -113,6 +133,8 @@ func show_foe(foe_state: Dictionary) -> void:
 		_tags.add_child(_tag("now: " + element, UiTheme.element(element), "This turn, %s hits in full." % element))
 	if foe_state.get("stoked", false):
 		_tags.add_child(_tag("stoked", UiTheme.ELEMENTS.fire, "Its next strike hits twice as hard."))
+	for chip: Dictionary in GuardianViews.chips(foe_state):
+		_tags.add_child(_tag(String(chip.text), TONES.get(chip.tone, UiTheme.WARN), String(chip.tip)))
 
 
 ## The intent's speed in a program run: it acts before a program that does more work than this.
@@ -132,7 +154,7 @@ func _show_intent() -> void:
 	_intent.text = "%s  %s" % [INTENT_GLYPHS.get(kind, "·"), ShardrunViews.intent_text(foe)]
 	if tempo > 0:
 		_intent.text += "   ⚡%d ops" % tempo
-	var danger := kind in ["strike", "multi", "reprint"]
+	var danger := kind in ["strike", "multi", "reprint", "loop", "throw", "count"]
 	_intent.add_theme_color_override("font_color", UiTheme.FAIL.lightened(0.2) if danger else UiTheme.TEXT)
 
 
@@ -170,6 +192,9 @@ func _tag(text: String, colour: Color, tip: String) -> Control:
 ## Resize the image itself, preserving aspect and floor alignment; text remains readable at every window size.
 func fit_arena(height: float, width: float) -> void:
 	var share := float(HEIGHTS.get(_size_name, 0.52)) * (1.0 if guardian else HALLWAY_SCALE)
+	# A foe another allocated (Malloc's blocks, ADR-0026) stands small beside its maker.
+	if foe.has("owner"):
+		share *= MINION_SCALE
 	var drawn_height := minf(height * share, width / _aspect)
 	var drawn := Vector2(drawn_height * _aspect, drawn_height)
 	_holder.custom_minimum_size = drawn

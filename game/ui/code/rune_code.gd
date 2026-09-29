@@ -107,8 +107,9 @@ func _init() -> void:
 	resized.connect(_layout)
 
 
-## Shows these lines ([{text, key, note?, note_colour?, warn?}]). A line whose key is new, or whose text changed, is
-## written in with runes when `animate`; the others stay as they are. Returns the index of the first new line, or -1.
+## Shows these lines ([{text, key, note?, note_colour?, warn?, dead?}]). A line whose key is new, or whose text
+## changed, is written in with runes when `animate`; the others stay as they are. Returns the index of the first new
+## line, or -1.
 func show_lines(lines: Array[Dictionary], animate := true) -> int:
 	var old := {}
 	for line in _lines:
@@ -128,6 +129,12 @@ func show_lines(lines: Array[Dictionary], animate := true) -> int:
 			"note_colour": source.get("note_colour", UiTheme.FAINT),
 			"warn": bool(source.get("warn", false)),
 		}
+		if source.get("dead", false):
+			# Dead code (after an Unreachable's `return`, ADR-0026): written, greyed, never run.
+			var faded := PackedColorArray()
+			faded.resize(text.length())
+			faded.fill(Color(UiTheme.FAINT, 0.55))
+			line.colours = faded
 		var was: Dictionary = old.get(source.key, {})
 		if not was.is_empty() and was.text == text:
 			line.born = was.born

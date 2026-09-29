@@ -1,0 +1,28 @@
+// The Halting Oracle (docs/SHARDRUN_DESIGN.md 6.3, docs/NewEnemies.md, stage 4). Each turn it predicts a property of your
+// program ("fewer than 8 bolts", "slower than O(n)"...). If the program you run has it, the prediction was right: the
+// Oracle takes nothing, and half of what it would have taken is reflected at you. Write the program it did not predict.
+{
+  "id": "halting-oracle",
+  "name": "The Halting Oracle",
+  "sprite": "halting-oracle",
+  "size": "colossal",
+  "hp": 175,
+  "trait": {
+    "kind": "oracle",
+    "predictions": [
+      { "check": "bolts-under", "value": 8 },
+      { "check": "slower-than", "class": "linear" },
+      { "check": "slower-than", "class": "linearithmic" },
+      { "check": "has-element", "element": "fire" },
+      { "check": "bolts-under", "value": 5 },
+      { "check": "has-element", "element": "frost" }
+    ],
+    "reflect": 0.5
+  },
+  "intents": [
+    { "kind": "strike", "power": 15, "tempo": 128, "name": "Verdict" },
+    { "kind": "shield", "amount": 18, "tempo": 96, "name": "Foresee" },
+    { "kind": "multi", "power": 5, "times": 3, "tempo": 160, "name": "Undecidable" }
+  ],
+  "flavor": "It knows whether your program halts. It only has to be right about the one you run."
+}

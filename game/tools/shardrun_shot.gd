@@ -8,7 +8,8 @@ extends Control
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs), layer (a
 ##   sandbox run jumped to ROOTWARD_SHOT_LAYER, the deepest by default: its map, or a fight there with the foes below).
 ##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the guardian at the top);
-##   ROOTWARD_SHOT_DRAWER=closed folds its route drawer, ROOTWARD_SHOT_DECK=1 opens the deck over it
+##   ROOTWARD_SHOT_DRAWER=closed folds its route drawer, ROOTWARD_SHOT_DECK=1 opens the deck over it, and
+##   ROOTWARD_SHOT_TURNS ends that many turns of a fight first
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
 ## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare; ROOTWARD_SHOT_RELICS
 ## (ids) grants those relics first, in such a run (the header's relics, rung by tier). ROOTWARD_SHOT_FOES (ids) puts
@@ -269,6 +270,9 @@ func _act(shot: String, screen: Control) -> void:
 					map.jump_to(float(OS.get_environment("ROOTWARD_SHOT_SCROLL")))
 			if OS.get_environment("ROOTWARD_SHOT_DECK") == "1":
 				screen.call("_open_deck")
+			# ROOTWARD_SHOT_TURNS ends that many turns first (a guardian's turns played out: a summon, a push).
+			for i in int(OS.get_environment("ROOTWARD_SHOT_TURNS")):
+				await screen.call("send", {"type": "end-turn"})
 		"enemy_tip", "relic_tip":
 			var desired := "Deadlock" if shot == "enemy_tip" else "Overclock"
 			for tip: HoverInfo in screen.find_children("*", "HoverInfo", true, false):

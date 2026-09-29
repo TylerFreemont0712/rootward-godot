@@ -1,0 +1,20 @@
+// The Cache Lich (docs/NewEnemies.md, stage 2). It remembers the last 6 different bolt powers that hit it (8 below half
+// its HP). A bolt whose power is cached is a hit: it deals nothing and moves to the front. A miss hurts in full and
+// pushes out the least recently used. Many different values beat many equal ones.
+{
+  "id": "cache-lich",
+  "name": "The Cache Lich",
+  "sprite": "cache-lich",
+  "size": "huge",
+  "hp": 85,
+  "weak": ["fire"],
+  "resist": ["frost"],
+  "trait": { "kind": "lru-cache", "size": 6, "warm_size": 8 },
+  "intents": [
+    { "kind": "strike", "power": 11, "tempo": 128, "name": "Recall" },
+    { "kind": "shield", "amount": 12, "tempo": 96, "name": "Warm the cache" },
+    { "kind": "heal", "amount": 14, "tempo": 192, "name": "Memoize" },
+    { "kind": "multi", "power": 4, "times": 3, "tempo": 64, "name": "Prefetch" }
+  ],
+  "flavor": "Six glowing cubes orbit it. Ask it something it already knows and it does not even look up."
+}

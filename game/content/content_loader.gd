@@ -38,7 +38,7 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 		"relics": {},
 		"balance": balance,
 		"sandbox": sandbox,
-		"programs": {"config": {}, "cards": {}, "relics": {}, "foes": {}},
+		"programs": {"config": {}, "cards": {}, "relics": {}, "foes": {}, "mutants": {}},
 	}
 	var programs_file := ""
 	var run_file := ""
@@ -52,6 +52,12 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 			# The program run's own foes (ADR-0017), beside the Shardrun's: the old engine's catalog stays as it was.
 			var foes: Dictionary = catalog.programs.foes
 			_load_kind(programs_dir.path_join("foes"), ProgramSchemas.foe(), foes, "foe", diagnostics)
+			# The Mutator's census (ADR-0026, scripts/mutants.sh): the mutants a fight may draw.
+			var mutants_file := programs_dir.path_join("mutants.jsonc")
+			if FileAccess.file_exists(mutants_file):
+				catalog.programs.mutants = _checked(
+					ProgramSchemas.mutants(), _read(mutants_file, diagnostics), mutants_file, "", diagnostics
+				)
 			var config_file := programs_dir.path_join("programs.jsonc")
 			if FileAccess.file_exists(config_file):
 				programs_file = config_file

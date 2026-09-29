@@ -53,7 +53,7 @@ func finished(state: Dictionary, spell: Dictionary) -> Dictionary:
 	var input := input_for(state)
 	if input.is_empty():
 		return {}
-	if _steps(spell).is_empty():
+	if _steps(spell, input).is_empty():
 		return empty_run(input)
 	return _done.get(key_of(state, spell, input), {})
 
@@ -68,7 +68,7 @@ func runs_for(state: Dictionary, spells: Array) -> Dictionary:
 	var missing: Array[Dictionary] = []
 	var keys := {}
 	for spell: Dictionary in spells:
-		if _steps(spell).is_empty():
+		if _steps(spell, input).is_empty():
 			results[spell.id] = empty_run(input)
 			continue
 		var key := key_of(state, spell, input)
@@ -95,10 +95,16 @@ func _run_batch(language: String, spells: Array[Dictionary], input: Dictionary, 
 	var programs: Array[Dictionary] = []
 	for spell in spells:
 		var shards: Array[Dictionary] = []
-		var steps := _steps(spell)
+		var steps := _steps(spell, input)
+		var mutants: Dictionary = input.get("mutants", {})
 		for shard_id: String in steps:
 			if catalog.shards.has(shard_id):
-				shards.append(catalog.shards[shard_id])
+				var shard: Dictionary = catalog.shards[shard_id]
+				if mutants.has(shard_id):
+					# The Mutator's edit (ADR-0026): the card runs as changed, so its preview is the mutant's truth.
+					shard = shard.duplicate(true)
+					shard.code[language] = ProgramGuardians.code_of(shard, language, {"mutants": mutants})
+				shards.append(shard)
 		if shards.size() != steps.size():
 			runs[spell.id] = _failure("one of its shards no longer exists")
 		else:
@@ -153,7 +159,7 @@ func input_for(state: Dictionary) -> Dictionary:
 		var seen := ShardrunRules.shard_battle(state, battle)
 		seen.imports = ProgramDeck.modules(state, catalog)
 		seen.globals = (battle.get("globals", {}) as Dictionary).duplicate()
-		return {
+		var input := {
 			"bolts": ProgramRules.seed(state, catalog),
 			"battle": seen,
 			"limit": int(config.max_bolts),
@@ -161,6 +167,14 @@ func input_for(state: Dictionary) -> Dictionary:
 			"count": true,
 			"hooks": ProgramRelics.modifiers(state, catalog).hooks,
 		}
+		# The guardians' edits to what runs (ADR-0026), in the input so they are part of the run's key: the step an
+		# Unreachable's `return` cuts at, and the Mutator's mutants.
+		var cut := ProgramGuardians.dead_from(battle)
+		if cut >= 0:
+			input.dead_from = cut
+		if not (battle.get("mutants", {}) as Dictionary).is_empty():
+			input.mutants = (battle.mutants as Dictionary).duplicate(true)
+		return input
 	return {
 		"bolts": [ShardrunRules.base_bolt(balance)],
 		"battle": ShardrunRules.shard_battle(state, battle),
@@ -169,9 +183,12 @@ func input_for(state: Dictionary) -> Dictionary:
 	}
 
 
-## The cards of a spell that run as its steps: a program's imports are lines at its top, not steps (ADR-0018).
-func _steps(spell: Dictionary) -> Array:
-	return ProgramDeck.steps(spell.shards, catalog)
+## The cards of a spell that run as its steps: a program's imports are lines at its top, not steps (ADR-0018), and the
+## cards after an Unreachable's `return` are dead code (ADR-0026).
+func _steps(spell: Dictionary, input: Dictionary = {}) -> Array:
+	var steps := ProgramDeck.steps(spell.shards, catalog)
+	var cut := int(input.get("dead_from", -1))
+	return steps.slice(0, cut) if cut >= 0 else steps
 
 
 static func key_of(state: Dictionary, spell: Dictionary, input: Dictionary) -> String:

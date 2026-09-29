@@ -1,0 +1,19 @@
+// Karp, the NP Koi (docs/NewEnemies.md, stage 4). Each turn it names a target. If some of the attacking bolts landing on
+// it add up to exactly the target, that is a certificate: those bolts deal double and Karp is stunned. Without one its
+// golden scales halve every bolt. Subset sum is hard to solve and easy to check.
+{
+  "id": "karp",
+  "name": "Karp, the NP Koi",
+  "sprite": "karp",
+  "size": "colossal",
+  "hp": 170,
+  "weak": ["frost"],
+  "resist": ["fire"],
+  "trait": { "kind": "certificate", "targets": [23, 37, 31, 45, 29, 41], "bonus": 2.0, "without": 0.5 },
+  "intents": [
+    { "kind": "strike", "power": 14, "tempo": 128, "name": "Splash" },
+    { "kind": "shield", "amount": 18, "tempo": 64, "name": "Riddle" },
+    { "kind": "multi", "power": 6, "times": 3, "tempo": 160, "name": "Tail sweep" }
+  ],
+  "flavor": "A golden carp that sets riddles. It does not solve them; it only checks your answer."
+}

@@ -191,7 +191,11 @@ static func tempo_of(foe: Dictionary, state: Dictionary, catalog: Dictionary) ->
 		tempo = int(speeds[at % speeds.size()])
 	var intents: Array = foe.get("intents", [])
 	if not intents.is_empty():
-		tempo = int((intents[at % intents.size()] as Dictionary).get("tempo", tempo))
+		var intent: Dictionary = intents[at % intents.size()]
+		tempo = int(intent.get("tempo", tempo))
+		# Self-hosting (the Root Compiler, ADR-0026): exactly the work the last program did.
+		if intent.get("self_hosting", false):
+			tempo = int((state.get("battle", {}) as Dictionary).get("last_work", tempo))
 	return maxi(1, tempo + int(ProgramRelics.modifiers(state, catalog).tempo))
 
 
@@ -280,7 +284,7 @@ static func cast(
 		var text := "%s moves first: %d ops is faster than your %d." % [foe.name, tempo, work]
 		Shardrun.record(state, {"kind": "tempo", "foe": foe.uid, "amount": tempo, "text": text})
 		(battle.acted as Array).append(foe.uid)
-		ShardrunBattle.foe_act(state, battle, foe)
+		ShardrunBattle.foe_act(state, battle, foe, catalog)
 		if int(state.integrity) <= 0:
 			ShardrunBattle.lose(state)
 			return {}
@@ -306,6 +310,7 @@ static func cast(
 		Shardrun.record(state, {"kind": "curse", "amount": curse, "text": "The cast burns %d Integrity." % curse})
 	var landed := resolve(state, battle, bolts, catalog, context)
 	remember(battle, spell.shards, bolts)
+	battle.last_work = work
 	ShardrunBattle.cast_defense(state, battle, catalog)
 	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
 	ProgramDeck.after_cast(state, battle, int(landed.dealt), catalog)
@@ -384,6 +389,8 @@ static func resolve(
 	var first := initiative(state, catalog)
 	var alive := (battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
 	var targeted := targets(landing, alive)
+	# The guardian pool judges the whole volley before a bolt flies (ADR-0026).
+	var plan := GuardianLanding.plan(landing, alive, context, int(m.bolt_power))
 	var dealt := 0
 	var wasted := 0
 	var gathered := 0
@@ -442,7 +449,10 @@ static func resolve(
 			held.text = "%s holds its lock: this program never touches %s." % [foe.name, holder.name]
 			Shardrun.record(state, held)
 			continue
-		var multiplier: float = m.damage_multiplier * program_factor
+		var verdict := GuardianLanding.bolt(state, battle, foe, bolt, index, power, plan, shape)
+		if verdict.skip:
+			continue
+		var multiplier: float = m.damage_multiplier * program_factor * float(verdict.factor)
 		if index == hottest:
 			multiplier *= float(relics.strongest_mult)
 		var first_strike: bool = foe.uid in out_sped
@@ -458,6 +468,15 @@ static func resolve(
 		elif resisted:
 			multiplier *= float(balance.resist_multiplier)
 		var damage := floori(power * multiplier)
+		var own := GuardianLanding.body(state, foe, damage, power, bolt.element, shape)
+		if not own.is_empty():
+			dealt += int(own.dealt)
+			wasted += int(own.wasted)
+			GuardianLanding.count(plan, foe, int(own.dealt))
+			GuardianLanding.after_hit(battle, alive, foe)
+			if int(foe.hp) == 0:
+				GuardianLanding.on_defeat(state, battle, foe)
+			continue
 		var blocked := mini(int(foe.shield), damage)
 		foe.shield -= blocked
 		damage -= blocked
@@ -480,8 +499,11 @@ static func resolve(
 		var lead := "Initiative: " if hit.has("initiative") else ""
 		hit.text = "%s%s takes %d%s." % [lead, foe.name, landed, shield_note]
 		Shardrun.record(state, hit)
+		GuardianLanding.count(plan, foe, landed)
 		if int(foe.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
+			GuardianLanding.on_defeat(state, battle, foe)
+		GuardianLanding.after_hit(battle, alive, foe)
 		var spill := damage - landed
 		if relics.overkill_flows:
 			spill = _flow(state, alive, foe, spill, bolt.element, shape)
@@ -494,8 +516,17 @@ static func resolve(
 			gathered += kept
 			var text := "The unused %d power is kept as block." % kept
 			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
+	GuardianLanding.finish(state, battle, plan, context)
 	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
-	return {"dealt": dealt, "wasted": wasted, "block": gathered, "kills": kills, "locked": locked, "fixed": fixed}
+	return {
+		"dealt": dealt,
+		"wasted": wasted,
+		"block": gathered,
+		"kills": kills,
+		"locked": locked,
+		"fixed": fixed,
+		"notes": plan.notes,
+	}
 
 
 ## The uids of the foes a volley's attacking bolts are aimed at (a bolt without an aim, or aimed past the last, flies
@@ -590,6 +621,7 @@ static func _flow(
 		Shardrun.record(state, hit)
 		if int(next.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": next.uid, "text": "%s breaks apart." % next.name})
+			GuardianLanding.on_defeat(state, state.battle, next)
 	return spill
 
 
@@ -633,6 +665,11 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	var landed := resolve(copy, shadow, bolts, catalog, context)
 	remember(shadow, spell.shards, bolts)
 	view.reprints = reprints(battle, shadow, view.faster)
+	# What the guardians make of this program, before it runs (ADR-0026).
+	var notes: Array[String] = []
+	notes.assign(landed.notes)
+	notes.append_array(GuardianLanding.telegraph(battle, shadow, spell.shards, stage_list, catalog))
+	view.notes = notes
 	view.bolts = bolts.size()
 	view.damage = landed.dealt
 	view.wasted = landed.wasted

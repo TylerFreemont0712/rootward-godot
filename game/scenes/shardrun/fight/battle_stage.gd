@@ -26,6 +26,8 @@ var fast := false:
 		return fast or instant
 var hero: HeroView
 var foes: Dictionary = {}
+## The run's catalog, for a foe that joins mid-fight.
+var _catalog: Dictionary = {}
 var _world: Control
 ## A guardian's name and health, in a wide bar across the top middle of the arena (boss fights only).
 var _boss_bar: Control
@@ -113,6 +115,7 @@ func place_status() -> void:
 
 
 func set_foes(foe_states: Array, catalog: Dictionary, entrance := false, boss := false) -> void:
+	_catalog = catalog
 	for view: FoeView in foes.values():
 		view.queue_free()
 	foes.clear()
@@ -135,11 +138,26 @@ func set_foes(foe_states: Array, catalog: Dictionary, entrance := false, boss :=
 	_layout.call_deferred()
 
 
+## Draws the foes' numbers. A foe the stage has not met (a guardian allocated it mid-fight, ADR-0026) walks in, and
+## the stage stands them in the fight's order, which a guardian can change (the Livelock Twins trade places).
 func show_foes(foe_states: Array) -> void:
+	var ordered := {}
 	for foe: Dictionary in foe_states:
 		var view: FoeView = foes.get(foe.uid)
+		if view == null and not _catalog.is_empty():
+			view = FoeView.create(foe, _catalog)
+			view.guardian = _boss_bar != null
+			_world.add_child(view)
+			if not fast:
+				view.enter(0.0)
 		if view != null:
 			view.show_foe(foe)
+			view.dim_if_dead.call_deferred()
+			ordered[foe.uid] = view
+	for uid: String in foes:
+		if not ordered.has(uid):
+			ordered[uid] = foes[uid]
+	foes = ordered
 	_layout.call_deferred()
 
 

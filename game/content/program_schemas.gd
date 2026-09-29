@@ -118,19 +118,91 @@ static func card() -> Dictionary:
 static func foe() -> Dictionary:
 	var schema: Dictionary = ShardrunSchemas.foe().duplicate(true)
 	var options: Dictionary = schema.fields.intents.item.options
-	for kind: String in options:
-		options[kind].tempo = Schema.optional(ShardrunSchemas.POSITIVE)
+	var positive := ShardrunSchemas.POSITIVE
+	var tempo := Schema.optional(positive)
 	schema.fields.trait.options["deadlock"] = {"partner": Schema.ID}
 	# The Quine (docs/NewEnemies.md): its `reprint` hits once per bolt of your last program, at most `max` of them, and
 	# its ward bolts become the Quine's shield (at `ward`); a program exactly like the last one cannot hurt it.
 	options["reprint"] = {
-		"power": ShardrunSchemas.POSITIVE,
-		"max": Schema.int_range(1, 32),
-		"ward": Schema.with_default(Schema.RATIO, 0.5),
-		"tempo": options.strike.tempo,
+		"power": positive, "max": Schema.int_range(1, 32), "ward": Schema.with_default(Schema.RATIO, 0.5)
 	}
 	schema.fields.trait.options["quine"] = {}
+	# The guardian pool (docs/NewEnemies.md, ProgramGuardians): new intents...
+	options["loop"] = {"power": positive, "start": positive, "max": positive}
+	options["throw"] = {"power": positive}
+	options["summon"] = {"foe": Schema.ID}
+	options["realloc"] = {"amount": positive}
+	options["mend-swapped"] = {"amount": positive}
+	options["count"] = {"power": positive, "wrap": positive}
+	options["mutate"] = {"count": Schema.int_range(1, 5)}
+	options["idle"] = {}
+	# ...and every intent may have a name of its own ("raise ValueError"), a tempo, and a tempo taken from the work
+	# the last program did (the Root Compiler's self-hosting phase).
+	for kind: String in options:
+		options[kind].tempo = tempo
+		options[kind].name = Schema.optional(Schema.TEXT)
+		options[kind].self_hosting = Schema.optional(Schema.BOOL)
+	var traits: Dictionary = schema.fields.trait.options
+	var guard := (
+		Schema
+		. union(
+			{
+				"count": {"op": Schema.one_of(["==", ">="]), "value": positive},
+				"sorted": {},
+				"element": {"element": ShardrunSchemas.element()},
+				"max-power": {"value": positive},
+				"sum-power": {"value": positive},
+			},
+			"check"
+		)
+	)
+	traits["loop-guard"] = {"guards": Schema.list_of(guard, null, 1), "bonus": Schema.with_default(Schema.NUMBER, 1.5)}
+	traits["stack-trace"] = {"grow": positive, "max": positive, "bounce": Schema.with_default(Schema.NUMBER, 1.5)}
+	traits["short-circuit"] = {
+		"guards": Schema.list_of(positive, null, 1), "bonus": Schema.with_default(Schema.NUMBER, 2.0)
+	}
+	traits["unreachable"] = {"returns": Schema.list_of(positive, null, 1)}
+	traits["lru-cache"] = {"size": positive, "warm_size": positive}
+	traits["allocator"] = {"shield_per": positive, "limit": positive, "oom_power": positive}
+	traits["heap-block"] = {"free_block": positive}
+	traits["paged"] = {"group": Schema.ID}
+	traits["lazy"] = {"force": positive, "bonus": Schema.with_default(Schema.NUMBER, 1.25), "decay": Schema.RATIO}
+	traits["call-stack"] = {
+		"frames": Schema.list_of(positive, null, 1),
+		"push": positive,
+		"overflow": positive,
+		"overflow_power": positive,
+		"reset": positive,
+	}
+	traits["int8"] = {}
+	traits["profiler"] = {"factors": Schema.record(Schema.NUMBER, ProgramRules.TIER_ORDER)}
+	traits["livelock"] = {"partner": Schema.ID, "enrage": Schema.with_default(Schema.NUMBER, 1.5)}
+	traits["mutator"] = {"kill_at": positive, "kill_damage": positive}
+	traits["certificate"] = {
+		"targets": Schema.list_of(positive, null, 1),
+		"bonus": Schema.with_default(Schema.NUMBER, 2.0),
+		"without": Schema.with_default(Schema.RATIO, 0.5),
+	}
+	var prediction := (
+		Schema
+		. union(
+			{
+				"bolts-under": {"value": positive},
+				"slower-than": {"class": Schema.one_of(ProgramRules.TIER_ORDER)},
+				"aimed-at-me": {},
+				"has-element": {"element": ShardrunSchemas.element()},
+			},
+			"check"
+		)
+	)
+	traits["oracle"] = {"predictions": Schema.list_of(prediction, null, 1), "reflect": Schema.RATIO}
+	traits["compiler"] = {"phases": Schema.list_of(Schema.RATIO, null, 1), "power": Schema.NUMBER}
 	return schema
+
+
+## The Mutator's census (`programs/mutants.jsonc`, ADR-0026): by language, by card, the mutation operators that run.
+static func mutants() -> Dictionary:
+	return Schema.record(Schema.record(Schema.list_of(Schema.int_range(0, 63))))
 
 
 ## A program relic (`packs/<pack>/programs/relics/`): its tier and its effects. The kinds are the Shardrun's that work
@@ -366,6 +438,32 @@ static func check(catalog: Dictionary, file: String, diagnostics: Array[Dictiona
 				reachable = true
 		if not reachable:
 			_error(diagnostics, "no relic of the tiers %s offers" % where, file)
+	_check_census(programs, diagnostics)
+
+
+## The Mutator's census still describes the cards (ADR-0026): every card listed, and every operator listed still
+## applying to its code as it is. A warning, since only scripts/mutants.sh can bring it up to date.
+static func _check_census(programs: Dictionary, diagnostics: Array[Dictionary]) -> void:
+	var census: Dictionary = programs.get("mutants", {})
+	var cards: Dictionary = programs.cards
+	for language: String in census:
+		var stale: Array[String] = []
+		for id: String in cards:
+			var listed: Array = (census[language] as Dictionary).get(id, [])
+			if not (census[language] as Dictionary).has(id):
+				stale.append(id)
+				continue
+			var code := String((cards[id].code as Dictionary).get(language, ""))
+			for op: int in listed:
+				if int(ProgramMutants.mutate(code, language, op).get("op", -1)) != op:
+					stale.append(id)
+					break
+		if not stale.is_empty():
+			var message := (
+				"the mutant census is stale for %d %s card(s) (%s): run scripts/mutants.sh"
+				% [stale.size(), language, ", ".join(stale.slice(0, 5))]
+			)
+			diagnostics.append({"severity": "warning", "code": "mutant-census", "message": message, "file": ""})
 
 
 static func _error(diagnostics: Array[Dictionary], message: String, file: String) -> void:

@@ -1,0 +1,12 @@
+// A Heap Block, allocated by Malloc (docs/NewEnemies.md): no attack of its own, 3 shield a turn for her while it lives.
+// Breaking it is `free()`: 3 block for you.
+{
+  "id": "heap-block",
+  "name": "Heap Block",
+  "sprite": "heap-block",
+  "size": "small",
+  "hp": 10,
+  "trait": { "kind": "heap-block", "free_block": 3 },
+  "intents": [{ "kind": "idle", "tempo": 999 }],
+  "flavor": "Sixteen bytes, and nobody holds the pointer any more."
+}

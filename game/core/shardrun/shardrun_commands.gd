@@ -212,9 +212,13 @@ static func _end_turn(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	if next.status != "battle" or not next.has("battle"):
 		return _no("not-in-battle", "There is no turn to end.")
 	var battle: Dictionary = next.battle
-	ShardrunBattle.enemy_turn(next, battle)
+	ShardrunBattle.enemy_turn(next, battle, catalog)
 	if int(next.integrity) <= 0:
 		ShardrunBattle.lose(next)
+		return {}
+	# A guardian can fall on its own turn (an exception caught and bounced back into it, ADR-0026).
+	if (battle.foes as Array).all(func(foe: Dictionary) -> bool: return int(foe.hp) == 0):
+		ShardrunBattle.win(next, battle, catalog)
 		return {}
 	ShardrunBattle.new_turn(next, battle, catalog)
 	return {}

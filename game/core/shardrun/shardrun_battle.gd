@@ -42,6 +42,8 @@ static func foe_states(state: Dictionary, foe_ids: Array, prefix: String, catalo
 		foe.stoked = false
 		foe.nullified = false
 		foe.flavor = def.flavor
+		if state.get("playstyle", "") == "program":
+			ProgramGuardians.prepare(foe, def, state, catalog)
 		foes.append(foe)
 	return foes
 
@@ -299,23 +301,27 @@ static func _pick(alive: Array, better: Callable) -> Dictionary:
 	return best
 
 
-static func enemy_turn(state: Dictionary, battle: Dictionary) -> void:
+static func enemy_turn(state: Dictionary, battle: Dictionary, catalog := {}) -> void:
 	# A program run's faster foes may already have acted this turn, before the program landed (ADR-0012).
 	var acted: Array = battle.get("acted", [])
-	for foe: Dictionary in battle.foes:
+	# A copy of the list: a guardian may allocate a new foe mid-turn (ADR-0026), which acts from the next turn.
+	for foe: Dictionary in (battle.foes as Array).duplicate():
 		if int(foe.hp) == 0 or foe.uid in acted:
 			continue
-		foe_act(state, battle, foe)
+		foe_act(state, battle, foe, catalog)
 		if int(state.integrity) <= 0:
 			return
 
 
-## One foe does what its intent says.
-static func foe_act(state: Dictionary, battle: Dictionary, foe: Dictionary) -> void:
+## One foe does what its intent says. The guardian pool's intents and states (a stun, a swapped-out page) are
+## ProgramGuardians'; they need the catalog only to mutate cards.
+static func foe_act(state: Dictionary, battle: Dictionary, foe: Dictionary, catalog := {}) -> void:
 	# A shield raised last turn has done its job by the time its owner acts again.
 	foe.shield = 0
 	var intents: Array = foe.intents
 	var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
+	if ProgramGuardians.act(state, battle, foe, intent, catalog):
+		return
 	match intent.kind:
 		"strike":
 			var power := int(intent.power) * (2 if foe.stoked else 1)
@@ -376,6 +382,10 @@ static func hit_maintainer(state: Dictionary, battle: Dictionary, foe: Dictionar
 
 
 static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
+	ProgramGuardians.end_turn(state, battle)
+	if int(state.integrity) <= 0:
+		lose(state)
+		return
 	var m := ShardrunRules.relic_modifiers(state, catalog)
 	battle.turn += 1
 	# Mana a program earned last turn for the next (ProgramRelics); no other playstyle ever sets it.
@@ -426,6 +436,7 @@ static func begin_turn(battle: Dictionary) -> void:
 			var element := _element_at(foe_trait.pattern, int(battle.turn))
 			if not element.is_empty():
 				foe.pattern = element[0]
+	ProgramGuardians.begin_turn(battle)
 
 
 static func _element_at(cycle: Array, turn: int) -> Array:
@@ -490,6 +501,12 @@ static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> v
 			var text := "Your patch kit restores %d Integrity." % healed
 			Shardrun.record(state, {"kind": "heal", "amount": healed, "text": text})
 	var boss: bool = battle.kind == "boss"
+	if boss and state.get("playstyle", "") == "program":
+		# The Root Compiler compiles the guardians a run has beaten (ADR-0026).
+		if not state.stats.has("guardians"):
+			state.stats.guardians = []
+		var beaten: Array = (battle.foes as Array).map(func(foe: Dictionary) -> String: return foe.id)
+		(state.stats.guardians as Array).append({"layer": int(state.layer), "foes": beaten})
 	var line := (
 		"The guardian falls. The way down opens." if boss else "The way is clear. Shards scatter across the floor."
 	)

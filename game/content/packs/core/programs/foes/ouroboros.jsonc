@@ -1,0 +1,31 @@
+// Ouroboros, the Endless Loop (docs/NewEnemies.md, stage 1). Each turn it shows a `break` guard, a real condition on
+// the volley you land. Meet it and the loop breaks: its counter resets, it is stunned, and that program deals +50%.
+// Miss it and the Loop goes around once more: one more hit next time. The lesson: every loop needs a reachable exit.
+{
+  "id": "ouroboros",
+  "name": "Ouroboros",
+  "sprite": "ouroboros",
+  "size": "huge",
+  "hp": 100,
+  "weak": ["frost"],
+  "trait": {
+    "kind": "loop-guard",
+    "guards": [
+      { "check": "count", "op": "==", "value": 3 },
+      { "check": "element", "element": "fire" },
+      { "check": "max-power", "value": 12 },
+      { "check": "count", "op": ">=", "value": 6 },
+      { "check": "sorted" },
+      { "check": "element", "element": "frost" },
+      { "check": "sum-power", "value": 30 },
+      { "check": "element", "element": "spark" }
+    ],
+    "bonus": 1.5
+  },
+  "intents": [
+    { "kind": "strike", "power": 7, "tempo": 48, "name": "Bite" },
+    { "kind": "shield", "amount": 8, "tempo": 96, "name": "Coil" },
+    { "kind": "loop", "power": 3, "start": 2, "max": 8, "tempo": 160, "name": "Loop" }
+  ],
+  "flavor": "while True: it goes around once more, unless you give it a reason to break."
+}

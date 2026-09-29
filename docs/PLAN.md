@@ -151,15 +151,15 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] The Root: a fourth layer for program runs (Spellforge keeps three), its hallways, its HP and budget.
 - [x] The Quine, the Root's guardian: `reprint` sends your last program back at you, and the same program twice
       cannot hurt it (its fixed point); the code panel warns before you run.
-- [ ] The Unhandled Exception and INT_MAX (a catch check; a damage transform).
-- [ ] The Cache Lich and Ouroboros (per-foe state; a guard shown each turn).
-- [ ] Malloc and the Call Stack Colossus (summons; a foe made of parts).
-- [ ] The Livelock Twins, the Short Circuit and the Profiler (small changes to the landing).
-- [ ] The Thunk, Karp and the Unreachable (per-foe state, a subset-sum check, a program cut before it runs).
-- [ ] The Page Fault (one resident page of three) and the Mutator (mutants authored for every card).
+- [x] The Unhandled Exception and INT_MAX (a catch check; a damage transform).
+- [x] The Cache Lich and Ouroboros (per-foe state; a guard shown each turn).
+- [x] Malloc and the Call Stack Colossus (summons; a foe made of parts).
+- [x] The Livelock Twins, the Short Circuit and the Profiler (small changes to the landing).
+- [x] The Thunk, Karp and the Unreachable (per-foe state, a subset-sum check, a program cut before it runs).
+- [x] The Page Fault (one resident page of three) and the Mutator (mutants made by mutation operators, ADR-0026).
 - [x] The drawn guardian shown on the map from the start (ADR-0025: the map as a scroll, every layer's guardian on
       its rail).
-- [ ] The Root Compiler as the finale.
+- [x] The Root Compiler, compiling the guardians the run beat; every layer's pool of five (ADR-0026).
 - [ ] A balance probe over four layers; per-guardian lines on the end screen, and ranks re-tuned.
 
 ### Next: the game plan (proposed on 2026-09-28)

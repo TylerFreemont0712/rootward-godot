@@ -1,0 +1,18 @@
+// The Livelock Twins, "After You" (docs/NewEnemies.md, stage 3). Every hit on either twin swaps their places, so the
+// list of foes changes while your volley is still landing. When one twin falls, the other stops yielding: +50% strikes.
+{
+  "id": "livelock-a",
+  "name": "After You",
+  "sprite": "livelock-dancer",
+  "size": "large",
+  "hp": 90,
+  "weak": ["frost"],
+  "resist": ["fire"],
+  "trait": { "kind": "livelock", "partner": "livelock-b", "enrage": 1.5 },
+  "intents": [
+    { "kind": "strike", "power": 10, "tempo": 64, "name": "Step in" },
+    { "kind": "shield", "amount": 12, "tempo": 48, "name": "After you" },
+    { "kind": "multi", "power": 4, "times": 2, "tempo": 96, "name": "Waltz" }
+  ],
+  "flavor": "Two dancers forever stepping aside for each other."
+}
