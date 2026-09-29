@@ -58,6 +58,16 @@ func test_lost_trial_fight_rewinds_with_a_hint() -> void:
 	assert_array(session.saves.load_history()).is_empty()
 
 
+func test_saved_trial_resumes_at_the_same_step() -> void:
+	await session.command({"type": "trial-next"})
+	await session.command({"type": "enter", "node_id": "l0-r0-c0"})
+	var resumed := ShardrunSession.new(session.catalog, SaveStore.new(ROOT), "program", "trial")
+	resumed.load_saved()
+	assert_str(resumed.state.trial.step_id).is_equal("hand")
+	assert_str(resumed.state.status).is_equal("battle")
+	assert_array(resumed.state.battle.hand).contains(["fire-constant"])
+
+
 func test_a_scripted_player_finishes_the_whole_trial_without_run_history() -> void:
 	Game.reset(ROOT)
 	assert_bool(Game.boot()).is_true()
@@ -77,7 +87,11 @@ func test_a_scripted_player_finishes_the_whole_trial_without_run_history() -> vo
 				var rooms := ShardrunMap.next_rooms(session.state.map, session.state.position)
 				result = await session.command({"type": "enter", "node_id": rooms[0].id})
 			"compose":
-				result = await _place_one_card()
+				result = (
+					await _place_ordered(step.ordered_cards)
+					if step.has("ordered_cards")
+					else await _place_one_card(String(step.get("required_card", "")))
+				)
 			"cast":
 				result = await session.command({"type": "cast", "spell_id": "spell-1"})
 			"battle-won":
@@ -104,9 +118,12 @@ func test_a_scripted_player_finishes_the_whole_trial_without_run_history() -> vo
 	assert_bool(commands.has("forge")).is_true()
 	assert_bool(commands.has("rest")).is_true()
 	assert_bool(commands.has("battle-won")).is_true()
+	assert_array(session.state.trial.completed).contains(["slow-run", "fast-run"])
+	assert_array(session.state.trial.completed).contains(["unsorted", "sort"])
+	assert_int(int(TrialRules.score(session.state).total)).is_between(1, 100)
 
 
-func test_scripted_reading_and_actions_fit_twelve_minutes() -> void:
+func test_scripted_reading_and_actions_fit_fifteen_minutes() -> void:
 	var content: Dictionary = session.trial_content
 	var words := 0
 	var action_seconds := 0
@@ -122,14 +139,23 @@ func test_scripted_reading_and_actions_fit_twelve_minutes() -> void:
 	assert_int(total_seconds).is_between(600, 900)
 
 
-func _place_one_card() -> Dictionary:
+func _place_one_card(required := "") -> Dictionary:
 	var hand: Array = session.state.battle.hand.duplicate()
 	if hand.is_empty():
 		return await session.command({"type": "end-turn"})
-	var chosen := "fire-constant" if "fire-constant" in hand else String(hand[0])
+	var chosen := required if required in hand else "fire-constant" if "fire-constant" in hand else String(hand[0])
 	hand.erase(chosen)
 	return await session.command(
 		{"type": "compose", "spells": [{"id": "spell-1", "shards": [chosen]}], "hand": hand, "held": []}
+	)
+
+
+func _place_ordered(cards: Array) -> Dictionary:
+	var hand: Array = session.state.battle.hand.duplicate()
+	for card: String in cards:
+		hand.erase(card)
+	return await session.command(
+		{"type": "compose", "spells": [{"id": "spell-1", "shards": cards.duplicate()}], "hand": hand, "held": []}
 	)
 
 

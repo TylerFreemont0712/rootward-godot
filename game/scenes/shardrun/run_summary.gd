@@ -14,6 +14,17 @@ const PARTS := ["progress", "combat", "build", "survival", "tempo", "completion"
 ## How a run ended and its score. `title_variation` is the headline's label variation: "Title" at the end of a run,
 ## a smaller one where it shares a screen (the title screen).
 static func ending(state: Dictionary, title_variation := "Title") -> Control:
+	if state.has("trial"):
+		var japanese: bool = Game.profile.get("preferred_language", "en") == "ja"
+		var greeting := (
+			"%s、やったね！" % Game.profile.get("name", "Player")
+			if japanese
+			else "Well played, %s." % Game.profile.get("name", "Player")
+		)
+		var title := Ui.tint(
+			Ui.label("トライアル達成！" if japanese else "Pip's Trial complete!", title_variation), UiTheme.PASS
+		)
+		return Ui.vbox([Ui.label(greeting, "Subheading"), title, trial_score(state)], 12)
 	var said: Array = ENDINGS.get(state.status, ["The run", UiTheme.AMBER])
 	var title := Ui.tint(Ui.label(said[0], title_variation), said[1])
 	var name := String(Game.profile.get("name", "Player"))
@@ -39,6 +50,30 @@ static func score(state: Dictionary) -> Control:
 		parts.add_child(Ui.label(part, "Muted"))
 		parts.add_child(Ui.label(("-%d" if part == "penalties" else "%d") % value, ""))
 	return Ui.vbox([head, parts, totals(state)], 10)
+
+
+static func trial_score(state: Dictionary) -> Control:
+	var scored := TrialRules.score(state)
+	var japanese: bool = Game.profile.get("preferred_language", "en") == "ja"
+	var head := Ui.hbox(
+		[Ui.label("トライアルのスコア" if japanese else "TRIAL SCORE", "Faint"), Ui.label("%d / 100" % scored.total, "Big")], 12
+	)
+	var names := {
+		"progress": "進みぐあい" if japanese else "progress",
+		"combat": "戦い" if japanese else "combat",
+		"build": "カードと遺物" if japanese else "build",
+		"survival": "生き残り" if japanese else "survival",
+		"tempo": "速さ" if japanese else "tempo",
+	}
+	var parts := GridContainer.new()
+	parts.columns = 4
+	for part: String in names:
+		parts.add_child(Ui.label(names[part], "Muted"))
+		parts.add_child(Ui.label(str(int(scored.breakdown[part]))))
+	var stats: Dictionary = state.stats
+	var facts := "%d回の戦い · %d回の実行 · %d回のやり直し" if japanese else "%d fights · %d casts · %d retries"
+	var summary := Ui.label(facts % [int(stats.fights), int(stats.casts), int(state.trial.failures)], "Muted")
+	return Ui.vbox([head, parts, summary], 10)
 
 
 static func totals(state: Dictionary) -> Control:

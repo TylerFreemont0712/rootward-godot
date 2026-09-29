@@ -233,9 +233,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       named delete confirmation; the title and run summary greet the player.
 - [x] Old saves copied and byte-verified into the first profile, with the old folder retained and the name requested.
       `ROOTWARD_SAVES` continues to work; a corrupt profile cannot hide other players.
-- [ ] A short fixed Trial offered on a new player's first Shardrun and from a title button, replayable and skippable.
-- [ ] Pip's chapters, interactive lessons, real sandbox commands, defeat rewind, and a profile-specific `trial.json`.
-- [ ] English and Japanese Trial text, whole-run tests, a 10–15 minute timing check and screenshots at both sizes.
+- [x] A short fixed Trial offered on a new player's first Shardrun and from a title button, replayable and skippable.
+- [x] Pip's chapters, interactive lessons, real sandbox commands, defeat rewind, and a profile-specific `trial.json`.
+- [x] English and Japanese Trial text, whole-run tests, a 10–15 minute timing check and screenshots at both sizes.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

@@ -77,6 +77,7 @@ static func coverage(catalog: Dictionary, strings: Dictionary) -> Dictionary:
 	_program_parts(catalog, func(node: Variant, path: String) -> void: _collect(node, path.split("."), english))
 	var trial := TrialContent.load_trial()
 	if trial.ok:
+		english[trial.value.loss_hint] = true
 		for chapter: Dictionary in trial.value.chapters:
 			english[chapter.title] = true
 			english[chapter.scene] = true

@@ -2,6 +2,7 @@
 {
   "id": "pip-trial",
   "seed": "pip-trial-v1",
+  "loss_hint": "A stumble, not an ending! We are back at the start of this fight. Try a faster card or guard the next hit; read the preview before you run.",
   "setup": {
     "paradigm": "dynamic",
     "deck": [
@@ -21,25 +22,25 @@
         {
           "id": "l0-r0-c0",
           "row": 0,
-          "col": 2,
+          "col": 0,
           "kind": "fight"
         },
         {
           "id": "l0-r1-c0",
           "row": 1,
-          "col": 2,
+          "col": 0,
           "kind": "forge"
         },
         {
           "id": "l0-r2-c0",
           "row": 2,
-          "col": 2,
+          "col": 0,
           "kind": "rest"
         },
         {
           "id": "l0-boss",
           "row": 3,
-          "col": 2,
+          "col": 0,
           "kind": "boss"
         }
       ],
@@ -63,7 +64,8 @@
         "foes": [
           {
             "id": "tally-wisp",
-            "hp": 30
+            "hp": 75,
+            "tempo": 2
           }
         ],
         "hand": [
@@ -118,21 +120,25 @@
   "chapters": [
     {
       "id": "arrival",
+      "mood": "excited",
       "title": "Chapter 1: The Pocket Shardrunner Arrives",
       "scene": "Pip tumbles out of a pocket of sparks. “Perfect landing! The floor disagrees, but I am ignoring it.”"
     },
     {
       "id": "order",
+      "mood": "worried",
       "title": "Chapter 2: In Which Order Matters",
       "scene": "Pip straightens his scarf. “I meant to let that one get close. Ahem. Now we make the program smarter.”"
     },
     {
       "id": "workshop",
+      "mood": "proud",
       "title": "Chapter 3: A Furnace and a Breather",
-      "scene": "The forge glows. Pip produces a tiny hammer from nowhere. “Please do not ask where I kept this.”"
+      "scene": "The foe scatters. Pip catches a relic nearly as big as he is. “I meant to do that. Now, onward to the forge!”"
     },
     {
       "id": "guardian",
+      "mood": "neutral",
       "title": "Chapter 4: The Guardian at the Return",
       "scene": "Pip peers at the final room. “One guardian. One little program. I am only slightly nervous.”"
     }
@@ -202,13 +208,80 @@
       "action_seconds": 7
     },
     {
+      "id": "slow-plan",
+      "chapter": "order",
+      "anchor": "hand",
+      "event": "compose",
+      "required_card": "fib-surge",
+      "force": {
+        "battle.hand": ["fib-surge", "fire-constant", "quick-sort", "binary-execute", "ward"],
+        "battle.mana": 5
+      },
+      "say": "Let us lose a speed race safely. Place Fibonacci Surge in the Program. Its naive recursion does more work as the volley grows. The foe's chip says it moves after just two operations; read the preview before you run.",
+      "code": "In real code: a slow algorithm can miss a deadline even when it gives the right answer.",
+      "action_seconds": 18
+    },
+    {
+      "id": "slow-run",
+      "mood": "worried",
+      "chapter": "order",
+      "anchor": "code",
+      "event": "cast",
+      "required_card": "fib-surge",
+      "log_kind": "tempo",
+      "say": "Run that slow line. See the foe act first? We let it win this race, so the log and the preview can show exactly what Initiative means. Ow. My scarf is taking notes.",
+      "code": "In real code: an expensive function can finish after another task has already acted.",
+      "action_seconds": 16
+    },
+    {
+      "id": "fast-plan",
+      "chapter": "order",
+      "anchor": "hand",
+      "event": "compose",
+      "required_card": "fire-constant",
+      "force": {
+        "battle.hand": ["fire-constant", "quick-sort", "binary-execute", "ward", "charge"],
+        "battle.mana": 5
+      },
+      "say": "Now win the race. Replace the line with Ember Constant. O(1) work is smaller than the foe's tempo of two. You decide where to place it; check the preview for the new order.",
+      "code": "In real code: constant work stays small as inputs grow.",
+      "action_seconds": 17
+    },
+    {
+      "id": "fast-run",
+      "mood": "excited",
+      "chapter": "order",
+      "anchor": "code",
+      "event": "cast",
+      "required_card": "fire-constant",
+      "exclude_log_kind": "tempo",
+      "say": "Run the faster Program. This time your bolts land before the foe moves. That is Initiative earned by the work you chose, not a lucky dice roll. I absolutely planned both halves of this demonstration.",
+      "code": "In real code: a lower-cost algorithm may finish first.",
+      "action_seconds": 16
+    },
+    {
+      "id": "unsorted",
+      "chapter": "order",
+      "anchor": "program",
+      "event": "compose",
+      "ordered_cards": ["binary-execute", "quick-sort"],
+      "force": {
+        "battle.hand": ["binary-execute", "quick-sort", "ward", "charge", "fire-constant"],
+        "battle.mana": 5
+      },
+      "say": "Try the wrong order safely: put Binary Execute before Quick Sort, but do not Run. The code panel warns that the search wants sorted bolts it has not received yet. That warning is a clue, not a scolding.",
+      "code": "In real code: a precondition can fail before a later function repairs the data.",
+      "action_seconds": 12
+    },
+    {
       "id": "sort",
       "chapter": "order",
       "anchor": "hand",
       "event": "compose",
-      "say": "Place Quick Sort before Binary Execute if both are in your hand. Read the warning in the code panel when a card needs sorted input. If the draw is different, place the sort you have and keep the idea: order changes the answer.",
+      "ordered_cards": ["quick-sort", "binary-execute"],
+      "say": "Now swap them: Quick Sort first, Binary Execute second. The warning clears because the search gets sorted bolts when it needs them. Then run this Program to see the difference in the real fight.",
       "code": "In real code: preconditions must hold when a function runs.",
-      "action_seconds": 22
+      "action_seconds": 15
     },
     {
       "id": "work",
@@ -358,6 +431,7 @@
     },
     {
       "id": "score",
+      "mood": "proud",
       "chapter": "guardian",
       "anchor": "score",
       "event": "coach-next",

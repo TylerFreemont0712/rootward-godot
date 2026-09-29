@@ -257,6 +257,25 @@ func _home() -> void:
 		)
 	)
 	_menu.add_child(Ui.spacer(0, 18))
+	if Game.trial_session != null:
+		var trial_open: bool = (
+			Game.trial_session.has_run() and not Game.trial_session.state.get("trial", {}).get("done", false)
+		)
+		var trial_done: bool = Game.profile.get("tutorial", {}).get("trial_done", false)
+		var trial_title := (
+			_text("Continue Pip's Trial", "ピップのトライアルのつづき")
+			if trial_open
+			else (_text("Replay Pip's Trial", "ピップのトライアルをもう一度") if trial_done else _text("Pip's Trial", "ピップのトライアル"))
+		)
+		_menu.add_child(
+			_action(
+				trial_title,
+				_text("A guided first run · 10–15 minutes", "はじめての案内つき冒険 · 10〜15分"),
+				"✦",
+				_start_trial,
+				not trial_done
+			)
+		)
 	if Game.session.in_progress() and Settings.playstyle != "verifier":
 		var where: String = ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name
 		_menu.add_child(
@@ -638,10 +657,40 @@ func _begin(sandbox: bool) -> void:
 	if Game.profile.get("needs_name", false):
 		_edit_profile(String(Game.profile.id), true)
 		return
+	if (
+		Settings.playstyle == "program"
+		and not sandbox
+		and not Game.profile.get("tutorial", {}).get("trial_done", false)
+	):
+		var tutorial: Dictionary = Game.profile.get("tutorial", {})
+		if not tutorial.get("trial_prompted", false):
+			tutorial.trial_prompted = true
+			Game.profile.tutorial = tutorial
+			Game.profiles.save_profile(Game.profile)
+			_offer_trial()
+			return
+	_launch_run(sandbox)
+
+
+func _launch_run(sandbox: bool) -> void:
+	Game.trial_active = false
 	var difficulties: Array = Game.catalog.config.difficulties
 	var known := difficulties.any(func(d: Dictionary) -> bool: return d.id == Settings.difficulty)
 	Game.session.start(Settings.language, Settings.difficulty if known else String(difficulties[0].id), "", sandbox)
 	Game.go(Game.SHARDRUN)
+
+
+func _start_trial() -> void:
+	if Game.profile.get("needs_name", false):
+		_edit_profile(String(Game.profile.id), true)
+		return
+	var active: bool = Game.trial_session.has_run() and not Game.trial_session.state.get("trial", {}).get("done", false)
+	if Game.resume_trial() if active else Game.start_trial():
+		Game.go(Game.SHARDRUN)
+
+
+func _offer_trial() -> void:
+	_show_overlay(TrialTitle.offer(_start_trial, _launch_run.bind(false)))
 
 
 func _confirm_new_run(sandbox: bool) -> void:

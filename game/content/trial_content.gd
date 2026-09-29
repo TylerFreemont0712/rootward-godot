@@ -14,6 +14,8 @@ static func load_trial(locale := "en") -> Dictionary:
 		return {"ok": false, "error": "Pip's Trial has no chapters or steps."}
 	if locale == "ja":
 		var translations: Dictionary = ContentLocale.load_overlay("ja").strings
+		if trial.has("loss_hint"):
+			trial.loss_hint = translations.get(trial.loss_hint, trial.loss_hint)
 		for chapter: Dictionary in trial.chapters:
 			for field: String in ["title", "scene"]:
 				chapter[field] = translations.get(chapter[field], chapter[field])

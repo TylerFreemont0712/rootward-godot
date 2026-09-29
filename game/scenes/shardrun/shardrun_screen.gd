@@ -14,17 +14,23 @@ var _toast: PanelContainer
 var _toast_tween: Tween
 var _fight: FightView
 var _chronicle: Label
+var _coach: TrialCoach
+var _trial_targets: Dictionary = {}
 
 
 func _ready() -> void:
 	theme = UiTheme.shared()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	if not Game.boot() or not Game.session.has_run():
+	if not Game.boot():
 		Game.go(Game.TITLE)
 		return
-	session = Game.session
+	session = Game.trial_session if Game.trial_active else Game.session
+	if session == null or not session.has_run():
+		Game.go(Game.TITLE)
+		return
 	_build()
 	_show(session.state)
+	_refresh_coach()
 	if _fight != null:
 		_fight.write_entries(session.state.log)
 		_fight.refresh_previews()
@@ -59,6 +65,11 @@ func _build() -> void:
 	_toast = Ui.panel(Ui.label("", "", true), "Overlay")
 	_toast.visible = false
 	add_child(_toast)
+	if Game.trial_active:
+		_coach = TrialCoach.new()
+		_coach.wants.connect(send)
+		_coach.skipped.connect(_skip_trial)
+		add_child(_coach)
 
 
 # --- Showing a state ------------------------------------------------------------------------------------------------
@@ -66,6 +77,7 @@ func _build() -> void:
 
 func _show(state: Dictionary) -> void:
 	_fight = null
+	_trial_targets.clear()
 	Ui.clear(_body)
 	_show_header(state)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
@@ -73,6 +85,7 @@ func _show(state: Dictionary) -> void:
 	var view: Control
 	if state.status in Shardrun.ENDED:
 		view = _ending(state)
+		_trial_targets["score"] = view
 		Sound.music("music-title")
 	elif state.status == "draft":
 		var draft := DraftView.create(session)
@@ -83,6 +96,10 @@ func _show(state: Dictionary) -> void:
 		_fight = FightView.create(session)
 		_fight.wants.connect(send)
 		view = _fight
+		_trial_targets["hand"] = _fight._table
+		_trial_targets["program"] = _fight._program
+		_trial_targets["code"] = _fight._program
+		_trial_targets["foe"] = _fight.stage
 		var boss: bool = state.battle.kind == "boss"
 		Sound.music(
 			layer.get("boss_music", "music-guardian") if boss else layer.get("battle_music", "music-battle-salvage")
@@ -98,6 +115,8 @@ func _show(state: Dictionary) -> void:
 func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
 	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
+	if Game.trial_active:
+		mode = "PIP'S TRIAL"
 	var heading := mode + (" / ARTIFICER" if state.get("playstyle", "") == "deck" else "")
 	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD) as Label
 	# A program run's paradigm, in its own colour: the colour its cards wear.
@@ -126,6 +145,8 @@ func _show_header(state: Dictionary) -> void:
 		"%s (%d/%d) · %s · %s"
 		% [layer.name, int(state.layer) + 1, layers.size(), session.difficulty().get("name", ""), state.language]
 	)
+	if Game.trial_active:
+		meta = "4 STOPS · %s · %s" % [session.difficulty().get("name", ""), state.language]
 	var relics := Ui.hbox([], 4)
 	for relic_id: String in state.relics:
 		relics.add_child(Cards.relic_icon(session.catalog.relics.get(relic_id, {"name": relic_id, "summary": ""})))
@@ -159,18 +180,25 @@ func _between(state: Dictionary) -> Control:
 	var on_map: bool = not state.status in ["reward", "rest", "forge"]
 	if not on_map:
 		var room := RoomPanel.create(session)
+		_trial_targets["relic"] = room
+		_trial_targets["forge"] = room
+		_trial_targets["rest"] = room
 		room.wants.connect(send)
 		var scroll := Ui.scroll(room)
 		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		left.add_child(Ui.expand(Ui.panel(scroll, ""), true))
 	else:
 		var map := MapView.new()
+		_trial_targets["guardian"] = map._rail
+		_trial_targets["deck"] = map._deck
 		map.show_deck = ShardrunRules.is_deck(state)
 		map.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		map.enter_pressed.connect(func(node_id: String) -> void: send({"type": "enter", "node_id": node_id}))
 		map.deck_pressed.connect(_open_deck)
 		left.add_child(Ui.expand(Ui.panel(map, "Sunken"), true))
 		map.show_map(state, session.catalog)
+		var next_rooms := ShardrunMap.next_rooms(state.map, state.position)
+		_trial_targets["map"] = map._rooms.get(next_rooms[0].id, map) if not next_rooms.is_empty() else map
 	_chronicle = Ui.label(_story(state.log), "Muted", true)
 	left.add_child(_chronicle)
 	# A deck run's map fills the screen: the deck opens from its pile, the next rooms sit in the map's route drawer.
@@ -191,14 +219,18 @@ func _between(state: Dictionary) -> Control:
 
 
 func _ending(state: Dictionary) -> Control:
-	var buttons := Ui.hbox(
-		[
-			Ui.button("A new run", func() -> void: Game.go(Game.TITLE), "PrimaryButton"),
-		],
-		8
+	var return_home := func() -> void: Game.go(Game.TITLE)
+	var buttons := (
+		Ui
+		. hbox(
+			[
+				Ui.button("Return to title" if Game.trial_active else "A new run", return_home, "PrimaryButton"),
+			],
+			8
+		)
 	)
 	var column := Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log), "Narration", true)], 16)
-	var history := session.saves.load_history()
+	var history := [] if Game.trial_active else session.saves.load_history()
 	if not history.is_empty() and String(history[0].get("seed", "")) == String(state.seed):
 		# What git prints after a commit: the run is in the history now (the title's git log shows them all).
 		var record: Dictionary = history[0]
@@ -237,12 +269,24 @@ func send(command: Dictionary) -> void:
 		_set_busy(false)
 		return
 	await _present(result, command)
+	_refresh_coach()
 	_set_busy(false)
 
 
 func _present(result: Dictionary, command: Dictionary) -> void:
 	var before: Dictionary = result.before
 	var after: Dictionary = result.state
+	if (
+		command.type == "trial-next"
+		or (
+			Game.trial_active
+			and int(after.get("trial", {}).get("failures", 0)) > int(before.get("trial", {}).get("failures", 0))
+		)
+	):
+		_show(after)
+		if _fight != null:
+			_fight.refresh_previews()
+		return
 	if String(command.type).begins_with("dev-"):
 		# A dev command can replace the whole fight (a spawn), so the screen is drawn afresh rather than played.
 		_show(after)
@@ -301,6 +345,19 @@ func _set_busy(value: bool) -> void:
 	_busy = value
 	if _fight != null:
 		_fight.set_busy(value)
+
+
+func _refresh_coach() -> void:
+	if _coach == null or session == null or not session.has_run():
+		return
+	var step := TrialRules.current(session.state, session.trial_content)
+	var target: Control = _trial_targets.get(step.get("anchor", ""), _body)
+	_coach.show_step(session.state, target)
+
+
+func _skip_trial() -> void:
+	Game.skip_trial()
+	Game.go(Game.TITLE)
 
 
 # --- Overlays -------------------------------------------------------------------------------------------------------
@@ -395,7 +452,9 @@ func _open_run_menu() -> void:
 	var actions := Ui.hbox(
 		[Ui.button("Return to title", func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
 	)
-	if not state.status in Shardrun.ENDED:
+	if Game.trial_active:
+		actions.add_child(Ui.button("Skip Trial", _skip_trial, "DangerButton"))
+	elif not state.status in Shardrun.ENDED:
 		actions.add_child(Ui.button("Abandon run", _confirm_abandon, "DangerButton"))
 	column.add_child(actions)
 	var panel := Ui.panel(column, "Overlay")

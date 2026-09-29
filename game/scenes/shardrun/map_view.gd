@@ -156,10 +156,17 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	_title.text = layer.name
 	_subtitle.text = "LAYER %d OF %d" % [int(state.layer) + 1, layers.size()]
 	_flavor.text = String(layer.get("flavor", ""))
+	if state.has("trial"):
+		_title.text = "Pip's Trial"
+		_subtitle.text = "%d STOPS · ONE ROUTE" % (state.map.nodes as Array).size()
+		_flavor.text = "A little climb to the Kiln Warden."
 	_wall.texture = Art.texture("shardrun/map-wall-%s-0" % layer.id)
 	_states = ShardrunViews.node_states(state)
 	_reachable = ShardrunViews.reachable(state)
 	var guardians := ShardrunViews.guardians(state, catalog)
+	if state.has("trial"):
+		var foe_id := String(state.trial.get("room_foes", {}).get("l0-boss", ""))
+		guardians = [{"layer": {"name": "Pip's Trial"}, "foes": [catalog.foes.get(foe_id, {})], "where": "current"}]
 	_rail.show_guardians(guardians)
 	var foes: Array = guardians[int(state.layer)].foes if int(state.layer) < guardians.size() else []
 	_canvas.state = state
@@ -189,6 +196,8 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 ## A room you can walk into next, in the drawer: pointing at it finds it on the map, clicking goes there.
 func _next_room(node: Dictionary) -> Button:
 	var foes := ShardrunViews.room_foes(state, node, catalog)
+	if state.has("trial") and state.trial.get("room_foes", {}).has(node.id):
+		foes = [catalog.foes.get(state.trial.room_foes[node.id], {})]
 	var what := ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name)) if not foes.is_empty() else ""
 	if what == "":
 		what = String(WHAT.get(node.kind, ""))
@@ -523,7 +532,7 @@ func _layout() -> void:
 	queue_redraw()
 	if state.is_empty():
 		return
-	var rows := int(ShardrunRules.layer_of(state, catalog).rows)
+	var rows := int(state.get("trial", {}).get("map_rows", ShardrunRules.layer_of(state, catalog).rows))
 	_canvas.size = Vector2(minf(MAP_WIDTH, _view.size.x - 16.0), _canvas.height_for(rows))
 	_wall.size = Vector2(_view.size.x, _canvas.size.y)
 	for node: Dictionary in state.map.nodes:

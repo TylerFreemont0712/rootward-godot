@@ -431,3 +431,10 @@ The migration copies each legacy file and compares its bytes before publishing t
 the copied run may already have changed because the player continued it. The confirmation therefore checks that the
 copy still exists while retaining the original byte comparison as the migration proof. The source folder stays in
 place, so a recovery path is available even if a later run becomes unreadable.
+
+## A lesson should watch the outcome, not just the button (`game/core/trial_rules.gd`)
+
+Pip's speed race originally advanced on any cast, so the story could say the foe moved first when it had not. The
+Trial now checks the accepted command's new battle log for `tempo`, and the sorted-input lesson checks card order in
+the submitted Program. Scripted hands and foe tempo are setup data; the cast still goes through the real sandbox and
+combat rules. This keeps the lesson honest without adding a tutorial branch to the battle engine.

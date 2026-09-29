@@ -26,11 +26,14 @@ their ordinary run or enter their finished-run history.
   first launch. A later launch confirms the copied files still exist; their contents may have advanced through play.
   The old folder is left intact. A corrupt profile metadata file is skipped so other people can still play.
 - The Trial is a separate `trial.json` snapshot under the same player folder. It carries the real program-run state
-  plus `trial: {step_id, chapter_id, checkpoint, failures, ...}`. A JSONC content file names chapters, steps, UI
-  anchors, English text keys, session events that advance a step, and generic forced setup. Japanese text uses the
+  plus `trial: {step_id, chapter_id, completed, checkpoint, failures, ...}`. A JSONC content file names chapters, steps,
+  UI anchors, English text keys, session events that advance a step, and generic forced setup. Event predicates may
+  require a named card, card order, or an actual battle log kind; dotted forced-state paths set up scripted hands and
+  foe tempo without changing the combat rules. Japanese text uses the
   normal English-keyed overlay. The session still submits real commands to the real rules and sandbox; the trial
   layer observes accepted events and stores progress in the snapshot. A lost fight restores its saved fight checkpoint.
-  Skipping or completing the Trial updates that player's flags and never appends to `history.jsonl`.
+  Skipping or completing the Trial updates that player's flags and never appends to `history.jsonl`. Its end score uses
+  a 100-point scale so the full run's completion bonus does not dominate two fights.
 
 ## Consequences
 

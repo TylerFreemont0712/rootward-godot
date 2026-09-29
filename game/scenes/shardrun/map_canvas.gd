@@ -46,7 +46,7 @@ func height_for(rows: int) -> float:
 func place(node: Dictionary) -> Vector2:
 	if node.kind == "boss":
 		return Vector2(size.x * 0.5, 30.0 + BOSS_RADIUS * 1.18)
-	var columns := int(ShardrunRules.layer_of(state, catalog).columns)
+	var columns := int(state.get("trial", {}).get("map_columns", ShardrunRules.layer_of(state, catalog).columns))
 	var column := (size.x - SIDE_PAD * 2.0) / columns
 	var x := SIDE_PAD + (int(node.col) + 0.5) * column
 	var y := size.y - foot - int(node.row) * ROW_STEP
@@ -211,7 +211,7 @@ func _draw_guardian(node: Dictionary, glow: float) -> void:
 ## guardian waits at the `return`.
 func _draw_gutter() -> void:
 	var font := UiTheme.ui_font()
-	var rows := int(ShardrunRules.layer_of(state, catalog).rows)
+	var rows := int(state.get("trial", {}).get("map_rows", ShardrunRules.layer_of(state, catalog).rows))
 	var reached := -1
 	for node: Dictionary in state.map.nodes:
 		if node.id == state.position:

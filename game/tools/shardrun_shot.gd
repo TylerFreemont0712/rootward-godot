@@ -34,6 +34,9 @@ func _ready() -> void:
 	var language := OS.get_environment("ROOTWARD_SHOT_LANGUAGE")
 	Game.reset(SAVES)
 	Game.boot()
+	if shot == "trial":
+		await _show_trial(language)
+		return
 	# ROOTWARD_SHOT_PLAYSTYLE=spellbook shows Spellforge, =deck the card Shardrun; the program Shardrun otherwise.
 	var playstyle := OS.get_environment("ROOTWARD_SHOT_PLAYSTYLE")
 	Game.use(playstyle if playstyle != "" else "program")
@@ -173,6 +176,71 @@ func _ready() -> void:
 	set_meta("shot_ready", true)
 	shot_ready.emit()
 	_act(shot, screen)
+
+
+## ROOTWARD_SHOT=trial plays real commands up to ROOTWARD_SHOT_TRIAL_STEP, then captures its chapter or lesson.
+func _show_trial(language: String) -> void:
+	Game.profile.preferred_language = "ja" if language == "ja" else "en"
+	Game.profiles.save_profile(Game.profile)
+	var target := OS.get_environment("ROOTWARD_SHOT_TRIAL_STEP")
+	if target == "":
+		target = "hello"
+	Game.start_trial()
+	var run := Game.trial_session
+	for turn in 110:
+		var step := TrialRules.current(run.state, run.trial_content)
+		if step.id == target or run.state.trial.done:
+			break
+		match step.event:
+			"coach-next":
+				await run.command({"type": "trial-next"})
+			"enter":
+				var rooms := ShardrunMap.next_rooms(run.state.map, run.state.position)
+				await run.command({"type": "enter", "node_id": rooms[0].id})
+			"compose":
+				if step.has("ordered_cards"):
+					await _trial_ordered(run, step.ordered_cards)
+				else:
+					await _trial_place(run, String(step.get("required_card", "")))
+			"cast":
+				await run.command({"type": "cast", "spell_id": "spell-1"})
+			"battle-won":
+				if (run.state.spells[0].shards as Array).is_empty():
+					await _trial_place(run)
+				await run.command({"type": "cast", "spell_id": "spell-1"})
+			"claim-relic":
+				await run.command({"type": "claim-relic", "relic_id": run.state.reward.relics[0]})
+			"forge":
+				await run.command({"type": "forge", "shard_id": "fib-surge"})
+			"rest":
+				await run.command({"type": "rest"})
+			_:
+				break
+	var screen: Control = (load(Game.SHARDRUN) as PackedScene).instantiate()
+	add_child(screen)
+	for i in 12:
+		await get_tree().process_frame
+	set_meta("shot_ready", true)
+	shot_ready.emit()
+
+
+func _trial_place(run: ShardrunSession, required := "") -> void:
+	var hand: Array = run.state.battle.hand.duplicate()
+	if hand.is_empty():
+		await run.command({"type": "end-turn"})
+		return
+	var chosen := required if required in hand else "fire-constant" if "fire-constant" in hand else String(hand[0])
+	hand.erase(chosen)
+	await run.command({"type": "compose", "spells": [{"id": "spell-1", "shards": [chosen]}], "hand": hand, "held": []})
+
+
+func _trial_ordered(run: ShardrunSession, cards: Array) -> void:
+	var hand: Array = run.state.battle.hand.duplicate()
+	for card: String in cards:
+		hand.erase(card)
+	await run.command(
+		{"type": "compose", "spells": [{"id": "spell-1", "shards": cards.duplicate()}], "hand": hand, "held": []}
+	)
 
 
 ## The run history over a dark stage, from a few finished runs made up for the picture (a win, losses, an abandon),

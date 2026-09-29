@@ -1,6 +1,10 @@
 // Trial prose keyed by the English line, as with the rest of the content.
 [
   {
+    "en": "A stumble, not an ending! We are back at the start of this fight. Try a faster card or guard the next hit; read the preview before you run.",
+    "to": "つまずいただけ、終わりじゃない！ この戦いの最初にもどったよ。もっと速いカードを選ぶか、次の一撃をガードして。走らせる前に予想も読もう。"
+  },
+  {
     "en": "Chapter 1: The Pocket Shardrunner Arrives",
     "to": "第一章：ポケット・シャードランナー参上！"
   },
@@ -21,8 +25,8 @@
     "to": "第三章：炉とひと休み"
   },
   {
-    "en": "The forge glows. Pip produces a tiny hammer from nowhere. “Please do not ask where I kept this.”",
-    "to": "炉が光る。ピップはどこからか小さな金づちを出す。「どこにしまっていたかは聞かないでね」"
+    "en": "The foe scatters. Pip catches a relic nearly as big as he is. “I meant to do that. Now, onward to the forge!”",
+    "to": "敵がぱっと消え、ピップは自分ほど大きな遺物（いぶつ）を受け止める。「ねらいどおり！ さあ、次は炉（ろ）へ行こう！」"
   },
   {
     "en": "Chapter 4: The Guardian at the Return",
@@ -89,8 +93,48 @@
     "to": "本当のコードでは、関数が「入力は整列（せいれつ）ずみ」を必要とすることがある。"
   },
   {
-    "en": "Place Quick Sort before Binary Execute if both are in your hand. Read the warning in the code panel when a card needs sorted input. If the draw is different, place the sort you have and keep the idea: order changes the answer.",
-    "to": "クイックソートをバイナリー・エグゼキュートより前に置こう。並んだ入力が必要なら、コードの警告（けいこく）が教えてくれる。手が違っても、まず並べるカードを置いてみて。"
+    "en": "Let us lose a speed race safely. Place Fibonacci Surge in the Program. Its naive recursion does more work as the volley grows. The foe's chip says it moves after just two operations; read the preview before you run.",
+    "to": "安全に速さ比べで負けてみよう。フィボナッチ・サージをプログラムに置いて。素朴な再帰（さいき）はボルトが増えるほど仕事も増える。敵の印には『2回の操作で動く』とあるよ。走らせる前に予想を読もう。"
+  },
+  {
+    "en": "In real code: a slow algorithm can miss a deadline even when it gives the right answer.",
+    "to": "本当のコードでは、答えが正しくても遅いアルゴリズムは時間に間に合わない。"
+  },
+  {
+    "en": "Run that slow line. See the foe act first? We let it win this race, so the log and the preview can show exactly what Initiative means. Ow. My scarf is taking notes.",
+    "to": "その遅い行を走らせよう。敵が先に動いたね？ これが先手（せんて）の意味だ。いたた……ぼくのマフラーがメモを取っている。"
+  },
+  {
+    "en": "In real code: an expensive function can finish after another task has already acted.",
+    "to": "本当のコードでは、手間のかかる関数が終わる前に、別の仕事が先に動くことがある。"
+  },
+  {
+    "en": "Now win the race. Replace the line with Ember Constant. O(1) work is smaller than the foe's tempo of two. You decide where to place it; check the preview for the new order.",
+    "to": "今度は勝とう。行をエンバー・コンスタントに変えて。O(1)の仕事は敵の速さ2より小さい。どこに置くかはきみが決めて、新しい順番を予想で確かめよう。"
+  },
+  {
+    "en": "In real code: constant work stays small as inputs grow.",
+    "to": "本当のコードでは、一定の仕事量は入力が増えても小さいままだ。"
+  },
+  {
+    "en": "Run the faster Program. This time your bolts land before the foe moves. That is Initiative earned by the work you chose, not a lucky dice roll. I absolutely planned both halves of this demonstration.",
+    "to": "速いプログラムを走らせて！ 今度は敵より先にボルトが当たる。選んだ仕事量で取った先手だよ。運まかせじゃない。さっきの負けも、もちろん計画どおりさ。"
+  },
+  {
+    "en": "In real code: a lower-cost algorithm may finish first.",
+    "to": "本当のコードでは、仕事の少ないアルゴリズムが先に終わることがある。"
+  },
+  {
+    "en": "Try the wrong order safely: put Binary Execute before Quick Sort, but do not Run. The code panel warns that the search wants sorted bolts it has not received yet. That warning is a clue, not a scolding.",
+    "to": "まず安全に逆の順番を試そう。バイナリー・エグゼキュートをクイックソートより前に置いて。でも実行はまだ。コードの警告（けいこく）は『並んだボルトがまだないよ』というヒントだ。怒っているわけじゃないよ。"
+  },
+  {
+    "en": "In real code: a precondition can fail before a later function repairs the data.",
+    "to": "本当のコードでは、後の関数が直す前に、前の関数の条件が失敗する。"
+  },
+  {
+    "en": "Now swap them: Quick Sort first, Binary Execute second. The warning clears because the search gets sorted bolts when it needs them. Then run this Program to see the difference in the real fight.",
+    "to": "今度は入れかえよう。クイックソートが先、バイナリー・エグゼキュートが後。探すときにはボルトが並んでいるから、警告は消える。次はこのプログラムを戦いで動かそう。"
   },
   {
     "en": "In real code: preconditions must hold when a function runs.",
