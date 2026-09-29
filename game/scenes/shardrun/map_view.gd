@@ -3,10 +3,12 @@ extends Control
 ## A layer of the Machine as a tall scroll of rooms, in the spirit of Slay the Spire's map: dotted paths climb from the
 ## bottom row to the guardian waiting at the top. The map is taller than its window and glides: the wheel, a drag, the
 ## scroll bar, Page Up/Down or a room taking focus moves it, eased toward where it was asked to be. A new layer opens on
-## its guardian and pans down to where you start. Every kind of room has its own hue and outline (MapMarkers), named in
-## the legend at the right; the guardians of every layer stand on the rail at the left.
+## its guardian and pans down to where you start. Every kind of room has its own hue and outline (MapMarkers). The
+## guardians of every layer stand on the rail at the left; the route drawer at the right (the layer, the rooms you can
+## enter next, the legend) folds away, and the deck lies face down at the map's foot, opened with a click.
 
 signal enter_pressed(node_id: String)
+signal deck_pressed
 
 const NAMES := {
 	"fight": "Fight", "elite": "Elite", "boss": "Guardian", "rest": "Rest", "forge": "Forge", "treasure": "Cache"
@@ -22,7 +24,10 @@ const WHAT := {
 const LEGEND: Array[String] = ["fight", "elite", "rest", "forge", "treasure", "boss"]
 const HINT := "Hover a room to see what waits there."
 const RAIL_WIDTH := 128.0
-const SIDE_WIDTH := 256.0
+const SIDE_WIDTH := 290.0
+## The map's column is never wider than this, so a layer reads as a climb rather than a field.
+const MAP_WIDTH := 960.0
+const PILE := Vector2(66, 92)
 const WHEEL_STEP := 120.0
 const DRAG_START := 6.0
 ## How quickly the view catches up with its target: the gap shrinks by e^(-GLIDE * seconds).
@@ -34,6 +39,11 @@ const INTRO_HOLD := 0.9
 
 ## Where each layer's view was left ("seed:layer" -> scroll), so a rebuilt screen glides on from there.
 static var _left_at: Dictionary = {}
+## Whether the route drawer is open, kept while the game runs.
+static var drawer_open := true
+
+## Show the deck's face-down pile (a deck run); set before show_map.
+var show_deck := false
 
 var state: Dictionary = {}
 var catalog: Dictionary = {}
@@ -49,10 +59,15 @@ var _bar: VScrollBar
 var _side: VBoxContainer
 ## The legend along the map's foot, when the window is too narrow for the side panel.
 var _strip: PanelContainer
+var _chips: GridContainer
 var _title: Label
 var _subtitle: Label
 var _flavor: Label
 var _detail_text: Label
+var _next: VBoxContainer
+var _toggle: Button
+var _deck: Button
+var _deck_count: Label
 var _traveling := false
 var _pulse := 0.0
 var _scroll := 0.0
@@ -75,14 +90,13 @@ func _init() -> void:
 	_canvas = MapCanvas.new()
 	for kind: String in LEGEND:
 		_canvas.icons[kind] = Art.texture("shardrun/map-" + kind)
-	_view.add_child(_canvas)
 	_wall = TextureRect.new()
 	_wall.stretch_mode = TextureRect.STRETCH_TILE
 	_wall.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_wall.modulate = Color(0.4, 0.34, 0.29)
 	_wall.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_wall.show_behind_parent = true
-	_canvas.add_child(_wall)
+	_view.add_child(_wall)
+	_view.add_child(_canvas)
 	_fade = Control.new()
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_fade.draw.connect(_draw_fade)
@@ -103,15 +117,24 @@ func _init() -> void:
 	_subtitle = Ui.tint(Ui.label("", "Faint"), UiTheme.AMBER_DIM) as Label
 	_flavor = Ui.sized(Ui.label("", "Muted", true), 14) as Label
 	_detail_text = Ui.label(HINT, "Muted", true)
+	_next = Ui.vbox([], 4)
 	_side.add_child(Ui.vbox([_title, _subtitle], 2))
 	_side.add_child(_flavor)
 	_side.add_child(Ui.panel(_detail_text, "Card"))
+	_side.add_child(Ui.tint(Ui.label("NEXT ROOMS", "Faint"), UiTheme.TEAL))
+	_side.add_child(_next)
 	_side.add_child(Ui.expand(Ui.spacer(0, 1), true))
 	_side.add_child(Ui.label("ROOMS", "Faint"))
 	for kind: String in LEGEND:
 		_side.add_child(_legend_row(kind))
 	_side.add_child(Ui.sized(Ui.label("Wheel or drag to look ahead.", "Faint", true), 12))
-	var chips := Ui.flow([], 2)
+	_toggle = Ui.button("", _flip_drawer, "ChipButton")
+	_toggle.tooltip_text = "Show or hide the route: the layer, the rooms you can enter next, the legend."
+	add_child(_toggle)
+	_deck = _pile()
+	_view.add_child(_deck)
+	_chips = GridContainer.new()
+	var chips := _chips
 	for kind: String in LEGEND:
 		var chip := _legend_row(kind)
 		chip.custom_minimum_size.x = 118
@@ -151,7 +174,62 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	_rooms.clear()
 	for node: Dictionary in state.map.nodes:
 		_rooms[node.id] = _room(node, _states.get(node.id, "ahead"))
+	Ui.clear(_next)
+	for node: Dictionary in ShardrunMap.next_rooms(state.map, state.position):
+		_next.add_child(_next_room(node))
+	var deck: Array = state.get("deck", [])
+	_deck_count.text = "DECK · %d" % deck.size()
+	_deck.visible = show_deck
 	_placed = false
+	_layout()
+
+
+## A room you can walk into next, in the drawer: pointing at it finds it on the map, clicking goes there.
+func _next_room(node: Dictionary) -> Button:
+	var foes := ShardrunViews.room_foes(state, node, catalog)
+	var what := ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name)) if not foes.is_empty() else ""
+	if what == "":
+		what = String(WHAT.get(node.kind, ""))
+	var button := Ui.button("%s  ·  %s" % [NAMES.get(node.kind, node.kind), what], func() -> void: travel_to(node.id))
+	button.icon = _canvas.icons.get(node.kind)
+	button.expand_icon = false
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	button.add_theme_font_size_override("font_size", 14)
+	button.add_theme_color_override("icon_normal_color", UiTheme.room(node.kind))
+	button.mouse_entered.connect(func() -> void: focus_room(node.id))
+	button.mouse_exited.connect(func() -> void: focus_room(""))
+	return button
+
+
+## The deck lying face down at the map's foot, as in a fight; a click opens it.
+func _pile() -> Button:
+	var pile := Button.new()
+	pile.custom_minimum_size = PILE + Vector2(0, 24)
+	pile.size = pile.custom_minimum_size
+	pile.tooltip_text = "Open your deck: every card, what it does and its code."
+	pile.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	for look: String in ["normal", "pressed", "focus"]:
+		pile.add_theme_stylebox_override(look, StyleBoxEmpty.new())
+	pile.add_theme_stylebox_override("hover", UiTheme.box(Color(1, 1, 1, 0.06), UiTheme.SHARD, 2, 10))
+	pile.pressed.connect(func() -> void: deck_pressed.emit())
+	var art := Art.texture("cards/back")
+	var face := Ui.picture("cards/back" if art != null else "brand/shardrun", PILE, "◆")
+	face.position = Vector2.ZERO
+	face.size = PILE
+	pile.add_child(face)
+	_deck_count = Ui.tint(Ui.sized(Ui.label("", "Faint"), 12), UiTheme.SHARD) as Label
+	_deck_count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_deck_count.position = Vector2(-20, PILE.y + 4)
+	_deck_count.size = Vector2(PILE.x + 40, 18)
+	_deck_count.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pile.add_child(_deck_count)
+	pile.visible = false
+	return pile
+
+
+func _flip_drawer() -> void:
+	drawer_open = not drawer_open
 	_layout()
 
 
@@ -391,7 +469,8 @@ func _process(delta: float) -> void:
 
 func _apply_scroll() -> void:
 	var slack := maxf(0.0, (_view.size.y - _canvas.size.y) * 0.5)
-	_canvas.position = Vector2(0, roundf(slack - _scroll))
+	_canvas.position = Vector2(roundf((_view.size.x - _canvas.size.x) * 0.5), roundf(slack - _scroll))
+	_wall.position = Vector2(0, _canvas.position.y)
 	_bar.visible = max_scroll() > 0.0
 	_bar.max_value = _canvas.size.y
 	_bar.page = _view.size.y
@@ -410,27 +489,41 @@ func _notification(what: int) -> void:
 
 
 func _layout() -> void:
-	var side := SIDE_WIDTH if size.x > 900.0 else 0.0
+	var wide := size.x > 900.0
+	var side := SIDE_WIDTH if wide and drawer_open else 0.0
 	_side.visible = side > 0.0
 	_strip.visible = not _side.visible
+	_toggle.visible = wide
+	_toggle.text = "Route  »" if drawer_open else "«  Route"
+	_toggle.size = _toggle.get_combined_minimum_size()
 	_rail.position = Vector2.ZERO
 	_rail.size = Vector2(RAIL_WIDTH, size.y)
-	_side.position = Vector2(size.x - side + 16.0, 14.0)
-	_side.size = Vector2(maxf(0.0, side - 30.0), maxf(0.0, size.y - 28.0))
+	_side.position = Vector2(size.x - side + 16.0, 52.0)
+	_side.size = Vector2(maxf(0.0, side - 30.0), maxf(0.0, size.y - 66.0))
 	_view.position = Vector2(RAIL_WIDTH, 0)
 	_view.size = Vector2(maxf(0.0, size.x - RAIL_WIDTH - side), size.y)
+	_toggle.position = Vector2(size.x - _toggle.size.x - 12.0, 12.0)
 	_fade.size = _view.size
 	_bar.position = Vector2(_view.size.x - 14.0, 10.0)
 	_bar.size = Vector2(10.0, maxf(0.0, _view.size.y - 20.0))
-	_strip.size = Vector2(maxf(0.0, _view.size.x - 40.0), 0.0)
-	_strip.position = Vector2(12.0, _view.size.y - _strip.get_combined_minimum_size().y - 10.0)
-	_canvas.foot = MapCanvas.FOOT + (_view.size.y - _strip.position.y if _strip.visible else 0.0)
+	_deck.position = Vector2(18.0, _view.size.y - _deck.size.y - 12.0)
+	var strip_x := _deck.position.x + _deck.size.x + 14.0 if _deck.visible else 12.0
+	# Known sizes, not the container's own: a legend laid out before its first frame would not know its height yet.
+	var room_for := _view.size.x - strip_x - 30.0
+	_chips.columns = 6 if room_for >= 740.0 else 3
+	var chip_rows := ceili(float(LEGEND.size()) / _chips.columns)
+	_strip.size = Vector2(_chips.columns * 122.0 + 16.0, chip_rows * 38.0 + 8.0)
+	_strip.position = Vector2(strip_x, _view.size.y - _strip.size.y - 10.0)
+	var covered := _view.size.y - _strip.position.y if _strip.visible else 0.0
+	if _deck.visible:
+		covered = maxf(covered, _view.size.y - _deck.position.y)
+	_canvas.foot = MapCanvas.FOOT + covered
 	queue_redraw()
 	if state.is_empty():
 		return
 	var rows := int(ShardrunRules.layer_of(state, catalog).rows)
-	_canvas.size = Vector2(_view.size.x - 16.0, _canvas.height_for(rows))
-	_wall.size = _canvas.size
+	_canvas.size = Vector2(minf(MAP_WIDTH, _view.size.x - 16.0), _canvas.height_for(rows))
+	_wall.size = Vector2(_view.size.x, _canvas.size.y)
 	for node: Dictionary in state.map.nodes:
 		var room: Button = _rooms.get(node.id)
 		if room != null:

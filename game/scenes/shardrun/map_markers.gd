@@ -82,20 +82,45 @@ static func draw_tick(canvas: CanvasItem, at: Vector2, radius: float) -> void:
 	canvas.draw_polyline(tick, UiTheme.TEXT, maxf(2.0, radius * 0.28), true)
 
 
-## Dots from `from` to `to`, stopping `trim_from` and `trim_to` short of the ends so they meet the markers' rims.
+## Dots from `from` to `to`, stopping `trims.x` and `trims.y` short of the ends so they meet the markers' rims.
 ## `phase` slides every dot along its gap, which reads as the path flowing where it leads.
 static func draw_path(
 	canvas: CanvasItem, from: Vector2, to: Vector2, colour: Color, dot: float, gap: float, trims: Vector2, phase := 0.0
 ) -> void:
-	var length := from.distance_to(to)
-	var span := length - trims.x - trims.y
-	if span <= 0.0:
-		return
-	var direction := (to - from) / length
-	var travelled := fposmod(phase, 1.0) * gap
-	while travelled <= span:
-		canvas.draw_circle(from + direction * (trims.x + travelled), dot, colour, true, -1.0, true)
-		travelled += gap
+	draw_trail(canvas, PackedVector2Array([from, to]), colour, dot, gap, trims, phase)
+
+
+## Dots along a polyline (a winding path), spaced `gap` apart by distance along it; trims and phase as draw_path.
+static func draw_trail(
+	canvas: CanvasItem, points: PackedVector2Array, colour: Color, dot: float, gap: float, trims: Vector2, phase := 0.0
+) -> void:
+	var total := 0.0
+	for i in points.size() - 1:
+		total += points[i].distance_to(points[i + 1])
+	var end := total - trims.y
+	var along := trims.x + fposmod(phase, 1.0) * gap
+	var walked := 0.0
+	var segment := 0
+	while along <= end and segment < points.size() - 1:
+		var length := points[segment].distance_to(points[segment + 1])
+		if along > walked + length:
+			walked += length
+			segment += 1
+			continue
+		var t := (along - walked) / maxf(length, 0.001)
+		canvas.draw_circle(points[segment].lerp(points[segment + 1], t), dot, colour, true, -1.0, true)
+		along += gap
+
+
+## A path that snakes from one point to another: a sideways wave of `amplitude` pixels, `waves` half-turns long,
+## fading out at both ends so it still meets each marker head-on.
+static func winding(from: Vector2, to: Vector2, amplitude: float, waves: float, steps := 24) -> PackedVector2Array:
+	var across := (to - from).orthogonal().normalized()
+	var points := PackedVector2Array()
+	for i in steps + 1:
+		var t := float(i) / steps
+		points.append(from.lerp(to, t) + across * amplitude * sin(t * PI * waves) * sin(t * PI))
+	return points
 
 
 static func _ring(canvas: CanvasItem, points: PackedVector2Array, colour: Color, width: float) -> void:

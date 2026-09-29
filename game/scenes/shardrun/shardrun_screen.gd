@@ -135,7 +135,7 @@ func _show_header(state: Dictionary) -> void:
 			[
 				(
 					Ui.button("Deck", _open_deck)
-					if ShardrunRules.is_deck(state) and state.status == "battle"
+					if ShardrunRules.is_deck(state) and not state.status in Shardrun.ENDED
 					else Ui.spacer()
 				),
 				Ui.button("Stats", _open_stats),
@@ -154,10 +154,10 @@ func _show_header(state: Dictionary) -> void:
 
 func _between(state: Dictionary) -> Control:
 	var left := Ui.vbox([], 8)
-	var map_view: MapView
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_stretch_ratio = 2.7 if ShardrunRules.is_deck(state) else 1.25
-	if state.status in ["reward", "rest", "forge"]:
+	var on_map: bool = not state.status in ["reward", "rest", "forge"]
+	if not on_map:
 		var room := RoomPanel.create(session)
 		room.wants.connect(send)
 		var scroll := Ui.scroll(room)
@@ -165,20 +165,20 @@ func _between(state: Dictionary) -> Control:
 		left.add_child(Ui.expand(Ui.panel(scroll, ""), true))
 	else:
 		var map := MapView.new()
-		map_view = map
+		map.show_deck = ShardrunRules.is_deck(state)
 		map.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		map.enter_pressed.connect(func(node_id: String) -> void: send({"type": "enter", "node_id": node_id}))
+		map.deck_pressed.connect(_open_deck)
 		left.add_child(Ui.expand(Ui.panel(map, "Sunken"), true))
 		map.show_map(state, session.catalog)
 	_chronicle = Ui.label(_story(state.log), "Muted", true)
 	left.add_child(_chronicle)
+	# A deck run's map fills the screen: the deck opens from its pile, the next rooms sit in the map's route drawer.
+	if ShardrunRules.is_deck(state) and on_map:
+		return left
 	var right: PanelContainer
 	if ShardrunRules.is_deck(state):
-		var sidebar := Ui.vbox([], 16)
-		if state.status == "map":
-			sidebar.add_child(_routes(state, map_view))
-		sidebar.add_child(DeckPanel.create(session))
-		right = Ui.panel(Ui.scroll(sidebar), "")
+		right = Ui.panel(Ui.scroll(DeckPanel.create(session)), "")
 		right.custom_minimum_size.x = 480
 	else:
 		var bench := Workbench.create(session)
@@ -188,33 +188,6 @@ func _between(state: Dictionary) -> Control:
 		right = Ui.panel(bench, "")
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return Ui.hbox([left, right], 12)
-
-
-func _routes(state: Dictionary, map_view: MapView = null) -> Control:
-	var routes := Ui.vbox([Ui.tint(Ui.label("AVAILABLE CHAMBERS", "Faint"), UiTheme.TEAL)], 6)
-	for room: Dictionary in ShardrunMap.next_rooms(state.map, state.position):
-		var name: String = MapView.NAMES.get(room.kind, room.kind)
-		var foes := ShardrunViews.room_foes(state, room, session.catalog)
-		var detail := ""
-		if not foes.is_empty():
-			detail = ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name))
-		else:
-			detail = MapView.WHAT.get(room.kind, "Continue deeper into the Machine.")
-		var button := Ui.button(
-			"%s  ·  %s" % [name, detail],
-			func() -> void:
-				if map_view != null:
-					map_view.travel_to(room.id)
-				else:
-					send({"type": "enter", "node_id": room.id})
-		)
-		if map_view != null:
-			button.mouse_entered.connect(func() -> void: map_view.focus_room(room.id))
-			button.mouse_exited.connect(func() -> void: map_view.focus_room(""))
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		routes.add_child(button)
-	return routes
 
 
 func _ending(state: Dictionary) -> Control:
@@ -462,8 +435,10 @@ func _open_dev() -> void:
 
 
 func _open_deck() -> void:
-	var panel := Ui.panel(DeckPanel.create(session, true), "Overlay")
-	panel.custom_minimum_size = Vector2(980, 0)
+	var close := Ui.button("Close", _close_overlay)
+	close.size_flags_horizontal = Control.SIZE_SHRINK_END
+	var panel := Ui.panel(Ui.vbox([DeckPanel.create(session, true), close], 12), "Overlay")
+	panel.custom_minimum_size = Vector2(1180, 0)
 	_open(panel)
 
 

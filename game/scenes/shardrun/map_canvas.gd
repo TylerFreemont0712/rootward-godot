@@ -4,14 +4,14 @@ extends Control
 ## room markers and guardian drawn there. The rooms' buttons are its children, laid over what it draws.
 
 ## The map's measures, in design pixels.
-const ROW_STEP := 128.0
+const ROW_STEP := 196.0
 const RADIUS := 30.0
 const BOSS_RADIUS := 70.0
 ## From the map's top to its top row: room for the guardian's medallion and name plate.
 const HEAD := 372.0
 const FOOT := 92.0
-const SIDE_PAD := 56.0
-const JITTER := Vector2(22, 14)
+const SIDE_PAD := 74.0
+const JITTER := Vector2(26, 22)
 const DOT_GAP := 13.0
 
 var state: Dictionary = {}
@@ -72,6 +72,7 @@ func _draw() -> void:
 		return
 	var calm := Settings.reduced_motion
 	var glow := 1.0 if calm else 0.5 + 0.5 * sin(_pulse * 3.6)
+	_draw_gutter()
 	_draw_paths(0.0 if calm else _pulse * 1.4)
 	for node: Dictionary in state.map.nodes:
 		if node.kind == "boss":
@@ -112,8 +113,10 @@ func _draw_paths(flow: float) -> void:
 			# Paths climb to the guardian's name plate, not through it.
 			b = _gate(b)
 			trims.y = 4.0
-		MapMarkers.draw_path(self, a, b, Color(0, 0, 0, 0.6), dot + 1.8, DOT_GAP, trims, phase)
-		MapMarkers.draw_path(self, a, b, colour, dot, DOT_GAP, trims, phase)
+		var wind := _wind("%s>%s" % [edge[0], edge[1]])
+		var trail := MapMarkers.winding(a, b, wind.x, wind.y)
+		MapMarkers.draw_trail(self, trail, Color(0, 0, 0, 0.6), dot + 1.8, DOT_GAP, trims, phase)
+		MapMarkers.draw_trail(self, trail, colour, dot, DOT_GAP, trims, phase)
 	if state.position == null:
 		for node: Dictionary in state.map.nodes:
 			if int(node.row) == 0:
@@ -122,6 +125,13 @@ func _draw_paths(flow: float) -> void:
 				var trims := Vector2(0.0, RADIUS + 10.0)
 				MapMarkers.draw_path(self, at + Vector2(0, 80), at, Color(0, 0, 0, 0.6), 6.0, DOT_GAP, trims, flow)
 				MapMarkers.draw_path(self, at + Vector2(0, 80), at, colour, 4.2, DOT_GAP, trims, flow)
+
+
+## How a path winds, (amplitude, half-waves): steady for the same path on every run (see jitter).
+static func _wind(key: String) -> Vector2:
+	var bits := hash(key)
+	var side := 1.0 if bits & 1 else -1.0
+	return Vector2(side * (10.0 + 10.0 * float((bits >> 1) & 0xFF) / 255.0), 2.0 + float((bits >> 9) & 1))
 
 
 func _radius_of(node: Dictionary) -> float:
@@ -195,3 +205,28 @@ func _draw_guardian(node: Dictionary, glow: float) -> void:
 	draw_string(font, line, title, HORIZONTAL_ALIGNMENT_CENTER, size.x, 34, hue)
 	var small := UiTheme.ui_font(600)
 	draw_string(small, line + Vector2(0, 22), caption, HORIZONTAL_ALIGNMENT_CENTER, size.x, 12, UiTheme.MUTED)
+
+
+## The margin of a code editor: every row is a numbered line of the climb, lit up to the one you stand on, and the
+## guardian waits at the `return`.
+func _draw_gutter() -> void:
+	var font := UiTheme.ui_font()
+	var rows := int(ShardrunRules.layer_of(state, catalog).rows)
+	var reached := -1
+	for node: Dictionary in state.map.nodes:
+		if node.id == state.position:
+			reached = int(node.row)
+	draw_line(Vector2(42, 0), Vector2(42, size.y), Color(UiTheme.LINE, 0.6), 1.0)
+	for row in rows:
+		var y := size.y - foot - row * ROW_STEP
+		var colour := UiTheme.AMBER_DIM if row <= reached else Color(UiTheme.FAINT, 0.8)
+		if row == reached:
+			colour = UiTheme.TEAL
+		draw_string(font, Vector2(0, y + 5), str(row + 1), HORIZONTAL_ALIGNMENT_RIGHT, 34, 13, colour)
+		for x in range(52, int(size.x) - 20, 14):
+			draw_line(Vector2(x, y), Vector2(x + 5, y), Color(UiTheme.LINE, 0.25), 1.0)
+	var top := place({"kind": "boss"}).y
+	draw_string(font, Vector2(0, top + 5), str(rows + 1), HORIZONTAL_ALIGNMENT_RIGHT, 34, 13, UiTheme.room("boss"))
+	draw_string(
+		font, Vector2(50, top - 30), "return", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(UiTheme.room("boss"), 0.8)
+	)

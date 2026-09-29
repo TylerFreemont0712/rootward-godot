@@ -107,3 +107,38 @@ func test_the_rail_shows_a_guardian_for_every_layer() -> void:
 	var layers: Array = catalog.config.layers
 	assert_int(rail.guardians.size()).is_equal(layers.size())
 	assert_str(String(rail.guardians[1].where)).is_equal("current")
+
+
+func test_the_route_drawer_folds_away_and_gives_the_map_its_room() -> void:
+	MapView.drawer_open = true
+	_open(_step_in(_start("map-drawer")))
+	var view: Control = map.get("_view")
+	var side: Control = map.get("_side")
+	var narrow := view.size.x
+	assert_bool(side.visible).is_true()
+	map.call("_flip_drawer")
+	assert_bool(side.visible).is_false()
+	assert_float(view.size.x).is_greater(narrow)
+	map.call("_flip_drawer")
+	assert_bool(MapView.drawer_open).is_true()
+
+
+func test_the_drawer_lists_every_room_you_can_enter_next() -> void:
+	var state := _step_in(_start("map-next"))
+	_open(state)
+	var listed: VBoxContainer = map.get("_next")
+	assert_int(listed.get_child_count()).is_equal(ShardrunMap.next_rooms(state.map, state.position).size())
+
+
+func test_a_deck_run_lays_its_deck_face_down_on_the_map() -> void:
+	map = MapView.new()
+	map.show_deck = true
+	map.size = Vector2(1300, 820)
+	add_child(map)
+	map.show_map(_step_in(_start("map-deck")), catalog)
+	var pile: Button = map.get("_deck")
+	assert_bool(pile.visible).is_true()
+	var opened: Array[bool] = [false]
+	map.deck_pressed.connect(func() -> void: opened[0] = true)
+	pile.pressed.emit()
+	assert_bool(opened[0]).is_true()

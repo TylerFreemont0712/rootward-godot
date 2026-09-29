@@ -42,3 +42,21 @@ visual indicator of each layer's boss. The old map squeezed a layer into its pan
 - `MapView` (scrolling, input, legend), `MapCanvas` (placement and drawing), `MapMarkers` (shapes shared with the
   legend and the rail) and `GuardianRail` replace the one file.
 - `ROOTWARD_SHOT_SCROLL` holds a map shot's view at a scroll, since the opening pan is timed in real seconds.
+
+## Amendment (same day): the map in the middle
+
+The player asked for the map to be the centre of the screen, the deck and the rooms ahead "a side menu that can be
+opened rather than something that is permanently attached", a longer climb, and paths less straight or with a
+programming touch.
+
+- **A deck run's map fills the screen.** The deck no longer sits beside it: it lies face down at the map's foot and a
+  click opens it in a modal (the fight's own deck panel: every card, its details and code on hover), as the header's
+  Deck button now does outside fights too. Reward, rest and forge rooms keep the deck beside them, where it is used.
+- **The route drawer** at the right holds the layer, the room pointed at, the rooms you can enter next (pointing finds
+  one on the map, clicking goes there) and the legend. It folds away with its "Route" tab and stays as you left it;
+  folded, the legend lies along the map's foot beside the deck.
+- **A longer climb.** Rows are 196 pixels apart (a layer is two to two and a half windows tall) in a column at most 960
+  pixels wide, centred.
+- **Winding paths**: each trail snakes a little (a sideways wave that fades at both ends, its size and side from a hash
+  of the path, so it never moves), and **a code editor's gutter** numbers the rows as lines up the left, lit up to the
+  line you stand on, with the guardian at the `return`.

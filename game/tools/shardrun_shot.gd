@@ -7,7 +7,8 @@ extends Control
 ##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window), relics
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs), layer (a
 ##   sandbox run jumped to ROOTWARD_SHOT_LAYER, the deepest by default: its map, or a fight there with the foes below).
-##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the guardian at the top)
+##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the guardian at the top);
+##   ROOTWARD_SHOT_DRAWER=closed folds its route drawer, ROOTWARD_SHOT_DECK=1 opens the deck over it
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
 ## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare; ROOTWARD_SHOT_RELICS
 ## (ids) grants those relics first, in such a run (the header's relics, rung by tier). ROOTWARD_SHOT_FOES (ids) puts
@@ -260,9 +261,14 @@ func _act(shot: String, screen: Control) -> void:
 					table.call("_open_pile", "draw")
 		"map", "layer":
 			# ROOTWARD_SHOT_SCROLL holds the map that far down (in pixels; 0 is the guardian at the top).
-			if OS.has_environment("ROOTWARD_SHOT_SCROLL"):
-				for map: MapView in screen.find_children("*", "MapView", true, false):
+			# ROOTWARD_SHOT_DRAWER=closed folds the route drawer away; ROOTWARD_SHOT_DECK=1 opens the deck over the map.
+			for map: MapView in screen.find_children("*", "MapView", true, false):
+				if OS.get_environment("ROOTWARD_SHOT_DRAWER") == "closed" and MapView.drawer_open:
+					map.call("_flip_drawer")
+				if OS.has_environment("ROOTWARD_SHOT_SCROLL"):
 					map.jump_to(float(OS.get_environment("ROOTWARD_SHOT_SCROLL")))
+			if OS.get_environment("ROOTWARD_SHOT_DECK") == "1":
+				screen.call("_open_deck")
 		"enemy_tip", "relic_tip":
 			var desired := "Deadlock" if shot == "enemy_tip" else "Overclock"
 			for tip: HoverInfo in screen.find_children("*", "HoverInfo", true, false):
