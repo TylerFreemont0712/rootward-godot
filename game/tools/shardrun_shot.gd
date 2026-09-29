@@ -198,8 +198,8 @@ func _show_trial(language: String) -> void:
 				var rooms := ShardrunMap.next_rooms(run.state.map, run.state.position)
 				await run.command({"type": "enter", "node_id": rooms[0].id})
 			"compose":
-				if step.has("ordered_cards"):
-					await _trial_ordered(run, step.ordered_cards)
+				if step.has("ordered_cards") or step.has("cards_exact"):
+					await _trial_ordered(run, step.get("ordered_cards", step.get("cards_exact", [])))
 				else:
 					await _trial_place(run, String(step.get("required_card", "")))
 			"cast":

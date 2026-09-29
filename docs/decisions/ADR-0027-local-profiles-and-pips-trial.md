@@ -28,8 +28,8 @@ their ordinary run or enter their finished-run history.
 - The Trial is a separate `trial.json` snapshot under the same player folder. It carries the real program-run state
   plus `trial: {step_id, chapter_id, completed, checkpoint, failures, ...}`. A JSONC content file names chapters, steps,
   UI anchors, English text keys, session events that advance a step, and generic forced setup. Event predicates may
-  require a named card, card order, or an actual battle log kind; dotted forced-state paths set up scripted hands and
-  foe tempo without changing the combat rules. Japanese text uses the
+  require a named card, an exact card sequence, card order, or an actual battle log kind; dotted forced-state paths set
+  up scripted hands and foe tempo without changing the combat rules. Japanese text uses the
   normal English-keyed overlay. The session still submits real commands to the real rules and sandbox; the trial
   layer observes accepted events and stores progress in the snapshot. A lost fight restores its saved fight checkpoint.
   Skipping or completing the Trial updates that player's flags and never appends to `history.jsonl`. Its end score uses

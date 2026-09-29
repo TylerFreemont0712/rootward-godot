@@ -154,6 +154,8 @@ static func _matches(step: Dictionary, event: Dictionary) -> bool:
 		return false
 	if step.has("required_card") and not step.required_card in event.get("cards", []):
 		return false
+	if step.has("cards_exact") and step.cards_exact != event.get("cards", []):
+		return false
 	if step.has("ordered_cards"):
 		var cards: Array = event.get("cards", [])
 		var previous := -1

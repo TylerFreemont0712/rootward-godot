@@ -186,17 +186,8 @@
       "anchor": "program",
       "event": "cast",
       "say": "Run the Program. Watch the walkthrough light up the function you chose, then follow the bolts to the foe. If you want another look, the code and battle log stay available.",
-      "code": "In real code: execution follows the calls in order.",
+      "code": "In real code: execution follows the calls in order, and matching previews make outcomes reproducible.",
       "action_seconds": 17
-    },
-    {
-      "id": "walk",
-      "chapter": "arrival",
-      "anchor": "code",
-      "event": "coach-next",
-      "say": "See? The cast landed as the preview said. I call that “Pip-level certainty.” The Machine calls it deterministic execution. Now the foe gets a turn, so we must plan the next one.",
-      "code": "In real code: the same input gives the same result here.",
-      "action_seconds": 5
     },
     {
       "id": "order-intro",
@@ -293,22 +284,28 @@
       "action_seconds": 19
     },
     {
-      "id": "budget",
+      "id": "budget-plan",
       "chapter": "order",
-      "anchor": "code",
-      "event": "coach-next",
-      "say": "The bar has a hard budget. A program over that limit times out: it spends mana and lands nothing. Try a cheaper line next turn if the preview warns you. Even my pockets cannot hold infinite work.",
-      "code": "In real code: a time limit stops an expensive computation.",
-      "action_seconds": 10
+      "anchor": "hand",
+      "event": "compose",
+      "cards_exact": ["fork", "fork", "fork", "fib-surge"],
+      "force": {
+        "battle.hand": ["fork", "fork", "fork", "fib-surge", "ward"],
+        "battle.mana": 5
+      },
+      "say": "Let's make one program too expensive on purpose. Place three Forks, then Fibonacci Surge: the volley grows, so naive recursion does far too much work. Check the warning in the preview, then run it.",
+      "code": "In real code: a budget is a time limit on computation.",
+      "action_seconds": 17
     },
     {
-      "id": "race",
+      "id": "budget-run",
       "chapter": "order",
-      "anchor": "foe",
-      "event": "coach-next",
-      "say": "The foe has a speed too. If its tempo beats your Work, it acts before your bolts land. A faster program wins Initiative and hits harder. We lost that race once on purpose. Probably.",
-      "code": "In real code: faster algorithms can change which action finishes first.",
-      "action_seconds": 14
+      "anchor": "code",
+      "event": "cast",
+      "log_kind": "timeout",
+      "say": "Run it. The foe takes its turn, and your bolts do not land, even though the mana is spent. The log says timeout: Work crossed the budget. My pockets have learned about limits.",
+      "code": "In real code: a timed-out program returns no result.",
+      "action_seconds": 17
     },
     {
       "id": "defense",
@@ -397,7 +394,7 @@
       "chapter": "guardian",
       "anchor": "guardian",
       "event": "coach-next",
-      "say": "The guardian is the last room, marked at the top of the map and on the rail. It has one trick. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
+      "say": "The guardian is the last room, marked at the top of the map and on the rail. Its brick hide turns bolts under five power aside. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
       "code": "In real code: inspect the conditions before committing a run.",
       "action_seconds": 5
     },

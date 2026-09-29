@@ -436,5 +436,6 @@ place, so a recovery path is available even if a later run becomes unreadable.
 
 Pip's speed race originally advanced on any cast, so the story could say the foe moved first when it had not. The
 Trial now checks the accepted command's new battle log for `tempo`, and the sorted-input lesson checks card order in
-the submitted Program. Scripted hands and foe tempo are setup data; the cast still goes through the real sandbox and
-combat rules. This keeps the lesson honest without adding a tutorial branch to the battle engine.
+the submitted Program. The budget lesson checks an exact scripted card sequence and the real `timeout` log, then
+verifies that no damage landed. Scripted hands and foe tempo are setup data; the cast still goes through the real
+sandbox and combat rules. This keeps the lesson honest without adding a tutorial branch to the battle engine.

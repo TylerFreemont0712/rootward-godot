@@ -73,16 +73,8 @@
     "to": "プログラムを走らせて！ コードの行が光ってから、ボルトが敵へ飛ぶところを見よう。もう一度見たければ、コードと戦いの記録を開けるよ。"
   },
   {
-    "en": "In real code: execution follows the calls in order.",
-    "to": "本当のコードでも、関数は並べた順に動く。"
-  },
-  {
-    "en": "See? The cast landed as the preview said. I call that “Pip-level certainty.” The Machine calls it deterministic execution. Now the foe gets a turn, so we must plan the next one.",
-    "to": "見た？ 予想どおりに当たった！ ぼくは「ピップ級の確実さ」と呼ぶ。機械は「決まったとおりの実行」と呼ぶけどね。次のターンを考えよう。"
-  },
-  {
-    "en": "In real code: the same input gives the same result here.",
-    "to": "本当のコードでは、ここでは同じ入力から同じ結果が出る。"
+    "en": "In real code: execution follows the calls in order, and matching previews make outcomes reproducible.",
+    "to": "本当のコードでは、関数は並べた順に動き、予想と同じ結果をくり返し出せる。"
   },
   {
     "en": "Cards have roles: source makes bolts, shape changes them, order sorts them, strike aims them and guard turns them into block. A search that needs sorted bolts fails if you put it before the sort. My scarf learned that the hard way.",
@@ -149,20 +141,20 @@
     "to": "本当のコードでは、Big-Oは入力が増えたときの手間の増え方を表す。"
   },
   {
-    "en": "The bar has a hard budget. A program over that limit times out: it spends mana and lands nothing. Try a cheaper line next turn if the preview warns you. Even my pockets cannot hold infinite work.",
-    "to": "バーには上限がある。こえると時間切れで、マナだけ使って何も当たらない。予想が警告したら、次は軽い行にしよう。ぼくのポケットだって無限じゃないよ。"
+    "en": "Let's make one program too expensive on purpose. Place three Forks, then Fibonacci Surge: the volley grows, so naive recursion does far too much work. Check the warning in the preview, then run it.",
+    "to": "わざと計算が重すぎるプログラムを作ろう。フォークを三枚、そのあとにフィボナッチ・サージを置いて。ボルトが増えると、素朴（そぼく）な再帰は手間がかかりすぎる。予想の警告を見てから、走らせてね。"
   },
   {
-    "en": "In real code: a time limit stops an expensive computation.",
-    "to": "本当のコードでも、重すぎる計算は時間制限で止まる。"
+    "en": "In real code: a budget is a time limit on computation.",
+    "to": "本当のコードでは、計算に使える時間が決まっている。"
   },
   {
-    "en": "The foe has a speed too. If its tempo beats your Work, it acts before your bolts land. A faster program wins Initiative and hits harder. We lost that race once on purpose. Probably.",
-    "to": "敵にも速さがある。敵のテンポが仕事量より速いと、ボルトより先に動く。速いプログラムなら先手（せんて）を取って強く当てられる。さっきはわざと負けたんだ。たぶん。"
+    "en": "Run it. The foe takes its turn, and your bolts do not land, even though the mana is spent. The log says timeout: Work crossed the budget. My pockets have learned about limits.",
+    "to": "走らせよう。マナは使ったのに、ボルトは当たらず、敵が動く。記録には「時間切れ」とあるよ。仕事量が上限をこえたんだ。ぼくのポケットも限界を知ったね。"
   },
   {
-    "en": "In real code: faster algorithms can change which action finishes first.",
-    "to": "本当のコードでも、速いアルゴリズムは終わる順番を変える。"
+    "en": "In real code: a timed-out program returns no result.",
+    "to": "本当のコードでは、時間切れのプログラムは結果を返せない。"
   },
   {
     "en": "Guard cards make block, not damage. The foe chips show shields, patterns and other states; look there before choosing a target. A blocked bolt or damage past a foe’s last HP is wasted overkill.",
@@ -237,8 +229,8 @@
     "to": "本当のコードでは、パラダイムは問題を解く作戦の一つ。"
   },
   {
-    "en": "The guardian is the last room, marked at the top of the map and on the rail. It has one trick. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
-    "to": "番人は地図のてっぺん、列の最後にいる。仕掛けが一つあるよ。行動の予告と状態の印を見て、走らせる前にコード画面の警告も読もう。"
+    "en": "The guardian is the last room, marked at the top of the map and on the rail. Its brick hide turns bolts under five power aside. Read its intent and state chips; the code panel warns what your Program will do before it runs.",
+    "to": "番人は地図のてっぺん、列の最後にいる。レンガの皮は、威力5より小さいボルトをはね返すよ。行動の予告と状態の印を見て、走らせる前にコード画面の警告も読もう。"
   },
   {
     "en": "In real code: inspect the conditions before committing a run.",

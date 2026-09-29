@@ -40,7 +40,7 @@ func test_trial_starts_on_its_fixed_map_and_advances_from_real_events() -> void:
 	assert_str(session.state.trial.step_id).is_equal("run")
 	var cast: Dictionary = await session.command({"type": "cast", "spell_id": "spell-1"})
 	assert_bool(cast.ok).is_true()
-	assert_str(session.state.trial.step_id).is_equal("walk")
+	assert_str(session.state.trial.step_id).is_equal("order-intro")
 	assert_int(int(session.state.stats.casts)).is_equal(1)
 	assert_array(session.saves.load_history()).is_empty()
 
@@ -88,12 +88,15 @@ func test_a_scripted_player_finishes_the_whole_trial_without_run_history() -> vo
 				result = await session.command({"type": "enter", "node_id": rooms[0].id})
 			"compose":
 				result = (
-					await _place_ordered(step.ordered_cards)
-					if step.has("ordered_cards")
+					await _place_ordered(step.get("ordered_cards", step.get("cards_exact", [])))
+					if step.has("ordered_cards") or step.has("cards_exact")
 					else await _place_one_card(String(step.get("required_card", "")))
 				)
 			"cast":
+				var damage_before := int(session.state.stats.damage)
 				result = await session.command({"type": "cast", "spell_id": "spell-1"})
+				if step.get("log_kind", "") == "timeout":
+					assert_int(int(session.state.stats.damage)).is_equal(damage_before)
 			"battle-won":
 				if session.state.status == "battle":
 					result = await _play_one_turn()
@@ -120,6 +123,7 @@ func test_a_scripted_player_finishes_the_whole_trial_without_run_history() -> vo
 	assert_bool(commands.has("battle-won")).is_true()
 	assert_array(session.state.trial.completed).contains(["slow-run", "fast-run"])
 	assert_array(session.state.trial.completed).contains(["unsorted", "sort"])
+	assert_array(session.state.trial.completed).contains(["budget-plan", "budget-run"])
 	assert_int(int(TrialRules.score(session.state).total)).is_between(1, 100)
 
 
