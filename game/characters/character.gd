@@ -1,11 +1,16 @@
 class_name StageCharacter
 extends Node3D
-## A character on the stage: an imported glTF dressed in the toon shader and ink outline, playing its authored clips
-## with short blends between them.
+## A character on the stage, playing its clips with short blends between them. Two kinds (ADR-0005, ADR-0028):
 ##
-##   var fox := StageCharacter.create("emberfox")
-##   add_child(fox)
-##   fox.play("cast-light")      # then back to idle on its own
+## - a **VRM skin** (`characters/<id>/<id>.vrm`): an anime model imported by godot-vrm, keeping its MToon materials,
+##   its spring-bone hair and cloth and its face expressions. Its clips are the shared move library
+##   (`characters/moves/rootward.glb`), retargeted through Godot's humanoid profile, so every VRM skin moves alike.
+## - a **glTF model** (`characters/<id>/<id>.glb`, Emberfox) with its own clips, dressed in the toon shader and ink.
+##
+##   var hero := StageCharacter.create("shibu")
+##   add_child(hero)
+##   hero.play("cast-light")      # then back to idle on its own
+##   hero.release_in(0.86)        # time the palm to the sigil's blow
 ##
 ## A character with no model file becomes an empty node: art is optional, and the stage still runs.
 
@@ -13,30 +18,52 @@ signal clip_finished(clip: String)
 
 const TOON := preload("res://characters/toon.gdshader")
 const OUTLINE := preload("res://characters/outline.gdshader")
+const MOVES := "res://characters/moves/rootward.glb"
+const MOVES_META := "res://characters/moves/moves.json"
 ## Seconds to cross-fade from one clip into the next.
 const BLEND := 0.18
 ## Clips that loop; every other clip returns to the idle when it ends (or holds its last pose, see HOLDS).
 const LOOPS: Array[String] = ["idle-breathe", "channel"]
 const HOLDS: Array[String] = ["victory", "death", "windup"]
 const IDLE := "idle-breathe"
+## How far a cast may be sped up or slowed down to land its release on the stage's beat.
+const RELEASE_SPEED := Vector2(0.55, 2.2)
 
 var id: String
 var model: Node3D
 var player: AnimationPlayer
 var skeleton: Skeleton3D
 var materials: Array[ShaderMaterial] = []
+## A VRM skin's own player, holding its face expressions (`happy`, `angry`, `blink`...).
+var face: AnimationPlayer
+## The move library's facts per clip (moves.json): length, loop, release, hand, release_point, face.
+var moves: Dictionary = {}
+var current := ""
+var _serial := 0
 
 
 static func create(character_id: String) -> StageCharacter:
 	var character := StageCharacter.new()
 	character.id = character_id
 	character.name = character_id
-	var path := "res://characters/%s/%s.glb" % [character_id, character_id]
-	if ResourceLoader.exists(path):
-		character.model = (load(path) as PackedScene).instantiate() as Node3D
+	var vrm := "res://characters/%s/%s.vrm" % [character_id, character_id]
+	var glb := "res://characters/%s/%s.glb" % [character_id, character_id]
+	if ResourceLoader.exists(vrm) and ResourceLoader.exists(MOVES):
+		character.model = (load(vrm) as PackedScene).instantiate() as Node3D
+		character.add_child(character.model)
+		character._dress_vrm()
+	elif ResourceLoader.exists(glb):
+		character.model = (load(glb) as PackedScene).instantiate() as Node3D
 		character.add_child(character.model)
 		character._dress()
 	return character
+
+
+static func has_skin(character_id: String) -> bool:
+	for extension: String in ["vrm", "glb"]:
+		if ResourceLoader.exists("res://characters/%s/%s.%s" % [character_id, character_id, extension]):
+			return true
+	return false
 
 
 func _ready() -> void:
@@ -48,16 +75,70 @@ func has_model() -> bool:
 	return model != null
 
 
+func is_vrm() -> bool:
+	return face != null or not moves.is_empty()
+
+
 func play(clip: String) -> void:
 	if player == null or not player.has_animation(clip):
 		return
+	_serial += 1
+	current = clip
+	player.speed_scale = 1.0
 	player.play(clip, BLEND)
+	_schedule_face(clip)
+
+
+## Speeds a cast up or down so its release (the palm through the sigil) lands `seconds` from now.
+func release_in(seconds: float) -> void:
+	var release: Variant = moves.get(current, {}).get("release")
+	if release == null or seconds <= 0.0 or player == null:
+		return
+	var left := float(release) - player.current_animation_position
+	if left > 0.0:
+		player.speed_scale = clampf(left / seconds, RELEASE_SPEED.x, RELEASE_SPEED.y)
+
+
+## Where the casting palm will be at the current clip's release, in world space; null when the clip has none.
+func release_point() -> Variant:
+	var facts: Dictionary = moves.get(current, {})
+	var point: Array = facts.get("release_point", [])
+	if point.size() != 3 or skeleton == null:
+		return null
+	var hips := skeleton.find_bone("Hips")
+	var height := skeleton.get_bone_global_rest(hips).origin.y if hips >= 0 else 1.0
+	return model.global_transform * (Vector3(point[0], point[1], point[2]) * height)
+
+
+## The world position of a bone right now (the casting hand, for effects that follow it).
+func bone_point(bone: String) -> Variant:
+	if skeleton == null or skeleton.find_bone(bone) < 0:
+		return null
+	return skeleton.global_transform * skeleton.get_bone_global_pose(skeleton.find_bone(bone)).origin
 
 
 ## A flash of colour over the whole character (a hit, a cast); alpha is its strength.
 func set_flash(colour: Color) -> void:
 	for material in materials:
 		material.set_shader_parameter("flash", colour)
+
+
+func _dress_vrm() -> void:
+	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
+	face = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	player = AnimationPlayer.new()
+	player.name = "Moves"
+	model.add_child(player)
+	player.root_node = player.get_path_to(model)
+	player.add_animation_library("", load(MOVES) as AnimationLibrary)
+	var file := FileAccess.open(MOVES_META, FileAccess.READ)
+	if file != null:
+		moves = (JSON.parse_string(file.get_as_text()) as Dictionary).get("clips", {})
+	for clip: String in moves:
+		if bool(moves[clip].get("loop", false)) and player.has_animation(clip):
+			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
+	player.animation_finished.connect(_on_finished)
+	_blink()
 
 
 func _dress() -> void:
@@ -115,7 +196,51 @@ func _add_spring_bones() -> void:
 	skeleton.add_child(springs)
 
 
+## A clip's expressions (moves.json `face`), each at its time; a newer clip cancels the older one's.
+func _schedule_face(clip: String) -> void:
+	if face == null:
+		return
+	var serial := _serial
+	_express("neutral")
+	for change: Dictionary in moves.get(clip, {}).get("face", []):
+		if float(change.get("weight", 1.0)) < 0.5:
+			continue
+		var expression: String = change.get("expression", "neutral")
+		var timer := get_tree().create_timer(float(change.get("t", 0.0))) if is_inside_tree() else null
+		if timer == null:
+			continue
+		timer.timeout.connect(_express_if.bind(expression, serial))
+
+
+func _express_if(expression: String, serial: int) -> void:
+	if serial == _serial:
+		_express(expression)
+
+
+func _express(expression: String) -> void:
+	if face != null and face.has_animation(expression):
+		face.play(expression, 0.08)
+
+
+## Blinks every few seconds while the face is neutral.
+func _blink() -> void:
+	if face == null or not face.has_animation("blink"):
+		return
+	var timer := Timer.new()
+	timer.wait_time = 3.4
+	timer.autostart = true
+	timer.timeout.connect(
+		func() -> void:
+			timer.wait_time = randf_range(2.2, 5.0)
+			if face.current_animation in ["", "neutral", "blink"]:
+				face.play("blink")
+				face.queue("neutral")
+	)
+	add_child(timer)
+
+
 func _on_finished(clip: StringName) -> void:
 	clip_finished.emit(String(clip))
+	player.speed_scale = 1.0
 	if not String(clip) in HOLDS and not String(clip) in LOOPS:
 		play(IDLE)

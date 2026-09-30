@@ -41,6 +41,13 @@ func _build() -> void:
 					"A crescent hat, a plum capelet, and a palm strike that writes in starlight. Drawn, not modelled.",
 					"res://assets/sprites/vesper/profile.png"
 				),
+				_skin_card(
+					"shibu",
+					"Shibu",
+					"Hovering Caster · 3D trial",
+					"A VRoid model on the new move set: she floats, spins up into the air and drives her palms at the foes.",
+					"res://assets/portraits/shibu.png"
+				),
 			],
 			14
 		)

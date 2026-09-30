@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0028**.
+The next number is **ADR-0029**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -30,3 +30,4 @@ The next number is **ADR-0028**.
 - [ADR-0025](ADR-0025-the-map-as-a-scroll.md): the layer map as a scroll, rooms apart by hue and outline, every layer's guardian in sight; hallway foes at 90%.
 - [ADR-0026](ADR-0026-the-guardian-pool.md): the guardian pool built: five guardians a layer drawn by the seed, their rules in ProgramGuardians, GuardianLanding and RootCompiler, mutants made by mutation operators.
 - [ADR-0027](ADR-0027-local-profiles-and-pips-trial.md): local player profiles with verified save migration; the guided Trial as a separate saved program run driven by content and session events.
+- [ADR-0028](ADR-0028-vrm-skins-and-a-shared-move-library.md): skins as VRM models (godot-vrm, MToon, spring bones); one move library keyed from readable poses in Blender and retargeted onto every skin.

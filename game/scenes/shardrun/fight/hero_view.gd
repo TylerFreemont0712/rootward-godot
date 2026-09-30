@@ -5,10 +5,15 @@ extends Control
 
 const FALLBACK := "brand/wanderer"
 const VIEW_SIZE := Vector2i(360, 480)
+## The orthographic camera's height and aim. A VRM skin levitates and throws her arms overhead, so she is framed with
+## more air above her than Emberfox is.
+const FRAME_GLB := Vector2(1.95, 0.92)
+const FRAME_VRM := Vector2(2.35, 1.1)
 
 var character: StageCharacter
 var sprite: SpriteCharacter
 var _viewport: SubViewport
+var _camera: Camera3D
 var _picture: Control
 var _flash_tween: Tween
 
@@ -32,6 +37,7 @@ func _build_skin() -> void:
 	character = null
 	sprite = null
 	_viewport = null
+	_camera = null
 	_picture = null
 	for child in get_children():
 		remove_child(child)
@@ -67,15 +73,36 @@ func _build_skin() -> void:
 	container.add_child(_viewport)
 	add_child(container)
 
-	var camera := Camera3D.new()
-	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	camera.size = 1.95
-	camera.position = Vector3(0.0, 0.92, 6.0)
-	camera.current = true
-	_viewport.add_child(camera)
+	if actor.is_vrm():
+		_light(_viewport)
+	var frame := FRAME_VRM if actor.is_vrm() else FRAME_GLB
+	_camera = Camera3D.new()
+	_camera.projection = Camera3D.PROJECTION_ORTHOGONAL
+	_camera.size = frame.x
+	_camera.position = Vector3(0.0, frame.y, 6.0)
+	_camera.current = true
+	_viewport.add_child(_camera)
 	# Cant the model toward the foes.
 	actor.rotation_degrees.y = 35.0
 	_viewport.add_child(actor)
+
+
+## LEARN: the viewport has a world of its own (`own_world_3d`), so the arena's light never reaches it. Emberfox's
+## toon shader carries its own light; MToon is lit like any material, and with no light a VRM skin is a silhouette.
+## A warm key from the front-left, as from the arena's lanterns, and a soft ambient for the shade side.
+func _light(viewport: SubViewport) -> void:
+	var environment := WorldEnvironment.new()
+	environment.environment = Environment.new()
+	environment.environment.background_mode = Environment.BG_CLEAR_COLOR
+	environment.environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	environment.environment.ambient_light_color = Color(0.62, 0.56, 0.6)
+	environment.environment.ambient_light_energy = 0.9
+	viewport.add_child(environment)
+	var key := DirectionalLight3D.new()
+	key.light_color = Color(1.0, 0.9, 0.78)
+	key.light_energy = 1.1
+	key.rotation_degrees = Vector3(-38.0, -28.0, 0.0)
+	viewport.add_child(key)
 
 
 ## Plays a rigged clip. Spell sigils, shields, projectiles, and impact art remain on the separate BattleFX layer.
@@ -119,11 +146,30 @@ func flash(colour: Color, seconds := 0.25) -> void:
 		_flash_tween.tween_property(_picture, "modulate", Color.WHITE, seconds)
 
 
-## Where projectiles leave from and where shield/hit effects land, in the stage's coordinates.
+## Times the current cast so its release lands `seconds` from now (a 3D skin; a sprite skin times itself).
+func release_in(seconds: float) -> void:
+	if character != null:
+		character.release_in(seconds)
+
+
+## Where projectiles leave from and where shield/hit effects land, in the stage's coordinates. A VRM skin answers
+## with where her palm will be at the cast's release (so the sigil is drawn where she strikes), else her hand now.
 func hand_point() -> Vector2:
 	if sprite != null:
 		return position + sprite.hand_point()
+	if character != null and _camera != null:
+		var point: Variant = character.release_point()
+		if point == null:
+			point = character.bone_point("LeftHand")
+		if point != null:
+			return position + _to_stage(point as Vector3)
 	return position + Vector2(size.x * 0.72, size.y * 0.40)
+
+
+## A point in the character's world, in this view's own coordinates.
+func _to_stage(world: Vector3) -> Vector2:
+	var pixel := _camera.unproject_position(world)
+	return pixel * size / Vector2(_viewport.size)
 
 
 func body_point() -> Vector2:

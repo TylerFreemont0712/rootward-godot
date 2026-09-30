@@ -1,0 +1,10 @@
+{
+  "_about": "Gathers, rises and holds both hands overhead (held at the end until the next clip).",
+  "length": 0.7,
+  "keys": [
+    {"t": 0.0, "pose": "float"},
+    {"t": 0.25, "pose": "gather", "ease": "cubic_out"},
+    {"t": 0.7, "pose": "summon", "ease": "back_out"}
+  ],
+  "lag": {"Head": 0.05, "Hand": 0.05}
+}

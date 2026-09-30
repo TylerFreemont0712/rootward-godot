@@ -1,0 +1,14 @@
+{
+  "_about": "Struck, she sags, then drops out of the air to her knees and slumps (held at the end).",
+  "length": 1.8,
+  "face": [{"t": 0.0, "expression": "sad", "weight": 1.0}],
+  "keys": [
+    {"t": 0.0, "pose": "float"},
+    {"t": 0.12, "pose": "hurt", "ease": "expo_out"},
+    {"t": 0.55, "pose": "slump", "ease": "sine"},
+    {"t": 1.1, "pose": "kneel", "ease": "cubic_in"},
+    {"t": 1.3, "pose": {"base": "kneel", "Spine": {"bend": 32}, "Head": {"bend": 42}}, "ease": "back_out"},
+    {"t": 1.8, "pose": "kneel", "ease": "sine"}
+  ],
+  "lag": {"Head": 0.08, "Hand": 0.06, "LowerArm": 0.05}
+}

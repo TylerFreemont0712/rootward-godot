@@ -1,0 +1,11 @@
+{
+  "_about": "Forearms crossed in front of the face, a knee drawn up, then back to the hover.",
+  "length": 0.9,
+  "keys": [
+    {"t": 0.0, "pose": "float"},
+    {"t": 0.12, "pose": "guard", "ease": "back_out"},
+    {"t": 0.6, "pose": "guard", "ease": "sine"},
+    {"t": 0.9, "pose": "float", "ease": "sine"}
+  ],
+  "lag": {"Head": 0.03, "Foot": 0.05}
+}

@@ -1,0 +1,15 @@
+{
+  "_about": "Hovering a hand's breadth off the ground: the body bobs, the hands float, the hair and skirt follow on their springs.",
+  "length": 3.2,
+  "loop": true,
+  "keys": [
+    {"t": 0.0, "pose": "float"},
+    {"t": 1.6, "pose": "float_breath", "ease": "sine"}
+  ],
+  "lag": {"Hand": 0.18, "Head": 0.12, "Foot": 0.2},
+  "layers": [
+    {"kind": "breathe", "amp": 2.0, "period": 3.2},
+    {"kind": "bob", "amp": 0.025, "period": 3.2},
+    {"kind": "sway", "amp": 1.5, "period": 3.2}
+  ]
+}

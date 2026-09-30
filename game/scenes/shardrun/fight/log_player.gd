@@ -111,6 +111,8 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var sigil := stage.spell(String(tier[0]), stage.hero.hand_point(), element, float(tier[1]))
 	if sigil == null:
 		sigil = stage.spell("cast-sigil", stage.hero.hand_point(), element, 1.2 if heavy else 0.9)
+	# A 3D skin's cast is timed so her palm strikes through the circle on its blow.
+	stage.hero.release_in(sigil.impact_time() if sigil != null else 0.38)
 	if tier[0] in ["cast-sigil-3", "cast-sigil-4"]:
 		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
 		stage.spell("cast-ground", feet, element, stage.hero.size.y / 440.0)

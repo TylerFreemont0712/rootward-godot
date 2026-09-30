@@ -439,3 +439,31 @@ Trial now checks the accepted command's new battle log for `tempo`, and the sort
 the submitted Program. The budget lesson checks an exact scripted card sequence and the real `timeout` log, then
 verifies that no damage landed. Scripted hands and foe tempo are setup data; the cast still goes through the real
 sandbox and combat rules. This keeps the lesson honest without adding a tutorial branch to the battle engine.
+
+## One animation, every skeleton: retargeting through a profile (`game/characters/moves/rootward.glb.import`)
+Two humanoid models never agree on their bones' axes, so a rotation keyed on one twists the other. Godot's importer
+solves it with a *profile*: a BoneMap names each bone by its role (`LeftUpperArm`), and "overwrite axis" rewrites
+every rest pose to the profile's reference, adjusting the animation to match. godot-vrm does the same to each VRM
+skin, so a clip imported this way plays on any of them. One import option, `remove_tracks/except_bone_transform`,
+turned out to strip the rotation tracks entirely (one track left per clip): a setting worth checking with a probe
+rather than trusting its name.
+
+## A pose made of readable numbers (`pipeline/blender/build_moves.py`)
+A bone's own axes are arbitrary, so `rotation_quaternion = (0.7, 0.1, ...)` means nothing to a person. The clips
+instead say `"LeftUpperArm": {"raise": 20, "forward": 70}`, a rotation `D` in the armature's axes at rest, applied at
+the bone's head and carried by its parent: the bone's local rotation is `R⁻¹ D R`, with `R` its rest orientation.
+Mirroring the right side is `S D S` with `S` the reflection through the body's mid-plane (x → -x). Easing is done on
+the numbers, not on the rotations, so an overshoot or a 360-degree spin is just a number passing its target.
+
+## Keying at one frame rate, exporting at another (`pipeline/blender/build_moves.py`)
+The glTF exporter converts frame numbers to seconds with the scene's frame rate. Keys placed on frames 0..69 of a
+30 fps clip, in a scene left at Blender's default 24 fps, came out 1.25 times too slow, and every release missed its
+beat. Setting the scene's rate before keying fixes it. In the same file: while an action is assigned, any update
+re-evaluates it at the scene's frame, so a pose set by hand is overwritten; read a posed bone by moving the scene to
+that frame instead.
+
+## A world of its own has no sun (`game/scenes/shardrun/fight/hero_view.gd`)
+The hero is drawn in a SubViewport with `own_world_3d`, so no light from anywhere else reaches it. Emberfox's toon
+shader is unshaded and brings its own light, so this never showed; a VRM's MToon material is lit like any other and
+came out as a black silhouette. The view now adds its own warm key light and ambient light for a VRM skin.
+

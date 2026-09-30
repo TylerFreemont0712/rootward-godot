@@ -21,6 +21,9 @@
 - The Mutator's census (which mutants of each program card still run, ADR-0026): `scripts/mutants.sh`, after changing
   any program card's code (loading warns when it is stale).
 - Sandbox timings: `godot --headless --path game -s res://tools/bench_sandbox.gd`.
+- Moves for VRM skins (ADR-0028, pipeline/moves/README.md): `scripts/moves.sh` (tests the motion, keys every clip in
+  Blender, imports, review sheets in `shots/moves/`), `--reel` also films them (`shots/moves/reel.mp4`). The Blender
+  side runs without `--factory-startup` (that disables the VRM extension).
 - Assets (pipeline/README.md): `scripts/art.sh --only '<ids>'`, `scripts/audio.sh --only '<ids>'` (`--reprocess` for
   post-processing only, no GPU), `scripts/character.sh <id>` (Blender export, import, screenshots in `shots/`).
   Never ComfyUI and Blender at once; the scripts refuse.

@@ -1,0 +1,631 @@
+{
+  "_about": "Named poses for clips (motion.py). Degrees and metres from the VRM T-pose; see pipeline/moves/README.md for what every parameter means. She stands canted toward the foes, who are on her LEFT: reaching to her left points at them.",
+  "stand": {
+    "UpperArm": {
+      "raise": -72,
+      "forward": 8
+    },
+    "LowerArm": {
+      "bend": 12
+    },
+    "Hand": {
+      "curl": 0.3,
+      "bend": 5
+    }
+  },
+  "float": {
+    "Hips": {
+      "lift": 0.08
+    },
+    "Spine": {
+      "bend": -2
+    },
+    "Head": {
+      "lean": 5,
+      "bend": 4
+    },
+    "UpperArm": {
+      "raise": -52,
+      "forward": 12,
+      "twist": 15
+    },
+    "LowerArm": {
+      "bend": 30,
+      "twist": 10
+    },
+    "Hand": {
+      "bend": -20,
+      "curl": 0.2,
+      "spread": 10
+    },
+    "LeftUpperLeg": {
+      "lift": 12
+    },
+    "LeftLowerLeg": {
+      "bend": 28
+    },
+    "RightUpperLeg": {
+      "lift": 4
+    },
+    "RightLowerLeg": {
+      "bend": 10
+    },
+    "Foot": {
+      "point": 35
+    }
+  },
+  "float_breath": {
+    "base": "float",
+    "UpperArm": {
+      "raise": -47,
+      "forward": 14,
+      "twist": 18
+    },
+    "Hand": {
+      "bend": -26,
+      "curl": 0.15,
+      "spread": 14
+    },
+    "Head": {
+      "lean": 3,
+      "bend": 2,
+      "turn": 4
+    }
+  },
+  "windback": {
+    "base": "float",
+    "Hips": {
+      "lift": 0.06,
+      "turn": -8
+    },
+    "Chest": {
+      "turn": -18,
+      "bend": -6
+    },
+    "Head": {
+      "turn": -5,
+      "bend": 8
+    },
+    "LeftUpperArm": {
+      "raise": -15,
+      "forward": 70,
+      "twist": -20
+    },
+    "LeftLowerArm": {
+      "bend": 120,
+      "twist": 0
+    },
+    "LeftHand": {
+      "curl": 0.7,
+      "bend": 20,
+      "spread": 0
+    },
+    "RightUpperArm": {
+      "raise": -45,
+      "forward": 25,
+      "twist": 0
+    },
+    "RightLowerArm": {
+      "bend": 45
+    },
+    "LeftUpperLeg": {
+      "lift": 25
+    },
+    "LeftLowerLeg": {
+      "bend": 50
+    }
+  },
+  "windback_tight": {
+    "base": "windback",
+    "Chest": {
+      "turn": -24,
+      "bend": -8
+    },
+    "LeftLowerArm": {
+      "bend": 128
+    },
+    "LeftHand": {
+      "curl": 0.85
+    }
+  },
+  "strike": {
+    "base": "float",
+    "Hips": {
+      "lift": 0.1,
+      "turn": 12,
+      "side": 0.03
+    },
+    "Chest": {
+      "turn": 25,
+      "bend": 6
+    },
+    "Head": {
+      "turn": 22,
+      "bend": 4,
+      "lean": 0
+    },
+    "LeftUpperArm": {
+      "raise": 8,
+      "forward": 70,
+      "twist": 25
+    },
+    "LeftLowerArm": {
+      "bend": 4,
+      "twist": 0
+    },
+    "LeftHand": {
+      "bend": -55,
+      "curl": 0.05,
+      "spread": 25
+    },
+    "RightUpperArm": {
+      "raise": -40,
+      "forward": -30,
+      "twist": 0
+    },
+    "RightLowerArm": {
+      "bend": 35
+    },
+    "RightHand": {
+      "curl": 0.4,
+      "bend": 10
+    },
+    "RightUpperLeg": {
+      "lift": -15
+    },
+    "RightLowerLeg": {
+      "bend": 45
+    },
+    "Foot": {
+      "point": 45
+    }
+  },
+  "strike_hold": {
+    "base": "strike",
+    "LeftHand": {
+      "spread": 32
+    },
+    "Chest": {
+      "turn": 22,
+      "bend": 4
+    }
+  },
+  "gather": {
+    "Hips": {
+      "lift": -0.05,
+      "forward": 0.02,
+      "bend": 12
+    },
+    "Spine": {
+      "bend": 10
+    },
+    "Chest": {
+      "bend": 10
+    },
+    "Head": {
+      "bend": 18
+    },
+    "UpperArm": {
+      "raise": -25,
+      "forward": 75,
+      "twist": -10
+    },
+    "LowerArm": {
+      "bend": 115
+    },
+    "Hand": {
+      "curl": 0.75
+    },
+    "UpperLeg": {
+      "lift": 30
+    },
+    "LowerLeg": {
+      "bend": 55
+    },
+    "Foot": {
+      "point": 10
+    }
+  },
+  "gather_deep": {
+    "base": "gather",
+    "Hips": {
+      "lift": -0.08,
+      "forward": 0.03,
+      "bend": 16
+    },
+    "Head": {
+      "bend": 24
+    },
+    "Hand": {
+      "curl": 0.9
+    }
+  },
+  "soar": {
+    "Hips": {
+      "lift": 0.4
+    },
+    "Spine": {
+      "bend": -8
+    },
+    "Head": {
+      "bend": -15
+    },
+    "UpperArm": {
+      "raise": 35,
+      "forward": -15,
+      "twist": 20
+    },
+    "LowerArm": {
+      "bend": 15
+    },
+    "Hand": {
+      "bend": -25,
+      "curl": 0.1,
+      "spread": 25
+    },
+    "LeftUpperLeg": {
+      "lift": 15
+    },
+    "LeftLowerLeg": {
+      "bend": 50
+    },
+    "RightUpperLeg": {
+      "lift": 30
+    },
+    "RightLowerLeg": {
+      "bend": 65
+    },
+    "Foot": {
+      "point": 50
+    }
+  },
+  "summon": {
+    "Hips": {
+      "lift": 0.42
+    },
+    "Spine": {
+      "bend": -10
+    },
+    "Chest": {
+      "bend": -8
+    },
+    "Head": {
+      "bend": -22
+    },
+    "UpperArm": {
+      "raise": 72,
+      "forward": 22,
+      "twist": 30
+    },
+    "LowerArm": {
+      "bend": 30
+    },
+    "Hand": {
+      "bend": -35,
+      "curl": 0.05,
+      "spread": 28
+    },
+    "LeftUpperLeg": {
+      "lift": 10
+    },
+    "LeftLowerLeg": {
+      "bend": 35
+    },
+    "RightUpperLeg": {
+      "lift": 25
+    },
+    "RightLowerLeg": {
+      "bend": 60
+    },
+    "Foot": {
+      "point": 55
+    }
+  },
+  "blast": {
+    "Hips": {
+      "lift": 0.36,
+      "turn": 20
+    },
+    "Spine": {
+      "turn": 12
+    },
+    "Chest": {
+      "turn": 20,
+      "bend": 12
+    },
+    "Head": {
+      "turn": 22,
+      "bend": 5
+    },
+    "LeftUpperArm": {
+      "raise": 10,
+      "forward": 87,
+      "twist": 20
+    },
+    "LeftLowerArm": {
+      "bend": 5
+    },
+    "LeftHand": {
+      "bend": -60,
+      "spread": 30,
+      "curl": 0.0
+    },
+    "RightUpperArm": {
+      "raise": 8,
+      "forward": 95,
+      "twist": 20
+    },
+    "RightLowerArm": {
+      "bend": 10
+    },
+    "RightHand": {
+      "bend": -60,
+      "spread": 30,
+      "curl": 0.0
+    },
+    "LeftUpperLeg": {
+      "lift": -10
+    },
+    "LeftLowerLeg": {
+      "bend": 15
+    },
+    "RightUpperLeg": {
+      "lift": 25
+    },
+    "RightLowerLeg": {
+      "bend": 40
+    },
+    "Foot": {
+      "point": 40
+    }
+  },
+  "hurt": {
+    "Hips": {
+      "lift": 0.03,
+      "forward": -0.1,
+      "bend": -10,
+      "turn": -15
+    },
+    "Spine": {
+      "bend": -12
+    },
+    "Chest": {
+      "bend": -10,
+      "lean": -8
+    },
+    "Head": {
+      "bend": -25,
+      "lean": 14,
+      "turn": -15
+    },
+    "UpperArm": {
+      "raise": -20,
+      "forward": -35,
+      "twist": -10
+    },
+    "LowerArm": {
+      "bend": 40
+    },
+    "Hand": {
+      "curl": 0.5,
+      "bend": -20
+    },
+    "UpperLeg": {
+      "lift": 25
+    },
+    "LowerLeg": {
+      "bend": 50
+    },
+    "Foot": {
+      "point": 20
+    }
+  },
+  "guard": {
+    "Hips": {
+      "lift": 0.03,
+      "bend": 8,
+      "forward": -0.03
+    },
+    "Spine": {
+      "bend": 10
+    },
+    "Head": {
+      "bend": 20,
+      "turn": 10
+    },
+    "UpperArm": {
+      "raise": 5,
+      "forward": 80,
+      "twist": -30
+    },
+    "LowerArm": {
+      "bend": 125
+    },
+    "Hand": {
+      "curl": 0.6
+    },
+    "LeftUpperLeg": {
+      "lift": 35
+    },
+    "LeftLowerLeg": {
+      "bend": 70
+    },
+    "RightUpperLeg": {
+      "lift": 5
+    },
+    "RightLowerLeg": {
+      "bend": 20
+    },
+    "Foot": {
+      "point": 30
+    }
+  },
+  "channel": {
+    "Hips": {
+      "lift": 0.14,
+      "turn": 10
+    },
+    "Chest": {
+      "turn": 25
+    },
+    "Head": {
+      "turn": 20,
+      "bend": 3
+    },
+    "LeftUpperArm": {
+      "raise": 8,
+      "forward": 70,
+      "twist": 20
+    },
+    "LeftLowerArm": {
+      "bend": 10
+    },
+    "LeftHand": {
+      "bend": -45,
+      "spread": 30,
+      "curl": 0.05
+    },
+    "RightUpperArm": {
+      "raise": -20,
+      "forward": 70
+    },
+    "RightLowerArm": {
+      "bend": 95
+    },
+    "RightHand": {
+      "bend": -30,
+      "spread": 20,
+      "curl": 0.1
+    },
+    "LeftUpperLeg": {
+      "lift": 12
+    },
+    "LeftLowerLeg": {
+      "bend": 28
+    },
+    "RightUpperLeg": {
+      "lift": 20
+    },
+    "RightLowerLeg": {
+      "bend": 45
+    },
+    "Foot": {
+      "point": 40
+    }
+  },
+  "cheer": {
+    "Hips": {
+      "lift": 0.12,
+      "lean": 8
+    },
+    "Head": {
+      "lean": 14,
+      "bend": -4,
+      "turn": 18
+    },
+    "LeftUpperArm": {
+      "raise": 52,
+      "forward": 30,
+      "twist": 35
+    },
+    "LeftLowerArm": {
+      "bend": 105
+    },
+    "LeftHand": {
+      "vee": 1,
+      "curl": 1,
+      "bend": -10,
+      "thumb": 1
+    },
+    "RightUpperArm": {
+      "raise": -60,
+      "forward": -15
+    },
+    "RightLowerArm": {
+      "bend": 100,
+      "twist": 40
+    },
+    "RightHand": {
+      "bend": 30,
+      "curl": 0.8
+    },
+    "LeftUpperLeg": {
+      "lift": 5
+    },
+    "RightUpperLeg": {
+      "lift": -5
+    },
+    "RightLowerLeg": {
+      "bend": 90
+    },
+    "Foot": {
+      "point": 40
+    }
+  },
+  "slump": {
+    "Hips": {
+      "lift": -0.15,
+      "bend": 5
+    },
+    "Spine": {
+      "bend": 10
+    },
+    "Head": {
+      "bend": 20
+    },
+    "UpperArm": {
+      "raise": -70,
+      "forward": 10
+    },
+    "LowerArm": {
+      "bend": 25
+    },
+    "Hand": {
+      "curl": 0.4
+    },
+    "UpperLeg": {
+      "lift": 25
+    },
+    "LowerLeg": {
+      "bend": 45
+    },
+    "Foot": {
+      "point": 20
+    }
+  },
+  "kneel": {
+    "Hips": {
+      "lift": -0.52,
+      "forward": 0.02
+    },
+    "Spine": {
+      "bend": 25
+    },
+    "Chest": {
+      "bend": 15
+    },
+    "Head": {
+      "bend": 35,
+      "lean": 10
+    },
+    "UpperArm": {
+      "raise": -80,
+      "forward": 5
+    },
+    "LowerArm": {
+      "bend": 10
+    },
+    "Hand": {
+      "curl": 0.4
+    },
+    "UpperLeg": {
+      "lift": 5
+    },
+    "LowerLeg": {
+      "bend": 95
+    },
+    "Foot": {
+      "point": 60
+    }
+  }
+}

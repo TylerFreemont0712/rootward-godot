@@ -105,6 +105,9 @@ the rules' modifiers table in Stats, keyboard focus through the map.
       ice spikes, starlight) under a darkened stage and a vortex at the hand; a volley on several foes sends a wave
       across the floor.
 - [x] Spell effects as shaders and drawn motion per element and the ward (ADR-0008, ADR-0014).
+- [x] VRM skins and a shared move library (ADR-0028): godot-vrm and MToon in the game, the VRM add-on in Blender,
+      clips as data (`pipeline/moves/`, `scripts/moves.sh`) with nine fantastical clips, casts timed to the sigil,
+      the trial skin Shibu in the wardrobe. [ ] Vesper as a VRM. [ ] The cast flash on MToon; blended expressions.
 - [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)

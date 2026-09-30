@@ -1,0 +1,13 @@
+{
+  "_about": "Holds a stream toward the foes: one palm out, the other hand bracing, a steady tremble.",
+  "length": 1.6,
+  "loop": true,
+  "keys": [
+    {"t": 0.0, "pose": "channel"},
+    {"t": 0.8, "pose": {"base": "channel", "Hips": {"lift": 0.17, "turn": 12}, "LeftHand": {"spread": 36}}, "ease": "sine"}
+  ],
+  "layers": [
+    {"kind": "tremble", "amp": 1.2},
+    {"kind": "bob", "amp": 0.015, "period": 1.6}
+  ]
+}

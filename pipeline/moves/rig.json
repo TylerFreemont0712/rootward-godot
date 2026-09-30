@@ -1,0 +1,4 @@
+{
+  "_about": "The skeleton every clip is keyed on: a CC0 VRoid sample (its VRM meta says CC0; fetched by scripts/fetch-moves-refs.sh). Any VRM T-pose base works; Godot retargets the clips to each skin.",
+  "base": "pipeline/cache/reference/vrm/Darkness_Shibu.vrm"
+}

@@ -8,7 +8,7 @@ extends RefCounted
 
 const PATH := "user://settings.json"
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
-const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox"]
+const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu"]
 
 ## How fast a cast plays as code before its bolts fly; "off" skips straight to the bolts.
 static var code_speed := "normal"
