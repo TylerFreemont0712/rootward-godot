@@ -5,7 +5,7 @@ description: Rootward's character and animation pipeline - VRM anime skins (godo
 
 # Rootward characters and moves
 
-Read first: `docs/decisions/ADR-0028-vrm-skins-and-a-shared-move-library.md` and `pipeline/moves/README.md` (every
+Read first: `docs/decisions/ADR-0028-vrm-skins-and-a-shared-move-library.md`, `ADR-0029` (the anime look) and `pipeline/moves/README.md` (every
 pose parameter, the clip format, the fantastical-motion checklist). Older routes and why they were dropped:
 ADR-0005, ADR-0007, ADR-0008.
 
@@ -17,6 +17,20 @@ ADR-0005, ADR-0007, ADR-0008.
 - Moves = `pipeline/moves/{poses.json,clips/*.json}` -> `scripts/moves.sh` -> `game/characters/moves/rootward.glb`
   (+ `moves.json`: length, loop, release, hand, release_point in hip heights, face). One library, every VRM skin.
 - `StageCharacter` (game/characters/character.gd) plays either kind; `HeroView` frames, lights and times it.
+
+## The anime look (ADR-0029)
+
+- Shaders: `game/characters/anime_toon.gdshader`, `anime_face.gdshader`, `anime_outline.gdshader`,
+  `anime_common.gdshaderinc`; unshaded, lit by `set_light_direction(HeroView.KEY_LIGHT)`.
+- VRM: `AnimeSkin.restyle_vrm` (MToon -> anime); `ROOTWARD_STYLE=mtoon|anime|anime-ink` picks it for now.
+- Any rig -> skin: `~/blender/blender --background <src.blend> --python pipeline/blender/normalize_rig.py -- <map.json>`
+  writes glb + textures + `skin.json`; copy the `.import` retarget block from `game/characters/moves/rootward.glb.import`
+  (skeleton path `PATH:Skin/Skeleton3D`, `fix_silhouette/enable` true for an A-pose).
+- Look dev: `ROOTWARD_CHARACTER=<id> ROOTWARD_LOOK=full|face [ROOTWARD_CLIP=.. ROOTWARD_AT=..]
+  scripts/screenshot.sh res://tools/skin_look.tscn shots/look/x.png 20`.
+- Third-party models (e.g. the ZZZ fan rigs in `/data/Blender/ZZZ`) go ONLY under `game/characters/_local/` and
+  `pipeline/local/` (git-ignored). Never commit or ship them; study them, then make our own assets.
+- To dump any .blend shader as text: iterate `material.node_tree.nodes` / `links` (see ADR-0029's method).
 
 ## Workflow for a new or changed clip
 

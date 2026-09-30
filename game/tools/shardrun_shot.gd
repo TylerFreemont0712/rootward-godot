@@ -160,7 +160,7 @@ func _ready() -> void:
 		for relic_id in OS.get_environment("ROOTWARD_SHOT_RELICS").split(",", false):
 			await bot.send({"type": "dev-grant-relic", "relic_id": relic_id})
 	var skin := OS.get_environment("ROOTWARD_SHOT_SKIN")
-	if skin in Settings.CHARACTER_SKINS:
+	if skin in Settings.all_skins():
 		Settings.character_skin = skin
 	var screen: Control = (load(Game.SHARDRUN) as PackedScene).instantiate()
 	add_child(screen)

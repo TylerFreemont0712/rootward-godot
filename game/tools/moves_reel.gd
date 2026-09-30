@@ -43,6 +43,7 @@ func _ready() -> void:
 	var hero := StageCharacter.create(skin)
 	hero.rotation_degrees.y = 35.0
 	add_child(hero)
+	hero.set_light_direction(HeroView.KEY_LIGHT)
 	await get_tree().create_timer(0.6).timeout
 	for clip in clips:
 		_label.text = clip

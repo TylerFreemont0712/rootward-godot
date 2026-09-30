@@ -4,6 +4,8 @@ const ROOT := "user://test-trial-title"
 
 
 func test_first_program_start_offers_the_trial() -> void:
+	# A first start needs a first profile: a folder left by an earlier run already has the Trial offered.
+	_clear(ROOT)
 	Game.reset(ROOT)
 	assert_bool(Game.boot()).is_true()
 	var named := Game.profiles.rename(String(Game.profile.id), "Trial Tester")
@@ -29,3 +31,14 @@ static func _button_text(root: Node, wanted: String) -> String:
 		if (button as Button).text == wanted:
 			return wanted
 	return ""
+
+
+static func _clear(path: String) -> void:
+	if not DirAccess.dir_exists_absolute(path):
+		return
+	for name in DirAccess.get_files_at(path):
+		DirAccess.remove_absolute(path.path_join(name))
+	for name in DirAccess.get_directories_at(path):
+		_clear(path.path_join(name))
+		DirAccess.remove_absolute(path.path_join(name))
+	DirAccess.remove_absolute(path)

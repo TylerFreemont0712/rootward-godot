@@ -9,6 +9,8 @@ extends RefCounted
 const PATH := "user://settings.json"
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
 const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu"]
+## Reference skins kept on this machine only (git-ignored, never shipped): each a folder with a skin.json.
+const LOCAL_SKINS := "res://characters/_local/"
 
 ## How fast a cast plays as code before its bolts fly; "off" skips straight to the bolts.
 static var code_speed := "normal"
@@ -61,8 +63,17 @@ static func load_file(from := PATH) -> void:
 		if skin in ["moonlit_kitsune", "tamamo_no_mae"]:
 			# Retired looks: their players get the default one.
 			character_skin = "vesper"
-		elif skin in CHARACTER_SKINS:
+		elif skin in all_skins():
 			character_skin = skin
+
+
+## The shipped looks, then any local reference skins found on this machine.
+static func all_skins() -> Array[String]:
+	var skins := CHARACTER_SKINS.duplicate()
+	for folder in DirAccess.get_directories_at(LOCAL_SKINS):
+		if FileAccess.file_exists(LOCAL_SKINS + folder + "/skin.json"):
+			skins.append(folder)
+	return skins
 
 
 static func save_file() -> void:

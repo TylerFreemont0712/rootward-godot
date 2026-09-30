@@ -40,6 +40,8 @@ var face: AnimationPlayer
 var moves: Dictionary = {}
 var current := ""
 var _serial := 0
+## Anime-shaded faces, which need the head's facing every frame (AnimeSkin, ADR-0029).
+var _faces: Array[ShaderMaterial] = []
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -48,7 +50,13 @@ static func create(character_id: String) -> StageCharacter:
 	character.name = character_id
 	var vrm := "res://characters/%s/%s.vrm" % [character_id, character_id]
 	var glb := "res://characters/%s/%s.glb" % [character_id, character_id]
-	if ResourceLoader.exists(vrm) and ResourceLoader.exists(MOVES):
+	var anime := AnimeSkin.folder(character_id)
+	if anime != "" and ResourceLoader.exists(MOVES):
+		var facts := AnimeSkin.read(anime)
+		character.model = (load(anime + String(facts.get("model", ""))) as PackedScene).instantiate() as Node3D
+		character.add_child(character.model)
+		character._dress_anime(anime, facts)
+	elif ResourceLoader.exists(vrm) and ResourceLoader.exists(MOVES):
 		character.model = (load(vrm) as PackedScene).instantiate() as Node3D
 		character.add_child(character.model)
 		character._dress_vrm()
@@ -60,6 +68,8 @@ static func create(character_id: String) -> StageCharacter:
 
 
 static func has_skin(character_id: String) -> bool:
+	if AnimeSkin.folder(character_id) != "":
+		return true
 	for extension: String in ["vrm", "glb"]:
 		if ResourceLoader.exists("res://characters/%s/%s.%s" % [character_id, character_id, extension]):
 			return true
@@ -75,8 +85,20 @@ func has_model() -> bool:
 	return model != null
 
 
+## A VRM skin (MToon, which needs a real light in the view).
 func is_vrm() -> bool:
-	return face != null or not moves.is_empty()
+	return face != null
+
+
+## Any skin that plays the shared move library (a VRM or a normalised anime skin).
+func is_humanoid() -> bool:
+	return not moves.is_empty()
+
+
+## The anime shaders are unshaded and take the light as a direction (toward the light, world space).
+func set_light_direction(direction: Vector3) -> void:
+	for material in materials:
+		material.set_shader_parameter("light_dir", direction.normalized())
 
 
 func play(clip: String) -> void:
@@ -126,6 +148,35 @@ func set_flash(colour: Color) -> void:
 func _dress_vrm() -> void:
 	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
 	face = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	var style := OS.get_environment("ROOTWARD_STYLE")
+	if style in ["anime", "anime-ink"]:
+		materials = AnimeSkin.restyle_vrm(model, style == "anime-ink", 0.35)
+		for material in materials:
+			if AnimeSkin.is_face(material):
+				_faces.append(material)
+	_add_moves()
+	_blink()
+
+
+func _dress_anime(skin_folder: String, facts: Dictionary) -> void:
+	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
+	materials = AnimeSkin.dress(model, skin_folder, facts)
+	for material in materials:
+		if AnimeSkin.is_face(material):
+			_faces.append(material)
+	_add_moves()
+	if skeleton != null:
+		var springs := (
+			AnimeSkin.springs(skeleton, facts.get("chains", []))
+			if OS.get_environment("ROOTWARD_NO_SPRINGS") == ""
+			else null
+		)
+		if springs != null:
+			skeleton.add_child(springs)
+
+
+## The shared move library on its own player, driving the humanoid skeleton.
+func _add_moves() -> void:
 	player = AnimationPlayer.new()
 	player.name = "Moves"
 	model.add_child(player)
@@ -138,7 +189,20 @@ func _dress_vrm() -> void:
 		if bool(moves[clip].get("loop", false)) and player.has_animation(clip):
 			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	player.animation_finished.connect(_on_finished)
-	_blink()
+
+
+## The face shader reads the light against the head's facing, which the clips turn every frame.
+func _process(_delta: float) -> void:
+	if _faces.is_empty() or skeleton == null:
+		return
+	var head := skeleton.find_bone("Head")
+	if head < 0:
+		return
+	var turned := skeleton.get_bone_global_pose(head).basis * skeleton.get_bone_global_rest(head).basis.inverse()
+	var basis := skeleton.global_basis * turned
+	for material in _faces:
+		material.set_shader_parameter("head_forward", (basis * Vector3.BACK).normalized())
+		material.set_shader_parameter("head_up", (basis * Vector3.UP).normalized())
 
 
 func _dress() -> void:

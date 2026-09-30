@@ -108,6 +108,8 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] VRM skins and a shared move library (ADR-0028): godot-vrm and MToon in the game, the VRM add-on in Blender,
       clips as data (`pipeline/moves/`, `scripts/moves.sh`) with nine fantastical clips, casts timed to the sigil,
       the trial skin Shibu in the wardrobe. [ ] Vesper as a VRM. [ ] The cast flash on MToon; blended expressions.
+- [x] The anime look as tooling (ADR-0029): ZZZ-style shaders, VRM restyle, a rig normaliser, local reference skins.
+      [ ] The default look chosen. [ ] Our own ZZZ-grade character assets (clean textures, shade maps, SDF face).
 - [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)

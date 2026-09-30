@@ -467,3 +467,24 @@ The hero is drawn in a SubViewport with `own_world_3d`, so no light from anywher
 shader is unshaded and brings its own light, so this never showed; a VRM's MToon material is lit like any other and
 came out as a black silhouette. The view now adds its own warm key light and ambient light for a VRM skin.
 
+## Reading a look out of someone else's shader (`docs/decisions/ADR-0029-the-anime-look-and-normalised-skins.md`)
+"Make it look like Zenless Zone Zero" became concrete by dumping a fan rig's Blender node graphs as text (every node,
+its settings, every link) and reading them as code. The graph said: shade colour chosen per material slot by a mask's
+red channel in bands of 0.2, a light term remapped over 0 to 0.25 (a nearly hard edge), specular over N·H 0.75 to 1
+times the mask's blue, and a LUT read through log2 with the constants 0.048 and 0.386, which are Unity's ARRI LogC
+curve. Knowing *why* it looks that way is what lets our own shaders reach the look without its assets.
+
+## An SDF face lightmap (`game/characters/anime_face.gdshader`)
+A face lit by its normals gets blotchy shadows. Anime games paint a greyscale map instead: each texel stores the light
+angle at which it falls into shadow. The shader flattens the light onto the head's horizontal plane, takes its angle
+from the head's forward (0 in front, 1 behind), mirrors the map when the light is on the other side, and compares:
+a clean edge that sweeps across the cheek as the light moves. It needs the head's facing each frame, which
+`StageCharacter._process` computes as the Head bone's turn from its rest.
+
+## Folding a production rig onto a humanoid (`pipeline/blender/normalize_rig.py`)
+A studio rig deforms with hundreds of bones (twist, correctives, face) driven by control bones through constraints
+that glTF cannot carry. Instead of exporting it, the script builds a fresh humanoid skeleton at the source's joints and
+moves the weights: every vertex's weights are summed per target bone (a twist bone's weight goes to its limb, a face
+bone's to the head), then trimmed to four and renormalised. Any bone not named in the map gives its weight to its
+nearest kept ancestor. The mesh never changes; only who moves it does.
+

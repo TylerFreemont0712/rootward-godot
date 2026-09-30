@@ -52,6 +52,18 @@ func _build() -> void:
 			14
 		)
 	)
+	# Reference skins on this machine only (git-ignored, never shipped), for comparing looks in a real fight.
+	for id in Settings.all_skins():
+		if not id in Settings.CHARACTER_SKINS:
+			cards.add_child(
+				_skin_card(
+					id,
+					id.capitalize(),
+					"Local reference · not shipped",
+					"A model kept on this machine to study its look; it plays the same moves.",
+					Settings.LOCAL_SKINS + id + "/portrait.png"
+				)
+			)
 	add_child(
 		(
 			Ui

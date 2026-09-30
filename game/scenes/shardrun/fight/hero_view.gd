@@ -9,6 +9,9 @@ const VIEW_SIZE := Vector2i(360, 480)
 ## more air above her than Emberfox is.
 const FRAME_GLB := Vector2(1.95, 0.92)
 const FRAME_VRM := Vector2(2.35, 1.1)
+## Where the key light comes from (toward the light, world space): front-left and above, as from the arena's lanterns.
+## The anime shaders take it as a direction; MToon gets a real light along it.
+const KEY_LIGHT := Vector3(0.45, 0.62, 0.64)
 
 var character: StageCharacter
 var sprite: SpriteCharacter
@@ -25,7 +28,7 @@ func _ready() -> void:
 
 
 func set_skin(id: String) -> void:
-	if not id in Settings.CHARACTER_SKINS:
+	if not id in Settings.all_skins():
 		return
 	Settings.character_skin = id
 	_build_skin()
@@ -75,7 +78,8 @@ func _build_skin() -> void:
 
 	if actor.is_vrm():
 		_light(_viewport)
-	var frame := FRAME_VRM if actor.is_vrm() else FRAME_GLB
+	actor.set_light_direction(KEY_LIGHT)
+	var frame := FRAME_VRM if actor.is_humanoid() else FRAME_GLB
 	_camera = Camera3D.new()
 	_camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	_camera.size = frame.x
@@ -101,8 +105,8 @@ func _light(viewport: SubViewport) -> void:
 	var key := DirectionalLight3D.new()
 	key.light_color = Color(1.0, 0.9, 0.78)
 	key.light_energy = 1.1
-	key.rotation_degrees = Vector3(-38.0, -28.0, 0.0)
 	viewport.add_child(key)
+	key.basis = Basis.looking_at(-KEY_LIGHT)
 
 
 ## Plays a rigged clip. Spell sigils, shields, projectiles, and impact art remain on the separate BattleFX layer.
