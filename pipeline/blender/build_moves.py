@@ -92,6 +92,12 @@ def load_rig() -> bpy.types.Object:
     for bone in armature.data.bones:
         if bone.name in renames:
             bone.name = renames[bone.name]
+    # LEARN: Blender ignores the location of a bone connected to its parent, and VRoid connects the hips to its root:
+    # every Hips lift, crouch and lunge keyed on it moved nothing. Disconnected, the hips can travel.
+    bpy.context.view_layer.objects.active = armature
+    bpy.ops.object.mode_set(mode="EDIT")
+    armature.data.edit_bones["Hips"].use_connect = False
+    bpy.ops.object.mode_set(mode="OBJECT")
     log(f"base {rig['base']}: {len(renames)} humanoid bones renamed")
     armature.name = "Moves"
     return armature
@@ -179,16 +185,118 @@ def apply_pose(armature: bpy.types.Object, pose: motion.Pose, rest: dict[str, Ma
     armature.pose.bones["Hips"].location = rest["Hips"].inverted() @ offset
 
 
-def key_clip(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str, Matrix]) -> bpy.types.Action:
+LEGS = {"LeftFoot": ("LeftUpperLeg", "LeftLowerLeg"), "RightFoot": ("RightUpperLeg", "RightLowerLeg")}
+
+
+def foot_targets(armature: bpy.types.Object) -> dict[str, tuple[Vector, Quaternion]]:
+    """Where each foot stands for a clip: its ankle where the first pose puts it, dropped to the rest pose's height
+    (the floor), and the foot flat, turned only about the vertical as that pose turns it."""
+    out = {}
+    for foot in LEGS:
+        posed = armature.pose.bones[foot]
+        rest_bone = armature.data.bones[foot]
+        ankle = posed.head.copy()
+        ankle.z = rest_bone.head_local.z
+        forward = posed.matrix.to_3x3() @ Vector((0.0, 1.0, 0.0))
+        rest_forward = rest_bone.matrix_local.to_3x3() @ Vector((0.0, 1.0, 0.0))
+        yaw = math.atan2(forward.y, forward.x) - math.atan2(rest_forward.y, rest_forward.x)
+        out[foot] = (ankle, Quaternion((0.0, 0.0, 1.0), yaw) @ rest_bone.matrix_local.to_quaternion())
+    return out
+
+
+def aim(bone: bpy.types.PoseBone, target: Vector, weight: float) -> None:
+    """Turns a bone about its head so its tail points at `target` (by `weight`: 0 leaves it, 1 aims it)."""
+    head = bone.head.copy()
+    turn = (bone.tail - head).normalized().rotation_difference((target - head).normalized())
+    turn = Quaternion().slerp(turn, weight)
+    bone.matrix = Matrix.Translation(head) @ (turn.to_matrix() @ bone.matrix.to_3x3()).to_4x4()
+    bpy.context.view_layer.update()
+
+
+# LEARN: two-bone IK by the law of cosines. With the thigh a, the shin b and the hip-to-target distance d, the thigh
+# leaves the hip at angle acos((a² + d² - b²) / 2ad) from the line to the target, bent toward where the knee already
+# points (so a knee never flips backwards); the shin then aims at the target. A straight leg is bent forward.
+def plant(armature: bpy.types.Object, targets: dict[str, tuple[Vector, Quaternion]], weights: dict) -> None:
+    """Keeps each planted foot on its spot, flat, whatever the hips do: the legs are solved to reach it."""
+    for foot, (ankle, flat) in targets.items():
+        weight = float(weights.get(foot, 0.0))
+        if weight <= 0.0:
+            continue
+        upper, lower = (armature.pose.bones[name] for name in LEGS[foot])
+        hip, knee, now = upper.head.copy(), lower.head.copy(), armature.pose.bones[foot].head.copy()
+        a, b = (knee - hip).length, (now - knee).length
+        reach = ankle - hip
+        d = min(max(reach.length, 1e-4), a + b - 1e-4)
+        toward = reach.normalized()
+        bend = math.acos(max(-1.0, min(1.0, (a * a + d * d - b * b) / (2.0 * a * d))))
+        axis = toward.cross(knee - hip)
+        if axis.length < 1e-6:
+            axis = toward.cross(FRONT)
+        aim(upper, hip + (Quaternion(axis.normalized(), bend) @ toward) * a, weight)
+        aim(lower, hip + toward * d, weight)
+        posed = armature.pose.bones[foot]
+        turned = posed.matrix.to_quaternion().slerp(flat, weight)
+        posed.matrix = Matrix.Translation(posed.head) @ turned.to_matrix().to_4x4()
+        bpy.context.view_layer.update()
+
+
+def keep_above_floor(armature: bpy.types.Object) -> None:
+    """A foot off the ground may not sink through it: an ankle below its rest height is lifted back onto the floor
+    (the leg solved to reach there), so a falling body's feet slide along the ground instead."""
+    for foot, (upper_name, lower_name) in LEGS.items():
+        floor = armature.data.bones[foot].head_local.z
+        ankle = armature.pose.bones[foot].head.copy()
+        if ankle.z >= floor - 0.005:
+            continue
+        upper, lower = armature.pose.bones[upper_name], armature.pose.bones[lower_name]
+        target = Vector((ankle.x, ankle.y, floor))
+        hip, knee = upper.head.copy(), lower.head.copy()
+        a, b = (knee - hip).length, (ankle - knee).length
+        d = min(max((target - hip).length, 1e-4), a + b - 1e-4)
+        toward = (target - hip).normalized()
+        bend = math.acos(max(-1.0, min(1.0, (a * a + d * d - b * b) / (2.0 * a * d))))
+        axis = toward.cross(knee - hip)
+        if axis.length < 1e-6:
+            axis = toward.cross(FRONT)
+        aim(upper, hip + (Quaternion(axis.normalized(), bend) @ toward) * a, 1.0)
+        aim(lower, hip + toward * d, 1.0)
+
+
+def key_clip(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str, Matrix], ground: dict) -> bpy.types.Action:
+    """Poses every frame (keys, then planted feet) with no action assigned, then keys them all: while an action is
+    assigned, each update would re-evaluate it and undo the solved legs."""
+    armature.animation_data_create().action = None
+    bones = [b for b in armature.pose.bones if b.name in rest]
+    frames = []
+    targets = None
+    for frame in range(clip.frames):
+        pose = clip.sample(frame)
+        apply_pose(armature, pose, rest)
+        bpy.context.view_layer.update()
+        if targets is None:
+            targets = foot_targets(armature)
+            height = armature.data.bones["Hips"].head_local.z
+            # Where each planted foot stands, in Godot's axes (the model faces +Z) and hip heights, so a skin of any
+            # size can plant its own feet there (StageCharacter's leg IK).
+            ground["feet"] = {
+                foot: [round(v.x / height, 4), round(v.z / height, 4), round(-v.y / height, 4)]
+                for foot, (v, _flat) in targets.items()
+            }
+        plant(armature, targets, pose.get(motion.PLANT, {}))
+        keep_above_floor(armature)
+        for foot in LEGS:
+            ground.setdefault("plant", {}).setdefault(foot, []).append(round(float(pose[motion.PLANT][foot]), 2))
+        frames.append(({b.name: b.rotation_quaternion.copy() for b in bones}, armature.pose.bones["Hips"].location.copy()))
     action = bpy.data.actions.new(clip.id)
     action.use_fake_user = True
-    armature.animation_data_create().action = action
-    bones = [b for b in armature.pose.bones if b.name in rest]
-    for frame in range(clip.frames):
-        apply_pose(armature, clip.sample(frame), rest)
+    armature.animation_data.action = action
+    hips = armature.pose.bones["Hips"]
+    for frame, (rotations, location) in enumerate(frames):
         for pose_bone in bones:
+            pose_bone.rotation_quaternion = rotations[pose_bone.name]
             pose_bone.keyframe_insert("rotation_quaternion", frame=frame)
-        armature.pose.bones["Hips"].keyframe_insert("location", frame=frame)
+        hips.location = location
+        hips.keyframe_insert("location", frame=frame)
     return action
 
 
@@ -208,6 +316,9 @@ def release_point(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str,
 
 def main() -> None:
     armature = load_rig()
+    # Only the skeleton is keyed; without the meshes every update (the leg solver makes many) is quick.
+    for obj in [o for o in bpy.data.objects if o is not armature]:
+        bpy.data.objects.remove(obj)
     # LEARN: the glTF exporter turns frame numbers into seconds with the scene's frame rate (Blender's default is
     # 24), so a 30 fps clip keyed on a 24 fps scene plays 1.25 times too slow and misses its release.
     bpy.context.scene.render.fps = motion.FPS
@@ -223,7 +334,8 @@ def main() -> None:
     meta: dict = {"clips": {}}
     for clip_id in motion.clip_ids():
         clip = motion.load_clip(clip_id, library)
-        key_clip(armature, clip, rest)
+        ground: dict = {}
+        key_clip(armature, clip, rest, ground)
         meta["clips"][clip_id] = {
             "length": clip.length,
             "loop": clip.loop,
@@ -231,12 +343,12 @@ def main() -> None:
             "hand": clip.data.get("hand"),
             "release_point": release_point(armature, clip, rest, hips_height),
             "face": clip.data.get("face", []),
+            "feet": ground["feet"],
+            "plant": ground["plant"],
         }
         log(f"clip {clip_id}: {clip.frames} frames")
     armature.animation_data.action = None
     apply_pose(armature, {}, rest)
-    for obj in [o for o in bpy.data.objects if o is not armature]:
-        bpy.data.objects.remove(obj)
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / "rootward.glb"
     armature.select_set(True)
@@ -259,4 +371,5 @@ def main() -> None:
     log(f"wrote {out.relative_to(ROOT)} ({out.stat().st_size / 1e6:.1f} MB) and {meta_path.relative_to(ROOT)}")
 
 
-main()
+if __name__ == "__main__":
+    main()

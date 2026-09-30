@@ -42,6 +42,8 @@ var current := ""
 var _serial := 0
 ## Anime-shaded faces, which need the head's facing every frame (AnimeSkin, ADR-0029).
 var _faces: Array[ShaderMaterial] = []
+## Leg IK that keeps a humanoid skin's planted feet on its own floor (LegPlanting).
+var _legs: LegPlanting
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -148,7 +150,10 @@ func set_flash(colour: Color) -> void:
 func _dress_vrm() -> void:
 	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
 	face = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
+	# The anime look with ink is the game's (ADR-0029); ROOTWARD_STYLE=mtoon|anime compares the others.
 	var style := OS.get_environment("ROOTWARD_STYLE")
+	if style == "":
+		style = "anime-ink"
 	if style in ["anime", "anime-ink"]:
 		materials = AnimeSkin.restyle_vrm(model, style == "anime-ink", 0.35)
 		for material in materials:
@@ -166,6 +171,7 @@ func _dress_anime(skin_folder: String, facts: Dictionary) -> void:
 			_faces.append(material)
 	_add_moves()
 	if skeleton != null:
+		AnimeSkin.curl_tails(skeleton, facts.get("chains", []), float(facts.get("tail_curl", -14.0)))
 		var springs := (
 			AnimeSkin.springs(skeleton, facts.get("chains", []))
 			if OS.get_environment("ROOTWARD_NO_SPRINGS") == ""
@@ -175,8 +181,10 @@ func _dress_anime(skin_folder: String, facts: Dictionary) -> void:
 			skeleton.add_child(springs)
 
 
-## The shared move library on its own player, driving the humanoid skeleton.
+## The shared move library on its own player, driving the humanoid skeleton, with its feet planted by leg IK.
 func _add_moves() -> void:
+	if skeleton != null:
+		_legs = LegPlanting.attach(skeleton)
 	player = AnimationPlayer.new()
 	player.name = "Moves"
 	model.add_child(player)
@@ -193,6 +201,8 @@ func _add_moves() -> void:
 
 ## The face shader reads the light against the head's facing, which the clips turn every frame.
 func _process(_delta: float) -> void:
+	if _legs != null and player != null:
+		_legs.update(moves.get(current, {}), player.current_animation_position)
 	if _faces.is_empty() or skeleton == null:
 		return
 	var head := skeleton.find_bone("Head")

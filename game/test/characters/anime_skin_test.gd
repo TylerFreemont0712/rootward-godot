@@ -3,8 +3,14 @@ extends GdUnitTestSuite
 ## painted shade, gets one flat-lit face, and ink lines on request; a skin folder is found only with a skin.json.
 
 
-func test_a_vrm_skin_restyles_into_the_anime_shaders() -> void:
+func test_a_vrm_skin_wears_the_anime_look_with_ink_by_default() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	assert_int(hero.materials.size()).is_greater(5)
+	assert_object(hero.materials[0].next_pass).is_not_null()
+
+
+func test_a_vrm_skin_restyles_into_the_anime_shaders() -> void:
+	var hero := _in_mtoon()
 	var made := AnimeSkin.restyle_vrm(hero.model, true, 0.35)
 	# One material per source material: the hair's fifty surfaces share one.
 	assert_int(made.size()).is_between(5, 20)
@@ -18,14 +24,13 @@ func test_a_vrm_skin_restyles_into_the_anime_shaders() -> void:
 
 
 func test_without_ink_there_is_no_line_pass() -> void:
-	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	var hero := _in_mtoon()
 	for material in AnimeSkin.restyle_vrm(hero.model, false, 0.0):
 		assert_object(material.next_pass).is_null()
 
 
 func test_the_light_direction_reaches_every_anime_material() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
-	hero.materials = AnimeSkin.restyle_vrm(hero.model, false, 0.0)
 	hero.set_light_direction(Vector3(0, 2, 0))
 	for material in hero.materials:
 		assert_vector(material.get_shader_parameter("light_dir")).is_equal(Vector3.UP)
@@ -39,3 +44,11 @@ func test_skin_folders_need_a_skin_json() -> void:
 func test_all_skins_start_with_the_shipped_ones() -> void:
 	var skins := Settings.all_skins()
 	assert_array(skins.slice(0, Settings.CHARACTER_SKINS.size())).is_equal(Settings.CHARACTER_SKINS)
+
+
+## Shibu in her own MToon, as imported (ROOTWARD_STYLE=mtoon), to restyle by hand.
+func _in_mtoon() -> StageCharacter:
+	OS.set_environment("ROOTWARD_STYLE", "mtoon")
+	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	OS.unset_environment("ROOTWARD_STYLE")
+	return hero

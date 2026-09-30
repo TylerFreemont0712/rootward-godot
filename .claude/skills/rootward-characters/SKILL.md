@@ -45,6 +45,11 @@ ADR-0005, ADR-0007, ADR-0008.
 
 ## Verified facts and traps (Blender 5.2.2, Godot 4.7.2)
 
+- Feet are planted by default (build: two-bone IK per frame; runtime: `LegPlanting` with `TwoBoneIK3D`). Keep
+  `Hips.lift` <= 0 except in an unplanted window (`plant` in the clip). The Hips must stay disconnected (the build
+  does it): Blender ignores a connected bone's location.
+- Every clip starts and ends in the `stance` pose (the guard idle); the foot spots are taken from each clip's frame 0.
+
 - Blender: `--factory-startup` disables user extensions (VRM). The pipeline enables it with
   `addon_utils.enable("bl_ext.blender_org.vrm")`. VRM imports face -Y, her left +X, Z up, T-pose, quaternion bones;
   VRM 0 humanoid map: `armature.data.vrm_addon_extension.vrm0.humanoid.human_bones` (`.bone`, `.node.bone_name`).

@@ -1,12 +1,48 @@
 {
-  "_about": "Knocked back in the air: the body snaps away, the head and hands whip after it, then she floats back.",
+  "_about": "Knocked back on planted feet: the body snaps away, the head and hands whip after it, then she recovers her guard.",
   "length": 0.9,
-  "face": [{"t": 0.0, "expression": "sad", "weight": 1.0}, {"t": 0.8, "expression": "neutral"}],
-  "keys": [
-    {"t": 0.0, "pose": "float"},
-    {"t": 0.08, "pose": "hurt", "ease": "expo_out"},
-    {"t": 0.3, "pose": {"base": "hurt", "Head": {"bend": -18}}, "ease": "sine"},
-    {"t": 0.9, "pose": "float", "ease": "sine"}
+  "face": [
+    {
+      "t": 0.0,
+      "expression": "sad",
+      "weight": 1.0
+    },
+    {
+      "t": 0.8,
+      "expression": "neutral"
+    }
   ],
-  "lag": {"Head": 0.04, "Hand": 0.05, "LowerArm": 0.03}
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "stance"
+    },
+    {
+      "t": 0.08,
+      "pose": "hurt",
+      "ease": "expo_out"
+    },
+    {
+      "t": 0.3,
+      "pose": {
+        "base": "hurt",
+        "Head": {
+          "bend": -18,
+          "lean": 14,
+          "turn": -10
+        }
+      },
+      "ease": "sine"
+    },
+    {
+      "t": 0.9,
+      "pose": "stance",
+      "ease": "sine"
+    }
+  ],
+  "lag": {
+    "Head": 0.04,
+    "Hand": 0.05,
+    "LowerArm": 0.03
+  }
 }

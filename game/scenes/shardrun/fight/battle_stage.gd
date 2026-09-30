@@ -97,7 +97,7 @@ func place_status() -> void:
 		_status.size = _status.get_combined_minimum_size()
 		var x := hero.position.x + hero.size.x * 0.5 - _status.size.x * 0.5
 		_status.position = Vector2(
-			clampf(x, 8.0, size.x - _status.size.x - 8.0), maxf(8.0, hero.position.y - _status.size.y)
+			clampf(x, 8.0, size.x - _status.size.x - 8.0), maxf(8.0, hero.head_point().y - _status.size.y)
 		)
 	if _incoming == null or foes.is_empty():
 		return
@@ -177,10 +177,13 @@ func _layout() -> void:
 	_grade.queue_redraw()
 	var floor_y := size.y * FLOOR
 	_place_backdrop(floor_y)
-	var hero_height := size.y * HERO_HEIGHT
+	var hero_share := hero.height_share()
+	var hero_height := size.y * hero_share
 	hero.size = Vector2(hero_height * 0.75, hero_height)
 	hero.position = Vector2(size.x * HERO_X, floor_y - hero_height)
-	var feet: Array[Vector3] = [Vector3(hero.position.x + hero.size.x * 0.5, floor_y, hero_height * 0.2)]
+	# The shadow is sized to the figure, not to her (taller, mostly empty) view.
+	var shadow := size.y * HERO_HEIGHT * 0.2
+	var feet: Array[Vector3] = [Vector3(hero.position.x + hero.size.x * 0.5, floor_y, shadow)]
 	if _boss_bar != null:
 		_boss_bar.size = _boss_bar.get_combined_minimum_size()
 		_boss_bar.position = Vector2((size.x - _boss_bar.size.x) * 0.5, 14.0)

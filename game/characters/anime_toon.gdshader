@@ -9,8 +9,10 @@ shader_type spatial;
 render_mode unshaded, cull_disabled, depth_draw_opaque;
 
 uniform sampler2D diffuse : source_color, filter_linear_mipmap, repeat_enable;
-uniform sampler2D mask : source_color, filter_linear_mipmap, repeat_enable;
+uniform sampler2D mask : filter_linear_mipmap, repeat_enable;
 uniform bool use_mask = false;
+// A mask saved as colour (sRGB) is decoded before its bands are read; one saved as data is read as it is.
+uniform bool mask_srgb = true;
 // A painted shade (VRoid's shade texture times its shade colour) instead of a slot colour: the artist's own shadows.
 uniform sampler2D shade_map : source_color, filter_linear_mipmap, repeat_enable, hint_default_white;
 uniform bool use_shade_map = false;
@@ -62,6 +64,9 @@ void fragment() {
 	vec3 v = normalize((INV_VIEW_MATRIX * vec4(0.0, 0.0, 1.0, 0.0)).xyz);
 	vec3 h = normalize(l + v);
 	vec4 m = use_mask ? texture(mask, UV) : vec4(1.0, 0.0, 0.0, 0.0);
+	if (use_mask && mask_srgb) {
+		m.rgb = pow(m.rgb, vec3(2.2));
+	}
 	float lit = clamp(dot(n, l) / max(edge, 0.0001), 0.0, 1.0);
 	vec3 shade = by_slot(m.r, shadow_1.rgb, shadow_2.rgb, shadow_3.rgb, shadow_4.rgb, shadow_5.rgb);
 	vec3 spec_colour = by_slot(m.r, specular_1.rgb, specular_2.rgb, specular_3.rgb, specular_4.rgb, specular_5.rgb);

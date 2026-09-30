@@ -1,13 +1,95 @@
 {
-  "_about": "Dips, spins up into the air and lands a peace sign by her eye, the other hand on her hip, a heel kicked up.",
+  "_about": "Dips, hops up spinning, and lands in a peace sign by her eye, the other hand on her hip and a heel kicked up.",
   "length": 2.2,
-  "face": [{"t": 1.0, "expression": "happy", "weight": 1.0}],
-  "keys": [
-    {"t": 0.0, "pose": "float"},
-    {"t": 0.25, "pose": {"base": "gather", "Hips": {"lift": 0.02}}, "ease": "cubic_out"},
-    {"t": 0.85, "pose": {"base": "soar", "Hips": {"turn": 360, "lift": 0.45}}, "ease": "sine"},
-    {"t": 1.25, "pose": {"base": "cheer", "Hips": {"turn": 360}}, "ease": "back_out"},
-    {"t": 2.2, "pose": {"base": "cheer", "Hips": {"turn": 360, "lift": 0.1}}, "ease": "sine"}
+  "face": [
+    {
+      "t": 1.0,
+      "expression": "happy",
+      "weight": 1.0
+    }
   ],
-  "lag": {"Head": 0.06, "Hand": 0.05, "Foot": 0.08, "LowerLeg": 0.05}
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "stance"
+    },
+    {
+      "t": 0.25,
+      "pose": "gather",
+      "ease": "cubic_out"
+    },
+    {
+      "t": 0.8,
+      "pose": {
+        "base": "leap",
+        "Hips": {
+          "lift": 0.28,
+          "turn": 360
+        }
+      },
+      "ease": "sine"
+    },
+    {
+      "t": 1.05,
+      "pose": {
+        "base": "land",
+        "Hips": {
+          "lift": -0.1,
+          "bend": 6,
+          "turn": 370
+        }
+      },
+      "ease": "expo_out"
+    },
+    {
+      "t": 1.35,
+      "pose": {
+        "base": "cheer",
+        "Hips": {
+          "lift": -0.02,
+          "lean": 6,
+          "turn": 372
+        }
+      },
+      "ease": "back_out"
+    },
+    {
+      "t": 2.2,
+      "pose": {
+        "base": "cheer",
+        "Hips": {
+          "lift": -0.03,
+          "lean": 6,
+          "turn": 372
+        }
+      },
+      "ease": "sine"
+    }
+  ],
+  "lag": {
+    "Head": 0.06,
+    "Hand": 0.05
+  },
+  "plant": {
+    "LeftFoot": [
+      [
+        0.0,
+        0.35
+      ],
+      [
+        0.98,
+        2.2
+      ]
+    ],
+    "RightFoot": [
+      [
+        0.0,
+        0.35
+      ],
+      [
+        0.98,
+        1.2
+      ]
+    ]
+  }
 }

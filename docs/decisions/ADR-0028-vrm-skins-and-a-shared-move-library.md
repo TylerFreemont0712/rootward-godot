@@ -55,3 +55,20 @@ creatures), HY-Motion (text to motion: needs 24 GB), and the VRM ecosystem (VRoi
 
 The AnimationLibrary import must keep `retarget/remove_tracks/except_bone_transform` **off**: on, it strips the
 rotation tracks and leaves one track per clip.
+
+## Amendment (2026-10-01): on solid ground
+
+The player found the moves floaty, the idle's arms awkward. Measured: the Hips bone is connected to its parent on the
+VRoid skeleton, and Blender ignores a connected bone's location, so no hip lift, crouch or lunge had ever moved;
+bent legs under a fixed pelvis read as hovering. Now:
+
+- The build disconnects the hips, and **plants the feet**: after each frame is posed, a two-bone solver keeps each
+  planted foot on its spot, flat, whatever the hips do (a lower hip bends the knees). Clips unplant a foot for a
+  window (`plant`), and a foot off the ground is kept from sinking through it.
+- **The idle is a mage's guard**: lead hand raised toward the foes, rear hand low, weight on bent knees, front foot
+  forward. Every clip starts and ends in it; only the heavy cast and the victory leave the ground (a real jump).
+- **Each skin plants its own feet** at runtime (`LegPlanting`, Godot's `TwoBoneIK3D`): `moves.json` carries each
+  clip's foot spots in hip heights and per-frame plant weights, so a skin with other leg lengths stands on its floor.
+- The hero is drawn about half again as large (her view takes 92% of the arena's height), with her plate above her
+  head, and the anime look with ink is the default (ADR-0029).
+

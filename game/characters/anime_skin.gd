@@ -72,6 +72,7 @@ static func _material(skin_folder: String, entry: Dictionary) -> ShaderMaterial:
 	# A texture's alpha is transparency only where skin.json says so (game rips pack masks into it).
 	material.set_shader_parameter("alpha_cut", float(entry.get("alpha_cut", 0.0)))
 	material.set_shader_parameter("use_mask", textures.has("mask"))
+	material.set_shader_parameter("mask_srgb", bool(entry.get("colour", {}).get("mask", true)))
 	material.set_shader_parameter("use_lightmap", textures.has("lightmap"))
 	var params: Dictionary = entry.get("params", {})
 	for key: String in params:
@@ -102,9 +103,11 @@ static func springs(skeleton: Skeleton3D, chains: Array) -> SpringBoneSimulator3
 			bone = skeleton.get_bone_children(bone)[0]
 		simulator.set_root_bone_name(i, roots[i])
 		simulator.set_end_bone_name(i, skeleton.get_bone_name(bone))
-		simulator.set_stiffness(i, 0.6)
-		simulator.set_drag(i, 0.45)
-		simulator.set_gravity(i, 0.25)
+		# A tail or ponytail hangs and swings; bangs and ribbons stay close to their shape.
+		var long := "Tail" in roots[i] or "Ponytail" in roots[i]
+		simulator.set_stiffness(i, 0.25 if long else 0.6)
+		simulator.set_drag(i, 0.35 if long else 0.45)
+		simulator.set_gravity(i, 0.9 if long else 0.25)
 		simulator.set_extend_end_bone(i, true)
 		simulator.set_end_bone_length(i, 0.04)
 	return simulator
@@ -167,3 +170,17 @@ static func _from_mtoon(mtoon: ShaderMaterial, name: String, rim: float) -> Shad
 ## A shader parameter never set on a material reads as null.
 static func _number(value: Variant, fallback: float) -> float:
 	return float(value) if value is float or value is int else fallback
+
+
+## A tail's rest pose is a straight line out behind; it is given a curl (each bone turned a little about its own X
+## axis) that its springs then rest toward and sway from.
+static func curl_tails(skeleton: Skeleton3D, chains: Array, degrees: float) -> void:
+	for chain: String in chains:
+		if not "Tail" in chain:
+			continue
+		var bone := skeleton.find_bone(chain)
+		while bone >= 0:
+			var rest := skeleton.get_bone_rest(bone).basis.get_rotation_quaternion()
+			skeleton.set_bone_pose_rotation(bone, rest * Quaternion(Vector3.RIGHT, deg_to_rad(degrees)))
+			var children := skeleton.get_bone_children(bone)
+			bone = children[0] if not children.is_empty() else -1

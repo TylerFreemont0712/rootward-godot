@@ -1,22 +1,181 @@
 {
-  "_about": "Curl up, spin up into the air with the arms flung open, raise both hands overhead and shake with the gathered power, then drive both palms at the foes (the release) and drift back down.",
+  "_about": "Crouch, spring up spinning, land, raise both hands shaking with the gathered power, then drive both palms at the foes from the ground (the release) and settle back into guard.",
   "length": 2.3,
   "hand": "LeftHand",
-  "events": {"release": 1.15},
-  "face": [{"t": 0.1, "expression": "angry", "weight": 0.7}, {"t": 0.8, "expression": "surprised", "weight": 0.4}, {"t": 1.1, "expression": "angry", "weight": 1.0}, {"t": 2.0, "expression": "neutral"}],
-  "keys": [
-    {"t": 0.0, "pose": "float"},
-    {"t": 0.18, "pose": "gather_deep", "ease": "cubic_out"},
-    {"t": 0.3, "pose": "gather", "ease": "sine"},
-    {"t": 0.62, "pose": {"base": "soar", "Hips": {"turn": 360}}, "ease": "sine"},
-    {"t": 0.85, "pose": {"base": "summon", "Hips": {"turn": 360}}, "ease": "back_out"},
-    {"t": 1.05, "pose": {"base": "summon", "Hips": {"turn": 360, "lift": 0.45}}, "ease": "sine"},
-    {"t": 1.15, "pose": {"base": "blast", "Hips": {"turn": 380}}, "ease": "expo_out"},
-    {"t": 1.35, "pose": {"base": "blast", "Hips": {"turn": 378, "lift": 0.32, "bend": -5}}, "ease": "back_out"},
-    {"t": 1.95, "pose": {"base": "float", "Hips": {"turn": 360}}, "ease": "sine"},
-    {"t": 2.3, "pose": {"base": "float", "Hips": {"turn": 360}}, "ease": "sine"}
+  "events": {
+    "release": 1.15
+  },
+  "face": [
+    {
+      "t": 0.1,
+      "expression": "angry",
+      "weight": 0.7
+    },
+    {
+      "t": 0.8,
+      "expression": "surprised",
+      "weight": 0.4
+    },
+    {
+      "t": 1.1,
+      "expression": "angry",
+      "weight": 1.0
+    },
+    {
+      "t": 2.0,
+      "expression": "neutral"
+    }
   ],
-  "lag": {"Head": 0.06, "Hand": 0.05, "LowerArm": 0.03, "Foot": 0.08, "LowerLeg": 0.06},
-  "layers": [{"kind": "tremble", "from": 0.85, "to": 1.12, "amp": 2.5, "fade": 0.05}],
-  "step": [{"from": 0.85, "to": 1.2, "frames": 2}]
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "stance"
+    },
+    {
+      "t": 0.16,
+      "pose": "gather_deep",
+      "ease": "cubic_out"
+    },
+    {
+      "t": 0.26,
+      "pose": "gather_deep",
+      "ease": "sine"
+    },
+    {
+      "t": 0.55,
+      "pose": {
+        "base": "leap",
+        "Hips": {
+          "lift": 0.3,
+          "turn": 360
+        }
+      },
+      "ease": "sine"
+    },
+    {
+      "t": 0.72,
+      "pose": {
+        "base": "land",
+        "Hips": {
+          "lift": -0.12,
+          "bend": 8,
+          "forward": 0.02,
+          "turn": 370
+        }
+      },
+      "ease": "expo_out"
+    },
+    {
+      "t": 0.95,
+      "pose": {
+        "base": "summon",
+        "Hips": {
+          "lift": -0.04,
+          "turn": 366
+        }
+      },
+      "ease": "back_out"
+    },
+    {
+      "t": 1.07,
+      "pose": {
+        "base": "summon",
+        "Hips": {
+          "lift": -0.06,
+          "turn": 366
+        }
+      },
+      "ease": "sine"
+    },
+    {
+      "t": 1.15,
+      "pose": {
+        "base": "blast",
+        "Hips": {
+          "lift": -0.1,
+          "side": 0.06,
+          "turn": 380
+        }
+      },
+      "ease": "expo_out"
+    },
+    {
+      "t": 1.35,
+      "pose": {
+        "base": "blast",
+        "Hips": {
+          "lift": -0.06,
+          "side": 0.04,
+          "bend": -5,
+          "turn": 378
+        }
+      },
+      "ease": "back_out"
+    },
+    {
+      "t": 1.95,
+      "pose": {
+        "base": "stance",
+        "Hips": {
+          "lift": -0.035,
+          "turn": 370
+        }
+      },
+      "ease": "sine"
+    },
+    {
+      "t": 2.3,
+      "pose": {
+        "base": "stance",
+        "Hips": {
+          "lift": -0.035,
+          "turn": 370
+        }
+      },
+      "ease": "sine"
+    }
+  ],
+  "lag": {
+    "Head": 0.06,
+    "Hand": 0.05,
+    "LowerArm": 0.03
+  },
+  "layers": [
+    {
+      "kind": "tremble",
+      "from": 0.95,
+      "to": 1.12,
+      "amp": 2.5,
+      "fade": 0.05
+    }
+  ],
+  "step": [
+    {
+      "from": 0.95,
+      "to": 1.2,
+      "frames": 2
+    }
+  ],
+  "plant": {
+    "LeftFoot": [
+      [
+        0.0,
+        0.3
+      ],
+      [
+        0.68,
+        2.3
+      ]
+    ],
+    "RightFoot": [
+      [
+        0.0,
+        0.3
+      ],
+      [
+        0.68,
+        2.3
+      ]
+    ]
+  }
 }

@@ -30,12 +30,20 @@ func _ready() -> void:
 		hero.player.play(clip)
 		hero.player.seek(float(OS.get_environment("ROOTWARD_AT")), true)
 		hero.player.pause()
+	# Framed on the skin's own head, so a short character is framed like a tall one.
+	var head_y := 1.38
+	if hero.skeleton != null and hero.skeleton.find_bone("Head") >= 0:
+		head_y = (
+			(hero.skeleton.global_transform * hero.skeleton.get_bone_global_rest(hero.skeleton.find_bone("Head")))
+			. origin
+			. y
+		)
 	var camera := Camera3D.new()
 	camera.projection = Camera3D.PROJECTION_ORTHOGONAL
 	if look == "face":
 		camera.size = 0.42
-		camera.position = Vector3(0.0, 1.38, 6)
+		camera.position = Vector3(0.0, head_y + 0.02, 6)
 	else:
-		camera.size = 1.8
-		camera.position = Vector3(0.0, 0.85, 6)
+		camera.size = (head_y + 0.35) * 1.25
+		camera.position = Vector3(0.0, (head_y + 0.35) * 0.5, 6)
 	add_child(camera)

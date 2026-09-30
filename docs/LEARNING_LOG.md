@@ -488,3 +488,16 @@ moves the weights: every vertex's weights are summed per target bone (a twist bo
 bone's to the head), then trimmed to four and renormalised. Any bone not named in the map gives its weight to its
 nearest kept ancestor. The mesh never changes; only who moves it does.
 
+## A connected bone does not move (`pipeline/blender/build_moves.py`)
+Every clip keyed a hip lift, and none of it showed. Printing the posed bones settled it: the Hips' location channel
+read -0.51 m while its head stayed at 0.944 m. On the VRoid skeleton the hips are *connected* to their parent, and
+Blender ignores the location of a connected bone (its head is glued to the parent's tail). Disconnecting it in edit
+mode lets the hips travel. When a number "does nothing", measure the thing it is supposed to move.
+
+## Planting feet with two-bone IK (`pipeline/blender/build_moves.py`, `game/characters/leg_planting.gd`)
+Forward kinematics moves a foot whenever the hips move, so a breathing bob or a crouch lifts the feet off the floor.
+Inverse kinematics works backwards from where the foot must be: with thigh a, shin b and hip-to-target distance d, the
+law of cosines gives the thigh's angle from the hip-to-target line, acos((a² + d² - b²) / 2ad), bent toward where the
+knee already points. The build solves it per frame (in Blender), and the game solves it again per skin (Godot's
+TwoBoneIK3D), because a foot planted on one skeleton hovers on a skeleton with longer or shorter legs.
+

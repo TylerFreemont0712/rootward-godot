@@ -1,13 +1,34 @@
 {
-  "_about": "Holds a stream toward the foes: one palm out, the other hand bracing, a steady tremble.",
+  "_about": "Holds a stream toward the foes: lead palm out, the other hand bracing, braced low on planted feet.",
   "length": 1.6,
   "loop": true,
   "keys": [
-    {"t": 0.0, "pose": "channel"},
-    {"t": 0.8, "pose": {"base": "channel", "Hips": {"lift": 0.17, "turn": 12}, "LeftHand": {"spread": 36}}, "ease": "sine"}
+    {
+      "t": 0.0,
+      "pose": "channel"
+    },
+    {
+      "t": 0.8,
+      "pose": {
+        "base": "channel",
+        "Hips": {
+          "lift": -0.09,
+          "turn": 13,
+          "side": 0.035
+        },
+        "LeftHand": {
+          "bend": -45,
+          "spread": 36,
+          "curl": 0.05
+        }
+      },
+      "ease": "sine"
+    }
   ],
   "layers": [
-    {"kind": "tremble", "amp": 1.2},
-    {"kind": "bob", "amp": 0.015, "period": 1.6}
+    {
+      "kind": "tremble",
+      "amp": 1.2
+    }
   ]
 }

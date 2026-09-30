@@ -8,7 +8,11 @@ const VIEW_SIZE := Vector2i(360, 480)
 ## The orthographic camera's height and aim. A VRM skin levitates and throws her arms overhead, so she is framed with
 ## more air above her than Emberfox is.
 const FRAME_GLB := Vector2(1.95, 0.92)
-const FRAME_VRM := Vector2(2.35, 1.1)
+## A humanoid skin (VRM or anime) stands with her feet on the view's floor and room above for a jump and raised arms;
+## her view is also taller on the stage (`height_share`), so she is drawn half again as large as before.
+const FRAME_VRM := Vector2(2.4, 1.17)
+const TALL_SHARE := 0.92
+const SHORT_SHARE := 0.6
 ## Where the key light comes from (toward the light, world space): front-left and above, as from the arena's lanterns.
 ## The anime shaders take it as a direction; MToon gets a real light along it.
 const KEY_LIGHT := Vector3(0.45, 0.62, 0.64)
@@ -177,4 +181,22 @@ func _to_stage(world: Vector3) -> Vector2:
 
 
 func body_point() -> Vector2:
+	if character != null and _camera != null:
+		var chest: Variant = character.bone_point("Chest")
+		if chest != null:
+			return position + _to_stage(chest as Vector3)
 	return position + Vector2(size.x * 0.5, size.y * 0.55)
+
+
+## Just above the top of the head, in the stage's coordinates (for the Maintainer's plate).
+func head_point() -> Vector2:
+	if character != null and _camera != null:
+		var head: Variant = character.bone_point("Head")
+		if head != null:
+			return position + _to_stage((head as Vector3) + Vector3(0.0, 0.28, 0.0))
+	return position
+
+
+## How much of the arena's height this view takes: a humanoid skin is drawn larger than the older looks.
+func height_share() -> float:
+	return TALL_SHARE if character != null and character.is_humanoid() else SHORT_SHARE

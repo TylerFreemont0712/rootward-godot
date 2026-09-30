@@ -199,6 +199,7 @@ def write_textures(spec: dict, out_dir: Path) -> dict:
             image.file_format = "PNG"
             image.save()
             entry["textures"][role] = path.name
+            entry.setdefault("colour", {})[role] = image.colorspace_settings.name == "sRGB"
         for node in material.node_tree.nodes:
             if node.type == "GROUP":
                 for socket in node.inputs:

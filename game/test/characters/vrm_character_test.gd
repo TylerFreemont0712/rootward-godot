@@ -63,3 +63,16 @@ func test_the_release_point_is_the_outstretched_palm() -> void:
 	assert_float(point.y).is_between(1.0, 1.7)
 	hero.play("hurt")
 	assert_object(hero.release_point()).is_null()
+
+
+func test_planted_feet_follow_the_clip_on_leg_ik() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	add_child(hero)
+	var iks := hero.skeleton.find_children("*", "TwoBoneIK3D", false, false)
+	assert_int(iks.size()).is_equal(2)
+	# The heavy cast leaves the ground mid-leap and stands again to blast.
+	var facts: Dictionary = hero.moves["cast-heavy"]
+	hero._legs.update(facts, 0.45)
+	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(0.0)
+	hero._legs.update(facts, 1.15)
+	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(1.0)

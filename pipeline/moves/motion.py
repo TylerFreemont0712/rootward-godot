@@ -25,6 +25,11 @@ A **clip** (`clips/<id>.json`) is keys on a timeline, in seconds:
 - `lag` samples a bone that many seconds late, so it follows the body through a move (overlapping action).
 - `step` holds each drawing for `frames` frames between `from` and `to`: animation on twos, the anime staccato.
 - `layers` add motion on top of the keys: `breathe`, `bob`, `sway`, `tremble`.
+- `plant` keeps the feet on the floor (the build solves the legs so each planted foot stays put, flat, while the hips
+  move). Both feet are planted for the whole clip unless the clip says otherwise:
+  `"plant": {"LeftFoot": [[0, 0.3], [0.9, 2.3]], "RightFoot": [[0, 0.3]]}` plants each foot only in those windows
+  (fading in and out over `plant_fade` seconds), so it can leave the ground for a jump or a kicked heel. A foot
+  the clip does not name stays planted.
 """
 
 from __future__ import annotations
@@ -36,6 +41,9 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 FPS = 30
+
+FEET = ("LeftFoot", "RightFoot")
+PLANT = "Plant"
 
 SIDED = (
     "Shoulder",
@@ -181,7 +189,23 @@ class Clip:
                 pose[bone] = late[bone]
         for layer in self.layers:
             _apply_layer(pose, layer, t, self)
+        pose[PLANT] = {foot: self._planted(foot, t) for foot in FEET}
         return pose
+
+    def _planted(self, foot: str, t: float) -> float:
+        """How firmly a foot is held to the floor at `t`: 1 inside its windows, 0 outside, fading between."""
+        windows = self.data.get("plant", {}).get(foot)
+        if windows is None:
+            return 1.0
+        fade = float(self.data.get("plant_fade", 0.08))
+        best = 0.0
+        for a, b in windows:
+            a, b = float(a), float(b)
+            if a <= t <= b:
+                edge_in = 1.0 if a <= 0.0 else min(1.0, (t - a) / fade)
+                edge_out = 1.0 if b >= self.length else min(1.0, (b - t) / fade)
+                best = max(best, min(edge_in, edge_out))
+        return best
 
 
 def _wave(t: float, period: float, phase: float = 0.0) -> float:

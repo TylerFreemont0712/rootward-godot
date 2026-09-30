@@ -161,6 +161,9 @@ func set_skin(id: String) -> void:
 	var texture := Art.texture("portraits/" + id)
 	if texture == null:
 		texture = Art.texture("sprites/%s/profile" % id)
+	var local := Settings.LOCAL_SKINS + id + "/portrait.png"
+	if texture == null and ResourceLoader.exists(local):
+		texture = load(local) as Texture2D
 	_portrait.texture = texture
 	_portrait_name.text = id.to_upper()
 

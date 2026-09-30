@@ -100,6 +100,26 @@ class ClipTest(unittest.TestCase):
         self.assertAlmostEqual(c.sample(0)["Hips"]["lift"], c.sample(30)["Hips"]["lift"], places=6)
 
 
+class PlantTest(unittest.TestCase):
+    def test_feet_are_planted_by_default(self) -> None:
+        c = clip(keys=[{"t": 0, "pose": "stand"}])
+        self.assertEqual(c.sample(10)[motion.PLANT], {"LeftFoot": 1.0, "RightFoot": 1.0})
+
+    def test_a_foot_leaves_the_ground_outside_its_windows(self) -> None:
+        c = clip(keys=[{"t": 0, "pose": "stand"}], plant={"LeftFoot": [[0, 0.3], [0.7, 1.0]], "RightFoot": [[0, 1.0]]})
+        self.assertEqual(c.sample(15)[motion.PLANT]["LeftFoot"], 0.0)
+        self.assertEqual(c.sample(15)[motion.PLANT]["RightFoot"], 1.0)
+        self.assertEqual(c.sample(3)[motion.PLANT]["LeftFoot"], 1.0)
+
+    def test_planting_fades_at_a_window_edge(self) -> None:
+        c = clip(keys=[{"t": 0, "pose": "stand"}], plant={"LeftFoot": [[0.5, 1.0]]}, plant_fade=0.2)
+        self.assertAlmostEqual(c.sample(18)[motion.PLANT]["LeftFoot"], 0.5, places=5)
+
+    def test_a_foot_the_clip_does_not_name_stays_planted(self) -> None:
+        c = clip(keys=[{"t": 0, "pose": "stand"}], plant={"LeftFoot": [[0, 0.1]]})
+        self.assertEqual(c.sample(15)[motion.PLANT]["RightFoot"], 1.0)
+
+
 class ContentTest(unittest.TestCase):
     def test_every_clip_resolves_and_samples(self) -> None:
         library = motion.load_library()
