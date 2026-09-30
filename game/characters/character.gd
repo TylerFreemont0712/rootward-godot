@@ -26,6 +26,10 @@ const BLEND := 0.18
 const LOOPS: Array[String] = ["idle-breathe", "channel"]
 const HOLDS: Array[String] = ["victory", "death", "windup"]
 const IDLE := "idle-breathe"
+## Limited animation (ADR-0029): a humanoid skin's pose, leg IK and springs advance together this many times a second
+## and hold in between, as Guilty Gear and 2XKO animate (no in-between interpolation reads as drawn, not 3D). A skin's
+## `style.fps` overrides it; ROOTWARD_LIMITED=0 plays smoothly, for comparison.
+const LIMITED_FPS := 15.0
 ## How far a cast may be sped up or slowed down to land its release on the stage's beat.
 const RELEASE_SPEED := Vector2(0.55, 2.2)
 
@@ -44,6 +48,10 @@ var _serial := 0
 var _faces: Array[ShaderMaterial] = []
 ## Leg IK that keeps a humanoid skin's planted feet on its own floor (LegPlanting).
 var _legs: LegPlanting
+## skin.json `style` of an anime skin (its own light, shade, ink).
+var _style_facts: Dictionary = {}
+var _limited_fps := 0.0
+var _held := 0.0
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -97,8 +105,17 @@ func is_humanoid() -> bool:
 	return not moves.is_empty()
 
 
-## The anime shaders are unshaded and take the light as a direction (toward the light, world space).
+## The anime shaders are unshaded and take the light as a direction (toward the light, world space). A skin may bring
+## its own (skin.json `style.light`, in its own facing: x to its left, y up, z to its front), as Guilty Gear gives each
+## character a light tuned to its pose, so its shadow shapes read.
 func set_light_direction(direction: Vector3) -> void:
+	var own: Variant = _style_facts.get("light")
+	if own is Array and (own as Array).size() == 3 and model != null:
+		direction = (
+			global_basis * Vector3(own[0], own[1], own[2])
+			if is_inside_tree()
+			else basis * Vector3(own[0], own[1], own[2])
+		)
 	for material in materials:
 		material.set_shader_parameter("light_dir", direction.normalized())
 
@@ -150,10 +167,7 @@ func set_flash(colour: Color) -> void:
 func _dress_vrm() -> void:
 	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
 	face = model.find_child("AnimationPlayer", true, false) as AnimationPlayer
-	# The anime look with ink is the game's (ADR-0029); ROOTWARD_STYLE=mtoon|anime compares the others.
-	var style := OS.get_environment("ROOTWARD_STYLE")
-	if style == "":
-		style = "anime-ink"
+	var style := _style()
 	if style in ["anime", "anime-ink"]:
 		materials = AnimeSkin.restyle_vrm(model, style == "anime-ink", 0.35)
 		for material in materials:
@@ -165,7 +179,8 @@ func _dress_vrm() -> void:
 
 func _dress_anime(skin_folder: String, facts: Dictionary) -> void:
 	skeleton = model.find_child("GeneralSkeleton", true, false) as Skeleton3D
-	materials = AnimeSkin.dress(model, skin_folder, facts)
+	_style_facts = facts.get("style", {})
+	materials = AnimeSkin.dress(model, skin_folder, facts, _style() == "anime-ink")
 	for material in materials:
 		if AnimeSkin.is_face(material):
 			_faces.append(material)
@@ -179,6 +194,12 @@ func _dress_anime(skin_folder: String, facts: Dictionary) -> void:
 		)
 		if springs != null:
 			skeleton.add_child(springs)
+
+
+## The anime look with ink is the game's (ADR-0029); ROOTWARD_STYLE=mtoon|anime compares the others.
+static func _style() -> String:
+	var style := OS.get_environment("ROOTWARD_STYLE")
+	return style if style != "" else "anime-ink"
 
 
 ## The shared move library on its own player, driving the humanoid skeleton, with its feet planted by leg IK.
@@ -197,12 +218,29 @@ func _add_moves() -> void:
 		if bool(moves[clip].get("loop", false)) and player.has_animation(clip):
 			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	player.animation_finished.connect(_on_finished)
+	if OS.get_environment("ROOTWARD_LIMITED") != "0":
+		_limited_fps = float(_style_facts.get("fps", LIMITED_FPS))
+	if _limited_fps > 0.0:
+		player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+		if skeleton != null:
+			skeleton.modifier_callback_mode_process = Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_MANUAL
 
 
 ## The face shader reads the light against the head's facing, which the clips turn every frame.
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	var step := delta
+	if _limited_fps > 0.0 and player != null:
+		_held += delta
+		if _held < 1.0 / _limited_fps:
+			return
+		step = _held
+		_held = 0.0
+		player.advance(step)
+	# The feet's targets follow the pose just reached, before the skeleton's IK and springs run on it.
 	if _legs != null and player != null:
 		_legs.update(moves.get(current, {}), player.current_animation_position)
+	if _limited_fps > 0.0 and skeleton != null:
+		skeleton.advance(step)
 	if _faces.is_empty() or skeleton == null:
 		return
 	var head := skeleton.find_bone("Head")

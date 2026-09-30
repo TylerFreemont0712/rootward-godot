@@ -50,3 +50,23 @@ Taking Anby's shader apart (its node graphs dumped from the .blend) showed what 
 
 Which look is the default for the game (MToon, anime, anime with ink), how large the hero is drawn on the stage, and
 how our own ZZZ-grade characters get made (see WIP.md).
+
+## Amendment (2026-10-01): the 2XKO target, after Guilty Gear Xrd
+
+The player set the target: the anime-styled League look of 2XKO (a 2D fighter of heavily cel-shaded 3D characters),
+for characters, enemies and everything, animation included, with an Ahri-like character to find it. Its method is
+Arc System Works' (GDC, "GuiltyGear Xrd's Art Style: the X Factor between 2D and 3D"): hard step shading with the
+threshold, the light and the normals all under the artist's control; shade = base x a tint per material; inverted-hull
+lines; limited animation (no interpolation, held poses, heavy scale animation, no simulation). Now:
+
+- **Edited normals, automated** (`normalize_rig.py` `normals`): smoothed across neighbours, and the head's turned to an
+  ellipsoid, so the face shades as one drawn shape.
+- **A light per character** (`style.light`, in its own facing), tuned so its shadow shapes read from the stage camera;
+  a skin's own `style` also sets its shade tint, edge, rim, ink width and tint, and `flatten` (dividing out a painted
+  texture's baked lighting, for game textures made for another look).
+- **Ink lines on every anime skin**, coloured from the surface.
+- **Limited animation**: pose, leg IK and springs advance together at `LIMITED_FPS` (15) and hold between
+  (`AnimationMixer` and `Skeleton3D` in manual mode); `ROOTWARD_LIMITED=0` plays smoothly for comparison.
+- **MMD models convert directly** (`import.pmx`), so an Ahri model (a fan MMD conversion of Wild Rift's) became a local
+  reference skin: nine tails, hair, ears, skirt and tassels on 19 spring chains. Local only, like Anby and Mana.
+

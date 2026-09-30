@@ -18,10 +18,13 @@ from __future__ import annotations
 import fnmatch
 import itertools
 import json
+import shutil
 import sys
 from pathlib import Path
 
+import addon_utils
 import bpy
+import numpy as np
 from mathutils import Vector
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -195,9 +198,16 @@ def write_textures(spec: dict, out_dir: Path) -> dict:
         for role, image_name in material_spec.get("textures", {}).items():
             image = bpy.data.images[image_name]
             path = out_dir / f"{Path(image_name).stem.split('.png')[0]}.png"
-            image.filepath_raw = str(path)
-            image.file_format = "PNG"
-            image.save()
+            source = Path(bpy.path.abspath(image.filepath)) if image.filepath else None
+            if image.packed_file is None and source is not None and source.exists():
+                # A file-backed image has no pixels until drawn: copy its file (and point the image at the copy).
+                if source.resolve() != path.resolve():
+                    shutil.copyfile(source, path)
+                image.filepath = str(path)
+            else:
+                image.filepath_raw = str(path)
+                image.file_format = "PNG"
+                image.save()
             entry["textures"][role] = path.name
             entry.setdefault("colour", {})[role] = image.colorspace_settings.name == "sRGB"
         for node in material.node_tree.nodes:
@@ -228,9 +238,70 @@ def simple_materials(meshes: list[bpy.types.Object], facts: dict) -> None:
             material.node_tree.links.new(bsdf.outputs["BSDF"], out.inputs["Surface"])
 
 
+def import_source(spec: dict) -> None:
+    """A map may name a model file to read instead of the .blend Blender opened: an MMD model (.pmx)."""
+    pmx = spec.get("import", {}).get("pmx")
+    if pmx is None:
+        return
+    addon_utils.enable("bl_ext.blender_org.mmd_tools", default_set=True)
+    for obj in list(bpy.data.objects):
+        bpy.data.objects.remove(obj)
+    scale = float(spec["import"].get("scale", 0.08))
+    bpy.ops.mmd_tools.import_model(filepath=pmx, scale=scale, types={"MESH", "ARMATURE", "MORPHS"})
+    log(f"imported {pmx} at scale {scale}")
+
+
+# LEARN: Guilty Gear Xrd's rule for a drawn look under hard (cel) shading is "control the normals": a normal the
+# modeller did not intend makes a blotch. Automated here: the head's normals point out from an ellipsoid round it (the
+# face shades as one clean shape, lit or not, like an anime face), and everywhere else each normal is averaged with its
+# neighbours' a few times, so small modelled details stop casting speckled shadow.
+def anime_normals(mesh: bpy.types.Object, skin: bpy.types.Object, spec: dict) -> None:
+    rule = spec.get("normals")
+    if not rule:
+        return
+    data = mesh.data
+    n = len(data.vertices)
+    positions = np.empty(n * 3)
+    data.vertices.foreach_get("co", positions)
+    positions = positions.reshape(-1, 3)
+    normals = np.empty(n * 3)
+    data.vertices.foreach_get("normal", normals)
+    normals = normals.reshape(-1, 3)
+    edges = np.empty(len(data.edges) * 2, dtype=np.int64)
+    data.edges.foreach_get("vertices", edges)
+    edges = edges.reshape(-1, 2)
+    for _ in range(int(rule.get("smooth", 4))):
+        summed = normals.copy()
+        np.add.at(summed, edges[:, 0], normals[edges[:, 1]])
+        np.add.at(summed, edges[:, 1], normals[edges[:, 0]])
+        normals = summed / np.maximum(np.linalg.norm(summed, axis=1, keepdims=True), 1e-9)
+    head = skin.data.bones.get("Head")
+    group = mesh.vertex_groups.get("Head")
+    if head is not None and group is not None:
+        # The ellipsoid sits on the head bone: centre a little above its head, stretched to the head's proportions.
+        world = mesh.matrix_world.inverted() @ skin.matrix_world
+        base = world @ head.head_local
+        centre = base + Vector(rule.get("head_offset", (0.0, 0.0, 0.07)))
+        radii = np.array(rule.get("head_radii", (0.09, 0.1, 0.11)))
+        weights = np.zeros(n)
+        for vertex in data.vertices:
+            for g in vertex.groups:
+                if g.group == group.index:
+                    weights[vertex.index] = g.weight
+        towards = (positions - np.array(centre)) / radii**2
+        towards /= np.maximum(np.linalg.norm(towards, axis=1, keepdims=True), 1e-9)
+        blend = np.clip((weights - 0.5) * 2.0, 0.0, 1.0)[:, None] * float(rule.get("head_blend", 0.85))
+        normals = normals * (1.0 - blend) + towards * blend
+        normals /= np.maximum(np.linalg.norm(normals, axis=1, keepdims=True), 1e-9)
+        log(f"{mesh.name}: {int((blend[:, 0] > 0).sum())} head vertices turned to the head's ellipsoid")
+    data.normals_split_custom_set_from_vertices([tuple(v) for v in normals])
+    log(f"{mesh.name}: normals smoothed {int(rule.get('smooth', 4))} times")
+
+
 def main() -> None:
     spec_path = ROOT / sys.argv[sys.argv.index("--") + 1]
     spec = json.loads(spec_path.read_text())
+    import_source(spec)
     source = bpy.data.objects[spec["armature"]]
     source.data.pose_position = "REST"
     bpy.context.view_layer.update()
@@ -243,6 +314,7 @@ def main() -> None:
         armature = next(m for m in mesh.modifiers if m.type == "ARMATURE")
         armature.object = skin
         fold_weights(mesh, owner, skin)
+        anime_normals(mesh, skin, spec)
         world = mesh.matrix_world.copy()
         mesh.parent = skin
         mesh.matrix_world = world

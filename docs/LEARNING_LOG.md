@@ -501,3 +501,10 @@ law of cosines gives the thigh's angle from the hip-to-target line, acos((a² + 
 knee already points. The build solves it per frame (in Blender), and the game solves it again per skin (Godot's
 TwoBoneIK3D), because a foot planted on one skeleton hovers on a skeleton with longer or shorter legs.
 
+## Limited animation: fewer drawings on purpose (`game/characters/character.gd`)
+Interpolating between keys every frame is what makes 3D look 3D. Anime and Guilty Gear hold each drawing for a few
+frames instead. In Godot the mixer and the skeleton's modifiers can be driven by hand (`callback_mode_process` and
+`modifier_callback_mode_process` set to manual): the character accumulates time and, fifteen times a second, advances
+the animation, re-aims the leg IK and steps the springs by the whole accumulated time at once. `advance()` still
+honours `speed_scale`, so a cast timed to its sigil lands on the same beat.
+

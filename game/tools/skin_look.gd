@@ -24,6 +24,9 @@ func _ready() -> void:
 	hero.rotation_degrees.y = TURN
 	add_child(hero)
 	hero.set_light_direction(HeroView.KEY_LIGHT)
+	if OS.get_environment("ROOTWARD_REST") != "" and hero.player != null:
+		hero.player.stop()
+		hero.player.active = false
 	var clip := OS.get_environment("ROOTWARD_CLIP")
 	if clip != "" and hero.player != null:
 		# Straight into the clip: a cross-fade from the idle would not advance while the player is paused.

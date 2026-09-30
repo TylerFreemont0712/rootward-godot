@@ -76,3 +76,15 @@ func test_planted_feet_follow_the_clip_on_leg_ik() -> void:
 	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(0.0)
 	hero._legs.update(facts, 1.15)
 	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(1.0)
+
+
+func test_limited_animation_holds_the_pose_between_steps() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	add_child(hero)
+	assert_int(hero.player.callback_mode_process).is_equal(AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL)
+	hero.play("cast-light")
+	var start := hero.player.current_animation_position
+	hero._process(0.01)
+	assert_float(hero.player.current_animation_position).is_equal(start)
+	hero._process(1.0 / StageCharacter.LIMITED_FPS)
+	assert_float(hero.player.current_animation_position).is_greater(start)

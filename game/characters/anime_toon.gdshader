@@ -33,6 +33,10 @@ uniform float edge = 0.25;
 uniform float specular_from = 0.75;
 uniform vec3 light_dir = vec3(0.4, 0.6, 0.7);
 uniform float alpha_cut = 0.5;
+// Painted game textures carry their own soft lighting; cel art wants flat colour. `flatten` divides out the texture's
+// low-frequency brightness (a blurred mip of itself), keeping its colours and fine detail (0 leaves it as painted).
+uniform float flatten = 0.0;
+uniform float flatten_mip = 4.0;
 // A thin light along the silhouette on the lit side (0 is none), as anime games separate a figure from its ground.
 uniform float rim = 0.0;
 uniform vec4 rim_colour : source_color = vec4(1.0, 0.95, 0.9, 1.0);
@@ -58,6 +62,13 @@ void fragment() {
 	vec4 albedo = texture(diffuse, UV);
 	if (albedo.a < alpha_cut) {
 		discard;
+	}
+	if (flatten > 0.0) {
+		vec3 broad = textureLod(diffuse, UV, flatten_mip).rgb;
+		float broad_luma = max(dot(broad, vec3(0.299, 0.587, 0.114)), 0.02);
+		float luma = dot(albedo.rgb, vec3(0.299, 0.587, 0.114));
+		vec3 flat_rgb = albedo.rgb * clamp(0.62 / broad_luma, 0.6, 1.8);
+		albedo.rgb = mix(albedo.rgb, flat_rgb, flatten * smoothstep(0.02, 0.1, luma));
 	}
 	vec3 n = normalize(world_normal);
 	vec3 l = normalize(light_dir);

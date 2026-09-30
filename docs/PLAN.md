@@ -109,7 +109,8 @@ the rules' modifiers table in Stats, keyboard focus through the map.
       clips as data (`pipeline/moves/`, `scripts/moves.sh`) with nine fantastical clips, casts timed to the sigil,
       the trial skin Shibu in the wardrobe. [ ] Vesper as a VRM. [ ] The cast flash on MToon; blended expressions.
 - [x] The anime look as tooling (ADR-0029): ZZZ-style shaders, VRM restyle, a rig normaliser, local reference skins.
-      [ ] The default look chosen. [ ] Our own ZZZ-grade character assets (clean textures, shade maps, SDF face).
+      [x] The default look chosen (anime with ink). [x] The 2XKO / Guilty Gear method: edited normals, a light per
+      character, limited animation. [ ] Our own characters and enemies made for it.
 - [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)

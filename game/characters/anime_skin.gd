@@ -41,10 +41,12 @@ static func read(skin_folder: String) -> Dictionary:
 	return JSON.parse_string(file.get_as_text()) as Dictionary if file != null else {}
 
 
-## Every surface whose material skin.json knows gets its anime shader; returns the materials made.
-static func dress(model: Node3D, skin_folder: String, facts: Dictionary) -> Array[ShaderMaterial]:
+## Every surface whose material skin.json knows gets its anime shader (and an ink line when `ink`); returns the
+## materials made. skin.json's `style` tunes the look for the whole skin (see STYLE_KEYS).
+static func dress(model: Node3D, skin_folder: String, facts: Dictionary, ink: bool) -> Array[ShaderMaterial]:
 	var made: Array[ShaderMaterial] = []
 	var known: Dictionary = facts.get("materials", {})
+	var style: Dictionary = facts.get("style", {})
 	for mesh: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
 		for surface in mesh.mesh.get_surface_count():
 			var imported := mesh.mesh.surface_get_material(surface)
@@ -52,9 +54,37 @@ static func dress(model: Node3D, skin_folder: String, facts: Dictionary) -> Arra
 			if not name in known:
 				continue
 			var material := _material(skin_folder, known[name] as Dictionary)
+			apply_style(material, style)
+			if ink:
+				material.next_pass = ink_line(material.get_shader_parameter("diffuse"), style)
 			mesh.set_surface_override_material(surface, material)
 			made.append(material)
 	return made
+
+
+## skin.json `style`: {"shadow": [r, g, b], "edge", "rim", "flatten", "ink_width", "ink_tint": [r, g, b]}.
+static func apply_style(material: ShaderMaterial, style: Dictionary) -> void:
+	for key: String in ["edge", "rim", "flatten"]:
+		if style.has(key):
+			material.set_shader_parameter(key, float(style[key]))
+	if style.get("shadow") is Array and material.shader == TOON:
+		var c: Array = style["shadow"]
+		material.set_shader_parameter("shadow_1", Color(c[0], c[1], c[2]))
+	if style.get("face_shadow") is Array and material.shader == FACE:
+		var f: Array = style["face_shadow"]
+		material.set_shader_parameter("shadow", Color(f[0], f[1], f[2]))
+
+
+static func ink_line(texture: Variant, style: Dictionary) -> ShaderMaterial:
+	var line := ShaderMaterial.new()
+	line.shader = OUTLINE
+	line.set_shader_parameter("diffuse", texture)
+	if style.has("ink_width"):
+		line.set_shader_parameter("width", float(style["ink_width"]))
+	if style.get("ink_tint") is Array:
+		var c: Array = style["ink_tint"]
+		line.set_shader_parameter("tint", Color(c[0], c[1], c[2]))
+	return line
 
 
 static func is_face(material: ShaderMaterial) -> bool:
