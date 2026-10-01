@@ -1,0 +1,30 @@
+Use case: ui-mockup
+Asset type: A single finished, high-fidelity 16:9 MAIN MENU concept image for the indie game ROOTWARD, suitable as the definitive visual direction. Create one full-bleed landscape screen, target 2560x1440. No presentation board, montage, monitor, surrounding frame, annotations, or other menu screens.
+
+Primary request: Finalize the established KERNEL FOUNDRY direction: a warm, inhabited underground machine dungeon; compact dispatch controls on the left; a low utility dock; a small distinctive artificer waiting beside a brass cage elevator on the right; the world visibly descends toward the Kernel. Upgrade the scenery to beautiful, richly authored game art while keeping the UI compact and immediately readable.
+
+Art style: Stylized painted 2D game environment with deliberate broad shapes, restrained cel shading, layered theatrical depth, hand-painted stone and metal, crisp silhouette edges, sophisticated lighting. Carry the charming graphic-puppet character proportions and clear staging of a constellation theatre into a grounded underground foundry. Aim for achievable premium indie game art. Character and scenery must share the same rendering language.
+
+Scene and composition: Leftmost 35% is a quiet espresso-brown stone wall in deep shadow, integrated naturally into the room, spacious enough for compact text. Right 65% shows a monumental rounded masonry arch framing a vertical lift shaft. A foreground stone-and-brass arrival platform runs across the right side at roughly 68% image height. An open, convincingly constructed brass cage elevator is docked at the platform, suspended by cables that continue above the frame. Show several increasingly small lower galleries and lanterns beneath the platform, with a faint warm core glow far below, giving unmistakable DOWNWARD depth. Scuffed brass rails, large pulley wheels, a few bundled root-like copper cables that run down the walls, heavy worn brown stone, and a modest inhabited workshop alcove give purpose and history. Detail stays in the art area and never behind labels. Keep the bottom of the shaft visible rather than making the elevator arch a flat closed doorway.
+
+Character: Only ONE small Vesper, the Copper Artificer, standing on the right-side platform just left of the elevator. Full-body silhouette, approximately 14% of image height. A pointed asymmetrical broad-brim wizard hat, charcoal shadow face with two small warm parchment eyes, copper-brown travel coat and short ochre mantle, brass edging, dark boots, a modest spellbook at the belt. Charming, thoughtful and ready to descend. Improve the painted costume construction and folds but preserve simple theatrical proportions, a distinctive readable silhouette and a plausible battle-scale design. No large portrait, no realistic human anatomy, no extra characters.
+
+Palette: Match the existing game palette closely: ground #120e0a, panels #1a1410 and #211a13, subtle bronze borders #3c2f21, amber highlight #f2a541, parchment text #e9dcc0, muted secondary text #a58f6e. Brown stone, tarnished brass, amber lanterns. Bright highlights are localized. Overall image has rich warm midtones and readable stone forms rather than crushed black. The left control area stays darker. No navy or purple environment, green plants, neon cyberpunk, rainbow lighting, or outer-space backdrop.
+
+Main menu layout: UI looks like a shippable flat game overlay with exact typography and disciplined spacing, taking only around 20% of the screen. The art is the hero. Anchor the left column at 6% screen width; leave a generous clear margin.
+At about 12% height: small widely tracked muted uppercase eyebrow "THE SURFACE STATION".
+Beneath it: large confident amber title "ROOTWARD", spelled R O O T W A R D, using a clean angular slab/stencil display wordmark with a subtle pixel-game influence, roughly 20% screen width. Restrained, no excessive ornaments.
+Beneath the logo, two short muted parchment lines, exact:
+"Program the spell."
+"Descend into the machine."
+At approximately 39% height: one compact horizontal primary button labelled "Resume descent", a small downward arrow before it, amber outline, warm dark-brown fill, faint amber focus accent. Approximately 18% screen width and 4.5% screen height. No giant panel behind the menu.
+Under it: smaller muted saved-run line "Shardrun · The Heap · Python".
+At approximately 51% height: two smaller adjacent buttons, "Play" with a simple triangle icon, and "Academy" with a simple mortarboard icon. Understated bronze framing, readable parchment text; Play may use amber text. They are the same visual size and both easy to find.
+Near lower left at 83% height: very quiet small route note "SALVAGE → HEAP → KERNEL".
+At lower left around 90% height: a thin bronze divider and one horizontal utility dock, simple line icons plus exact labels "Library", "Character", "Settings". Character is the required name. NO Wardrobe.
+At the upper right around 6% height, over a quiet shadow area: small unobtrusive profile and utility text "Mira", "EN / 日本語", "Quit", using subtle profile and power icons and adequate spacing.
+At bottom right: very subtle compact navigation hints "Tab / arrows · Select" and "Esc · Back".
+
+Typography: Crisp legible parchment sans-serif UI, with quiet monospaced secondary labels appropriate to a programming game. Button labels stay readable and have air around them. Render all specified text verbatim; no additional words, headings, fake version number, marketing slogans or watermark. Minimal borders, no giant boxed dashboard, no generic tile grid, no vertical list of every destination, no heavy ornate fantasy frames.
+
+Lighting and mood: Warm pools from a small number of amber lanterns light the platform, brass elevator frame and the artificer's hat edge. Atmospheric brown haze subtly separates lower galleries. A gentle amber glow deep below suggests the Kernel. Inviting, mysterious and purposeful, with a clear sense of a lived-in place and a journey deeper into a machine. Polish the composition, readable hierarchy and cohesive art until this feels like a final main-menu concept.

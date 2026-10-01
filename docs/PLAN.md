@@ -249,6 +249,18 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Pip's chapters, interactive lessons, real sandbox commands, defeat rewind, and a profile-specific `trial.json`.
 - [x] English and Japanese Trial text, whole-run tests, a 10–15 minute timing check and screenshots at both sizes.
 
+### Kernel Foundry front end (ADR-0032)
+- [x] Approved station art behind real controls, an equipped live character and a Library / Character / Settings dock.
+- [x] Subtle local lantern and lift-light variation, stopped immediately by the existing reduced-motion setting.
+- [x] Adventure departure desk with existing playstyles, language, difficulty, resume, new descent, Pip's travels,
+      records and field guide; the first-run Trial offer and replacement confirmations retained.
+- [x] Character class column (Artificer for now) and the existing skin carousel, with persistent avatar selection.
+- [x] Front-end settings, profile management and an explicit Academy placeholder with the existing Verifier entry.
+- [x] Live Library with search, rarity and role filters, code/refactor inspection and creature portraits; finished
+      records with filters, detail and access to the commit log.
+- [x] Keyboard focus through modals and rebuilt choices; English, Japanese and narrow-window screenshot review.
+- [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

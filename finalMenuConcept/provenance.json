@@ -1,0 +1,26 @@
+{
+  "concept": "Kernel Foundry",
+  "screen": "Main menu",
+  "tool": "Built-in image_gen.imagegen",
+  "created_at_utc": "2026-10-01T14:43:04.282176+00:00",
+  "output": "main-menu.png",
+  "prompt": "prompt.txt",
+  "original_generated_source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-74e054ae-429a-433d-b53f-66f8cc22b84f.png",
+  "dimensions": {
+    "width": 1672,
+    "height": 941
+  },
+  "bytes": 2159973,
+  "sha256": "e303b242823652b6a0689616d94b20ce258219b99a0ef193efdf436f8121a45b",
+  "brief_sources": [
+    "../Concept/Menu/05-kernel-foundry/ART_BRIEF.md",
+    "../Concept/Menu/05-kernel-foundry/README.md",
+    "../Concept/Menu/STARFALL_VARIANTS.md"
+  ],
+  "visual_references_reviewed": [
+    "../Concept/Menu/05-kernel-foundry/01-title.png",
+    "../Concept/Menu/01-04-starfall-codex/01-title.png"
+  ],
+  "reference_images_sent_to_generator": [],
+  "notes": "Single generated main-menu concept with baked-in illustrative UI. Sources were reviewed before drafting the prompt. The original generation is preserved. No game implementation changes."
+}

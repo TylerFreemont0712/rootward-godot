@@ -1,0 +1,29 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "created_at_utc": "2026-10-01T15:45:05.691646+00:00",
+  "reference": "main-menu.png",
+  "assets": [
+    {
+      "asset": "../game/assets/menus/kernel-foundry.png",
+      "prompt": "backdrop-prompt.txt",
+      "original_generated_source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-7f247cb1-9ddd-44be-ac02-04a423bf9f70.png",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "sha256": "6caf07fb11c87289f77dd01425c099504c8f8f197bc7bb297b0c3790ef846cb6",
+      "transparent": false
+    },
+    {
+      "asset": "../game/assets/menus/rootward-wordmark.png",
+      "prompt": "wordmark-prompt.txt",
+      "original_generated_source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-2f74ab76-2a2d-4388-93a2-e1379d1b79b1.png",
+      "dimensions": [
+        2195,
+        716
+      ],
+      "sha256": "9df7285802c0a95ff89bfa27ef9f8be718d5de0f87d2473ed10dbf5afaaf5388",
+      "transparent": true
+    }
+  ]
+}

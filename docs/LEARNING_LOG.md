@@ -550,3 +550,22 @@ contribute, starting from the rest pose. A clip that has *finished* contributes 
 return to the idle. Measured by printing the hand's height each frame across the hand-off; fixed by starting the next
 clip a blend's length before the old one ends, while it still plays.
 
+## A local theme is a copied resource (`game/scenes/title/foundry_ui.gd`)
+Godot themes are shared Resources: changing a style on the shared instance changes every screen using it. A deep
+duplicate lets the Foundry use larger type and warm panels while the battle menus keep their existing theme.
+
+## Visible alpha is more useful than the file's rectangle (`game/scenes/title/foundry_ui.gd`)
+A generated transparent wordmark can contain almost invisible pixels far below its letters. Cropping to every
+nonzero pixel leaves the logo small inside a tall rectangle. Inspecting a thumbnail and finding alpha above 0.25
+gives a stable visible rectangle for an AtlasTexture, without changing the original image.
+
+## Modal focus has to be restored (`game/scenes/title/title.gd`)
+A dim overlay blocks the mouse but does not remove the controls underneath from keyboard navigation. Opening a
+modal stores their focus modes, disables them, and returns focus to the opener on close. Rebuilding an option list
+also saves the focused button's index. Deferred focus must check that the control is still inside the scene tree:
+the page may have closed before that call runs.
+
+## Reduced motion needs a clock we own (`game/scenes/title/foundry_lights.gdshader`)
+The shader's built-in TIME continues while the user changes settings. A supplied clock advances only while motion
+is enabled, so reduced motion can freeze the light immediately. Local Gaussian masks keep the tiny brightness
+change at the lanterns and lift core instead of pulsing the whole painting.
