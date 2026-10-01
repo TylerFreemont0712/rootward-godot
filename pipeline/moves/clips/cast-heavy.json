@@ -1,9 +1,10 @@
 {
-  "_about": "Crouch, spring up spinning, land, raise both hands shaking with the gathered power, then drive both palms at the foes from the ground (the release) and settle back into guard.",
-  "length": 2.3,
+  "_about": "Crouch and cup the power at the chest (the charge, stretched while the grand circle draws), rise and sweep both arms out and up over the head, then drive both palms at the circle in a deep lunge (the release). It ends held: cast-heavy-hold, then cast-heavy-end.",
+  "length": 1.25,
   "hand": "LeftHand",
   "events": {
-    "release": 1.15
+    "release": 0.95,
+    "charge": 0.5
   },
   "face": [
     {
@@ -12,18 +13,14 @@
       "weight": 0.7
     },
     {
-      "t": 0.8,
+      "t": 0.7,
       "expression": "surprised",
-      "weight": 0.4
+      "weight": 0.6
     },
     {
-      "t": 1.1,
+      "t": 0.92,
       "expression": "angry",
       "weight": 1.0
-    },
-    {
-      "t": 2.0,
-      "expression": "neutral"
     }
   ],
   "keys": [
@@ -33,149 +30,77 @@
     },
     {
       "t": 0.16,
-      "pose": "gather_deep",
+      "pose": "gather_orb",
       "ease": "cubic_out"
     },
     {
-      "t": 0.26,
-      "pose": "gather_deep",
+      "t": 0.5,
+      "pose": "gather_orb_tight",
       "ease": "sine"
     },
     {
-      "t": 0.55,
-      "pose": {
-        "base": "leap",
-        "Hips": {
-          "lift": 0.3,
-          "turn": 360
-        }
-      },
-      "ease": "sine"
+      "t": 0.62,
+      "pose": "unfurl",
+      "ease": "cubic_out"
     },
     {
-      "t": 0.72,
-      "pose": {
-        "base": "land",
-        "Hips": {
-          "lift": -0.12,
-          "bend": 8,
-          "forward": 0.02,
-          "turn": 370
-        }
-      },
-      "ease": "expo_out"
+      "t": 0.76,
+      "pose": "crown",
+      "ease": "back_out"
+    },
+    {
+      "t": 0.86,
+      "pose": "crown_tight",
+      "ease": "sine"
     },
     {
       "t": 0.95,
-      "pose": {
-        "base": "summon",
-        "Hips": {
-          "lift": -0.04,
-          "turn": 366
-        }
-      },
-      "ease": "back_out"
-    },
-    {
-      "t": 1.07,
-      "pose": {
-        "base": "summon",
-        "Hips": {
-          "lift": -0.06,
-          "turn": 366
-        }
-      },
-      "ease": "sine"
-    },
-    {
-      "t": 1.15,
-      "pose": {
-        "base": "blast",
-        "Hips": {
-          "lift": -0.1,
-          "side": 0.06,
-          "turn": 380
-        }
-      },
+      "pose": "thrust",
       "ease": "expo_out"
     },
     {
-      "t": 1.35,
-      "pose": {
-        "base": "blast",
-        "Hips": {
-          "lift": -0.06,
-          "side": 0.04,
-          "bend": -5,
-          "turn": 378
-        }
-      },
-      "ease": "back_out"
-    },
-    {
-      "t": 1.95,
-      "pose": {
-        "base": "stance",
-        "Hips": {
-          "lift": -0.035,
-          "turn": 370
-        }
-      },
-      "ease": "sine"
-    },
-    {
-      "t": 2.3,
-      "pose": {
-        "base": "stance",
-        "Hips": {
-          "lift": -0.035,
-          "turn": 370
-        }
-      },
+      "t": 1.25,
+      "pose": "thrust_hold",
       "ease": "sine"
     }
   ],
   "lag": {
-    "Head": 0.06,
-    "Hand": 0.05,
-    "LowerArm": 0.03
+    "Hips": -0.03,
+    "Spine": -0.015,
+    "UpperArm": 0.02
+  },
+  "follow": {
+    "Hand": [
+      7,
+      0.42
+    ],
+    "LowerArm": [
+      9,
+      0.55
+    ],
+    "Head": [
+      5.5,
+      0.5
+    ],
+    "Chest": [
+      9,
+      0.7
+    ]
   },
   "layers": [
     {
       "kind": "tremble",
-      "from": 0.95,
-      "to": 1.12,
-      "amp": 2.5,
-      "fade": 0.05
-    }
-  ],
-  "step": [
+      "from": 0.28,
+      "to": 0.52,
+      "amp": 1.4,
+      "fade": 0.06
+    },
     {
-      "from": 0.95,
-      "to": 1.2,
-      "frames": 2
+      "kind": "tremble",
+      "from": 0.78,
+      "to": 0.93,
+      "amp": 2.0,
+      "fade": 0.04
     }
-  ],
-  "plant": {
-    "LeftFoot": [
-      [
-        0.0,
-        0.3
-      ],
-      [
-        0.68,
-        2.3
-      ]
-    ],
-    "RightFoot": [
-      [
-        0.0,
-        0.3
-      ],
-      [
-        0.68,
-        2.3
-      ]
-    ]
-  }
+  ]
 }

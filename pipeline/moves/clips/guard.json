@@ -1,5 +1,5 @@
 {
-  "_about": "Drops low behind crossed forearms, then back to her guard.",
+  "_about": "Drops low behind crossed forearms, braced, then back to her guard.",
   "length": 0.9,
   "keys": [
     {
@@ -7,22 +7,33 @@
       "pose": "stance"
     },
     {
-      "t": 0.12,
+      "t": 0.1,
       "pose": "guard",
       "ease": "back_out"
     },
     {
-      "t": 0.6,
-      "pose": "guard",
+      "t": 0.55,
+      "pose": "guard_b",
       "ease": "sine"
     },
     {
       "t": 0.9,
       "pose": "stance",
-      "ease": "sine"
+      "ease": "smooth"
     }
   ],
-  "lag": {
-    "Head": 0.03
+  "follow": {
+    "Hand": [
+      8,
+      0.5
+    ],
+    "Head": [
+      6,
+      0.5
+    ],
+    "LowerArm": [
+      9,
+      0.6
+    ]
   }
 }

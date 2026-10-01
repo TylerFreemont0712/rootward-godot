@@ -340,6 +340,7 @@ def main() -> None:
             "length": clip.length,
             "loop": clip.loop,
             "release": clip.data.get("events", {}).get("release"),
+            "charge": clip.data.get("events", {}).get("charge"),
             "hand": clip.data.get("hand"),
             "release_point": release_point(armature, clip, rest, hips_height),
             "face": clip.data.get("face", []),

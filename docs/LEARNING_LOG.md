@@ -508,3 +508,24 @@ frames instead. In Godot the mixer and the skeleton's modifiers can be driven by
 the animation, re-aims the leg IK and steps the springs by the whole accumulated time at once. `advance()` still
 honours `speed_scale`, so a cast timed to its sigil lands on the same beat.
 
+## Follow-through on a spring (`pipeline/moves/motion.py`)
+Stiff animation is every joint starting and stopping together. Real limbs lag the body that carries them and carry on
+past it when it stops. A damped spring does that with two numbers: x'' = w²(target - x) - 2ζw·x', where the target is
+the keyed pose, w = 2π·frequency sets how tightly the bone follows and ζ (damping) below 1 lets it overshoot and
+settle. It is stepped in small sub-steps (semi-implicit Euler: update the speed, then the position with the new
+speed), which stays stable where a single step per frame would blow up. A looping clip runs one lap first, so the
+spring's state at its end matches its start.
+
+## Waiting in the wind-up, not the strike (`game/characters/character.gd`)
+A cast must land its strike when the circle completes, and circles take 0.6 to 1.2 seconds. Slowing the whole clip
+to fit made the strike itself mushy. The clip marks where its coil ends (`charge`): only the time before it is
+stretched (speed = coil left / (wait - strike length)), and once the playhead passes it the speed returns to 1, so the
+snap is always the same speed. Anticipation can be any length; the action never.
+
+## A circle seen side-on is a transform, not a picture (`game/scenes/shardrun/fight/magic_circle.gd`)
+A disc facing the foes is seen from the camera narrowed. Everything is drawn in a flat "disc space" (a circle of
+radius r), and `draw_set_transform_matrix` maps that space to the screen: scale x by 0.46, lean it back, offset it
+along the cast axis for the smaller circles stacked in front. Spinning a ring is one more rotation inside that
+transform, so rings, star and runes all narrow correctly however they turn. Additive blending
+(`CanvasItemMaterial.BLEND_MODE_ADD`) makes overlapping strokes brighten like light rather than cover each other.
+

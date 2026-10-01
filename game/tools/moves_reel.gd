@@ -5,6 +5,8 @@ extends Node3D
 ## ROOTWARD_SKIN picks the skin (a character id); ROOTWARD_CLIPS picks and orders the clips.
 
 const GAP := 0.35
+## How long a cast holds its push before it lets go (a volley's worth).
+const HOLD := 1.0
 
 var _label: Label3D
 
@@ -12,11 +14,11 @@ var _label: Label3D
 func _ready() -> void:
 	var skin := OS.get_environment("ROOTWARD_SKIN")
 	if skin == "":
-		skin = "shibu"
+		skin = "dummy"
 	var clips := OS.get_environment("ROOTWARD_CLIPS").split(",", false)
 	if clips.is_empty():
 		clips = PackedStringArray(
-			["idle-breathe", "cast-light", "cast-heavy", "channel", "guard", "hurt", "victory", "death"]
+			["idle-breathe", "cast-light", "cast-heavy", "guard", "hurt", "channel", "victory", "death"]
 		)
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
@@ -50,6 +52,11 @@ func _ready() -> void:
 		hero.play(clip)
 		var facts: Dictionary = hero.moves.get(clip, {})
 		var length: float = facts.get("length", 1.0)
+		if clip in StageCharacter.CASTS:
+			# Held for a volley's worth, then let go, as on the stage.
+			await get_tree().create_timer(length + HOLD).timeout
+			hero.end_cast()
+			length = float(hero.moves.get(clip + "-end", {}).get("length", 0.5))
 		await get_tree().create_timer(length * (2.0 if facts.get("loop", false) else 1.0) + GAP).timeout
 		if clip in StageCharacter.HOLDS:
 			hero.play(StageCharacter.IDLE)

@@ -1,6 +1,6 @@
 {
-  "_about": "Knocked back on planted feet: the body snaps away, the head and hands whip after it, then she recovers her guard.",
-  "length": 0.9,
+  "_about": "Knocked back on planted feet: the body snaps away and the head and hands whip after it on their springs, a stagger, then the guard again.",
+  "length": 0.8,
   "face": [
     {
       "t": 0.0,
@@ -8,7 +8,7 @@
       "weight": 1.0
     },
     {
-      "t": 0.8,
+      "t": 0.7,
       "expression": "neutral"
     }
   ],
@@ -18,31 +18,49 @@
       "pose": "stance"
     },
     {
-      "t": 0.08,
+      "t": 0.06,
       "pose": "hurt",
       "ease": "expo_out"
     },
     {
-      "t": 0.3,
+      "t": 0.24,
       "pose": {
         "base": "hurt",
         "Head": {
           "bend": -18,
           "lean": 14,
-          "turn": -10
+          "turn": 2
         }
       },
       "ease": "sine"
     },
     {
-      "t": 0.9,
+      "t": 0.48,
+      "pose": "steady",
+      "ease": "cubic_out"
+    },
+    {
+      "t": 0.8,
       "pose": "stance",
-      "ease": "sine"
+      "ease": "smooth"
     }
   ],
-  "lag": {
-    "Head": 0.04,
-    "Hand": 0.05,
-    "LowerArm": 0.03
+  "follow": {
+    "Head": [
+      6,
+      0.35
+    ],
+    "Hand": [
+      7,
+      0.38
+    ],
+    "LowerArm": [
+      8,
+      0.5
+    ],
+    "Chest": [
+      8,
+      0.6
+    ]
   }
 }

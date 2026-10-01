@@ -13,9 +13,8 @@ const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", 
 ## What a cast logs after itself, before the next thing happens: its bolts, and what fizzled or burned on the way.
 const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", "wasted", "defeat", "fizzle", "curse"]
 ## A cast's magic circle by how much its volley deals (damage and block together), as the old games drew a higher spell
-## with a more elaborate circle: [the most power for the tier, animation, size]. Stronger still is the last tier.
-const TIERS: Array[Array] = [[11, "cast-sigil-1", 0.8], [34, "cast-sigil", 0.95], [79, "cast-sigil-3", 1.05]]
-const GRAND := ["cast-sigil-4", 1.15]
+## with a more elaborate circle: the most power for each tier; stronger still is the grand circle (MagicCircle.TIERS).
+const TIERS: Array[int] = [11, 34, 79]
 ## A blow at least this big (or this share of the foe's health) lands as a critical, with its own animation.
 const CRITICAL_AMOUNT := 18
 const CRITICAL_SHARE := 0.45
@@ -37,9 +36,8 @@ var motifs_shown := false
 var _heavy := false
 ## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
 var _crashed: Dictionary = {}
-## Where the cast's bolts are born: the middle of its circle, and how far round it they may start.
-var _circle := Vector2.ZERO
-var _circle_reach := 0.0
+## The cast's magic circle while its volley flies: every bolt is born on it (null when effects are off).
+var _circle: MagicCircle
 ## Bolts launched and not landed yet. The cast's playback ends when this is back to zero, so every hit is on the bars
 ## before the screen draws the true state.
 var _in_flight := 0
@@ -99,35 +97,30 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 			stage.shard_effect(card)
 			if not Settings.reduced_motion:
 				await stage.wait(140.0)
-	# The program runs: its circle draws itself at the hand and lets go, more elaborate the more it will deal; the
-	# strongest also draw a circle on the ground with runes rising round the Maintainer. Each circle brings its own
-	# sound, laid out on its beats (SpellAnim).
+	# The program runs: its circle writes itself in the air in front of the Maintainer, more elaborate the more it will
+	# deal, and her strike lands on it as it completes; the strongest also draw a circle on the ground with runes
+	# rising round her. The circle stays while the volley flies, and every bolt leaves from it.
 	var power := _total(bolts)
-	var tier: Array = GRAND
-	for candidate: Array in TIERS:
-		if power <= int(candidate[0]):
-			tier = candidate.slice(1)
+	var tier := TIERS.size()
+	for i in TIERS.size():
+		if power <= TIERS[i]:
+			tier = i
 			break
-	var sigil := stage.spell(String(tier[0]), stage.hero.hand_point(), element, float(tier[1]))
-	if sigil == null:
-		sigil = stage.spell("cast-sigil", stage.hero.hand_point(), element, 1.2 if heavy else 0.9)
-	# A 3D skin's cast is timed so her palm strikes through the circle on its blow.
-	stage.hero.release_in(sigil.impact_time() if sigil != null else 0.38)
-	if tier[0] in ["cast-sigil-3", "cast-sigil-4"]:
+	_circle = stage.magic_circle(tier, element, _words(entry))
+	stage.hero.release_in(_circle.form_time() if _circle != null else 0.38)
+	if tier >= 2:
 		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
 		stage.spell("cast-ground", feet, element, stage.hero.size.y / 440.0)
-	_circle = stage.hero.hand_point()
-	_circle_reach = (float(sigil.facts.size[0]) * 0.18 * sigil.scale.x) if sigil != null else 0.0
 	if heavy:
 		stage.dim(0.38, 0.3)
-	if sigil == null:
+	if _circle == null:
 		Sound.play("sfx-cast-sigil", 0.8)
 		stage.cast_flash(element, heavy)
 		if heavy:
 			stage.vortex(element, 0.62)
 		await stage.wait(380.0)
 	else:
-		await stage.wait(sigil.impact_time() * 1000.0)
+		await stage.wait(_circle.form_time() * 1000.0)
 	for part: Dictionary in volley:
 		if part.kind in ["fizzle", "curse"]:
 			await _one(part)
@@ -147,6 +140,11 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 		_in_flight += 1
 		_launch(hit, _flight(hit), volley)
 		await stage.wait(gap)
+	# The program has finished: its circle closes and the Maintainer lets go of it while the last bolts fly.
+	if is_instance_valid(_circle):
+		_circle.close()
+	_circle = null
+	stage.hero.end_cast()
 	# LEARN: wait for the landings themselves, not for a guess at how long they take. A heavy cast's later bolts wait
 	# for the blow falling on their foe, every blow waits for its brackets to slam, and hit-stops stretch all of it; a
 	# fixed wait let the log move on with hits still to come, and the screen then drew the true state over a bar that
@@ -160,12 +158,26 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 		stage.dim(0.0, 0.4)
 
 
+## The cast's runes: the names of the functions its cards are, as its code calls them (`knapsackStrike()`).
+func _words(entry: Dictionary) -> String:
+	var names: PackedStringArray = []
+	for card: Dictionary in cast_cards.get(entry.get("spell", ""), []):
+		var words := String(card.get("name", "")).split(" ", false)
+		if words.is_empty():
+			continue
+		var called := words[0].to_lower()
+		for word in words.slice(1):
+			called += word.capitalize().replace(" ", "")
+		names.append(called + "()")
+	return "  ".join(names) + "  " if not names.is_empty() else ""
+
+
 func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
-	# Born somewhere on the cast's circle, so a volley fans out of it rather than out of one point.
-	var angle := randf() * TAU
-	var from := _circle + Vector2(cos(angle), sin(angle)) * _circle_reach * randf_range(0.5, 1.0)
-	if _circle == Vector2.ZERO:
-		from = stage.hero.hand_point()
+	# Born on the cast's circle, so a volley pours out of it rather than out of her hand; it flares as each one leaves.
+	var from := stage.hero.hand_point()
+	if is_instance_valid(_circle):
+		from = _circle.launch_point()
+		_circle.pulse()
 	if hit.kind == "ward":
 		stage.fly(
 			from, stage.hero.body_point(), hit.get("element", "none"), flight * 0.6, _land.bind(hit, volley), true

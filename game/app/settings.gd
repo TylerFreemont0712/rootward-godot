@@ -8,7 +8,7 @@ extends RefCounted
 
 const PATH := "user://settings.json"
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
-const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu"]
+const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu", "dummy"]
 ## Reference skins kept on this machine only (git-ignored, never shipped): each a folder with a skin.json.
 const LOCAL_SKINS := "res://characters/_local/"
 

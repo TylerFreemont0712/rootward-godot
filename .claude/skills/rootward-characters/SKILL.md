@@ -32,6 +32,19 @@ ADR-0005, ADR-0007, ADR-0008.
   `pipeline/local/` (git-ignored). Never commit or ship them; study them, then make our own assets.
 - To dump any .blend shader as text: iterate `material.node_tree.nodes` / `links` (see ADR-0029's method).
 
+## The motion dummy and lab (ADR-0030)
+
+- Moves are judged on the **motion dummy** first (`game/characters/dummy/`, a normalised skin built by
+  `~/blender/blender --background --python pipeline/blender/build_dummy.py` on the move library's own skeleton), then
+  on skins. `scripts/moves.sh` sheets and reels use it by default; `scripts/motion-lab.sh` plays any clip live (slow
+  motion, frame steps, limited/smooth, hand trails, the cast's circle and a volley).
+- Casts end in their push: `<cast>-hold` loops it while the volley flies, `<cast>-end` lets go on `end_cast()`;
+  `events.charge` ends the coil, the only part slowed to wait for a long circle.
+- Clip tools against stiffness: `follow` springs (`"Hand": [7, 0.42]`), negative `lag` (hips lead), `wave` layers,
+  and no dead holds (drift between two near poses).
+- The cast's magic circle is `MagicCircle` (game/scenes/shardrun/fight/magic_circle.gd), in front of the palm;
+  look-dev sheet: `scripts/screenshot.sh res://tools/magic_circle_sheet.tscn shots/circles.png 10`.
+
 ## Workflow for a new or changed clip
 
 1. Edit poses/clips (numbers only; no bone axes). Remember: foes are on her LEFT and 35 degrees forward; a torso

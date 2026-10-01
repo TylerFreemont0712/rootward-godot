@@ -24,7 +24,10 @@ A **clip** (`clips/<id>.json`) is keys on a timeline, in seconds:
   `back_in` pulls back before it goes (anticipation), `hold` jumps at the key (a held drawing).
 - `lag` samples a bone that many seconds late, so it follows the body through a move (overlapping action).
 - `step` holds each drawing for `frames` frames between `from` and `to`: animation on twos, the anime staccato.
-- `layers` add motion on top of the keys: `breathe`, `bob`, `sway`, `tremble`.
+- `layers` add motion on top of the keys: `breathe`, `bob`, `sway`, `tremble`, and `wave` (one bone's parameter).
+- `follow` hangs a bone on a spring that chases its keyed pose (`"Hand": [8, 0.45]`: 8 Hz, damping 0.45), so when the
+  body stops the hand carries on, overshoots and settles: follow-through without keying it. Lower damping wobbles
+  more; a higher frequency follows tighter.
 - `plant` keeps the feet on the floor (the build solves the legs so each planted foot stays put, flat, while the hips
   move). Both feet are planted for the whole clip unless the clip says otherwise:
   `"plant": {"LeftFoot": [[0, 0.3], [0.9, 2.3]], "RightFoot": [[0, 0.3]]}` plants each foot only in those windows
@@ -148,6 +151,11 @@ class Clip:
                 self.lag[name] = float(lag)
         self.layers: list[dict] = data.get("layers", [])
         self.steps: list[dict] = data.get("step", [])
+        self.follow: dict[str, tuple[float, float]] = {}
+        for bone, (hz, damping) in data.get("follow", {}).items():
+            for name in [side + bone for side in ("Left", "Right")] if bone in SIDED else [bone]:
+                self.follow[name] = (float(hz), float(damping))
+        self._followed: list[Pose] | None = None
         keys = sorted(data["keys"], key=lambda k: float(k["t"]))
         if not keys or float(keys[0]["t"]) != 0.0:
             raise ValueError(f"clip {clip_id}: the first key must be at t=0")
@@ -179,9 +187,8 @@ class Clip:
                 return float(step["from"]) + math.floor((t - float(step["from"])) / hold + 1e-9) * hold
         return t
 
-    def sample(self, frame: int) -> Pose:
-        """The pose at a frame: keys, per-bone lag, then the procedural layers."""
-        t = self._stepped(frame / FPS)
+    def _raw(self, t: float) -> Pose:
+        """The pose at a time: keys, per-bone lag, then the procedural layers (no springs, no steps)."""
         pose = self._keyed(t)
         for bone, lag in self.lag.items():
             late = self._keyed(t - lag if self.loop else max(0.0, t - lag))
@@ -189,8 +196,51 @@ class Clip:
                 pose[bone] = late[bone]
         for layer in self.layers:
             _apply_layer(pose, layer, t, self)
+        return pose
+
+    def sample(self, frame: int) -> Pose:
+        """The pose at a frame: keys, per-bone lag, layers, follow springs, then the steps on twos."""
+        t = self._stepped(frame / FPS)
+        if self.follow:
+            index = round(t * FPS)
+            followed = self._springs()
+            index = index % (len(followed) - 1) if self.loop else min(index, len(followed) - 1)
+            pose = copy.deepcopy(followed[index])
+        else:
+            pose = self._raw(t)
         pose[PLANT] = {foot: self._planted(foot, t) for foot in FEET}
         return pose
+
+    # LEARN: a damped spring, x'' = w²(target - x) - 2ζw·x', is what makes a limb follow through: while the keyed
+    # pose moves, the spring trails it; when the pose stops, the spring's speed carries it past and it settles back.
+    # w = 2π·hz sets how tightly it follows, ζ (damping) how much it overshoots (below 1 it does). It is stepped in
+    # small sub-steps (semi-implicit Euler) so it stays stable at any frequency used here.
+    def _springs(self) -> list[Pose]:
+        """Every frame with the `follow` bones on their springs (a loop runs a lap first, so it closes)."""
+        if self._followed is not None:
+            return self._followed
+        n = round(self.length * FPS) + 1
+        laps = 2 if self.loop else 1
+        state: dict[tuple[str, str], list[float]] = {}
+        out: list[Pose] = []
+        substeps = 8
+        dt = 1.0 / FPS / substeps
+        for lap in range(laps):
+            for frame in range(n):
+                pose = self._raw(frame / FPS)
+                for bone, (hz, damping) in self.follow.items():
+                    w = 2.0 * math.pi * hz
+                    for param, target in pose.get(bone, {}).items():
+                        x, v = state.setdefault((bone, param), [target, 0.0])
+                        for _ in range(substeps):
+                            v += (w * w * (target - x) - 2.0 * damping * w * v) * dt
+                            x += v * dt
+                        state[(bone, param)] = [x, v]
+                        pose[bone][param] = x
+                if lap == laps - 1:
+                    out.append(pose)
+        self._followed = out
+        return out
 
     def _planted(self, foot: str, t: float) -> float:
         """How firmly a foot is held to the floor at `t`: 1 inside its windows, 0 outside, fading between."""
@@ -252,6 +302,11 @@ def _apply_layer(pose: Pose, layer: dict, t: float, clip: Clip) -> None:
         amp = float(layer.get("amp", 3.0))
         _add(pose, "Hips", "lean", amp * _wave(t, period, 0.25) * w)
         _add(pose, "Head", "lean", -amp * 0.6 * _wave(t, period, 0.1) * w)
+    elif kind == "wave":
+        # One parameter of one bone on its own slow wave (a lead hand that floats, fingers that breathe).
+        amp = float(layer.get("amp", 3.0))
+        for bone in [side + layer["bone"] for side in ("Left", "Right")] if layer["bone"] in SIDED else [layer["bone"]]:
+            _add(pose, bone, layer["param"], amp * _wave(t, period, float(layer.get("phase", 0))) * w)
     elif kind == "tremble":
         amp = float(layer.get("amp", 2.0))
         bones = layer.get("bones", ["LeftHand", "RightHand", "LeftLowerArm", "RightLowerArm", "Chest"])

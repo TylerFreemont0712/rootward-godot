@@ -1,9 +1,11 @@
 extends Control
 ## The wardrobe panel on its own, for a screenshot:
 ##   scripts/screenshot.sh res://tools/wardrobe_shot.tscn shots/wardrobe.png
+## ROOTWARD_TURN=n turns the wheel n places first (negative turns it back).
 
 
 func _ready() -> void:
+	theme = UiTheme.shared()
 	var backdrop := ColorRect.new()
 	backdrop.color = Color("#171422")
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -13,3 +15,6 @@ func _ready() -> void:
 	centre.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	centre.add_child(panel)
 	add_child(centre)
+	var turns := int(OS.get_environment("ROOTWARD_TURN"))
+	for i in absi(turns):
+		panel.call("_turn", signi(turns))

@@ -108,6 +108,7 @@ static func stats_panel(state: Dictionary) -> Control:
 		"vesper": "res://assets/sprites/vesper/profile.png",
 		"emberfox": "res://characters/emberfox/emberfox_front.png",
 		"shibu": "res://assets/portraits/shibu.png",
+		"dummy": "res://assets/portraits/dummy.png",
 	}
 	var portrait_path: String = image.get(skin, image.emberfox)
 	portrait.texture = load(portrait_path) as Texture2D if ResourceLoader.exists(portrait_path) else null
@@ -120,6 +121,7 @@ static func stats_panel(state: Dictionary) -> Control:
 		"vesper": ["Vesper", "Star-Script Witch"],
 		"emberfox": ["Emberfox", "Salvage Runner"],
 		"shibu": ["Shibu", "Hovering Caster"],
+		"dummy": ["Motion Dummy", "Animation lab"],
 	}
 	var identity_text: Array = names.get(skin, names.emberfox)
 	var identity := Ui.vbox(

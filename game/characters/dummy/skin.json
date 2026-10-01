@@ -1,0 +1,59 @@
+{
+  "_about": "The motion dummy (pipeline/blender/build_dummy.py): flat colours in the anime toon shader.",
+  "model": "dummy.glb",
+  "materials": {
+    "DummyBody": {
+      "shader": "main",
+      "textures": {
+        "diffuse": "dummybody.png"
+      },
+      "params": {
+        "ShadowColor1": [
+          0.5,
+          0.55,
+          0.68,
+          1.0
+        ]
+      }
+    },
+    "DummyJoint": {
+      "shader": "main",
+      "textures": {
+        "diffuse": "dummyjoint.png"
+      },
+      "params": {
+        "ShadowColor1": [
+          0.62,
+          0.62,
+          0.75,
+          1.0
+        ]
+      }
+    },
+    "DummyAccent": {
+      "shader": "main",
+      "textures": {
+        "diffuse": "dummyaccent.png"
+      },
+      "params": {
+        "ShadowColor1": [
+          0.45,
+          0.62,
+          0.78,
+          1.0
+        ]
+      }
+    }
+  },
+  "style": {
+    "edge": 0.18,
+    "rim": 0.25,
+    "ink_width": 1.4,
+    "ink_tint": [
+      0.08,
+      0.1,
+      0.16
+    ]
+  },
+  "chains": []
+}

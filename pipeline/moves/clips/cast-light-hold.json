@@ -1,0 +1,49 @@
+{
+  "_about": "The push held while the circle fires: the palm trembling a little at the circle, breathing, never frozen.",
+  "length": 1.2,
+  "loop": true,
+  "hand": "LeftHand",
+  "face": [
+    {
+      "t": 0.0,
+      "expression": "angry",
+      "weight": 0.6
+    }
+  ],
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "push_hold"
+    },
+    {
+      "t": 0.6,
+      "pose": "push_hold_b",
+      "ease": "sine"
+    }
+  ],
+  "follow": {
+    "Hand": [
+      6,
+      0.5
+    ],
+    "Head": [
+      4,
+      0.6
+    ]
+  },
+  "layers": [
+    {
+      "kind": "tremble",
+      "amp": 0.7,
+      "bones": [
+        "LeftHand",
+        "LeftLowerArm"
+      ]
+    },
+    {
+      "kind": "breathe",
+      "amp": 1.0,
+      "period": 1.2
+    }
+  ]
+}

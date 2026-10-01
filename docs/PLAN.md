@@ -111,6 +111,10 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] The anime look as tooling (ADR-0029): ZZZ-style shaders, VRM restyle, a rig normaliser, local reference skins.
       [x] The default look chosen (anime with ink). [x] The 2XKO / Guilty Gear method: edited normals, a light per
       character, limited animation. [ ] Our own characters and enemies made for it.
+- [x] A motion dummy and a motion lab (ADR-0030): the moves judged on a plain mannequin first; follow-through springs;
+      the moves re-keyed (a contrapposto guard, coil-drive-push, gather-crown-thrust); casts held while the volley
+      flies; magic circles written in the air in front of the caster, the bolts born on them; the wardrobe as a wheel.
+      [ ] The moves tuned by play in the lab. [ ] The other clips (victory, death, channel, windup) re-keyed the same way.
 - [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)

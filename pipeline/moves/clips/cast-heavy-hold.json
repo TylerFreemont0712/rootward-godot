@@ -1,0 +1,45 @@
+{
+  "_about": "Both palms held at the grand circle while it fires, straining: a stronger tremble, breathing hard.",
+  "length": 1.0,
+  "loop": true,
+  "hand": "LeftHand",
+  "face": [
+    {
+      "t": 0.0,
+      "expression": "angry",
+      "weight": 1.0
+    }
+  ],
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "thrust_hold"
+    },
+    {
+      "t": 0.5,
+      "pose": "thrust_hold_b",
+      "ease": "sine"
+    }
+  ],
+  "follow": {
+    "Hand": [
+      6,
+      0.5
+    ],
+    "Head": [
+      4,
+      0.6
+    ]
+  },
+  "layers": [
+    {
+      "kind": "tremble",
+      "amp": 1.3
+    },
+    {
+      "kind": "breathe",
+      "amp": 1.6,
+      "period": 0.5
+    }
+  ]
+}

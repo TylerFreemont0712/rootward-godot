@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0030**.
+The next number is **ADR-0031**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -32,3 +32,4 @@ The next number is **ADR-0030**.
 - [ADR-0027](ADR-0027-local-profiles-and-pips-trial.md): local player profiles with verified save migration; the guided Trial as a separate saved program run driven by content and session events.
 - [ADR-0028](ADR-0028-vrm-skins-and-a-shared-move-library.md): skins as VRM models (godot-vrm, MToon, spring bones); one move library keyed from readable poses in Blender and retargeted onto every skin.
 - [ADR-0029](ADR-0029-the-anime-look-and-normalised-skins.md): the ZZZ-style anime shaders (slot shades, SDF face, specular, LogC LUT, coloured ink), any VRM restyled into them, any rig normalised into a skin; reference skins stay local.
+- [ADR-0030](ADR-0030-motion-dummy-held-casts-and-magic-circles.md): a motion dummy and lab for the moves; follow-through springs; casts held while their volley flies; magic circles drawn in the air in front of the caster; the wardrobe as a wheel.

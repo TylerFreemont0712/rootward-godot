@@ -83,6 +83,18 @@ class ClipTest(unittest.TestCase):
         c = clip(keys=[{"t": 0, "pose": "stand"}], lag={"Hand": 0.05})
         self.assertEqual(set(c.lag), {"LeftHand", "RightHand"})
 
+    def test_a_followed_bone_trails_then_overshoots_and_settles(self) -> None:
+        keys = [{"t": 0, "pose": {"Head": {"bend": 0}}}, {"t": 0.2, "pose": {"Head": {"bend": 30}}, "ease": "linear"}]
+        c = clip(keys=keys, follow={"Head": [6, 0.35]})
+        self.assertLess(c.sample(6)["Head"]["bend"], 30.0)
+        self.assertGreater(max(c.sample(f)["Head"]["bend"] for f in range(6, 20)), 30.0)
+        self.assertAlmostEqual(c.sample(30)["Head"]["bend"], 30.0, delta=1.0)
+
+    def test_a_followed_loop_closes(self) -> None:
+        keys = [{"t": 0, "pose": {"Head": {"bend": 0}}}, {"t": 0.5, "pose": {"Head": {"bend": 20}}}]
+        c = clip(keys=keys, loop=True, follow={"Head": [5, 0.5]})
+        self.assertAlmostEqual(c.sample(0)["Head"]["bend"], c.sample(30)["Head"]["bend"], delta=0.5)
+
     def test_steps_hold_drawings_on_twos(self) -> None:
         keys = [{"t": 0, "pose": {"Hips": {"lift": 0}}}, {"t": 1, "pose": {"Hips": {"lift": 1}}, "ease": "linear"}]
         c = clip(keys=keys, step=[{"from": 0.0, "to": 1.0, "frames": 2}])

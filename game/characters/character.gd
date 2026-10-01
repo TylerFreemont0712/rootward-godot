@@ -25,6 +25,8 @@ const BLEND := 0.18
 ## Clips that loop; every other clip returns to the idle when it ends (or holds its last pose, see HOLDS).
 const LOOPS: Array[String] = ["idle-breathe", "channel"]
 const HOLDS: Array[String] = ["victory", "death", "windup"]
+## A cast ends in its push, held: "<cast>-hold" loops it while the circle fires and "<cast>-end" lets go (end_cast).
+const CASTS: Array[String] = ["cast-light", "cast-heavy"]
 const IDLE := "idle-breathe"
 ## Limited animation (ADR-0029): a humanoid skin's pose, leg IK and springs advance together this many times a second
 ## and hold in between, as Guilty Gear and 2XKO animate (no in-between interpolation reads as drawn, not 3D). A skin's
@@ -32,6 +34,8 @@ const IDLE := "idle-breathe"
 const LIMITED_FPS := 15.0
 ## How far a cast may be sped up or slowed down to land its release on the stage's beat.
 const RELEASE_SPEED := Vector2(0.55, 2.2)
+## A cast's charge (the coil before the strike) may be slowed this far to wait for a circle that takes long to draw.
+const CHARGE_SLOWEST := 0.3
 
 var id: String
 var model: Node3D
@@ -52,6 +56,11 @@ var _legs: LegPlanting
 var _style_facts: Dictionary = {}
 var _limited_fps := 0.0
 var _held := 0.0
+## The cast being played or held ("" when none), whether it should let go as soon as its push is reached, and the
+## clip time at which its slowed charge ends and the strike plays at its own speed again (-1 when not slowed).
+var _cast := ""
+var _letting_go := false
+var _charge_until := -1.0
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -123,6 +132,13 @@ func set_light_direction(direction: Vector3) -> void:
 func play(clip: String) -> void:
 	if player == null or not player.has_animation(clip):
 		return
+	_cast = clip if clip in CASTS else ""
+	_letting_go = false
+	_play(clip)
+
+
+func _play(clip: String) -> void:
+	_charge_until = -1.0
 	_serial += 1
 	current = clip
 	player.speed_scale = 1.0
@@ -130,14 +146,70 @@ func play(clip: String) -> void:
 	_schedule_face(clip)
 
 
-## Speeds a cast up or down so its release (the palm through the sigil) lands `seconds` from now.
+## Times a cast so its release (the palm thrust at the circle) lands `seconds` from now. A cast with a `charge` waits
+## in its charge: only the coil before the strike is slowed, so the strike itself keeps its snap whatever the circle's
+## length; anything else is sped up or slowed down as a whole.
 func release_in(seconds: float) -> void:
-	var release: Variant = moves.get(current, {}).get("release")
+	var facts: Dictionary = moves.get(current, {})
+	var release: Variant = facts.get("release")
 	if release == null or seconds <= 0.0 or player == null:
 		return
-	var left := float(release) - player.current_animation_position
-	if left > 0.0:
+	var at := player.current_animation_position
+	var left := float(release) - at
+	if left <= 0.0:
+		return
+	var charge: Variant = facts.get("charge")
+	# LEARN: wait in the wind-up, never in the strike. Only the coil before `charge` is stretched; once the playhead
+	# passes it (_process) the speed returns to 1, so the snap is the same whatever the circle's length.
+	if charge != null and float(charge) > at and seconds > left:
+		var strike := float(release) - float(charge)
+		var speed := (float(charge) - at) / maxf(seconds - strike, 0.01)
+		player.speed_scale = clampf(speed, CHARGE_SLOWEST, 1.0)
+		_charge_until = float(charge)
+	else:
 		player.speed_scale = clampf(left / seconds, RELEASE_SPEED.x, RELEASE_SPEED.y)
+
+
+## Plays in limited animation at `fps` poses a second (0: smoothly), as a skin's style sets it; the motion lab toggles
+## it to compare.
+func set_limited(fps: float) -> void:
+	_limited_fps = fps
+	_held = 0.0
+	if player == null:
+		return
+	var manual := fps > 0.0
+	player.callback_mode_process = (
+		AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+		if manual
+		else AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_IDLE
+	)
+	if skeleton != null:
+		skeleton.modifier_callback_mode_process = (
+			Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_MANUAL
+			if manual
+			else Skeleton3D.MODIFIER_CALLBACK_MODE_PROCESS_IDLE
+		)
+
+
+func limited_fps() -> float:
+	return _limited_fps
+
+
+## The volley is over: the held cast lets go (at once if it is holding, else as soon as its push is reached).
+func end_cast() -> void:
+	if _cast == "" or player == null:
+		return
+	if current == _cast:
+		_letting_go = true
+	else:
+		_let_go()
+
+
+func _let_go() -> void:
+	var ending := _cast + "-end"
+	_cast = ""
+	_letting_go = false
+	_play(ending if player.has_animation(ending) else IDLE)
 
 
 ## Where the casting palm will be at the current clip's release, in world space; null when the clip has none.
@@ -215,7 +287,7 @@ func _add_moves() -> void:
 	if file != null:
 		moves = (JSON.parse_string(file.get_as_text()) as Dictionary).get("clips", {})
 	for clip: String in moves:
-		if bool(moves[clip].get("loop", false)) and player.has_animation(clip):
+		if is_loop(clip) and player.has_animation(clip):
 			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	player.animation_finished.connect(_on_finished)
 	if OS.get_environment("ROOTWARD_LIMITED") != "0":
@@ -236,6 +308,9 @@ func _process(delta: float) -> void:
 		step = _held
 		_held = 0.0
 		player.advance(step)
+	if _charge_until >= 0.0 and player != null and player.current_animation_position >= _charge_until:
+		player.speed_scale = 1.0
+		_charge_until = -1.0
 	# The feet's targets follow the pose just reached, before the skeleton's IK and springs run on it.
 	if _legs != null and player != null:
 		_legs.update(moves.get(current, {}), player.current_animation_position)
@@ -351,8 +426,20 @@ func _blink() -> void:
 	add_child(timer)
 
 
+func is_loop(clip: String) -> bool:
+	return bool(moves.get(clip, {}).get("loop", clip in LOOPS))
+
+
 func _on_finished(clip: StringName) -> void:
 	clip_finished.emit(String(clip))
 	player.speed_scale = 1.0
-	if not String(clip) in HOLDS and not String(clip) in LOOPS:
-		play(IDLE)
+	_charge_until = -1.0
+	var ended := String(clip)
+	if ended == _cast:
+		# The push is reached: held while the circle fires, unless the volley is already over.
+		if _letting_go or not player.has_animation(ended + "-hold"):
+			_let_go()
+		else:
+			_play(ended + "-hold")
+	elif not ended in HOLDS and not is_loop(ended):
+		_play(IDLE)

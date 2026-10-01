@@ -1,5 +1,5 @@
 {
-  "_about": "A mage's guard: the lead hand raised toward the foes, the rear hand low, weight on bent knees, breathing and shifting over planted feet.",
+  "_about": "A caster's guard at rest: weight on the back leg (contrapposto), the lead hand floating in front of her ready to cast, breathing, the weight drifting, the hand and head trailing on springs.",
   "length": 3.2,
   "loop": true,
   "keys": [
@@ -13,20 +13,50 @@
       "ease": "sine"
     }
   ],
-  "lag": {
-    "Hand": 0.15,
-    "Head": 0.1
+  "follow": {
+    "Hand": [
+      3.5,
+      0.6
+    ],
+    "Head": [
+      3,
+      0.7
+    ]
   },
   "layers": [
     {
       "kind": "breathe",
-      "amp": 2.0,
+      "amp": 1.6,
       "period": 3.2
     },
     {
-      "kind": "bob",
-      "amp": 0.008,
-      "period": 1.6
+      "kind": "sway",
+      "amp": 1.2,
+      "period": 6.4
+    },
+    {
+      "kind": "wave",
+      "bone": "LeftHand",
+      "param": "bend",
+      "amp": 5,
+      "period": 1.6,
+      "phase": 0.2
+    },
+    {
+      "kind": "wave",
+      "bone": "LeftUpperArm",
+      "param": "raise",
+      "amp": 2,
+      "period": 3.2,
+      "phase": 0.6
+    },
+    {
+      "kind": "wave",
+      "bone": "LeftHand",
+      "param": "spread",
+      "amp": 4,
+      "period": 1.6,
+      "phase": 0.45
     }
   ]
 }

@@ -160,6 +160,12 @@ func release_in(seconds: float) -> void:
 		character.release_in(seconds)
 
 
+## The volley is over: a 3D skin lets go of its held cast (a sprite skin's cast already ended on its own).
+func end_cast() -> void:
+	if character != null:
+		character.end_cast()
+
+
 ## Where projectiles leave from and where shield/hit effects land, in the stage's coordinates. A VRM skin answers
 ## with where her palm will be at the cast's release (so the sigil is drawn where she strikes), else her hand now.
 func hand_point() -> Vector2:
@@ -172,6 +178,12 @@ func hand_point() -> Vector2:
 		if point != null:
 			return position + _to_stage(point as Vector3)
 	return position + Vector2(size.x * 0.72, size.y * 0.40)
+
+
+## Where the cast's magic circle stands: just beyond her palm at the strike, toward the foes (a circle of `size`
+## pixels in radius stands a little in front of her hand, not on it).
+func circle_point(size: float) -> Vector2:
+	return hand_point() + Vector2(size * 0.42 + self.size.y * 0.05, self.size.y * 0.005)
 
 
 ## A point in the character's world, in this view's own coordinates.

@@ -1,7 +1,7 @@
 extends Node3D
 ## The move library on a VRM skin, for review: one row per clip, the clip frozen at even steps across its length
 ## (the last column is its end), turned toward the foes as on the stage. The release frame is ringed in gold.
-##   ROOTWARD_SKIN=res://characters/<id>/<id>.vrm ROOTWARD_CLIPS=cast-light,cast-heavy \
+##   ROOTWARD_SKIN=dummy (a character id, or a res:// path to a VRM) ROOTWARD_CLIPS=cast-light,cast-heavy \
 ##     scripts/screenshot.sh res://tools/moves_sheet.tscn shots/moves/cast.png 20
 ## Spring bones do not settle in a frozen frame; watch `scripts/moves.sh --reel` for the motion itself.
 
@@ -60,6 +60,18 @@ func _stage() -> void:
 
 
 func _pose(skin: String, library: AnimationLibrary, clip: String, at: float, where: Vector3) -> void:
+	if not skin.begins_with("res://"):
+		# A character id (the motion dummy, a normalised skin): dressed as on the stage.
+		var hero := StageCharacter.create(skin)
+		hero.position = where
+		hero.rotation_degrees.y = 35.0
+		add_child(hero)
+		hero.set_light_direction(HeroView.KEY_LIGHT)
+		if hero.player != null:
+			hero.player.play(clip)
+			hero.player.seek(at, true)
+			hero.player.pause()
+		return
 	var model := (load(skin) as PackedScene).instantiate() as Node3D
 	model.position = where
 	model.rotation_degrees.y = 35.0

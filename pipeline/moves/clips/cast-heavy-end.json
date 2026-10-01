@@ -1,0 +1,43 @@
+{
+  "_about": "The grand circle spent: the arms fall and the body sags for a breath, then gathers itself back into the guard.",
+  "length": 0.8,
+  "hand": "LeftHand",
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "thrust_hold"
+    },
+    {
+      "t": 0.22,
+      "pose": "relax_heavy",
+      "ease": "cubic_out"
+    },
+    {
+      "t": 0.8,
+      "pose": "stance",
+      "ease": "smooth"
+    }
+  ],
+  "lag": {
+    "Hips": -0.04,
+    "Hand": 0.04
+  },
+  "follow": {
+    "Hand": [
+      7,
+      0.42
+    ],
+    "LowerArm": [
+      9,
+      0.55
+    ],
+    "Head": [
+      5.5,
+      0.5
+    ],
+    "Chest": [
+      9,
+      0.7
+    ]
+  }
+}

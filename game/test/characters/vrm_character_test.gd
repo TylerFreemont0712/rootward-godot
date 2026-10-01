@@ -70,11 +70,11 @@ func test_planted_feet_follow_the_clip_on_leg_ik() -> void:
 	add_child(hero)
 	var iks := hero.skeleton.find_children("*", "TwoBoneIK3D", false, false)
 	assert_int(iks.size()).is_equal(2)
-	# The heavy cast leaves the ground mid-leap and stands again to blast.
-	var facts: Dictionary = hero.moves["cast-heavy"]
-	hero._legs.update(facts, 0.45)
+	# The victory leaves the ground mid-leap and stands again to cheer.
+	var facts: Dictionary = hero.moves["victory"]
+	hero._legs.update(facts, 0.65)
 	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(0.0)
-	hero._legs.update(facts, 1.15)
+	hero._legs.update(facts, 1.5)
 	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(1.0)
 
 
@@ -88,3 +88,38 @@ func test_limited_animation_holds_the_pose_between_steps() -> void:
 	assert_float(hero.player.current_animation_position).is_equal(start)
 	hero._process(1.0 / StageCharacter.LIMITED_FPS)
 	assert_float(hero.player.current_animation_position).is_greater(start)
+
+
+func test_a_cast_holds_its_push_until_the_volley_ends() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
+	add_child(hero)
+	hero.play("cast-light")
+	hero._on_finished("cast-light")
+	assert_str(hero.current).is_equal("cast-light-hold")
+	hero.end_cast()
+	assert_str(hero.current).is_equal("cast-light-end")
+	hero._on_finished("cast-light-end")
+	assert_str(hero.current).is_equal(StageCharacter.IDLE)
+
+
+func test_a_volley_over_before_the_push_lets_go_once_it_is_reached() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
+	add_child(hero)
+	hero.play("cast-heavy")
+	hero.end_cast()
+	assert_str(hero.current).is_equal("cast-heavy")
+	hero._on_finished("cast-heavy")
+	assert_str(hero.current).is_equal("cast-heavy-end")
+
+
+func test_a_long_circle_slows_only_the_charge() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
+	add_child(hero)
+	hero.play("cast-light")
+	var facts: Dictionary = hero.moves["cast-light"]
+	var strike := float(facts.release) - float(facts.charge)
+	hero.release_in(float(facts.release) * 2.0)
+	# The charge stretches to fill the wait; the strike after it keeps its own speed.
+	var expected := float(facts.charge) / (float(facts.release) * 2.0 - strike)
+	assert_float(hero.player.speed_scale).is_equal_approx(expected, 0.001)
+	assert_float(hero._charge_until).is_equal(float(facts.charge))

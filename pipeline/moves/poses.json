@@ -2,204 +2,93 @@
   "_about": "Named poses for clips (motion.py). Degrees and metres from the VRM T-pose; see pipeline/moves/README.md. The foes are on her LEFT: reaching to her left points at them, and a torso turn toward them adds to an arm's forward. Feet are planted by the build (the legs are solved to keep them on the floor), so a lower Hips.lift bends the knees; a positive lift is only for a jump, with the feet unplanted.",
   "stance": {
     "Hips": {
-      "lift": -0.035,
-      "turn": 10
+      "lift": -0.045,
+      "turn": 12,
+      "side": -0.015,
+      "lean": -2
     },
     "Spine": {
-      "bend": 3
+      "bend": 2
     },
     "Chest": {
-      "turn": 8,
-      "bend": 2
+      "turn": 6,
+      "bend": 0,
+      "lean": 3
     },
     "Head": {
       "turn": 12,
-      "bend": 4,
-      "lean": 3
+      "bend": 6,
+      "lean": 6
     },
     "LeftUpperArm": {
-      "raise": -30,
-      "forward": 55,
-      "twist": 15
+      "raise": -42,
+      "forward": 48,
+      "twist": 10
     },
     "LeftLowerArm": {
-      "bend": 60,
-      "twist": 10
+      "bend": 88,
+      "twist": 30
     },
     "LeftHand": {
       "bend": -10,
-      "curl": 0.3,
-      "spread": 14
+      "side": 5,
+      "curl": 0.25,
+      "spread": 16
     },
     "RightUpperArm": {
-      "raise": -62,
-      "forward": 18
+      "raise": -60,
+      "forward": 10
     },
     "RightLowerArm": {
-      "bend": 50
+      "bend": 28
     },
     "RightHand": {
-      "curl": 0.65,
-      "bend": 5
+      "curl": 0.4,
+      "bend": 8,
+      "spread": 10
     },
     "LeftUpperLeg": {
-      "lift": 10,
-      "spread": 12
+      "lift": 14,
+      "spread": 13,
+      "twist": 6
     },
     "RightUpperLeg": {
-      "lift": -6,
-      "spread": 6
+      "lift": -8,
+      "spread": 10,
+      "twist": 14
     },
     "LowerLeg": {
-      "bend": 10
+      "bend": 8
     }
   },
   "stance_breath": {
     "base": "stance",
     "Hips": {
-      "lift": -0.05,
-      "turn": 10,
-      "side": 0.012
+      "lift": -0.055,
+      "turn": 12,
+      "side": -0.022,
+      "lean": -3
     },
     "Chest": {
-      "turn": 7,
-      "bend": 0
+      "turn": 6,
+      "bend": -1.5,
+      "lean": 4
     },
     "Head": {
-      "turn": 10,
-      "bend": 3,
-      "lean": 2
+      "turn": 11,
+      "bend": 5,
+      "lean": 5
     },
     "LeftUpperArm": {
-      "raise": -27,
-      "forward": 57,
-      "twist": 17
+      "raise": -39,
+      "forward": 50,
+      "twist": 12
     },
     "LeftHand": {
       "bend": -14,
-      "curl": 0.26,
-      "spread": 18
-    },
-    "RightUpperArm": {
-      "raise": -60,
-      "forward": 20
-    }
-  },
-  "windback": {
-    "base": "stance",
-    "Hips": {
-      "lift": -0.06,
-      "forward": -0.03,
-      "turn": -4
-    },
-    "Chest": {
-      "turn": -16,
-      "bend": -4
-    },
-    "Head": {
-      "turn": 4,
-      "bend": 8
-    },
-    "LeftUpperArm": {
-      "raise": -15,
-      "forward": 75,
-      "twist": -20
-    },
-    "LeftLowerArm": {
-      "bend": 120,
-      "twist": 0
-    },
-    "LeftHand": {
-      "curl": 0.7,
-      "bend": 20,
-      "spread": 0
-    },
-    "RightUpperArm": {
-      "raise": -45,
-      "forward": 25
-    },
-    "RightLowerArm": {
-      "bend": 50
-    }
-  },
-  "windback_tight": {
-    "base": "windback",
-    "Chest": {
-      "turn": -22,
-      "bend": -6
-    },
-    "LeftLowerArm": {
-      "bend": 128
-    },
-    "LeftHand": {
-      "curl": 0.85,
-      "bend": 20
-    }
-  },
-  "strike": {
-    "base": "stance",
-    "Hips": {
-      "lift": -0.08,
-      "side": 0.05,
-      "forward": 0.02,
-      "turn": 22
-    },
-    "Spine": {
-      "turn": 6,
-      "bend": 3
-    },
-    "Chest": {
-      "turn": 22,
-      "bend": 6
-    },
-    "Head": {
-      "turn": 22,
-      "bend": 3,
-      "lean": 0
-    },
-    "LeftUpperArm": {
-      "raise": 8,
-      "forward": 82,
-      "twist": 25
-    },
-    "LeftLowerArm": {
-      "bend": 4,
-      "twist": 0
-    },
-    "LeftHand": {
-      "bend": -55,
-      "curl": 0.05,
-      "spread": 25
-    },
-    "RightUpperArm": {
-      "raise": -40,
-      "forward": -30,
-      "twist": 0
-    },
-    "RightLowerArm": {
-      "bend": 35
-    },
-    "RightHand": {
-      "curl": 0.4,
-      "bend": 10
-    },
-    "RightLowerLeg": {
-      "bend": 45
-    },
-    "RightFoot": {
-      "point": 40
-    }
-  },
-  "strike_hold": {
-    "base": "strike",
-    "LeftHand": {
-      "bend": -55,
-      "curl": 0.05,
-      "spread": 32
-    },
-    "Chest": {
-      "turn": 20,
-      "bend": 4
+      "side": 5,
+      "curl": 0.2,
+      "spread": 20
     }
   },
   "gather": {
@@ -231,22 +120,6 @@
     },
     "Hand": {
       "curl": 0.75,
-      "bend": 0,
-      "spread": 0
-    }
-  },
-  "gather_deep": {
-    "base": "gather",
-    "Hips": {
-      "lift": -0.17,
-      "forward": 0.03,
-      "bend": 16
-    },
-    "Head": {
-      "bend": 24
-    },
-    "Hand": {
-      "curl": 0.9,
       "bend": 0,
       "spread": 0
     }
@@ -346,85 +219,53 @@
       "spread": 28
     }
   },
-  "blast": {
-    "base": "stance",
-    "Hips": {
-      "lift": -0.1,
-      "side": 0.06,
-      "turn": 20
-    },
-    "Spine": {
-      "turn": 12
-    },
-    "Chest": {
-      "turn": 20,
-      "bend": 12
-    },
-    "Head": {
-      "turn": 22,
-      "bend": 5
-    },
-    "LeftUpperArm": {
-      "raise": 10,
-      "forward": 87,
-      "twist": 20
-    },
-    "LeftLowerArm": {
-      "bend": 5
-    },
-    "LeftHand": {
-      "bend": -60,
-      "spread": 30,
-      "curl": 0.0
-    },
-    "RightUpperArm": {
-      "raise": 8,
-      "forward": 95,
-      "twist": 20
-    },
-    "RightLowerArm": {
-      "bend": 10
-    },
-    "RightHand": {
-      "bend": -60,
-      "spread": 30,
-      "curl": 0.0
-    }
-  },
   "hurt": {
     "base": "stance",
     "Hips": {
       "lift": -0.07,
-      "forward": -0.08,
-      "bend": -8,
-      "turn": -8
+      "forward": -0.06,
+      "side": -0.03,
+      "bend": -6,
+      "turn": 2,
+      "lean": 0
     },
     "Spine": {
-      "bend": -12
+      "bend": -10
     },
     "Chest": {
-      "bend": -10,
-      "lean": -8,
-      "turn": 0
+      "bend": -12,
+      "lean": -6,
+      "turn": -6
     },
     "Head": {
-      "bend": -25,
-      "lean": 14,
-      "turn": -10
+      "bend": -22,
+      "lean": 12,
+      "turn": 0
     },
-    "UpperArm": {
-      "raise": -20,
-      "forward": -35,
-      "twist": -10
-    },
-    "LowerArm": {
-      "bend": 40,
+    "LeftUpperArm": {
+      "raise": -40,
+      "forward": 40,
       "twist": 0
     },
-    "Hand": {
-      "curl": 0.5,
+    "LeftLowerArm": {
+      "bend": 70,
+      "twist": 0
+    },
+    "LeftHand": {
+      "curl": 0.3,
       "bend": -20,
-      "spread": 0
+      "spread": 20
+    },
+    "RightUpperArm": {
+      "raise": -55,
+      "forward": -10
+    },
+    "RightLowerArm": {
+      "bend": 40
+    },
+    "RightHand": {
+      "curl": 0.4,
+      "spread": 10
     }
   },
   "guard": {
@@ -615,6 +456,594 @@
     },
     "Foot": {
       "point": 60
+    }
+  },
+  "coil": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.06,
+      "side": -0.035,
+      "forward": -0.02,
+      "turn": 2,
+      "lean": -3
+    },
+    "Spine": {
+      "bend": 4,
+      "turn": -4
+    },
+    "Chest": {
+      "turn": -14,
+      "bend": 6,
+      "lean": 2
+    },
+    "Head": {
+      "turn": 22,
+      "bend": 10,
+      "lean": 4
+    },
+    "LeftUpperArm": {
+      "raise": -12,
+      "forward": 95,
+      "twist": -10
+    },
+    "LeftLowerArm": {
+      "bend": 130,
+      "twist": 10
+    },
+    "LeftHand": {
+      "bend": 25,
+      "side": -10,
+      "curl": 0.6,
+      "spread": 4
+    },
+    "RightUpperArm": {
+      "raise": -50,
+      "forward": 25,
+      "twist": 10
+    },
+    "RightLowerArm": {
+      "bend": 45
+    },
+    "RightHand": {
+      "curl": 0.5,
+      "spread": 4
+    }
+  },
+  "coil_deep": {
+    "base": "coil",
+    "Hips": {
+      "lift": -0.075,
+      "side": -0.04,
+      "forward": -0.025,
+      "turn": 0,
+      "lean": -3
+    },
+    "Chest": {
+      "turn": -18,
+      "bend": 7,
+      "lean": 2
+    },
+    "LeftLowerArm": {
+      "bend": 136,
+      "twist": 10
+    },
+    "LeftHand": {
+      "bend": 30,
+      "side": -10,
+      "curl": 0.8,
+      "spread": 0
+    }
+  },
+  "drive": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.08,
+      "side": 0.04,
+      "forward": 0.03,
+      "turn": 24,
+      "lean": 2
+    },
+    "Spine": {
+      "turn": 6,
+      "bend": 4
+    },
+    "Chest": {
+      "turn": 10,
+      "bend": 7,
+      "lean": 0
+    },
+    "Head": {
+      "turn": 14,
+      "bend": 6,
+      "lean": 0
+    },
+    "LeftUpperArm": {
+      "raise": 0,
+      "forward": 80,
+      "twist": 0
+    },
+    "LeftLowerArm": {
+      "bend": 95,
+      "twist": 0
+    },
+    "LeftHand": {
+      "bend": 20,
+      "side": 0,
+      "curl": 0.5,
+      "spread": 6
+    },
+    "RightUpperArm": {
+      "raise": -45,
+      "forward": -10,
+      "twist": 0
+    },
+    "RightLowerArm": {
+      "bend": 40
+    }
+  },
+  "push": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.1,
+      "side": 0.07,
+      "forward": 0.06,
+      "turn": 24,
+      "lean": 3
+    },
+    "Spine": {
+      "turn": 8,
+      "bend": 6
+    },
+    "Chest": {
+      "turn": 20,
+      "bend": 12,
+      "lean": -2
+    },
+    "Head": {
+      "turn": 18,
+      "bend": 6,
+      "lean": -3
+    },
+    "LeftUpperArm": {
+      "raise": 6,
+      "forward": 86,
+      "twist": 30
+    },
+    "LeftLowerArm": {
+      "bend": 6,
+      "twist": 0
+    },
+    "LeftHand": {
+      "bend": -62,
+      "side": 0,
+      "curl": 0.0,
+      "spread": 32
+    },
+    "RightUpperArm": {
+      "raise": -38,
+      "forward": -38,
+      "twist": -10
+    },
+    "RightLowerArm": {
+      "bend": 30
+    },
+    "RightHand": {
+      "curl": 0.25,
+      "spread": 18,
+      "bend": -10
+    }
+  },
+  "push_hold": {
+    "base": "push",
+    "Hips": {
+      "lift": -0.095,
+      "side": 0.065,
+      "forward": 0.055,
+      "turn": 24,
+      "lean": 3
+    },
+    "Chest": {
+      "turn": 18,
+      "bend": 11,
+      "lean": -2
+    },
+    "LeftUpperArm": {
+      "raise": 5,
+      "forward": 85,
+      "twist": 30
+    },
+    "LeftHand": {
+      "bend": -58,
+      "curl": 0.0,
+      "spread": 36
+    }
+  },
+  "push_hold_b": {
+    "base": "push_hold",
+    "Hips": {
+      "lift": -0.09,
+      "side": 0.06,
+      "forward": 0.052,
+      "turn": 24,
+      "lean": 3
+    },
+    "Chest": {
+      "turn": 18,
+      "bend": 10,
+      "lean": -1
+    },
+    "LeftHand": {
+      "bend": -64,
+      "curl": 0.04,
+      "spread": 30
+    },
+    "RightHand": {
+      "curl": 0.3,
+      "spread": 12,
+      "bend": -6
+    }
+  },
+  "relax": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.06,
+      "side": 0.02,
+      "forward": 0.015,
+      "turn": 18,
+      "lean": 0
+    },
+    "Chest": {
+      "turn": 12,
+      "bend": 4,
+      "lean": 1
+    },
+    "LeftUpperArm": {
+      "raise": -25,
+      "forward": 70,
+      "twist": 20
+    },
+    "LeftLowerArm": {
+      "bend": 40,
+      "twist": 20
+    },
+    "LeftHand": {
+      "bend": -5,
+      "curl": 0.35,
+      "spread": 10
+    },
+    "RightUpperArm": {
+      "raise": -58,
+      "forward": -8
+    },
+    "RightLowerArm": {
+      "bend": 25
+    }
+  },
+  "gather_orb": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.12,
+      "side": -0.01,
+      "turn": 8,
+      "bend": 10,
+      "lean": 0
+    },
+    "Spine": {
+      "bend": 8
+    },
+    "Chest": {
+      "bend": 8,
+      "turn": 4,
+      "lean": 0
+    },
+    "Head": {
+      "bend": 16,
+      "turn": 10,
+      "lean": 2
+    },
+    "UpperArm": {
+      "raise": -35,
+      "forward": 60,
+      "twist": -5
+    },
+    "LowerArm": {
+      "bend": 105,
+      "twist": 10
+    },
+    "Hand": {
+      "bend": 10,
+      "side": 0,
+      "curl": 0.45,
+      "spread": 10
+    }
+  },
+  "gather_orb_tight": {
+    "base": "gather_orb",
+    "Hips": {
+      "lift": -0.14,
+      "side": -0.01,
+      "turn": 8,
+      "bend": 12
+    },
+    "Head": {
+      "bend": 20,
+      "turn": 10,
+      "lean": 2
+    },
+    "UpperArm": {
+      "raise": -33,
+      "forward": 66,
+      "twist": -5
+    },
+    "LowerArm": {
+      "bend": 115,
+      "twist": 10
+    },
+    "Hand": {
+      "bend": 14,
+      "curl": 0.6,
+      "spread": 6
+    }
+  },
+  "unfurl": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.02,
+      "side": 0.0,
+      "turn": 10,
+      "bend": -4,
+      "lean": 0
+    },
+    "Spine": {
+      "bend": -6
+    },
+    "Chest": {
+      "bend": -10,
+      "turn": 4,
+      "lean": 0
+    },
+    "Head": {
+      "bend": -14,
+      "turn": 10,
+      "lean": 0
+    },
+    "UpperArm": {
+      "raise": 30,
+      "forward": 25,
+      "twist": 30
+    },
+    "LowerArm": {
+      "bend": 30,
+      "twist": 0
+    },
+    "Hand": {
+      "bend": -30,
+      "side": 0,
+      "curl": 0.05,
+      "spread": 30
+    }
+  },
+  "crown": {
+    "base": "unfurl",
+    "Hips": {
+      "lift": 0.0,
+      "turn": 12,
+      "bend": -3
+    },
+    "Chest": {
+      "bend": -8,
+      "turn": 6
+    },
+    "Head": {
+      "bend": -18,
+      "turn": 12
+    },
+    "UpperArm": {
+      "raise": 68,
+      "forward": 30,
+      "twist": 35
+    },
+    "LowerArm": {
+      "bend": 35
+    },
+    "Hand": {
+      "bend": -40,
+      "curl": 0.05,
+      "spread": 32
+    }
+  },
+  "crown_tight": {
+    "base": "crown",
+    "Hips": {
+      "lift": -0.01,
+      "turn": 12,
+      "bend": -4
+    },
+    "UpperArm": {
+      "raise": 72,
+      "forward": 28,
+      "twist": 38
+    },
+    "Hand": {
+      "bend": -44,
+      "curl": 0.0,
+      "spread": 36
+    }
+  },
+  "thrust": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.13,
+      "side": 0.07,
+      "forward": 0.07,
+      "turn": 26,
+      "lean": 3,
+      "bend": 0
+    },
+    "Spine": {
+      "turn": 8,
+      "bend": 9
+    },
+    "Chest": {
+      "turn": 20,
+      "bend": 15,
+      "lean": -2
+    },
+    "Head": {
+      "turn": 18,
+      "bend": 6,
+      "lean": -2
+    },
+    "LeftUpperArm": {
+      "raise": 8,
+      "forward": 84,
+      "twist": 25
+    },
+    "LeftLowerArm": {
+      "bend": 4,
+      "twist": 0
+    },
+    "LeftHand": {
+      "bend": -62,
+      "side": 0,
+      "curl": 0.0,
+      "spread": 34
+    },
+    "RightUpperArm": {
+      "raise": 6,
+      "forward": 112,
+      "twist": 25
+    },
+    "RightLowerArm": {
+      "bend": 14,
+      "twist": 0
+    },
+    "RightHand": {
+      "bend": -60,
+      "curl": 0.0,
+      "spread": 30
+    }
+  },
+  "thrust_hold": {
+    "base": "thrust",
+    "Hips": {
+      "lift": -0.12,
+      "side": 0.065,
+      "forward": 0.065,
+      "turn": 26,
+      "lean": 3
+    },
+    "Chest": {
+      "turn": 19,
+      "bend": 14,
+      "lean": -2
+    },
+    "LeftHand": {
+      "bend": -58,
+      "spread": 38
+    },
+    "RightHand": {
+      "bend": -56,
+      "spread": 34
+    }
+  },
+  "thrust_hold_b": {
+    "base": "thrust_hold",
+    "Hips": {
+      "lift": -0.115,
+      "side": 0.06,
+      "forward": 0.06,
+      "turn": 26,
+      "lean": 3
+    },
+    "Chest": {
+      "turn": 19,
+      "bend": 13,
+      "lean": -1
+    },
+    "LeftHand": {
+      "bend": -64,
+      "spread": 32,
+      "curl": 0.04
+    },
+    "RightHand": {
+      "bend": -62,
+      "spread": 30,
+      "curl": 0.05
+    }
+  },
+  "relax_heavy": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.07,
+      "side": 0.03,
+      "forward": 0.02,
+      "turn": 18,
+      "bend": 4
+    },
+    "Chest": {
+      "turn": 10,
+      "bend": 6,
+      "lean": 0
+    },
+    "Head": {
+      "turn": 14,
+      "bend": 10,
+      "lean": 2
+    },
+    "UpperArm": {
+      "raise": -40,
+      "forward": 55,
+      "twist": 10
+    },
+    "LowerArm": {
+      "bend": 45,
+      "twist": 10
+    },
+    "Hand": {
+      "bend": -5,
+      "curl": 0.35,
+      "spread": 10
+    }
+  },
+  "steady": {
+    "base": "stance",
+    "Hips": {
+      "lift": -0.06,
+      "forward": -0.015,
+      "side": -0.02,
+      "turn": 10
+    },
+    "Chest": {
+      "bend": 5,
+      "turn": 4,
+      "lean": 2
+    },
+    "Head": {
+      "bend": 9,
+      "lean": 4,
+      "turn": 10
+    },
+    "LeftUpperArm": {
+      "raise": -45,
+      "forward": 50,
+      "twist": 10
+    },
+    "LeftLowerArm": {
+      "bend": 85,
+      "twist": 25
+    }
+  },
+  "guard_b": {
+    "base": "guard",
+    "Hips": {
+      "lift": -0.1,
+      "bend": 7,
+      "forward": -0.035
+    },
+    "Head": {
+      "bend": 18,
+      "turn": 10
     }
   }
 }
