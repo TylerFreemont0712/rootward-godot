@@ -1,43 +1,41 @@
 {
-  "_about": "The grand circle spent: the arms fall and the body sags for a breath, then gathers itself back into the guard.",
-  "length": 0.8,
+  "_about": "Lets go of the grand circle: Quaternius's Spell_Simple_Exit, settling back into the idle.",
+  "length": 0.75,
   "hand": "LeftHand",
+  "blend": 0.2,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Spell_Simple_Exit",
+      "from": 0.0,
+      "to": 0.433
+    },
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 0.517
+    }
+  ],
   "keys": [
     {
       "t": 0.0,
-      "pose": "thrust_hold"
+      "pose": "hold"
     },
     {
-      "t": 0.22,
-      "pose": "relax_heavy",
-      "ease": "cubic_out"
-    },
-    {
-      "t": 0.8,
-      "pose": "stance",
+      "t": 0.75,
+      "pose": "idle_offsets",
       "ease": "smooth"
     }
   ],
-  "lag": {
-    "Hips": -0.04,
-    "Hand": 0.04
-  },
-  "follow": {
-    "Hand": [
-      7,
-      0.42
+  "fingers": [
+    [
+      0.0,
+      0.0
     ],
-    "LowerArm": [
-      9,
-      0.55
-    ],
-    "Head": [
-      5.5,
-      0.5
-    ],
-    "Chest": [
-      9,
-      0.7
+    [
+      0.45,
+      1.0
     ]
-  }
+  ]
 }

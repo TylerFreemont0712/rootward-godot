@@ -70,3 +70,8 @@ lines; limited animation (no interpolation, held poses, heavy scale animation, n
 - **MMD models convert directly** (`import.pmx`), so an Ahri model (a fan MMD conversion of Wild Rift's) became a local
   reference skin: nine tails, hair, ears, skirt and tassels on 19 spring chains. Local only, like Anby and Mana.
 
+
+## Amendment (2026-10-01): limited animation is opt-in
+
+The player found the 15-a-second limited animation choppy. Playback is smooth by default; `ROOTWARD_LIMITED=15` (or
+`=style`, a skin's own rate) brings the limited look back (ADR-0031).

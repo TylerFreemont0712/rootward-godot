@@ -1,67 +1,61 @@
 {
-  "_about": "A mage at ease between turns, opened toward the viewer (only the head looks at the foes): weight settled on the back leg, the free hip dropped and the shoulders tilted against it, the lead hand held loose at the waist palm up, the other hanging. Alert breathing (25 a minute), a slow drift of the weight and back, the hands and head trailing on springs.",
-  "length": 4.8,
+  "_about": "The idle: Quaternius's Idle_Loop (CC0 motion capture) as the stage shows it, the body turned a touch toward the foes and the head further, the hands relaxed (fingers loose, curling from index to little) and drifting.",
+  "length": 2.5,
   "loop": true,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 2.5
+    }
+  ],
   "keys": [
     {
       "t": 0.0,
-      "pose": "stance"
-    },
-    {
-      "t": 2.4,
-      "pose": "stance_breath",
-      "ease": "sine"
+      "pose": "idle_offsets"
     }
   ],
-  "follow": {
-    "Hand": [
-      3.5,
-      0.6
-    ],
-    "Head": [
-      3,
-      0.7
-    ]
-  },
   "layers": [
-    {
-      "kind": "breathe",
-      "amp": 1.4,
-      "period": 2.4
-    },
-    {
-      "kind": "bob",
-      "amp": 0.005,
-      "period": 2.4
-    },
-    {
-      "kind": "sway",
-      "amp": 0.8,
-      "period": 4.8
-    },
     {
       "kind": "wave",
       "bone": "LeftHand",
       "param": "bend",
+      "amp": 5,
+      "period": 2.5,
+      "phase": 0.1
+    },
+    {
+      "kind": "wave",
+      "bone": "RightHand",
+      "param": "bend",
       "amp": 4,
-      "period": 2.4,
-      "phase": 0.2
+      "period": 2.5,
+      "phase": 0.55
     },
     {
       "kind": "wave",
       "bone": "LeftHand",
       "param": "curl",
-      "amp": 0.05,
-      "period": 4.8,
-      "phase": 0.4
+      "amp": 0.06,
+      "period": 2.5,
+      "phase": 0.3
     },
     {
       "kind": "wave",
-      "bone": "Head",
-      "param": "turn",
-      "amp": 2,
-      "period": 4.8,
-      "phase": 0.7
+      "bone": "RightHand",
+      "param": "curl",
+      "amp": 0.05,
+      "period": 2.5,
+      "phase": 0.8
+    },
+    {
+      "kind": "wave",
+      "bone": "LeftHand",
+      "param": "spread",
+      "amp": 3,
+      "period": 1.25,
+      "phase": 0.2
     }
   ]
 }

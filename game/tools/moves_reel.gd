@@ -17,9 +17,7 @@ func _ready() -> void:
 		skin = "dummy"
 	var clips := OS.get_environment("ROOTWARD_CLIPS").split(",", false)
 	if clips.is_empty():
-		clips = PackedStringArray(
-			["idle-breathe", "cast-light", "cast-heavy", "guard", "hurt", "channel", "victory", "death"]
-		)
+		clips = PackedStringArray(["idle-breathe", "cast-light", "cast-heavy", "guard", "hurt", "death"])
 	var environment := WorldEnvironment.new()
 	environment.environment = Environment.new()
 	environment.environment.background_mode = Environment.BG_COLOR

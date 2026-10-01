@@ -132,6 +132,45 @@ class PlantTest(unittest.TestCase):
         self.assertEqual(c.sample(15)[motion.PLANT]["RightFoot"], 1.0)
 
 
+class MocapTest(unittest.TestCase):
+    def test_a_clip_without_keys_samples_empty_offsets(self) -> None:
+        c = clip(mocap=[{"source": "s", "action": "Idle", "from": 0, "to": 1}])
+        self.assertEqual({k: v for k, v in c.sample(10).items() if k != motion.PLANT}, {})
+
+    def test_a_looping_take_wraps_its_own_time(self) -> None:
+        c = clip(loop=True, mocap=[{"source": "s", "action": "Idle", "from": 0, "to": 2, "speed": 2}])
+        self.assertEqual(c.mocap_at(0.5), [("s", "Idle", 1.0, 1.0)])
+        self.assertAlmostEqual(c.mocap_at(1.25)[0][2], 0.5)
+
+    def test_takes_crossfade_into_the_next(self) -> None:
+        takes = [{"source": "s", "action": "A", "from": 0, "to": 0.5}, {"source": "s", "action": "B", "from": 0, "to": 1}]
+        c = clip(mocap=takes, blend=0.2)
+        self.assertEqual([e[1] for e in c.mocap_at(0.1)], ["A"])
+        middle = c.mocap_at(0.4)
+        self.assertEqual([e[1] for e in middle], ["A", "B"])
+        self.assertAlmostEqual(sum(e[3] for e in middle), 1.0)
+        self.assertEqual([e[1] for e in c.mocap_at(0.7)], ["B"])
+        self.assertAlmostEqual(c.mocap_at(0.7)[0][2], 0.4)
+
+    def test_owned_bones_follow_their_weight(self) -> None:
+        c = clip(own={"bones": ["UpperArm"], "weight": [[0, 0], [0.5, 1], [1.0, 0]]})
+        self.assertEqual(c.own_weight("LeftUpperArm", 0.0), 0.0)
+        self.assertAlmostEqual(c.own_weight("RightUpperArm", 0.5), 1.0)
+        self.assertEqual(c.own_weight("Head", 0.5), 0.0)
+
+
+    def test_an_owned_bone_holds_its_pose_where_a_key_leaves_it_out(self) -> None:
+        keys = [{"t": 0, "pose": {"LeftUpperArm": {"raise": 30}}}, {"t": 1, "pose": {"Head": {"bend": 10}}}]
+        c = clip(keys=keys, own={"bones": ["LeftUpperArm"], "weight": [[0, 1]]})
+        self.assertAlmostEqual(c.sample(30)["LeftUpperArm"]["raise"], 30.0)
+        self.assertAlmostEqual(c.sample(15)["Head"]["bend"], 5.0)
+
+    def test_finger_weight_follows_its_curve(self) -> None:
+        c = clip(fingers=[[0, 1], [0.5, 1], [1.0, 0]])
+        self.assertEqual(c.finger_weight(0.2), 1.0)
+        self.assertEqual(c.finger_weight(1.0), 0.0)
+
+
 class ContentTest(unittest.TestCase):
     def test_every_clip_resolves_and_samples(self) -> None:
         library = motion.load_library()

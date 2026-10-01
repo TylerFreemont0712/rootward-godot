@@ -32,6 +32,15 @@ ADR-0005, ADR-0007, ADR-0008.
   `pipeline/local/` (git-ignored). Never commit or ship them; study them, then make our own assets.
 - To dump any .blend shader as text: iterate `material.node_tree.nodes` / `links` (see ADR-0029's method).
 
+## Motion capture first (ADR-0031)
+
+- Clips play CC0 capture (`pipeline/moves/mocap/`, `sources.json`: file, T-pose frame, bone map), retargeted by
+  `pipeline/blender/retarget.py`; our keys are offsets on it, `own` bones are keyed outright by a weight curve, keyed
+  fingers replace the capture's by `fingers`. Render a source's clips from the stage angle before choosing (Blender
+  workbench, camera at yaw -35). Hand-key only what no capture has (the snap).
+- Playback is smooth by default (`ROOTWARD_LIMITED=15` for the limited look). Clip hand-offs start before the clip
+  ends (the deterministic mixer fades from rest after a clip has finished).
+
 ## The motion dummy and lab (ADR-0030)
 
 - Moves are judged on the **motion dummy** first (`game/characters/dummy/`, a normalised skin built by

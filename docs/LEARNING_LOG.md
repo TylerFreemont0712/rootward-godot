@@ -536,3 +536,17 @@ at the model at rest: the skeleton's toe joint sits at ankle height (so feet bui
 *fix silhouette*, meant to straighten an A-pose into a T-pose, also re-aimed the T-pose skeleton's feet. A rest-pose
 check (no clip, no IK) separates "the model" from "the motion" in one picture.
 
+## Retargeting by the turn away from a T-pose (`pipeline/blender/retarget.py`)
+Two skeletons rarely agree on which local axis a bone points along, so copying local rotations breaks limbs. Both are
+matched in a T-pose instead (the source at a frame where it stands in one, ours at rest), and each bone copies the
+*world-space turn away from that T-pose*: ours(t) = theirs(t) · theirs(T)⁻¹ · ours(T). The local pose a bone needs is
+then worked out down the hierarchy (a child is carried by its parent's posed matrix). The hips copy the pelvis's
+travel, scaled by the ratio of the hip heights, and the feet are planted afterwards as for any clip.
+
+## A cross-fade needs something to fade from (`game/characters/character.gd`)
+Godot's AnimationMixer is deterministic by default: it blends a new clip over what the playing clips still
+contribute, starting from the rest pose. A clip that has *finished* contributes nothing, so a fade started in
+`animation_finished` blended up out of the rest pose: on the dummy, a T-pose arm flashed to shoulder height on every
+return to the idle. Measured by printing the hand's height each frame across the hand-off; fixed by starting the next
+clip a blend's length before the old one ends, while it still plays.
+

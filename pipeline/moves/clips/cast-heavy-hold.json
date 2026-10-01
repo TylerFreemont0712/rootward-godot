@@ -1,45 +1,27 @@
 {
-  "_about": "Both palms held at the grand circle while it fires, straining: a stronger tremble, breathing hard.",
-  "length": 1.0,
+  "_about": "The spell held while the grand circle fires: Quaternius's Spell_Simple_Idle_Loop, leaning into it.",
+  "length": 2.1,
   "loop": true,
   "hand": "LeftHand",
-  "face": [
+  "mocap": [
     {
-      "t": 0.0,
-      "expression": "angry",
-      "weight": 1.0
+      "source": "quaternius",
+      "action": "Spell_Simple_Idle_Loop",
+      "from": 0.0,
+      "to": 2.1
     }
   ],
   "keys": [
     {
       "t": 0.0,
-      "pose": "thrust_hold"
-    },
-    {
-      "t": 0.5,
-      "pose": "thrust_hold_b",
-      "ease": "sine"
+      "pose": "hold"
     }
   ],
-  "follow": {
-    "Hand": [
-      6,
-      0.5
-    ],
-    "Head": [
-      4,
-      0.6
-    ]
-  },
-  "layers": [
+  "face": [
     {
-      "kind": "tremble",
-      "amp": 1.3
-    },
-    {
-      "kind": "breathe",
-      "amp": 1.6,
-      "period": 0.5
+      "t": 0.0,
+      "expression": "angry",
+      "weight": 0.8
     }
   ]
 }

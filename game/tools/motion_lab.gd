@@ -262,15 +262,23 @@ func _play(clip: String) -> void:
 	_refresh()
 	if not clip in StageCharacter.CASTS:
 		return
-	var tier := 1 if clip == "cast-light" else 3
+	var heavy := clip == "cast-heavy"
+	var tier := 3 if heavy else 1
 	var height := _view_box.size.y * 0.92
 	var size := clampf(height * (0.15 + 0.035 * tier), 56.0, 230.0)
 	var palm: Variant = _hero.release_point()
 	var at := _to_overlay(palm as Vector3) if palm != null else _view_box.size * 0.5
-	_circle = MagicCircle.cast(
-		_overlay, at + Vector2(size * 0.42 + height * 0.05, height * 0.005), tier, _element, size
-	)
-	_hero.release_in(_circle.form_time())
+	var where := at + Vector2(size * 0.42 + height * 0.05, height * 0.005)
+	if heavy:
+		_circle = MagicCircle.cast(_overlay, where, tier, _element, size)
+		_hero.release_in(_circle.form_time())
+	else:
+		# As in a fight: the snap calls the circle, which writes itself quickly.
+		await get_tree().create_timer(_hero.release_left()).timeout
+		if serial != _serial:
+			return
+		_circle = MagicCircle.cast(_overlay, where, tier, _element, size, "", LogPlayer.SNAP_SPEED)
+		_circle.spark_from(at)
 	await _circle.formed
 	for i in VOLLEY:
 		if serial != _serial or not is_instance_valid(_circle):
@@ -311,8 +319,9 @@ func _bolt(from: Vector2) -> void:
 func _on_finished(clip: String) -> void:
 	if not _loop or _paused:
 		return
-	var ended := clip == _clip and not clip in StageCharacter.CASTS and not _hero.is_loop(clip)
-	if not ended and not (_clip in StageCharacter.CASTS and clip == _clip + "-end"):
+	# A take ends with its last clip: a cast's letting go when it has one, else the clip itself.
+	var last := _clip + "-end" if _hero.player.has_animation(_clip + "-end") else _clip
+	if clip != last or _hero.is_loop(clip):
 		return
 	var serial := _serial
 	await get_tree().create_timer(0.5).timeout

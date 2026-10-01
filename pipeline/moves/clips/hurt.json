@@ -1,6 +1,28 @@
 {
-  "_about": "Knocked back on planted feet: the body snaps away and the head and hands whip after it on their springs, a stagger, then the guard again.",
-  "length": 0.8,
+  "_about": "Struck in the chest (Quaternius's Hit_Chest), recovering into the idle.",
+  "length": 0.95,
+  "blend": 0.18,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Hit_Chest",
+      "from": 0.0,
+      "to": 0.333,
+      "speed": 0.85
+    },
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 0.75
+    }
+  ],
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "idle_offsets"
+    }
+  ],
   "face": [
     {
       "t": 0.0,
@@ -8,59 +30,8 @@
       "weight": 1.0
     },
     {
-      "t": 0.7,
+      "t": 0.8,
       "expression": "neutral"
     }
-  ],
-  "keys": [
-    {
-      "t": 0.0,
-      "pose": "stance"
-    },
-    {
-      "t": 0.06,
-      "pose": "hurt",
-      "ease": "expo_out"
-    },
-    {
-      "t": 0.24,
-      "pose": {
-        "base": "hurt",
-        "Head": {
-          "bend": -18,
-          "lean": 14,
-          "turn": 2
-        }
-      },
-      "ease": "sine"
-    },
-    {
-      "t": 0.48,
-      "pose": "steady",
-      "ease": "cubic_out"
-    },
-    {
-      "t": 0.8,
-      "pose": "stance",
-      "ease": "smooth"
-    }
-  ],
-  "follow": {
-    "Head": [
-      6,
-      0.35
-    ],
-    "Hand": [
-      7,
-      0.38
-    ],
-    "LowerArm": [
-      8,
-      0.5
-    ],
-    "Chest": [
-      8,
-      0.6
-    ]
-  }
+  ]
 }

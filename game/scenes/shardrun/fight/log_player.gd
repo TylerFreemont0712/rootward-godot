@@ -20,6 +20,8 @@ const CRITICAL_AMOUNT := 18
 const CRITICAL_SHARE := 0.45
 ## A volley spreads its launches over about this long, one bolt every `max` ms at most and `min` at least.
 const VOLLEY := {"spread": 1300.0, "max": 190.0, "min": 45.0}
+## A light cast's circle is called by a snap of the fingers and writes itself this much faster than a heavy one's.
+const SNAP_SPEED := 1.5
 ## The longest a cast waits (in real time) for its bolts to land before it lets the log move on regardless: a guard
 ## against an animation that never finishes, never a pace.
 const LANDING_CAP_MS := 8000
@@ -97,17 +99,25 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 			stage.shard_effect(card)
 			if not Settings.reduced_motion:
 				await stage.wait(140.0)
-	# The program runs: its circle writes itself in the air in front of the Maintainer, more elaborate the more it will
-	# deal, and her strike lands on it as it completes; the strongest also draw a circle on the ground with runes
-	# rising round her. The circle stays while the volley flies, and every bolt leaves from it.
+	# The program runs. A heavy cast's circle writes itself in the air in front of the Maintainer while she gathers the
+	# power, and her strike lands on it as it completes; a light cast is a snap of her fingers, and the circle appears
+	# on the snap. Either way the circle is more elaborate the more it will deal (a heavy one is at least the third),
+	# stays while the volley flies, and every bolt leaves from it.
 	var power := _total(bolts)
 	var tier := TIERS.size()
 	for i in TIERS.size():
 		if power <= TIERS[i]:
 			tier = i
 			break
-	_circle = stage.magic_circle(tier, element, _words(entry))
-	stage.hero.release_in(_circle.form_time() if _circle != null else 0.38)
+	if heavy:
+		tier = maxi(tier, 2)
+		_circle = stage.magic_circle(tier, element, _words(entry))
+		stage.hero.release_in(_circle.form_time() if _circle != null else 0.38)
+	else:
+		await stage.wait(stage.hero.release_left() * 1000.0)
+		_circle = stage.magic_circle(tier, element, _words(entry), SNAP_SPEED)
+		if _circle != null:
+			_circle.spark_from(stage.hero.hand_point())
 	if tier >= 2:
 		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
 		stage.spell("cast-ground", feet, element, stage.hero.size.y / 440.0)
@@ -380,7 +390,6 @@ func _one(entry: Dictionary) -> void:
 			numbers_changed.emit()
 			await stage.wait(300.0)
 		"victory":
-			stage.hero.play("victory")
 			stage.banner("Victory", UiTheme.PASS, 1100.0)
 			Sound.cue("cue-victory", 0.8)
 			await stage.wait(1300.0)

@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 ## library (pipeline/blender/build_moves.py) plays on it, with its release timing and the palm's release point.
 
 const CLIPS: Array[String] = [
-	"idle-breathe", "cast-light", "cast-heavy", "channel", "windup", "guard", "hurt", "victory", "death"
+	"idle-breathe", "cast-light", "cast-heavy", "cast-heavy-hold", "cast-heavy-end", "guard", "hurt", "death"
 ]
 
 
@@ -33,7 +33,7 @@ func test_the_clips_drive_the_skeleton_bones() -> void:
 func test_loops_follow_the_library() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
 	assert_int(hero.player.get_animation("idle-breathe").loop_mode).is_equal(Animation.LOOP_LINEAR)
-	assert_int(hero.player.get_animation("channel").loop_mode).is_equal(Animation.LOOP_LINEAR)
+	assert_int(hero.player.get_animation("cast-heavy-hold").loop_mode).is_equal(Animation.LOOP_LINEAR)
 	assert_int(hero.player.get_animation("cast-light").loop_mode).is_equal(Animation.LOOP_NONE)
 
 
@@ -42,6 +42,7 @@ func test_a_cast_is_timed_to_land_its_release_on_the_beat() -> void:
 	add_child(hero)
 	hero.play("cast-light")
 	var release: float = hero.moves["cast-light"]["release"]
+	# A cast without a charge window is sped up as a whole to land on a beat sooner than its own.
 	hero.release_in(release / 2.0)
 	assert_float(hero.player.speed_scale).is_equal_approx(2.0, 0.05)
 	hero.play("cast-heavy")
@@ -52,15 +53,21 @@ func test_a_cast_is_timed_to_land_its_release_on_the_beat() -> void:
 	assert_float(hero.player.speed_scale).is_equal(1.0)
 
 
-func test_the_release_point_is_the_outstretched_palm() -> void:
+func test_the_release_point_is_the_casting_palm() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
 	add_child(hero)
+	# The snap: the hand raised beside her head, out to her left (toward the foes).
 	hero.play("cast-light")
-	var point: Vector3 = hero.release_point()
-	# Out to her left (toward the foes), in front of her, about head height.
-	assert_float(point.x).is_greater(0.3)
-	assert_float(point.z).is_greater(0.05)
-	assert_float(point.y).is_between(1.0, 1.7)
+	var snap: Vector3 = hero.release_point()
+	assert_float(snap.x).is_greater(0.15)
+	assert_float(snap.y).is_between(1.1, 1.7)
+	# The heavy push: the arm out in front of her and to her left (toward the foes once she stands turned on the
+	# stage), at about shoulder height.
+	hero.play("cast-heavy")
+	var push: Vector3 = hero.release_point()
+	assert_float(push.x).is_greater(0.15)
+	assert_float(push.z).is_greater(0.3)
+	assert_float(push.y).is_between(0.9, 1.5)
 	hero.play("hurt")
 	assert_object(hero.release_point()).is_null()
 
@@ -70,17 +77,25 @@ func test_planted_feet_follow_the_clip_on_leg_ik() -> void:
 	add_child(hero)
 	var iks := hero.skeleton.find_children("*", "TwoBoneIK3D", false, false)
 	assert_int(iks.size()).is_equal(2)
-	# The victory leaves the ground mid-leap and stands again to cheer.
-	var facts: Dictionary = hero.moves["victory"]
-	hero._legs.update(facts, 0.65)
-	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(0.0)
-	hero._legs.update(facts, 1.5)
+	# A fall lets go of the floor once the body goes down.
+	var facts: Dictionary = hero.moves["death"]
+	hero._legs.update(facts, 0.2)
 	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(1.0)
+	hero._legs.update(facts, 1.5)
+	assert_float((iks[0] as TwoBoneIK3D).influence).is_equal(0.0)
+
+
+func test_playback_is_smooth_unless_limited_is_asked_for() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
+	add_child(hero)
+	assert_float(hero.limited_fps()).is_equal(0.0)
+	assert_int(hero.player.callback_mode_process).is_not_equal(AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL)
 
 
 func test_limited_animation_holds_the_pose_between_steps() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("shibu"))
 	add_child(hero)
+	hero.set_limited(StageCharacter.LIMITED_FPS)
 	assert_int(hero.player.callback_mode_process).is_equal(AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL)
 	hero.play("cast-light")
 	var start := hero.player.current_animation_position
@@ -90,15 +105,23 @@ func test_limited_animation_holds_the_pose_between_steps() -> void:
 	assert_float(hero.player.current_animation_position).is_greater(start)
 
 
-func test_a_cast_holds_its_push_until_the_volley_ends() -> void:
+func test_a_snap_returns_to_the_idle_on_its_own() -> void:
 	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
 	add_child(hero)
 	hero.play("cast-light")
-	hero._on_finished("cast-light")
-	assert_str(hero.current).is_equal("cast-light-hold")
+	hero._hand_off("cast-light")
+	assert_str(hero.current).is_equal(StageCharacter.IDLE)
+
+
+func test_a_heavy_cast_holds_until_the_volley_ends() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
+	add_child(hero)
+	hero.play("cast-heavy")
+	hero._hand_off("cast-heavy")
+	assert_str(hero.current).is_equal("cast-heavy-hold")
 	hero.end_cast()
-	assert_str(hero.current).is_equal("cast-light-end")
-	hero._on_finished("cast-light-end")
+	assert_str(hero.current).is_equal("cast-heavy-end")
+	hero._hand_off("cast-heavy-end")
 	assert_str(hero.current).is_equal(StageCharacter.IDLE)
 
 
@@ -108,18 +131,33 @@ func test_a_volley_over_before_the_push_lets_go_once_it_is_reached() -> void:
 	hero.play("cast-heavy")
 	hero.end_cast()
 	assert_str(hero.current).is_equal("cast-heavy")
-	hero._on_finished("cast-heavy")
+	hero._hand_off("cast-heavy")
 	assert_str(hero.current).is_equal("cast-heavy-end")
 
 
-func test_a_long_circle_slows_only_the_charge() -> void:
+func test_the_next_clip_fades_in_before_the_last_one_ends() -> void:
+	# A fade begun after a clip has finished would rise out of the rest pose (the mixer has nothing to fade from).
 	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
 	add_child(hero)
-	hero.play("cast-light")
-	var facts: Dictionary = hero.moves["cast-light"]
-	var strike := float(facts.release) - float(facts.charge)
-	hero.release_in(float(facts.release) * 2.0)
-	# The charge stretches to fill the wait; the strike after it keeps its own speed.
-	var expected := float(facts.charge) / (float(facts.release) * 2.0 - strike)
-	assert_float(hero.player.speed_scale).is_equal_approx(expected, 0.001)
-	assert_float(hero._charge_until).is_equal(float(facts.charge))
+	hero.play("hurt")
+	hero.player.seek(hero.player.current_animation_length - 0.1, true)
+	hero._process(1.0 / 60.0)
+	assert_str(hero.current).is_equal(StageCharacter.IDLE)
+
+
+func test_a_long_circle_slows_only_the_charge_window() -> void:
+	var hero: StageCharacter = auto_free(StageCharacter.create("dummy"))
+	add_child(hero)
+	hero.play("cast-heavy")
+	var facts: Dictionary = hero.moves["cast-heavy"]
+	var window := StageCharacter.charge_window(facts)
+	var release := float(facts.release)
+	var seconds := release + 0.4
+	hero.release_in(seconds)
+	# Before the window the gesture keeps its own speed; inside it, the window stretches to fill the wait.
+	assert_float(hero.player.speed_scale).is_equal(1.0)
+	var own := window.x + (release - window.y)
+	assert_float(hero._charge_speed).is_equal_approx((window.y - window.x) / (seconds - own), 0.001)
+	hero.player.seek(window.x + 0.05, true)
+	hero._process(1.0 / 60.0)
+	assert_float(hero.player.speed_scale).is_equal_approx(hero._charge_speed, 0.001)

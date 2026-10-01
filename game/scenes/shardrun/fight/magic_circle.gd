@@ -37,6 +37,8 @@ const ELEMENT_LAYERS: Array[String] = ["fire", "frost", "spark"]
 
 var tier := 0
 var radius := 100.0
+## How fast it writes itself (a snapped spell writes faster); once complete it turns at its own pace.
+var speed := 1.0
 var dark := Color.BLACK
 var mid := Color.WHITE
 var hot := Color.WHITE
@@ -56,8 +58,11 @@ var _mote_debt := 0.0
 
 ## Writes a circle of `tier` (0..3) at `at` in `parent`, `size` pixels in radius, in `element`'s colours, with `words`
 ## (the spell's own function names) as its runes.
-static func cast(parent: Node, at: Vector2, circle_tier: int, element: String, size: float, words := "") -> MagicCircle:
+static func cast(
+	parent: Node, at: Vector2, circle_tier: int, element: String, size: float, words := "", writing_speed := 1.0
+) -> MagicCircle:
 	var circle := MagicCircle.new()
+	circle.speed = maxf(writing_speed, 0.1)
 	circle.tier = clampi(circle_tier, 0, TIERS.size() - 1)
 	circle._facts = TIERS[circle.tier]
 	circle.radius = size
@@ -74,13 +79,26 @@ static func cast(parent: Node, at: Vector2, circle_tier: int, element: String, s
 	circle.material = light
 	circle._font = UiTheme.crt_font()
 	parent.add_child(circle)
-	Sound.play(String(circle._facts.sound), SpellAnim.SOUND_VOLUME)
+	Sound.play(String(circle._facts.sound), SpellAnim.SOUND_VOLUME, circle.speed)
 	return circle
 
 
-## Seconds from its first stroke to its completion (the strike's beat).
+## Seconds from its first stroke to its completion (the strike's beat), in real time.
 func form_time() -> float:
+	return _form() / speed
+
+
+## The same in the circle's own clock (which runs `speed` times faster while it writes itself).
+func _form() -> float:
 	return float(_facts.get("form", 0.8))
+
+
+## Sparks thrown from `point` (in the parent's coordinates) into the circle: the fingers' snap that called it.
+func spark_from(point: Vector2) -> void:
+	var from := point - position
+	for i in 14:
+		var toward := (_disc_origin(0) - from).normalized().rotated(randf_range(-0.6, 0.6))
+		_motes.append([from, toward * randf_range(160.0, 420.0), 0.0, randf_range(0.18, 0.34), randf_range(1.4, 2.6)])
 
 
 ## Where a bolt is born: somewhere on the front circle, in the parent's coordinates.
@@ -106,14 +124,14 @@ func close() -> void:
 
 
 func _process(delta: float) -> void:
-	clock += delta
+	clock += delta * (speed if not _formed else 1.0)
 	_flare = maxf(0.0, _flare - delta * 4.0)
 	# Motes spiral in while it writes itself and drift off its rim while it stands.
 	_mote_debt += delta * (36.0 if not _formed else 5.0 + 3.0 * tier) * (0.0 if _closing >= 0.0 else 1.0)
 	while _mote_debt >= 1.0:
 		_mote_debt -= 1.0
 		_spawn_mote(not _formed)
-	if not _formed and clock >= form_time():
+	if not _formed and clock >= _form():
 		_formed = true
 		_flare = 1.4
 		_shocks.append(clock)
@@ -174,7 +192,7 @@ func _disc_origin(index: int) -> Vector2:
 
 ## 0 → 1 as `clock` crosses the share `from`..`to` of the forming time.
 func _phase(from: float, to: float) -> float:
-	var u := clock / form_time()
+	var u := clock / _form()
 	return clampf((u - from) / (to - from), 0.0, 1.0)
 
 

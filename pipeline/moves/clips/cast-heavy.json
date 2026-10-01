@@ -1,106 +1,153 @@
 {
-  "_about": "Crouch and cup the power at the chest (the charge, stretched while the grand circle draws), rise and sweep both arms out and up over the head, then drive both palms at the circle in a deep lunge (the release). It ends held: cast-heavy-hold, then cast-heavy-end.",
-  "length": 1.25,
+  "_about": "The heavy cast: both hands gather the power at her chest over the idle, then the lead hand sweeps out into Quaternius's simple spell (Spell_Simple_Enter), holds it while the circle completes (the charge), and pushes (Spell_Simple_Shoot, the release) with the body leaning in. It ends held: cast-heavy-hold, then cast-heavy-end.",
+  "length": 1.85,
   "hand": "LeftHand",
   "events": {
-    "release": 0.95,
-    "charge": 0.5
+    "release": 1.5,
+    "charge": [
+      0.8,
+      1.3
+    ]
   },
-  "face": [
+  "blend": 0.15,
+  "mocap": [
     {
-      "t": 0.1,
-      "expression": "angry",
-      "weight": 0.7
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 0.35
     },
     {
-      "t": 0.7,
-      "expression": "surprised",
-      "weight": 0.6
+      "source": "quaternius",
+      "action": "Spell_Simple_Enter",
+      "from": 0.0,
+      "to": 0.533
     },
     {
-      "t": 0.92,
-      "expression": "angry",
-      "weight": 1.0
+      "source": "quaternius",
+      "action": "Spell_Simple_Idle_Loop",
+      "from": 0.0,
+      "to": 0.9
+    },
+    {
+      "source": "quaternius",
+      "action": "Spell_Simple_Shoot",
+      "from": 0.0,
+      "to": 0.5
     }
   ],
+  "own": {
+    "bones": [
+      "UpperArm",
+      "LowerArm",
+      "Hand"
+    ],
+    "weight": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.28,
+        1.0
+      ],
+      [
+        0.5,
+        1.0
+      ],
+      [
+        0.85,
+        0.0
+      ]
+    ]
+  },
   "keys": [
     {
       "t": 0.0,
-      "pose": "stance"
+      "pose": "idle_offsets"
     },
     {
-      "t": 0.16,
-      "pose": "gather_orb",
-      "ease": "cubic_out"
+      "t": 0.32,
+      "pose": "gather",
+      "ease": "smooth"
     },
     {
       "t": 0.5,
-      "pose": "gather_orb_tight",
+      "pose": {
+        "base": "gather",
+        "Hips": {
+          "lift": -0.055
+        },
+        "Head": {
+          "bend": 16
+        }
+      },
       "ease": "sine"
     },
     {
-      "t": 0.62,
-      "pose": "unfurl",
+      "t": 0.85,
+      "pose": "unfold",
+      "ease": "smooth"
+    },
+    {
+      "t": 1.3,
+      "pose": "unfold",
+      "ease": "sine"
+    },
+    {
+      "t": 1.5,
+      "pose": "thrust",
       "ease": "cubic_out"
     },
     {
-      "t": 0.76,
-      "pose": "crown",
-      "ease": "back_out"
-    },
-    {
-      "t": 0.86,
-      "pose": "crown_tight",
-      "ease": "sine"
-    },
-    {
-      "t": 0.95,
-      "pose": "thrust",
-      "ease": "expo_out"
-    },
-    {
-      "t": 1.25,
-      "pose": "thrust_hold",
-      "ease": "sine"
+      "t": 1.85,
+      "pose": "hold",
+      "ease": "smooth"
     }
   ],
-  "lag": {
-    "Hips": -0.03,
-    "Spine": -0.015,
-    "UpperArm": 0.02
-  },
   "follow": {
-    "Hand": [
-      7,
-      0.42
-    ],
-    "LowerArm": [
-      9,
-      0.55
-    ],
     "Head": [
-      5.5,
-      0.5
+      5,
+      0.6
     ],
     "Chest": [
-      9,
+      6,
       0.7
     ]
   },
   "layers": [
     {
       "kind": "tremble",
-      "from": 0.28,
-      "to": 0.52,
-      "amp": 1.4,
+      "from": 0.35,
+      "to": 0.55,
+      "amp": 0.8,
       "fade": 0.06
+    }
+  ],
+  "face": [
+    {
+      "t": 0.2,
+      "expression": "angry",
+      "weight": 0.7
     },
     {
-      "kind": "tremble",
-      "from": 0.78,
-      "to": 0.93,
-      "amp": 2.0,
-      "fade": 0.04
+      "t": 1.45,
+      "expression": "angry",
+      "weight": 1.0
     }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ],
+    [
+      0.55,
+      1.0
+    ],
+    [
+      0.85,
+      0.0
+    ]
   ]
 }

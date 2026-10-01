@@ -237,11 +237,11 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 
 ## The cast's magic circle (MagicCircle), written in the air in front of the Maintainer and sized to her; null when the
 ## stage plays fast.
-func magic_circle(tier: int, element: String, words: String) -> MagicCircle:
+func magic_circle(tier: int, element: String, words: String, writing_speed := 1.0) -> MagicCircle:
 	if fast:
 		return null
 	var size := clampf(hero.size.y * (0.15 + 0.035 * tier), 56.0, 230.0)
-	return MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words)
+	return MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words, writing_speed)
 
 
 func shard_effect(card: Dictionary) -> void:

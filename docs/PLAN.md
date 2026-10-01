@@ -114,7 +114,9 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 - [x] A motion dummy and a motion lab (ADR-0030): the moves judged on a plain mannequin first; follow-through springs;
       the moves re-keyed (a contrapposto guard, coil-drive-push, gather-crown-thrust); casts held while the volley
       flies; magic circles written in the air in front of the caster, the bolts born on them; the wardrobe as a wheel.
-      [ ] The moves tuned by play in the lab. [ ] The other clips (victory, death, channel, windup) re-keyed the same way.
+      [x] The idle opened to the viewer. [x] Motion capture under the moves (ADR-0031): the Quaternius idle, a snap
+      for the light cast, the Quaternius spell for the heavy, hurt and death from capture, smooth playback.
+      [ ] The moves tuned by play in the lab; more capture (Mixamo, Quaternius's second library) where it helps.
 - [x] Sound and music on audio buses with volume and mute settings (ADR-0019, ADR-0020).
 
 ### Phase 7: the deck playstyle (the Shardrun, now the main mode)

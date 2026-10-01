@@ -28,6 +28,15 @@ A **clip** (`clips/<id>.json`) is keys on a timeline, in seconds:
 - `follow` hangs a bone on a spring that chases its keyed pose (`"Hand": [8, 0.45]`: 8 Hz, damping 0.45), so when the
   body stops the hand carries on, overshoots and settles: follow-through without keying it. Lower damping wobbles
   more; a higher frequency follows tighter.
+- `mocap` plays motion capture under the keys (ADR-0030): takes from a source in `sources.json`, one after another,
+  crossfaded over `blend` seconds: `"mocap": [{"source": "quaternius", "action": "Idle_Loop", "from": 0, "to": 2.5,
+  "speed": 1}]`. The build retargets each take onto the skeleton. In a mocap clip the keys and layers are **offsets**
+  added on top of the capture (`"Head": {"turn": 12}` turns the captured head 12 degrees further), except for:
+- `own`: bones the keys pose outright, over the capture, by a weight that rises and falls on its own timeline:
+  `"own": {"bones": ["LeftUpperArm", "LeftLowerArm", "LeftHand"], "weight": [[0, 0], [0.3, 1], [1.0, 0]]}`. An
+  owned bone a key leaves out holds its pose from the nearest key that has it (so it never drifts toward the T-pose
+  while its weight fades). A hand given finger parameters (`curl`, `cascade`, ...) in a mocap clip has its fingers
+  posed by them, not by the capture, by the `fingers` weight (`[[t, w], ...]`, 1 throughout by default).
 - `plant` keeps the feet on the floor (the build solves the legs so each planted foot stays put, flat, while the hips
   move). Both feet are planted for the whole clip unless the clip says otherwise:
   `"plant": {"LeftFoot": [[0, 0.3], [0.9, 2.3]], "RightFoot": [[0, 0.3]]}` plants each foot only in those windows
@@ -156,13 +165,98 @@ class Clip:
             for name in [side + bone for side in ("Left", "Right")] if bone in SIDED else [bone]:
                 self.follow[name] = (float(hz), float(damping))
         self._followed: list[Pose] | None = None
-        keys = sorted(data["keys"], key=lambda k: float(k["t"]))
+        self.takes = self._timeline(data.get("mocap", []), float(data.get("blend", 0.15)))
+        self.own: set[str] = set()
+        for bone in data.get("own", {}).get("bones", []):
+            self.own.update([side + bone for side in ("Left", "Right")] if bone in SIDED else [bone])
+        self.own_weight_keys = [(float(t), float(w)) for t, w in data.get("own", {}).get("weight", [[0, 1]])]
+        self.finger_weight_keys = [(float(t), float(w)) for t, w in data.get("fingers", [[0, 1]])]
+        keys = sorted(data.get("keys", [{"t": 0, "pose": {}}]), key=lambda k: float(k["t"]))
         if not keys or float(keys[0]["t"]) != 0.0:
             raise ValueError(f"clip {clip_id}: the first key must be at t=0")
         self.keys = [(float(k["t"]), resolve(k["pose"], library), k.get("ease", "sine")) for k in keys]
+        self._hold_owned()
         if self.loop and self.keys[-1][0] < self.length:
             # A loop closes on its first pose, so its last frame flows into its first.
             self.keys.append((self.length, self.keys[0][1], self.data.get("close", "sine")))
+
+    @staticmethod
+    def _timeline(takes: list[dict], blend: float) -> list[dict]:
+        """Each take placed on the clip's timeline: it starts `blend` seconds before the one before it ends."""
+        out: list[dict] = []
+        start = 0.0
+        for take in takes:
+            speed = float(take.get("speed", 1.0))
+            length = (float(take["to"]) - float(take.get("from", 0.0))) / speed
+            placed = {**take, "start": start, "length": length, "speed": speed, "from": float(take.get("from", 0.0))}
+            out.append(placed)
+            start += length - (blend if take is not takes[-1] else 0.0)
+        for i, take in enumerate(out):
+            take["fade_in"] = blend if i > 0 else 0.0
+        return out
+
+    def mocap_at(self, t: float) -> list[tuple[str, str, float, float]]:
+        """The captured takes playing at `t`: (source, action, the take's own time in seconds, weight); the weights add
+        up to 1, two takes sharing it while one crossfades into the next."""
+        if not self.takes:
+            return []
+        if self.loop and len(self.takes) == 1:
+            take = self.takes[0]
+            local = (t % self.length) / self.length * take["length"]
+            return [(take["source"], take["action"], take["from"] + local * take["speed"], 1.0)]
+        playing: list[tuple[str, str, float, float]] = []
+        for i, take in enumerate(self.takes):
+            local = t - take["start"]
+            last = i == len(self.takes) - 1
+            if local < 0.0 or (local > take["length"] and not last):
+                continue
+            local = min(local, take["length"])
+            weight = 1.0
+            if take["fade_in"] > 0.0 and local < take["fade_in"]:
+                weight = EASES["smooth"](local / take["fade_in"])
+            playing.append((take["source"], take["action"], take["from"] + local * take["speed"], weight))
+        if not playing:
+            first = self.takes[0]
+            return [(first["source"], first["action"], first["from"], 1.0)]
+        # The newest take has its share; the ones before it share what is left, the most recent first.
+        out: list[tuple[str, str, float, float]] = []
+        left = 1.0
+        for source, action, at, weight in reversed(playing):
+            share = left * weight
+            out.append((source, action, at, share))
+            left -= share
+        return [entry for entry in reversed(out) if entry[3] > 1e-4]
+
+    def _hold_owned(self) -> None:
+        """An owned bone missing from a key takes its pose from the key before it (or, first, the key after)."""
+        for bone in self.own:
+            held = next((pose[bone] for _, pose, _ in self.keys if bone in pose), None)
+            if held is None:
+                continue
+            for _, pose, _ in self.keys:
+                if bone in pose:
+                    held = pose[bone]
+                else:
+                    pose[bone] = copy.deepcopy(held)
+
+    def own_weight(self, bone: str, t: float) -> float:
+        """How fully the keys pose `bone` over the capture at `t` (0 when the bone is not owned)."""
+        if bone not in self.own:
+            return 0.0
+        return self._curve(self.own_weight_keys, t)
+
+    def finger_weight(self, t: float) -> float:
+        """How fully a keyed hand's fingers replace the capture's at `t`."""
+        return self._curve(self.finger_weight_keys, t)
+
+    @staticmethod
+    def _curve(points: list[tuple[float, float]], t: float) -> float:
+        if t <= points[0][0]:
+            return points[0][1]
+        for (t0, w0), (t1, w1) in zip(points, points[1:]):
+            if t <= t1:
+                return w0 + (w1 - w0) * EASES["smooth"]((t - t0) / (t1 - t0) if t1 > t0 else 1.0)
+        return points[-1][1]
 
     @property
     def frames(self) -> int:

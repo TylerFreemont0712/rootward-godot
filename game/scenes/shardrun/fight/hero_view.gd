@@ -160,6 +160,11 @@ func release_in(seconds: float) -> void:
 		character.release_in(seconds)
 
 
+## Seconds until the current cast's release (the strike, or the snap), 0 for a skin that does not time its casts.
+func release_left() -> float:
+	return character.release_left() if character != null else 0.0
+
+
 ## The volley is over: a 3D skin lets go of its held cast (a sprite skin's cast already ended on its own).
 func end_cast() -> void:
 	if character != null:

@@ -29,8 +29,10 @@ from mathutils import Matrix, Quaternion, Vector
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "pipeline" / "moves"))
+sys.path.insert(0, str(ROOT / "pipeline" / "blender"))
 
 import motion
+import retarget
 
 OUT = ROOT / "game" / "characters" / "moves"
 MIRROR = Matrix.Diagonal((-1.0, 1.0, 1.0))
@@ -42,6 +44,8 @@ CURL = {"Thumb": (25.0, 30.0, 40.0), "Other": (75.0, 95.0, 60.0)}
 FAN = {"Thumb": 0.6, "Index": 1.0, "Middle": 0.25, "Ring": -0.45, "Little": -1.0}
 # How much more each finger curls at `cascade` 1: a relaxed hand curls from the index (least) to the little finger.
 CASCADE = {"Thumb": 0.0, "Index": -0.12, "Middle": 0.0, "Ring": 0.14, "Little": 0.28}
+# Hand parameters that pose the fingers; in a mocap clip a hand given any of them has its fingers keyed, not captured.
+FINGER_KEYS = {"curl", "cascade", "spread", "point", "vee", "thumb", "oppose", "index", "middle", "ring", "little"}
 # At rest (VRM T-pose) every palm faces down and every thumb points to the front.
 PALM = Vector((0.0, 0.0, -1.0))
 FRONT = Vector((0.0, -1.0, 0.0))
@@ -133,7 +137,9 @@ def limb_rotation(part: str, p: dict[str, float]) -> Matrix | None:
 
 
 def finger_rotations(side: str, hand: dict[str, float], rest: dict[str, Matrix]) -> dict[str, Matrix]:
-    """Each finger segment's rotation from the hand's `curl`, `cascade`, `spread`, `point`, `vee` and `thumb`."""
+    """Each finger segment's rotation from the hand's `curl`, `cascade`, `spread`, `point`, `vee` and `thumb`; a finger
+    named on its own (`middle`: 0.9) takes that curl outright, and `oppose` swings the thumb across under the palm
+    toward the fingers (degrees), as it does to press on the middle finger for a snap."""
     out: dict[str, Matrix] = {}
     curl = hand.get("curl", 0.0)
     for finger in FINGERS:
@@ -147,6 +153,7 @@ def finger_rotations(side: str, hand: dict[str, float], rest: dict[str, Matrix])
             amount = curl * (1.0 - hand.get("vee", 0.0))
         if finger != "Thumb":
             amount = min(1.0, max(0.0, amount + CASCADE[finger] * hand.get("cascade", 0.0)))
+        amount = hand.get(finger.lower(), amount)
         spread = hand.get("spread", 0.0) * FAN[finger]
         if hand.get("vee", 0.0) and finger in ("Index", "Middle"):
             spread += hand["vee"] * (10.0 if finger == "Index" else -10.0)
@@ -158,15 +165,30 @@ def finger_rotations(side: str, hand: dict[str, float], rest: dict[str, Matrix])
             turn = about(direction.cross(PALM), CURL[kind][i] * amount)
             if i == 0 and spread:
                 turn = about(direction.cross(FRONT), spread) @ turn
+            if i == 0 and finger == "Thumb" and hand.get("oppose", 0.0):
+                # About the hand's length: the thumb, pointing to the front at rest, swings down under the palm.
+                along = rest[f"{side}Hand"] @ Vector((0.0, 1.0, 0.0))
+                turn = about(along, hand["oppose"] * (1.0 if side == "Left" else -1.0)) @ turn
             out[name] = turn
     return out
 
 
-def apply_pose(armature: bpy.types.Object, pose: motion.Pose, rest: dict[str, Matrix]) -> None:
+def apply_pose(
+    armature: bpy.types.Object,
+    pose: motion.Pose,
+    rest: dict[str, Matrix],
+    base: dict[str, tuple[Quaternion, Vector]] | None = None,
+    own: dict[str, float] | None = None,
+    fingers: float = 1.0,
+) -> None:
+    """Poses the skeleton from readable parameters. Over a captured `base` (a mocap clip) the parameters are offsets
+    turned on top of the capture, except on `own` bones, which they pose outright by that bone's weight, and on the
+    fingers of a hand given finger parameters, which they pose instead of the capture."""
     for pose_bone in armature.pose.bones:
         pose_bone.rotation_quaternion = Quaternion()
         pose_bone.location = Vector()
     rotations: dict[str, Matrix] = {}
+    keyed_fingers: set[str] = set()
     for bone, params in pose.items():
         side, part = side_of(bone)
         if bone in TORSO:
@@ -179,14 +201,40 @@ def apply_pose(armature: bpy.types.Object, pose: motion.Pose, rest: dict[str, Ma
                 rotations[bone] = MIRROR @ left @ MIRROR if side == "Right" else left
             if part == "Hand":
                 rotations.update(finger_rotations(side, params, rest))
+                if FINGER_KEYS & set(params):
+                    keyed_fingers.add(side)
+    hips = pose.get("Hips", {})
+    offset = Vector((hips.get("side", 0.0), -hips.get("forward", 0.0), hips.get("lift", 0.0)))
+    if base is None:
+        for bone, turn in rotations.items():
+            if bone not in armature.pose.bones:
+                continue
+            r = rest[bone]
+            armature.pose.bones[bone].rotation_quaternion = (r.inverted() @ turn @ r).to_quaternion()
+        armature.pose.bones["Hips"].location = rest["Hips"].inverted() @ offset
+        return
+    own = own or {}
+    for bone, (turn, travel) in base.items():
+        armature.pose.bones[bone].rotation_quaternion = turn
+        if bone == "Hips":
+            armature.pose.bones[bone].location = travel
     for bone, turn in rotations.items():
         if bone not in armature.pose.bones:
             continue
         r = rest[bone]
-        armature.pose.bones[bone].rotation_quaternion = (r.inverted() @ turn @ r).to_quaternion()
-    hips = pose.get("Hips", {})
-    offset = Vector((hips.get("side", 0.0), -hips.get("forward", 0.0), hips.get("lift", 0.0)))
-    armature.pose.bones["Hips"].location = rest["Hips"].inverted() @ offset
+        keyed = (r.inverted() @ turn @ r).to_quaternion()
+        captured = base.get(bone, (Quaternion(), Vector()))[0]
+        side, part = side_of(bone)
+        if part.startswith(FINGERS):
+            if side in keyed_fingers:
+                armature.pose.bones[bone].rotation_quaternion = captured.slerp(keyed, fingers)
+            continue
+        # An owned bone is the keys' pose by its weight (at 0, the capture alone); any other bone is offset by them.
+        if bone in own:
+            armature.pose.bones[bone].rotation_quaternion = captured.slerp(keyed, own[bone])
+        else:
+            armature.pose.bones[bone].rotation_quaternion = captured @ keyed
+    armature.pose.bones["Hips"].location = base.get("Hips", (None, Vector()))[1] + rest["Hips"].inverted() @ offset
 
 
 LEGS = {"LeftFoot": ("LeftUpperLeg", "LeftLowerLeg"), "RightFoot": ("RightUpperLeg", "RightLowerLeg")}
@@ -266,7 +314,17 @@ def keep_above_floor(armature: bpy.types.Object) -> None:
         aim(lower, hip + toward * d, 1.0)
 
 
-def key_clip(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str, Matrix], ground: dict) -> bpy.types.Action:
+def captured(clip: motion.Clip, sources: dict, t: float) -> dict[str, tuple[Quaternion, Vector]] | None:
+    """The clip's motion capture at `t`, retargeted (None for a clip keyed from poses alone)."""
+    takes = clip.mocap_at(t)
+    if not takes:
+        return None
+    return retarget.blend([(sources[source].basis(action, at), weight) for source, action, at, weight in takes])
+
+
+def key_clip(
+    armature: bpy.types.Object, clip: motion.Clip, rest: dict[str, Matrix], ground: dict, sources: dict
+) -> bpy.types.Action:
     """Poses every frame (keys, then planted feet) with no action assigned, then keys them all: while an action is
     assigned, each update would re-evaluate it and undo the solved legs."""
     armature.animation_data_create().action = None
@@ -275,7 +333,15 @@ def key_clip(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str, Matr
     targets = None
     for frame in range(clip.frames):
         pose = clip.sample(frame)
-        apply_pose(armature, pose, rest)
+        t = frame / motion.FPS
+        apply_pose(
+            armature,
+            pose,
+            rest,
+            captured(clip, sources, t),
+            {b: clip.own_weight(b, t) for b in clip.own},
+            clip.finger_weight(t),
+        )
         bpy.context.view_layer.update()
         if targets is None:
             targets = foot_targets(armature)
@@ -334,12 +400,16 @@ def main() -> None:
     rest = {b.name: b.matrix_local.to_3x3() for b in armature.data.bones if b.name in humanoid}
     hips_height = armature.data.bones["Hips"].head_local.z
     library = motion.load_library()
+    clips = [motion.load_clip(clip_id, library) for clip_id in motion.clip_ids()]
+    ours = set(bpy.data.actions)
+    sources = retarget.load_all(armature, {take["source"] for clip in clips for take in clip.takes})
     meta_path = OUT / "moves.json"
     meta: dict = {"clips": {}}
-    for clip_id in motion.clip_ids():
-        clip = motion.load_clip(clip_id, library)
+    keyed: list[bpy.types.Action] = []
+    for clip in clips:
+        clip_id = clip.id
         ground: dict = {}
-        key_clip(armature, clip, rest, ground)
+        keyed.append(key_clip(armature, clip, rest, ground, sources))
         meta["clips"][clip_id] = {
             "length": clip.length,
             "loop": clip.loop,
@@ -354,6 +424,12 @@ def main() -> None:
         log(f"clip {clip_id}: {clip.frames} frames")
     armature.animation_data.action = None
     apply_pose(armature, {}, rest)
+    # Only our clips go into the library: the capture's skeletons and their clips are taken out before the export.
+    for source in sources.values():
+        bpy.data.objects.remove(source.armature)
+    for action in list(bpy.data.actions):
+        if action not in keyed and action not in ours:
+            bpy.data.actions.remove(action)
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / "rootward.glb"
     armature.select_set(True)

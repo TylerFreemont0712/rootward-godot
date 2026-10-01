@@ -20,17 +20,18 @@ const TOON := preload("res://characters/toon.gdshader")
 const OUTLINE := preload("res://characters/outline.gdshader")
 const MOVES := "res://characters/moves/rootward.glb"
 const MOVES_META := "res://characters/moves/moves.json"
-## Seconds to cross-fade from one clip into the next.
+## Seconds to cross-fade from one clip into the next, and from a finished clip back into the idle (longer: softer).
 const BLEND := 0.18
+const BLEND_TO_IDLE := 0.3
 ## Clips that loop; every other clip returns to the idle when it ends (or holds its last pose, see HOLDS).
 const LOOPS: Array[String] = ["idle-breathe", "channel"]
-const HOLDS: Array[String] = ["victory", "death", "windup"]
+const HOLDS: Array[String] = ["death"]
 ## A cast ends in its push, held: "<cast>-hold" loops it while the circle fires and "<cast>-end" lets go (end_cast).
 const CASTS: Array[String] = ["cast-light", "cast-heavy"]
 const IDLE := "idle-breathe"
 ## Limited animation (ADR-0029): a humanoid skin's pose, leg IK and springs advance together this many times a second
-## and hold in between, as Guilty Gear and 2XKO animate (no in-between interpolation reads as drawn, not 3D). A skin's
-## `style.fps` overrides it; ROOTWARD_LIMITED=0 plays smoothly, for comparison.
+## and hold in between, as Guilty Gear and 2XKO animate. Off by default since ADR-0030 (the player found it choppy):
+## ROOTWARD_LIMITED=15 (any rate) turns it on, ROOTWARD_LIMITED=style uses a skin's own `style.fps`.
 const LIMITED_FPS := 15.0
 ## How far a cast may be sped up or slowed down to land its release on the stage's beat.
 const RELEASE_SPEED := Vector2(0.55, 2.2)
@@ -61,6 +62,9 @@ var _held := 0.0
 var _cast := ""
 var _letting_go := false
 var _charge_until := -1.0
+## The slowed charge's window in clip time (it starts at x) and its speed.
+var _charge_from := -1.0
+var _charge_speed := 1.0
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -137,12 +141,12 @@ func play(clip: String) -> void:
 	_play(clip)
 
 
-func _play(clip: String) -> void:
+func _play(clip: String, blend := BLEND) -> void:
 	_charge_until = -1.0
 	_serial += 1
 	current = clip
 	player.speed_scale = 1.0
-	player.play(clip, BLEND)
+	player.play(clip, blend)
 	_schedule_face(clip)
 
 
@@ -158,16 +162,38 @@ func release_in(seconds: float) -> void:
 	var left := float(release) - at
 	if left <= 0.0:
 		return
-	var charge: Variant = facts.get("charge")
-	# LEARN: wait in the wind-up, never in the strike. Only the coil before `charge` is stretched; once the playhead
-	# passes it (_process) the speed returns to 1, so the snap is the same whatever the circle's length.
-	if charge != null and float(charge) > at and seconds > left:
-		var strike := float(release) - float(charge)
-		var speed := (float(charge) - at) / maxf(seconds - strike, 0.01)
-		player.speed_scale = clampf(speed, CHARGE_SLOWEST, 1.0)
-		_charge_until = float(charge)
+	# LEARN: wait in the wind-up, never in the strike. Only the clip's charge window (`charge`: [from, to] in clip
+	# time, or a time, meaning from the start) is slowed to wait for a long circle; before it and after it the clip
+	# plays at its own speed (_process switches), so the gesture and the strike look the same whatever the circle.
+	var window := charge_window(facts)
+	if window.y > at and seconds > left:
+		var from := maxf(window.x, at)
+		var stretch := window.y - from
+		var own_speed := (from - at) + (float(release) - window.y)
+		_charge_speed = clampf(stretch / maxf(seconds - own_speed, 0.01), CHARGE_SLOWEST, 1.0)
+		_charge_from = from
+		_charge_until = window.y
+		player.speed_scale = _charge_speed if at >= from else 1.0
 	else:
 		player.speed_scale = clampf(left / seconds, RELEASE_SPEED.x, RELEASE_SPEED.y)
+
+
+## A clip's charge window in clip time ([from, to], or (-1, -1) without one).
+static func charge_window(facts: Dictionary) -> Vector2:
+	var charge: Variant = facts.get("charge")
+	if charge is Array and (charge as Array).size() == 2:
+		return Vector2(float(charge[0]), float(charge[1]))
+	if charge is float or charge is int:
+		return Vector2(0.0, float(charge))
+	return Vector2(-1.0, -1.0)
+
+
+## Seconds until the current clip's release at its current speed (0 when it has none or it has passed).
+func release_left() -> float:
+	var release: Variant = moves.get(current, {}).get("release")
+	if release == null or player == null:
+		return 0.0
+	return maxf(0.0, float(release) - player.current_animation_position) / maxf(player.speed_scale, 0.01)
 
 
 ## Plays in limited animation at `fps` poses a second (0: smoothly), as a skin's style sets it; the motion lab toggles
@@ -209,7 +235,7 @@ func _let_go() -> void:
 	var ending := _cast + "-end"
 	_cast = ""
 	_letting_go = false
-	_play(ending if player.has_animation(ending) else IDLE)
+	_play(ending if player.has_animation(ending) else IDLE, BLEND if player.has_animation(ending) else BLEND_TO_IDLE)
 
 
 ## Where the casting palm will be at the current clip's release, in world space; null when the clip has none.
@@ -290,8 +316,11 @@ func _add_moves() -> void:
 		if is_loop(clip) and player.has_animation(clip):
 			player.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	player.animation_finished.connect(_on_finished)
-	if OS.get_environment("ROOTWARD_LIMITED") != "0":
+	var limited := OS.get_environment("ROOTWARD_LIMITED")
+	if limited == "style":
 		_limited_fps = float(_style_facts.get("fps", LIMITED_FPS))
+	elif limited.is_valid_float():
+		_limited_fps = float(limited)
 	if _limited_fps > 0.0:
 		player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		if skeleton != null:
@@ -308,9 +337,14 @@ func _process(delta: float) -> void:
 		step = _held
 		_held = 0.0
 		player.advance(step)
-	if _charge_until >= 0.0 and player != null and player.current_animation_position >= _charge_until:
-		player.speed_scale = 1.0
-		_charge_until = -1.0
+	_hand_off_early()
+	if _charge_until >= 0.0 and player != null:
+		var position := player.current_animation_position
+		if position >= _charge_until:
+			player.speed_scale = 1.0
+			_charge_until = -1.0
+		elif position >= _charge_from:
+			player.speed_scale = _charge_speed
 	# The feet's targets follow the pose just reached, before the skeleton's IK and springs run on it.
 	if _legs != null and player != null:
 		_legs.update(moves.get(current, {}), player.current_animation_position)
@@ -430,16 +464,49 @@ func is_loop(clip: String) -> bool:
 	return bool(moves.get(clip, {}).get("loop", clip in LOOPS))
 
 
+## A clip that ends hands over to what follows it a blend's length *before* its end, so the cross-fade has the clip
+## to fade from (_process). This is the fallback for a clip that ends without that.
 func _on_finished(clip: StringName) -> void:
-	clip_finished.emit(String(clip))
+	_hand_off(String(clip))
+
+
+## What follows a clip, and how long it fades into it: a cast's hold (or its letting go), the idle, or nothing (a
+## loop, or a pose that is held, as death is).
+func _after(clip: String) -> Array:
+	if clip == _cast:
+		# The push is reached: held while the circle fires, unless the volley is already over.
+		if _letting_go or not player.has_animation(clip + "-hold"):
+			var ending := clip + "-end"
+			return [ending, BLEND] if player.has_animation(ending) else [IDLE, BLEND_TO_IDLE]
+		return [clip + "-hold", BLEND]
+	if clip in HOLDS or is_loop(clip):
+		return []
+	return [IDLE, BLEND_TO_IDLE]
+
+
+func _hand_off(clip: String) -> void:
+	var next := _after(clip)
+	clip_finished.emit(clip)
 	player.speed_scale = 1.0
 	_charge_until = -1.0
-	var ended := String(clip)
-	if ended == _cast:
-		# The push is reached: held while the circle fires, unless the volley is already over.
-		if _letting_go or not player.has_animation(ended + "-hold"):
-			_let_go()
-		else:
-			_play(ended + "-hold")
-	elif not ended in HOLDS and not is_loop(ended):
-		_play(IDLE)
+	if next.is_empty():
+		return
+	if clip == _cast and String(next[0]) != clip + "-hold":
+		_cast = ""
+		_letting_go = false
+	_play(String(next[0]), float(next[1]))
+
+
+# LEARN: the mixer is deterministic (Godot's default): a cross-fade blends the new clip over what the old one still
+# contributes, and a clip that has *finished* contributes nothing, so a fade started from animation_finished rose out
+# of the rest pose (a T-pose arm flashed up). Starting the fade while the old clip still plays its last moments
+# blends from where it really is.
+func _hand_off_early() -> void:
+	if player == null or current == "" or not player.is_playing() or player.current_animation != current:
+		return
+	var next := _after(current)
+	if next.is_empty():
+		return
+	var left := (player.current_animation_length - player.current_animation_position) / maxf(player.speed_scale, 0.01)
+	if left <= float(next[1]):
+		_hand_off(current)

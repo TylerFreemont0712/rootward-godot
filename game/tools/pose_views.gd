@@ -3,7 +3,7 @@ extends Node3D
 ## behind her shoulder, on a floor with stride lines, the feet planted as in a fight.
 ##   ROOTWARD_CHARACTER=dummy ROOTWARD_CLIP=idle-breathe ROOTWARD_AT=0 \
 ##     scripts/screenshot.sh res://tools/pose_views.tscn shots/pose.png 20
-## ROOTWARD_REST=1 shows the model as built (no clip, no leg IK).
+## ROOTWARD_REST=1 shows the model as built (no clip, no leg IK); ROOTWARD_ZOOM=1 frames the upper body only.
 
 const VIEWS: Array[Array] = [["stage", 35.0], ["front", 0.0], ["her side", 90.0], ["behind", 150.0]]
 const GAP := 1.15
@@ -29,7 +29,7 @@ func _ready() -> void:
 	add_child(key)
 	for i in VIEWS.size():
 		var view: Array = VIEWS[i]
-		var spot := Vector3((i - 1.5) * GAP, 0.0, 0.0)
+		var spot := Vector3((i - 1.5) * GAP * (0.55 if OS.get_environment("ROOTWARD_ZOOM") != "" else 1.0), 0.0, 0.0)
 		var hero := StageCharacter.create(id)
 		hero.position = spot
 		hero.rotation_degrees.y = float(view[1])
@@ -57,6 +57,11 @@ func _ready() -> void:
 	# A little above her, looking down, so the stride lines on the floor show where the feet stand.
 	camera.position = Vector3(0, 1.85, 6)
 	camera.rotation_degrees.x = -9.0
+	if OS.get_environment("ROOTWARD_ZOOM") != "":
+		# The upper body only, for hands and faces.
+		camera.size = 1.15
+		camera.position = Vector3(0, 1.25, 6)
+		camera.rotation_degrees.x = 0.0
 	add_child(camera)
 
 

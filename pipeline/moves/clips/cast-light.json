@@ -1,83 +1,93 @@
 {
-  "_about": "Coil (the lead hand sweeps across to the far shoulder, weight back, the torso turned away, the eyes kept on the foes) and charge while the circle draws; then the hips fire first, the chest follows, the elbow leads and the palm snaps out at the circle (the release). It ends in the push held: cast-light-hold keeps it while the bolts fly, cast-light-end lets go.",
-  "length": 0.75,
+  "_about": "The light cast is a finger snap over the breathing idle: the lead hand rises beside her head, cocks, snaps toward the foes (the release: the circle appears) and eases back down into the idle. The body stays in the capture, turning a touch into the snap.",
+  "length": 1.5,
   "hand": "LeftHand",
   "events": {
-    "release": 0.49,
-    "charge": 0.36
+    "release": 0.52
   },
-  "face": [
+  "mocap": [
     {
-      "t": 0.1,
-      "expression": "angry",
-      "weight": 0.6
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 1.5
     }
   ],
+  "own": {
+    "bones": [
+      "LeftUpperArm",
+      "LeftLowerArm",
+      "LeftHand"
+    ],
+    "weight": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.4,
+        1.0
+      ],
+      [
+        0.85,
+        1.0
+      ],
+      [
+        1.5,
+        0.0
+      ]
+    ]
+  },
   "keys": [
     {
       "t": 0.0,
-      "pose": "stance"
+      "pose": "idle_offsets"
     },
     {
-      "t": 0.14,
-      "pose": "coil",
-      "ease": "cubic_out"
+      "t": 0.4,
+      "pose": "snap_set",
+      "ease": "smooth"
     },
     {
-      "t": 0.36,
-      "pose": "coil_deep",
+      "t": 0.48,
+      "pose": "snap_cock",
       "ease": "sine"
     },
     {
-      "t": 0.43,
-      "pose": "drive",
-      "ease": "cubic_in"
-    },
-    {
-      "t": 0.49,
-      "pose": "push",
+      "t": 0.52,
+      "pose": "snap",
       "ease": "expo_out"
     },
     {
-      "t": 0.75,
-      "pose": "push_hold",
+      "t": 0.85,
+      "pose": "snap_after",
       "ease": "sine"
+    },
+    {
+      "t": 1.5,
+      "pose": "idle_offsets",
+      "ease": "smooth"
     }
   ],
-  "lag": {
-    "Hips": -0.03,
-    "Spine": -0.015,
-    "UpperArm": 0.015
-  },
   "follow": {
-    "Hand": [
-      7,
-      0.42
-    ],
     "LowerArm": [
-      9,
-      0.55
-    ],
-    "Head": [
-      5.5,
+      7,
       0.5
     ],
-    "Chest": [
-      9,
-      0.7
+    "Head": [
+      5,
+      0.6
     ]
   },
-  "layers": [
+  "face": [
     {
-      "kind": "tremble",
-      "from": 0.2,
-      "to": 0.4,
-      "amp": 1.2,
-      "fade": 0.06,
-      "bones": [
-        "LeftHand",
-        "LeftLowerArm"
-      ]
+      "t": 0.35,
+      "expression": "happy",
+      "weight": 0.5
+    },
+    {
+      "t": 1.3,
+      "expression": "neutral"
     }
   ]
 }
