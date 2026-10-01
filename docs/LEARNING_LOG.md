@@ -589,3 +589,10 @@ Removing the old bar from its parent hides it immediately; `queue_free()` keeps 
 the frame ends. Calling a navigation method directly misses this failure, so the regression emits the actual
 signal and `scripts/menu-navigation.sh` sends mouse press/release events through the viewport, including scene
 handoffs and returns with motion both enabled and disabled. Its profiles and settings are isolated per process.
+
+## Shrink the layout before shrinking the letters (`game/scenes/title/`)
+Scaling an entire menu also scales its text and click targets. The compact Foundry panels instead reduce padding,
+group preferences in a row, and place the optional tutorial on its own tab. Normal text remains 18 pixels in the
+design canvas. The carousel is the exception: its existing card geometry can be scaled inside a plain Control,
+but a surrounding wrapper must reserve the scaled footprint because containers measure unscaled minimum sizes.
+English and Japanese layout tests check the resulting panel bounds, and screenshots check the actual text flow.

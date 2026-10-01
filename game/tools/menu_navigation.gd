@@ -66,7 +66,7 @@ func _walk() -> void:
 				await _click("Back")
 		await _click("Back")
 		# A real scene replacement must leave the new scene ready and the curtain unlocked.
-		Game.profile.tutorial = {"trial_prompted": true}
+		Game.profile.tutorial = {}
 		Game.profiles.save_profile(Game.profile)
 		await _click("Adventure")
 		await _click("Begin a new descent")
@@ -78,7 +78,8 @@ func _walk() -> void:
 		await _expect_scene(Game.SHARDRUN)
 		await _return_from_run()
 		await _click("Adventure")
-		await _click("Continue Pip's travels" if _button("Continue Pip's travels") != null else "Pip's travels")
+		await _click("Pip's travels")
+		await _click("Continue tutorial" if _button("Continue tutorial") != null else "Start tutorial")
 		await _expect_scene(Game.SHARDRUN)
 		await _return_from_run()
 		await _click("Academy")

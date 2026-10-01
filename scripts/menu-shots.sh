@@ -2,7 +2,8 @@
 # Review the Kernel Foundry front end with isolated saves, on a private virtual display.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-pages=(home resume adventure settings audio character academy library foes records profiles home-ja adventure-ja)
+pages=(home resume adventure adventure-resume pip settings audio settings-battle character academy library foes records
+  profiles profile-edit guide commit-log home-ja adventure-ja)
 for page in "${pages[@]}"; do
   ROOTWARD_MENU="$page" scripts/screenshot.sh res://tools/foundry_shot.tscn "shots/foundry/$page.png" 30 \
     > "/tmp/rootward-foundry-$page.log" 2>&1

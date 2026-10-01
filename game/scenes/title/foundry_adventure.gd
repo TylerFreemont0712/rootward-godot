@@ -16,6 +16,8 @@ const MODES: Array[Dictionary] = [
 	{"id": "deck", "name": "Card Shardrun"},
 ]
 
+var _tab := "descent"
+
 
 static func make() -> FoundryAdventurePanel:
 	var panel := FoundryAdventurePanel.new()
@@ -25,7 +27,7 @@ static func make() -> FoundryAdventurePanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(1030, 760)
+	custom_minimum_size = Vector2(700, 510)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
@@ -33,13 +35,29 @@ func _build() -> void:
 			),
 			FoundryUi.rule()
 		],
-		14
+		12
 	)
-	column.add_child(
-		Ui.label(
-			FoundryUi.text("The lift is waiting. Prepare your next descent.", "リフトが待っている。次の冒険の準備をしよう。"), "Muted", true
+	var tabs := Ui.hbox([], 18)
+	for tab: String in ["descent", "pip"]:
+		var choose := func() -> void:
+			_tab = tab
+			_rebuild()
+		tabs.add_child(
+			Ui.choice(
+				FoundryUi.text("Descent", "冒険へ") if tab == "descent" else FoundryUi.text("Pip's travels", "ピップの旅"),
+				_tab == tab,
+				choose
+			)
 		)
-	)
+	column.add_child(tabs)
+	if _tab == "pip":
+		_tutorial(column)
+	else:
+		_descent(column)
+	add_child(column)
+
+
+func _descent(column: VBoxContainer) -> void:
 	var modes := Ui.hbox([], 12)
 	for mode: Dictionary in MODES:
 		if mode.id == "deck" and not (Game.sessions.deck as ShardrunSession).in_progress():
@@ -52,7 +70,7 @@ func _build() -> void:
 	column.add_child(modes)
 	var character := FoundryUi.action(
 		FoundryUi.text("Artificer", "クラフター"),
-		_skin_name() + FoundryUi.text(" · Choose class & skin", " · クラスとすがたを選ぶ"),
+		_skin_name() + FoundryUi.text(" · Class & skin", " · クラスとすがた"),
 		func() -> void: character_requested.emit()
 	)
 	column.add_child(character)
@@ -78,11 +96,13 @@ func _build() -> void:
 	else:
 		column.add_child(
 			Ui.label(
-				FoundryUi.text("No descent underway. A fresh journey awaits.", "冒険はまだ始まっていない。新しい旅が待っているよ。"), "Faint"
+				FoundryUi.text("The lift is waiting. Prepare your next descent.", "リフトが待っている。次の冒険の準備をしよう。"),
+				"Muted",
+				true
 			)
 		)
-	var runtime := Ui.hbox([Ui.label(FoundryUi.text("LANGUAGE", "言語"), "Faint"), Ui.spacer()], 8)
 	var usable := Game.languages()
+	var runtime := Ui.hbox([], 8)
 	for language: String in SandboxJob.LANGUAGES:
 		var choose := func() -> void:
 			Settings.language = language
@@ -94,18 +114,28 @@ func _build() -> void:
 		)
 		control.disabled = language not in usable
 		runtime.add_child(control)
-	column.add_child(runtime)
-	var challenge := Ui.hbox([Ui.label(FoundryUi.text("CHALLENGE", "難しさ"), "Faint"), Ui.spacer()], 8)
-	for difficulty: Dictionary in Game.display_catalog().config.difficulties:
-		var choose := func() -> void:
-			Settings.difficulty = difficulty.id
+	var challenge := OptionButton.new()
+	var difficulties: Array = Game.display_catalog().config.difficulties
+	for difficulty: Dictionary in difficulties:
+		challenge.add_item(difficulty.name)
+		if difficulty.id == Settings.difficulty:
+			challenge.selected = challenge.item_count - 1
+	challenge.item_selected.connect(
+		func(index: int) -> void:
+			Settings.difficulty = difficulties[index].id
 			Game.remember_profile_settings()
 			Settings.save_file()
-			_rebuild()
-		var control := Ui.choice(difficulty.name, Settings.difficulty == difficulty.id, choose)
-		control.tooltip_text = difficulty.summary
-		challenge.add_child(control)
-	column.add_child(challenge)
+	)
+	var preferences := Ui.hbox(
+		[
+			Ui.vbox([Ui.label(FoundryUi.text("LANGUAGE", "言語"), "Faint"), runtime], 4),
+			Ui.spacer(),
+			Ui.vbox([Ui.label(FoundryUi.text("CHALLENGE", "難しさ"), "Faint"), challenge], 4)
+		],
+		16
+	)
+	column.add_child(preferences)
+	column.add_child(FoundryUi.rule())
 	var start := FoundryUi.button(
 		FoundryUi.text("Begin a new descent", "新しい冒険を始める"),
 		func() -> void: start_requested.emit(false),
@@ -125,8 +155,7 @@ func _build() -> void:
 			Ui.tint(
 				Ui.label(
 					FoundryUi.text(
-						"The spell runtime is unavailable. Install it with scripts/fetch-sandbox.sh.",
-						"呪文を動かす環境がないよ。scripts/fetch-sandbox.shでインストールしてね。"
+						"Spell runtime unavailable: scripts/fetch-sandbox.sh", "呪文の環境がないよ: scripts/fetch-sandbox.sh"
 					),
 					"Muted",
 					true
@@ -134,24 +163,6 @@ func _build() -> void:
 				UiTheme.FAIL
 			)
 		)
-	column.add_child(FoundryUi.rule())
-	var trial_open: bool = (
-		Game.trial_session != null
-		and Game.trial_session.has_run()
-		and not Game.trial_session.state.get("trial", {}).get("done", false)
-	)
-	var pip := (
-		FoundryUi.text("Continue Pip's travels", "ピップの旅のつづき")
-		if trial_open
-		else FoundryUi.text("Pip's travels", "ピップの旅")
-	)
-	column.add_child(
-		FoundryUi.action(
-			pip,
-			FoundryUi.text("A guided first descent · 10–15 minutes", "案内つきの最初の冒険 · 10〜15分"),
-			func() -> void: trial_requested.emit()
-		)
-	)
 	column.add_child(
 		Ui.hbox(
 			[
@@ -161,10 +172,48 @@ func _build() -> void:
 				FoundryUi.button(
 					FoundryUi.text("Field guide", "遊び方"), func() -> void: help_requested.emit(), false, true
 				)
-			]
+			],
+			12
 		)
 	)
-	add_child(column)
+
+
+func _tutorial(column: VBoxContainer) -> void:
+	column.add_child(Ui.label(FoundryUi.text("An optional first journey", "はじめての旅を、好きなときに"), "Heading"))
+	column.add_child(
+		Ui.label(
+			FoundryUi.text(
+				(
+					"Travel with Pip to learn how shards become spells. Follow a short guided descent, "
+					+ "then return to your own adventure whenever you like."
+				),
+				"ピップと旅をして、シャードから呪文を作る方法を学ぼう。短い案内つきの冒険のあと、好きなときに自分の冒険へ戻れるよ。"
+			),
+			"Muted",
+			true
+		)
+	)
+	column.add_child(
+		Ui.label(
+			FoundryUi.text("10–15 minutes · Saved separately from your adventure", "10〜15分 · 冒険とは別に保存"), "Faint", true
+		)
+	)
+	var active: bool = (
+		Game.trial_session != null
+		and Game.trial_session.has_run()
+		and not Game.trial_session.state.get("trial", {}).get("done", false)
+	)
+	column.add_child(
+		FoundryUi.button(
+			(
+				FoundryUi.text("Continue tutorial", "チュートリアルのつづき")
+				if active
+				else FoundryUi.text("Start tutorial", "チュートリアルを始める")
+			),
+			func() -> void: trial_requested.emit(),
+			true
+		)
+	)
 
 
 func refresh() -> void:

@@ -17,7 +17,7 @@ static func make() -> FoundryCharacterPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(1510, 820)
+	custom_minimum_size = Vector2(1010, 550)
 	_looks = looks().filter(
 		func(look: Dictionary) -> bool: return look.id in CLASSES[0].skins or look.id not in Settings.CHARACTER_SKINS
 	)
@@ -30,10 +30,10 @@ func _build() -> void:
 			FoundryUi.heading("CHARACTER / SKINS", FoundryUi.text("Choose your appearance", "すがたを選ぶ"), _close),
 			FoundryUi.rule()
 		],
-		22
+		10
 	)
-	var classes := Ui.vbox([Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint")], 16)
-	classes.custom_minimum_size.x = 240
+	var classes := Ui.vbox([Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint")], 10)
+	classes.custom_minimum_size.x = 180
 	for entry: Dictionary in CLASSES:
 		var choose := func() -> void: selected_class = entry.id
 		var control := Ui.choice(entry.name, selected_class == entry.id, choose)
@@ -48,7 +48,7 @@ func _build() -> void:
 	)
 	classes.add_child(FoundryUi.rule())
 	classes.add_child(Ui.label(FoundryUi.text("More classes will arrive later.", "新しいクラスはこれから。"), "Faint", true))
-	classes.add_child(Ui.spacer(0, 100))
+	classes.add_child(Ui.spacer(0, 20))
 	classes.add_child(
 		Ui.label(
 			FoundryUi.text("Your skin stays with your player. Appearance only.", "すがたはプレイヤーごとに保存。強さは変わらないよ。"),
@@ -57,7 +57,8 @@ func _build() -> void:
 		)
 	)
 	_stage = Control.new()
-	_stage.custom_minimum_size = STAGE
+	_stage.size = STAGE
+	_stage.scale = Vector2.ONE * 0.66
 	_stage.clip_contents = true
 	_stage.gui_input.connect(_on_wheel)
 	for i in _looks.size():
@@ -67,17 +68,23 @@ func _build() -> void:
 	_epithet = Ui.label("", "Faint")
 	_name = Ui.label("", "Heading")
 	_note = Ui.label("", "Muted", true)
-	_note.custom_minimum_size.x = 700
+	_note.custom_minimum_size.x = 720
 	for label: Label in [_epithet, _name, _note]:
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_equip = FoundryUi.button("", _equip_current, true)
-	_equip.custom_minimum_size.x = 250
+	_equip.custom_minimum_size.x = 190
 	_dots = Ui.hbox([], 8)
 	_dots.alignment = BoxContainer.ALIGNMENT_CENTER
 	var turning := Ui.hbox([FoundryUi.button("‹", _turn.bind(-1)), _dots, FoundryUi.button("›", _turn.bind(1))], 24)
 	turning.alignment = BoxContainer.ALIGNMENT_CENTER
-	var wheel := Ui.vbox([_stage, turning, _epithet, _name, _note, _centred(_equip)], 12)
-	column.add_child(Ui.hbox([classes, wheel], 28))
+	# LEARN: containers measure unscaled minimums. A wrapper reserves the wheel's actual scaled footprint.
+	var stage_space := Control.new()
+	stage_space.custom_minimum_size = STAGE * 0.66
+	stage_space.add_child(_stage)
+	var identity := Ui.vbox([_epithet, _name], 2)
+	var footer := Ui.hbox([Ui.expand(identity), _equip], 12)
+	var wheel := Ui.vbox([stage_space, turning, footer, _note], 8)
+	column.add_child(Ui.hbox([classes, wheel], 18))
 	add_child(column)
 	_arrange(false)
 

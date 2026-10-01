@@ -9,13 +9,13 @@ static func text(english: String, japanese: String) -> String:
 
 static func theme() -> Theme:
 	var result := UiTheme.shared().duplicate(true) as Theme
-	result.default_font_size = 20
+	result.default_font_size = 18
 	for variation: String in ["Heading", "Subheading", "Narration"]:
 		result.set_font("font", variation, UiTheme.ui_font(600 if variation != "Narration" else 400))
-		result.set_font_size("font_size", variation, 30 if variation == "Heading" else 21)
+		result.set_font_size("font_size", variation, 24 if variation == "Heading" else 18)
 		result.set_constant("shadow_outline_size", variation, 0)
-	result.set_font_size("font_size", "Muted", 18)
-	result.set_font_size("font_size", "Faint", 16)
+	result.set_font_size("font_size", "Muted", 16)
+	result.set_font_size("font_size", "Faint", 14)
 	result.set_color("font_color", "Faint", UiTheme.MUTED)
 	for variation: String in ["Button", "PrimaryButton", "DangerButton", "QuietButton"]:
 		if variation == "QuietButton":
@@ -23,7 +23,7 @@ static func theme() -> Theme:
 		var primary := variation == "PrimaryButton"
 		var quiet := variation == "QuietButton"
 		var accent := UiTheme.FAIL if variation == "DangerButton" else UiTheme.AMBER
-		result.set_font_size("font_size", variation, 20)
+		result.set_font_size("font_size", variation, 18)
 		result.set_color("font_color", variation, accent if primary else UiTheme.TEXT)
 		result.set_color("font_hover_color", variation, UiTheme.AMBER)
 		result.set_color("font_pressed_color", variation, UiTheme.TEXT)
@@ -31,25 +31,28 @@ static func theme() -> Theme:
 		result.set_color("font_disabled_color", variation, UiTheme.FAINT)
 		for state: String in ["normal", "hover", "pressed", "disabled"]:
 			var lit := state in ["hover", "pressed"]
-			var fill := Color(UiTheme.PANEL_2, 0.95 if lit else 0.85)
-			var edge := accent if lit else (UiTheme.AMBER_DIM if primary else UiTheme.LINE)
+			var fill := Color(UiTheme.AMBER, 0.12 if lit else (0.06 if primary else 0.0))
+			var edge := accent if lit or primary else Color.TRANSPARENT
 			if quiet and not lit:
-				fill = Color.TRANSPARENT
 				edge = Color.TRANSPARENT
-			result.set_stylebox(state, variation, UiTheme.box(fill, edge, 1, 3, Vector2(20, 12)))
-		result.set_stylebox("focus", variation, UiTheme.box(Color.TRANSPARENT, UiTheme.TEXT, 2, 3))
+			var style := UiTheme.box(fill, edge, 0, 6, Vector2(12, 6))
+			style.border_width_bottom = 1 if lit or primary else 0
+			result.set_stylebox(state, variation, style)
+		result.set_stylebox("focus", variation, UiTheme.box(Color.TRANSPARENT, UiTheme.AMBER, 1, 6))
 	for variation: String in ["Overlay", "Card", "Header", "Sunken"]:
-		var margin := Vector2(30, 26) if variation == "Overlay" else Vector2(22, 18)
-		result.set_stylebox("panel", variation, UiTheme.box(Color(UiTheme.PANEL, 0.97), UiTheme.LINE, 1, 4, margin))
-	result.set_font_size("font_size", "LineEdit", 20)
-	result.set_font_size("font_size", "OptionButton", 20)
+		var margin := Vector2(20, 16) if variation == "Overlay" else Vector2(14, 10)
+		result.set_stylebox(
+			"panel", variation, UiTheme.box(Color(UiTheme.PANEL, 0.94), UiTheme.AMBER_DIM, 1, 10, margin)
+		)
+	result.set_font_size("font_size", "LineEdit", 18)
+	result.set_font_size("font_size", "OptionButton", 18)
 	return result
 
 
 static func button(label: String, callback: Callable, primary := false, quiet := false) -> Button:
 	var variation := "QuietButton" if quiet else ("PrimaryButton" if primary else "")
 	var control := Ui.button(label, callback, variation)
-	control.custom_minimum_size.y = 48
+	control.custom_minimum_size.y = 34
 	control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	return control
 
@@ -75,7 +78,7 @@ static func rule() -> Control:
 
 static func action(title: String, subtitle: String, callback: Callable, primary := false) -> Button:
 	var control := button(title, callback, primary)
-	control.custom_minimum_size.y = 88
+	control.custom_minimum_size.y = 60
 	control.tooltip_text = subtitle
 	# LEARN: keep the button's text for accessibility; its child labels supply the two visual text sizes.
 	for state: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
@@ -88,7 +91,7 @@ static func action(title: String, subtitle: String, callback: Callable, primary 
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side: String in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 20 if side in ["left", "right"] else 12)
+		margin.add_theme_constant_override("margin_" + side, 12 if side in ["left", "right"] else 6)
 	margin.add_child(row)
 	control.add_child(margin)
 	HoverInfo._ignore_mouse(margin)

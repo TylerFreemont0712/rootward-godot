@@ -90,7 +90,7 @@ func _build(content_ok: bool) -> void:
 		_adventure.continue_requested.connect(_continue)
 		_adventure.trial_requested.connect(_start_trial)
 		var departure := Ui.scroll(_adventure)
-		FoundryUi.place(_menu, departure, Rect2(104, 156, 1030, 782))
+		FoundryUi.place(_menu, departure, Rect2(104, 220, 700, 540))
 	else:
 		_home()
 	_reveal()
@@ -165,7 +165,7 @@ func _home() -> void:
 	)
 	resume.text = resume.text if underway else _text("↓  Begin your descent", "↓  冒険を始める")
 	FoundryUi.place(_menu, resume, Rect2(104, 418, 400, 56))
-	resume.call_deferred("grab_focus")
+	FoundryUi.focus.call_deferred(resume)
 	var note := _text("The lift is ready when you are.", "準備ができたら、リフトへ。")
 	if underway:
 		note = (
@@ -261,10 +261,10 @@ func _open_academy() -> void:
 			FoundryUi.heading("ACADEMY / THE LEARNING WORKSHOP", _text("A place to grow", "学びを育てる場所"), _close_overlay),
 			FoundryUi.rule()
 		],
-		24
+		12
 	)
 	column.add_child(Ui.tint(Ui.label(_text("IN PREPARATION", "準備中"), "Faint"), UiTheme.AMBER))
-	column.add_child(Ui.sized(Ui.label(_text("The workbench is taking shape.", "学びの工房を準備しているよ。"), "Heading", true), 34))
+	column.add_child(Ui.sized(Ui.label(_text("The workbench is taking shape.", "学びの工房を準備しているよ。"), "Heading", true), 26))
 	column.add_child(
 		Ui.label(
 			_text(
@@ -283,35 +283,28 @@ func _open_academy() -> void:
 			_text("Find another way. Understand the difference.", "別の方法を見つけ、その違いを知る。")
 		],
 	]
+	var plans := Ui.hbox([], 12)
 	for i in paths.size():
-		column.add_child(
-			Ui.panel(
-				Ui.hbox(
-					[
-						Ui.label("0%d" % (i + 1), "Subheading"),
-						Ui.vbox([Ui.label(paths[i][0], "Subheading"), Ui.label(paths[i][1], "Muted")], 8)
-					],
-					22
-				),
-				"Card"
-			)
-		)
-	column.add_child(
-		Ui.label(
-			_text(
-				"The Academy is not open yet. Your adventures and saved progress are ready as usual.",
-				"アカデミーはまだ準備中。冒険と保存した記録は、これまでどおり遊べるよ。"
+		var card := Ui.panel(
+			Ui.vbox(
+				[
+					Ui.label("0%d" % (i + 1), "Faint"),
+					Ui.label(paths[i][0], "Subheading", true),
+					Ui.label(paths[i][1], "Muted", true)
+				],
+				6
 			),
-			"Muted",
-			true
+			"Card"
 		)
-	)
+		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		plans.add_child(card)
+	column.add_child(plans)
 	var existing := FoundryUi.button(
 		_text("Open existing Verifier course", "今あるコード読解コースを開く"), func() -> void: Game.go(Game.VERIFIER), false, true
 	)
 	existing.disabled = not Sandbox.is_available(SandboxJob.JAVASCRIPT)
 	column.add_child(Ui.hbox([existing]))
-	_show_overlay(FoundryUi.page(column, Vector2(1030, 740)))
+	_show_overlay(FoundryUi.page(column, Vector2(700, 500)))
 
 
 func _open_profiles() -> void:
@@ -346,7 +339,7 @@ func _open_profiles() -> void:
 			12
 		)
 	)
-	_show_overlay(FoundryUi.page(column, Vector2(860, 0)))
+	_show_overlay(FoundryUi.page(column, Vector2(590, 0)))
 
 
 func _set_locale(locale: String) -> void:
@@ -357,11 +350,13 @@ func _set_locale(locale: String) -> void:
 
 
 func _edit_profile(id := "", required := false) -> void:
-	_show_overlay(
-		ProfilePanel.editor(
-			id, required, func() -> void: get_tree().reload_current_scene.call_deferred(), _close_overlay
-		)
+	var panel := ProfilePanel.editor(
+		id, required, func() -> void: get_tree().reload_current_scene.call_deferred(), _close_overlay
 	)
+	panel.custom_minimum_size.x = 370
+	for input: Node in panel.find_children("*", "LineEdit", true, false):
+		(input as Control).custom_minimum_size.x = 280
+	_show_overlay(panel)
 
 
 func _confirm_delete_profile() -> void:
@@ -381,6 +376,12 @@ func _open_git_log(history: Array[Dictionary]) -> void:
 
 func _open_commit_log(history: Array[Dictionary]) -> void:
 	var view := GitLogView.create(history)
+	view.custom_minimum_size.x = 700
+	for scroll: Node in view.find_children("*", "ScrollContainer", true, false):
+		(scroll as Control).custom_minimum_size.y = 350
+	var hint := view.get_child(0).get_child(2) as Label
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.custom_minimum_size.x = 40
 	view.closed.connect(_close_overlay)
 	_show_overlay(view)
 
@@ -388,7 +389,7 @@ func _open_commit_log(history: Array[Dictionary]) -> void:
 func _open_how_to() -> void:
 	var column := Ui.vbox(
 		[FoundryUi.heading("THE FIELD GUIDE", _text("Before you descend", "降りる前に"), _close_overlay), FoundryUi.rule()],
-		22
+		12
 	)
 	column.add_child(
 		Ui.label(
@@ -404,9 +405,9 @@ func _open_how_to() -> void:
 		)
 	)
 	for i in HOW_TO.size():
-		column.add_child(Ui.hbox([Ui.label("0%d" % (i + 1), "Faint"), Ui.expand(Ui.label(HOW_TO[i], "", true))], 20))
+		column.add_child(Ui.hbox([Ui.label("0%d" % (i + 1), "Faint"), Ui.expand(Ui.label(HOW_TO[i], "", true))], 12))
 	column.add_child(FoundryUi.button(_text("Travel with Pip", "ピップと旅する"), _start_trial, true))
-	_show_overlay(FoundryUi.page(column, Vector2(940, 0)))
+	_show_overlay(FoundryUi.page(column, Vector2(650, 0)))
 
 
 func _show_overlay(panel: Control) -> void:
@@ -518,18 +519,6 @@ func _begin(sandbox: bool) -> void:
 	if Game.profile.get("needs_name", false):
 		_edit_profile(String(Game.profile.id), true)
 		return
-	if (
-		Settings.playstyle == "program"
-		and not sandbox
-		and not Game.profile.get("tutorial", {}).get("trial_done", false)
-	):
-		var tutorial: Dictionary = Game.profile.get("tutorial", {})
-		if not tutorial.get("trial_prompted", false):
-			tutorial.trial_prompted = true
-			Game.profile.tutorial = tutorial
-			Game.profiles.save_profile(Game.profile)
-			_offer_trial()
-			return
 	_launch_run(sandbox)
 
 
@@ -548,10 +537,6 @@ func _start_trial() -> void:
 	var active: bool = Game.trial_session.has_run() and not Game.trial_session.state.get("trial", {}).get("done", false)
 	if Game.resume_trial() if active else Game.start_trial():
 		Game.go(Game.SHARDRUN)
-
-
-func _offer_trial() -> void:
-	_show_overlay(TrialTitle.offer(_start_trial, _launch_run.bind(false)))
 
 
 func _confirm_new_run(sandbox: bool) -> void:

@@ -14,9 +14,9 @@ static func make() -> FoundrySettingsPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(1080, 680)
+	custom_minimum_size = Vector2(740, 460)
 	var column := Ui.vbox(
-		[FoundryUi.heading("THE CONTROL ROOM", FoundryUi.text("Settings", "設定"), _close), FoundryUi.rule()], 24
+		[FoundryUi.heading("THE CONTROL ROOM", FoundryUi.text("Settings", "設定"), _close), FoundryUi.rule()], 12
 	)
 	column.add_child(
 		Ui.label(
@@ -38,10 +38,10 @@ func _build() -> void:
 			_tab = tab
 			_rebuild()
 		var control := Ui.choice(names[tab], _tab == tab, choose)
-		control.custom_minimum_size = Vector2(240, 48)
+		control.custom_minimum_size = Vector2(170, 34)
 		tabs.add_child(control)
 	column.add_child(tabs)
-	column.add_child(Ui.spacer(0, 8))
+	column.add_child(Ui.spacer(0, 0))
 	add_child(column)
 	if _tab == "Audio":
 		column.add_child(
@@ -120,10 +120,10 @@ func _build() -> void:
 
 func _setting(title: String, note: String, control: Control) -> Control:
 	var words := Ui.vbox([Ui.label(title, "Subheading"), Ui.label(note, "Muted", true)], 8)
-	words.custom_minimum_size.x = 430
+	words.custom_minimum_size.x = 280
 	words.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	control.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	return Ui.vbox([Ui.hbox([words, control], 28), FoundryUi.rule()], 20)
+	return Ui.vbox([Ui.hbox([words, control], 16), FoundryUi.rule()], 10)
 
 
 func _on_off(value: bool, apply: Callable) -> Control:
@@ -144,3 +144,10 @@ func _saved() -> void:
 
 func _rebuild() -> void:
 	FoundryUi.rebuild(self, _build)
+
+
+func _slider(value: float, apply: Callable) -> Control:
+	var row := super._slider(value, apply)
+	(row.get_child(0) as Control).custom_minimum_size.x = 190
+	(row.get_child(1) as Control).custom_minimum_size.x = 50
+	return row

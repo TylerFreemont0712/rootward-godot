@@ -15,7 +15,7 @@ static func make(catalog: Dictionary) -> FoundryLibraryPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(1390, 850)
+	custom_minimum_size = Vector2(940, 570)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
@@ -25,7 +25,7 @@ func _build() -> void:
 			),
 			FoundryUi.rule()
 		],
-		18
+		10
 	)
 	var tabs := Ui.hbox([], 10)
 	for kind: String in ["cards", "relics", "foes", "glossary"]:
@@ -46,7 +46,7 @@ func _build() -> void:
 	_search = LineEdit.new()
 	_search.placeholder_text = FoundryUi.text("Search the shelves…", "図鑑を検索…")
 	_search.text = _query
-	_search.custom_minimum_size.y = 48
+	_search.custom_minimum_size.y = 34
 	_search.text_changed.connect(
 		func(value: String) -> void:
 			_query = value
@@ -55,11 +55,19 @@ func _build() -> void:
 	column.add_child(_search)
 	if _kind == "cards":
 		var rarities := Ui.hbox([], 8)
-		for rarity: String in ["all", "common", "uncommon", "rare", "epic", "legendary", "boss"]:
-			var choose := func() -> void:
-				_rarity = rarity
-				_rebuild()
-			rarities.add_child(Ui.choice(rarity.capitalize(), _rarity == rarity, choose))
+		var rarity_ids: Array[String] = ["all", "common", "uncommon", "rare", "epic", "legendary", "boss"]
+		var rarity_picker := OptionButton.new()
+		for rarity: String in rarity_ids:
+			rarity_picker.add_item(
+				FoundryUi.text("All rarities", "すべてのレア度") if rarity == "all" else rarity.capitalize()
+			)
+		rarity_picker.selected = maxi(0, rarity_ids.find(_rarity))
+		rarity_picker.item_selected.connect(
+			func(index: int) -> void:
+				_rarity = rarity_ids[index]
+				_refresh()
+		)
+		rarities.add_child(rarity_picker)
 		if _mode == "program":
 			rarities.add_child(Ui.spacer())
 			var roles := OptionButton.new()
@@ -81,12 +89,12 @@ func _build() -> void:
 	column.add_child(_count)
 	_list = Ui.vbox([], 6)
 	var browse := Ui.scroll(_list)
-	browse.custom_minimum_size.x = 365
-	_details = Ui.vbox([], 18)
+	browse.custom_minimum_size.x = 255
+	_details = Ui.vbox([], 12)
 	var details := Ui.scroll(_details)
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var body := Ui.hbox([browse, details], 28)
-	body.custom_minimum_size.y = 550
+	var body := Ui.hbox([browse, details], 16)
+	body.custom_minimum_size.y = 290
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(body)
 	add_child(column)
@@ -127,9 +135,14 @@ func _entries() -> Dictionary:
 func _show_entry(base: Dictionary) -> void:
 	if _kind != "foes":
 		super._show_entry(base)
+		if _kind == "cards":
+			var art := _details.get_child(0).get_child(0) as Control
+			art.custom_minimum_size = Vector2(96, 96)
+		elif _kind == "relics":
+			(_details.get_child(0) as Control).custom_minimum_size = Vector2(96, 96)
 		return
 	Ui.clear(_details)
-	var art := Ui.picture("foes/" + String(base.get("sprite", base.id)), Vector2(360, 280), "◇")
+	var art := Ui.picture("foes/" + String(base.get("sprite", base.id)), Vector2(240, 190), "◇")
 	art.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_details.add_child(art)
 	_details.add_child(Ui.label(base.name, "Heading"))

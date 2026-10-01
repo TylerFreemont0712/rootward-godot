@@ -248,7 +248,7 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       named delete confirmation; the title and run summary greet the player.
 - [x] Old saves copied and byte-verified into the first profile, with the old folder retained and the name requested.
       `ROOTWARD_SAVES` continues to work; a corrupt profile cannot hide other players.
-- [x] A short fixed Trial offered on a new player's first Shardrun and from a title button, replayable and skippable.
+- [x] A short fixed Trial, now explicitly activated from Adventure's Pip's travels tab, replayable and skippable.
 - [x] Pip's chapters, interactive lessons, real sandbox commands, defeat rewind, and a profile-specific `trial.json`.
 - [x] English and Japanese Trial text, whole-run tests, a 10–15 minute timing check and screenshots at both sizes.
 
@@ -256,7 +256,7 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Approved station art behind real controls, an equipped live character and a Library / Character / Settings dock.
 - [x] Subtle local lantern and lift-light variation, stopped immediately by the existing reduced-motion setting.
 - [x] Adventure departure desk with existing playstyles, language, difficulty, resume, new descent, Pip's travels,
-      records and field guide; the first-run Trial offer and replacement confirmations retained.
+      records and field guide; replacement confirmations retained. The tutorial has its own optional tab.
 - [x] Character class column (Artificer for now) and the existing skin carousel, with persistent avatar selection.
 - [x] Front-end settings, profile management and an explicit Academy placeholder with the existing Verifier entry.
 - [x] Live Library with search, rarity and role filters, code/refactor inspection and creature portraits; finished
@@ -264,6 +264,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Keyboard focus through modals and rebuilt choices; English, Japanese and narrow-window screenshot review.
 - [x] Menu crash regression: queue old utility bars after click dispatch, test repeated button-driven page changes,
       and exercise real mouse clicks plus descent / resume / Trial / Verifier scene handoffs in isolated saves.
+- [x] Compact front-end panels, approximately one-third smaller in each dimension, with readable type, amber
+      underline controls, side-by-side preferences and Academy plans, and a smaller wrapped skin-carousel stage.
+      Pip's travels starts only by choice; ordinary descents no longer trigger a tutorial offer.
 - [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
 
 ### Later

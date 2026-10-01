@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 const ROOT := "user://test-trial-title"
 
 
-func test_first_program_start_offers_the_trial() -> void:
+func test_new_player_can_browse_optional_tutorial_without_starting_either_run() -> void:
 	# A first start needs a first profile: a folder left by an earlier run already has the Trial offered.
 	_clear(ROOT)
 	Game.reset(ROOT)
@@ -15,13 +15,19 @@ func test_first_program_start_offers_the_trial() -> void:
 	var title := (load(Game.TITLE) as PackedScene).instantiate()
 	add_child(title)
 	await get_tree().process_frame
-	title.call("_begin", false)
-	assert_bool(Game.profile.tutorial.get("trial_prompted", false)).is_true()
+	title.call("_show_setup")
+	var adventure := title.get("_adventure") as FoundryAdventurePanel
+	assert_bool(Game.profile.tutorial.get("trial_prompted", false)).is_false()
 	assert_bool(Game.session.has_run()).is_false()
-	var overlay := title.get("_overlay") as Control
-	assert_int(overlay.get_child_count()).is_greater(0)
-	assert_str(_button_text(overlay, "Start the Trial")).is_equal("Start the Trial")
-	assert_str(_button_text(overlay, "Start a full run")).is_equal("Start a full run")
+	assert_str(_button_text(adventure, "Start tutorial")).is_empty()
+	for button: Node in adventure.find_children("*", "Button", true, false):
+		if (button as Button).text == "Pip's travels":
+			(button as Button).pressed.emit()
+			break
+	assert_str(_button_text(adventure, "Start tutorial")).is_equal("Start tutorial")
+	assert_bool(Game.trial_session.has_run()).is_false()
+	assert_bool(Game.session.has_run()).is_false()
+	assert_int((title.get("_overlay") as Control).get_child_count()).is_equal(0)
 	title.queue_free()
 	await get_tree().process_frame
 

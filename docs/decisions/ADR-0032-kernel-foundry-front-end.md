@@ -15,9 +15,10 @@ later design task; this change must preserve their presentation and launch contr
   rather than a character painted into the background. Prompts and source provenance live in `finalMenuConcept/`.
 - Duplicate the shared theme for these scenes. Front-end subclasses reuse the skin wheel, persistent settings and
   archive inspection without changing their shared versions or the run UI.
-- Adventure opens a departure desk: existing playstyles, language, difficulty, new descent, resume, Pip's travels,
-  records and field guide. Existing session commands, first-run Trial offer and replacement confirmations remain
-  responsible for starting a run. Opening a menu never starts one.
+- Adventure opens a compact departure desk: existing playstyles, language, difficulty, new descent, resume,
+  records and field guide. Pip's travels has a separate optional tab with an explicit start/continue action;
+  starting an ordinary descent does not display a tutorial offer. Existing session commands and replacement
+  confirmations remain responsible for starting a run. Opening a menu or tutorial tab never starts one.
 - Character separates class from skin. Artificer is the only implemented class; its existing carousel holds the
   shipped and local skins. Equipping persists the profile's avatar and keeps the wardrobe open.
 - Academy clearly says it is in preparation, with the existing Verifier course available when its runtime is
@@ -36,6 +37,13 @@ Changing the global theme or shared menus would also restyle Shardrun before its
 would introduce a larger art and camera task than the approved concept requires.
 
 ## Consequences
+
+The compact revision reduces the large panels' width and height by roughly one-third. It keeps normal text at
+18 pixels on the design canvas, reduces padding, puts language and difficulty alongside each other, uses a rarity
+picker, and arranges the Academy's plans horizontally. Scrolling belongs inside long library/history contents;
+the outer pages fit without scrolling. A wrapper measures the scaled carousel stage, while the shared run
+wardrobe keeps its existing geometry. Buttons use warm translucent highlights and amber underlines rather than
+boxed rows. Small confirmation dialogs keep enough room for their actions and warnings.
 
 The approved painting anchors the composition across front-end pages. New classes and the Academy curriculum
 still need implementation; their menus accurately expose that limit. Some inherited catalog descriptions remain

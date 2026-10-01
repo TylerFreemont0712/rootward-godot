@@ -121,7 +121,7 @@ func test_library_creatures_come_from_the_live_catalog_and_can_be_searched() -> 
 	assert_int((panel.get("_list") as VBoxContainer).get_child_count()).is_equal(0)
 
 
-func test_adventure_keeps_focus_on_language_choice_and_offers_the_first_run_trial() -> void:
+func test_adventure_keeps_focus_on_language_choice_and_tutorial_is_opt_in() -> void:
 	_title.call("_show_setup")
 	var language := _button(_title, "JavaScript")
 	language.grab_focus()
@@ -129,11 +129,15 @@ func test_adventure_keeps_focus_on_language_choice_and_offers_the_first_run_tria
 	await get_tree().process_frame
 	assert_str(Settings.language).is_equal("javascript")
 	assert_str((get_viewport().gui_get_focus_owner() as Button).text).is_equal("JavaScript")
-	_button(_title, "Begin a new descent").pressed.emit()
-	assert_bool(Game.profile.tutorial.get("trial_prompted", false)).is_true()
+	assert_object(_button(_title, "Start tutorial")).is_null()
+	_button(_title, "Pip's travels").pressed.emit()
+	assert_object(_button(_title, "Start tutorial")).is_not_null()
+	assert_object(_button(_title, "Begin a new descent")).is_null()
 	assert_bool(Game.session.in_progress()).is_false()
-	assert_object(_button(_title, "Start the Trial")).is_not_null()
-	assert_object(_button(_title, "Start a full run")).is_not_null()
+	assert_bool(Game.trial_active).is_false()
+	_button(_title, "Descent").pressed.emit()
+	assert_object(_button(_title, "Begin a new descent")).is_not_null()
+	assert_object(_button(_title, "Start tutorial")).is_null()
 
 
 func test_library_role_filter_retains_the_selected_cards_upgrade() -> void:
@@ -198,6 +202,31 @@ func test_settings_library_and_nested_profile_buttons_can_replace_their_own_page
 		await _press(label)
 		await _press("Keep player" if label == "Delete" else "Cancel")
 		assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
+
+
+func test_compact_pages_fit_their_space_in_both_ui_languages() -> void:
+	for locale: String in ["en", "ja"]:
+		_title.call("_set_locale", locale)
+		_title.call("_show_setup")
+		await get_tree().process_frame
+		await get_tree().process_frame
+		var adventure := _panel("FoundryAdventurePanel")
+		assert_float(adventure.size.x).is_less_equal(730.0)
+		assert_float(adventure.size.y).is_less_equal(540.0)
+		for entry: Array in [
+			["_open_options", "FoundrySettingsPanel", Vector2(770, 490)],
+			["_open_skins", "FoundryCharacterPanel", Vector2(1040, 590)],
+			["_open_archive", "FoundryLibraryPanel", Vector2(970, 600)]
+		]:
+			_title.call(entry[0])
+			await get_tree().process_frame
+			await get_tree().process_frame
+			var panel := _panel(entry[1])
+			var limit: Vector2 = entry[2]
+			assert_float(panel.size.x).is_less_equal(limit.x)
+			assert_float(panel.size.y).is_less_equal(limit.y)
+			_title.call("_close_overlay")
+	_title.call("_set_locale", "en")
 
 
 func _press(label: String) -> void:
