@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rootward · Underground concepts</title>
+<style>
+:root{color-scheme:dark;--bg:#120e0a;--panel:#211a13;--line:#3c2f21;--ink:#e9dcc0;--muted:#a58f6e;--focus:#f2a541}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.5}
+button,a{touch-action:manipulation}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+a{color:#f0d5a5}header{max-width:1500px;margin:auto;padding:38px 28px 20px}h1{margin:0;font-size:clamp(26px,4vw,44px);letter-spacing:-.035em}
+.subtitle{margin:8px 0 0;color:var(--muted);max-width:800px}main{max-width:1500px;margin:auto;padding:0 28px 48px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.nav button,.tabs button{background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink);padding:11px 16px}
+.nav button[aria-pressed=true],.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}.nav .number{margin-right:8px;font-variant-numeric:tabular-nums}
+.compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel)}
+.card img{display:block;width:100%;height:auto}.card button{display:block;border:0;padding:0;background:transparent;width:100%;text-align:left;color:inherit}
+.card-copy{padding:18px 20px}.card h2{margin:0;font-size:23px}.card p{margin:5px 0 0;color:var(--muted)}.swatches{display:flex;gap:8px;margin-top:16px}
+.swatch{width:27px;height:27px;border:1px solid #ffffff50;border-radius:50%}.detail-top{display:flex;align-items:start;justify-content:space-between;gap:24px}
+.detail-top h2{font-size:32px;margin:10px 0 6px}.detail-top p{max-width:840px;margin:0;color:var(--muted)}.brief-link{flex:none;margin-top:20px}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 12px}.imagebar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:12px 0;color:var(--muted)}
+.imagebar p{margin:0}.screen{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0d1114}
+.screen button{display:block;border:0;padding:0;width:100%;background:none;cursor:zoom-in}.screen img{display:block;width:100%;height:auto}
+.navigation-notes{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0}.navigation-notes div{border:1px solid var(--line);padding:18px;border-radius:8px;background:var(--panel)}.navigation-notes h3{margin:0 0 8px;font-size:18px}.navigation-notes p{margin:0;color:var(--muted)}.note{margin-top:22px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:14px}
+[hidden]{display:none!important}dialog{background:#101316;color:var(--ink);border:1px solid var(--line);padding:12px;max-width:96vw;max-height:96vh;border-radius:8px}
+dialog::backdrop{background:#000d}.dialogbar{display:flex;justify-content:space-between;gap:24px;align-items:center;padding:0 0 10px}
+.dialogbar button{border:1px solid var(--line);border-radius:5px;padding:8px 14px;background:var(--panel);color:var(--ink)}dialog img{display:block;max-width:90vw;max-height:82vh;object-fit:contain}
+@media(max-width:760px){header{padding:26px 18px 18px}main{padding:0 18px 32px}.compare-grid{grid-template-columns:1fr}.detail-top{display:block}.brief-link{display:inline-block;margin-top:14px}.imagebar{align-items:start;flex-direction:column;gap:6px}.nav button{padding:9px 12px}.detail-top h2{font-size:27px}}
+@media(max-width:760px){.navigation-notes{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+<h1>Rootward · Two underground concepts</h1>
+<p class="subtitle">Brown and gold, smaller menus, and a descent toward the Kernel. Compare titles, maps and Shardrun arenas, then try the clickable mockups.</p>
+</header>
+<main>
+<nav class="nav" aria-label="Concept direction" id="direction-nav"></nav>
+<section id="compare" aria-label="Compare title screens"><div class="compare-grid" id="compare-grid"></div></section>
+<section id="detail" hidden aria-labelledby="detail-name">
+<div class="detail-top"><div><h2 id="detail-name"></h2><p id="detail-pitch"></p><div class="swatches" id="detail-swatches"></div></div><div class="brief-link"><a id="brief-link">Read the brief</a> · <a id="prototype-link" target="_blank" rel="noopener">Try the menus ↗</a></div></div>
+<div class="navigation-notes"><div><h3 id="navigation-name"></h3><p id="navigation-placement"></p></div><div><h3>Movement and return</h3><p id="navigation-movement"></p></div></div>
+<div class="tabs" role="tablist" aria-label="Menu image" id="image-tabs"></div>
+<div class="imagebar"><p id="image-description"></p><a id="original-link" target="_blank" rel="noopener">Open PNG at full size ↗</a></div>
+<figure class="screen" role="tabpanel" id="image-panel"><button id="zoom-button" type="button" aria-label="Enlarge concept image"><img id="active-image" alt=""></button></figure>
+</section>
+<p class="note">Rendered layout mockups using the current palette and shard art. Kernel Foundry is the current lead; richer art is planned in its <a href="05-kernel-foundry/ART_BRIEF.md">art brief</a>. No game files or saves are changed. <a href="README.md">All concepts</a>. Keyboard: 0 compares titles; 1–2 chooses a direction. Click an image to enlarge it.</p>
+<noscript><p>See <a href="05-kernel-foundry/README.md">Kernel Foundry</a> or <a href="06-rootvault-workshop/README.md">Rootvault Workshop</a> for all PNG links.</p></noscript>
+</main>
+<dialog id="zoom" aria-label="Concept image enlarged"><div class="dialogbar"><a id="zoom-original" target="_blank" rel="noopener">Open original PNG ↗</a><button id="close-zoom" type="button">Close · Esc</button></div><img id="zoom-image" alt=""></dialog>
+<script>
+"use strict";
+const directions=[{"id": "05-kernel-foundry", "number": "05", "name": "Kernel Foundry", "tag": "Underground foundry / vertical shaft", "pitch": "Current lead: compact launch controls, a bottom utility dock and a descent through brown stone and brass toward the Kernel.", "palette": [["Ground", "#120e0a"], ["Brown", "#211a13"], ["Amber", "#f2a541"], ["Parchment", "#e9dcc0"]]}, {"id": "06-rootvault-workshop", "number": "06", "name": "Rootvault Workshop", "tag": "Underground workshop / terraced route", "pitch": "A thin top command strip, compact working pages, copper root lines and a downward route through terraced caverns.", "palette": [["Ground", "#120e0a"], ["Brown", "#211a13"], ["Amber", "#f2a541"], ["Parchment", "#e9dcc0"]]}];
+const navigation={"05-kernel-foundry": {"mechanism": "Launch panel and bottom utility dock", "placement": "Play and Academy on the left; Library, Character and Settings in a low dock. Working pages leave the lift station visible.", "movement": "Open a section over the same station. Back restores its opener. Character lets you confirm a persistent skin for the preview profile."}, "06-rootvault-workshop": {"mechanism": "Top command strip and unfolding pages", "placement": "A thin global strip, working pages beneath it, Resume at right. A narrow skin list sits beside the in-game actor.", "movement": "Select a destination to unfold its page. Back restores the previous view. The route descends through terraces; battle retains the same Shardrun desk."}};
+const assets=[{"file": "01-title", "name": "Title", "description": "Title and compact primary navigation"}, {"file": "02-play", "name": "Play", "description": "Mode selection and compact launch panel"}, {"file": "03-character", "name": "Character", "description": "Skins and persistent appearance"}, {"file": "04-academy", "name": "Academy", "description": "Learning map and lesson entry"}, {"file": "05-descent-map", "name": "Descent map", "description": "Downward routes and next chamber"}, {"file": "06-shardrun-battle", "name": "Shardrun battle", "description": "Underground arena, current cards, program slots and code pane"}];
+const byId=id=>document.getElementById(id);
+let selected=-1,assetIndex=0;
+const nav=byId("direction-nav"),tabs=byId("image-tabs"),dialog=byId("zoom");
+function swatches(target,palette){
+target.replaceChildren();
+for(const [name,color] of palette){const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=color;swatch.title=name+" · "+color;swatch.setAttribute("aria-label",name+" "+color);target.append(swatch);}
+}
+function button(label,action){const el=document.createElement("button");el.type="button";el.textContent=label;el.addEventListener("click",action);return el;}
+nav.append(button("0 · Compare titles",()=>choose(-1)));
+directions.forEach((d,i)=>{
+nav.append(button(d.number+" · "+d.name,()=>choose(i)));
+const card=document.createElement("article");card.className="card";
+const select=button("",()=>choose(i));select.setAttribute("aria-label","Explore "+d.name);
+const img=document.createElement("img");img.src=d.id+"/01-title.png";img.alt=d.name+" title screen";select.append(img);
+const copy=document.createElement("div");copy.className="card-copy";
+const name=document.createElement("h2");name.textContent=d.number+" · "+d.name;
+const tag=document.createElement("p");tag.textContent=d.tag+" · "+navigation[d.id].mechanism;
+const palette=document.createElement("div");palette.className="swatches";swatches(palette,d.palette);
+copy.append(name,tag,palette);select.append(copy);card.append(select);byId("compare-grid").append(card);
+});
+assets.forEach((a,i)=>{
+const tab=button(a.name,()=>showAsset(i));tab.id="image-tab-"+i;tab.setAttribute("role","tab");tab.setAttribute("aria-controls","image-panel");
+tab.addEventListener("keydown",event=>{
+if(event.key==="ArrowRight"||event.key==="ArrowLeft"){event.preventDefault();const next=(assetIndex+(event.key==="ArrowRight"?1:-1)+assets.length)%assets.length;showAsset(next);tabs.children[next].focus();}
+});tabs.append(tab);
+});
+function choose(index){
+selected=index;
+Array.from(nav.children).forEach((el,i)=>el.setAttribute("aria-pressed",String(i===index+1)));
+byId("compare").hidden=index!==-1;byId("detail").hidden=index===-1;
+if(index<0){location.hash="compare";return;}
+const d=directions[index];byId("detail-name").textContent=d.number+" · "+d.name;byId("detail-pitch").textContent=d.pitch;
+byId("brief-link").href=d.id+"/README.md";byId("prototype-link").href="foundry-prototype.html?concept="+d.id;swatches(byId("detail-swatches"),d.palette);const n=navigation[d.id];byId("navigation-name").textContent=n.mechanism;byId("navigation-placement").textContent=n.placement;byId("navigation-movement").textContent=n.movement;showAsset(assetIndex);
+}
+function showAsset(index){
+assetIndex=index;
+Array.from(tabs.children).forEach((el,i)=>{el.setAttribute("aria-selected",String(i===index));el.tabIndex=i===index?0:-1;});
+if(selected<0)return;
+const d=directions[selected],a=assets[index],path=d.id+"/"+a.file+".png";
+const img=byId("active-image");img.src=path;img.alt=d.name+" — "+a.description;
+byId("original-link").href=path;byId("image-description").textContent=a.description;byId("image-panel").setAttribute("aria-labelledby","image-tab-"+index);
+location.hash=d.id+"/"+a.file;
+}
+byId("zoom-button").addEventListener("click",()=>{
+const source=byId("active-image");byId("zoom-image").src=source.src;byId("zoom-image").alt=source.alt;byId("zoom-original").href=source.src;dialog.showModal();
+});
+byId("close-zoom").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close();});
+document.addEventListener("keydown",event=>{
+if(dialog.open||event.altKey||event.ctrlKey||event.metaKey||event.target.matches("input,textarea,select"))return;
+if(/^[0-2]$/.test(event.key)){event.preventDefault();choose(Number(event.key)-1);}
+});
+const initial=location.hash.slice(1).split("/"),initialDirection=directions.findIndex(d=>d.id===initial[0]),initialAsset=assets.findIndex(a=>a.file===initial[1]);
+if(initialAsset>=0)assetIndex=initialAsset;choose(initialDirection);
+</script>
+</body>
+</html>

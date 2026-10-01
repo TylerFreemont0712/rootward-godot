@@ -1,4 +1,12 @@
-# Rootward — four menu and theme concepts
+# Rootward — menu and theme concepts
+
+## Current review: two underground concepts
+
+Open [underground-concepts.html](underground-concepts.html). **05 · Kernel Foundry** is the current lead; **06 · Rootvault Workshop** offers a different navigation and map layout. Each has six 1920×1080 PNGs: title, Play, Character/Skins, Academy, descent map and Shardrun battle. The gallery links to clickable offline mockups with the other menus.
+
+These are browser-rendered layouts using the existing brown/amber palette, fonts and shard assets. The simple scenery establishes composition; richer Kernel Foundry art is the next requested pass, documented in its [art brief](05-kernel-foundry/ART_BRIEF.md). The built-in image generator reached its usage limit. No API fallback or game implementation was used.
+
+The [Starfall variant pass](STARFALL_VARIANTS.md) was stopped at the user's request; its 19 images and prompts are retained. The original four directions below remain available.
 
 Prepared on 2026-10-01. These are visual proposals for selection before implementation.
 
