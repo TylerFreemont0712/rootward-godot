@@ -149,6 +149,71 @@ func test_library_role_filter_retains_the_selected_cards_upgrade() -> void:
 	assert_bool(labels.any(func(label: Label) -> bool: return label.text == "Ember Constant+")).is_true()
 
 
+func test_locale_buttons_rebuild_without_freeing_the_signal_sender() -> void:
+	for locale: String in ["日本語", "EN", "日本語", "EN"]:
+		var sender := _button(_title, locale)
+		var parent := sender.get_parent()
+		sender.grab_focus()
+		sender.pressed.emit()
+		# LEARN: a clicked control must survive until its pressed signal has finished dispatching.
+		assert_bool(is_instance_valid(sender)).is_true()
+		assert_bool(parent.is_queued_for_deletion()).is_true()
+		assert_bool(sender.is_inside_tree()).is_false()
+		await get_tree().process_frame
+	assert_str(Game.profile.preferred_language).is_equal("en")
+	assert_object(_button(_title, "Adventure")).is_not_null()
+
+
+func test_menu_buttons_round_trip_with_and_without_animation() -> void:
+	for reduced: bool in [true, false]:
+		Settings.reduced_motion = reduced
+		for label: String in ["Settings", "Character", "Library", "Academy", "Menu Tester"]:
+			await _press(label)
+			assert_int((_title.get("_overlay") as Control).get_child_count()).is_greater(0)
+			await _press("Back")
+			assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
+		await _press("Adventure")
+		assert_object(_button(_title, "Begin a new descent")).is_not_null()
+		for label: String in ["Records", "Field guide", "Artificer"]:
+			await _press(label)
+			await _press("Back")
+		await _press("Back")
+		assert_object(_button(_title, "Adventure")).is_not_null()
+		assert_bool(Game.session.in_progress()).is_false()
+
+
+func test_settings_library_and_nested_profile_buttons_can_replace_their_own_pages() -> void:
+	await _press("Settings")
+	for label: String in ["Audio", "Spell playback", "Display"]:
+		await _press(label)
+		assert_object(_button(_title, "Back")).is_not_null()
+	await _press("Back")
+	await _press("Library")
+	for label: String in ["Creatures", "Relics", "Concepts", "Shards", "Spellforge", "Shardrun"]:
+		await _press(label)
+		assert_object(_button(_title, "Back")).is_not_null()
+	await _press("Back")
+	for label: String in ["New player", "Rename", "Delete"]:
+		await _press("Menu Tester")
+		await _press(label)
+		await _press("Keep player" if label == "Delete" else "Cancel")
+		assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
+
+
+func _press(label: String) -> void:
+	var overlay := _title.get("_overlay") as Control
+	var button := _button(overlay if overlay.get_child_count() > 0 else _title, label)
+	assert_object(button).is_not_null()
+	if button == null:
+		return
+	button.grab_focus()
+	button.pressed.emit()
+	if not Settings.reduced_motion:
+		await get_tree().create_timer(0.25).timeout
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+
 func _panel(wanted: String) -> Control:
 	for child: Node in _title.find_children("*", "", true, false):
 		if child.get_script() != null and child.get_script().get_global_name() == wanted:

@@ -97,10 +97,11 @@ func _build(content_ok: bool) -> void:
 
 
 func _chrome() -> void:
-	if is_instance_valid(_utilities):
-		_utilities.free()
-	if is_instance_valid(_dock):
-		_dock.free()
+	# LEARN: locale buttons rebuild their own parent inside pressed. Detach now, free after signal dispatch.
+	for old: HBoxContainer in [_utilities, _dock]:
+		if is_instance_valid(old):
+			_canvas.remove_child(old)
+			old.queue_free()
 	var profile := FoundryUi.button(String(Game.profile.get("name", "Player")), _open_profiles, false, true)
 	profile.custom_minimum_size.x = 220
 	profile.clip_text = true

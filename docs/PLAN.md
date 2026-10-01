@@ -262,6 +262,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Live Library with search, rarity and role filters, code/refactor inspection and creature portraits; finished
       records with filters, detail and access to the commit log.
 - [x] Keyboard focus through modals and rebuilt choices; English, Japanese and narrow-window screenshot review.
+- [x] Menu crash regression: queue old utility bars after click dispatch, test repeated button-driven page changes,
+      and exercise real mouse clicks plus descent / resume / Trial / Verifier scene handoffs in isolated saves.
 - [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
 
 ### Later

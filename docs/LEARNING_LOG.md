@@ -581,3 +581,11 @@ A large, attractive transparent image can still disappear in a square card windo
 was a long horizontal row; its arrows shrank too far at card size. A compact diagonal version fills the window and
 keeps both inward pointers visible. The review fixture instantiates the real CardFace at its normal hand size,
 without overlap, so it checks the same layout the player sees without changing the battle menus.
+
+## A button must outlive its own click (`game/scenes/title/title.gd`)
+Switching the title's locale rebuilt the utility bar with `free()`, destroying the button while its `pressed`
+signal was still being dispatched. The player's log reported that error followed by a native segmentation fault.
+Removing the old bar from its parent hides it immediately; `queue_free()` keeps the emitting button alive until
+the frame ends. Calling a navigation method directly misses this failure, so the regression emits the actual
+signal and `scripts/menu-navigation.sh` sends mouse press/release events through the viewport, including scene
+handoffs and returns with motion both enabled and disabled. Its profiles and settings are isolated per process.

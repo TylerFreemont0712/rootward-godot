@@ -44,3 +44,9 @@ English. The Shardrun screens and rules are unchanged.
 `scripts/menu-shots.sh` captures home, resume, Adventure, overlays, Japanese and a 1280 × 720 wardrobe in isolated
 saves. The front-end tests cover launch separation, modal focus, avatar persistence, motion settings, creature
 search and art, choice focus, the Trial offer and role-filtered refactors.
+
+Menu rebuilds detach old controls and queue their deletion: the locale button can rebuild its own parent while its
+click signal is still being emitted. Direct method calls alone cannot verify that lifetime. The regression suite
+exercises button signals, and `scripts/menu-navigation.sh` clicks the real controls on a private display and checks
+scene handoffs with motion enabled and disabled. It uses separate profiles and settings for each process; set
+`ROOTWARD_NAVIGATION_QUIT=1` to verify the explicit Quit button in a separate process.
