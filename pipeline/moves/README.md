@@ -30,7 +30,7 @@ swings that arm backwards, so add the torso's turn to the arm's `forward`.
 | `UpperArm` | `raise`, `forward`, `twist` | above level (-72 is at her side); swing to the front; palm turns forward |
 | `LowerArm` | `bend`, `twist` | elbow bends; palm turns forward |
 | `Hand` | `bend`, `side`, `twist` | toward the palm (negative lifts the fingers: a pushing palm); toward the thumb |
-| `Hand` (fingers) | `curl` (0..1), `spread`, `point`, `vee`, `thumb` | a fist; fingers fanned; index straight; index and middle straight (a V); thumb curled |
+| `Hand` (fingers) | `curl` (0..1), `cascade` (0..1), `spread`, `point`, `vee`, `thumb` | a fist; the little finger curled more than the index (a relaxed hand); fingers fanned; index straight; index and middle straight (a V); thumb curled |
 | `UpperLeg` | `lift`, `spread`, `twist` | thigh forward; outward; knee turns out |
 | `LowerLeg` | `bend` | knee bends (foot goes back) |
 | `Foot`, `Toes` | `point`, `bend` | toes down |

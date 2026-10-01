@@ -1,6 +1,6 @@
 {
-  "_about": "A caster's guard at rest: weight on the back leg (contrapposto), the lead hand floating in front of her ready to cast, breathing, the weight drifting, the hand and head trailing on springs.",
-  "length": 3.2,
+  "_about": "A mage at ease between turns, opened toward the viewer (only the head looks at the foes): weight settled on the back leg, the free hip dropped and the shoulders tilted against it, the lead hand held loose at the waist palm up, the other hanging. Alert breathing (25 a minute), a slow drift of the weight and back, the hands and head trailing on springs.",
+  "length": 4.8,
   "loop": true,
   "keys": [
     {
@@ -8,7 +8,7 @@
       "pose": "stance"
     },
     {
-      "t": 1.6,
+      "t": 2.4,
       "pose": "stance_breath",
       "ease": "sine"
     }
@@ -26,37 +26,42 @@
   "layers": [
     {
       "kind": "breathe",
-      "amp": 1.6,
-      "period": 3.2
+      "amp": 1.4,
+      "period": 2.4
+    },
+    {
+      "kind": "bob",
+      "amp": 0.005,
+      "period": 2.4
     },
     {
       "kind": "sway",
-      "amp": 1.2,
-      "period": 6.4
+      "amp": 0.8,
+      "period": 4.8
     },
     {
       "kind": "wave",
       "bone": "LeftHand",
       "param": "bend",
-      "amp": 5,
-      "period": 1.6,
+      "amp": 4,
+      "period": 2.4,
       "phase": 0.2
     },
     {
       "kind": "wave",
-      "bone": "LeftUpperArm",
-      "param": "raise",
-      "amp": 2,
-      "period": 3.2,
-      "phase": 0.6
+      "bone": "LeftHand",
+      "param": "curl",
+      "amp": 0.05,
+      "period": 4.8,
+      "phase": 0.4
     },
     {
       "kind": "wave",
-      "bone": "LeftHand",
-      "param": "spread",
-      "amp": 4,
-      "period": 1.6,
-      "phase": 0.45
+      "bone": "Head",
+      "param": "turn",
+      "amp": 2,
+      "period": 4.8,
+      "phase": 0.7
     }
   ]
 }

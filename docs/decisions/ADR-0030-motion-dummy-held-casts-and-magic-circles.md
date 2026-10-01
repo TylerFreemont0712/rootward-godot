@@ -50,3 +50,27 @@ drift back to the idle. The cast also returned to the idle while its bolts were 
   them; `cast-ground` still marks the strongest casts.
 - Sprite skins (Vesper, Emberfox) are unchanged: they have no hold clips, and the circle works with their hand point.
 - The new clips are a first pass. The motion lab is where the player says what still reads wrong.
+
+## Amendment (2026-10-01, later): the idle, opened to the viewer
+
+The player found the idle leaning at the enemy, a foot "broken", the lead hand open and tense, and asked for the body
+turned more toward them. Measured first: the soles were level in the animation; the dummy's feet were wrong twice
+over. Its foot blocks were built at the skeleton's toe joint, which on the VRoid skeleton sits at ankle height (14 cm
+up), and its import had *fix silhouette* on (copied from an A-pose skin), which re-aims a T-pose skeleton's foot bones
+and tipped the feet toes-up even at rest. The dummy now stands its feet on the floor and imports exactly as the move
+library does (fix silhouette off).
+
+The stance follows the references (Quaternius's CC0 idles rendered from the stage's angles; the stage's "cheat out":
+the body opened halfway between the camera and the scene partner, only the head turned to them; idles are asymmetric,
+weight on one foot, hands relaxed rather than splayed):
+
+- turned about 20 degrees more toward the camera (torso about 33 degrees from it on the stage, the head about 56,
+  looking at the foes), the casts still turning into the strike;
+- the weight over the back leg, the free hip dropped and the shoulders tilted against it, nothing leaning at the foes;
+- the lead hand hanging loose in front of the hip, fingers curled in a cascade (`cascade`, the index least, the little
+  finger most), the rear arm hanging;
+- a 4.8 s loop: alert breathing (25 a minute), a slow drift of the weight, a glance.
+
+`tools/pose_views.tscn` shows a pose from four sides at once for this work (`ROOTWARD_REST=1` shows the model as
+built).
+

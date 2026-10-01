@@ -2,93 +2,106 @@
   "_about": "Named poses for clips (motion.py). Degrees and metres from the VRM T-pose; see pipeline/moves/README.md. The foes are on her LEFT: reaching to her left points at them, and a torso turn toward them adds to an arm's forward. Feet are planted by the build (the legs are solved to keep them on the floor), so a lower Hips.lift bends the knees; a positive lift is only for a jump, with the feet unplanted.",
   "stance": {
     "Hips": {
-      "lift": -0.045,
-      "turn": 12,
-      "side": -0.015,
-      "lean": -2
+      "lift": -0.035,
+      "turn": -3,
+      "side": -0.03,
+      "lean": 4
     },
     "Spine": {
-      "bend": 2
+      "bend": 2,
+      "lean": -3
     },
     "Chest": {
-      "turn": 6,
-      "bend": 0,
-      "lean": 3
+      "turn": 2,
+      "bend": 1,
+      "lean": -3
     },
     "Head": {
-      "turn": 12,
-      "bend": 6,
-      "lean": 6
+      "turn": 22,
+      "bend": 5,
+      "lean": 7
     },
     "LeftUpperArm": {
-      "raise": -42,
-      "forward": 48,
-      "twist": 10
+      "raise": -66,
+      "forward": 22,
+      "twist": 5
     },
     "LeftLowerArm": {
-      "bend": 88,
-      "twist": 30
+      "bend": 58,
+      "twist": 25
     },
     "LeftHand": {
-      "bend": -10,
-      "side": 5,
-      "curl": 0.25,
-      "spread": 16
+      "bend": 12,
+      "side": -4,
+      "curl": 0.3,
+      "cascade": 1.0,
+      "spread": 7,
+      "thumb": 0.45
     },
     "RightUpperArm": {
-      "raise": -60,
-      "forward": 10
+      "raise": -68,
+      "forward": 8
     },
     "RightLowerArm": {
-      "bend": 28
+      "bend": 18
     },
     "RightHand": {
-      "curl": 0.4,
+      "curl": 0.35,
+      "cascade": 1.0,
       "bend": 8,
-      "spread": 10
+      "spread": 5,
+      "thumb": 0.5
     },
     "LeftUpperLeg": {
       "lift": 14,
-      "spread": 13,
-      "twist": 6
+      "spread": 12,
+      "twist": 12
     },
     "RightUpperLeg": {
-      "lift": -8,
-      "spread": 10,
-      "twist": 14
+      "lift": -6,
+      "spread": 4,
+      "twist": 28
     },
-    "LowerLeg": {
-      "bend": 8
+    "LeftLowerLeg": {
+      "bend": 10
+    },
+    "RightLowerLeg": {
+      "bend": 6
     }
   },
   "stance_breath": {
     "base": "stance",
     "Hips": {
-      "lift": -0.055,
-      "turn": 12,
+      "lift": -0.04,
+      "turn": -3,
       "side": -0.022,
-      "lean": -3
+      "lean": 3
     },
     "Chest": {
-      "turn": 6,
-      "bend": -1.5,
-      "lean": 4
+      "turn": 2,
+      "bend": -0.5,
+      "lean": -2
     },
     "Head": {
-      "turn": 11,
-      "bend": 5,
-      "lean": 5
+      "turn": 19,
+      "bend": 4,
+      "lean": 6
     },
     "LeftUpperArm": {
-      "raise": -39,
-      "forward": 50,
-      "twist": 12
+      "raise": -64,
+      "forward": 24,
+      "twist": 7
+    },
+    "LeftLowerArm": {
+      "bend": 62,
+      "twist": 25
     },
     "LeftHand": {
-      "bend": -14,
-      "side": 5,
-      "curl": 0.2,
-      "spread": 20
+      "bend": 9,
+      "curl": 0.26,
+      "cascade": 1.0,
+      "spread": 9,
+      "thumb": 0.42
     }
   },
   "gather": {

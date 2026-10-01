@@ -9,7 +9,8 @@ go onto the anime skins (ADR-0030).
 Every part is a primitive weighted wholly to one bone: tapered limbs between ball joints, a three-piece torso that
 shows each spine bend, segmented fingers (the hand poses read), a head with a visor so its facing reads, and the
 casting (left) hand in the accent colour. It is written as `dummy.glb` beside a `skin.json` and flat colour textures,
-which AnimeSkin dresses in the game's toon shader and ink like any other skin.
+which AnimeSkin dresses in the game's toon shader and ink like any other skin. Its `.import` keeps
+`fix_silhouette` off, as the move library's does (the same T-pose skeleton; on, it tips the feet toes-up).
 """
 
 from __future__ import annotations
@@ -145,19 +146,20 @@ def build(armature: bpy.types.Object) -> Parts:
         p.limb(s + "UpperLeg", h(s + "UpperLeg"), h(s + "LowerLeg"), 0.075, 0.052)
         p.ball(s + "LowerLeg", h(s + "LowerLeg"), 0.054, "DummyJoint")
         p.limb(s + "LowerLeg", h(s + "LowerLeg"), h(s + "Foot"), 0.05, 0.036)
+        # The foot stands on the floor (the skin's sole is at 0; the skeleton's toe joint sits at ankle height above
+        # the ball of the foot): a sole from the heel to the ball, an instep from the ankle down to it, toes beyond.
         ankle, ball = h(s + "Foot"), h(s + "Toes")
-        floor = min(ankle.z, ball.z) - 0.035
-        forward = Vector((ball.x - ankle.x, ball.y - ankle.y, 0.0))
-        heel = ankle - forward.normalized() * 0.045
-        heel.z = floor
-        front = Vector((ball.x, ball.y, floor))
+        forward = Vector((ball.x - ankle.x, ball.y - ankle.y, 0.0)).normalized()
+        width = forward.cross(up).normalized()
+        heel = Vector((ankle.x, ankle.y, 0.0)) - forward * 0.05
+        front = Vector((ball.x, ball.y, 0.0)) + forward * 0.01
         sole = (front - heel) * 0.5
-        width = sole.cross(up).normalized() * 0.042
-        p.block(s + "Foot", heel + sole + Vector((0, 0, 0.032)), sole, width, Vector((0, 0, 0.034)), "DummyBody")
-        toe_tip = front + forward.normalized() * 0.055
+        p.block(s + "Foot", heel + sole + Vector((0, 0, 0.022)), sole, width * 0.042, Vector((0, 0, 0.022)), "DummyBody")
+        p.limb(s + "Foot", ankle, Vector((ball.x, ball.y, 0.045)) - forward * 0.02, 0.036, 0.03)
+        p.ball(s + "Foot", Vector((heel.x, heel.y, 0.04)) + forward * 0.02, 0.038, "DummyBody")
+        toe_tip = front + forward * 0.05
         toe = (toe_tip - front) * 0.5
-        p.block(s + "Toes", front + toe + Vector((0, 0, 0.022)), toe, width * 0.95, Vector((0, 0, 0.022)),
-                "DummyJoint")
+        p.block(s + "Toes", front + toe + Vector((0, 0, 0.017)), toe, width * 0.04, Vector((0, 0, 0.017)), "DummyJoint")
     return p
 
 

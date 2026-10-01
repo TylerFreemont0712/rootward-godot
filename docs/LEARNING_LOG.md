@@ -529,3 +529,10 @@ along the cast axis for the smaller circles stacked in front. Spinning a ring is
 transform, so rings, star and runes all narrow correctly however they turn. Additive blending
 (`CanvasItemMaterial.BLEND_MODE_ADD`) makes overlapping strokes brighten like light rather than cover each other.
 
+## Measure the bone before blaming the pose (`game/characters/dummy/`)
+The dummy's feet looked broken in every clip. A probe printed each foot's toe pitch and sole tilt in the idle, with the
+leg IK on and off: both were 0, so the animation was right and the model was not. Two causes, both found by looking
+at the model at rest: the skeleton's toe joint sits at ankle height (so feet built on it hovered), and the importer's
+*fix silhouette*, meant to straighten an A-pose into a T-pose, also re-aimed the T-pose skeleton's feet. A rest-pose
+check (no clip, no IK) separates "the model" from "the motion" in one picture.
+

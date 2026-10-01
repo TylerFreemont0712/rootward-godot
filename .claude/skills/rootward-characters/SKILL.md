@@ -42,6 +42,8 @@ ADR-0005, ADR-0007, ADR-0008.
   `events.charge` ends the coil, the only part slowed to wait for a long circle.
 - Clip tools against stiffness: `follow` springs (`"Hand": [7, 0.42]`), negative `lag` (hips lead), `wave` layers,
   and no dead holds (drift between two near poses).
+- A pose from four sides at once: `ROOTWARD_CLIP=idle-breathe ROOTWARD_AT=0 scripts/screenshot.sh
+  res://tools/pose_views.tscn shots/pose.png 20` (`ROOTWARD_REST=1`: the model as built, no clip, no IK).
 - The cast's magic circle is `MagicCircle` (game/scenes/shardrun/fight/magic_circle.gd), in front of the palm;
   look-dev sheet: `scripts/screenshot.sh res://tools/magic_circle_sheet.tscn shots/circles.png 10`.
 
@@ -62,6 +64,9 @@ ADR-0005, ADR-0007, ADR-0008.
   `Hips.lift` <= 0 except in an unplanted window (`plant` in the clip). The Hips must stay disconnected (the build
   does it): Blender ignores a connected bone's location.
 - Every clip starts and ends in the `stance` pose (the guard idle); the foot spots are taken from each clip's frame 0.
+- A T-pose skin built on the move library's skeleton (the dummy) imports with `fix_silhouette` **off**, as
+  `rootward.glb` does: on, it re-aims the VRoid feet and tips them toes-up. Only an A-pose rig needs it.
+- The VRoid `Toes` bone sits at ankle height; the floor (the sole) is at 0.
 
 - Blender: `--factory-startup` disables user extensions (VRM). The pipeline enables it with
   `addon_utils.enable("bl_ext.blender_org.vrm")`. VRM imports face -Y, her left +X, Z up, T-pose, quaternion bones;

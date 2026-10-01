@@ -40,6 +40,8 @@ SEGMENTS = {"Thumb": ("Metacarpal", "Proximal", "Distal"), "Other": ("Proximal",
 # How far each segment bends at `curl` 1 (a fist), and how far each finger fans at `spread` (a share of it).
 CURL = {"Thumb": (25.0, 30.0, 40.0), "Other": (75.0, 95.0, 60.0)}
 FAN = {"Thumb": 0.6, "Index": 1.0, "Middle": 0.25, "Ring": -0.45, "Little": -1.0}
+# How much more each finger curls at `cascade` 1: a relaxed hand curls from the index (least) to the little finger.
+CASCADE = {"Thumb": 0.0, "Index": -0.12, "Middle": 0.0, "Ring": 0.14, "Little": 0.28}
 # At rest (VRM T-pose) every palm faces down and every thumb points to the front.
 PALM = Vector((0.0, 0.0, -1.0))
 FRONT = Vector((0.0, -1.0, 0.0))
@@ -131,7 +133,7 @@ def limb_rotation(part: str, p: dict[str, float]) -> Matrix | None:
 
 
 def finger_rotations(side: str, hand: dict[str, float], rest: dict[str, Matrix]) -> dict[str, Matrix]:
-    """Each finger segment's rotation from the hand's `curl`, `spread`, `point`, `vee` and `thumb`."""
+    """Each finger segment's rotation from the hand's `curl`, `cascade`, `spread`, `point`, `vee` and `thumb`."""
     out: dict[str, Matrix] = {}
     curl = hand.get("curl", 0.0)
     for finger in FINGERS:
@@ -143,6 +145,8 @@ def finger_rotations(side: str, hand: dict[str, float], rest: dict[str, Matrix])
             amount = curl * (1.0 - max(hand.get("point", 0.0), hand.get("vee", 0.0)))
         elif finger == "Middle":
             amount = curl * (1.0 - hand.get("vee", 0.0))
+        if finger != "Thumb":
+            amount = min(1.0, max(0.0, amount + CASCADE[finger] * hand.get("cascade", 0.0)))
         spread = hand.get("spread", 0.0) * FAN[finger]
         if hand.get("vee", 0.0) and finger in ("Index", "Middle"):
             spread += hand["vee"] * (10.0 if finger == "Index" else -10.0)
