@@ -1,5 +1,6 @@
 {
   "id": "chill",
+  "icon": "shardrun/shard-chill",
   "name": "Chill",
   "rarity": "common",
   "cost": 0,

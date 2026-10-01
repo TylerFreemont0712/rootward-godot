@@ -1,8 +1,8 @@
 {
   "id": "pairwise-plus",
+  "icon": "shardrun/shard-cross-product",
   "name": "Pairwise+",
   "rarity": "rare",
-  "art": "pairwise",
   "cost": 2,
   "paradigm": "brute-force",
   "role": "source",

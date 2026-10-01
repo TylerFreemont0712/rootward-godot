@@ -1,12 +1,12 @@
 {
   "id": "recursive-mirror-plus",
+  "icon": "shardrun/shard-echo",
   "name": "Recursive Mirror+",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "divide-conquer",
   "role": "source",
   "complexity": "linear",
-  "art": "recursive-mirror",
   "summary": "Append a reversed copy of the volley at full power. Recursion visits each bolt once; elements, targets and guards are copied.",
   "function": "recursive_mirror_plus",
   "makes": "unsorted",

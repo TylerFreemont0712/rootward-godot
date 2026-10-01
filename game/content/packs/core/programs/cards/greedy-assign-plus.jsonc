@@ -1,8 +1,8 @@
 {
   "id": "greedy-assign-plus",
+  "icon": "shardrun/shard-seeker",
   "name": "Greedy Assign+",
   "rarity": "uncommon",
-  "art": "greedy-assign",
   "cost": 1,
   "paradigm": "greedy",
   "role": "strike",

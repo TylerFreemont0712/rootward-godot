@@ -1,8 +1,8 @@
 {
   "id": "ward-plus",
+  "icon": "shardrun/shard-ward",
   "name": "Ward+",
   "rarity": "common",
-  "art": "ward",
   "cost": 1,
   "paradigm": "neutral",
   "role": "guard",

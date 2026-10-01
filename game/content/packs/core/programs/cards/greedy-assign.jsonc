@@ -1,5 +1,6 @@
 {
   "id": "greedy-assign",
+  "icon": "shardrun/shard-seeker",
   "name": "Greedy Assign",
   "rarity": "uncommon",
   "cost": 1,

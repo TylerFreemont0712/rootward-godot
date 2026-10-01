@@ -1,5 +1,6 @@
 {
   "id": "prefix-sum",
+  "icon": "shardrun/shard-prefix-charge",
   "name": "Prefix Sum",
   "rarity": "uncommon",
   "cost": 1,

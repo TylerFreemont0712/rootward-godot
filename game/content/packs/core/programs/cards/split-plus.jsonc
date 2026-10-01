@@ -1,8 +1,8 @@
 {
   "id": "split-plus",
+  "icon": "shardrun/shard-overflow",
   "name": "Split+",
   "rarity": "common",
-  "art": "split",
   "cost": 1,
   "paradigm": "divide-conquer",
   "role": "source",

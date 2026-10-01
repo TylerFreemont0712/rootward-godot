@@ -1,12 +1,12 @@
 {
   "id": "zip-ward",
+  "icon": "shardrun/shard-guard-echo",
   "name": "Zip Ward",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "neutral",
   "role": "guard",
   "complexity": "linear",
-  "art": "zip-ward",
   "summary": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down). Existing guards pass through.",
   "function": "zip_ward",
   "forge": {

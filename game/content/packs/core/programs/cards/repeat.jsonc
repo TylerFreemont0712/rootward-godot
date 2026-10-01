@@ -1,5 +1,6 @@
 {
   "id": "repeat",
+  "icon": "shardrun/shard-double-tap",
   "name": "Repeat",
   "rarity": "common",
   "cost": 1,

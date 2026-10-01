@@ -1,8 +1,8 @@
 {
   "id": "linear-search-plus",
+  "icon": "shardrun/card-binary-execute",
   "name": "Linear Search+",
   "rarity": "uncommon",
-  "art": "linear-search",
   "cost": 1,
   "paradigm": "brute-force",
   "role": "strike",

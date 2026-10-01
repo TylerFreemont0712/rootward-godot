@@ -1,8 +1,8 @@
 {
   "id": "recursion-tree-plus",
+  "icon": "shardrun/card-divide",
   "name": "Recursion Tree+",
   "rarity": "uncommon",
-  "art": "recursion-tree",
   "cost": 1,
   "paradigm": "divide-conquer",
   "role": "source",

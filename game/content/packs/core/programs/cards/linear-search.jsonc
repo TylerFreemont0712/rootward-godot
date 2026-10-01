@@ -1,5 +1,6 @@
 {
   "id": "linear-search",
+  "icon": "shardrun/card-binary-execute",
   "name": "Linear Search",
   "rarity": "uncommon",
   "cost": 1,

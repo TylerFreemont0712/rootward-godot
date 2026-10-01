@@ -1,8 +1,8 @@
 {
   "id": "chill-plus",
+  "icon": "shardrun/shard-chill",
   "name": "Chill+",
   "rarity": "common",
-  "art": "chill",
   "cost": 0,
   "paradigm": "neutral",
   "role": "shape",

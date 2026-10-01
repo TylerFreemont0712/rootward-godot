@@ -1,5 +1,6 @@
 {
   "id": "quickselect",
+  "icon": "shardrun/card-quick-sort",
   "name": "Quickselect",
   "rarity": "uncommon",
   "cost": 1,

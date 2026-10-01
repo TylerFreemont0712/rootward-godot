@@ -1,5 +1,6 @@
 {
   "id": "lambda",
+  "icon": "shardrun/shard-amplify",
   "name": "Lambda",
   "rarity": "common",
   "cost": 0,

@@ -1,12 +1,12 @@
 {
   "id": "spark-constant",
+  "icon": "shardrun/shard-arc",
   "name": "Spark Constant",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",
   "complexity": "constant",
-  "art": "spark-constant",
   "summary": "Appends one 6-power spark bolt. const: stays in your hand until played, without using a hold slot.",
   "function": "spark_constant",
   "keywords": [

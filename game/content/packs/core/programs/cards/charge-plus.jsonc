@@ -1,8 +1,8 @@
 {
   "id": "charge-plus",
+  "icon": "shardrun/shard-arc",
   "name": "Charge+",
   "rarity": "common",
-  "art": "charge",
   "cost": 0,
   "paradigm": "neutral",
   "role": "shape",

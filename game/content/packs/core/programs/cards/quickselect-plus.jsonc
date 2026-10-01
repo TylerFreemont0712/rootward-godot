@@ -1,8 +1,8 @@
 {
   "id": "quickselect-plus",
+  "icon": "shardrun/card-quick-sort",
   "name": "Quickselect+",
   "rarity": "uncommon",
-  "art": "quickselect",
   "cost": 1,
   "paradigm": "divide-conquer",
   "role": "strike",

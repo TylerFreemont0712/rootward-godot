@@ -237,6 +237,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       32 pixels and in five Shardrun hands (`ArtUpdate.md`, `pipeline/art/sprite-polish-pass-7.json`).
 - [x] The Archives labels the Spellforge list “Shards”, exposes all 72 base entries, and resolves art for all 77 shard
       variants, including the five forged upgrades (`game/ui/archive_panel.gd`, `game/app/shardrun_views.gd`).
+- [x] Program-card pass 9: all 71 base cards use finished high-resolution art. Twenty-seven share the exact Spellforge
+      texture and six share another program design; 31 unique placeholders are repainted, seven finished designs
+      retained, and 33 duplicate card files removed. All 139 records and refactors resolve correctly (ADR-0033).
 - [ ] Continue through the fifty-five unchecked older relics in reviewable groups, keeping their meanings and colors.
 
 ### Profiles and Pip's Trial (ADR-0027)

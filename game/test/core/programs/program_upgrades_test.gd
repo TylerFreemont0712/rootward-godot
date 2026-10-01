@@ -26,7 +26,7 @@ func test_an_upgrade_is_never_drafted_and_shows_its_cards_picture() -> void:
 			continue
 		var base := String(card.id).trim_suffix("-plus")
 		assert_bool(bool(card.draftable)).override_failure_message(card.id).is_false()
-		assert_str(ShardrunViews.art(card)).is_equal("shardrun/card-" + base)
+		assert_str(ShardrunViews.art(card)).is_equal(ShardrunViews.art(catalog.shards[base]))
 		assert_str(String(card.name)).is_equal(String(catalog.shards[base].name) + "+")
 
 

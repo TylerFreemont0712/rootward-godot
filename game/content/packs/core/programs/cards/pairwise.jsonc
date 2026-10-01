@@ -1,5 +1,6 @@
 {
   "id": "pairwise",
+  "icon": "shardrun/shard-cross-product",
   "name": "Pairwise",
   "rarity": "rare",
   "cost": 2,

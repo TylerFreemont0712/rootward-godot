@@ -1,8 +1,8 @@
 {
   "id": "repeat-plus",
+  "icon": "shardrun/shard-double-tap",
   "name": "Repeat+",
   "rarity": "common",
-  "art": "repeat",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",

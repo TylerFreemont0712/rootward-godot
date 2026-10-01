@@ -1,5 +1,6 @@
 {
   "id": "knapsack-ward",
+  "icon": "shardrun/card-exhaustive-ward",
   "name": "Knapsack Ward",
   "rarity": "uncommon",
   "cost": 1,

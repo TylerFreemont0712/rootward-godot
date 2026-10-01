@@ -1,8 +1,8 @@
 {
   "id": "take-max-plus",
+  "icon": "shardrun/shard-apex",
   "name": "Take Max+",
   "rarity": "uncommon",
-  "art": "take-max",
   "cost": 1,
   "paradigm": "greedy",
   "role": "shape",

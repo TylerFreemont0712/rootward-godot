@@ -285,8 +285,10 @@ static func complexity(shard: Dictionary) -> String:
 	return shard.get("big_o", COMPLEXITY.get(shard.get("complexity", "linear"), "O(n)"))
 
 
-## The picture of a shard or a program card: its own, or the one its `art` borrows.
+## The canonical picture: a shared `icon`, a legacy `art` alias, or the shard/card's own id.
 static func art(shard: Dictionary, id := "") -> String:
+	if shard.has("icon"):
+		return String(shard.icon)
 	# A program card has a picture of its own (card-<id>, ADR-0018; a + shares its card's by `art`); an old shard, a
 	# shard's.
 	if shard.has("paradigm"):

@@ -1,12 +1,12 @@
 {
   "id": "run-length",
+  "icon": "shardrun/shard-pair-fold",
   "name": "Run Length",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "search-index",
   "role": "shape",
   "complexity": "linear",
-  "art": "run-length",
   "summary": "Combine adjacent bolts with the same element, target and guard status. Add their powers.",
   "function": "run_length",
   "makes": "unsorted",

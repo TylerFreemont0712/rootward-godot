@@ -1,5 +1,6 @@
 {
   "id": "load-balance",
+  "icon": "shardrun/shard-triage",
   "name": "Load Balance",
   "rarity": "uncommon",
   "cost": 1,

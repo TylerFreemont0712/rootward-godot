@@ -70,6 +70,18 @@ static func card() -> Dictionary:
 				"rarity": Schema.one_of(ShardrunSchemas.SHARD_RARITIES),
 				# The card whose picture it shows (shardrun/card-<art>): a + shows its card's; without it, its own id.
 				"art": Schema.optional(Schema.ID),
+				"icon":
+				(
+					# A shared texture in assets/: matching effects across modes use the same file (ADR-0033).
+					Schema
+					. optional(
+						{
+							"type": "text",
+							"pattern": "^shardrun/(card|shard)-[a-z][a-z0-9-]*$",
+							"pattern_message": "must name a shardrun/card- or shardrun/shard- texture",
+						}
+					)
+				),
 				"cost": Schema.int_range(0, 9),
 				"paradigm": Schema.ID,
 				"role": Schema.one_of(ROLES),

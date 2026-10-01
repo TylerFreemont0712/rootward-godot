@@ -1,5 +1,6 @@
 {
   "id": "split",
+  "icon": "shardrun/shard-overflow",
   "name": "Split",
   "rarity": "common",
   "cost": 1,

@@ -1,8 +1,8 @@
 {
   "id": "reverse-plus",
+  "icon": "shardrun/shard-rewind",
   "name": "Reverse+",
   "rarity": "common",
-  "art": "reverse",
   "cost": 0,
   "paradigm": "neutral",
   "role": "order",

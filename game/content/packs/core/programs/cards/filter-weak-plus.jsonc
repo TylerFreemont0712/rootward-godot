@@ -1,8 +1,8 @@
 {
   "id": "filter-weak-plus",
+  "icon": "shardrun/shard-sieve",
   "name": "Filter+",
   "rarity": "common",
-  "art": "filter-weak",
   "cost": 0,
   "paradigm": "neutral",
   "role": "shape",

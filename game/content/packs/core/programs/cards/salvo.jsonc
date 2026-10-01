@@ -1,5 +1,6 @@
 {
   "id": "salvo",
+  "icon": "shardrun/shard-ramp",
   "name": "Salvo",
   "rarity": "common",
   "cost": 1,

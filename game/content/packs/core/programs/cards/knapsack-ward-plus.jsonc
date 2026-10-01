@@ -1,8 +1,8 @@
 {
   "id": "knapsack-ward-plus",
+  "icon": "shardrun/card-exhaustive-ward",
   "name": "Knapsack Ward+",
   "rarity": "uncommon",
-  "art": "knapsack-ward",
   "cost": 1,
   "paradigm": "dynamic",
   "role": "guard",

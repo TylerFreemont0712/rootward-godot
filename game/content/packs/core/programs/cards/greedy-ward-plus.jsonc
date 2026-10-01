@@ -1,8 +1,8 @@
 {
   "id": "greedy-ward-plus",
+  "icon": "shardrun/shard-bulwark",
   "name": "Greedy Ward+",
   "rarity": "common",
-  "art": "greedy-ward",
   "cost": 1,
   "paradigm": "greedy",
   "role": "guard",

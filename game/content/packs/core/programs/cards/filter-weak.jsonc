@@ -1,5 +1,6 @@
 {
   "id": "filter-weak",
+  "icon": "shardrun/shard-sieve",
   "name": "Filter",
   "rarity": "common",
   "cost": 0,

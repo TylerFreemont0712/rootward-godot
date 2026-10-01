@@ -1,5 +1,6 @@
 {
   "id": "amplify",
+  "icon": "shardrun/shard-amplify",
   "name": "Amplify",
   "rarity": "common",
   "cost": 1,

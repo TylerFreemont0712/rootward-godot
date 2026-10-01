@@ -1,8 +1,8 @@
 {
   "id": "fork-plus",
+  "icon": "shardrun/shard-fork",
   "name": "Fork+",
   "rarity": "common",
-  "art": "fork",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",

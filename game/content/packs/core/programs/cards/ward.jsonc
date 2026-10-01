@@ -1,5 +1,6 @@
 {
   "id": "ward",
+  "icon": "shardrun/shard-ward",
   "name": "Ward",
   "rarity": "common",
   "cost": 1,

@@ -1,8 +1,8 @@
 {
   "id": "load-balance-plus",
+  "icon": "shardrun/shard-triage",
   "name": "Load Balance+",
   "rarity": "uncommon",
-  "art": "load-balance",
   "cost": 0,
   "paradigm": "greedy",
   "role": "strike",

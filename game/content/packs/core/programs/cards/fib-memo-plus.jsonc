@@ -1,8 +1,8 @@
 {
   "id": "fib-memo-plus",
+  "icon": "shardrun/card-fib-surge",
   "name": "Fibonacci Table+",
   "rarity": "rare",
-  "art": "fib-memo",
   "cost": 1,
   "paradigm": "dynamic",
   "role": "shape",

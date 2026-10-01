@@ -1,5 +1,6 @@
 {
   "id": "kindle",
+  "icon": "shardrun/shard-kindle",
   "name": "Kindle",
   "rarity": "common",
   "cost": 0,

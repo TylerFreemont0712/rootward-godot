@@ -569,3 +569,15 @@ the page may have closed before that call runs.
 The shader's built-in TIME continues while the user changes settings. A supplied clock advances only while motion
 is enabled, so reduced motion can freeze the light immediately. Local Gaussian masks keep the tiny brightness
 change at the lanterns and lift core instead of pulsing the whole painting.
+
+## Sharing art means sharing the reference (`game/app/shardrun_views.gd`)
+Copying a polished PNG to two filenames leaves two assets that can drift apart. A validated optional `icon` id in
+the program-card record lets both modes load the same cached Texture2D. Refactors keep that reference too. Mapping
+by the operation matters: program Charge converts to spark like Spellforge Arc; Spellforge Charge is a multiplier
+operation. The tests check both the canonical id and Resource identity, alongside the existing missing-art fallback.
+
+## Review the silhouette in its actual frame (`game/tools/program_icon_sheet.gd`)
+A large, attractive transparent image can still disappear in a square card window. The first Two Pointers candidate
+was a long horizontal row; its arrows shrank too far at card size. A compact diagonal version fills the window and
+keeps both inward pointers visible. The review fixture instantiates the real CardFace at its normal hand size,
+without overlap, so it checks the same layout the player sees without changing the battle menus.

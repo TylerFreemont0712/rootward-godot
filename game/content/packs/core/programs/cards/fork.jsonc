@@ -1,5 +1,6 @@
 {
   "id": "fork",
+  "icon": "shardrun/shard-fork",
   "name": "Fork",
   "rarity": "common",
   "cost": 1,

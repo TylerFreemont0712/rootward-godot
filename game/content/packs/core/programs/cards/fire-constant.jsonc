@@ -1,12 +1,12 @@
 {
   "id": "fire-constant",
+  "icon": "shardrun/shard-kindle",
   "name": "Ember Constant",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",
   "complexity": "constant",
-  "art": "fire-constant",
   "summary": "Appends one 6-power fire bolt. const: stays in your hand until played, without using a hold slot.",
   "function": "fire_constant",
   "keywords": [

@@ -1,5 +1,6 @@
 {
   "id": "sweep",
+  "icon": "shardrun/shard-scatter",
   "name": "Sweep",
   "rarity": "uncommon",
   "cost": 1,

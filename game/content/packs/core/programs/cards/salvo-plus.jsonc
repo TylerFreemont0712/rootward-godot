@@ -1,8 +1,8 @@
 {
   "id": "salvo-plus",
+  "icon": "shardrun/shard-ramp",
   "name": "Salvo+",
   "rarity": "common",
-  "art": "salvo",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",

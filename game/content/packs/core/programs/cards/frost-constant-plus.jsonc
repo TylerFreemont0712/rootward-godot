@@ -1,12 +1,12 @@
 {
   "id": "frost-constant-plus",
+  "icon": "shardrun/shard-chill",
   "name": "Rime Constant+",
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "neutral",
   "role": "source",
   "complexity": "constant",
-  "art": "frost-constant",
   "summary": "Appends one 9-power frost bolt. const: stays in your hand until played, without using a hold slot.",
   "function": "frost_constant_plus",
   "keywords": [

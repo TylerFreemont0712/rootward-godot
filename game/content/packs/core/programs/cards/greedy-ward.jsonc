@@ -1,5 +1,6 @@
 {
   "id": "greedy-ward",
+  "icon": "shardrun/shard-bulwark",
   "name": "Greedy Ward",
   "rarity": "common",
   "cost": 1,

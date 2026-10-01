@@ -4,7 +4,7 @@ Checked images have been repainted and reviewed at their intended display size, 
 playable. Unchecked images still use the earlier, smaller concept art. The enemy list includes unused concepts as
 well as playable foes.
 
-Last reviewed: 2026-09-29. Keep this list current as later small art passes are accepted.
+Last reviewed: 2026-10-02. Keep this list current as later small art passes are accepted.
 
 ## Enemies (31/31 updated)
 
@@ -152,7 +152,90 @@ The new icon shapes were also compared at 32 pixels ([pass 4](images/artupdate-i
 - [ ] [relic-warm-start.png](../game/assets/shardrun/relic-warm-start.png)
 - [ ] [relic-wider-aperture.png](../game/assets/shardrun/relic-wider-aperture.png)
 
-## Shards (72/72 updated)
+## Shardrun program cards (71/71 updated)
+
+The 139 program-card records now resolve to 61 finished textures: 27 base cards share Spellforge art, six share
+another program card, 31 unique placeholders were repainted, and seven already finished designs were retained.
+Refactored cards use the same canonical picture as their base. The obsolete duplicate files are removed.
+
+The [review board](images/program-icons-pass9.png) compares every card at 32, 64 and 128 pixels. Real, unobscured
+hand-size cards are captured in `shots/polish/program-cards-pass9-{1,2,3}.png`; the shared icons are also checked in
+the battle hand at `shots/polish/program-shared-pass9.png`. Prompts, mappings and provenance are in
+`pipeline/art/program-icons-pass-9.json` ([ADR-0033](decisions/ADR-0033-shared-card-art.md)).
+
+- [x] [amplify](../game/assets/shardrun/shard-amplify.png) — shared Spellforge art
+- [x] [binary-execute](../game/assets/shardrun/card-binary-execute.png)
+- [x] [bisect-insert](../game/assets/shardrun/card-bisect-insert.png)
+- [x] [bubble-sort](../game/assets/shardrun/card-bubble-sort.png)
+- [x] [chain-lightning](../game/assets/shardrun/card-chain-lightning.png)
+- [x] [charge](../game/assets/shardrun/shard-arc.png) — shared Spellforge art
+- [x] [chill](../game/assets/shardrun/shard-chill.png) — shared Spellforge art
+- [x] [dedupe](../game/assets/shardrun/card-dedupe.png)
+- [x] [divide](../game/assets/shardrun/card-divide.png)
+- [x] [exhaustive-kill](../game/assets/shardrun/card-exhaustive-kill.png)
+- [x] [exhaustive-ward](../game/assets/shardrun/card-exhaustive-ward.png)
+- [x] [fib-memo](../game/assets/shardrun/card-fib-surge.png) — shared program art
+- [x] [fib-surge](../game/assets/shardrun/card-fib-surge.png)
+- [x] [filter-weak](../game/assets/shardrun/shard-sieve.png) — shared Spellforge art
+- [x] [fire-constant](../game/assets/shardrun/shard-kindle.png) — shared Spellforge art
+- [x] [fork](../game/assets/shardrun/shard-fork.png) — shared Spellforge art
+- [x] [frost-constant](../game/assets/shardrun/shard-chill.png) — shared Spellforge art
+- [x] [generator](../game/assets/shardrun/card-generator.png)
+- [x] [global-total](../game/assets/shardrun/card-global-total.png)
+- [x] [greedy-assign](../game/assets/shardrun/shard-seeker.png) — shared Spellforge art
+- [x] [greedy-ward](../game/assets/shardrun/shard-bulwark.png) — shared Spellforge art
+- [x] [hash-aim](../game/assets/shardrun/card-hash-aim.png)
+- [x] [hash-merge](../game/assets/shardrun/card-hash-merge.png)
+- [x] [higher-order](../game/assets/shardrun/card-higher-order.png)
+- [x] [huffman](../game/assets/shardrun/card-huffman.png)
+- [x] [import-bisect](../game/assets/shardrun/card-import-bisect.png)
+- [x] [import-cache](../game/assets/shardrun/card-import-cache.png)
+- [x] [import-collections](../game/assets/shardrun/card-import-collections.png)
+- [x] [import-copy](../game/assets/shardrun/card-import-copy.png)
+- [x] [import-heapq](../game/assets/shardrun/card-import-heapq.png)
+- [x] [import-itertools](../game/assets/shardrun/card-import-itertools.png)
+- [x] [import-math](../game/assets/shardrun/card-import-math.png)
+- [x] [import-numpy](../game/assets/shardrun/card-import-numpy.png)
+- [x] [import-operator](../game/assets/shardrun/card-import-operator.png)
+- [x] [kadane](../game/assets/shardrun/card-kadane.png)
+- [x] [kindle](../game/assets/shardrun/shard-kindle.png) — shared Spellforge art
+- [x] [knapsack-strike](../game/assets/shardrun/card-exhaustive-kill.png) — shared program art
+- [x] [knapsack-ward](../game/assets/shardrun/card-exhaustive-ward.png) — shared program art
+- [x] [lambda](../game/assets/shardrun/shard-amplify.png) — shared Spellforge art
+- [x] [linear-search](../game/assets/shardrun/card-binary-execute.png) — shared program art
+- [x] [lis-strike](../game/assets/shardrun/card-lis-strike.png)
+- [x] [literal](../game/assets/shardrun/card-literal.png)
+- [x] [load-balance](../game/assets/shardrun/shard-triage.png) — shared Spellforge art
+- [x] [make-change](../game/assets/shardrun/card-make-change.png)
+- [x] [merge-sort](../game/assets/shardrun/card-merge-sort.png)
+- [x] [merge-strike](../game/assets/shardrun/shard-fuse.png) — shared Spellforge art
+- [x] [pairwise](../game/assets/shardrun/shard-cross-product.png) — shared Spellforge art
+- [x] [pascal-row](../game/assets/shardrun/card-pascal-row.png)
+- [x] [power-set](../game/assets/shardrun/card-power-set.png)
+- [x] [prefix-sum](../game/assets/shardrun/shard-prefix-charge.png) — shared Spellforge art
+- [x] [quick-sort](../game/assets/shardrun/card-quick-sort.png)
+- [x] [quickselect](../game/assets/shardrun/card-quick-sort.png) — shared program art
+- [x] [recursion-tree](../game/assets/shardrun/card-divide.png) — shared program art
+- [x] [recursive-mirror](../game/assets/shardrun/shard-echo.png) — shared Spellforge art
+- [x] [reduce](../game/assets/shardrun/shard-focus.png) — shared Spellforge art
+- [x] [release](../game/assets/shardrun/card-release.png)
+- [x] [repeat](../game/assets/shardrun/shard-double-tap.png) — shared Spellforge art
+- [x] [reverse](../game/assets/shardrun/shard-rewind.png) — shared Spellforge art
+- [x] [round-robin](../game/assets/shardrun/card-round-robin.png)
+- [x] [run-length](../game/assets/shardrun/shard-pair-fold.png) — shared Spellforge art
+- [x] [salvo](../game/assets/shardrun/shard-ramp.png) — shared Spellforge art
+- [x] [sliding-window](../game/assets/shardrun/card-sliding-window.png)
+- [x] [spark-constant](../game/assets/shardrun/shard-arc.png) — shared Spellforge art
+- [x] [split](../game/assets/shardrun/shard-overflow.png) — shared Spellforge art
+- [x] [stable-partition](../game/assets/shardrun/card-stable-partition.png)
+- [x] [sweep](../game/assets/shardrun/shard-scatter.png) — shared Spellforge art
+- [x] [tabulate](../game/assets/shardrun/card-tabulate.png)
+- [x] [take-max](../game/assets/shardrun/shard-apex.png) — shared Spellforge art
+- [x] [two-pointers](../game/assets/shardrun/card-two-pointers.png)
+- [x] [ward](../game/assets/shardrun/shard-ward.png) — shared Spellforge art
+- [x] [zip-ward](../game/assets/shardrun/shard-guard-echo.png) — shared Spellforge art
+
+## Spellforge shards (72/72 updated)
 
 The [older shard pass 7 review](images/artupdate-shards-pass7.png) compares all thirty-eight remaining icons at their
 32-pixel card size. They were also checked in five Shardrun hand captures (see `pipeline/art/sprite-polish-pass-7.json`).

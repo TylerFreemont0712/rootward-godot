@@ -1,5 +1,6 @@
 {
   "id": "recursion-tree",
+  "icon": "shardrun/card-divide",
   "name": "Recursion Tree",
   "rarity": "uncommon",
   "cost": 1,

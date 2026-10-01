@@ -41,6 +41,35 @@ func test_every_shard_and_forge_upgrade_has_art() -> void:
 	assert_array(missing).override_failure_message("missing shard art: %s" % [missing]).is_empty()
 
 
+func test_shared_effects_use_the_same_texture() -> void:
+	var catalog: Dictionary = ContentLoader.load_shardrun().catalog
+	var pairs := {"amplify": "amplify", "fork": "fork", "charge": "arc", "chill": "chill", "sweep": "scatter"}
+	for card_id: String in pairs:
+		var card: Dictionary = catalog.programs.cards[card_id]
+		var shard: Dictionary = catalog.shards[pairs[card_id]]
+		assert_str(ShardrunViews.art(card)).is_equal(ShardrunViews.art(shard))
+		assert_object(Art.texture(ShardrunViews.art(card))).is_same(Art.texture(ShardrunViews.art(shard)))
+
+
+func test_shared_icon_schema_rejects_paths_outside_the_icon_library() -> void:
+	var loaded: Dictionary = ContentLoader.load_shardrun().catalog.programs.cards.amplify.duplicate(true)
+	loaded.icon = "shardrun/shard-amplify"
+	assert_array(Schema.check(ProgramSchemas.card(), loaded).errors).is_empty()
+	for invalid: String in ["../shard-amplify", "backgrounds/arena-salvage", "shardrun/shard-amplify.png"]:
+		loaded.icon = invalid
+		assert_str(" ".join(Schema.check(ProgramSchemas.card(), loaded).errors)).contains("icon:")
+
+
+func test_program_cards_no_longer_use_low_resolution_placeholders() -> void:
+	var cards: Dictionary = ContentLoader.load_shardrun().catalog.programs.cards
+	var placeholders: Array[String] = []
+	for card: Dictionary in cards.values():
+		var texture := Art.texture(ShardrunViews.art(card))
+		if texture == null or mini(texture.get_width(), texture.get_height()) < 128:
+			placeholders.append(String(card.id))
+	assert_array(placeholders).override_failure_message("unfinished program icons: %s" % [placeholders]).is_empty()
+
+
 func test_every_layer_names_music_that_is_there_and_loops() -> void:
 	var loops: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Art.LOOPS))
 	var missing: Array[String] = []

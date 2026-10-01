@@ -1,5 +1,6 @@
 {
   "id": "fib-memo",
+  "icon": "shardrun/card-fib-surge",
   "name": "Fibonacci Table",
   "rarity": "rare",
   "cost": 1,

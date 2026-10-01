@@ -1,8 +1,8 @@
 {
   "id": "knapsack-strike-plus",
+  "icon": "shardrun/card-exhaustive-kill",
   "name": "Knapsack Strike+",
   "rarity": "rare",
-  "art": "knapsack-strike",
   "cost": 1,
   "paradigm": "dynamic",
   "role": "strike",

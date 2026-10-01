@@ -1,8 +1,8 @@
 {
   "id": "kindle-plus",
+  "icon": "shardrun/shard-kindle",
   "name": "Kindle+",
   "rarity": "common",
-  "art": "kindle",
   "cost": 0,
   "paradigm": "neutral",
   "role": "shape",

@@ -1,8 +1,8 @@
 {
   "id": "amplify-plus",
+  "icon": "shardrun/shard-amplify",
   "name": "Amplify+",
   "rarity": "common",
-  "art": "amplify",
   "cost": 1,
   "paradigm": "neutral",
   "role": "shape",

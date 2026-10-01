@@ -1,8 +1,8 @@
 {
   "id": "sweep-plus",
+  "icon": "shardrun/shard-scatter",
   "name": "Sweep+",
   "rarity": "uncommon",
-  "art": "sweep",
   "cost": 1,
   "paradigm": "greedy",
   "role": "strike",

@@ -1,8 +1,8 @@
 {
   "id": "merge-strike-plus",
+  "icon": "shardrun/shard-fuse",
   "name": "Merge Strike+",
   "rarity": "rare",
-  "art": "merge-strike",
   "cost": 2,
   "paradigm": "divide-conquer",
   "role": "strike",

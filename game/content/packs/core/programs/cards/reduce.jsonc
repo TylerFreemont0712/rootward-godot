@@ -1,5 +1,6 @@
 {
   "id": "reduce",
+  "icon": "shardrun/shard-focus",
   "name": "Reduce",
   "rarity": "uncommon",
   "cost": 1,

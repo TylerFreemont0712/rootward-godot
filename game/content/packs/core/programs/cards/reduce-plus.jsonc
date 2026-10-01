@@ -1,8 +1,8 @@
 {
   "id": "reduce-plus",
+  "icon": "shardrun/shard-focus",
   "name": "Reduce+",
   "rarity": "uncommon",
-  "art": "reduce",
   "cost": 1,
   "paradigm": "neutral",
   "role": "shape",

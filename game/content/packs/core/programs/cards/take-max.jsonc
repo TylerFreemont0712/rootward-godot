@@ -1,5 +1,6 @@
 {
   "id": "take-max",
+  "icon": "shardrun/shard-apex",
   "name": "Take Max",
   "rarity": "uncommon",
   "cost": 1,

@@ -1,5 +1,6 @@
 {
   "id": "charge",
+  "icon": "shardrun/shard-arc",
   "name": "Charge",
   "rarity": "common",
   "cost": 0,

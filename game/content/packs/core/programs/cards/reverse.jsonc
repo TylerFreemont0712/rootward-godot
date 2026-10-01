@@ -1,5 +1,6 @@
 {
   "id": "reverse",
+  "icon": "shardrun/shard-rewind",
   "name": "Reverse",
   "rarity": "common",
   "cost": 0,
