@@ -82,12 +82,16 @@
       "candidates": 1,
       "post": {
         "kind": "timeline",
-        "fade_ms": 120,
+        "fade_ms": 60,
         "threshold_db": -50,
-        "lufs": -16,
-        "peak": -1.5,
+        "peak": -3,
         "bitrate": 128,
-        "highpass_hz": 40
+        "highpass_hz": 40,
+        "lowpass_hz": 13000,
+        "tail_db": -54,
+        "fade_in_ms": 1.5,
+        "k_lufs": -18,
+        "limit_db": 3
       }
     }
   },
@@ -137,23 +141,23 @@
       "layers": [
         {
           "synth": "shimmer",
-          "length": 0.1,
-          "note": "D7",
-          "gain_db": -20
-        },
-        {
-          "synth": "shimmer",
-          "length": 0.1,
-          "note": "E7",
-          "delay_ms": 160,
-          "gain_db": -20
-        },
-        {
-          "synth": "shimmer",
-          "length": 0.1,
-          "note": "A6",
-          "delay_ms": 320,
+          "length": 0.12,
+          "note": "D6",
           "gain_db": -19
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.12,
+          "note": "E6",
+          "delay_ms": 160,
+          "gain_db": -19
+        },
+        {
+          "synth": "shimmer",
+          "length": 0.12,
+          "note": "A5",
+          "delay_ms": 320,
+          "gain_db": -18
         },
         {
           "synth": "whiff",
@@ -174,56 +178,13 @@
           "gain_db": -14
         },
         {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_000.ogg",
+          "synth": "thud",
+          "pitch": 150,
+          "length": 0.3,
+          "crunch": 0.8,
+          "knock": 0.8,
           "delay_ms": 384,
-          "gain_db": -6,
-          "rate": 0.85,
-          "vary": {
-            "rate": [
-              -0.05,
-              0.05
-            ]
-          }
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_001.ogg",
-          "delay_ms": 386,
-          "gain_db": -12
-        },
-        {
-          "synth": "sub_boom",
-          "length": 0.25,
-          "delay_ms": 384,
-          "gain_db": -12
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_002.ogg",
-          "delay_ms": 576,
-          "gain_db": -6,
-          "rate": 0.85,
-          "vary": {
-            "rate": [
-              -0.05,
-              0.05
-            ]
-          }
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_003.ogg",
-          "delay_ms": 578,
-          "gain_db": -12
-        },
-        {
-          "synth": "sub_boom",
-          "length": 0.25,
-          "delay_ms": 576,
-          "gain_db": -12
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_004.ogg",
-          "delay_ms": 896,
-          "gain_db": -3,
-          "rate": 0.7,
+          "gain_db": -5,
           "vary": {
             "rate": [
               -0.04,
@@ -232,17 +193,114 @@
           }
         },
         {
-          "synth": "sub_boom",
-          "start": 80,
-          "end": 30,
-          "length": 0.8,
+          "synth": "crystal_burst",
+          "length": 0.15,
+          "count": 10,
+          "delay_ms": 388,
+          "gain_db": -14
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_000.ogg",
+          "delay_ms": 384,
+          "gain_db": -10,
+          "rate": 0.85,
+          "hp": 150,
+          "lp": 5000,
+          "trim_ms": 350,
+          "fade_out_ms": 150,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
+        },
+        {
+          "synth": "thud",
+          "pitch": 130,
+          "length": 0.3,
+          "crunch": 0.8,
+          "knock": 0.8,
+          "delay_ms": 576,
+          "gain_db": -4,
+          "vary": {
+            "rate": [
+              -0.04,
+              0.04
+            ]
+          }
+        },
+        {
+          "synth": "crystal_burst",
+          "length": 0.15,
+          "count": 10,
+          "delay_ms": 580,
+          "gain_db": -14
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_002.ogg",
+          "delay_ms": 576,
+          "gain_db": -10,
+          "rate": 0.85,
+          "hp": 150,
+          "lp": 5000,
+          "trim_ms": 350,
+          "fade_out_ms": 150,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
+        },
+        {
+          "synth": "thud",
+          "pitch": 100,
+          "length": 0.6,
+          "crunch": 0.8,
+          "knock": 0.8,
           "delay_ms": 896,
-          "gain_db": -4
+          "gain_db": -1
+        },
+        {
+          "synth": "sub_boom",
+          "start": 82,
+          "end": 48,
+          "length": 0.7,
+          "delay_ms": 896,
+          "gain_db": -15
+        },
+        {
+          "synth": "release",
+          "size": 0.9,
+          "note": "D6",
+          "delay_ms": 896,
+          "gain_db": -7
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_004.ogg",
+          "delay_ms": 896,
+          "gain_db": -8,
+          "rate": 0.7,
+          "hp": 120,
+          "lp": 5000,
+          "trim_ms": 600,
+          "fade_out_ms": 250,
+          "vary": {
+            "rate": [
+              -0.04,
+              0.04
+            ]
+          }
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
           "delay_ms": 898,
-          "gain_db": -7
+          "gain_db": -9,
+          "hp": 1000,
+          "lp": 9000,
+          "trim_ms": 500,
+          "fade_out_ms": 200
         },
         {
           "synth": "crystal_burst",
@@ -259,7 +317,10 @@
           "delay_ms": 900,
           "gain_db": -16
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -15
+      }
     },
     {
       "id": "sfx-shatter",
@@ -277,24 +338,36 @@
         {
           "synth": "crackle",
           "length": 0.3,
-          "gain_db": -10
+          "gain_db": -9
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
           "delay_ms": 120,
-          "gain_db": -16,
-          "rate": 1.4
+          "gain_db": -17,
+          "rate": 1.4,
+          "hp": 2000,
+          "lp": 9000,
+          "trim_ms": 250,
+          "fade_out_ms": 100
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_004.ogg",
           "delay_ms": 230,
-          "gain_db": -14,
-          "rate": 1.2
+          "gain_db": -15,
+          "rate": 1.2,
+          "hp": 2000,
+          "lp": 9000,
+          "trim_ms": 250,
+          "fade_out_ms": 100
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
           "delay_ms": 338,
-          "gain_db": -4
+          "gain_db": -6,
+          "hp": 800,
+          "lp": 9000,
+          "trim_ms": 600,
+          "fade_out_ms": 250
         },
         {
           "synth": "release",
@@ -304,10 +377,21 @@
           "gain_db": -6
         },
         {
-          "synth": "sub_boom",
-          "length": 0.4,
+          "synth": "thud",
+          "pitch": 100,
+          "length": 0.35,
+          "crunch": 0.5,
+          "knock": 0.4,
           "delay_ms": 340,
-          "gain_db": -10
+          "gain_db": -7
+        },
+        {
+          "synth": "sub_boom",
+          "start": 90,
+          "end": 55,
+          "length": 0.35,
+          "delay_ms": 340,
+          "gain_db": -13
         },
         {
           "synth": "crystal_burst",
@@ -324,7 +408,10 @@
           "delay_ms": 380,
           "gain_db": -15
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -16.5
+      }
     },
     {
       "id": "sfx-heal",
@@ -338,8 +425,10 @@
         "attack_ms": 30,
         "hold_ms": 150,
         "decay_ms": 650,
-        "lufs": -20,
-        "start_seconds": 0.25
+        "start_seconds": 0.25,
+        "k_lufs": -21,
+        "peak": -3,
+        "width": 0.4
       },
       "pick": 1
     },
@@ -355,7 +444,9 @@
         "attack_ms": 15,
         "hold_ms": 90,
         "decay_ms": 500,
-        "lufs": -20
+        "k_lufs": -19,
+        "peak": -3,
+        "width": 0.4
       },
       "pick": 0
     },
@@ -365,7 +456,8 @@
       "style": "recorded",
       "source": "vendor/kenney-impact-sounds/Audio/footstep_concrete_000.ogg",
       "post": {
-        "lufs": -22
+        "k_lufs": -24,
+        "peak": -3
       }
     },
     {
@@ -374,7 +466,9 @@
       "style": "recorded",
       "source": "vendor/kenney-rpg-audio/Audio/handleCoins.ogg",
       "post": {
-        "lufs": -19
+        "k_lufs": -22,
+        "peak": -3,
+        "lowpass_hz": 9000
       }
     },
     {
@@ -388,8 +482,11 @@
         "max_seconds": 1.15,
         "hold_ms": 50,
         "decay_ms": 650,
-        "lufs": -21,
-        "rate": 0.9
+        "rate": 0.9,
+        "k_lufs": -22,
+        "peak": -3,
+        "width": 0.5,
+        "lowpass_hz": 8500
       },
       "pick": 1
     },
@@ -404,8 +501,10 @@
         "max_seconds": 1.85,
         "hold_ms": 100,
         "decay_ms": 900,
-        "lufs": -19,
-        "rate": 0.86
+        "rate": 0.86,
+        "k_lufs": -20,
+        "peak": -3,
+        "width": 0.7
       },
       "pick": 1
     },
@@ -425,8 +524,8 @@
         }
       ],
       "post": {
-        "lufs": -17,
-        "peak": -2.5
+        "peak": -3,
+        "k_lufs": -20
       }
     },
     {
@@ -440,7 +539,10 @@
         "max_seconds": 0.65,
         "hold_ms": 40,
         "decay_ms": 220,
-        "lufs": -23
+        "k_lufs": -24,
+        "peak": -3,
+        "width": 0.7,
+        "lowpass_hz": 8500
       },
       "pick": 1
     },
@@ -455,7 +557,9 @@
         "max_seconds": 0.95,
         "hold_ms": 200,
         "decay_ms": 450,
-        "lufs": -20
+        "k_lufs": -22,
+        "peak": -3,
+        "width": 0.5
       },
       "pick": 1
     },
@@ -470,12 +574,13 @@
         "attack_ms": 8,
         "fade_ms": 80,
         "lowpass_hz": 7500,
-        "lufs": -24
+        "k_lufs": -24,
+        "peak": -3
       }
     },
     {
-      "id": "sfx-cast-sigil-1",
-      "out": "audio/sfx-cast-sigil-1",
+      "id": "sfx-cast-tier-1",
+      "out": "audio/sfx-cast-tier-1",
       "style": "timeline",
       "about": "cast-sigil-1 (733 ms): a ring draws (0-257), four runes (73-238), it gathers (440-616) and lets go (616)",
       "beats": [
@@ -519,6 +624,12 @@
           "gain_db": -14
         },
         {
+          "synth": "bracket_clack",
+          "weight": 0.6,
+          "delay_ms": 215,
+          "gain_db": -16
+        },
+        {
           "synth": "gather",
           "length": 0.18,
           "delay_ms": 436,
@@ -531,11 +642,14 @@
           "delay_ms": 612,
           "gain_db": -3
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -23
+      }
     },
     {
-      "id": "sfx-cast-sigil",
-      "out": "audio/sfx-cast-sigil",
+      "id": "sfx-cast-tier-2",
+      "out": "audio/sfx-cast-tier-2",
       "style": "timeline",
       "about": "cast-sigil (1000 ms): the circle draws (0-360), twelve runes (80-355), brackets snap (~360), it gathers (620-860) and lets go (860)",
       "beats": [
@@ -645,11 +759,14 @@
           "delay_ms": 856,
           "gain_db": -2
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -21
+      }
     },
     {
-      "id": "sfx-cast-sigil-3",
-      "out": "audio/sfx-cast-sigil-3",
+      "id": "sfx-cast-tier-3",
+      "out": "audio/sfx-cast-tier-3",
       "style": "timeline",
       "about": "cast-sigil-3 (1200 ms): rings and a hexagram draw (0-600), twelve runes (180-600), brackets snap (~460), it gathers (790-1010), lets go in two waves (1008, 1056)",
       "beats": [
@@ -770,7 +887,7 @@
         {
           "synth": "sub_boom",
           "delay_ms": 1004,
-          "gain_db": -8
+          "gain_db": -10
         },
         {
           "synth": "release",
@@ -779,11 +896,14 @@
           "delay_ms": 1056,
           "gain_db": -7
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -19
+      }
     },
     {
-      "id": "sfx-cast-sigil-4",
-      "out": "audio/sfx-cast-sigil-4",
+      "id": "sfx-cast-tier-4",
+      "out": "audio/sfx-cast-tier-4",
       "style": "timeline",
       "about": "cast-sigil-4 (1467 ms): the grand circle, an outer ring of twenty runes (367-880), brackets (~560), gathers (970-1260), two waves (1232, 1291)",
       "beats": [
@@ -795,6 +915,7 @@
         1291
       ],
       "seed": 70300,
+      "variants": 2,
       "layers": [
         {
           "synth": "shimmer",
@@ -1048,7 +1169,10 @@
           "delay_ms": 1290,
           "gain_db": -6
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -17.5
+      }
     },
     {
       "id": "sfx-hit-compile",
@@ -1067,17 +1191,42 @@
           "length": 0.14,
           "bright": 5000,
           "delay_ms": 52,
-          "gain_db": -16
+          "gain_db": -17
         },
         {
           "synth": "bracket_clack",
           "delay_ms": 186,
-          "gain_db": -6
+          "gain_db": -7,
+          "vary": {
+            "delay_ms": [
+              -2,
+              2
+            ]
+          }
+        },
+        {
+          "synth": "thud",
+          "pitch": 150,
+          "length": 0.22,
+          "crunch": 0.3,
+          "knock": 0.3,
+          "delay_ms": 188,
+          "gain_db": -9,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
           "delay_ms": 188,
-          "gain_db": -8,
+          "gain_db": -11,
+          "hp": 1500,
+          "lp": 8500,
+          "trim_ms": 300,
+          "fade_out_ms": 120,
           "vary": {
             "rate": [
               -0.06,
@@ -1086,27 +1235,31 @@
           }
         },
         {
-          "synth": "sub_boom",
-          "start": 95,
-          "end": 45,
-          "length": 0.18,
-          "delay_ms": 190,
-          "gain_db": -12
-        },
-        {
           "synth": "crystal_burst",
           "length": 0.3,
-          "count": 22,
-          "delay_ms": 195,
+          "count": 20,
+          "delay_ms": 192,
+          "gain_db": -10
+        },
+        {
+          "synth": "release",
+          "size": 0.5,
+          "note": "D6",
+          "delay_ms": 190,
           "gain_db": -10
         },
         {
           "synth": "ring_sweep",
-          "length": 0.3,
+          "length": 0.28,
+          "low": 1500,
+          "high": 7000,
           "delay_ms": 200,
-          "gain_db": -18
+          "gain_db": -19
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -17.5
+      }
     },
     {
       "id": "sfx-hit-critical",
@@ -1124,70 +1277,93 @@
         {
           "synth": "gather",
           "length": 0.19,
-          "bright": 9000,
-          "gain_db": -6
+          "bright": 6500,
+          "gain_db": -8
         },
         {
           "synth": "shimmer",
           "length": 0.18,
-          "note": "A6",
+          "note": "A5",
           "delay_ms": 10,
-          "gain_db": -16
+          "gain_db": -15
         },
         {
           "synth": "release",
           "size": 1.2,
           "note": "D6",
           "delay_ms": 190,
-          "gain_db": -1
+          "gain_db": -2
         },
         {
           "synth": "bracket_clack",
           "weight": 1.4,
           "delay_ms": 188,
-          "gain_db": -5
+          "gain_db": -6
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
+          "delay_ms": 190,
+          "gain_db": -8,
+          "hp": 1000,
+          "lp": 9000,
+          "trim_ms": 500,
+          "fade_out_ms": 200
+        },
+        {
+          "synth": "thud",
+          "pitch": 105,
+          "length": 0.5,
+          "crunch": 0.4,
+          "knock": 0.3,
           "delay_ms": 190,
           "gain_db": -6
         },
         {
           "synth": "sub_boom",
-          "start": 90,
-          "end": 32,
-          "length": 0.7,
+          "start": 85,
+          "end": 50,
+          "length": 0.6,
           "delay_ms": 190,
-          "gain_db": -5
+          "gain_db": -13
         },
         {
-          "synth": "sub_boom",
-          "start": 70,
-          "end": 35,
-          "length": 0.4,
+          "synth": "thud",
+          "pitch": 100,
+          "length": 0.3,
+          "crunch": 0.3,
+          "knock": 0.3,
           "delay_ms": 333,
-          "gain_db": -10
+          "gain_db": -9
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
           "delay_ms": 333,
-          "gain_db": -9
+          "gain_db": -11,
+          "hp": 1000,
+          "lp": 9000,
+          "trim_ms": 400,
+          "fade_out_ms": 150
         },
         {
           "synth": "ring_sweep",
           "length": 0.35,
+          "low": 1200,
+          "high": 7000,
           "delay_ms": 336,
-          "gain_db": -14
+          "gain_db": -15
         },
         {
           "synth": "crystal_burst",
           "length": 0.7,
-          "count": 48,
+          "count": 40,
           "decay": 0.6,
           "delay_ms": 200,
           "gain_db": -9
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -15
+      }
     },
     {
       "id": "sfx-ward-hex",
@@ -1313,7 +1489,10 @@
           "delay_ms": 880,
           "gain_db": -12
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -19
+      }
     },
     {
       "id": "sfx-claw",
@@ -1330,36 +1509,71 @@
       "layers": [
         {
           "synth": "slash",
-          "gain_db": -4
+          "gain_db": 0,
+          "vary": {
+            "rate": [
+              -0.04,
+              0.04
+            ]
+          }
         },
         {
           "synth": "slash",
           "high": 8000,
           "delay_ms": 51,
-          "gain_db": -5
+          "gain_db": -3
         },
         {
           "synth": "slash",
           "low": 1000,
           "delay_ms": 103,
-          "gain_db": -3
+          "gain_db": -1
         },
         {
-          "source": "vendor/kenney-rpg-audio/Audio/knifeSlice.ogg",
-          "gain_db": -12,
+          "synth": "tile_lock",
+          "note": "D7",
+          "gain_db": -14
+        },
+        {
+          "synth": "tile_lock",
+          "note": "F#7",
+          "delay_ms": 51,
+          "gain_db": -14
+        },
+        {
+          "synth": "tile_lock",
+          "note": "A7",
+          "delay_ms": 103,
+          "gain_db": -14
+        },
+        {
+          "synth": "thud",
+          "pitch": 200,
+          "length": 0.22,
+          "crunch": 0.7,
+          "knock": 0.2,
+          "delay_ms": 55,
+          "gain_db": -10
+        },
+        {
+          "synth": "thud",
+          "pitch": 150,
+          "length": 0.2,
+          "crunch": 0.6,
+          "knock": 0.3,
+          "delay_ms": 104,
+          "gain_db": -7,
           "vary": {
             "rate": [
-              -0.1,
-              0.1
+              -0.05,
+              0.05
             ]
           }
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPunch_medium_00{v}.ogg",
-          "delay_ms": 60,
-          "gain_db": -10
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -15.5
+      }
     },
     {
       "id": "sfx-tempo",
@@ -1373,13 +1587,13 @@
       ],
       "seed": 71000,
       "post": {
-        "lufs": -18
+        "k_lufs": -22
       },
       "layers": [
         {
           "synth": "shimmer",
           "length": 0.18,
-          "note": "D7",
+          "note": "D6",
           "gain_db": -20
         },
         {
@@ -1459,7 +1673,7 @@
       "seed": 71100,
       "variants": 2,
       "post": {
-        "lufs": -20
+        "k_lufs": -22
       },
       "layers": [
         {
@@ -1476,7 +1690,7 @@
       "seed": 71200,
       "variants": 2,
       "post": {
-        "lufs": -20
+        "k_lufs": -24
       },
       "layers": [
         {
@@ -1493,7 +1707,7 @@
       "seed": 71300,
       "variants": 2,
       "post": {
-        "lufs": -20
+        "k_lufs": -23
       },
       "layers": [
         {
@@ -1518,7 +1732,11 @@
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactMetal_light_00{v}.ogg",
           "gain_db": -6,
-          "rate": 1.3
+          "rate": 1.3,
+          "hp": 900,
+          "lp": 9000,
+          "trim_ms": 220,
+          "fade_out_ms": 80
         },
         {
           "synth": "rune_tick",
@@ -1533,7 +1751,10 @@
           "delay_ms": 15,
           "gain_db": -12
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -22
+      }
     },
     {
       "id": "sfx-gulp",
@@ -1545,7 +1766,10 @@
         {
           "synth": "gulp"
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -21
+      }
     },
     {
       "id": "sfx-lock",
@@ -1557,13 +1781,21 @@
       "layers": [
         {
           "source": "vendor/kenney-rpg-audio/Audio/metalLatch.ogg",
-          "gain_db": -3
+          "gain_db": -3,
+          "hp": 250,
+          "lp": 8000,
+          "trim_ms": 350,
+          "fade_out_ms": 120
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactMetal_heavy_00{v}.ogg",
           "delay_ms": 10,
           "gain_db": -8,
-          "rate": 0.8
+          "rate": 0.8,
+          "hp": 250,
+          "lp": 8000,
+          "trim_ms": 350,
+          "fade_out_ms": 120
         },
         {
           "synth": "crystal_burst",
@@ -1573,8 +1805,26 @@
           "high": 4000,
           "delay_ms": 40,
           "gain_db": -14
+        },
+        {
+          "synth": "thud",
+          "pitch": 135,
+          "length": 0.2,
+          "crunch": 0.5,
+          "knock": 0.4,
+          "delay_ms": 12,
+          "gain_db": -9,
+          "vary": {
+            "rate": [
+              -0.08,
+              0.08
+            ]
+          }
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -20
+      }
     },
     {
       "id": "sfx-whiff",
@@ -1583,7 +1833,7 @@
       "about": "a bolt flies at a fallen foe: a faint whiff of air past nothing",
       "seed": 71700,
       "post": {
-        "lufs": -24
+        "k_lufs": -28
       },
       "layers": [
         {
@@ -1605,9 +1855,16 @@
         },
         {
           "source": "vendor/kenney-interface-sounds/Audio/glitch_002.ogg",
-          "gain_db": -8
+          "gain_db": -8,
+          "hp": 300,
+          "lp": 6000,
+          "trim_ms": 500,
+          "fade_out_ms": 100
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -20
+      }
     },
     {
       "id": "sfx-timeout",
@@ -1667,9 +1924,13 @@
           "synth": "buzzer",
           "length": 0.4,
           "delay_ms": 360,
-          "gain_db": -6
+          "gain_db": -6,
+          "note": "A3"
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -20
+      }
     },
     {
       "id": "sfx-stoke",
@@ -1688,7 +1949,10 @@
           "delay_ms": 380,
           "gain_db": -2
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -21
+      }
     },
     {
       "id": "sfx-foe-shield",
@@ -1699,26 +1963,41 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "paper",
-          "length": 0.25,
-          "low": 200,
-          "high": 900,
-          "attack": 0.08,
-          "gain_db": -10
+          "synth": "scrape",
+          "length": 0.28,
+          "low": 160,
+          "high": 650,
+          "gain_db": -8
+        },
+        {
+          "synth": "thud",
+          "pitch": 135,
+          "length": 0.32,
+          "crunch": 0.6,
+          "knock": 0.5,
+          "delay_ms": 230,
+          "gain_db": -6,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
         },
         {
           "source": "vendor/kenney-impact-sounds/Audio/impactMining_00{v}.ogg",
-          "delay_ms": 200,
-          "gain_db": -4,
-          "rate": 0.8
-        },
-        {
-          "synth": "sub_boom",
-          "length": 0.3,
-          "delay_ms": 200,
-          "gain_db": -12
+          "delay_ms": 230,
+          "gain_db": -9,
+          "rate": 0.8,
+          "hp": 150,
+          "lp": 4500,
+          "trim_ms": 300,
+          "fade_out_ms": 120
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -20
+      }
     },
     {
       "id": "sfx-clang",
@@ -1729,20 +2008,47 @@
       "variants": 2,
       "layers": [
         {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
-          "gain_db": -4
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactBell_heavy_00{v}.ogg",
-          "gain_db": -14,
-          "rate": 1.6
+          "synth": "bracket_clack",
+          "weight": 0.8,
+          "gain_db": -8
         },
         {
           "synth": "tile_lock",
           "note": "D7",
-          "gain_db": -10
+          "gain_db": -9
+        },
+        {
+          "synth": "bell",
+          "note": "A5",
+          "length": 0.18,
+          "gain_db": -10,
+          "vary": {
+            "rate": [
+              -0.03,
+              0.03
+            ]
+          }
+        },
+        {
+          "synth": "thud",
+          "pitch": 190,
+          "length": 0.16,
+          "crunch": 0.3,
+          "knock": 0.2,
+          "gain_db": -8
+        },
+        {
+          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
+          "gain_db": -10,
+          "hp": 700,
+          "lp": 9000,
+          "trim_ms": 180,
+          "fade_out_ms": 100
         }
-      ]
+      ],
+      "post": {
+        "k_lufs": -19.5
+      }
     },
     {
       "id": "sfx-card-slide",
@@ -1752,15 +2058,16 @@
       "seed": 72300,
       "variants": 3,
       "post": {
-        "lufs": -24
+        "k_lufs": -23
       },
       "layers": [
         {
           "synth": "paper",
-          "length": 0.14,
-          "low": 1500,
-          "high": 6000,
-          "attack": 0.03
+          "length": 0.15,
+          "low": 1200,
+          "high": 5000,
+          "attack": 0.035,
+          "gain_db": 0
         }
       ]
     },
@@ -1772,21 +2079,28 @@
       "seed": 72400,
       "variants": 3,
       "post": {
-        "lufs": -22
+        "k_lufs": -21
       },
       "layers": [
         {
-          "synth": "paper",
-          "length": 0.05,
-          "low": 1200,
-          "high": 5000,
-          "attack": 0.001
+          "synth": "tap",
+          "pitch": 300,
+          "length": 0.1,
+          "gain_db": -3,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "clock_tick",
-          "note": "A4",
-          "delay_ms": 2,
-          "gain_db": -12
+          "synth": "paper",
+          "length": 0.045,
+          "low": 1200,
+          "high": 5000,
+          "attack": 0.001,
+          "gain_db": -6
         }
       ]
     },
@@ -1798,15 +2112,16 @@
       "seed": 72500,
       "variants": 3,
       "post": {
-        "lufs": -24
+        "k_lufs": -24
       },
       "layers": [
         {
           "synth": "paper",
-          "length": 0.07,
-          "low": 2500,
-          "high": 8000,
-          "attack": 0.005
+          "length": 0.08,
+          "low": 1600,
+          "high": 5000,
+          "attack": 0.008,
+          "gain_db": 0
         }
       ]
     },
@@ -1818,19 +2133,29 @@
       "seed": 72600,
       "variants": 3,
       "post": {
-        "lufs": -24
+        "k_lufs": -22
       },
       "layers": [
         {
           "synth": "rune_tick",
-          "note": "D7",
-          "length": 0.06,
-          "gain_db": -4
+          "note": "A6",
+          "length": 0.07,
+          "gain_db": -3,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          }
         },
         {
           "source": "vendor/kenney-interface-sounds/Audio/click_001.ogg",
-          "gain_db": -14,
+          "gain_db": -18,
           "rate": 1.2,
+          "hp": 1500,
+          "lp": 5000,
+          "trim_ms": 40,
+          "fade_out_ms": 15,
           "vary": {
             "rate": [
               -0.1,

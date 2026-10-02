@@ -1,7 +1,7 @@
 {
   "_about": "Spell animations drawn by spells.py (ADR-0014). Each is a motion in spells.py drawn `frames` times at `size`; `anchor` is the point of a frame that lands on the spot it is played at (a heavy blow's ground), `impact` the share of its time at which its blow lands, `sound` the sound that starts with it (pipeline/audio/manifest.json, laid out on its beats), `element_layer` whether an element's layer (sfx-element-fire, -frost, -spark) joins at its impact, `preview` only the colour of the contact sheet.",
   "spells": [
-    {"id": "cast-sigil", "motion": "cast-sigil", "size": [320, 320], "frames": 30, "fps": 30, "bloom": 0.5, "impact": 0.86, "sound": "sfx-cast-sigil", "element_layer": true, "preview": "#b48cff"},
+    {"id": "cast-sigil", "motion": "cast-sigil", "size": [320, 320], "frames": 30, "fps": 30, "bloom": 0.5, "impact": 0.86, "sound": "sfx-cast-tier-2", "element_layer": true, "preview": "#b48cff"},
     {"id": "glyph-bolt", "motion": "glyph-bolt", "size": [224, 128], "frames": 12, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#ff8a3a"},
     {"id": "hit-compile", "motion": "hit-compile", "size": [288, 288], "frames": 32, "fps": 30, "bloom": 0.5, "impact": 0.18, "seed": 11, "sound": "sfx-hit-compile", "element_layer": true, "preview": "#3fb6ff"},
     {"id": "hit-heavy", "motion": "hit-heavy", "size": [320, 460], "frames": 48, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.88], "impact": 0.56, "seed": 5, "sound": "sfx-hit-heavy", "element_layer": true, "preview": "#ffc83a"},
@@ -9,9 +9,9 @@
     {"id": "shatter", "motion": "shatter", "size": [300, 300], "frames": 34, "fps": 30, "bloom": 0.4, "impact": 0.3, "seed": 9, "sound": "sfx-shatter", "preview": "#e9dcff"},
     {"id": "claw", "motion": "claw", "size": [256, 256], "frames": 22, "fps": 30, "bloom": 0.35, "impact": 0.12, "sound": "sfx-claw", "preview": "#ff3a4a"},
     {"id": "tempo", "motion": "tempo", "size": [192, 192], "frames": 28, "fps": 30, "bloom": 0.4, "sound": "sfx-tempo", "preview": "#ffb13a"},
-    {"id": "cast-sigil-1", "motion": "cast-sigil-simple", "size": [256, 256], "frames": 22, "fps": 30, "bloom": 0.45, "impact": 0.84, "sound": "sfx-cast-sigil-1", "element_layer": true, "preview": "#b48cff"},
-    {"id": "cast-sigil-3", "motion": "cast-sigil-complex", "size": [384, 384], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.84, "sound": "sfx-cast-sigil-3", "element_layer": true, "preview": "#ff8a3a"},
-    {"id": "cast-sigil-4", "motion": "cast-sigil-grand", "size": [448, 448], "frames": 44, "fps": 30, "bloom": 0.5, "impact": 0.84, "sound": "sfx-cast-sigil-4", "element_layer": true, "preview": "#3fb6ff"},
+    {"id": "cast-sigil-1", "motion": "cast-sigil-simple", "size": [256, 256], "frames": 22, "fps": 30, "bloom": 0.45, "impact": 0.84, "sound": "sfx-cast-tier-1", "element_layer": true, "preview": "#b48cff"},
+    {"id": "cast-sigil-3", "motion": "cast-sigil-complex", "size": [384, 384], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.84, "sound": "sfx-cast-tier-3", "element_layer": true, "preview": "#ff8a3a"},
+    {"id": "cast-sigil-4", "motion": "cast-sigil-grand", "size": [448, 448], "frames": 44, "fps": 30, "bloom": 0.5, "impact": 0.84, "sound": "sfx-cast-tier-4", "element_layer": true, "preview": "#3fb6ff"},
     {"id": "cast-ground", "motion": "cast-ground", "size": [384, 560], "frames": 44, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.88], "preview": "#ffc83a"},
     {"id": "bolt-lance", "motion": "bolt-lance", "size": [256, 96], "frames": 8, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#ff8a3a", "anchor": [0.84, 0.5]},
     {"id": "bolt-orb", "motion": "bolt-orb", "size": [256, 160], "frames": 12, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#b48cff", "anchor": [0.64, 0.5]},

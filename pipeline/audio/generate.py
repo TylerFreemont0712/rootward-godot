@@ -298,7 +298,29 @@ def retime(audio: np.ndarray, rate: float) -> np.ndarray:
     return np.column_stack(channels).astype(np.float32)
 
 
-LAYER_KEYS = {"source", "synth", "delay_ms", "gain_db", "rate", "reverse", "pan", "vary"}
+LAYER_KEYS = {"source", "synth", "delay_ms", "gain_db", "rate", "reverse", "pan", "vary", "lp", "hp", "trim_ms",
+              "fade_in_ms", "fade_out_ms"}
+
+
+def shape_layer(audio: np.ndarray, settings: dict) -> np.ndarray:
+    """A layer's own shaping before it is mixed: `hp`/`lp` (Hz) take the rumble or the hiss off a recording, `trim_ms`
+    cuts it short, `fade_in_ms`/`fade_out_ms` give it soft edges (a recording that starts at full level clicks)."""
+    from scipy import signal as sg
+
+    if settings.get("trim_ms"):
+        audio = audio[: max(2, round(float(settings["trim_ms"]) / 1000 * SAMPLE_RATE))].copy()
+    if settings.get("hp"):
+        audio = sg.sosfilt(sg.butter(2, float(settings["hp"]), "high", fs=SAMPLE_RATE, output="sos"), audio, axis=0)
+    if settings.get("lp"):
+        audio = sg.sosfilt(sg.butter(4, float(settings["lp"]), "low", fs=SAMPLE_RATE, output="sos"), audio, axis=0)
+    audio = audio.astype(np.float32)
+    fade_in = min(len(audio) // 2, round(float(settings.get("fade_in_ms", 0)) / 1000 * SAMPLE_RATE))
+    fade_out = min(len(audio) // 2, round(float(settings.get("fade_out_ms", 0)) / 1000 * SAMPLE_RATE))
+    if fade_in > 1:
+        audio[:fade_in] *= (0.5 - 0.5 * np.cos(np.pi * np.arange(fade_in) / fade_in)).astype(np.float32)[:, None]
+    if fade_out > 1:
+        audio[len(audio) - fade_out:] *= (0.5 + 0.5 * np.cos(np.pi * np.arange(fade_out) / fade_out)).astype(np.float32)[:, None]
+    return audio
 
 
 def mix_recorded(job: dict, variant: int = 0) -> np.ndarray:
@@ -325,6 +347,7 @@ def mix_recorded(job: dict, variant: int = 0) -> np.ndarray:
         if settings.get("reverse", False):
             audio = audio[::-1].copy()
         audio = retime(audio, float(settings.get("rate", 1)))
+        audio = shape_layer(audio, settings)
         audio *= np.float32(10 ** (float(settings.get("gain_db", 0)) / 20))
         pan = float(settings.get("pan", 0))
         if pan:
@@ -364,6 +387,63 @@ def loudness(audio: np.ndarray) -> tuple[float, float]:
     text = result.stderr.decode(errors="replace")
     measured = json.loads(text[text.rindex("{") : text.rindex("}") + 1])
     return float(measured["input_i"]), float(measured["input_tp"])
+
+
+def k_weight(audio: np.ndarray) -> np.ndarray:
+    """ITU-R BS.1770 K-weighting (a high shelf, then a high pass) for 48 kHz: how loud a listener hears something."""
+    from scipy import signal as sg
+
+    shelf = sg.lfilter([1.53512485958697, -2.69169618940638, 1.19839281085285], [1.0, -1.69065929318241, 0.73248077421585],
+                       audio, axis=0)
+    return sg.lfilter([1.0, -2.0, 1.0], [1.0, -1.99004745483398, 0.99007225036621], shelf, axis=0)
+
+
+def k_loudest(audio: np.ndarray, window: float = 0.1) -> float:
+    """The loudest `window` seconds of K-weighted power, in LUFS-like dB.
+
+    LEARN: the old measure (a plain RMS of the loudest 100 ms) counts a 40 Hz boom as much as a 2 kHz click, though the
+    ear hears the boom some 40 dB quieter. A sound that was mostly sub-bass was therefore turned down until its audible
+    parts were faint: the critical blow ended up quieter than a glance. K-weighting discounts the bass and boosts the
+    presence region, as the ear does."""
+    power = (k_weight(audio.astype(np.float64)) ** 2).mean(axis=1)
+    frames = round(window * SAMPLE_RATE)
+    if len(power) <= frames:
+        return float(10 * np.log10(power.mean() + 1e-12) - 0.691)
+    total = np.cumsum(np.insert(power, 0, 0))
+    return float(10 * np.log10(((total[frames:] - total[:-frames]) / frames).max() + 1e-12) - 0.691)
+
+
+def soft_limit(audio: np.ndarray, ceiling_db: float, lookahead_ms: float = 4.0) -> np.ndarray:
+    """A look-ahead peak limiter: the gain that brings each peak to the ceiling is found a few ms before it arrives and
+    eased in, so a peak is tamed without the click a hard clip makes. Used for a few dB at most."""
+    from scipy import ndimage
+
+    ceiling = 10 ** (ceiling_db / 20)
+    need = np.minimum(1.0, ceiling / np.maximum(np.abs(audio).max(axis=1), 1e-9))
+    if need.min() >= 1.0:
+        return audio
+    window = max(3, round(lookahead_ms / 1000 * SAMPLE_RATE)) | 1
+    gain = ndimage.minimum_filter1d(need, size=2 * window + 1, mode="nearest")
+    gain = ndimage.uniform_filter1d(gain, size=window, mode="nearest")
+    out = audio * gain[:, None].astype(np.float32)
+    return np.clip(out, -ceiling, ceiling)
+
+
+def level_k(audio: np.ndarray, post: dict) -> tuple[np.ndarray, float]:
+    """One fixed gain to a K-weighted target (`k_lufs`) for the loudest 100 ms, with a peak ceiling (`peak`, dBFS,
+    default -3: sounds stack, and two at -1.5 clip the output). A few dB (`limit_db`, default 3) may be taken off the
+    peaks by a look-ahead limiter to reach the target; past that the sound is simply left quieter than its target."""
+    loudest = k_loudest(audio)
+    peak_db = 20 * np.log10(np.abs(audio).max() + 1e-12)
+    ceiling = post.get("peak", -3.0)
+    gain_db = post["k_lufs"] - loudest
+    over = peak_db + gain_db - ceiling
+    allowed = post.get("limit_db", 3.0)
+    if over > allowed:
+        gain_db -= over - allowed
+    out = audio * np.float32(10 ** (gain_db / 20))
+    out = soft_limit(out, ceiling)
+    return out, k_loudest(out)
 
 
 def level(audio: np.ndarray, post: dict) -> np.ndarray:
@@ -528,6 +608,11 @@ def post_cue(audio: np.ndarray, job: dict) -> tuple[np.ndarray, str]:
     if not len(audio):
         raise ValueError(f"{job['id']}: selected cue is empty")
     audio = clean_audio(audio, post)
+    if "width" in post:
+        # Mid/side: a generated sound's two ears are often unrelated noise (a left-right correlation near 0 or below),
+        # which thins out or cancels on a mono speaker. `width` 1 keeps the stereo as it is, 0 makes it mono.
+        mid, side = audio.mean(axis=1, keepdims=True), (audio[:, :1] - audio[:, 1:]) / 2
+        audio = np.hstack([mid + side * post["width"], mid - side * post["width"]]).astype(np.float32)
     start = max(0, onset(audio, post.get("threshold_db", -40)) - round(0.005 * SAMPLE_RATE))
     clip = audio[start : start + round(post.get("max_seconds", 3) * SAMPLE_RATE)].copy()
     if not len(clip) or np.max(np.abs(clip)) < 1e-7:
@@ -540,6 +625,9 @@ def post_cue(audio: np.ndarray, job: dict) -> tuple[np.ndarray, str]:
     fade_in = min(len(clip), round(post.get("attack_ms", 4) / 1000 * SAMPLE_RATE))
     clip[:fade_in] *= np.linspace(0, 1, fade_in, dtype=np.float32)[:, None]
     clip[len(clip) - fade_out :] *= np.linspace(1, 0, fade_out, dtype=np.float32)[:, None]
+    if "k_lufs" in post:
+        clip, reached = level_k(clip, post)
+        return clip, f"{len(clip) / SAMPLE_RATE:.1f}s cue, {reached:.1f} K-LUFS"
     return level(clip, post), f"{len(clip) / SAMPLE_RATE:.1f}s cue"
 
 
@@ -548,10 +636,24 @@ def post_timeline(audio: np.ndarray, job: dict) -> tuple[np.ndarray, str]:
     frame, so nothing is trimmed from the front; it is cleaned, faded at its end, and levelled."""
     post = job["post"]
     audio = clean_audio(audio, post)
-    end = ending(audio, post.get("threshold_db", -50))
+    threshold = post.get("threshold_db", -50)
+    if "tail_db" in post:
+        # Relative to the clip's own peak: a quiet sound's tail is not mistaken for silence, nor a loud one's cut short.
+        threshold = 20 * np.log10(np.abs(audio).max() + 1e-12) + post["tail_db"]
+    end = ending(audio, threshold)
     clip = audio[: max(end, round(0.05 * SAMPLE_RATE))].copy()
     fade_out = min(len(clip), round(post.get("fade_ms", 120) / 1000 * SAMPLE_RATE))
-    clip[len(clip) - fade_out:] *= np.linspace(1, 0, fade_out, dtype=np.float32)[:, None]
+    if "fade_in_ms" in post:
+        fade_in = min(len(clip) // 2, round(post["fade_in_ms"] / 1000 * SAMPLE_RATE))
+        if fade_in > 1:
+            clip[:fade_in] *= (0.5 - 0.5 * np.cos(np.pi * np.arange(fade_in) / fade_in)).astype(np.float32)[:, None]
+        # a cosine fade-out: the linear one below ends in a corner
+        clip[len(clip) - fade_out:] *= (0.5 + 0.5 * np.cos(np.pi * np.arange(fade_out) / fade_out)).astype(np.float32)[:, None]
+    else:
+        clip[len(clip) - fade_out:] *= np.linspace(1, 0, fade_out, dtype=np.float32)[:, None]
+    if "k_lufs" in post:
+        clip, reached = level_k(clip, post)
+        return clip, f"{len(clip) / SAMPLE_RATE:.2f}s timeline, {reached:.1f} K-LUFS"
     return level(clip, post), f"{len(clip) / SAMPLE_RATE:.2f}s timeline"
 
 
@@ -591,6 +693,11 @@ def encode(audio: np.ndarray, target: Path, post: dict) -> None:
                              compression_level=1.0 - quality) as out:
         for start in range(0, len(samples), SAMPLE_RATE):
             out.write(samples[start:start + SAMPLE_RATE])
+
+
+def shown(path: Path) -> Path:
+    """A path relative to the repository when it is inside it (an --out-dir may not be)."""
+    return path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
 
 
 def listening_page(entries: list[dict], path: Path) -> None:
@@ -637,7 +744,12 @@ def main() -> None:
     parser.add_argument("--reprocess", action="store_true", help="never render; post-process cached raws only")
     parser.add_argument("--sheet", nargs="?", const=CACHE_DIR / "listen.html", type=Path, help="write a page to listen to every candidate")
     parser.add_argument("--no-write", action="store_true", help="do not write into game/assets (listen with --sheet)")
+    parser.add_argument("--out-dir", type=Path, help="write into this folder instead of game/assets (a manifest `out` of "
+                        "`audio/sfx-hit` lands at <out-dir>/audio/sfx-hit.ogg), to audition before replacing anything")
     args = parser.parse_args()
+    if args.out_dir:
+        global OUT_DIR
+        OUT_DIR = args.out_dir.resolve()
 
     manifest = json.loads(args.manifest.read_text())
     comfy = manifest.get("comfy_url", "http://127.0.0.1:8188").rstrip("/")
@@ -662,7 +774,7 @@ def main() -> None:
                 if not args.no_write:
                     target = OUT_DIR / f"{job['out']}-{variant + 1}.ogg"
                     encode(audio, target, job["post"])
-                    print(f"  wrote {target.relative_to(ROOT)}")
+                    print(f"  wrote {shown(target)}")
             entries.append({"job": job, "candidates": candidates})
             continue
         for index, raw in enumerate(raws):
@@ -681,7 +793,7 @@ def main() -> None:
                 encode(audio, target, job["post"])
                 if meta is not None:
                     music[Path(job["out"]).name] = meta
-                print(f"  wrote {target.relative_to(ROOT)}")
+                print(f"  wrote {shown(target)}")
         entries.append({"job": job, "candidates": candidates})
     if music and not args.no_write:
         music_path.parent.mkdir(parents=True, exist_ok=True)

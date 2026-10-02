@@ -19,10 +19,10 @@ signal formed
 ## Per tier: how long it takes to write itself (the beats of the sheets it replaced, so their sounds still land), the
 ## sound it brings, its rune rings, its star {points / step}, and how many smaller circles stand in front of it.
 const TIERS: Array[Dictionary] = [
-	{"form": 0.62, "sound": "sfx-cast-sigil-1", "runes": 1, "star": [3, 1], "front": 1, "ticks": 36},
-	{"form": 0.86, "sound": "sfx-cast-sigil", "runes": 1, "star": [6, 2], "front": 1, "ticks": 48},
-	{"form": 1.0, "sound": "sfx-cast-sigil-3", "runes": 2, "star": [7, 3], "front": 2, "ticks": 60},
-	{"form": 1.23, "sound": "sfx-cast-sigil-4", "runes": 2, "star": [8, 3], "front": 3, "ticks": 72},
+	{"form": 0.62, "sound": "sfx-cast-tier-1", "runes": 1, "star": [3, 1], "front": 1, "ticks": 36},
+	{"form": 0.86, "sound": "sfx-cast-tier-2", "runes": 1, "star": [6, 2], "front": 1, "ticks": 48},
+	{"form": 1.0, "sound": "sfx-cast-tier-3", "runes": 2, "star": [7, 3], "front": 2, "ticks": 60},
+	{"form": 1.23, "sound": "sfx-cast-tier-4", "runes": 2, "star": [8, 3], "front": 3, "ticks": 72},
 ]
 ## The disc faces the foes, so from the camera it is narrowed to this share of its width, leaning back this far.
 const SQUASH := 0.46

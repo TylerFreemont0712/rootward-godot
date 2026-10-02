@@ -124,7 +124,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	if heavy:
 		stage.dim(0.38, 0.3)
 	if _circle == null:
-		Sound.play("sfx-cast-sigil", 0.8)
+		Sound.play("sfx-cast-tier-2", 0.8)
 		stage.cast_flash(element, heavy)
 		if heavy:
 			stage.vortex(element, 0.62)

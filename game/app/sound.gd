@@ -12,6 +12,13 @@ const SOUND_BUS := "Sound"
 ## Enough for a volley: twenty bolts landing a tenth of a second apart, each ringing for half a second.
 const VOICES := 12
 const FADE := 0.8
+## Short, frequent sounds that would sound mechanical repeated exactly (a card, a glyph typed): each play shifts the
+## pitch by up to this fraction either way and the level by up to LEVEL_JITTER_DB, besides the choice among takes.
+const JITTER := {"sfx-glyph": 0.04, "sfx-card-flick": 0.05, "sfx-card-place": 0.05, "sfx-card-slide": 0.05}
+const LEVEL_JITTER_DB := 1.5
+## The Sound bus ends in a limiter, so a volley's hits landing together (twelve voices) cannot clip the output.
+const LIMITER_THRESHOLD_DB := -4.0
+const LIMITER_CEILING_DB := -1.0
 
 static var _music: Array[AudioStreamPlayer] = []
 static var _current := 0
@@ -56,9 +63,13 @@ static func play(id: String, volume := 1.0, pitch := 1.0) -> void:
 	var stream: AudioStream = found[randi() % found.size()]
 	var voice := _voices[_next_voice]
 	_next_voice = (_next_voice + 1) % VOICES
+	var jitter: float = JITTER.get(id, 0.0)
 	voice.stream = stream
 	voice.volume_db = linear_to_db(maxf(volume, 0.001))
 	voice.pitch_scale = pitch
+	if jitter > 0.0:
+		voice.volume_db += randf_range(-LEVEL_JITTER_DB, LEVEL_JITTER_DB)
+		voice.pitch_scale = pitch * (1.0 + randf_range(-jitter, jitter))
 	_start(voice)
 
 
@@ -146,6 +157,18 @@ static func _buses() -> void:
 			AudioServer.add_bus()
 			AudioServer.set_bus_name(AudioServer.bus_count - 1, bus)
 			AudioServer.set_bus_send(AudioServer.bus_count - 1, "Master")
+	_limit(AudioServer.get_bus_index(SOUND_BUS))
+
+
+## One limiter at the end of the Sound bus, added once.
+static func _limit(bus_index: int) -> void:
+	for i in AudioServer.get_bus_effect_count(bus_index):
+		if AudioServer.get_bus_effect(bus_index, i) is AudioEffectLimiter:
+			return
+	var limiter := AudioEffectLimiter.new()
+	limiter.threshold_db = LIMITER_THRESHOLD_DB
+	limiter.ceiling_db = LIMITER_CEILING_DB
+	AudioServer.add_bus_effect(bus_index, limiter)
 
 
 static func _ensure() -> bool:
