@@ -43,3 +43,5 @@ The next number is **ADR-0038**.
 - [ADR-0036](ADR-0036-fitting-room-and-cinzel-default.md): Character becomes a fitting and rehearsal room using live skins, clips and circles on a local clock; Cinzel becomes the saved default and the passage gains a continuous soft opening.
 
 - [ADR-0037](ADR-0037-cosmetic-loadout-and-fight-scale-rehearsal.md): every skin fitted to one figure height; a six-slot cosmetic loadout (idle, casts, circle style, bolt, impact) saved with the profile; four new moves and sheets; the Character room's practice ring as a real fight stage on its own clock, with carousels.
+
+- [ADR-0038](ADR-0038-prompted-soundtrack-glass-circuit.md): a prompted "Glass Circuit" soundtrack replaces the composed one slot by slot, as the player approves each track.
