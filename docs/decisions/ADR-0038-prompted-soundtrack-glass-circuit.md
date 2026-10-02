@@ -14,10 +14,10 @@ lyrics, then plays it) and liked its results, and asked a sound designer to prop
   instrumental), a seed on the YuE2 Generate Music node and a duration cap, run through the unchanged workflow. The
   designer's identity, "Glass Circuit" (glassy kalimba, glockenspiel and celesta arpeggios, warm analog synth, airy
   choir, taiko), and every track's exact prompt and seeds are in `test/music/SOUNDTRACK.md` and `queue.json`.
-- Tracks are replaced **only once the player has heard and approved them**. Approved and installed: the title (the
-  rough take "b"), the Heap and Kernel map themes, the three battle themes (Salvage take 1) and the treasure cue.
-  The other slots (Salvage map, rest, guardian, final guardian, victory, defeat) keep the ADR-0019 tracks until their
-  replacements are approved.
+- Tracks were replaced once the player had heard and approved them, and all thirteen slots now are: the title (the
+  rough take "b"), the Salvage, Heap and Kernel maps, rest, the three battle themes (Salvage take 1), the two
+  guardians, and the treasure, victory and defeat cues (the victory and defeat cues are the 12 s and 13 s trimmed
+  cuts, not the 40 s takes).
 - `test/music/install_music.py` installs a slot from its mastered take: the steps of `pipeline/music/master.py`
   (tone, one level gain, a bar-aligned loop cut at `loopEnd` with a 0.15 s crossfade) into `game/assets/audio/` and
   `music.json`. The planner picks its own key and tempo, so several tracks are not in D (the sound effects' key).

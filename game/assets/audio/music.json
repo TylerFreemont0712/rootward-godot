@@ -12,12 +12,12 @@
     "loopEnd": 65.6842292
   },
   "music-guardian": {
-    "loopStart": 7.7155625,
-    "loopEnd": 73.0966667
+    "loopStart": 98.1201875,
+    "loopEnd": 138.1201875
   },
   "music-guardian-final": {
-    "loopStart": 6.4238958,
-    "loopEnd": 56.9860417
+    "loopStart": 125.5801667,
+    "loopEnd": 148.0101667
   },
   "music-heap": {
     "loopStart": 104.5601458,
@@ -28,12 +28,12 @@
     "loopEnd": 122.0591458
   },
   "music-rest": {
-    "loopStart": 5.691125,
-    "loopEnd": 62.383125
+    "loopStart": 47.1900625,
+    "loopEnd": 81.4800625
   },
   "music-salvage": {
-    "loopStart": 6.1418542,
-    "loopEnd": 73.0390833
+    "loopStart": 25.6501458,
+    "loopEnd": 64.5901458
   },
   "music-title": {
     "loopStart": 70.410125,
