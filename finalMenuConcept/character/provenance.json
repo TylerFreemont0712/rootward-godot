@@ -1,0 +1,8 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-10-02",
+  "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-5482d470-e701-452c-827d-43b768c8bd5e.png",
+  "asset": "game/assets/menus/character-room.png",
+  "prompt": "background-prompt.txt",
+  "sha256": "1661ef052285cff5a8b994c51073e56b4f725c1878b8c921a6af3fc3b72f86f5"
+}

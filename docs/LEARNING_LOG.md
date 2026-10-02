@@ -667,3 +667,20 @@ serif/sans system fallback follows the candidate's style; the current default re
 The original face's `has_char` does not enumerate automatically supplied system glyphs, although rendered Japanese
 works. Tests check explicit Japanese support for candidates and screenshots verify the actual default/fallback
 rendering. Persist validated ids so missing/invalid fields in older saves select the original face.
+
+
+## Rehearse on a local clock (`game/scenes/title/foundry_rehearsal.gd`)
+A preview must not slow the rest of the game or silently equip the skin being inspected. HeroView accepts a
+preview appearance independently of saved equipment, while sprite time and AnimationPlayer speed belong to the
+local actor. The rehearsal drives MagicCircle manually with scaled delta and disables its automatic processing;
+this keeps formation, turning, particles, closing and practice pulses together at every speed. Disabling the actor
+subtree freezes its animation and secondary motion. Sampling an animation before freezing also matters: a new 3D
+model that never advances a frame can otherwise display its rest pose. A direct, zero-blend seek applies the idle
+pose immediately and makes paused frame inspection accurate.
+
+## Preserve an explicit choice when changing a default (`game/app/settings.gd`)
+The old `default` font id is also a selectable Original face. Changing its meaning would make a saved Original
+choice ambiguous. Keep that id and add a preference revision: migrate legacy defaults once, then retain explicit
+Original selections in revised saves. Validate both the id and revision's type before comparing them; GDScript
+cannot compare an integer Variant with a String. Fresh and invalid preferences use Cinzel while other chosen
+candidates continue to persist.

@@ -36,15 +36,31 @@ func _walk() -> void:
 			await _click(label)
 			if label == "Character":
 				await _click("Artificer")
-				await _click("›")
-				await _click("‹")
+				await _click("Next")
+				await _click("Previous")
+				for control: String in [
+					"Play animation",
+					"Pause",
+					"Frame ›",
+					"0.5x",
+					"Loop animation",
+					"Spells",
+					"Test spell",
+					"Circle only",
+					"View",
+					"Floor guides",
+					"High contrast",
+					"Motion",
+					"Reset pose"
+				]:
+					await _click(control)
 			await _click("Back")
 		await _click("Settings")
 		for label: String in ["Audio", "Spell playback", "Display", "Fonts & text"]:
 			await _click(label)
 		for id: String in UiFonts.CHOICES:
 			await _click(String(UiFonts.CHOICES[id][0]))
-		await _click("Restore current font")
+		await _click("Use default font")
 		await _click("Back")
 		await _click("Library")
 		for label: String in [

@@ -72,10 +72,10 @@ func _build() -> void:
 ## A paradigm on offer: its name in its colour, its speed class large, what it is, and its signature cards.
 func _paradigm(paradigm: Dictionary) -> Control:
 	var colour := Color(paradigm.colour)
-	var name := Ui.tint(Ui.label(String(paradigm.name).to_upper(), "Heading"), colour)
-	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 52), colour.lightened(0.2))
+	var name := Ui.tint(Ui.sized(Ui.label(String(paradigm.name).to_upper(), "Heading"), 32), colour)
+	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 47), colour.lightened(0.2))
 	(tier as Label).add_theme_font_override("font", UiTheme.crt_font())
-	var summary := Ui.label(paradigm.summary, "Muted", true)
+	var summary := Ui.sized(Ui.label(paradigm.summary, "Muted", true), 14)
 	var cards := Ui.hbox([], 8)
 	for card_id: String in paradigm.signature:
 		var face := CardFace.create(

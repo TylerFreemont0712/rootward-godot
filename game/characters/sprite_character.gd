@@ -40,6 +40,8 @@ var id: String
 var manifest: Dictionary = {}
 var clip := ""
 var frame := 0
+## Rehearsal playback uses a local speed; normal battle playback remains 1.0.
+var playback_speed := 1.0
 var _time := 0.0
 var _sheets: Dictionary = {}
 
@@ -130,7 +132,7 @@ func _process(delta: float) -> void:
 		return
 	var info: Dictionary = manifest.clips[clip]
 	var count := int(info.frames)
-	_time += delta
+	_time += delta * playback_speed
 	var next := _frame_at(info, _time)
 	if next >= count:
 		if bool(info.get("loop", false)):

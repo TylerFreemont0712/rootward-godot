@@ -121,7 +121,7 @@ func _show_header(state: Dictionary) -> void:
 	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD) as Label
 	# A program run's paradigm, in its own colour: the colour its cards wear.
 	var paradigm := ProgramDraft.paradigm_of(session.catalog, String(state.get("paradigm", "")))
-	var school := Ui.label("", "Subheading")
+	var school := Ui.sized(Ui.label("", "Subheading"), 24) as Label
 	if state.get("playstyle", "") == "program" and not paradigm.is_empty():
 		school.text = "/ " + String(paradigm.name).to_upper()
 		school.add_theme_color_override("font_color", Color(paradigm.colour))

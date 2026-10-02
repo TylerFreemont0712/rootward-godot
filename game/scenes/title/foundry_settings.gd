@@ -164,7 +164,9 @@ func _font_choices(column: VBoxContainer) -> void:
 		)
 	)
 	choices.add_child(
-		FoundryUi.button(FoundryUi.text("Restore current font", "今のフォントに戻す"), _choose_font.bind("default"), false, true)
+		FoundryUi.button(
+			FoundryUi.text("Use default font", "標準のフォントに戻す"), _choose_font.bind(Settings.DEFAULT_FONT), false, true
+		)
 	)
 	var preview := Ui.panel(_font_preview(), "Sunken")
 	preview.custom_minimum_size.x = 410

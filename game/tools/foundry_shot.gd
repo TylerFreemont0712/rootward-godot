@@ -17,7 +17,7 @@ func _ready() -> void:
 	Game.use("program")
 	Settings.font_style = OS.get_environment("ROOTWARD_FONT")
 	if not UiFonts.CHOICES.has(Settings.font_style):
-		Settings.font_style = "default"
+		Settings.font_style = Settings.DEFAULT_FONT
 	UiTheme.refresh_fonts()
 	Settings.reduced_motion = not moment in ["motion", "library-transition"]
 	if moment in ["resume", "adventure-resume"]:
@@ -48,8 +48,22 @@ func _ready() -> void:
 				)
 			)
 			panel.call("_rebuild")
-		"character":
+		"character", "character-spells", "character-dummy":
 			title.call("_open_skins")
+			var panel := _panel(title, "FoundryCharacterPanel") as FoundryCharacterPanel
+			if moment == "character-dummy":
+				for i in panel._looks.size():
+					if panel._looks[i].id == "dummy":
+						panel._at = i
+				panel._arrange(false)
+			if moment == "character-spells":
+				panel._tab = "Spells"
+				panel.rehearsal.tier = 3
+				panel.rehearsal.element = "spark"
+				panel._build_controls()
+				panel.rehearsal.preview_circle()
+				await get_tree().create_timer(0.7).timeout
+				panel.rehearsal.set_paused(true)
 		"academy":
 			title.call("_open_academy")
 		"library", "library-transition", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":

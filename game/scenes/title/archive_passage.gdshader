@@ -81,6 +81,9 @@ void fragment() {
 	alpha *= smoothstep(0.0, 0.04, progress) * (1.0 - smoothstep(0.96, 1.0, progress));
 	float rim = exp(-pow((radius + warp - front) / 0.055, 2.0));
 	float sigil = circle_sigil(p, radius, angle);
+	float breath = sin(progress * 3.14159265);
+	// A faint whole-screen mist precedes the advancing edge, easing into the circle.
+	alpha = max(alpha, breath * 0.12);
 	vec2 star_grid = UV * vec2(95.0, 54.0) + vec2(progress * 1.8, -progress * 4.0);
 	float seed = hash(floor(star_grid));
 	float spark = exp(-dot(fract(star_grid) - 0.5, fract(star_grid) - 0.5) * 180.0);
@@ -89,5 +92,6 @@ void fragment() {
 	fog += vec3(0.10, 0.40, 0.39) * rim * 0.38;
 	fog += vec3(0.68, 0.44, 0.17) * sigil * 1.05;
 	fog += vec3(0.65, 0.62, 0.36) * spark * 0.65;
-	COLOR = vec4(fog, max(alpha, (sigil + spark) * bloom * 0.5));
+	float opening = smoothstep(0.0, 0.085, progress) * (1.0 - smoothstep(0.915, 1.0, progress));
+	COLOR = vec4(fog, max(alpha, (sigil + spark) * bloom * 0.5) * opening);
 }

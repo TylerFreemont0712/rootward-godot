@@ -41,7 +41,7 @@ func test_each_candidate_is_bundled_and_updates_live_themes_without_changing_cod
 	assert_float(source.get_char_size("i".unicode_at(0), 18).x).is_equal(source.get_char_size("M".unicode_at(0), 18).x)
 
 
-func test_preferences_round_trip_and_old_or_invalid_saved_fonts_keep_the_original() -> void:
+func test_preferences_round_trip_and_old_or_invalid_saved_fonts_use_cinzel() -> void:
 	for id: String in UiFonts.CHOICES:
 		Settings.font_style = id
 		Settings.save_file()
@@ -54,8 +54,8 @@ func test_preferences_round_trip_and_old_or_invalid_saved_fonts_keep_the_origina
 		file.close()
 		Settings.font_style = "cinzel"
 		Settings.load_file(Settings.path)
-		assert_str(Settings.font_style).is_equal("default")
-		assert_object(UiTheme.ui_font()).is_same(UiTheme.code_font())
+		assert_str(Settings.font_style).is_equal(Settings.DEFAULT_FONT)
+		assert_object(UiTheme.ui_font()).is_same(UiFonts.face("cinzel"))
 
 
 func test_source_views_keep_their_monospaced_override_under_a_decorative_theme() -> void:
@@ -66,3 +66,15 @@ func test_source_views_keep_their_monospaced_override_under_a_decorative_theme()
 	assert_object(source.get_theme_font("normal_font")).is_same(UiTheme.code_font())
 	var rune := auto_free(RuneCode.new()) as RuneCode
 	assert_object(rune.get("_font")).is_same(UiTheme.code_font())
+
+
+func test_former_default_migrates_once_but_original_remains_an_explicit_choice() -> void:
+	var file := FileAccess.open(Settings.path, FileAccess.WRITE)
+	file.store_string('{"font_style":"default"}')
+	file.close()
+	Settings.load_file(Settings.path)
+	assert_str(Settings.font_style).is_equal("cinzel")
+	Settings.font_style = "default"
+	Settings.save_file()
+	Settings.load_file(Settings.path)
+	assert_str(Settings.font_style).is_equal("default")

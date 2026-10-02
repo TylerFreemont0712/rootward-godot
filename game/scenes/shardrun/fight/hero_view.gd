@@ -17,6 +17,8 @@ const SHORT_SHARE := 0.6
 ## The anime shaders take it as a direction; MToon gets a real light along it.
 const KEY_LIGHT := Vector3(0.45, 0.62, 0.64)
 
+## A rehearsal skin can be browsed without changing the equipped appearance.
+var preview_skin := ""
 var character: StageCharacter
 var sprite: SpriteCharacter
 var _viewport: SubViewport
@@ -38,6 +40,14 @@ func set_skin(id: String) -> void:
 	_build_skin()
 
 
+func set_preview_skin(id: String) -> void:
+	if id not in Settings.all_skins():
+		return
+	preview_skin = id
+	if is_inside_tree():
+		_build_skin()
+
+
 func _build_skin() -> void:
 	if _flash_tween != null and _flash_tween.is_running():
 		_flash_tween.kill()
@@ -50,8 +60,9 @@ func _build_skin() -> void:
 		remove_child(child)
 		child.queue_free()
 
-	if SpriteCharacter.exists(Settings.character_skin):
-		sprite = SpriteCharacter.create(Settings.character_skin)
+	var skin := preview_skin if preview_skin != "" else Settings.character_skin
+	if SpriteCharacter.exists(skin):
+		sprite = SpriteCharacter.create(skin)
 		if sprite.has_clips():
 			sprite.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			add_child(sprite)
@@ -59,7 +70,7 @@ func _build_skin() -> void:
 		sprite.free()
 		sprite = null
 
-	var actor: StageCharacter = StageCharacter.create(Settings.character_skin)
+	var actor: StageCharacter = StageCharacter.create(skin)
 	if not actor.has_model():
 		actor.free()
 		_picture = Ui.picture(FALLBACK, Vector2(192, 288), "@")

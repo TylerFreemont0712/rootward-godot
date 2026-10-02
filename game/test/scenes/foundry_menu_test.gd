@@ -27,7 +27,7 @@ func before_test() -> void:
 	Game.use("program")
 	Settings.path = ROOT + "/settings.json"
 	Settings.reduced_motion = true
-	Settings.font_style = "default"
+	Settings.font_style = Settings.DEFAULT_FONT
 	UiTheme.refresh_fonts()
 	_title = (load(Game.TITLE) as PackedScene).instantiate() as Control
 	add_child(_title)
@@ -96,6 +96,85 @@ func test_character_equips_a_skin_without_closing_or_starting_a_run() -> void:
 	assert_bool(Game.session.has_run()).is_false()
 	assert_str(panel.selected_class).is_equal("artificer")
 	assert_bool((_button(panel, "Current skin") as Button).disabled).is_true()
+
+
+func test_fitting_room_browses_real_skins_without_changing_equipment() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	assert_object(_panel("FoundryCharacterRoom")).is_not_null()
+	assert_bool(panel.rehearsal.paused).is_true()
+	assert_object(panel.rehearsal.hero.sprite).is_not_null()
+	assert_bool(panel.rehearsal.clips().has("cast-light")).is_true()
+	var equipped := Settings.character_skin
+	var avatar: String = Game.profile.avatar
+	for id: String in ["dummy", "emberfox", "shibu", "vesper"]:
+		for i in panel._looks.size():
+			if panel._looks[i].id == id:
+				panel._at = i
+		panel._arrange(false)
+		assert_str(panel.rehearsal.hero.preview_skin).is_equal(id)
+		assert_bool(panel.rehearsal.clips().is_empty()).is_false()
+		assert_bool(panel.rehearsal.paused).is_true()
+		assert_str(Settings.character_skin).is_equal(equipped)
+		assert_str(Game.profile.avatar).is_equal(avatar)
+		await get_tree().process_frame
+	assert_bool(Game.session.has_run()).is_false()
+
+
+func test_rehearsal_pause_speed_and_frames_use_a_local_clock() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	var stage := panel.rehearsal
+	stage.play("cast-light")
+	stage.speed = 0.5
+	await get_tree().create_timer(0.2).timeout
+	stage.set_paused(true)
+	var elapsed := stage._elapsed
+	var sprite_time := stage.hero.sprite._time
+	await get_tree().create_timer(0.1).timeout
+	assert_float(stage._elapsed).is_equal(elapsed)
+	assert_float(stage.hero.sprite._time).is_equal(sprite_time)
+	assert_float(Engine.time_scale).is_equal(1.0)
+	stage.seek(0.2)
+	stage.step(1)
+	assert_float(stage._elapsed).is_equal_approx(0.2 + 1.0 / 30.0, 0.001)
+	assert_float(stage.hero.sprite._time).is_equal_approx(stage._elapsed, 0.001)
+	stage.step(-1)
+	assert_float(stage._elapsed).is_equal_approx(0.2, 0.001)
+	assert_bool(stage.paused).is_true()
+
+
+func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	var stage := panel.rehearsal
+	stage.tier = 3
+	stage.element = "spark"
+	stage.preview_circle()
+	assert_object(stage._circle).is_not_null()
+	assert_int(stage._circle.tier).is_equal(3)
+	stage.set_paused(true)
+	var clock := stage._circle.clock
+	await get_tree().create_timer(0.1).timeout
+	assert_float(stage._circle.clock).is_equal(clock)
+	stage.step(1)
+	assert_float(stage._circle.clock).is_greater(clock)
+	stage.set_paused(false)
+	await get_tree().create_timer(2.8).timeout
+	assert_int(stage._pulses).is_equal(6)
+	assert_bool(stage._bolts.is_empty()).is_true()
+	stage.play("cast-heavy")
+	stage.set_skin("dummy")
+	await get_tree().process_frame
+	assert_object(stage._circle).is_null()
+	assert_int(stage._fx.get_child_count()).is_equal(0)
+	assert_object(stage.hero.character).is_not_null()
+	stage.play("cast-light")
+	stage.seek(0.1)
+	assert_float(stage.hero.character.player.current_animation_position).is_equal_approx(0.1, 0.001)
+	stage.step(1)
+	assert_float(stage.hero.character.player.current_animation_position).is_equal_approx(0.1 + 1.0 / 30.0, 0.001)
+	assert_bool(Game.session.has_run()).is_false()
 
 
 func test_reduce_motion_applies_to_the_current_scene_immediately() -> void:
@@ -222,7 +301,7 @@ func test_compact_pages_fit_their_space_in_both_ui_languages() -> void:
 		assert_float(adventure.size.y).is_less_equal(540.0)
 		for entry: Array in [
 			["_open_options", "FoundrySettingsPanel", Vector2(1550, 790)],
-			["_open_skins", "FoundryCharacterPanel", Vector2(1040, 590)],
+			["_open_skins", "FoundryCharacterPanel", Vector2(1550, 790)],
 			["_open_archive", "FoundryLibraryPanel", Vector2(1550, 790)]
 		]:
 			_title.call(entry[0])
@@ -327,7 +406,7 @@ func test_library_passage_blocks_reentry_and_defers_focus_restoration_until_the_
 	var room := _panel("FoundryLibraryRoom")
 	assert_bool(room.visible).is_true()
 	_button(room, "Back").pressed.emit()
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.64).timeout
 	assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
 	assert_int(opener.focus_mode).is_equal(Control.FOCUS_NONE)
 	assert_object(get_viewport().gui_get_focus_owner()).is_same(_title.get("_archive_transition"))
@@ -390,8 +469,8 @@ func test_settings_room_previews_every_face_live_and_restores_the_opener() -> vo
 		assert_float(panel.size.x).is_less_equal(1550.0)
 		assert_float(panel.size.y).is_less_equal(790.0)
 		assert_int(get_viewport().gui_get_focus_owner().focus_mode).is_equal(Control.FOCUS_ALL)
-	await _press("Restore current font")
-	assert_str(Settings.font_style).is_equal("default")
+	await _press("Use default font")
+	assert_str(Settings.font_style).is_equal(Settings.DEFAULT_FONT)
 	await _press("Back")
 	assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
 

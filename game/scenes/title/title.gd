@@ -287,6 +287,17 @@ func _mount_settings() -> void:
 
 
 func _open_skins() -> void:
+	if is_instance_valid(_archive_transition):
+		return
+	if Settings.reduced_motion:
+		_mount_character()
+		return
+	_overlay_return = get_viewport().gui_get_focus_owner()
+	_freeze_navigation()
+	_archive_passage(_mount_character, _focus_archive)
+
+
+func _mount_character() -> void:
 	var character := FoundryCharacterPanel.make()
 	character.closed.connect(_close_overlay)
 	character.skin_selected.connect(
@@ -294,7 +305,7 @@ func _open_skins() -> void:
 			_backdrop.refresh_skin()
 			_refresh_adventure = _setup
 	)
-	_show_overlay(character)
+	_show_overlay(character, false, false, true)
 
 
 func _open_academy() -> void:
@@ -452,8 +463,8 @@ func _open_how_to() -> void:
 	_show_overlay(FoundryUi.page(column, Vector2(650, 0)))
 
 
-func _show_overlay(panel: Control, library_room := false, settings_room := false) -> void:
-	var destination_room := library_room or settings_room
+func _show_overlay(panel: Control, library_room := false, settings_room := false, character_room := false) -> void:
+	var destination_room := library_room or settings_room or character_room
 	if is_instance_valid(_archive_transition) and not destination_room:
 		panel.queue_free()
 		return
@@ -475,6 +486,8 @@ func _show_overlay(panel: Control, library_room := false, settings_room := false
 		page = FoundryLibraryRoom.make(panel)
 	elif settings_room:
 		page = FoundrySettingsRoom.make(panel)
+	elif character_room:
+		page = FoundryCharacterRoom.make(panel)
 	else:
 		page = Ui.centered_scroll(panel)
 	page.size = DESIGN
@@ -508,7 +521,11 @@ func _close_overlay() -> void:
 	if Settings.reduced_motion:
 		_finish_close()
 	else:
-		if _overlay.get_child(1) is FoundryLibraryRoom or _overlay.get_child(1) is FoundrySettingsRoom:
+		if (
+			_overlay.get_child(1) is FoundryLibraryRoom
+			or _overlay.get_child(1) is FoundrySettingsRoom
+			or _overlay.get_child(1) is FoundryCharacterRoom
+		):
 			_archive_passage(_finish_close.bind(false), _restore_navigation)
 			return
 		_overlay_motion = create_tween()

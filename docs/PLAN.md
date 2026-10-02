@@ -284,6 +284,12 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       Six saved/live font choices (current default plus five candidates), source spacing retained, English/Japanese
       and small-window review, persistent preferences and focus-safe resets (ADR-0035).
 
+- [x] Cinzel default with versioned preservation of explicit Original preferences; paradigm text reduced about 10%,
+      Settings shade extended through sliders/Back, and a continuous soft-opening room passage (ADR-0036).
+- [x] Dedicated Character fitting room with its own painting, explicit skin equip, live native clip rehearsal,
+      local slow motion/pause/loop/frame inspection, cast/circle tiers/elements, zoom and 3D viewing angles.
+      Existing class/skin assets and production spell circles reused; additional classes remain later work.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

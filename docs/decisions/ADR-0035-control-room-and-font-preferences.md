@@ -2,6 +2,9 @@
 
 Accepted 2026-10-02.
 
+The font default and reset behavior below are superseded by [ADR-0036](ADR-0036-fitting-room-and-cinzel-default.md):
+Cinzel is now the default; Original remains an explicit saved choice.
+
 ## Context
 
 The player wants Settings to inhabit its own screen, like the Library, with its categories down the left. They

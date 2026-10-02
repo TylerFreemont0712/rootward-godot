@@ -1,6 +1,6 @@
-class_name FoundrySettingsRoom
+class_name FoundryCharacterRoom
 extends Control
-## An opaque control room replaces the station visually while retaining the title's safe modal focus lifecycle.
+## An opaque fitting room replaces the station visually while retaining the title's safe modal focus lifecycle.
 
 var _painting: TextureRect
 var _light: ShaderMaterial
@@ -8,8 +8,8 @@ var _clock := 0.0
 var _preferences: ScrollContainer
 
 
-static func make(panel: FoundrySettingsPanel) -> FoundrySettingsRoom:
-	var room := FoundrySettingsRoom.new()
+static func make(panel: FoundryCharacterPanel) -> FoundryCharacterRoom:
+	var room := FoundryCharacterRoom.new()
 	room.size = Vector2(1920, 1080)
 	room.mouse_filter = Control.MOUSE_FILTER_STOP
 	var ground := ColorRect.new()
@@ -18,7 +18,7 @@ static func make(panel: FoundrySettingsPanel) -> FoundrySettingsRoom:
 	ground.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	room.add_child(ground)
 	room._painting = TextureRect.new()
-	room._painting.texture = Art.texture("menus/control-room")
+	room._painting.texture = Art.texture("menus/character-room")
 	room._painting.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	room._painting.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	room._painting.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
@@ -36,16 +36,18 @@ static func make(panel: FoundrySettingsPanel) -> FoundrySettingsRoom:
 	var reading_shade := ColorRect.new()
 	var reading_material := ShaderMaterial.new()
 	reading_material.shader = preload("res://scenes/title/library_reading_shade.gdshader")
-	reading_material.set_shader_parameter("feather", 0.025)
-	reading_material.set_shader_parameter("opacity", 0.90)
 	reading_shade.material = reading_material
 	reading_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FoundryUi.place(room, reading_shade, Rect2(144, 170, 1640, 824))
+	FoundryUi.place(room, reading_shade, Rect2(144, 170, 360, 824))
+	var controls_shade := ColorRect.new()
+	controls_shade.material = reading_material
+	controls_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	FoundryUi.place(room, controls_shade, Rect2(1220, 170, 564, 824))
 	var plaque := Ui.vbox(
 		[
-			Ui.tint(Ui.sized(Ui.label(FoundryUi.text("THE CONTROL ROOM", "工房の調整室"), "Heading"), 32), UiTheme.AMBER),
+			Ui.tint(Ui.sized(Ui.label(FoundryUi.text("THE FITTING ROOM", "工房の試着室"), "Heading"), 32), UiTheme.AMBER),
 			Ui.label(
-				FoundryUi.text("Tune the light, the sound and the lettering of your journey.", "灯り、音、冒険の文字を、自分らしく。"),
+				FoundryUi.text("Find your silhouette. Practice the spell before the journey.", "すがたを選び、冒険の前に呪文を練習しよう。"),
 				"Muted"
 			)
 		],

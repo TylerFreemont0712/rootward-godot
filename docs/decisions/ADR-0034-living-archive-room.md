@@ -2,6 +2,9 @@
 
 Accepted 2026-10-02.
 
+The passage timing below is refined by [ADR-0036](ADR-0036-fitting-room-and-cinzel-default.md): one continuous
+1.12-second sine in/out curve and a softer opening, retaining the opaque midpoint and input protection.
+
 ## Context
 
 The player wants the Library to feel like a separate place, with different art, a transition in both directions,

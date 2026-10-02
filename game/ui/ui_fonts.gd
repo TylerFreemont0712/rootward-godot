@@ -3,8 +3,8 @@ extends RefCounted
 ## Shipped typeface candidates; no download or installed Latin font is needed at runtime.
 
 const CHOICES := {
-	"default": ["Current · IBM Plex Mono", "The original amber terminal", "今の琥珀色のターミナル"],
-	"cinzel": ["Cinzel", "Engraved brass & ancient inscriptions", "真鍮の刻印と古い碑文"],
+	"default": ["Original · IBM Plex Mono", "The original amber terminal", "今の琥珀色のターミナル"],
+	"cinzel": ["Cinzel · Default", "Engraved brass & ancient inscriptions", "真鍮の刻印と古い碑文"],
 	"alegreya": ["Alegreya", "A warm, handwritten storybook", "あたたかい物語の本"],
 	"lora": ["Lora", "A lantern-lit journal", "灯りに照らされた日記"],
 	"spectral": ["Spectral", "A scholar's field notes", "学者の観察ノート"],

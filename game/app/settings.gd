@@ -7,6 +7,8 @@ extends RefCounted
 ##   Settings.save_file()
 
 const PATH := "user://settings.json"
+const DEFAULT_FONT := "cinzel"
+const FONT_REVISION := 2
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
 const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu", "dummy"]
 ## Reference skins kept on this machine only (git-ignored, never shipped): each a folder with a skin.json.
@@ -21,8 +23,8 @@ static var shake := true
 ## Calm menus and shard flourishes, while retaining the essential combat playback.
 static var reduced_motion := false
 static var fullscreen := false
-## The selected game lettering; old saves and fresh installs retain the current face.
-static var font_style := "default"
+## The selected game lettering; Cinzel is the default, with the original terminal still available.
+static var font_style := DEFAULT_FONT
 ## The last journey selected on the title screen.
 static var playstyle := "program"
 ## The last selected battle look. Vesper is the first impression on a fresh install.
@@ -50,8 +52,13 @@ static func load_file(from := PATH) -> void:
 	shake = _bool(values, "shake", shake)
 	reduced_motion = _bool(values, "reduced_motion", reduced_motion)
 	fullscreen = _bool(values, "fullscreen", fullscreen)
-	var face: Variant = values.get("font_style", "default")
-	font_style = face if face is String and UiFonts.CHOICES.has(face) else "default"
+	var face: Variant = values.get("font_style", DEFAULT_FONT)
+	# The former default becomes Cinzel once; explicit Original selections in new saves remain Original.
+	var revision: Variant = values.get("font_revision", 0)
+	var version := int(revision) if revision is int or revision is float else 0
+	if face is String and face == "default" and version < FONT_REVISION:
+		face = DEFAULT_FONT
+	font_style = face if face is String and UiFonts.CHOICES.has(face) else DEFAULT_FONT
 	UiTheme.refresh_fonts()
 	apply_display()
 	music_volume = _volume(values, "music_volume", music_volume)
@@ -89,6 +96,7 @@ static func save_file() -> void:
 		"reduced_motion": reduced_motion,
 		"fullscreen": fullscreen,
 		"font_style": font_style,
+		"font_revision": FONT_REVISION,
 		"music_volume": music_volume,
 		"sound_volume": sound_volume,
 		"language": language,
