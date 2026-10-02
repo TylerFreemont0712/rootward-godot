@@ -3,20 +3,26 @@ extends GdUnitTestSuite
 
 const ROOT := "user://test-profile-game"
 
+var _old_path := ""
+
 
 func before_test() -> void:
 	_clear(ROOT)
 	Game.reset(ROOT)
+	_old_path = Settings.path
 
 
 func after_test() -> void:
 	Background.finish_all()
+	Settings.path = _old_path
 	Game.reset(ROOT)
 	_clear(ROOT)
 
 
 func test_switching_player_reloads_only_that_players_run_and_preferences() -> void:
 	assert_bool(Game.boot()).is_true()
+	# Booting points saving at the player's own settings; choosing a profile saves them: keep this suite's apart.
+	Settings.path = ROOT + "/settings.json"
 	var first := Game.profile.duplicate(true)
 	assert_bool(first.needs_name).is_true()
 	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "first-player")

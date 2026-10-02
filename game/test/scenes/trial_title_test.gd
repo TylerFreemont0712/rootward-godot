@@ -8,6 +8,9 @@ func test_new_player_can_browse_optional_tutorial_without_starting_either_run() 
 	_clear(ROOT)
 	Game.reset(ROOT)
 	assert_bool(Game.boot()).is_true()
+	# Choosing a profile saves the settings: to this suite's folder, never the player's own file.
+	var player_settings := Settings.path
+	Settings.path = ROOT + "/settings.json"
 	var named := Game.profiles.rename(String(Game.profile.id), "Trial Tester")
 	assert_bool(named.ok).is_true()
 	assert_bool(Game.select_profile(String(named.profile.id))).is_true()
@@ -30,6 +33,7 @@ func test_new_player_can_browse_optional_tutorial_without_starting_either_run() 
 	assert_int((title.get("_overlay") as Control).get_child_count()).is_equal(0)
 	title.queue_free()
 	await get_tree().process_frame
+	Settings.path = player_settings
 
 
 static func _button_text(root: Node, wanted: String) -> String:
