@@ -293,6 +293,16 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       the planned class names and small symbols; future classes stay unavailable. Preserve the wheel animation
       while refreshing the live actor, with preview-only card clicks and English/Japanese layout review.
 
+### Cosmetic loadout and fight-scale rehearsal (ADR-0037)
+- [x] Every skin fitted to one measured figure height (Vesper's); the 3D skins drawn about 14% smaller in a fight.
+- [x] A six-slot loadout (idle, light cast, heavy cast, circle, bolt, impact) in content, saved with the profile,
+      worn in fights; moves a skin cannot play fall back to its own.
+- [x] Four new moves (Lantern Bearer, Rune Trace, Skyward Call, Root Seal), three new circle styles, a thorn bolt
+      and three heavy impacts (Starfall, Root Eruption, Judgment Pillar).
+- [x] The practice ring as a real fight stage on a local clock, with practice targets; Moves and Spells carousels
+      with live previews, browse-to-try and Wear this.
+- [ ] Tune the new moves and looks by play (a lantern light in the idle hand, snap/strike sounds per cast).
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

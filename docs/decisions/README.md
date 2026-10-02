@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0037**.
+The next number is **ADR-0038**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -41,3 +41,5 @@ The next number is **ADR-0037**.
 - [ADR-0035](ADR-0035-control-room-and-font-preferences.md): Settings inhabits a control room with left-hand tabs; five bundled font candidates update game themes live while the existing default and monospaced source remain available.
 
 - [ADR-0036](ADR-0036-fitting-room-and-cinzel-default.md): Character becomes a fitting and rehearsal room using live skins, clips and circles on a local clock; Cinzel becomes the saved default and the passage gains a continuous soft opening.
+
+- [ADR-0037](ADR-0037-cosmetic-loadout-and-fight-scale-rehearsal.md): every skin fitted to one figure height; a six-slot cosmetic loadout (idle, casts, circle style, bolt, impact) saved with the profile; four new moves and sheets; the Character room's practice ring as a real fight stage on its own clock, with carousels.

@@ -13,6 +13,10 @@ gesture over the captured body (the finger snap). A clip without `mocap` is keys
 | `cast-heavy-hold`, `cast-heavy-end` | `Spell_Simple_Idle_Loop`, `Spell_Simple_Exit` → `Idle_Loop` | leaning in, then settling back |
 | `hurt`, `death` | `Hit_Chest` → `Idle_Loop`, `Death01` | relaxed hands |
 | `guard` | `Idle_Loop` | both arms own crossed forearms |
+| `idle-lantern` | `Idle_Torch_Loop` ×2 | the torch hand opened and cupped, as if holding a light (ADR-0037) |
+| `cast-trace` | `Idle_Loop` | the lead arm owns one pointed stroke down toward the foes (the release) |
+| `cast-skyward` (`-hold`, `-end`) | as `cast-heavy` | both arms owned: gather, the lead arm thrown overhead (the charge), snapped down to point |
+| `cast-slam` (`-hold`, `-end`) | `Idle_Loop` → `Fixing_Kneeling` | the lead hand raised while she kneels, pressed flat to the floor (the release); feet unplanted while kneeling |
 
 Each clip is data: takes, then keys on a timeline, each key a pose, each pose readable numbers. `motion.py` samples a clip frame by
 frame (pure Python, tested by `python3 -m unittest discover -s pipeline/moves`); `pipeline/blender/build_moves.py`

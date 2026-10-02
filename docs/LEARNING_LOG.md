@@ -692,3 +692,25 @@ controls on every skin_ready signal would also replace the wheel and cut off its
 active Skins subtree intact and rebuild native animation controls only when another tab needs them. The wheel
 reuses the existing base layout at a smaller scale; a wrapper reserves its scaled footprint because Godot's
 containers measure unscaled minimums. Clicking any card browses only, while the explicit equip action saves.
+
+
+## Size the camera to the model, not the model to the camera (`game/scenes/shardrun/fight/hero_view.gd`)
+An orthographic camera's `size` is the height of the world it shows (the view keeps its height), so a figure
+`stature` metres tall fills `stature / size` of the view. One fixed camera made a 1.75 m model larger than a 1.39 m
+one and both larger than a drawn skin with its own framing. Measuring each model once (the top of its meshes'
+AABBs in the rest pose, walking local transforms so it works before the node is in the tree) and setting
+`camera.size = stature / fill` puts every skin at the same height; effects then size by that height, not by the view.
+
+## A stage with a clock of its own (`game/scenes/shardrun/fight/battle_stage.gd`)
+Slow motion for one part of the screen cannot use `Engine.time_scale`, which slows the whole game. The rehearsal's
+stage keeps `_clock`: waits poll it on `process_frame` (and so stand still while the stage is disabled), effects
+multiply their `delta` by a `time_scale` the stage sets, and tweens it creates are kept so their `set_speed_scale`
+follows its tempo and `custom_step` can move them a frame by hand. Disabling the stage (`PROCESS_MODE_DISABLED`)
+pauses its processing and the tweens bound to its nodes at once. A test cast is then the fight's own playback,
+not an imitation of it.
+
+## Booting resets where settings are saved (`game/test/app/cosmetics_test.gd`)
+`Game.boot` reads `user://settings.json` and points `Settings.path` back at it; `Game.select_profile` saves. A
+test that boots and then switches profiles writes the player's real settings unless it redirects the path after
+booting. A diff of the real file before and after a full run is the cheap check.
+

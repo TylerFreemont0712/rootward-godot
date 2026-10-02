@@ -56,6 +56,17 @@ ADR-0005, ADR-0007, ADR-0008.
 - The cast's magic circle is `MagicCircle` (game/scenes/shardrun/fight/magic_circle.gd), in front of the palm;
   look-dev sheet: `scripts/screenshot.sh res://tools/magic_circle_sheet.tscn shots/circles.png 10`.
 
+## Size and the cosmetic loadout (ADR-0037)
+
+- Every skin is fitted to one figure height: `StageCharacter.stature()` (mesh tops in rest pose) sizes the camera,
+  `SpriteCharacter.stature()` the drawing; effects size by `HeroView.figure_height()` / `circle_radius(tier)`.
+- Moves the player can wear are options in `game/content/cosmetics.jsonc` (`idle`, `cast_light`, `cast_heavy` name a
+  clip; any clip with a `release` is a cast, a heavy one may add `-hold`/`-end`). A new move: the clip, then an option
+  (+ Japanese in `packs/core/locales/ja/cosmetics.jsonc`), then its card picture:
+  `scripts/screenshot.sh res://tools/move_thumbs.tscn shots/move-thumbs.png 10` (`thumb` picks the moment).
+- `scripts/moves.sh` sheets list their clip groups by hand; add a new clip to a group there.
+- In the Character room (Moves tab) every move plays at fight scale on a real BattleStage.
+
 ## Workflow for a new or changed clip
 
 1. Edit poses/clips (numbers only; no bone axes). Remember: foes are on her LEFT and 35 degrees forward; a torso
