@@ -121,6 +121,39 @@ func test_fitting_room_browses_real_skins_without_changing_equipment() -> void:
 	assert_bool(Game.session.has_run()).is_false()
 
 
+func test_skins_tab_retains_the_carousel_and_unavailable_class_roster() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	assert_str(panel._tab).is_equal("Skins")
+	assert_int(panel._cards.size()).is_equal(panel._looks.size())
+	assert_int(panel._dots.get_child_count()).is_equal(panel._looks.size())
+	for entry: Dictionary in FoundryCharacterPanel.CLASSES:
+		var choice := _button(panel, entry.name)
+		assert_object(choice).is_not_null()
+		assert_bool(choice.disabled).is_equal(not entry.available)
+	var wheel := panel._stage
+	var equipped := Settings.character_skin
+	var avatar: String = Game.profile.avatar
+	Settings.reduced_motion = false
+	panel._turn(1)
+	assert_object(panel._stage).is_same(wheel)
+	assert_str(panel.rehearsal.hero.preview_skin).is_equal(panel._looks[panel._at].id)
+	await get_tree().create_timer(SkinSelectionPanel.TURN_SECONDS + 0.1).timeout
+	var center := panel._cards[panel._at]
+	assert_float(center.size.x).is_greater(panel._cards[wrapi(panel._at + 1, 0, panel._cards.size())].size.x)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	panel._on_card_input(click, wrapi(panel._at + 1, 0, panel._looks.size()))
+	assert_str(Settings.character_skin).is_equal(equipped)
+	assert_str(Game.profile.avatar).is_equal(avatar)
+	_button(panel, "Motion").pressed.emit()
+	assert_object(_button(panel, "Play animation")).is_not_null()
+	_button(panel, "Skins").pressed.emit()
+	assert_int(panel._cards.size()).is_equal(panel._looks.size())
+	assert_str(panel.rehearsal.hero.preview_skin).is_equal(panel._looks[panel._at].id)
+
+
 func test_rehearsal_pause_speed_and_frames_use_a_local_clock() -> void:
 	_title.call("_open_skins")
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel

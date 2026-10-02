@@ -39,6 +39,7 @@ func _walk() -> void:
 				await _click("Next")
 				await _click("Previous")
 				for control: String in [
+					"Motion",
 					"Play animation",
 					"Pause",
 					"Frame ›",

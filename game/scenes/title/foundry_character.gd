@@ -3,13 +3,27 @@ extends SkinSelectionPanel
 ## A fitting room and rehearsal desk. Browsing is temporary; only Use this skin saves equipment.
 
 const CLASSES: Array[Dictionary] = [
-	{"id": "artificer", "name": "Artificer", "available": true, "skins": ["vesper", "emberfox", "shibu", "dummy"]}
+	{
+		"id": "artificer",
+		"name": "Artificer",
+		"ja": "工匠",
+		"available": true,
+		"skins": ["vesper", "emberfox", "shibu", "dummy"]
+	},
+	{"id": "ward-duelist", "name": "Ward Duelist", "ja": "結界の決闘者", "available": false},
+	{"id": "storm-cartographer", "name": "Storm Cartographer", "ja": "嵐の地図師", "available": false},
+	{"id": "ember-alchemist", "name": "Ember Alchemist", "ja": "残り火の錬金術師", "available": false},
+	{"id": "thorn-compiler", "name": "Thorn Compiler", "ja": "茨のコンパイラ", "available": false},
+	{"id": "rootglass-lancer", "name": "Rootglass Lancer", "ja": "根硝子の槍使い", "available": false},
+	{"id": "star-thread-witch", "name": "Star-Thread Witch", "ja": "星糸の魔女", "available": false},
+	{"id": "comet-scribe", "name": "Comet Scribe", "ja": "彗星の書記", "available": false},
+	{"id": "pocket-shardrunner", "name": "Pocket Shardrunner", "ja": "小さなシャードランナー", "available": false},
 ]
+const WHEEL_SCALE := 0.52
 var selected_class := "artificer"
 var rehearsal: FoundryRehearsal
-var _portrait: TextureRect
 var _controls: VBoxContainer
-var _tab := "Motion"
+var _tab := "Skins"
 var _timeline: HSlider
 var _status: Label
 var _pause: Button
@@ -40,72 +54,140 @@ func _build() -> void:
 	var column := Ui.vbox(
 		[FoundryUi.heading("WARDROBE / REHEARSAL", FoundryUi.text("Character", "キャラクター"), _close), FoundryUi.rule()], 12
 	)
-	var wardrobe := Ui.vbox([], 10)
-	wardrobe.custom_minimum_size.x = 240
-	wardrobe.add_child(Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint"))
+	var classes := Ui.vbox([Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint")], 8)
+	classes.custom_minimum_size.x = 220
 	for entry: Dictionary in CLASSES:
-		wardrobe.add_child(Ui.choice(entry.name, selected_class == entry.id, func() -> void: selected_class = entry.id))
-	wardrobe.add_child(Ui.label(FoundryUi.text("More classes will arrive later.", "新しいクラスはこれから。"), "Muted", true))
-	_portrait = TextureRect.new()
-	_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	_portrait.custom_minimum_size = Vector2(240, 232)
-	_portrait.gui_input.connect(_on_wheel)
-	wardrobe.add_child(Ui.panel(_portrait, "Card"))
-	_name = Ui.label("", "Heading", true)
-	_epithet = Ui.label("", "Faint", true)
-	_note = Ui.label("", "Muted", true)
-	wardrobe.add_child(_name)
-	wardrobe.add_child(_epithet)
-	wardrobe.add_child(
-		Ui.hbox(
-			[
-				FoundryUi.button(FoundryUi.text("Previous", "前へ"), _turn.bind(-1)),
-				Ui.spacer(),
-				FoundryUi.button(FoundryUi.text("Next", "次へ"), _turn.bind(1))
-			],
-			8
-		)
-	)
-	_equip = FoundryUi.button("", _equip_current, true)
-	wardrobe.add_child(_equip)
-	wardrobe.add_child(_note)
-	wardrobe.add_child(
-		Ui.label(FoundryUi.text("Browsing never changes your equipped skin.", "試着だけでは、保存したすがたは変わらないよ。"), "Muted", true)
-	)
+		classes.add_child(_class_button(entry))
+	classes.add_child(Ui.label(FoundryUi.text("More classes will arrive later.", "新しいクラスはこれから。"), "Muted", true))
+
 	rehearsal = FoundryRehearsal.new()
-	rehearsal.custom_minimum_size = Vector2(690, 580)
+	rehearsal.custom_minimum_size = Vector2(650, 580)
 	rehearsal.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	rehearsal.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	rehearsal.skin_ready.connect(_build_controls)
+	rehearsal.skin_ready.connect(_refresh_rehearsal_controls)
 	var stage := Ui.vbox([Ui.label(FoundryUi.text("THE PRACTICE RING", "練習の魔法陣"), "Faint"), rehearsal], 8)
 	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_controls = Ui.vbox([], 14)
-	_controls.custom_minimum_size.x = 430
+	_controls.custom_minimum_size.x = 602
 	var desk := Ui.scroll(_controls)
-	desk.custom_minimum_size.x = 430
-	var body := Ui.hbox([wardrobe, stage, desk], 24)
+	desk.custom_minimum_size.x = 602
+	var body := Ui.hbox([classes, stage, desk], 24)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(body)
 	add_child(column)
 	_arrange(false)
 
 
-func _arrange(_animate := true) -> void:
-	var look := _looks[_at]
-	_name.text = look.name
-	_epithet.text = look.epithet
-	_note.text = FoundryUi.text("Try a move, inspect a pose, or write a circle in the air.", "動きやポーズ、空中の魔法陣を試してみよう。")
-	_portrait.texture = load(look.portrait) as Texture2D if ResourceLoader.exists(look.portrait) else null
-	_equip.text = (
-		FoundryUi.text("Current skin", "今のすがた")
-		if look.id == Settings.character_skin
-		else FoundryUi.text("Use this skin", "このすがたにする")
+func _class_button(entry: Dictionary) -> Button:
+	var control := Ui.choice(String(entry.name), selected_class == entry.id, func() -> void: selected_class = entry.id)
+	control.disabled = not entry.available
+	control.clip_text = true
+	control.custom_minimum_size = Vector2(220, 48)
+	control.tooltip_text = (
+		FoundryUi.text("Available", "選べるクラス") if entry.available else FoundryUi.text("Coming later", "今後追加予定")
 	)
-	_equip.disabled = look.id == Settings.character_skin
-	if rehearsal.is_inside_tree():
+	# LEARN: retain accessible button text while an icon and wrapped label supply its compact visible contents.
+	for state: String in [
+		"font_color", "font_hover_color", "font_pressed_color", "font_focus_color", "font_disabled_color"
+	]:
+		control.add_theme_color_override(state, Color.TRANSPARENT)
+	var icon := Ui.picture("menus/classes/" + String(entry.id), Vector2(24, 24))
+	icon.modulate = Color.WHITE if entry.available else Color(1, 1, 1, 0.45)
+	icon.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	var label := Ui.sized(Ui.label(FoundryUi.text(entry.name, entry.ja), "", true), 14)
+	label.add_theme_color_override("font_color", UiTheme.TEXT if entry.available else UiTheme.MUTED)
+	var contents := Ui.hbox([icon, Ui.expand(label)], 10)
+	contents.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	contents.offset_left = 8
+	contents.offset_right = -8
+	contents.offset_top = 4
+	contents.offset_bottom = -4
+	control.add_child(contents)
+	HoverInfo._ignore_mouse(contents)
+	return control
+
+
+func _skin_controls() -> void:
+	_controls.add_child(Ui.label(FoundryUi.text("Choose your appearance", "すがたを選ぶ"), "Subheading"))
+	_stage = Control.new()
+	_stage.size = STAGE
+	_stage.scale = Vector2.ONE * WHEEL_SCALE
+	_stage.clip_contents = true
+	_stage.gui_input.connect(_on_wheel)
+	for i in _looks.size():
+		var card := _card(_looks[i], i)
+		_cards.append(card)
+		_stage.add_child(card)
+	var space := Control.new()
+	space.custom_minimum_size = STAGE * WHEEL_SCALE
+	space.add_child(_stage)
+	_controls.add_child(space)
+	_dots = Ui.hbox([], 8)
+	_dots.alignment = BoxContainer.ALIGNMENT_CENTER
+	_controls.add_child(
+		Ui.hbox(
+			[
+				FoundryUi.button(FoundryUi.text("Previous", "前へ"), _turn.bind(-1)),
+				Ui.expand(_dots),
+				FoundryUi.button(FoundryUi.text("Next", "次へ"), _turn.bind(1))
+			],
+			8
+		)
+	)
+	_name = Ui.label("", "Heading", true)
+	_epithet = Ui.label("", "Faint", true)
+	_note = Ui.label("", "Muted", true)
+	_equip = FoundryUi.button("", _equip_current, true)
+	for node: Control in [_name, _epithet, _note, _equip]:
+		_controls.add_child(node)
+	_controls.add_child(
+		Ui.label(FoundryUi.text("Browsing never changes your equipped skin.", "試着だけでは、保存したすがたは変わらないよ。"), "Muted", true)
+	)
+	_arrange(false)
+
+
+func _card(look: Dictionary, index: int) -> Control:
+	var card := super._card(look, index)
+	# The room stays open when equipping; its footer supplies the live equipment status.
+	if card.get_child_count() > 4:
+		var badge := card.get_child(4)
+		card.remove_child(badge)
+		badge.free()
+	return card
+
+
+func _arrange(animate := true) -> void:
+	var look := _looks[_at]
+	if _stage != null:
+		super._arrange(animate)
+		_note.text = FoundryUi.text(
+			"Turn the carousel, then try this skin on the practice ring.", "カルーセルで選び、練習の魔法陣で動きを試そう。"
+		)
+		_equip.text = (
+			FoundryUi.text("Current skin", "今のすがた")
+			if look.id == Settings.character_skin
+			else FoundryUi.text("Use this skin", "このすがたにする")
+		)
+	if rehearsal.is_inside_tree() and (rehearsal.hero == null or rehearsal.hero.preview_skin != look.id):
 		rehearsal.set_skin(look.id)
+
+
+func _on_card_input(event: InputEvent, index: int) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_at = index
+		_arrange()
+		accept_event()
+	else:
+		_on_wheel(event)
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if _tab == "Skins":
+		super._unhandled_key_input(event)
+	elif event.is_action_pressed("ui_cancel"):
+		_close()
+		get_viewport().set_input_as_handled()
 
 
 func _equip_current() -> void:
@@ -115,27 +197,41 @@ func _equip_current() -> void:
 	Settings.character_skin = id
 	Game.remember_avatar()
 	Settings.save_file()
-	_equip.text = FoundryUi.text("Current skin", "今のすがた")
-	_equip.disabled = true
+	_arrange(false)
 	skin_selected.emit(id)
+
+
+func _refresh_rehearsal_controls() -> void:
+	# Keep the wheel alive during a skin change so its cards finish gliding into place.
+	if _tab != "Skins" or _stage == null:
+		_build_controls()
 
 
 func _build_controls() -> void:
 	Ui.clear(_controls)
+	_cards.clear()
+	_stage = null
+	_equip = null
 	_timeline = null
 	_status = null
 	_pause = null
 	var tabs := Ui.hbox([], 8)
-	for tab: String in ["Motion", "Spells", "View"]:
+	for tab: String in ["Skins", "Motion", "Spells", "View"]:
 		var choose := func() -> void:
 			_tab = tab
 			_build_controls()
 		tabs.add_child(
-			Ui.choice(FoundryUi.text(tab, {"Motion": "動き", "Spells": "呪文", "View": "見え方"}[tab]), _tab == tab, choose)
+			Ui.choice(
+				FoundryUi.text(tab, {"Skins": "すがた", "Motion": "動き", "Spells": "呪文", "View": "見え方"}[tab]),
+				_tab == tab,
+				choose
+			)
 		)
 	_controls.add_child(tabs)
 	_controls.add_child(FoundryUi.rule())
-	if _tab == "Motion":
+	if _tab == "Skins":
+		_skin_controls()
+	elif _tab == "Motion":
 		_motion_controls()
 	elif _tab == "Spells":
 		_spell_controls()

@@ -684,3 +684,11 @@ choice ambiguous. Keep that id and add a preference revision: migrate legacy def
 Original selections in revised saves. Validate both the id and revision's type before comparing them; GDScript
 cannot compare an integer Variant with a String. Fresh and invalid preferences use Cinzel while other chosen
 candidates continue to persist.
+
+
+## Keep the carousel alive while replacing its preview (`game/scenes/title/foundry_character.gd`)
+The skin carousel and practice actor have different lifetimes. Browsing replaces the actor, but rebuilding its
+controls on every skin_ready signal would also replace the wheel and cut off its gliding portraits. Keep the
+active Skins subtree intact and rebuild native animation controls only when another tab needs them. The wheel
+reuses the existing base layout at a smaller scale; a wrapper reserves its scaled footprint because Godot's
+containers measure unscaled minimums. Clicking any card browses only, while the explicit equip action saves.

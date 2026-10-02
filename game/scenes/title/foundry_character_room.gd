@@ -38,11 +38,11 @@ static func make(panel: FoundryCharacterPanel) -> FoundryCharacterRoom:
 	reading_material.shader = preload("res://scenes/title/library_reading_shade.gdshader")
 	reading_shade.material = reading_material
 	reading_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FoundryUi.place(room, reading_shade, Rect2(144, 170, 360, 824))
+	FoundryUi.place(room, reading_shade, Rect2(144, 170, 316, 824))
 	var controls_shade := ColorRect.new()
 	controls_shade.material = reading_material
 	controls_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FoundryUi.place(room, controls_shade, Rect2(1220, 170, 564, 824))
+	FoundryUi.place(room, controls_shade, Rect2(1060, 170, 724, 824))
 	var plaque := Ui.vbox(
 		[
 			Ui.tint(Ui.sized(Ui.label(FoundryUi.text("THE FITTING ROOM", "工房の試着室"), "Heading"), 32), UiTheme.AMBER),

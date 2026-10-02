@@ -21,14 +21,16 @@ checking actual animation clips and spell circles, useful both to players and wh
 - Run the existing detailed passage on one 1.12-second sine in/out tween, with one opaque midpoint crossing.
   Fade in faint mist and the circle gently at the opening. Do not stop/restart the progress curve at midpoint.
   The title still warms the shader, freezes input immediately and constructs the destination under the veil.
-- Character inhabits a generated root-and-brass fitting room, with shaded wardrobe and rehearsal controls and
+- Character inhabits a generated root-and-brass fitting room, with a compact left-hand class list, right-hand wardrobe/rehearsal tabs and
   an open central practice stage. Reuse the safe room handoff, Back/Escape and reduced-motion behavior. Artificer
-  remains the only class; class membership is explicit, with more classes reserved for future implementation.
-- Browse the existing shipped/local skin catalogue through Previous/Next or the portrait's wheel. An explicit
-  `Use this skin` saves equipment/profile appearance; previewing never does. `HeroView.preview_skin` selects a
+  remains the only class; class membership is explicit. The planned roster from SHARDRUN_DESIGN has small vector symbols and disabled
+  future-class entries, with an availability tooltip.
+- Skins is the first/default right-hand tab. Browse the existing shipped/local skin catalogue through the original
+  sliding portrait carousel, its smaller/dimmed neighboring cards, Previous/Next, card clicks and mouse wheel. An explicit
+  `Use this skin` saves equipment/profile appearance; previewing never does, including clicks on the central card. `HeroView.preview_skin` selects a
   rehearsal renderer without mutating Settings. Normal battle skin selection remains unchanged.
 - Render the actual SpriteCharacter or StageCharacter and expose native clips, rather than drawing placeholder
-  animation samples. Motion offers play/pause, four local speeds, looping, 30-fps frame stepping and scrubbing.
+  animation samples. Motion, Spells and View follow Skins. Motion offers play/pause, four local speeds, looping, 30-fps frame stepping and scrubbing.
   Spells offers each skin's available casts, all four existing circle tiers, four elements, circle-only testing,
   optional circles and shared playback controls. View offers zoom, floor guides, a contrast backdrop and angles
   for 3D models; painted skins retain their drawn viewpoint. Cast tests emit harmless practice bolts.
@@ -52,3 +54,19 @@ Japanese at 1280×720, Settings audio controls, Cinzel paradigm offers and the p
 Final focused checks passed all 24 cases after the paused-pose fix. All scripts pass the engine parse check;
 changed scripts pass lint and formatting. Repository lint retains the unrelated archive_panel.gd:130
 line-length violation.
+
+
+### Carousel layout refinement
+
+The initial fitting room replaced the old portrait wheel with a single portrait on the left. The player asked to
+retain that carousel and put skin browsing in the first tab on the right. Reuse SkinSelectionPanel's wheel/card
+arrangement inside a scaled wrapper; preserve the wheel nodes when a new rehearsal actor emits skin_ready so
+in-progress card glides are not replaced by a fresh panel. The left column now contains class names and compact
+symbols only. Class symbols are deterministic SVGs in the existing menu icon style, with no new raster generation.
+Tests cover retained wheel identity during a turn, selection markers, larger central cards, preview-only card
+clicks, disabled future classes and returning to the Skins tab. English and 1280×720 Japanese captures review the
+roster and carousel; the Spells capture reviews the wider rehearsal controls.
+
+Carousel refinement validation: all 296 tests in 47 suites passed, with no test errors/failures/orphans; the
+rendered walkthrough passed 187 actual mouse clicks. All four changed scripts pass lint/format. The existing
+archive_panel.gd:130 repository lint violation and intermittent engine exit resource warnings remain.

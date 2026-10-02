@@ -289,6 +289,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Dedicated Character fitting room with its own painting, explicit skin equip, live native clip rehearsal,
       local slow motion/pause/loop/frame inspection, cast/circle tiers/elements, zoom and 3D viewing angles.
       Existing class/skin assets and production spell circles reused; additional classes remain later work.
+- [x] Restore the original skin carousel in the first/default right-hand Skins tab. Compact left-hand roster uses
+      the planned class names and small symbols; future classes stay unavailable. Preserve the wheel animation
+      while refreshing the live actor, with preview-only card clicks and English/Japanese layout review.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
