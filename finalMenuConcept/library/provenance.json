@@ -1,0 +1,9 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-10-02",
+  "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-054e6260-9e45-40e2-ab46-6986cf0b8d1f.png",
+  "asset": "game/assets/menus/living-archive.png",
+  "prompt": "background-prompt.txt",
+  "intent": "A separate archive interior; all labels and navigation are real localized Godot controls. Existing shard, relic and creature art is shared.",
+  "sha256": "f705866a8580227194453dbd170d981083d4681b9e70c2e5d73a52896c026dcd"
+}

@@ -1,8 +1,11 @@
 class_name FoundryLibraryPanel
 extends ArchivePanel
-## The station's library adds a bestiary while retaining the live archive's search, code and refactor inspectors.
+## The Living Archive: shelf navigation, illustrated entries and encounter-aware bestiary in its own room.
 
 var _role := "all"
+var _layer := "all"
+var _browse: ScrollContainer
+var _shelves: Dictionary = {}
 
 
 static func make(catalog: Dictionary) -> FoundryLibraryPanel:
@@ -10,167 +13,348 @@ static func make(catalog: Dictionary) -> FoundryLibraryPanel:
 	panel._catalog = catalog
 	panel._language = Settings.language
 	panel.theme_type_variation = "Overlay"
+	panel.add_theme_stylebox_override(
+		"panel", UiTheme.box(Color("142124"), Color(UiTheme.AMBER_DIM, 0.8), 1, 10, Vector2(14, 12))
+	)
 	panel._build()
 	return panel
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(940, 510)
+	custom_minimum_size = Vector2(960, 570)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
-				"THE STATION LIBRARY",
-				FoundryUi.text("Knowledge for the journey", "旅のための知識"),
+				FoundryUi.text("CATALOGUE / FIELD NOTES", "図鑑 / 観察ノート"),
+				_kind_name(_kind),
 				func() -> void: closed.emit()
 			),
 			FoundryUi.rule()
 		],
 		8
 	)
-	var tabs := Ui.hbox([], 10)
-	for kind: String in ["cards", "relics", "foes", "glossary"]:
-		var choose := func() -> void:
-			_kind = kind
-			_selected = ""
-			_rarity = "all"
-			_rebuild()
-		tabs.add_child(Ui.choice(_kind_name(kind), _kind == kind, choose))
-	tabs.add_child(Ui.spacer())
+	var sidebar := Ui.vbox([], 6)
+	sidebar.custom_minimum_size.x = 128
+	sidebar.add_child(Ui.label(FoundryUi.text("COLLECTIONS", "コレクション"), "Faint"))
+	var symbols := {"cards": "◆", "relics": "✦", "foes": "◇", "bosses": "♜", "glossary": "≡"}
+	for kind: String in ["cards", "relics", "foes", "bosses", "glossary"]:
+		var choose := Ui.choice(_kind_name(kind), _kind == kind, _choose_shelf.bind(kind, _mode))
+		choose.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		choose.custom_minimum_size.y = 32
+		choose.tooltip_text = "%s  %s" % [symbols[kind], _kind_name(kind)]
+		sidebar.add_child(choose)
+	sidebar.add_child(Ui.spacer(0, 14))
+	sidebar.add_child(FoundryUi.rule())
+	sidebar.add_child(Ui.label(FoundryUi.text("JOURNEY", "冒険モード"), "Faint"))
 	for mode: String in ["program", "spellbook"]:
-		var choose := func() -> void:
-			_mode = mode
-			_selected = ""
-			_rebuild()
-		tabs.add_child(Ui.choice("Shardrun" if mode == "program" else "Spellforge", _mode == mode, choose))
-	column.add_child(tabs)
+		sidebar.add_child(
+			Ui.choice("Shardrun" if mode == "program" else "Spellforge", _mode == mode, _choose_shelf.bind(_kind, mode))
+		)
+	sidebar.add_child(Ui.expand(Ui.spacer(0, 1), true))
+	sidebar.add_child(
+		Ui.label(
+			FoundryUi.text("Study a shard.\nRead an intent.\nPrepare a journey.", "シャードを調べる。\n敵の意図を読む。\n冒険に備える。"),
+			"Faint",
+			true
+		)
+	)
 	_search = LineEdit.new()
-	_search.placeholder_text = FoundryUi.text("Search the shelves…", "図鑑を検索…")
+	_search.placeholder_text = FoundryUi.text("Search names, effects or locations…", "名前・効果・場所を検索…")
 	_search.text = _query
 	_search.custom_minimum_size.y = 28
+	_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_search.text_changed.connect(
 		func(value: String) -> void:
 			_query = value
 			_refresh()
 	)
-	column.add_child(_search)
+	var catalogue := Ui.vbox(
+		[Ui.hbox([_search, FoundryUi.button(FoundryUi.text("Reset", "リセット"), _reset_filters, false, true)], 8)], 8
+	)
+	catalogue.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var filters := Ui.hbox([], 8)
 	if _kind == "cards":
-		var rarities := Ui.hbox([], 8)
-		var rarity_ids: Array[String] = ["all", "common", "uncommon", "rare", "epic", "legendary", "boss"]
-		var rarity_picker := OptionButton.new()
-		for rarity: String in rarity_ids:
-			rarity_picker.add_item(
-				FoundryUi.text("All rarities", "すべてのレア度") if rarity == "all" else rarity.capitalize()
+		var rarity_changed := func(value: String) -> void:
+			_rarity = value
+			_refresh()
+		filters.add_child(
+			_picker(
+				["all", "common", "uncommon", "rare", "epic", "legendary", "boss"],
+				_rarity,
+				FoundryUi.text("All rarities", "すべてのレア度"),
+				rarity_changed
 			)
-		rarity_picker.selected = maxi(0, rarity_ids.find(_rarity))
-		rarity_picker.item_selected.connect(
+		)
+		if _mode == "program":
+			var roles: Array[String] = ["all"]
+			roles.append_array(RoleBadge.ROLES.keys())
+			var role_changed := func(value: String) -> void:
+				_role = value
+				_refresh()
+			filters.add_child(_picker(roles, _role, FoundryUi.text("All roles", "すべての役割"), role_changed))
+	elif _kind in ["foes", "bosses"]:
+		var layers := OptionButton.new()
+		layers.add_item(FoundryUi.text("All layers", "すべての層"))
+		var ids: Array[String] = ["all"]
+		var routes := FoundryBestiary.layers(_catalog, _mode)
+		for i in routes.size():
+			ids.append(routes[i].id)
+			layers.add_item(FoundryUi.text("Layer %d · %s", "第%d層 · %s") % [i + 1, routes[i].name])
+		layers.selected = maxi(0, ids.find(_layer))
+		layers.item_selected.connect(
 			func(index: int) -> void:
-				_rarity = rarity_ids[index]
+				_layer = ids[index]
 				_refresh()
 		)
-		rarities.add_child(rarity_picker)
-		if _mode == "program":
-			rarities.add_child(Ui.spacer())
-			var roles := OptionButton.new()
-			var role_ids: Array[String] = ["all"]
-			for id: String in RoleBadge.ROLES:
-				role_ids.append(id)
-			for id in role_ids:
-				roles.add_item(FoundryUi.text("All roles", "すべての役割") if id == "all" else id.capitalize())
-			roles.selected = maxi(0, role_ids.find(_role))
-			roles.item_selected.connect(
-				func(index: int) -> void:
-					_role = role_ids[index]
-					_selected = ""
-					_refresh()
+		filters.add_child(layers)
+		filters.add_child(
+			Ui.expand(
+				Ui.label(
+					FoundryUi.text(
+						"Guardian pools" if _kind == "bosses" else "Hallways & elites",
+						"守護者の候補" if _kind == "bosses" else "通常の敵・エリート"
+					),
+					"Faint"
+				)
 			)
-			rarities.add_child(roles)
-		column.add_child(rarities)
+		)
+	if filters.get_child_count() > 0:
+		catalogue.add_child(filters)
+	else:
+		filters.free()
 	_count = Ui.label("", "Faint")
-	column.add_child(_count)
-	_list = Ui.vbox([], 6)
-	var browse := Ui.scroll(_list)
-	browse.custom_minimum_size.x = 255
+	catalogue.add_child(_count)
+	_list = Ui.vbox([], 4)
+	_browse = Ui.scroll(_list)
+	_browse.follow_focus = true
+	_browse.custom_minimum_size.x = 238
 	_details = Ui.vbox([], 8)
 	var details := Ui.scroll(_details)
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var body := Ui.hbox([browse, details], 10)
-	body.custom_minimum_size.y = 260
+	var specimen := Ui.panel(details, "Sunken")
+	specimen.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var body := Ui.hbox([_browse, specimen], 12)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	column.add_child(body)
+	catalogue.add_child(body)
+	var content := Ui.hbox([sidebar, catalogue], 16)
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(content)
 	add_child(column)
 	_refresh()
 
 
-func _kind_name(kind: String) -> String:
-	var names := {
-		"cards": FoundryUi.text("Shards", "シャード"),
-		"relics": FoundryUi.text("Relics", "遺物"),
-		"foes": FoundryUi.text("Creatures", "敵"),
-		"glossary": FoundryUi.text("Concepts", "概念"),
+func _choose_shelf(kind: String, mode: String) -> void:
+	_shelves[_mode + "/" + _kind] = {
+		"query": _query, "selected": _selected, "role": _role, "rarity": _rarity, "layer": _layer
 	}
-	return names.get(kind, kind.capitalize())
+	_kind = kind
+	_mode = mode
+	var saved: Dictionary = _shelves.get(mode + "/" + kind, {})
+	_query = saved.get("query", "")
+	_selected = saved.get("selected", "")
+	_role = saved.get("role", "all")
+	_rarity = saved.get("rarity", "all")
+	_layer = saved.get("layer", "all")
+	_upgraded = false
+	_rebuild()
+
+
+func _reset_filters() -> void:
+	_query = ""
+	_role = "all"
+	_rarity = "all"
+	_layer = "all"
+	_rebuild()
+	FoundryUi.focus.call_deferred(_search)
+
+
+static func _picker(ids: Array[String], current: String, all_label: String, changed: Callable) -> OptionButton:
+	var picker := OptionButton.new()
+	for id in ids:
+		picker.add_item(all_label if id == "all" else id.capitalize())
+	picker.selected = maxi(0, ids.find(current))
+	picker.item_selected.connect(func(index: int) -> void: changed.call(ids[index]))
+	return picker
+
+
+func _kind_name(kind: String) -> String:
+	return (
+		{
+			"cards": FoundryUi.text("Shards", "シャード"),
+			"relics": FoundryUi.text("Relics", "遺物"),
+			"foes": FoundryUi.text("Creatures", "通常の敵"),
+			"bosses": FoundryUi.text("Bosses", "ボス"),
+			"glossary": FoundryUi.text("Concepts", "概念")
+		}
+		. get(kind, kind.capitalize())
+	)
 
 
 func _entries() -> Dictionary:
-	if _kind != "foes":
-		var entries := super._entries()
-		if _kind != "cards" or _mode != "program" or _role == "all":
-			return entries
-		var matching := {}
-		for id: String in entries:
-			if entries[id].get("role", "") == _role:
-				matching[id] = entries[id]
-		return matching
-	var creatures: Dictionary = _catalog.foes.duplicate(true)
-	if _mode == "program":
-		creatures.merge(_catalog.programs.foes, true)
-	for creature: Dictionary in creatures.values():
-		var trait_view := ShardrunViews.trait_view(creature)
-		creature.summary = trait_view.get(
-			"text", creature.get("flavor", FoundryUi.text("A creature of the Machine.", "機械の中に住む敵。"))
+	if _kind in ["foes", "bosses"]:
+		return FoundryBestiary.entries(_catalog, _mode, _kind == "bosses", _layer)
+	var entries := super._entries()
+	if _kind != "cards" or _mode != "program" or _role == "all":
+		return entries
+	var matching := {}
+	for id: String in entries:
+		if entries[id].get("role", "") == _role:
+			matching[id] = entries[id]
+	return matching
+
+
+func _refresh() -> void:
+	var focus_owner := get_viewport().gui_get_focus_owner() if is_inside_tree() else null
+	var focused := focus_owner != null and _list.is_ancestor_of(focus_owner)
+	var scroll := _browse.scroll_vertical
+	Ui.clear(_list)
+	var shown: Array[Dictionary] = []
+	for item: Dictionary in _entries().values():
+		if _kind == "cards" and String(item.id).ends_with("-plus"):
+			continue
+		if _kind == "cards" and _rarity != "all" and item.get("rarity", "") != _rarity:
+			continue
+		var haystack := (
+			"%s %s %s %s %s %s"
+			% [
+				item.name,
+				item.get("summary", ""),
+				item.get("keywords", []),
+				item.get("role", ""),
+				item.get("paradigm", ""),
+				FoundryBestiary.location_text(item)
+			]
 		)
-	return creatures
+		if _query != "" and not _query.to_lower() in haystack.to_lower():
+			continue
+		shown.append(item)
+	shown.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return String(a.name).naturalnocasecmp_to(b.name) < 0)
+	_count.text = FoundryUi.text("%d entries · select to inspect", "%d件 · 選んで調べる") % shown.size()
+	if shown.is_empty():
+		Ui.clear(_details)
+		_details.add_child(Ui.label(FoundryUi.text("An empty shelf", "見つからなかったよ"), "Heading"))
+		_details.add_child(
+			Ui.label(
+				FoundryUi.text("Try another name or reset your filters.", "別の名前を探すか、フィルターをリセットしてね。"), "Muted", true
+			)
+		)
+		return
+	if not shown.any(func(item: Dictionary) -> bool: return item.id == _selected):
+		_selected = shown[0].id
+		_upgraded = false
+	var selected_row: Button
+	for item in shown:
+		var row := FoundryUi.button(
+			item.name,
+			func() -> void:
+				_selected = item.id
+				_upgraded = false
+				_refresh(),
+			item.id == _selected
+		)
+		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		row.custom_minimum_size = Vector2(238, 36)
+		row.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		row.icon = Art.texture(_entry_art(item))
+		row.add_theme_constant_override("icon_max_width", 28)
+		row.tooltip_text = (
+			"%s\n%s"
+			% [
+				item.name,
+				FoundryBestiary.location_text(item) if _kind in ["foes", "bosses"] else item.get("summary", "")
+			]
+		)
+		_list.add_child(row)
+		if item.id == _selected:
+			selected_row = row
+			_show_entry(item)
+	_browse.set_deferred("scroll_vertical", scroll)
+	if focused:
+		FoundryUi.focus.call_deferred(selected_row)
+
+
+func _entry_art(item: Dictionary) -> String:
+	if _kind in ["foes", "bosses"]:
+		return "foes/" + String(item.get("sprite", item.id))
+	if _kind == "relics":
+		return "shardrun/relic-" + String(item.get("icon", item.id))
+	return ShardrunViews.art(item) if _kind == "cards" else "menus/icons/library"
 
 
 func _show_entry(base: Dictionary) -> void:
-	if _kind != "foes":
+	if _kind not in ["foes", "bosses"]:
 		super._show_entry(base)
 		if _kind == "cards":
-			var art := _details.get_child(0).get_child(0) as Control
-			art.custom_minimum_size = Vector2(96, 96)
+			(_details.get_child(0).get_child(0) as Control).custom_minimum_size = Vector2(80, 80)
 		elif _kind == "relics":
 			(_details.get_child(0) as Control).custom_minimum_size = Vector2(96, 96)
 		return
 	Ui.clear(_details)
-	var art := Ui.picture("foes/" + String(base.get("sprite", base.id)), Vector2(240, 190), "◇")
+	_details.add_child(
+		Ui.tint(
+			Ui.label(
+				FoundryUi.text(
+					"GUARDIAN DOSSIER" if base.boss else "FIELD OBSERVATION", "守護者の記録" if base.boss else "観察の記録"
+				),
+				"Faint"
+			),
+			UiTheme.TEAL
+		)
+	)
+	var art := Ui.picture(_entry_art(base), Vector2(144, 140), "◇")
 	art.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_details.add_child(art)
-	_details.add_child(Ui.label(base.name, "Heading"))
-	_details.add_child(Ui.label(base.summary, "", true))
+	art.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	var identity := Ui.vbox(
+		[
+			Ui.label(base.name, "Heading", true),
+			Ui.tint(Ui.label(FoundryBestiary.location_text(base), "Muted", true), UiTheme.AMBER),
+			Ui.label(base.get("flavor", ""), "Muted", true)
+		],
+		8
+	)
+	identity.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_details.add_child(Ui.hbox([art, identity], 12))
+	_details.add_child(FoundryUi.rule())
 	var traits := ShardrunViews.trait_view(base)
 	if not traits.is_empty():
-		_details.add_child(Ui.label(traits.name, "Subheading"))
-	var facts := FoundryUi.text("Base health: %d", "基本HP: %d") % int(base.get("hp", 0))
-	_details.add_child(Ui.label(facts, "Muted"))
-	for key: String in ["weak", "resist"]:
-		var elements: Array = base.get(key, [])
-		if not elements.is_empty():
-			_details.add_child(Ui.label("%s · %s" % [key.capitalize(), ", ".join(elements)], "Muted", true))
-	_details.add_child(FoundryUi.rule())
+		_details.add_child(Ui.label(traits.name, "Subheading", true))
+		_details.add_child(Ui.label(traits.text, "", true))
 	_details.add_child(
 		Ui.label(
-			FoundryUi.text("Observe its intent. Choose your program's order with care.", "敵の行動を見て、プログラムの順番を考えよう。"),
-			"Muted",
+			(
+				FoundryUi.text("Base health: %d · increases with layer and difficulty", "基本HP: %d · 層と難易度で増加")
+				% int(base.get("hp", 0))
+			),
+			"Faint",
 			true
 		)
 	)
+	for key: String in ["weak", "resist"]:
+		var elements: Array = base.get(key, [])
+		if not elements.is_empty():
+			var label := FoundryUi.text("Weakness", "弱点") if key == "weak" else FoundryUi.text("Resistance", "耐性")
+			_details.add_child(Ui.label("%s · %s" % [label, ", ".join(elements)], "Muted", true))
+	if base.boss:
+		var companions: Array[String] = []
+		var effective := ProgramRules.catalog_for(_catalog) if _mode == "program" else _catalog
+		for location: Dictionary in base.locations:
+			for id: String in location.group:
+				if id != base.id and effective.foes.has(id) and not String(effective.foes[id].name) in companions:
+					companions.append(effective.foes[id].name)
+		if not companions.is_empty():
+			_details.add_child(
+				Ui.label(FoundryUi.text("Encountered with: %s", "一緒に現れる敵: %s") % ", ".join(companions), "Muted", true)
+			)
+		_details.add_child(
+			Ui.label(
+				FoundryUi.text(
+					"One guardian encounter is drawn from this layer's pool each journey.", "この層の候補から、冒険ごとに守護者の戦闘が選ばれる。"
+				),
+				"Faint",
+				true
+			)
+		)
 
 
 func _rebuild() -> void:
 	FoundryUi.rebuild(self, _build)
-
-
-func _refresh() -> void:
-	super._refresh()
-	for entry: Node in _list.get_children():
-		(entry as Control).custom_minimum_size.y = 32

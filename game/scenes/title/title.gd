@@ -234,7 +234,7 @@ func _continue() -> void:
 func _open_archive() -> void:
 	var library := FoundryLibraryPanel.make(Game.display_catalog())
 	library.closed.connect(_close_overlay)
-	_show_overlay(library)
+	_show_overlay(library, true)
 
 
 func _open_options() -> void:
@@ -410,7 +410,7 @@ func _open_how_to() -> void:
 	_show_overlay(FoundryUi.page(column, Vector2(650, 0)))
 
 
-func _show_overlay(panel: Control) -> void:
+func _show_overlay(panel: Control, library_room := false) -> void:
 	if _overlay_motion != null:
 		_overlay_motion.kill()
 	if _overlay.get_child_count() == 0:
@@ -423,14 +423,20 @@ func _show_overlay(panel: Control) -> void:
 	dim.size = DESIGN
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
 	_overlay.add_child(dim)
-	var page := Ui.centered_scroll(panel)
+	var page: Control = FoundryLibraryRoom.make(panel) if library_room else Ui.centered_scroll(panel)
 	page.size = DESIGN
 	_overlay.add_child(page)
 	_canvas.move_child(_overlay, -1)
 	if not Settings.reduced_motion:
 		page.modulate.a = 0.0
 		_overlay_motion = create_tween()
-		_overlay_motion.tween_property(page, "modulate:a", 1.0, 0.2)
+		_overlay_motion.set_parallel(true)
+		_overlay_motion.tween_property(page, "modulate:a", 1.0, 0.22)
+		if library_room:
+			page.position.x = 24.0
+			_overlay_motion.tween_property(page, "position:x", 0.0, 0.22).set_trans(Tween.TRANS_CUBIC).set_ease(
+				Tween.EASE_OUT
+			)
 	_focus_first.call_deferred(panel)
 
 
@@ -444,6 +450,9 @@ func _close_overlay() -> void:
 	else:
 		_overlay_motion = create_tween()
 		_overlay_motion.tween_property(_overlay, "modulate:a", 0.0, 0.12)
+		var room := _overlay.get_child(1) as FoundryLibraryRoom
+		if room != null:
+			_overlay_motion.parallel().tween_property(room, "position:x", -16.0, 0.12)
 		_overlay_motion.tween_callback(_finish_close)
 
 

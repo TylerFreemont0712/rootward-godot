@@ -41,11 +41,23 @@ func _ready() -> void:
 			title.call("_open_skins")
 		"academy":
 			title.call("_open_academy")
-		"library", "foes":
+		"library", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":
 			title.call("_open_archive")
-			if moment == "foes":
+			if moment.trim_suffix("-ja") != "library":
 				var panel := _panel(title, "FoundryLibraryPanel")
-				panel.set("_kind", "foes")
+				var kind := "foes" if moment == "foes" else "bosses"
+				if moment == "library-relics":
+					kind = "relics"
+				elif moment == "library-spellforge":
+					kind = "cards"
+					panel.set("_mode", "spellbook")
+				panel.set("_kind", kind)
+				if moment == "boss-root":
+					panel.set("_layer", "root")
+					panel.set("_selected", "the-quine")
+				elif moment == "boss-heap":
+					panel.set("_layer", "heap")
+					panel.set("_selected", "page-fault-a")
 				panel.call("_rebuild")
 		"records":
 			title.call("_open_git_log", Game.session.saves.load_history())

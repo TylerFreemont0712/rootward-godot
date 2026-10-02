@@ -44,7 +44,9 @@ func _walk() -> void:
 			await _click(label)
 		await _click("Back")
 		await _click("Library")
-		for label: String in ["Creatures", "Relics", "Concepts", "Shards", "Spellforge", "Shardrun"]:
+		for label: String in [
+			"Creatures", "Bosses", "The Quine", "Relics", "Concepts", "Shards", "Spellforge", "Shardrun"
+		]:
 			await _click(label)
 		await _click("Back")
 		for label: String in ["New player", "Rename", "Delete"]:
@@ -122,6 +124,10 @@ func _click(label: String) -> void:
 	if button == null or button.disabled:
 		_fail("Missing or disabled button: " + label)
 		return
+	# LEARN: focus-following scroll lists must reveal an offscreen entry before its mouse coordinates are usable.
+	button.grab_focus()
+	await process_frame
+	await process_frame
 	var received := [false]
 	button.pressed.connect(func() -> void: received[0] = true, CONNECT_ONE_SHOT)
 	var point := button.get_global_rect().get_center()

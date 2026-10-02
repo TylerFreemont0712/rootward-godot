@@ -1,0 +1,43 @@
+# ADR-0034: The Library as the Living Archive
+
+Accepted 2026-10-02.
+
+## Context
+
+The player wants the Library to feel like a separate place, with different art, a transition in both directions,
+easy catalogue navigation, and bosses separated from ordinary creatures with their encounter layers shown.
+The earlier compact typography and the unchanged presentation of run menus remain requirements.
+
+## Decision
+
+- Open an opaque archive room within the title's existing modal lifecycle. A new painting of brass specimen
+  cabinets, root-threaded shelves and a reading desk replaces the station visually. Real localized controls sit
+  on top. The built-in imagegen prompt and provenance are in `finalMenuConcept/library/`; the production painting
+  is `game/assets/menus/living-archive.png`. Missing art falls back to the room's solid background.
+- Enter with a 220 ms fade and small sideways movement; return with a 120 ms fade and reverse movement. Reduced
+  motion bypasses both. A clock we own supplies very subtle variation at the desk lamp and freezes immediately
+  under reduced motion. Background controls remain blocked, and returning restores the same home/departure desk
+  and its opener's keyboard focus without changing runs or saves.
+- Keep a compact 960 × 570 catalogue: collection navigation on the left, illustrated entries in the middle,
+  and a reading pane on the right. Collections are Shards, Relics, Creatures, Bosses and Concepts. Search, Reset,
+  rarity/role selectors and the two mode choices reuse real catalog data and canonical art. Each collection/mode
+  remembers its query, selection and filters while the room is open. Long lists and source listings scroll inside
+  the reading area; keyboard focus reveals list entries automatically.
+- Build the bestiary from each mode's actual encounter pools. `ProgramRules.catalog_for` resolves Shardrun's
+  guardian overrides and fourth layer; Spellforge reads its three original layers. Boss entries come from `boss`
+  groups and ordinary creatures from `fight`/`elite` groups. Unused creatures from another mode's pool are omitted.
+  Dossiers and the layer selector show actual layer numbers/names; multipart bosses list their companions.
+  The same creature can appear on both shelves if future encounter data uses it in both roles.
+- Annotate deep display copies. The catalogue and rules remain immutable. Health is explicitly the base value,
+  since difficulty and depth alter it during a run. Existing code-language and refactor inspection stays intact.
+
+## Consequences
+
+The Library has its own visual identity without another scene loading path or a second copy of item art. Shared
+run archives and battle screens keep their existing controls. A long dossier can still scroll, but its portrait,
+identity and location share a row so the useful facts fit without excessive vertical space.
+
+Tests cover mode-specific boss membership, layer filtering, multipart guardians, catalogue immutability, shelf
+memory/reset, refactor retention, compact English/Japanese bounds, and animated/reduced-motion focus restoration.
+The actual mouse walkthrough includes an offscreen boss entry, revealed through the list's focus-following scroll.
+Screenshot fixtures cover ordinary creatures, the Root guardian shelf, relics, both modes, Japanese and 1280 × 720.

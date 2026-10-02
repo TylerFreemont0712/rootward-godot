@@ -270,6 +270,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Compact contents as well as panels: 16-pixel body text, 20-pixel headings, 12–14-pixel captions, tighter
       padding and section gaps, and 32-pixel Library entries. Reviewed English, Japanese and 1280 × 720 layouts.
 - [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
+- [x] Living Archive room (ADR-0034): separate generated background, reversible transition, illustrated collection
+      navigation, remembered searches/selections and reset; creatures and bosses separated by live encounter pools
+      with mode-specific layer filters, base stats and multipart companions. Shared art and run archives retained.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

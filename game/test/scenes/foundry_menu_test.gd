@@ -229,6 +229,80 @@ func test_compact_pages_fit_their_space_in_both_ui_languages() -> void:
 	_title.call("_set_locale", "en")
 
 
+func test_bestiary_separates_actual_boss_pools_and_resolves_their_layers() -> void:
+	var snapshot := JSON.stringify(Game.catalog)
+	var bosses := FoundryBestiary.entries(Game.catalog, "program", true)
+	var creatures := FoundryBestiary.entries(Game.catalog, "program", false)
+	assert_bool(bosses.has("the-quine")).is_true()
+	assert_bool(creatures.has("the-quine")).is_false()
+	assert_bool(creatures.has("tally-wisp")).is_true()
+	assert_bool(bosses.has("tally-wisp")).is_false()
+	assert_bool(bosses.has("deadlock-lock-a")).is_true()
+	assert_bool(bosses.has("page-fault-c")).is_true()
+	var root := FoundryBestiary.entries(Game.catalog, "program", true, "root")
+	assert_int(root.size()).is_equal(5)
+	assert_int(root["the-quine"].locations[0].number).is_equal(4)
+	assert_str(root["the-quine"].locations[0].id).is_equal("root")
+	assert_bool(root.has("kiln-warden")).is_false()
+	var spellforge := FoundryBestiary.entries(Game.catalog, "spellbook", true)
+	assert_int(spellforge.size()).is_equal(3)
+	assert_bool(spellforge.has("deadlock-golem")).is_true()
+	assert_bool(spellforge.has("deadlock-lock-a")).is_false()
+	assert_bool(spellforge.has("the-quine")).is_false()
+	bosses["the-quine"].name = "Edited display copy"
+	assert_str(JSON.stringify(Game.catalog)).is_equal(snapshot)
+
+
+func test_library_remembers_each_shelf_and_resets_search_and_layer_filters() -> void:
+	_title.call("_open_archive")
+	var panel := _panel("FoundryLibraryPanel") as FoundryLibraryPanel
+	panel.set("_query", "Ember Constant")
+	panel.call("_refresh")
+	panel.call("_choose_shelf", "bosses", "program")
+	assert_str(panel.get("_query")).is_equal("")
+	panel.set("_layer", "root")
+	panel.set("_query", "quine")
+	panel.call("_rebuild")
+	assert_int((panel.get("_list") as Control).get_child_count()).is_equal(1)
+	(
+		assert_bool(
+			(panel.get("_details") as Control).find_children("*", "Label", true, false).any(
+				func(label: Label) -> bool: return "Layer 4" in label.text
+			)
+		)
+		. is_true()
+	)
+	panel.call("_choose_shelf", "cards", "program")
+	assert_str(panel.get("_query")).is_equal("Ember Constant")
+	panel.call("_choose_shelf", "bosses", "program")
+	assert_str(panel.get("_query")).is_equal("quine")
+	panel.call("_reset_filters")
+	assert_str(panel.get("_layer")).is_equal("all")
+	assert_str(panel.get("_query")).is_equal("")
+	assert_int((panel.get("_list") as Control).get_child_count()).is_greater(5)
+
+
+func test_library_room_returns_to_the_same_departure_desk_and_restores_focus() -> void:
+	_title.call("_show_setup")
+	await get_tree().process_frame
+	var opener := _button(_title, "Library")
+	for reduced: bool in [false, true]:
+		Settings.reduced_motion = reduced
+		opener.grab_focus()
+		opener.pressed.emit()
+		await get_tree().create_timer(0.26).timeout
+		var room := _panel("FoundryLibraryRoom")
+		assert_object(room).is_not_null()
+		assert_float(room.position.x).is_equal(0.0)
+		assert_int(opener.focus_mode).is_equal(Control.FOCUS_NONE)
+		_button(room, "Back").pressed.emit()
+		await get_tree().create_timer(0.16).timeout
+		assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
+		assert_bool(_title.get("_setup")).is_true()
+		assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
+		assert_bool(Game.session.in_progress()).is_false()
+
+
 func _press(label: String) -> void:
 	var overlay := _title.get("_overlay") as Control
 	var button := _button(overlay if overlay.get_child_count() > 0 else _title, label)

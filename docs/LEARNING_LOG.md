@@ -603,3 +603,21 @@ Godot uses `hover_pressed` for a selected button under the pointer: leaving that
 shared theme's larger padding and boxed appearance. Every button state, including focus, needs the same compact
 margins. Local Library rows also override the shared archive's minimum height after each refresh, keeping the
 run's archive unchanged. Screenshots caught clipped action captions at 48 pixels; 52 pixels keeps both lines visible.
+
+## A boss is an encounter role (`game/scenes/title/foundry_bestiary.gd`)
+Sprite size and names cannot reliably distinguish bosses: a guardian can contain multiple small parts, and the
+two modes use different guardian pools. Build the Library's locations from the effective run catalog, just as the
+map does. Annotate deep copies so adding locations and search descriptions cannot modify combat content. The
+tests compare both modes, the fourth layer and the unchanged source catalogue.
+
+## Focus reveals scroll entries before a mouse can click them (`game/tools/menu_navigation.gd`)
+Finding a button in the scene tree does not mean its rectangle is inside its scroll viewport. The first mouse
+walkthrough missed the Quine because it was below the visible boss list. Focusing it and letting the layout settle
+uses the list's `follow_focus` to reveal it before sending the real mouse press/release. Rebuilding the list also
+restores focus to the selected row, so keyboard browsing does not jump back to the room header.
+
+## An unattached container still needs disposal (`game/scenes/title/foundry_library.gd`)
+The filter row is only attached for collections with filters. Creating it for every collection and leaving the
+empty ones unattached leaked two orphan nodes in the navigation tests. Free unused, unattached containers; defer
+deletion for attached controls that may still be emitting a click. Check for a null focus owner before asking
+whether a list contains it: an open menu can legitimately have no focused control yet.

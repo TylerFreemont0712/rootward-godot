@@ -26,6 +26,7 @@ later design task; this change must preserve their presentation and launch contr
 - The station Library browses live shards, relics, creatures and concepts. Search, rarity and shard role filters
   feed the existing real code and refactor inspection. Records shows actual finished history and links its commit
   log; an empty profile has a useful empty state.
+  ADR-0034 expands the Library into its own painted room with separate creature/boss collections and layer filters.
 - English and Japanese labels use the profile locale. Modal menus disable background keyboard focus and restore
   the opener. Rebuilding a choice preserves focus. Warm light varies locally at the lanterns and lift core;
   reduced motion immediately stops the shader clock, actor motion and menu transitions.
@@ -40,7 +41,7 @@ would introduce a larger art and camera task than the approved concept requires.
 
 The compact revision reduces the large panels' width and height by roughly one-third. It keeps normal text at
 16 pixels on the design canvas, with 20-pixel headings and 12–14-pixel captions. Panel padding is 14 × 10 pixels,
-ordinary controls are 28 pixels tall, and Library entries are 32 pixels tall. It puts language and difficulty alongside each other, uses a rarity
+ordinary controls are 28 pixels tall. The Library's later illustrated rows use 36 pixels (ADR-0034). It puts language and difficulty alongside each other, uses a rarity
 picker, and arranges the Academy's plans horizontally. Scrolling belongs inside long library/history contents;
 the outer pages fit without scrolling. A wrapper measures the scaled carousel stage, while the shared run
 wardrobe keeps its existing geometry. Buttons use warm translucent highlights and amber underlines rather than

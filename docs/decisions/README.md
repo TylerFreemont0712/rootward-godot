@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0034**.
+The next number is **ADR-0035**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -36,3 +36,4 @@ The next number is **ADR-0034**.
 - [ADR-0031](ADR-0031-motion-capture-under-the-moves.md): the moves play CC0 motion capture retargeted in Blender, our keys layered on it (offsets, owned bones); the light cast a finger snap; smooth playback; hand-offs that fade from the playing clip.
 - [ADR-0032](ADR-0032-kernel-foundry-front-end.md): the approved lift station becomes the localized front end; Adventure, wardrobe, settings, Library, records and an Academy placeholder around unchanged run launch commands.
 - [ADR-0033](ADR-0033-shared-card-art.md): matching program and Spellforge effects resolve to one canonical texture; remaining placeholders get finished originals, and duplicate files are retired.
+- [ADR-0034](ADR-0034-living-archive-room.md): the Library opens into its own archive interior, with compact shelf navigation and mode-specific creature/boss dossiers derived from live encounter pools.
