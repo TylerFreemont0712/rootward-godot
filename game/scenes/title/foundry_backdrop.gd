@@ -39,8 +39,9 @@ func _ready() -> void:
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(shade)
 	hero = HeroView.new()
-	hero.position = Vector2(1130, 316)
-	hero.size = Vector2(208, 236)
+	# Feet on the station's floor at y 552; the figure is fitted to HeroView.FIGURE_FILL of the view (about 200 px).
+	hero.position = Vector2(1122, 252)
+	hero.size = Vector2(225, 300)
 	add_child(hero)
 	apply_motion()
 

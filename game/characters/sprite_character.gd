@@ -36,12 +36,17 @@ const FLASH := preload("res://characters/sprite_flash.gdshader")
 ## arm), so the frame is fitted by height, its body line centred in the slot, and its empty sides allowed to overflow.
 const FILL := 0.95
 
+## Measured statures by skin id (a share of the frame's height), so a skin is measured once a session.
+static var _statures: Dictionary = {}
+
 var id: String
 var manifest: Dictionary = {}
 var clip := ""
 var frame := 0
 ## Rehearsal playback uses a local speed; normal battle playback remains 1.0.
 var playback_speed := 1.0
+## The share of this control's height a frame is drawn at (FILL unless the stage fits the figure to a height).
+var fill := FILL
 var _time := 0.0
 var _sheets: Dictionary = {}
 
@@ -117,10 +122,38 @@ func hand_point() -> Vector2:
 	return box.position + Vector2(0.5 + float(point[0]), 1.0 - float(point[1])) * box.size
 
 
+## How much of a frame's height the figure takes, from the top of its hat to its soles (the frame's baseline),
+## measured on the first frame of its idle. The stage fits that to the same height as every other skin (HeroView).
+func stature() -> float:
+	if _statures.has(id):
+		return _statures[id]
+	var baseline := float(manifest.get("baseline", 1.0))
+	var found := baseline
+	var sheet: Texture2D = _sheets.get(IDLE)
+	var image := sheet.get_image() if sheet != null else null
+	if image != null and not manifest.is_empty():
+		if image.is_compressed():
+			image.decompress()
+		var w := mini(int(manifest.frame.width), image.get_width())
+		var h := mini(int(manifest.frame.height), image.get_height())
+		# The first row from the top with any opaque pixel is the top of the figure (sampled every other pixel).
+		for y in h:
+			var hit := false
+			for x in range(0, w, 2):
+				if image.get_pixel(x, y).a > 0.16:
+					hit = true
+					break
+			if hit:
+				found = baseline - float(y) / float(h)
+				break
+	_statures[id] = clampf(found, 0.2, 1.0)
+	return _statures[id]
+
+
 ## Where a frame is drawn: fitted by height, its body line on the slot's centre, its soles on the slot's floor.
 func _frame_rect() -> Rect2:
 	var frame_size := Vector2(float(manifest.frame.width), float(manifest.frame.height))
-	var drawn := frame_size * (size.y * FILL / frame_size.y)
+	var drawn := frame_size * (size.y * fill / frame_size.y)
 	var baseline := float(manifest.get("baseline", 1.0))
 	var x := size.x * 0.5 - float(manifest.get("center", 0.5)) * drawn.x
 	var y := size.y - drawn.y * baseline

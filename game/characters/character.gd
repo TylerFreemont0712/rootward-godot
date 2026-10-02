@@ -65,6 +65,7 @@ var _charge_until := -1.0
 ## The slowed charge's window in clip time (it starts at x) and its speed.
 var _charge_from := -1.0
 var _charge_speed := 1.0
+var _stature := 0.0
 
 
 static func create(character_id: String) -> StageCharacter:
@@ -247,6 +248,29 @@ func release_point() -> Variant:
 	var hips := skeleton.find_bone("Hips")
 	var height := skeleton.get_bone_global_rest(hips).origin.y if hips >= 0 else 1.0
 	return model.global_transform * (Vector3(point[0], point[1], point[2]) * height)
+
+
+## How tall the figure stands as built, in metres: the top of every mesh in its rest pose (hair, ears and hat
+## included), measured from its floor. Skins differ (a 1.4 m kid, a 1.75 m fox), and the stage fits each one to the
+## same height on screen by it (HeroView), so no skin is drawn bigger only because its model is.
+func stature() -> float:
+	if _stature > 0.0 or model == null:
+		return maxf(_stature, 0.0)
+	var top := 0.0
+	for mesh: MeshInstance3D in model.find_children("*", "MeshInstance3D", true, false):
+		if mesh.mesh == null or not mesh.visible:
+			continue
+		# LEARN: walk the local transforms up to this node rather than read global_transform, so it works before the
+		# character is in the tree (a view sizes its camera as it builds) and ignores where the stage put it.
+		var to_here := Transform3D.IDENTITY
+		var node: Node = mesh
+		while node != null and node != self:
+			if node is Node3D:
+				to_here = (node as Node3D).transform * to_here
+			node = node.get_parent()
+		top = maxf(top, (to_here * mesh.get_aabb()).end.y)
+	_stature = top if top > 0.1 else 1.6
+	return _stature
 
 
 ## The world position of a bone right now (the casting hand, for effects that follow it).

@@ -5,14 +5,15 @@ extends Control
 
 const FALLBACK := "brand/wanderer"
 const VIEW_SIZE := Vector2i(360, 480)
-## The orthographic camera's height and aim. A VRM skin levitates and throws her arms overhead, so she is framed with
-## more air above her than Emberfox is.
-const FRAME_GLB := Vector2(1.95, 0.92)
-## A humanoid skin (VRM or anime) stands with her feet on the view's floor and room above for a jump and raised arms;
-## her view is also taller on the stage (`height_share`), so she is drawn half again as large as before.
-const FRAME_VRM := Vector2(2.4, 1.17)
-const TALL_SHARE := 0.92
-const SHORT_SHARE := 0.6
+## Every skin's view takes this share of the arena's height, and its figure (head, hair or hat to soles) is fitted to
+## FIGURE_SHARE of it, whatever its model or drawing measures (ADR-0037): Vesper's drawn height, which the player
+## chose as right, so no skin stands taller only because its model is bigger or its camera was framed wider.
+const VIEW_SHARE := 0.8
+const FIGURE_SHARE := 0.53
+## The figure's share of the view's own height.
+const FIGURE_FILL := FIGURE_SHARE / VIEW_SHARE
+## How far above the view's bottom edge a 3D figure's soles stand, as a share of the camera's height.
+const FLOOR_MARGIN := 0.01
 ## Where the key light comes from (toward the light, world space): front-left and above, as from the arena's lanterns.
 ## The anime shaders take it as a direction; MToon gets a real light along it.
 const KEY_LIGHT := Vector3(0.45, 0.62, 0.64)
@@ -64,6 +65,7 @@ func _build_skin() -> void:
 	if SpriteCharacter.exists(skin):
 		sprite = SpriteCharacter.create(skin)
 		if sprite.has_clips():
+			sprite.fill = FIGURE_FILL / sprite.stature()
 			sprite.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			add_child(sprite)
 			return
@@ -94,11 +96,12 @@ func _build_skin() -> void:
 	if actor.is_vrm():
 		_light(_viewport)
 	actor.set_light_direction(KEY_LIGHT)
-	var frame := FRAME_VRM if actor.is_humanoid() else FRAME_GLB
+	# LEARN: an orthographic camera's `size` is the height it sees in metres (the view keeps its height), so a figure
+	# `stature` metres tall fills stature / size of the view: the camera is sized to the model, not the other way.
 	_camera = Camera3D.new()
 	_camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-	_camera.size = frame.x
-	_camera.position = Vector3(0.0, frame.y, 6.0)
+	_camera.size = actor.stature() / FIGURE_FILL
+	_camera.position = Vector3(0.0, _camera.size * (0.5 - FLOOR_MARGIN), 6.0)
 	_camera.current = true
 	_viewport.add_child(_camera)
 	# Cant the model toward the foes.
@@ -222,9 +225,19 @@ func head_point() -> Vector2:
 		var head: Variant = character.bone_point("Head")
 		if head != null:
 			return position + _to_stage((head as Vector3) + Vector3(0.0, 0.28, 0.0))
-	return position
+	return position + Vector2(size.x * 0.5, size.y - figure_height())
 
 
-## How much of the arena's height this view takes: a humanoid skin is drawn larger than the older looks.
+## How much of the arena's height this view takes: the same for every skin (the figure inside it is fitted).
 func height_share() -> float:
-	return TALL_SHARE if character != null and character.is_humanoid() else SHORT_SHARE
+	return VIEW_SHARE
+
+
+## The figure's height on the stage, in pixels: what effects are sized by, so they keep their size against her.
+func figure_height() -> float:
+	return size.y * FIGURE_FILL
+
+
+## A cast's magic circle's radius for `tier` (0..3), in stage pixels: the same in a fight and in the fitting room.
+func circle_radius(tier: int) -> float:
+	return clampf(figure_height() * (0.2 + 0.045 * tier), 40.0, 230.0)

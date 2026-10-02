@@ -120,7 +120,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 			_circle.spark_from(stage.hero.hand_point())
 	if tier >= 2:
 		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
-		stage.spell("cast-ground", feet, element, stage.hero.size.y / 440.0)
+		stage.spell("cast-ground", feet, element, stage.hero.figure_height() / 390.0)
 	if heavy:
 		stage.dim(0.38, 0.3)
 	if _circle == null:
@@ -247,9 +247,11 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 		"ward":
 			shown.block += int(hit.amount)
 			# The honeycomb (about 224 px tall as drawn) covers the Maintainer from hat to boots.
-			var cover := stage.hero.size.y * 0.92 / 224.0
+			var cover := stage.hero.figure_height() * 1.05 / 224.0
 			if (
-				stage.spell("ward-hex", stage.hero.body_point() - Vector2(0, stage.hero.size.y * 0.06), "ward", cover)
+				stage.spell(
+					"ward-hex", stage.hero.body_point() - Vector2(0, stage.hero.figure_height() * 0.07), "ward", cover
+				)
 				== null
 			):
 				stage.ward_glow()

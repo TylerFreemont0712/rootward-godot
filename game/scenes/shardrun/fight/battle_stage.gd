@@ -240,14 +240,14 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 func magic_circle(tier: int, element: String, words: String, writing_speed := 1.0) -> MagicCircle:
 	if fast:
 		return null
-	var size := clampf(hero.size.y * (0.15 + 0.035 * tier), 56.0, 230.0)
+	var size := hero.circle_radius(tier)
 	return MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words, writing_speed)
 
 
 func shard_effect(card: Dictionary) -> void:
 	if fast or Settings.reduced_motion:
 		return
-	ShardFlourish.play(_fx, card, hero.hand_point(), clampf(hero.size.y / 320.0, 0.65, 1.5))
+	ShardFlourish.play(_fx, card, hero.hand_point(), clampf(hero.figure_height() / 280.0, 0.65, 1.5))
 
 
 ## A bolt from `from` to `to`; `arrive` is called when it lands. It leaves slowly, curving off to one side, and speeds
