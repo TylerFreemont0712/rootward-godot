@@ -159,8 +159,8 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	# for the blow falling on their foe, every blow waits for its brackets to slam, and hit-stops stretch all of it; a
 	# fixed wait let the log move on with hits still to come, and the screen then drew the true state over a bar that
 	# still showed the foe alive.
-	var deadline := Time.get_ticks_msec() + LANDING_CAP_MS
-	while _in_flight > 0 and stage.is_inside_tree() and Time.get_ticks_msec() < deadline:
+	var deadline := stage.clock_ms() + LANDING_CAP_MS
+	while _in_flight > 0 and stage.is_inside_tree() and stage.clock_ms() < deadline:
 		await stage.get_tree().process_frame
 	# A beat after the last blow, before the foes answer.
 	await stage.wait(400.0)

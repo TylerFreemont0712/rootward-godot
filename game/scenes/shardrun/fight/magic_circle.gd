@@ -35,9 +35,13 @@ const RUNES_FALLBACK := "λ ∑ { } => ; ∀ ∃ ( ) 0 1 ⊕ ⊗ != == [ ] ≤ �
 ## The elements whose layer (sfx-element-fire ...) sounds as the circle completes.
 const ELEMENT_LAYERS: Array[String] = ["fire", "frost", "spark"]
 
+## How fast its time runs (a rehearsal stage slows it, ADR-0037); 1 in a fight.
+var time_scale := 1.0
 var tier := 0
 ## How it is drawn (ADR-0037): "codex" (the pen-stroke rings and ruled star below), or one of CircleStyles'.
 var style := "codex"
+## A preview (a carousel card) writes itself without a sound.
+var silent := false
 var radius := 100.0
 ## How fast it writes itself (a snapped spell writes faster); once complete it turns at its own pace.
 var speed := 1.0
@@ -61,7 +65,14 @@ var _mote_debt := 0.0
 ## Writes a circle of `tier` (0..3) at `at` in `parent`, `size` pixels in radius, in `element`'s colours, with `words`
 ## (the spell's own function names) as its runes.
 static func cast(
-	parent: Node, at: Vector2, circle_tier: int, element: String, size: float, words := "", writing_speed := 1.0
+	parent: Node,
+	at: Vector2,
+	circle_tier: int,
+	element: String,
+	size: float,
+	words := "",
+	writing_speed := 1.0,
+	silent := false
 ) -> MagicCircle:
 	var circle := MagicCircle.new()
 	circle.speed = maxf(writing_speed, 0.1)
@@ -80,8 +91,10 @@ static func cast(
 	light.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 	circle.material = light
 	circle._font = UiTheme.crt_font()
+	circle.silent = silent
 	parent.add_child(circle)
-	Sound.play(String(circle._facts.sound), SpellAnim.SOUND_VOLUME, circle.speed)
+	if not silent:
+		Sound.play(String(circle._facts.sound), SpellAnim.SOUND_VOLUME, circle.speed)
 	return circle
 
 
@@ -125,7 +138,8 @@ func close() -> void:
 		_burst(_disc_origin(0), 18, 0.2, radius * 0.7)
 
 
-func _process(delta: float) -> void:
+func _process(frame_delta: float) -> void:
+	var delta := frame_delta * time_scale
 	clock += delta * (speed if not _formed else 1.0)
 	_flare = maxf(0.0, _flare - delta * 4.0)
 	# Motes spiral in while it writes itself and drift off its rim while it stands.
@@ -138,7 +152,7 @@ func _process(delta: float) -> void:
 		_flare = 1.4
 		_shocks.append(clock)
 		_burst(_disc_origin(0), 26 + 8 * tier, 1.0, radius * 0.9)
-		if _element in ELEMENT_LAYERS:
+		if _element in ELEMENT_LAYERS and not silent:
 			Sound.play("sfx-element-" + _element, SpellAnim.SOUND_VOLUME * 0.8)
 		formed.emit()
 	for mote in _motes:

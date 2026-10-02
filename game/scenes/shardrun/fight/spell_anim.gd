@@ -27,6 +27,8 @@ const RAMPS := {
 
 static var _facts: Dictionary = {}
 
+## How fast its time runs (a rehearsal stage slows it, ADR-0037); 1 in a fight.
+var time_scale := 1.0
 var facts: Dictionary = {}
 var looping := false
 var clock := 0.0
@@ -54,7 +56,9 @@ static func has(id: String) -> bool:
 
 ## Plays animation `id` at `at` in `parent`, coloured by `ramp` (an element, or ward, foe, tempo), `size` times its
 ## drawn size, turned by `angle` radians. Null when the sheet is not there.
-static func play(parent: Node, id: String, at: Vector2, ramp := "none", size := 1.0, angle := 0.0) -> SpellAnim:
+static func play(
+	parent: Node, id: String, at: Vector2, ramp := "none", size := 1.0, angle := 0.0, silent := false
+) -> SpellAnim:
 	var found := facts_of(id)
 	if found.is_empty():
 		return null
@@ -80,9 +84,9 @@ static func play(parent: Node, id: String, at: Vector2, ramp := "none", size := 
 	parent.add_child(anim)
 	# The sound that belongs to it starts with its first frame: it was laid out on this animation's beats
 	# (docs/SOUND_DESIGN.md), so a blow's crack lands on the frame the blow does. An element tints it at its impact.
-	if found.has("sound"):
+	if found.has("sound") and not silent:
 		Sound.play(String(found.sound), SOUND_VOLUME)
-	if bool(found.get("element_layer", false)) and ramp in ELEMENT_LAYERS:
+	if bool(found.get("element_layer", false)) and ramp in ELEMENT_LAYERS and not silent:
 		anim.impact.connect(func() -> void: Sound.play("sfx-element-" + ramp, SOUND_VOLUME * 0.8), CONNECT_ONE_SHOT)
 	return anim
 
@@ -122,7 +126,8 @@ func stop() -> void:
 
 ## LEARN: _process gets `delta` already scaled by Engine.time_scale, so a hit-stop freezes every animation on the stage
 ## at once, which is what makes the stop feel like weight.
-func _process(delta: float) -> void:
+func _process(frame_delta: float) -> void:
+	var delta := frame_delta * time_scale
 	clock += delta
 	var index := floori(clock * float(facts.fps))
 	var count := int(facts.frames)

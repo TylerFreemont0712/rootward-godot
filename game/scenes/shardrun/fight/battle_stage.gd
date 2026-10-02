@@ -26,6 +26,12 @@ var fast := false:
 		return fast or instant
 var hero: HeroView
 var foes: Dictionary = {}
+## A rehearsal stage keeps time of its own (ADR-0037): its waits, effects and tweens run on `_clock`, `tempo` times
+## as fast as real time, stop while the stage is disabled, and step frame by frame (advance). A fight never sets it.
+var local_clock := false
+## Where the foes stand (FOE_SPAN in a fight); a narrower stage spreads them further to keep them apart.
+var foe_span := FOE_SPAN
+var tempo := 1.0
 ## The run's catalog, for a foe that joins mid-fight.
 var _catalog: Dictionary = {}
 var _world: Control
@@ -39,6 +45,8 @@ var _grade: _Grade
 var _shadows: _Shadows
 var _fx: Control
 var _shake_tween: Tween
+var _clock := 0.0
+var _tweens: Array[Tween] = []
 
 
 func _init() -> void:
@@ -193,7 +201,7 @@ func _layout() -> void:
 		view.fit_arena(size.y, size.x * 0.40 / maxi(1, count))
 		view.size = view.get_combined_minimum_size()
 		var share := (index + 0.5) / count
-		var x := size.x * lerpf(FOE_SPAN.x, FOE_SPAN.y, share)
+		var x := size.x * lerpf(foe_span.x, foe_span.y, share)
 		if count == 1:
 			x = size.x * LONE_FOE
 		view.position = Vector2(x - view.size.x * 0.5, floor_y - view.foot_offset())
@@ -224,7 +232,53 @@ func _place_backdrop(floor_y: float) -> void:
 func wait(ms: float) -> void:
 	if fast or ms <= 0.0 or not is_inside_tree():
 		return
+	if local_clock:
+		var until := _clock + ms / 1000.0
+		while _clock < until and is_inside_tree() and not fast:
+			await get_tree().process_frame
+		return
 	await get_tree().create_timer(ms / 1000.0).timeout
+
+
+## Milliseconds on the stage's clock (real time in a fight), for guards against an animation that never ends.
+func clock_ms() -> float:
+	return _clock * 1000.0 if local_clock else float(Time.get_ticks_msec())
+
+
+## A tween on `node` that keeps the stage's time: at its tempo, and stepped with it on a rehearsal stage.
+func tween_on(node: Node) -> Tween:
+	var tween := node.create_tween()
+	tween.set_speed_scale(tempo)
+	if local_clock:
+		_tweens.append(tween)
+	return tween
+
+
+func _process(delta: float) -> void:
+	if local_clock:
+		_keep_time(delta * tempo, false)
+
+
+## Moves a rehearsal stage `seconds` on, at once (a frame step while paused): its clock, every effect and tween.
+func advance(seconds: float) -> void:
+	_keep_time(seconds, true)
+
+
+# LEARN: Engine.time_scale would slow the whole game (the room's own menus too), so a rehearsal keeps its own time:
+# effects take a time_scale, tracked tweens a speed scale (or a custom_step when stepped by hand), and waits poll
+# the stage's clock, which stands still while the stage is disabled.
+func _keep_time(seconds: float, by_hand: bool) -> void:
+	_clock += seconds
+	for node in _fx.get_children():
+		if "time_scale" in node:
+			node.set("time_scale", tempo)
+			if by_hand and node.has_method("_process"):
+				node.call("_process", seconds / maxf(tempo, 0.01))
+	_tweens = _tweens.filter(func(tween: Tween) -> bool: return tween.is_valid())
+	for tween in _tweens:
+		tween.set_speed_scale(tempo)
+		if by_hand:
+			tween.custom_step(seconds)
 
 
 ## One of the pipeline's spell animations at `at` (ADR-0014), coloured by `ramp`; null when skipping ahead or when the
@@ -300,7 +354,7 @@ func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callabl
 			trail.add_point(point)
 			if trail.get_point_count() > 14:
 				trail.remove_point(0)
-		var motion := head.create_tween()
+		var motion := tween_on(head)
 		motion.tween_method(travel, 0.0, 1.0, ms / 1000.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 		motion.tween_callback(arrive)
 		motion.tween_callback(head.stop)
@@ -309,7 +363,7 @@ func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callabl
 	var colour: Color = UiTheme.TEAL if ward else UiTheme.element(element)
 	var bolt := BattleFX.spawn(_fx, BattleFX.Kind.BOLT, from, colour, ms / 1000.0 + 0.05, "ward" if ward else element)
 	bolt.set_flight(from, to, 42.0 + randf() * 48.0)
-	var tween := bolt.create_tween()
+	var tween := tween_on(bolt)
 	tween.tween_method(bolt.set_flight_progress, 0.0, 1.0, ms / 1000.0)
 	tween.tween_callback(arrive)
 	tween.tween_callback(bolt.finish)
@@ -338,7 +392,7 @@ func _trail(ramp: String, size: float) -> Line2D:
 
 
 func _fade_trail(trail: Line2D) -> void:
-	var tween := trail.create_tween()
+	var tween := tween_on(trail)
 	tween.tween_property(trail, "modulate:a", 0.0, 0.18)
 	tween.tween_callback(trail.queue_free)
 
@@ -357,7 +411,7 @@ func burst(at: Vector2, element: String, scale_to := 1.4) -> void:
 	picture.scale = Vector2(0.6, 0.6)
 	_fx.add_child(picture)
 	BattleFX.spawn(_fx, BattleFX.Kind.BURST, at, UiTheme.element(element), 0.48)
-	var tween := picture.create_tween().set_parallel()
+	var tween := tween_on(picture).set_parallel()
 	tween.tween_property(picture, "scale", Vector2(scale_to, scale_to), 0.32)
 	tween.tween_property(picture, "modulate", Color(1, 1, 1, 0), 0.36)
 	tween.chain().tween_callback(picture.queue_free)
@@ -396,7 +450,7 @@ func dim(amount: float, seconds := 0.25) -> void:
 		shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		_fx.add_child(shade)
 		_fx.move_child(shade, 0)
-	var tween := shade.create_tween()
+	var tween := tween_on(shade)
 	tween.tween_property(shade, "color:a", amount, seconds)
 
 
@@ -412,7 +466,7 @@ func popup(at: Vector2, text: String, colour: Color, font_size := 34) -> void:
 	_fx.add_child(label)
 	label.size = label.get_combined_minimum_size()
 	label.position = at - Vector2(label.size.x * 0.5, label.size.y)
-	var tween := label.create_tween()
+	var tween := tween_on(label)
 	tween.tween_property(label, "position:y", label.position.y - 46, 0.9).set_ease(Tween.EASE_OUT)
 	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 0), 0.5).set_delay(0.5)
 	tween.tween_callback(label.queue_free)
@@ -429,7 +483,7 @@ func banner(text: String, colour: Color, ms := 900.0) -> void:
 	plate.size = plate.get_combined_minimum_size()
 	plate.position = Vector2((size.x - plate.size.x) * 0.5, size.y * 0.3)
 	plate.modulate = Color(1, 1, 1, 0)
-	var tween := plate.create_tween()
+	var tween := tween_on(plate)
 	tween.tween_property(plate, "modulate", Color.WHITE, 0.15)
 	tween.tween_interval(ms / 1000.0)
 	tween.tween_property(plate, "modulate", Color(1, 1, 1, 0), 0.25)
@@ -457,7 +511,7 @@ func shake(strength: float) -> void:
 		return
 	if _shake_tween != null:
 		_shake_tween.kill()
-	_shake_tween = create_tween()
+	_shake_tween = tween_on(self)
 	var amount := clampf(strength, 0.0, 1.0) * 12.0
 	for i in 6:
 		var offset := Vector2(randf_range(-amount, amount), randf_range(-amount, amount) * 0.6)
@@ -472,7 +526,8 @@ func shake(strength: float) -> void:
 ## LEARN: Engine.time_scale slows every timer and tween at once; the timer that ends the freeze ignores the time scale
 ## (its last argument), or it would be frozen too and the game would never wake up.
 func hit_stop(ms: float) -> void:
-	if fast or not is_inside_tree():
+	# A rehearsal stage plays in slow motion and frame by frame; a freeze of the whole engine would fight that.
+	if fast or local_clock or not is_inside_tree():
 		return
 	Engine.time_scale = 0.05
 	await get_tree().create_timer(ms / 1000.0, true, false, true).timeout

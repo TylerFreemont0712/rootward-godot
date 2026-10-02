@@ -42,7 +42,7 @@ static func make(panel: FoundryCharacterPanel) -> FoundryCharacterRoom:
 	var controls_shade := ColorRect.new()
 	controls_shade.material = reading_material
 	controls_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	FoundryUi.place(room, controls_shade, Rect2(1060, 170, 724, 824))
+	FoundryUi.place(room, controls_shade, Rect2(1130, 170, 654, 824))
 	var plaque := Ui.vbox(
 		[
 			Ui.tint(Ui.sized(Ui.label(FoundryUi.text("THE FITTING ROOM", "工房の試着室"), "Heading"), 32), UiTheme.AMBER),

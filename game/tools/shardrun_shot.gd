@@ -23,6 +23,7 @@ extends Control
 ## milliseconds after the action, in real time (a headless run draws frames far faster than 60 a second):
 ##   ROOTWARD_SHOT=volley ROOTWARD_SHOT_SKIN=vesper ROOTWARD_SHOT_AFTER_MS=700 scripts/screenshot.sh \
 ##       res://tools/shardrun_shot.tscn shots/vesper-volley.png 1
+## ROOTWARD_SHOT_LOADOUT wears cosmetic looks (ADR-0037), slot=id pairs: "circle=rootglass,impact=starfall".
 
 signal shot_ready
 
@@ -166,6 +167,10 @@ func _ready() -> void:
 	var skin := OS.get_environment("ROOTWARD_SHOT_SKIN")
 	if skin in Settings.all_skins():
 		Settings.character_skin = skin
+	for pair in OS.get_environment("ROOTWARD_SHOT_LOADOUT").split(",", false):
+		var parts := pair.split("=")
+		if parts.size() == 2:
+			Settings.loadout[parts[0].strip_edges()] = parts[1].strip_edges()
 	var screen: Control = (load(Game.SHARDRUN) as PackedScene).instantiate()
 	add_child(screen)
 	for i in 10:

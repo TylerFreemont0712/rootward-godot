@@ -48,22 +48,61 @@ func _ready() -> void:
 				)
 			)
 			panel.call("_rebuild")
-		"character", "character-spells", "character-dummy":
+		"character", "character-spells", "character-dummy", "character-moves", "character-circle":
 			title.call("_open_skins")
+			var base := moment.trim_suffix("-ja")
 			var panel := _panel(title, "FoundryCharacterPanel") as FoundryCharacterPanel
-			if moment == "character-dummy":
+			if base in ["character-dummy", "character-moves"]:
+				var wanted := OS.get_environment("ROOTWARD_SHOT_SKIN")
+				if wanted == "":
+					wanted = "dummy"
 				for i in panel._looks.size():
-					if panel._looks[i].id == "dummy":
+					if panel._looks[i].id == wanted:
 						panel._at = i
 				panel._arrange(false)
-			if moment == "character-spells":
-				panel._tab = "Spells"
-				panel.rehearsal.tier = 3
-				panel.rehearsal.element = "spark"
+			for i in 4:
+				await get_tree().process_frame
+			var rehearsal := panel.rehearsal
+			var at := (
+				float(OS.get_environment("ROOTWARD_SHOT_AFTER_MS")) / 1000.0
+				if OS.get_environment("ROOTWARD_SHOT_AFTER_MS")
+				else 1.6
+			)
+			if base == "character-moves":
+				panel._tab = "Moves"
+				panel._move_slot = "cast_heavy"
 				panel._build_controls()
-				panel.rehearsal.preview_circle()
-				await get_tree().create_timer(0.7).timeout
-				panel.rehearsal.set_paused(true)
+				rehearsal.set_look("cast_heavy", "skyward-call")
+				panel._carousel.at = 1
+				panel._carousel.arrange(false)
+				panel._show_look()
+				rehearsal.test_cast(3)
+			elif base == "character-spells":
+				panel._tab = "Spells"
+				panel._spell_slot = "impact"
+				panel._build_controls()
+				rehearsal.set_look("impact", "root-eruption")
+				rehearsal.set_look("circle", "rootglass")
+				panel._carousel.at = 2
+				panel._carousel.arrange(false)
+				panel._show_look()
+				rehearsal.element = "frost"
+				rehearsal.set_targets(3)
+				rehearsal.test_cast(3)
+			elif base == "character-circle":
+				panel._tab = "Spells"
+				panel._spell_slot = "circle"
+				panel._build_controls()
+				rehearsal.set_look("circle", "clockwork")
+				panel._carousel.at = 2
+				panel._carousel.arrange(false)
+				panel._show_look()
+				rehearsal.tier = 3
+				rehearsal.element = "spark"
+				rehearsal.preview_circle()
+			if base != "character" and base != "character-dummy":
+				await get_tree().create_timer(at).timeout
+				rehearsal.set_paused(true)
 		"academy":
 			title.call("_open_academy")
 		"library", "library-transition", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":

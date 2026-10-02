@@ -1,109 +1,260 @@
 class_name FoundryRehearsal
 extends Control
-## The real skin renderer and cast circles, with a local rehearsal clock and no run or equipment mutations.
+## The practice ring (ADR-0036, ADR-0037): a real BattleStage, so the skin, its size, its circles, its bolts and its
+## impacts are exactly a fight's. A test cast is a made-up log played by the fight's own LogPlayer against practice
+## targets that never fall. The stage keeps a clock of its own (speed, pause, frame steps) and changes no run, no
+## equipment and no loadout: a look is only tried on (`set_look`) until the room saves it.
 
 signal skin_ready
-var hero: HeroView
+
+## A test cast's power: [bolts, power each]. The fight decides from these, as from any volley, how heavy the cast
+## is and which tier of circle it writes (LogPlayer.TIERS): light I, light II, heavy III, heavy IV.
+const POWERS: Array[Array] = [[3, 3], [3, 8], [5, 9], [8, 12]]
+const PRACTICE_FOE := "tally-wisp"
+const PRACTICE_HP := 999
+const ARENA := "arena-salvage"
+
+var stage: BattleStage
+var hero: HeroView:
+	get:
+		return stage.hero if stage != null else null
 var clip := StageCharacter.IDLE
 var speed := 1.0
 var paused := true
 var looping := false
-var circles := true
 var tier := 1
 var element := "none"
-var zoom := 1.0
+var targets := 1
+var arena := true
 var view_angle := 35.0
-var marks := true
-var contrast := false
+var marks := false
+## The loadout being tried on, {slot: option id}; the rest is what the player wears.
+var preview_loadout: Dictionary = {}
+## Seconds into the clip being inspected (the Motion tab's timeline).
 var _elapsed := 0.0
-var _release := -1.0
-var _next_pulse := -1.0
-var _pulses := 0
-var _replay := -1.0
+var _serial := 0
+var _playing := false
 var _circle: MagicCircle
-var _bolts: Array[Dictionary] = []
-var _fx: Control
+var _catalog: Dictionary = {}
+var _marks: Control
 
 
 func _ready() -> void:
 	clip_contents = true
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_fx = Control.new()
-	_fx.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_fx.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(_fx)
+	stage = BattleStage.new()
+	stage.local_clock = true
+	stage.foe_span = Vector2(0.44, 0.95)
+	stage.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(stage)
+	_marks = Control.new()
+	_marks.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_marks.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_marks.draw.connect(_draw_marks)
+	add_child(_marks)
+	preview_loadout = Cosmetics.loadout()
+	_catalog = Game.catalog
+	set_arena(arena)
 	resized.connect(_fit)
 
 
 func set_skin(id: String) -> void:
-	_clear_effects()
-	if is_instance_valid(hero):
-		remove_child(hero)
-		hero.queue_free()
-	hero = HeroView.new()
-	hero.preview_skin = id
-	add_child(hero)
-	move_child(_fx, -1)
-	clip = StageCharacter.IDLE
+	await _cancel()
+	hero.preview_loadout = preview_loadout
+	hero.set_preview_skin(id)
+	_apply_speed()
+	_foes()
+	clip = hero.move_clip("idle")
 	_elapsed = 0.0
 	_fit()
 	seek(0.0)
 	skin_ready.emit()
 
 
+## Tries a look on (a slot's option) without saving it: the idle changes at once, the rest on the next cast.
+func set_look(slot: String, id: String) -> void:
+	preview_loadout[slot] = id
+	if hero != null:
+		hero.set_preview_loadout(preview_loadout)
+
+
 func clips() -> Array[String]:
 	var available: Array[String] = []
 	if hero == null:
 		return available
-	if hero.sprite != null:
-		available.assign(hero.sprite.manifest.get("clips", {}).keys())
-	elif hero.character != null and hero.character.player != null:
-		available.assign(hero.character.player.get_animation_list())
-	available = available.filter(
+	available = hero.clips().filter(
 		func(id: String) -> bool: return not id.ends_with("-hold") and not id.ends_with("-end")
 	)
 	available.sort()
 	return available
 
 
+## Plays one of the skin's clips on its own, the move alone (the Motion tab).
 func play(animation: String) -> void:
 	if animation not in clips():
 		return
-	_clear_effects()
+	await _cancel()
 	clip = animation
 	_elapsed = 0.0
 	hero.play(clip)
 	set_paused(false)
-	_set_actor_speed()
-	_replay = maxf(duration() + 0.5, 4.5 if clip.begins_with("cast-") else 0.0)
-	if circles and clip.begins_with("cast-"):
-		_release = hero.release_left() * speed if hero.character != null else SpriteCharacter.RELEASE_MS / 1000.0
-		if clip == "cast-heavy":
-			_release = 0.0
+	if looping and not hero.character == null and not hero.character.is_loop(clip):
+		_replay_after(duration() + 0.6, _serial)
 
 
-func preview_circle() -> void:
-	_clear_effects()
+## A test cast at the chosen power, against the practice targets, as the fight plays it: the worn (or tried-on) cast,
+## circle, bolts and impact. Loops while `looping`.
+func test_cast(power := -1) -> void:
+	await _cancel()
+	var chosen: Array = POWERS[clampi(power if power >= 0 else tier, 0, POWERS.size() - 1)]
+	var player := LogPlayer.new(stage, _state())
+	player.motifs_shown = true
+	var entries: Array = [{"kind": "cast", "spell": "practice", "amount": 0}]
+	var uids: Array = stage.foes.keys()
+	for i in int(chosen[0]):
+		var uid: String = uids[i % maxi(1, uids.size())] if not uids.is_empty() else ""
+		entries.append(
+			{
+				"kind": "hit",
+				"foe": uid,
+				"amount": int(chosen[1]),
+				"element": element,
+				"target": "all" if targets > 1 else "front"
+			}
+		)
+	clip = hero.move_clip("cast_heavy" if int(chosen[0]) >= 4 else "cast_light")
 	_elapsed = 0.0
 	set_paused(false)
-	_form_circle()
-	_replay = -1.0
+	_serial += 1
+	var serial := _serial
+	_playing = true
+	await player.play(entries)
+	_playing = false
+	if serial != _serial:
+		return
+	_foes()
+	if looping:
+		_replay_after(0.8, serial, true)
 
 
-func _form_circle() -> void:
-	_release = -1.0
-	var radius := 92.0 + tier * 12.0
-	_circle = MagicCircle.cast(_fx, hero.circle_point(radius), tier, element, radius, "", speed)
-	# LEARN: drive the complete effect with the stage's clock, including its turning/closing phases.
-	_circle.process_mode = Node.PROCESS_MODE_DISABLED
-	_circle.speed = 1.0
-	_circle.formed.connect(func() -> void: _next_pulse = _elapsed, CONNECT_ONE_SHOT)
+## The worn circle alone at the chosen tier: written, firing six times, closing.
+func preview_circle() -> void:
+	await _cancel()
+	set_paused(false)
+	_serial += 1
+	var serial := _serial
+	_playing = true
+	_circle = stage.magic_circle(tier, element, "")
+	if _circle != null:
+		await stage.wait(_circle.form_time() * 1000.0)
+		for i in 6:
+			if serial != _serial or not is_instance_valid(_circle):
+				break
+			_circle.pulse()
+			await stage.wait(160.0)
+		if is_instance_valid(_circle):
+			_circle.close()
+	_playing = false
+
+
+func _replay_after(seconds: float, serial: int, cast := false) -> void:
+	await stage.wait(seconds * 1000.0)
+	if serial == _serial and looping and is_inside_tree():
+		if cast:
+			test_cast()
+		else:
+			play(clip)
+
+
+## Lets go of whatever is playing: a cast still running finishes at once (the stage plays fast), and every effect
+## is cleared, so nothing from it lands on the next one.
+func _cancel() -> void:
+	_serial += 1
+	if _playing:
+		# Played fast and running (even if paused), the cast finishes in a few frames: its bolts land at once.
+		stage.fast = true
+		stage.process_mode = Node.PROCESS_MODE_INHERIT
+		var guard := 0
+		while _playing and guard < 90 and is_inside_tree():
+			guard += 1
+			await get_tree().process_frame
+		stage.fast = false
+		set_paused(paused)
+	_playing = false
+	_circle = null
+	if stage != null:
+		for node in stage._fx.get_children():
+			node.queue_free()
+	if hero != null:
+		hero.end_cast()
 
 
 func set_paused(value: bool) -> void:
 	paused = value
+	if stage != null:
+		stage.process_mode = Node.PROCESS_MODE_DISABLED if paused else Node.PROCESS_MODE_INHERIT
+	_apply_speed()
+
+
+func set_speed(value: float) -> void:
+	speed = value
+	_apply_speed()
+
+
+func _apply_speed() -> void:
+	if stage != null:
+		stage.tempo = speed
 	if hero != null:
-		hero.process_mode = Node.PROCESS_MODE_DISABLED if paused else Node.PROCESS_MODE_INHERIT
+		hero.set_time_scale(speed)
+
+
+func set_arena(on: bool) -> void:
+	arena = on
+	stage.set_backdrop(ARENA if on else "")
+	stage._backdrop.visible = on
+	stage._grade.visible = on
+
+
+func set_targets(count: int) -> void:
+	targets = clampi(count, 1, 3)
+	_foes()
+
+
+## The practice targets: training wisps of the run's catalogue that never fall, at full health again after each cast.
+func _foes() -> void:
+	var content: Dictionary = _catalog.get("foes", {}).get(PRACTICE_FOE, {})
+	if content.is_empty() or stage == null:
+		return
+	var states: Array = []
+	for i in targets:
+		(
+			states
+			. append(
+				{
+					"uid": "practice-%d" % i,
+					"id": PRACTICE_FOE,
+					"name": FoundryUi.text("Practice Wisp", "練習のウィスプ"),
+					"sprite": String(content.get("sprite", PRACTICE_FOE)),
+					"hp": PRACTICE_HP,
+					"max": PRACTICE_HP,
+					"shield": 0,
+					"intents": [],
+					"intent_index": 0,
+				}
+			)
+		)
+	if stage.foes.size() == states.size():
+		stage.show_foes(states)
+	else:
+		stage.set_foes(states, _catalog)
+
+
+func _state() -> Dictionary:
+	var foes: Array = []
+	for view: FoeView in stage.foes.values():
+		foes.append(view.foe.duplicate(true))
+	return {"integrity": 60, "integrity_max": 60, "battle": {"foes": foes, "block": 0, "mana": 5}}
 
 
 func duration() -> float:
@@ -116,8 +267,9 @@ func duration() -> float:
 	return 0.0
 
 
+## Shows one moment of the clip, still: the pose sampled directly, without a blend from a previous one.
 func seek(seconds: float) -> void:
-	_clear_effects()
+	await _cancel()
 	set_paused(true)
 	_elapsed = clampf(seconds, 0.0, duration())
 	if hero.sprite != null:
@@ -128,107 +280,44 @@ func seek(seconds: float) -> void:
 		hero.sprite.queue_redraw()
 	elif hero.character != null and hero.character.player != null:
 		hero.character.play(clip)
-		# Inspect the chosen frame directly, without blending from a previous pose or the model's rest pose.
 		hero.character.player.play(clip, 0.0)
 		hero.character.player.seek(_elapsed, true)
 
 
+## One thirtieth of a second on (or back, for the inspected clip): the pose, and every effect on the stage with it.
 func step(direction: int) -> void:
 	if direction < 0:
 		seek(_elapsed - 1.0 / 30.0)
 		return
 	set_paused(true)
-	_set_actor_speed()
+	var seconds := 1.0 / 30.0
 	if hero.sprite != null:
-		hero.sprite._process(1.0 / (30.0 * speed))
+		hero.sprite._process(seconds / maxf(speed, 0.01))
 	elif hero.character != null and hero.character.player != null:
-		hero.character.player.advance(1.0 / (30.0 * speed))
-	_tick(1.0 / 30.0)
-	if is_instance_valid(_circle):
-		_circle._process(1.0 / 30.0)
+		hero.character.player.advance(seconds)
+		if hero.character.skeleton != null:
+			hero.character.skeleton.advance(seconds)
+	_elapsed += seconds
+	stage.advance(seconds)
 
 
 func _process(delta: float) -> void:
-	if hero == null or paused:
-		return
-	_set_actor_speed()
-	if is_instance_valid(_circle):
-		_circle._process(delta * speed)
-	_tick(delta * speed)
-
-
-func _set_actor_speed() -> void:
-	if hero.sprite != null:
-		hero.sprite.playback_speed = speed
-	elif hero.character != null and hero.character.player != null:
-		hero.character.player.speed_scale = speed
-	if is_instance_valid(_circle):
-		_circle.speed = 1.0
-
-
-func _tick(delta: float) -> void:
-	_elapsed += delta
-	if _release >= 0.0 and _elapsed >= _release:
-		_form_circle()
-	if _next_pulse >= 0.0 and _elapsed >= _next_pulse and is_instance_valid(_circle):
-		_circle.pulse()
-		_bolt(_circle.launch_point())
-		_pulses += 1
-		_next_pulse = _elapsed + 0.16
-		if _pulses >= 6:
-			_next_pulse = -1.0
-			_circle.close()
-			hero.end_cast()
-	for bolt: Dictionary in _bolts.duplicate():
-		bolt.age += delta
-		var u := float(bolt.age) / 0.32
-		var line: Line2D = bolt.line
-		if u > 1.15:
-			line.queue_free()
-			_bolts.erase(bolt)
-		else:
-			line.points = PackedVector2Array([bolt.from.lerp(bolt.to, maxf(0.0, u - 0.18)), bolt.from.lerp(bolt.to, u)])
-	if looping and _replay > 0.0 and _elapsed >= _replay:
-		play(clip)
-
-
-func _bolt(from: Vector2) -> void:
-	var line := Line2D.new()
-	line.width = 4.0
-	line.default_color = UiTheme.element(element)
-	line.points = PackedVector2Array([from, from])
-	_fx.add_child(line)
-	_bolts.append({"line": line, "from": from, "to": Vector2(size.x + 30, from.y - 18 + _pulses * 7), "age": 0.0})
-
-
-func _clear_effects() -> void:
-	if _fx != null:
-		Ui.clear(_fx)
-	_circle = null
-	_bolts.clear()
-	_release = -1.0
-	_next_pulse = -1.0
-	_pulses = 0
-	_replay = -1.0
+	if not paused:
+		_elapsed += delta * speed
 
 
 func _fit() -> void:
-	if hero == null:
-		return
-	hero.size = Vector2(310, 450) * zoom
-	hero.position = Vector2(size.x * 0.39 - hero.size.x * 0.5, size.y * 0.90 - hero.size.y)
-	if hero.character != null:
+	if hero != null and hero.character != null:
 		hero.character.rotation_degrees.y = view_angle
-	queue_redraw()
+	if _marks != null:
+		_marks.queue_redraw()
 
 
-func _draw() -> void:
-	if contrast:
-		draw_rect(Rect2(Vector2.ZERO, size), Color(0.015, 0.018, 0.025, 0.90))
-	if marks:
-		var center := Vector2(size.x * 0.39, size.y * 0.90)
-		var points := PackedVector2Array()
-		for i in 97:
-			var angle := i * TAU / 96
-			points.append(center + Vector2(cos(angle) * 142, sin(angle) * 34))
-		draw_polyline(points, Color(UiTheme.AMBER, 0.45), 2.0, true)
+func _draw_marks() -> void:
+	if not marks or hero == null:
+		return
+	# The figure's height on the stage and the floor it stands on, for judging a skin's size against the others.
+	var floor_y := size.y * BattleStage.FLOOR
+	var top := floor_y - hero.figure_height()
+	_marks.draw_line(Vector2(0, floor_y), Vector2(size.x, floor_y), Color(UiTheme.AMBER, 0.5), 1.0)
+	_marks.draw_dashed_line(Vector2(0, top), Vector2(size.x * 0.5, top), Color(UiTheme.TEAL, 0.6), 1.0, 6.0)

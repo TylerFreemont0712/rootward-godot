@@ -162,6 +162,14 @@ func move_clip(slot: String) -> String:
 	return CosmeticRules.clip(Cosmetics.catalog(), loadout(), slot, clips())
 
 
+## Plays `scale` times as fast as real time (the fitting room's slow motion; 1 in a fight).
+func set_time_scale(scale: float) -> void:
+	if sprite != null:
+		sprite.playback_speed = scale
+	elif character != null:
+		character.set_time_scale(scale)
+
+
 ## Plays the worn cast for a light or a heavy spell.
 func play_cast(heavy: bool) -> void:
 	play(move_clip("cast_heavy" if heavy else "cast_light"))

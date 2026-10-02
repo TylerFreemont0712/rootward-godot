@@ -19,7 +19,7 @@ const CLASSES: Array[Dictionary] = [
 	{"id": "comet-scribe", "name": "Comet Scribe", "ja": "彗星の書記", "available": false},
 	{"id": "pocket-shardrunner", "name": "Pocket Shardrunner", "ja": "小さなシャードランナー", "available": false},
 ]
-const WHEEL_SCALE := 0.52
+const WHEEL_SCALE := 0.46
 var selected_class := "artificer"
 var rehearsal: FoundryRehearsal
 var _controls: VBoxContainer
@@ -27,6 +27,13 @@ var _tab := "Skins"
 var _timeline: HSlider
 var _status: Label
 var _pause: Button
+## The loadout slot each look tab shows, and its carousel while one is shown.
+var _move_slot := "cast_heavy"
+var _spell_slot := "circle"
+var _carousel: LookCarousel
+var _wear: Button
+var _look_name: Label
+var _look_note: Label
 
 
 static func make() -> FoundryCharacterPanel:
@@ -61,17 +68,19 @@ func _build() -> void:
 	classes.add_child(Ui.label(FoundryUi.text("More classes will arrive later.", "新しいクラスはこれから。"), "Muted", true))
 
 	rehearsal = FoundryRehearsal.new()
-	rehearsal.custom_minimum_size = Vector2(650, 580)
+	# A wide ring, nearer a fight's arena than a square, so targets stand apart; everything in it is sized by its
+	# height as in a fight (HeroView, BattleStage), so the skin, its circles and the foes keep a fight's proportions.
+	rehearsal.custom_minimum_size = Vector2(700, 470)
 	rehearsal.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	rehearsal.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	rehearsal.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	rehearsal.skin_ready.connect(_refresh_rehearsal_controls)
 	var stage := Ui.vbox([Ui.label(FoundryUi.text("THE PRACTICE RING", "練習の魔法陣"), "Faint"), rehearsal], 8)
 	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_controls = Ui.vbox([], 14)
-	_controls.custom_minimum_size.x = 602
+	_controls.custom_minimum_size.x = 530
 	var desk := Ui.scroll(_controls)
-	desk.custom_minimum_size.x = 602
+	desk.custom_minimum_size.x = 530
 	var body := Ui.hbox([classes, stage, desk], 24)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(body)
@@ -185,6 +194,9 @@ func _on_card_input(event: InputEvent, index: int) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if _tab == "Skins":
 		super._unhandled_key_input(event)
+	elif _carousel != null and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
+		_carousel.turn(-1 if event.is_action_pressed("ui_left") else 1)
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_cancel"):
 		_close()
 		get_viewport().set_input_as_handled()
@@ -215,14 +227,18 @@ func _build_controls() -> void:
 	_timeline = null
 	_status = null
 	_pause = null
+	_carousel = null
+	_wear = null
 	var tabs := Ui.hbox([], 8)
-	for tab: String in ["Skins", "Motion", "Spells", "View"]:
+	for tab: String in ["Skins", "Moves", "Spells", "Motion", "View"]:
 		var choose := func() -> void:
 			_tab = tab
 			_build_controls()
 		tabs.add_child(
 			Ui.choice(
-				FoundryUi.text(tab, {"Skins": "すがた", "Motion": "動き", "Spells": "呪文", "View": "見え方"}[tab]),
+				FoundryUi.text(
+					tab, {"Skins": "すがた", "Moves": "しぐさ", "Spells": "呪文", "Motion": "動き", "View": "見え方"}[tab]
+				),
 				_tab == tab,
 				choose
 			)
@@ -231,6 +247,8 @@ func _build_controls() -> void:
 	_controls.add_child(FoundryUi.rule())
 	if _tab == "Skins":
 		_skin_controls()
+	elif _tab == "Moves":
+		_moves_controls()
 	elif _tab == "Motion":
 		_motion_controls()
 	elif _tab == "Spells":
@@ -288,7 +306,7 @@ func _playback_controls() -> void:
 	var speeds := Ui.hbox([], 6)
 	for speed: float in [0.25, 0.5, 1.0, 1.5]:
 		var set_speed := func() -> void:
-			rehearsal.speed = speed
+			rehearsal.set_speed(speed)
 			_build_controls()
 		speeds.add_child(Ui.choice("%sx" % str(speed), is_equal_approx(speed, rehearsal.speed), set_speed))
 	_controls.add_child(speeds)
@@ -298,22 +316,46 @@ func _playback_controls() -> void:
 	_controls.add_child(Ui.choice(FoundryUi.text("Loop animation", "くり返す"), rehearsal.looping, toggle_loop))
 
 
+## The moves a 3D skin plays (ADR-0037): its idle and its light and heavy casts, each a carousel of the catalogue.
+func _moves_controls() -> void:
+	_slot_choices(
+		[["idle", "Idle", "待機"], ["cast_light", "Light cast", "軽い詠唱"], ["cast_heavy", "Heavy cast", "重い詠唱"]],
+		_move_slot,
+		func(slot: String) -> void: _move_slot = slot
+	)
+	_look_controls(_move_slot)
+	var hero := rehearsal.hero
+	if hero == null or hero.character == null or not hero.character.is_humanoid():
+		_controls.add_child(
+			Ui.label(
+				FoundryUi.text(
+					"This skin plays its own moves; the choices show on 3D skins.", "このすがたは自分の動きを使うよ。選んだ動きは3Dのすがたで見られる。"
+				),
+				"Muted",
+				true
+			)
+		)
+	_playback_controls()
+
+
+## The look of a cast (ADR-0037): the circle written, the bolts thrown and the heavy blow's impact, each a carousel,
+## then a practice cast at any power, element and number of targets.
 func _spell_controls() -> void:
-	_controls.add_child(Ui.label(FoundryUi.text("Cast animation", "詠唱の動き"), "Subheading"))
-	var casts := rehearsal.clips().filter(func(id: String) -> bool: return id.begins_with("cast-"))
-	var choose := OptionButton.new()
-	for id: String in casts:
-		choose.add_item(id.replace("-", " ").capitalize())
-	choose.disabled = casts.is_empty()
-	choose.item_selected.connect(func(index: int) -> void: rehearsal.clip = casts[index])
-	choose.selected = maxi(0, casts.find(rehearsal.clip))
-	if rehearsal.clip not in casts and not casts.is_empty():
-		rehearsal.clip = casts[0]
-	_controls.add_child(choose)
+	_slot_choices(
+		[["circle", "Circle", "魔法陣"], ["bolt", "Bolt", "飛ぶ呪文"], ["impact", "Impact", "落ちる呪文"]],
+		_spell_slot,
+		func(slot: String) -> void: _spell_slot = slot
+	)
+	_look_controls(_spell_slot)
 	_controls.add_child(
 		_picker(
-			FoundryUi.text("Circle tier", "魔法陣の段階"),
-			["I · Simple", "II · Inscribed", "III · Layered", "IV · Grand"],
+			FoundryUi.text("Practice power", "練習の強さ"),
+			[
+				FoundryUi.text("I · Light", "I · 軽い"),
+				FoundryUi.text("II · Light", "II · 軽い"),
+				FoundryUi.text("III · Heavy", "III · 重い"),
+				FoundryUi.text("IV · Grand", "IV · 大魔法")
+			],
 			rehearsal.tier,
 			func(index: int) -> void: rehearsal.tier = index
 		)
@@ -321,32 +363,115 @@ func _spell_controls() -> void:
 	_controls.add_child(
 		_picker(
 			FoundryUi.text("Element", "属性"),
-			["Arcane", "Fire", "Frost", "Spark"],
+			[
+				FoundryUi.text("Arcane", "魔力"),
+				FoundryUi.text("Fire", "炎"),
+				FoundryUi.text("Frost", "氷"),
+				FoundryUi.text("Spark", "雷")
+			],
 			["none", "fire", "frost", "spark"].find(rehearsal.element),
 			func(index: int) -> void: rehearsal.element = ["none", "fire", "frost", "spark"][index]
 		)
 	)
-	var toggle_circles := func() -> void:
-		rehearsal.circles = not rehearsal.circles
-		_build_controls()
-	_controls.add_child(Ui.choice(FoundryUi.text("Show cast circles", "詠唱の魔法陣を表示"), rehearsal.circles, toggle_circles))
-	var cast := FoundryUi.button(
-		FoundryUi.text("Test spell", "呪文を試す"), func() -> void: rehearsal.play(rehearsal.clip), true
+	var counts := Ui.hbox([Ui.label(FoundryUi.text("Targets", "的の数"), "Faint")], 6)
+	for count: int in [1, 3]:
+		var choose := func() -> void:
+			rehearsal.set_targets(count)
+			_build_controls()
+		counts.add_child(Ui.choice(str(count), rehearsal.targets == count, choose))
+	_controls.add_child(counts)
+	_controls.add_child(
+		Ui.hbox(
+			[
+				Ui.expand(
+					FoundryUi.button(FoundryUi.text("Cast it", "唱える"), func() -> void: rehearsal.test_cast(), true)
+				),
+				Ui.expand(FoundryUi.button(FoundryUi.text("Circle only", "魔法陣だけ"), rehearsal.preview_circle))
+			],
+			8
+		)
 	)
-	cast.disabled = casts.is_empty()
-	_controls.add_child(cast)
-	_controls.add_child(FoundryUi.button(FoundryUi.text("Circle only", "魔法陣だけ試す"), rehearsal.preview_circle))
 	_playback_controls()
 	_controls.add_child(
 		Ui.label(
 			FoundryUi.text(
-				"The same circles and moves used on the journey, with harmless practice bolts.",
-				"冒険と同じ動きと魔法陣。練習の光なので、ダメージはないよ。"
+				"The fight's own casts, at fight size, on practice targets that never fall.",
+				"冒険と同じ呪文を同じ大きさで。練習の的はたおれないよ。"
 			),
 			"Muted",
 			true
 		)
 	)
+
+
+## A row of choices for which slot a look tab shows.
+func _slot_choices(slots: Array, chosen: String, choose: Callable) -> void:
+	var row := Ui.hbox([], 6)
+	for entry: Array in slots:
+		var pick := func() -> void:
+			choose.call(String(entry[0]))
+			_build_controls()
+		row.add_child(Ui.choice(FoundryUi.text(String(entry[1]), String(entry[2])), entry[0] == chosen, pick))
+	_controls.add_child(row)
+
+
+## A slot's carousel, the browsed option's name and note, and the button that wears it.
+func _look_controls(slot: String) -> void:
+	var unplayable: Array = []
+	if slot in CosmeticRules.NATIVE:
+		var available := rehearsal.hero.clips() if rehearsal.hero != null else []
+		for option in Cosmetics.options(slot):
+			if not CosmeticRules.playable(option, available):
+				unplayable.append(option.id)
+	_carousel = LookCarousel.make(
+		slot, String(rehearsal.preview_loadout.get(slot, "")), String(Cosmetics.loadout().get(slot, "")), unplayable
+	)
+	_carousel.browsed.connect(_browse_look)
+	_controls.add_child(_carousel)
+	_look_name = Ui.label("", "Heading", true)
+	_look_note = Ui.label("", "Muted", true)
+	_wear = FoundryUi.button("", _wear_look, true)
+	for node: Control in [_look_name, _look_note, _wear]:
+		_controls.add_child(node)
+	_show_look()
+
+
+func _show_look() -> void:
+	if _carousel == null:
+		return
+	var option := _carousel.current()
+	var worn := String(Cosmetics.loadout().get(_carousel.slot, "")) == String(option.get("id", ""))
+	_look_name.text = Cosmetics.text(String(option.get("name", "")))
+	_look_note.text = Cosmetics.text(String(option.get("note", "")))
+	_wear.text = FoundryUi.text("Worn", "使用中") if worn else FoundryUi.text("Wear this", "これにする")
+	_wear.disabled = worn
+
+
+## Browsing tries the option on at once and shows it off: the idle plays, a cast or a spell look is cast.
+func _browse_look(id: String) -> void:
+	var slot := _carousel.slot
+	rehearsal.set_look(slot, id)
+	_show_look()
+	match slot:
+		"idle":
+			rehearsal.play(rehearsal.hero.move_clip("idle"))
+		"cast_light", "bolt":
+			rehearsal.test_cast(1)
+		"cast_heavy", "impact":
+			rehearsal.test_cast(3)
+		"circle":
+			rehearsal.preview_circle()
+
+
+## Wears the browsed option: saved to the settings and the profile, as the skin is.
+func _wear_look() -> void:
+	var option := _carousel.current()
+	Settings.loadout = Cosmetics.loadout()
+	Settings.loadout[_carousel.slot] = String(option.id)
+	Game.remember_avatar()
+	Settings.save_file()
+	_carousel.set_worn(String(option.id))
+	_show_look()
 
 
 func _view_controls() -> void:
@@ -356,7 +481,12 @@ func _view_controls() -> void:
 		rehearsal._fit()
 	var view := _picker(
 		FoundryUi.text("Camera angle", "見る角度"),
-		["Three-quarter", "Front", "Side", "Back"],
+		[
+			FoundryUi.text("As in a fight", "冒険と同じ"),
+			FoundryUi.text("Front", "正面"),
+			FoundryUi.text("Side", "横"),
+			FoundryUi.text("Back", "後ろ")
+		],
 		[35.0, 0.0, 90.0, 180.0].find(rehearsal.view_angle),
 		set_angle
 	)
@@ -365,24 +495,25 @@ func _view_controls() -> void:
 	_controls.add_child(
 		Ui.label(FoundryUi.text("Painted skins keep their drawn viewpoint.", "描かれたすがたは、絵の角度で表示されるよ。"), "Muted", true)
 	)
-	var zoom := HSlider.new()
-	zoom.min_value = 0.7
-	zoom.max_value = 1.2
-	zoom.step = 0.05
-	zoom.value = rehearsal.zoom
-	zoom.value_changed.connect(
-		func(value: float) -> void:
-			rehearsal.zoom = value
-			rehearsal._fit()
+	var toggle_arena := func() -> void:
+		rehearsal.set_arena(not rehearsal.arena)
+		_build_controls()
+	_controls.add_child(Ui.choice(FoundryUi.text("Arena backdrop", "戦いの背景"), rehearsal.arena, toggle_arena))
+	var toggle_marks := func() -> void:
+		rehearsal.marks = not rehearsal.marks
+		rehearsal._fit()
+		_build_controls()
+	_controls.add_child(Ui.choice(FoundryUi.text("Floor and height guides", "床と身長の目印"), rehearsal.marks, toggle_marks))
+	_controls.add_child(
+		Ui.label(
+			FoundryUi.text(
+				"Every skin stands the same height in a fight; the practice ring shows it at the same scale.",
+				"どのすがたも冒険では同じ身長。練習の場でも同じ大きさで見られるよ。"
+			),
+			"Muted",
+			true
+		)
 	)
-	_controls.add_child(Ui.label(FoundryUi.text("Zoom", "大きさ"), "Faint"))
-	_controls.add_child(zoom)
-	for entry: Array in [["Floor guides", "床の目印", "marks"], ["High contrast", "背景を暗く", "contrast"]]:
-		var toggle_view := func() -> void:
-			rehearsal.set(entry[2], not bool(rehearsal.get(entry[2])))
-			rehearsal.queue_redraw()
-			_build_controls()
-		_controls.add_child(Ui.choice(FoundryUi.text(entry[0], entry[1]), bool(rehearsal.get(entry[2])), toggle_view))
 
 
 static func _picker(title: String, names: Array, index: int, changed: Callable) -> Control:

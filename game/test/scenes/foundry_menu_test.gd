@@ -8,6 +8,7 @@ var _old_path := ""
 var _old_skin := ""
 var _old_motion := false
 var _old_font := "default"
+var _old_loadout: Dictionary = {}
 
 
 func before_test() -> void:
@@ -15,6 +16,7 @@ func before_test() -> void:
 	_old_skin = Settings.character_skin
 	_old_motion = Settings.reduced_motion
 	_old_font = Settings.font_style
+	_old_loadout = Settings.loadout.duplicate()
 	Game.reset(ROOT)
 	assert_bool(Game.boot()).is_true()
 	Game.profile.name = "Menu Tester"
@@ -22,6 +24,7 @@ func before_test() -> void:
 	Game.profile.preferred_language = "en"
 	Game.profile.avatar = "vesper"
 	Game.profile.tutorial = {}
+	Game.profile.loadout = {}
 	Game.profiles.save_profile(Game.profile)
 	Game.select_profile(String(Game.profile.id), false)
 	Game.use("program")
@@ -42,6 +45,7 @@ func after_test() -> void:
 	Settings.character_skin = _old_skin
 	Settings.reduced_motion = _old_motion
 	Settings.font_style = _old_font
+	Settings.loadout = _old_loadout
 	UiTheme.refresh_fonts()
 
 
@@ -159,7 +163,7 @@ func test_rehearsal_pause_speed_and_frames_use_a_local_clock() -> void:
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
 	var stage := panel.rehearsal
 	stage.play("cast-light")
-	stage.speed = 0.5
+	stage.set_speed(0.5)
 	await get_tree().create_timer(0.2).timeout
 	stage.set_paused(true)
 	var elapsed := stage._elapsed
@@ -193,14 +197,14 @@ func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> vo
 	stage.step(1)
 	assert_float(stage._circle.clock).is_greater(clock)
 	stage.set_paused(false)
-	await get_tree().create_timer(2.8).timeout
-	assert_int(stage._pulses).is_equal(6)
-	assert_bool(stage._bolts.is_empty()).is_true()
+	await get_tree().create_timer(3.0).timeout
+	assert_bool(stage._playing).is_false()
+	assert_bool(is_instance_valid(stage._circle)).is_false()
 	stage.play("cast-heavy")
 	stage.set_skin("dummy")
 	await get_tree().process_frame
 	assert_object(stage._circle).is_null()
-	assert_int(stage._fx.get_child_count()).is_equal(0)
+	assert_int(stage.stage._fx.get_child_count()).is_equal(0)
 	assert_object(stage.hero.character).is_not_null()
 	stage.play("cast-light")
 	stage.seek(0.1)
@@ -208,6 +212,64 @@ func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> vo
 	stage.step(1)
 	assert_float(stage.hero.character.player.current_animation_position).is_equal_approx(0.1 + 1.0 / 30.0, 0.001)
 	assert_bool(Game.session.has_run()).is_false()
+
+
+func test_practice_ring_is_a_fight_stage_at_fight_proportions() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	var ring := panel.rehearsal
+	await get_tree().process_frame
+	assert_bool(ring.stage.local_clock).is_true()
+	assert_int(ring.stage.foes.size()).is_equal(1)
+	# The skin is sized by the ring's height exactly as a fight sizes it by the arena's.
+	var share := ring.hero.figure_height() / ring.stage.size.y
+	assert_float(share).is_equal_approx(HeroView.FIGURE_SHARE, 0.01)
+	ring.set_targets(3)
+	assert_int(ring.stage.foes.size()).is_equal(3)
+	assert_float(Engine.time_scale).is_equal(1.0)
+
+
+func test_a_practice_cast_plays_the_fight_and_leaves_the_targets_whole() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	var ring := panel.rehearsal
+	ring.set_skin("dummy")
+	ring.set_look("cast_heavy", "root-seal")
+	ring.set_look("impact", "judgment-pillar")
+	ring.set_speed(1.5)
+	ring.test_cast(3)
+	await get_tree().process_frame
+	assert_str(ring.hero.character.current).is_equal("cast-slam")
+	var deadline := Time.get_ticks_msec() + 9000
+	while ring._playing and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(ring._playing).is_false()
+	for view: FoeView in ring.stage.foes.values():
+		assert_int(int(view.foe.hp)).is_equal(FoundryRehearsal.PRACTICE_HP)
+	# Trying looks on never wears them.
+	assert_dict(Settings.loadout).is_empty()
+
+
+func test_look_carousels_browse_without_wearing_and_wear_on_request() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	_button(panel, "Spells").pressed.emit()
+	assert_object(panel._carousel).is_not_null()
+	assert_str(panel._carousel.slot).is_equal("circle")
+	assert_int(panel._carousel._cards.size()).is_equal(Cosmetics.options("circle").size())
+	panel._carousel.turn(1)
+	assert_str(panel.rehearsal.preview_loadout.circle).is_equal(panel._carousel.current().id)
+	assert_str(Cosmetics.look("circle").id).is_equal("codex")
+	assert_bool(_button(panel, "Wear this") != null).is_true()
+	_button(panel, "Wear this").pressed.emit()
+	var worn: String = panel._carousel.current().id
+	assert_str(Cosmetics.look("circle").id).is_equal(worn)
+	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.circle).is_equal(worn)
+	assert_bool((_button(panel, "Worn") as Button).disabled).is_true()
+	_button(panel, "Moves").pressed.emit()
+	assert_str(panel._carousel.slot).is_equal("cast_heavy")
+	# Vesper plays her own moves: the 3D-only casts are marked on their cards.
+	assert_int(panel._carousel._cards[1].get_child_count()).is_greater(4)
 
 
 func test_reduce_motion_applies_to_the_current_scene_immediately() -> void:

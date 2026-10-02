@@ -4,6 +4,8 @@ extends Node2D
 
 const MAX_POINTS := 28
 
+## How fast its time runs (a rehearsal stage slows it, ADR-0037); 1 in a fight.
+var time_scale := 1.0
 var element := "none"
 var colour := Color.WHITE
 var points: Array[Vector2] = []
@@ -34,7 +36,8 @@ func release() -> void:
 	_released = true
 
 
-func _process(delta: float) -> void:
+func _process(frame_delta: float) -> void:
+	var delta := frame_delta * time_scale
 	_age += delta
 	if _released:
 		_release_age += delta

@@ -50,6 +50,8 @@ var moves: Dictionary = {}
 var current := ""
 ## The idle this character returns to after every clip (the player's chosen one, ADR-0037; IDLE by default).
 var idle_clip := IDLE
+## How fast its time runs (the fitting room's slow motion, ADR-0037): anything but 1 steps the pose by hand.
+var time_scale := 1.0
 var _serial := 0
 ## Anime-shaded faces, which need the head's facing every frame (AnimeSkin, ADR-0029).
 var _faces: Array[ShaderMaterial] = []
@@ -219,9 +221,24 @@ func release_left() -> float:
 func set_limited(fps: float) -> void:
 	_limited_fps = fps
 	_held = 0.0
+	_apply_manual()
+
+
+## Plays `scale` times as fast as real time, pose, leg IK and springs together.
+func set_time_scale(scale: float) -> void:
+	time_scale = maxf(scale, 0.0)
+	_apply_manual()
+
+
+## The pose is stepped by hand (in _process) when it is limited or its time is scaled, else by the engine.
+func _manual() -> bool:
+	return _limited_fps > 0.0 or not is_equal_approx(time_scale, 1.0)
+
+
+func _apply_manual() -> void:
 	if player == null:
 		return
-	var manual := fps > 0.0
+	var manual := _manual()
 	player.callback_mode_process = (
 		AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		if manual
@@ -372,13 +389,15 @@ func _add_moves() -> void:
 
 ## The face shader reads the light against the head's facing, which the clips turn every frame.
 func _process(delta: float) -> void:
-	var step := delta
-	if _limited_fps > 0.0 and player != null:
-		_held += delta
-		if _held < 1.0 / _limited_fps:
-			return
-		step = _held
-		_held = 0.0
+	var step := delta * time_scale
+	var manual := _manual()
+	if manual and player != null:
+		if _limited_fps > 0.0:
+			_held += step
+			if _held < 1.0 / _limited_fps:
+				return
+			step = _held
+			_held = 0.0
 		player.advance(step)
 	_hand_off_early()
 	if _charge_until >= 0.0 and player != null:
@@ -391,7 +410,7 @@ func _process(delta: float) -> void:
 	# The feet's targets follow the pose just reached, before the skeleton's IK and springs run on it.
 	if _legs != null and player != null:
 		_legs.update(moves.get(current, {}), player.current_animation_position)
-	if _limited_fps > 0.0 and skeleton != null:
+	if manual and skeleton != null:
 		skeleton.advance(step)
 	if _faces.is_empty() or skeleton == null:
 		return

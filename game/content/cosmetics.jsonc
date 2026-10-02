@@ -4,7 +4,8 @@
 // Every slot's first option is its default, the look the game had before there was a choice. A move a skin cannot
 // play (a drawn skin, a model with its own clips) falls back to that skin's own clip (CosmeticRules.NATIVE).
 //
-//   idle, cast_light, cast_heavy  a clip of the shared move library (pipeline/moves/clips/)
+//   idle, cast_light, cast_heavy  a clip of the shared move library (pipeline/moves/clips/); `thumb` is the moment
+//                                 its card shows (tools/move_thumbs; the release by default)
 //   circle                        a MagicCircle style: codex, rootglass, clockwork, constellation
 //   bolt                          a spell sheet for the bolt in flight (assets/fx/spells/), the sheet a strong bolt
 //                                 flies as, and its path: arc, straight or spiral
@@ -51,7 +52,8 @@
       "id": "skyward-call",
       "name": "Skyward Call",
       "note": "An arm raised to the ceiling calls the spell down from above.",
-      "clip": "cast-skyward"
+      "clip": "cast-skyward",
+      "thumb": 1.25
     },
     {
       "id": "root-seal",

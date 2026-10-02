@@ -4,15 +4,21 @@ extends GdUnitTestSuite
 
 const ROOT := "user://test-cosmetics"
 
+var _old_path := ""
+
 
 func before_test() -> void:
 	_clear(ROOT)
 	Game.reset(ROOT)
+	# Choosing a profile saves the settings: they go to this suite's folder, never the player's own file.
+	_old_path = Settings.path
+	Settings.path = ROOT + "/settings.json"
 
 
 func after_test() -> void:
 	Background.finish_all()
 	Settings.loadout = {}
+	Settings.path = _old_path
 	Game.reset(ROOT)
 	_clear(ROOT)
 
@@ -51,6 +57,8 @@ func test_every_name_and_note_has_its_japanese() -> void:
 
 func test_the_loadout_is_remembered_per_profile() -> void:
 	assert_bool(Game.boot()).is_true()
+	# Booting reads the settings from the player's file and points saving there again: point it back here.
+	Settings.path = ROOT + "/settings.json"
 	var first := String(Game.profile.id)
 	Settings.loadout = {"circle": "clockwork", "cast_heavy": "skyward-call"}
 	Game.remember_avatar()

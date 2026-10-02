@@ -27,6 +27,8 @@ static var _glint: Texture2D
 static var _soft: Texture2D
 static var _ring: Texture2D
 
+## How fast its time runs (a rehearsal stage slows it, ADR-0037); 1 in a fight.
+var time_scale := 1.0
 var kind := Kind.BURST
 var element := "none"
 var tint := Color.WHITE
@@ -138,7 +140,8 @@ func finish() -> void:
 	get_tree().create_timer(_trail.lifetime + 0.05).timeout.connect(queue_free)
 
 
-func _process(delta: float) -> void:
+func _process(frame_delta: float) -> void:
+	var delta := frame_delta * time_scale
 	elapsed += delta
 	if _finishing:
 		return
