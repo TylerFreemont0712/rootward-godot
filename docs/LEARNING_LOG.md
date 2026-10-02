@@ -634,3 +634,19 @@ shrunk, but the freely placed wrapper kept its expanded size. The centred contai
 its minimum-size change restores the wrapper’s intended room rectangle. The geometry tests caught the overflow.
 A deferred closure captures a WeakRef to the page: capturing a freed node directly reports an error before the
 closure can check its validity. Resolving the WeakRef inside the callback avoids passing a freed typed argument.
+
+## Start feedback before loading the destination (`game/scenes/title/title.gd`)
+The Library click built 71 buttons and synchronously loaded every icon before creating its transition. Profiling
+with actual rendering measured 1.09–1.24 seconds for the panel alone. The passage now starts in the click handler,
+and the destination is built at its opaque midpoint. The same panel builds in 8–26 ms after removing eager row
+art loads. A transparent warm-up draw compiles the circle shader during title loading rather than on first click.
+
+## Threaded loading still needs ownership (`game/scenes/title/foundry_library_art.gd`)
+Only visible rows request canonical artwork, with two jobs in flight and a bounded cache held by the title.
+`load_threaded_get` blocks if called too soon: poll status and retrieve only completed resources, one per frame.
+Retained texture references avoid reloading the same icons after a list rebuild or room reopening. At final cache
+disposal, consume outstanding jobs so Godot does not retain unclaimed resource loads. Missing individual artwork
+still uses the existing atlas/null fallback. Godot’s headless dummy renderer reported null texture
+initialization from loading threads; it now loads one visible texture synchronously per frame. The rendered
+143-click navigation walkthrough separately checks the real threaded path. No second copy of Spellforge art is
+introduced.

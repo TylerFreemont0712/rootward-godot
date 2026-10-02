@@ -6,10 +6,12 @@ var _role := "all"
 var _layer := "all"
 var _browse: ScrollContainer
 var _shelves: Dictionary = {}
+var _art: FoundryLibraryArt
 
 
-static func make(catalog: Dictionary) -> FoundryLibraryPanel:
+static func make(catalog: Dictionary, artwork: FoundryLibraryArt = null) -> FoundryLibraryPanel:
 	var panel := FoundryLibraryPanel.new()
+	panel._art = artwork if artwork != null else FoundryLibraryArt.new()
 	panel._catalog = catalog
 	panel._language = Settings.language
 	panel.theme_type_variation = "Overlay"
@@ -261,7 +263,9 @@ func _refresh() -> void:
 		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		row.custom_minimum_size = Vector2(310, 38)
 		row.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		row.icon = Art.texture(_entry_art(item))
+		var art_id := _entry_art(item)
+		row.set_meta("art_id", art_id)
+		row.icon = _art.textures.get(art_id)
 		row.add_theme_constant_override("icon_max_width", 28)
 		row.tooltip_text = (
 			"%s\n%s"
@@ -277,6 +281,24 @@ func _refresh() -> void:
 	_browse.set_deferred("scroll_vertical", scroll)
 	if focused:
 		FoundryUi.focus.call_deferred(selected_row)
+
+
+func _process(_delta: float) -> void:
+	_art.poll()
+	if not is_visible_in_tree():
+		return
+	var viewport_rect := _browse.get_global_rect()
+	for child: Node in _list.get_children():
+		var row := child as Button
+		if row == null or not viewport_rect.intersects(row.get_global_rect()):
+			continue
+		var art_id: String = row.get_meta("art_id", "")
+		if art_id.is_empty():
+			continue
+		if _art.textures.has(art_id):
+			row.icon = _art.textures[art_id]
+		else:
+			_art.request(art_id)
 
 
 func _entry_art(item: Dictionary) -> String:

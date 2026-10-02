@@ -311,13 +311,13 @@ func test_library_passage_blocks_reentry_and_defers_focus_restoration_until_the_
 	var passage := _title.get("_archive_transition") as ArchivePassage
 	assert_object(passage).is_not_null()
 	assert_object(get_viewport().gui_get_focus_owner()).is_same(passage)
-	var room := _panel("FoundryLibraryRoom")
-	assert_bool(room.visible).is_false()
+	assert_object(_panel("FoundryLibraryRoom")).is_null()
 	_title.call("_close_overlay")
 	_title.call("_open_options")
 	assert_object(_title.get("_archive_transition")).is_same(passage)
 	assert_object(_panel("FoundrySettingsPanel")).is_null()
 	await _settle_archive()
+	var room := _panel("FoundryLibraryRoom")
 	assert_bool(room.visible).is_true()
 	_button(room, "Back").pressed.emit()
 	await get_tree().create_timer(0.5).timeout
@@ -327,6 +327,32 @@ func test_library_passage_blocks_reentry_and_defers_focus_restoration_until_the_
 	await _settle_archive()
 	assert_int(opener.focus_mode).is_equal(Control.FOCUS_ALL)
 	assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
+
+
+func test_library_loads_visible_canonical_icons_and_retains_them_on_reopen() -> void:
+	_title.call("_open_archive")
+	var panel := _panel("FoundryLibraryPanel") as FoundryLibraryPanel
+	var rows := panel._list.get_children()
+	assert_object((rows.back() as Button).icon).is_null()
+	var first := rows[0] as Button
+	for i in 100:
+		if first.icon != null:
+			break
+		await get_tree().create_timer(0.02).timeout
+	assert_object(first.icon).is_not_null()
+	assert_bool(first.icon.resource_path.begins_with(Art.ROOT + String(first.get_meta("art_id")))).is_true()
+	assert_object((rows.back() as Button).icon).is_null()
+	assert_int(panel._art.textures.size()).is_less_equal(FoundryLibraryArt.CAPACITY)
+	var picture := first.icon
+	_title.call("_close_overlay")
+	await get_tree().process_frame
+	_title.call("_open_archive")
+	panel = _panel("FoundryLibraryPanel") as FoundryLibraryPanel
+	assert_object((panel._list.get_child(0) as Button).icon).is_same(picture)
+	panel._query = "nothing matches this shelf"
+	panel._refresh()
+	await get_tree().process_frame
+	assert_int(panel._list.get_child_count()).is_equal(0)
 
 
 func _press(label: String) -> void:

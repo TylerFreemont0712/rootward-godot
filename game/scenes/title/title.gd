@@ -22,6 +22,7 @@ var _setup := false
 var _menu_motion: Tween
 var _overlay_motion: Tween
 var _archive_transition: ArchivePassage
+var _library_art := FoundryLibraryArt.new()
 var _overlay_return: Control
 var _focus_modes: Dictionary = {}
 var _refresh_adventure := false
@@ -54,9 +55,21 @@ func _ready() -> void:
 	_canvas.add_child(_overlay)
 	resized.connect(_fit)
 	_fit()
+	_warm_archive_shader()
 	Sound.music("music-title")
 	if Game.profile.get("needs_name", false):
 		call_deferred("_edit_profile", String(Game.profile.id), true)
+
+
+func _warm_archive_shader() -> void:
+	# A transparent draw compiles the veil during title loading, before the first Library click.
+	var warmup := ArchivePassage.new()
+	warmup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	warmup.focus_mode = Control.FOCUS_NONE
+	_canvas.add_child(warmup)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	warmup.queue_free()
 
 
 func _fit() -> void:
@@ -233,9 +246,26 @@ func _continue() -> void:
 
 
 func _open_archive() -> void:
-	var library := FoundryLibraryPanel.make(Game.display_catalog())
+	if is_instance_valid(_archive_transition):
+		return
+	if Settings.reduced_motion:
+		_mount_archive()
+		return
+	_overlay_return = get_viewport().gui_get_focus_owner()
+	_freeze_navigation()
+	# Start drawing the passage immediately; construct the destination under the opaque midpoint.
+	_archive_passage(_mount_archive, _focus_archive)
+
+
+func _mount_archive() -> void:
+	var library := FoundryLibraryPanel.make(Game.display_catalog(), _library_art)
 	library.closed.connect(_close_overlay)
 	_show_overlay(library, true)
+
+
+func _focus_archive() -> void:
+	if _overlay.get_child_count() > 1:
+		_focus_first(_overlay.get_child(1))
 
 
 func _open_options() -> void:
@@ -412,12 +442,12 @@ func _open_how_to() -> void:
 
 
 func _show_overlay(panel: Control, library_room := false) -> void:
-	if is_instance_valid(_archive_transition):
+	if is_instance_valid(_archive_transition) and not library_room:
 		panel.queue_free()
 		return
 	if _overlay_motion != null:
 		_overlay_motion.kill()
-	if _overlay.get_child_count() == 0:
+	if _overlay.get_child_count() == 0 and not is_instance_valid(_archive_transition):
 		_overlay_return = get_viewport().gui_get_focus_owner()
 		_freeze_navigation()
 	Ui.clear(_overlay)
@@ -432,9 +462,8 @@ func _show_overlay(panel: Control, library_room := false) -> void:
 	page.size = DESIGN
 	_overlay.add_child(page)
 	_canvas.move_child(_overlay, -1)
-	if library_room and not Settings.reduced_motion:
-		page.hide()
-		_archive_passage(page.show, _focus_first.bind(panel))
+	if library_room and is_instance_valid(_archive_transition):
+		_canvas.move_child(_archive_transition, -1)
 		return
 	if not library_room and not Settings.reduced_motion:
 		page.modulate.a = 0.0

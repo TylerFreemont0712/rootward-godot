@@ -277,6 +277,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Integrate the Library catalogue into the room at 1520×760, with wider reading/navigation areas and a smooth
       mist/sigil passage in both directions. The opaque midpoint hides the swap; input stays blocked until reveal.
 
+- [x] Detail the Library passage with a layered magic circle; begin feedback before destination construction,
+      load only visible shelf icons in the background and retain a bounded canonical-art cache across reopenings.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

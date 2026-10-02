@@ -15,12 +15,21 @@ The earlier compact typography and the unchanged presentation of run menus remai
   on top. The built-in imagegen prompt and provenance are in `finalMenuConcept/library/`; the production painting
   is `game/assets/menus/living-archive.png`. Missing art falls back to the room's solid background.
 - Enter and return through a one-second procedural mist/sigil passage: 420 ms to conceal the old room,
-  then 580 ms to reveal the new one. Teal mist, rotating brass arcs and drifting sparks surround the reveal.
+  then 580 ms to reveal the new one. Teal mist, a brass magic circle and drifting sparks surround the reveal.
+  The circle has concentric rings, a counter-rotating rune band, interlocking triangles, six vertex seals and a central glyph.
   The veil is fully opaque at the midpoint, when the room swaps. It owns mouse and keyboard focus until it clears,
   ignores repeated navigation, and restores station focus only after the return finishes. Reduced motion bypasses
   both. A clock we own supplies very subtle variation at the desk lamp and freezes immediately
   under reduced motion. Background controls remain blocked, and returning restores the same home/departure desk
   and its opener's keyboard focus without changing runs or saves.
+- Start the passage in the click handler before constructing the catalogue; build the destination at the opaque
+  midpoint. Warm the shader with an input-transparent draw during title loading. Shelf buttons resolve canonical
+  art ids immediately but request textures only when their rows intersect the scroll viewport. Two threaded loads
+  may be in flight, and at most one completed texture is retrieved per frame. A title-owned 32-entry cache retains
+  artwork across shelf rebuilds and Library reopenings, with existing atlas/null fallbacks for absent assets.
+  Disposing the cache consumes outstanding loader jobs. The headless dummy renderer loads one visible
+  texture synchronously per frame because its texture initialization is not safe in loading threads. Selected
+  dossier art and the room painting remain a small synchronous load concealed by the midpoint; reduced motion skips the passage and builds immediately.
 - Integrate a larger 1520 × 760 catalogue directly into the room, with no outer window frame. A room title
   sits above the collection navigation, illustrated entries and wide reading pane. Soft shading behind the
   navigation keeps the painting visible while separating text from bright shelf details. Local typography uses
@@ -48,3 +57,11 @@ memory/reset, refactor retention, English/Japanese screen bounds, animated/reduc
 station focus staying disabled until the return veil clears.
 The actual mouse walkthrough includes an offscreen boss entry, revealed through the list's focus-following scroll.
 Screenshot fixtures cover ordinary creatures, the Root guardian shelf, relics, both modes, Japanese and 1280 × 720.
+
+A rendering probe traced the old click delay to loading all 71 shelf icons synchronously before creating the veil:
+the panel alone took 1.09–1.24 seconds with Mesa llvmpipe. Visible-row loading reduced the same construction to
+8–26 ms. With shader warm-up, the actual click handler takes under 1 ms and its first rendered transition frame
+appears in 60–80 ms in the same software-rendering environment. These are local diagnostic measurements, not a
+frame-rate guarantee for the player's hardware.
+A regression checks that an offscreen row remains unloaded, visible art uses the canonical path, reopening reuses
+its texture, empty searches remain safe, and the transition exists before any destination room is constructed.
