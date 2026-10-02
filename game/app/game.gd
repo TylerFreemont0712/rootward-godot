@@ -76,6 +76,7 @@ static func select_profile(id: String, remember := true) -> bool:
 		return false
 	profile = profiles.get_profile(id)
 	Settings.character_skin = String(profile.get("avatar", "vesper"))
+	Settings.loadout = Settings.clean_loadout(profile.get("loadout", {}))
 	var overrides: Dictionary = profile.get("settings", {})
 	Settings.language = String(overrides.get("language", SandboxJob.PYTHON))
 	Settings.difficulty = String(overrides.get("difficulty", "beginner"))
@@ -99,6 +100,7 @@ static func remember_avatar() -> void:
 	if profile.is_empty() or profiles == null:
 		return
 	profile.avatar = Settings.character_skin
+	profile.loadout = Settings.loadout.duplicate()
 	profiles.save_profile(profile)
 
 

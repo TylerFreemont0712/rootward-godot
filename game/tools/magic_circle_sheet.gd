@@ -1,7 +1,8 @@
 extends Control
 ## Every tier of the magic circle (MagicCircle, ADR-0030) caught as it writes itself, complete, firing and closing:
 ##   scripts/screenshot.sh res://tools/magic_circle_sheet.tscn shots/circles.png 10
-## ROOTWARD_ELEMENT picks the colours (none, fire, frost, spark).
+## ROOTWARD_ELEMENT picks the colours (none, fire, frost, spark), ROOTWARD_CIRCLE_STYLE the style (codex, rootglass,
+## clockwork, constellation; ADR-0037).
 
 const MOMENTS: Array[Array] = [
 	["writing", 0.3], ["writing", 0.6], ["writing", 0.85], ["complete", 1.15], ["firing", 1.6]
@@ -23,6 +24,9 @@ func _ready() -> void:
 			var moment: Array = MOMENTS[column]
 			var at := Vector2(200 + column * 360, 140 + tier * 250)
 			var circle := MagicCircle.cast(self, at, tier, element, 80.0 + tier * 12.0, "knapsackStrike()  charge()  ")
+			circle.style = (
+				OS.get_environment("ROOTWARD_CIRCLE_STYLE") if OS.get_environment("ROOTWARD_CIRCLE_STYLE") else "codex"
+			)
 			circle.set_process(false)
 			# Played up to the moment in sixtieths, so its motes and sparks are where they would be.
 			var until := float(moment[1]) * circle.form_time()

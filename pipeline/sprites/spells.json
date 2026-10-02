@@ -15,6 +15,10 @@
     {"id": "cast-ground", "motion": "cast-ground", "size": [384, 560], "frames": 44, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.88], "preview": "#ffc83a"},
     {"id": "bolt-lance", "motion": "bolt-lance", "size": [256, 96], "frames": 8, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#ff8a3a", "anchor": [0.84, 0.5]},
     {"id": "bolt-orb", "motion": "bolt-orb", "size": [256, 160], "frames": 12, "fps": 24, "loop": true, "bloom": 0.6, "preview": "#b48cff", "anchor": [0.64, 0.5]},
-    {"id": "hit-critical", "motion": "hit-critical", "size": [480, 480], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.16, "seed": 13, "sound": "sfx-hit-critical", "element_layer": true, "preview": "#ff5a3a"}
+    {"id": "hit-critical", "motion": "hit-critical", "size": [480, 480], "frames": 36, "fps": 30, "bloom": 0.5, "impact": 0.16, "seed": 13, "sound": "sfx-hit-critical", "element_layer": true, "preview": "#ff5a3a"},
+    {"id": "bolt-thorn", "motion": "bolt-thorn", "size": [256, 112], "frames": 12, "fps": 24, "loop": true, "bloom": 0.55, "preview": "#33d6b6", "anchor": [0.86, 0.5]},
+    {"id": "hit-starfall", "motion": "hit-starfall", "size": [320, 460], "frames": 48, "fps": 30, "bloom": 0.5, "anchor": [0.5, 0.88], "impact": 0.54, "seed": 17, "sound": "sfx-hit-heavy", "element_layer": true, "preview": "#ffc83a"},
+    {"id": "hit-roots", "motion": "hit-roots", "size": [320, 460], "frames": 48, "fps": 30, "bloom": 0.45, "anchor": [0.5, 0.88], "impact": 0.52, "seed": 19, "sound": "sfx-hit-heavy", "element_layer": true, "preview": "#33d6b6"},
+    {"id": "hit-pillar", "motion": "hit-pillar", "size": [320, 460], "frames": 48, "fps": 30, "bloom": 0.5, "anchor": [0.5, 0.88], "impact": 0.52, "seed": 23, "sound": "sfx-hit-heavy", "element_layer": true, "preview": "#b48cff"}
   ]
 }

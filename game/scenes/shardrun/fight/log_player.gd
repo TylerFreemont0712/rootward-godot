@@ -92,7 +92,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var heavy := bolts.size() >= 4 or _total(bolts) >= 30
 	_heavy = heavy
 	_crashed = {}
-	stage.hero.play("cast-heavy" if heavy else "cast-light")
+	stage.hero.play_cast(heavy)
 	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
 	if not motifs_shown:
 		for card: Dictionary in cast_cards.get(entry.get("spell", ""), []):
@@ -168,6 +168,14 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 		stage.dim(0.0, 0.4)
 
 
+## The sheet a worn impact plays: its own when it was drawn, else the falling code; "" when neither is there.
+static func impact_sheet(look: Dictionary) -> String:
+	for sheet: String in [String(look.get("sprite", "")), "hit-heavy"]:
+		if sheet != "" and SpellAnim.has(sheet):
+			return sheet
+	return ""
+
+
 ## The cast's runes: the names of the functions its cards are, as its code calls them (`knapsackStrike()`).
 func _words(entry: Dictionary) -> String:
 	var names: PackedStringArray = []
@@ -204,11 +212,13 @@ func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
 	if is_instance_valid(pending) and pending is SpellAnim:
 		# The foe's falling blow lands first; the bolts after it fly once it has.
 		await (pending as SpellAnim).landed()
-	if _heavy and not _crashed.has(hit.foe) and SpellAnim.has("hit-heavy"):
-		# A heavy cast's first blow on a foe does not fly: blocks of code fall on it from above.
+	var impact := impact_sheet(stage.hero.look("impact"))
+	if _heavy and not _crashed.has(hit.foe) and impact != "":
+		# A heavy cast's first blow on a foe does not fly: it arrives as the worn impact (blocks of code falling on it
+		# from above by default, a star, roots, a pillar of light), anchored at its feet.
 		_crashed[hit.foe] = true
 		var crash := stage.spell(
-			"hit-heavy", view.foot_point(), hit.get("element", "none"), 0.9 + minf(0.5, view.sprite_width() / 400.0)
+			impact, view.foot_point(), hit.get("element", "none"), 0.9 + minf(0.5, view.sprite_width() / 400.0)
 		)
 		if crash != null:
 			_crashed[hit.foe] = crash

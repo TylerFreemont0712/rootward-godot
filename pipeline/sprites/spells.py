@@ -661,6 +661,181 @@ def hit_critical(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None
         f.rune(i + 2, at, h * 0.055, angle * 2 * after, 1.6, 0.75 * fade(t, 0.5, 1.0))
 
 
+def bolt_thorn(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A rootglass thorn in flight, heading right: a long faceted spike of glass light, a ring of sap-light round its
+    waist, two leaves trailing off it and a stream of droplets behind. It loops (ADR-0037)."""
+    cy = h / 2
+    tip = w * 0.92
+    phase = t * 2 * math.pi
+    # The thorn: a halo, the body, then a bright spine down its middle.
+    body = [(tip, cy), (w * 0.62, cy - h * 0.17), (w * 0.3, cy - h * 0.07), (w * 0.24, cy), (w * 0.3, cy + h * 0.07), (w * 0.62, cy + h * 0.17)]
+    f.polygon(body, 0.35, blur=4)
+    f.polygon(body, 0.75, blur=1)
+    f.lines([(w * 0.3, cy), (tip, cy)], 2.4, 1.0)
+    for side in (-1, 1):
+        f.lines([(w * 0.62, cy + side * h * 0.17), (tip, cy)], 1.4, 0.8)
+        f.lines([(w * 0.62, cy + side * h * 0.17), (w * 0.44, cy)], 1.2, 0.6)
+    f.polygon(body, 0.35, shade=True, blur=2)
+    # A ring of light turning round its waist.
+    waist = 0.5 + 0.5 * math.sin(phase * 2)
+    f.ellipse((w * 0.5, cy), w * 0.025, h * (0.22 + 0.05 * waist), 2, 0.8)
+    # Two leaves peeling off behind, fluttering.
+    for side in (-1, 1):
+        flutter = math.sin(phase * 2 + side) * h * 0.05
+        base = (w * 0.3, cy + side * h * 0.04)
+        leaf_tip = (w * 0.08, cy + side * (h * 0.3 + flutter))
+        mid = ((base[0] + leaf_tip[0]) / 2, (base[1] + leaf_tip[1]) / 2)
+        bulge = (0, side * h * 0.07)
+        f.polygon([base, (mid[0] + bulge[1] * 0.4, mid[1] + bulge[1]), leaf_tip, (mid[0] - bulge[1] * 0.4, mid[1] - bulge[1] * 0.2)], 0.55, blur=1)
+        f.lines([base, leaf_tip], 1.0, 0.85)
+    # Droplets of sap-light streaming back.
+    for i in range(6):
+        drift = (t * 2 + i / 6) % 1.0
+        x = w * (0.26 - 0.24 * drift)
+        y = cy + math.sin(phase * 3 + i * 1.7) * h * 0.12
+        f.disc((x, y), h * 0.03 * (1 - drift * 0.6), 0.8 * (1 - drift), blur=1)
+
+
+def hit_starfall(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A star falls on the foe (ADR-0037): it is lit high to the upper left, hangs a beat as its points open, then
+    streaks down at a slant and bursts at the foe's feet: a flash, a star-shaped spray of light, a ring along the
+    ground, and sparkles drifting down. Its ground is at 88% of the height."""
+    ground = h * 0.88
+    cx = w / 2
+    start = (w * 0.22, h * 0.13)
+    land = 0.54
+    if t < land:
+        shown = span(t, 0.0, 0.12)
+        fall = span(t, 0.26, land)
+        x = start[0] + (cx - start[0]) * into(fall, 2.2)
+        y = start[1] + (ground - h * 0.04 - start[1]) * into(fall, 2.2)
+        size = w * (0.07 + 0.03 * math.sin(t * 50)) * shown
+        if fall > 0:
+            # The streak behind it, longer as it speeds up.
+            back = (x - (x - start[0]) * min(1.0, 0.35 + fall * 0.6), y - (y - start[1]) * min(1.0, 0.35 + fall * 0.6))
+            f.lines([back, (x, y)], size * 0.9, 0.35, blur=5)
+            f.lines([back, (x, y)], 3, 0.9)
+        f.disc((x, y), size * 1.4, 0.4 * shown, blur=4)
+        for k in range(4):
+            angle = 45 * k + t * 240
+            arm = rotate((size * 1.8, 0), angle)
+            f.polygon([(x + arm[0], y + arm[1]), (x + arm[1] * 0.18, y - arm[0] * 0.18), (x - arm[0] * 0.2, y - arm[1] * 0.2), (x - arm[1] * 0.18, y + arm[0] * 0.18)], 0.95 * shown)
+        f.disc((x, y), size * 0.5, 1.0 * shown)
+        return
+    after = span(t, land, 1.0)
+    f.disc((cx, ground - h * 0.05), w * 0.2 * (1 - after), 0.9 * (1 - span(after, 0, 0.2)), blur=6)
+    spread = w * 0.46 * out(after, 3)
+    f.ellipse((cx, ground), spread, spread * 0.2, 6 * (1 - after) + 1, 0.9 * (1 - after))
+    f.ellipse((cx, ground), spread * 0.8, spread * 0.16, 14, 0.5 * (1 - after), shade=True, blur=4)
+    # A star of light burst from the point of impact, its arms shrinking back.
+    for k in range(8):
+        angle = -90 + k * 45
+        reach = h * (0.42 if k % 2 == 0 else 0.24) * out(span(after, 0, 0.35), 2) * (1 - span(after, 0.35, 1.0))
+        tip = (cx + reach * math.cos(math.radians(angle)), ground - h * 0.05 + reach * math.sin(math.radians(angle)) * 0.9)
+        f.lines([(cx, ground - h * 0.05), tip], 5 if k % 2 == 0 else 3, 0.9)
+    # Sparkles flung up, then drifting down.
+    for k in range(10):
+        angle = -90 + rng.uniform(-70, 70)
+        reach = h * rng.uniform(0.15, 0.4) * out(after, 2)
+        at = (cx + reach * math.cos(math.radians(angle)), ground - h * 0.05 + reach * math.sin(math.radians(angle)) + h * 0.25 * after * after)
+        size = w * 0.018 * (1 - after)
+        f.lines([(at[0] - size * 2, at[1]), (at[0] + size * 2, at[1])], 2, 0.9 * (1 - after))
+        f.lines([(at[0], at[1] - size * 2), (at[0], at[1] + size * 2)], 2, 0.9 * (1 - after))
+
+
+def hit_roots(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """Roots erupt under the foe (ADR-0037): a ring of runes cracks open on the ground, the floor splits, and roots
+    of light spear up through the foe from the cracks (the blow), splinter, and sink back as runes rise. Its ground
+    is at 88% of the height."""
+    ground = h * 0.88
+    cx = w / 2
+    land = 0.5
+    ring = span(t, 0.0, 0.3)
+    fade_all = 1 - span(t, 0.82, 1.0)
+    # The ring on the ground, seen at a slant, its runes set one by one.
+    f.ellipse((cx, ground), w * 0.36 * out(ring, 2), w * 0.36 * 0.22 * out(ring, 2), 3, 0.85 * fade_all)
+    f.ellipse((cx, ground), w * 0.36, w * 0.36 * 0.22, 16, 0.4 * ring * fade_all, shade=True, blur=4)
+    for k in range(10):
+        shown = span(ring * 10 - k, 0, 1)
+        angle = math.radians(k * 36)
+        f.rune(k, (cx + math.cos(angle) * w * 0.3, ground + math.sin(angle) * w * 0.3 * 0.22), h * 0.045, 0, 1.6, 0.9 * shown * fade_all)
+    # Cracks racing out from the middle.
+    crack = span(t, 0.22, land)
+    for k in range(6):
+        angle = math.radians(k * 60 + 15)
+        points = [(cx, ground)]
+        for step in range(1, 5):
+            r = w * 0.34 * crack * step / 4
+            wobble = math.radians(rng.uniform(-14, 14))
+            points.append((cx + math.cos(angle + wobble) * r, ground + math.sin(angle + wobble) * r * 0.22))
+        f.lines(points, 2.4, 0.9 * fade_all)
+        f.lines(points, 5, 0.6 * fade_all, shade=True)
+    if t < land - 0.04:
+        return
+    # The roots: thorns of light spearing up from the cracks, tallest in the middle, then sinking back.
+    rise = out(span(t, land - 0.04, land + 0.08), 3)
+    sink = into(span(t, 0.66, 0.92), 2)
+    for k in range(7):
+        x = cx + (k - 3) * w * 0.1 + rng.uniform(-6, 6)
+        tall = h * (0.66 - abs(k - 3) * 0.12) * rise * (1 - sink)
+        lean = (k - 3) * w * 0.035
+        base = w * (0.05 - abs(k - 3) * 0.006)
+        if tall <= 1:
+            continue
+        spike = [(x - base, ground), (x + lean, ground - tall), (x + base, ground)]
+        f.polygon(spike, 0.4, blur=3)
+        f.polygon(spike, 0.75, blur=1)
+        f.polygon(spike, 0.3, shade=True)
+        f.lines([(x, ground), (x + lean, ground - tall)], 1.6, 1.0)
+        # A thorn on its side.
+        side = (x + lean * 0.5 + (base if k % 2 else -base) * 1.6, ground - tall * 0.55)
+        f.lines([(x + lean * 0.5, ground - tall * 0.5), side], 1.4, 0.8)
+    f.disc((cx, ground - h * 0.25), w * 0.16 * (1 - span(t, land, land + 0.18)), 0.7 * (1 - span(t, land, land + 0.18)), blur=6)
+    # Runes rising from the cracks as the roots sink.
+    for k in range(6):
+        drift = span(t, 0.62 + k * 0.03, 1.0)
+        if drift <= 0:
+            continue
+        x = cx + (k - 2.5) * w * 0.12
+        f.rune(k + 4, (x, ground - h * 0.1 - h * 0.35 * out(drift, 2)), h * 0.05, drift * 90, 1.5, 0.8 * (1 - drift))
+
+
+def hit_pillar(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A pillar of judgment (ADR-0037): a circle is written on the ground under the foe and another high above it,
+    a thin line of light joins them, and the column slams down full width (the blow), burns, then narrows to a thread
+    and is gone, runes racing round its foot. Its ground is at 88% of the height."""
+    ground = h * 0.88
+    cx = w / 2
+    top = h * 0.06
+    land = 0.52
+    writing = span(t, 0.0, 0.32)
+    fade_all = 1 - span(t, 0.8, 1.0)
+    for y, size in ((ground, 0.34), (top + h * 0.03, 0.22)):
+        rx = w * size
+        f.ellipse((cx, y), rx * out(writing, 2), rx * 0.2 * out(writing, 2), 3, 0.85 * fade_all)
+        f.ellipse((cx, y), rx * 0.75 * out(writing, 2), rx * 0.15 * out(writing, 2), 1.6, 0.6 * fade_all)
+    # A thread of light from the upper circle to the lower before the column comes.
+    thread = span(t, 0.3, land - 0.04)
+    if 0 < thread and t < land:
+        f.lines([(cx, top + h * 0.03), (cx, top + h * 0.03 + (ground - top) * into(thread, 2))], 2, 0.9)
+    # The column.
+    if t >= land - 0.04:
+        slam = out(span(t, land - 0.04, land + 0.02), 3)
+        narrow = into(span(t, 0.68, 0.92), 2)
+        half = w * 0.16 * slam * (1 - narrow) + 1.5
+        reach = top + h * 0.03 + (ground - top) * slam
+        f.polygon([(cx - half, top + h * 0.03), (cx + half, top + h * 0.03), (cx + half, reach), (cx - half, reach)], 0.45 * fade_all, blur=6)
+        f.polygon([(cx - half * 0.55, top + h * 0.03), (cx + half * 0.55, top + h * 0.03), (cx + half * 0.55, reach), (cx - half * 0.55, reach)], 1.0 * fade_all, blur=1)
+        f.polygon([(cx - half * 1.2, ground - h * 0.4), (cx + half * 1.2, ground - h * 0.4), (cx + half * 1.2, ground), (cx - half * 1.2, ground)], 0.25 * fade_all, shade=True, blur=5)
+        after = span(t, land, land + 0.3)
+        spread = w * 0.44 * out(after, 3)
+        f.ellipse((cx, ground), spread, spread * 0.2, 6 * (1 - after) + 1, 0.9 * (1 - after))
+        # Runes racing round its foot.
+        for k in range(8):
+            angle = math.radians(k * 45 + t * 520)
+            f.rune(k + 1, (cx + math.cos(angle) * w * 0.27, ground + math.sin(angle) * w * 0.27 * 0.2), h * 0.04, 0, 1.5, 0.85 * fade_all * span(t, land, land + 0.06))
+
+
 MOTIONS = {
     "cast-sigil": cast_sigil,
     "cast-sigil-simple": cast_sigil_simple,
@@ -677,6 +852,10 @@ MOTIONS = {
     "shatter": shatter,
     "claw": claw,
     "tempo": tempo,
+    "bolt-thorn": bolt_thorn,
+    "hit-starfall": hit_starfall,
+    "hit-roots": hit_roots,
+    "hit-pillar": hit_pillar,
 }
 
 

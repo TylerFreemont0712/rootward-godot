@@ -29,6 +29,8 @@ static var font_style := DEFAULT_FONT
 static var playstyle := "program"
 ## The last selected battle look. Vesper is the first impression on a fresh install.
 static var character_skin := "vesper"
+## The look worn on the moves and spells, {slot: option id} (ADR-0037, Cosmetics); a missing slot is its default.
+static var loadout: Dictionary = {}
 static var music_volume := 0.6
 static var sound_volume := 0.8
 ## The last language and difficulty a run was started with, offered first next time.
@@ -77,6 +79,17 @@ static func load_file(from := PATH) -> void:
 			character_skin = "vesper"
 		elif skin in all_skins():
 			character_skin = skin
+	loadout = clean_loadout(values.get("loadout"))
+
+
+## Only string choices for known slots are kept; whether an id exists is the catalogue's to say (Cosmetics).
+static func clean_loadout(saved: Variant) -> Dictionary:
+	var clean := {}
+	if saved is Dictionary:
+		for slot: String in CosmeticRules.SLOTS:
+			if (saved as Dictionary).get(slot) is String:
+				clean[slot] = saved[slot]
+	return clean
 
 
 ## The shipped looks, then any local reference skins found on this machine.
@@ -102,6 +115,7 @@ static func save_file() -> void:
 		"language": language,
 		"difficulty": difficulty,
 		"character_skin": character_skin,
+		"loadout": loadout,
 		"playstyle": playstyle,
 	}
 	var file := FileAccess.open(path, FileAccess.WRITE)

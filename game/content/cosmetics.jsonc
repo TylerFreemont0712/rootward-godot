@@ -1,0 +1,149 @@
+// The looks a player wears on their moves and spells (ADR-0037): presentation only, never a rule. The Character
+// room browses them on carousels and saves a choice per slot to the profile, as it saves the skin.
+//
+// Every slot's first option is its default, the look the game had before there was a choice. A move a skin cannot
+// play (a drawn skin, a model with its own clips) falls back to that skin's own clip (CosmeticRules.NATIVE).
+//
+//   idle, cast_light, cast_heavy  a clip of the shared move library (pipeline/moves/clips/)
+//   circle                        a MagicCircle style: codex, rootglass, clockwork, constellation
+//   bolt                          a spell sheet for the bolt in flight (assets/fx/spells/), the sheet a strong bolt
+//                                 flies as, and its path: arc, straight or spiral
+//   impact                        the sheet a heavy cast's first blow on each foe arrives as (anchored at its feet)
+//
+// Names and notes are English here; their Japanese is in packs/core/locales/ja/cosmetics.jsonc.
+{
+  "idle": [
+    {
+      "id": "guarded-breath",
+      "name": "Guarded Breath",
+      "note": "Weight on the back foot, hands loose, eyes on the foes.",
+      "clip": "idle-breathe"
+    },
+    {
+      "id": "lantern-bearer",
+      "name": "Lantern Bearer",
+      "note": "One hand held up and open, cupping a light for the dark of the roots.",
+      "clip": "idle-lantern"
+    }
+  ],
+  "cast_light": [
+    {
+      "id": "finger-snap",
+      "name": "Finger Snap",
+      "note": "A snap beside the face, and the circle is simply there.",
+      "clip": "cast-light"
+    },
+    {
+      "id": "rune-trace",
+      "name": "Rune Trace",
+      "note": "One finger writes a quick stroke in the air; the circle closes on its last line.",
+      "clip": "cast-trace"
+    }
+  ],
+  "cast_heavy": [
+    {
+      "id": "grand-push",
+      "name": "Grand Push",
+      "note": "Both hands gather the power at the chest, then drive it through the circle.",
+      "clip": "cast-heavy"
+    },
+    {
+      "id": "skyward-call",
+      "name": "Skyward Call",
+      "note": "An arm raised to the ceiling calls the spell down from above.",
+      "clip": "cast-skyward"
+    },
+    {
+      "id": "root-seal",
+      "name": "Root Seal",
+      "note": "Down on one knee, a palm pressed to the floor wakes what grows under it.",
+      "clip": "cast-slam"
+    }
+  ],
+  "circle": [
+    {
+      "id": "codex",
+      "name": "Codex Circle",
+      "note": "Pen-stroke rings, a ruled star and the spell's own function names as runes.",
+      "style": "codex"
+    },
+    {
+      "id": "rootglass",
+      "name": "Rootglass Wreath",
+      "note": "A ring that grows like a vine, budding leaves, with branches for a star.",
+      "style": "rootglass"
+    },
+    {
+      "id": "clockwork",
+      "name": "Clockwork Gear",
+      "note": "Toothed rings that turn against each other, ticking like a timer.",
+      "style": "clockwork"
+    },
+    {
+      "id": "constellation",
+      "name": "Constellation",
+      "note": "Stars pricked in the air and joined one line at a time, as Vesper writes.",
+      "style": "constellation"
+    }
+  ],
+  "bolt": [
+    {
+      "id": "arcane-lance",
+      "name": "Arcane Lance",
+      "note": "Lances of light that curve to their mark; a strong one flies as an orb.",
+      "sprite": "bolt-lance",
+      "strong": "bolt-orb",
+      "path": "arc"
+    },
+    {
+      "id": "power-orb",
+      "name": "Power Orb",
+      "note": "Every bolt a pulsing orb with runes in orbit.",
+      "sprite": "bolt-orb",
+      "strong": "bolt-orb",
+      "path": "arc"
+    },
+    {
+      "id": "glyph-swarm",
+      "name": "Glyph Swarm",
+      "note": "Runes that corkscrew to their target, shedding letters as they go.",
+      "sprite": "glyph-bolt",
+      "strong": "glyph-bolt",
+      "path": "spiral"
+    },
+    {
+      "id": "rootglass-thorn",
+      "name": "Rootglass Thorn",
+      "note": "A glass thorn shot straight and fast, sap-light streaming behind it.",
+      "sprite": "bolt-thorn",
+      "strong": "bolt-thorn",
+      "path": "straight"
+    }
+  ],
+  "impact": [
+    {
+      "id": "falling-code",
+      "name": "Falling Code",
+      "note": "Blocks of code drawn in the air above the foe, then dropped on it.",
+      "sprite": "hit-heavy"
+    },
+    {
+      "id": "starfall",
+      "name": "Starfall",
+      "note": "A star streaks down at a slant and bursts on the foe.",
+      "sprite": "hit-starfall"
+    },
+    {
+      "id": "root-eruption",
+      "name": "Root Eruption",
+      "note": "The floor splits in a ring and roots spear up through the foe.",
+      "sprite": "hit-roots"
+    },
+    {
+      "id": "judgment-pillar",
+      "name": "Judgment Pillar",
+      "note": "A column of light slams down on the foe, runes racing round its foot.",
+      "sprite": "hit-pillar"
+    }
+  ]
+}

@@ -241,7 +241,9 @@ func magic_circle(tier: int, element: String, words: String, writing_speed := 1.
 	if fast:
 		return null
 	var size := hero.circle_radius(tier)
-	return MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words, writing_speed)
+	var circle := MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words, writing_speed)
+	circle.style = String(hero.look("circle").get("style", "codex"))
+	return circle
 
 
 func shard_effect(card: Dictionary) -> void:
@@ -258,19 +260,41 @@ func fly(from: Vector2, to: Vector2, element: String, ms: float, arrive: Callabl
 		arrive.call()
 		return
 	var ramp := "ward" if ward else element
-	var sprite := "bolt-orb" if power >= 12.0 else "bolt-lance"
+	# The worn bolt (ADR-0037): its sheet (a strong bolt flies as its `strong` one) and its path.
+	var look := hero.look("bolt")
+	var sprite := String(look.get("strong" if power >= 12.0 else "sprite", ""))
+	if not SpellAnim.has(sprite):
+		sprite = "bolt-orb" if power >= 12.0 else "bolt-lance"
+	var path := String(look.get("path", "arc"))
 	if SpellAnim.has(sprite):
 		var size := clampf(0.55 + power / 30.0, 0.55, 1.4)
 		var head := SpellAnim.play(_fx, sprite, from, ramp, size)
 		var trail := _trail(ramp, size)
 		var across := (to - from).orthogonal().normalized()
-		var bend := across * randf_range(-1.0, 1.0) * clampf(from.distance_to(to) * 0.22, 30.0, 150.0)
-		var control := (from + to) * 0.5 + bend - Vector2(0, randf_range(0.0, 40.0))
+		var reach := clampf(from.distance_to(to) * 0.22, 30.0, 150.0)
+		# An arc bends off to one side and rises; a straight bolt goes as the crow flies; a spiral corkscrews in.
+		var bend := Vector2.ZERO
+		var rise := 0.0
+		var coil := 0.0
+		match path:
+			"straight":
+				pass
+			"spiral":
+				bend = across * randf_range(-0.3, 0.3) * reach
+				coil = clampf(reach * 0.32, 16.0, 40.0)
+			_:
+				bend = across * randf_range(-1.0, 1.0) * reach
+				rise = randf_range(0.0, 40.0)
+		var control := (from + to) * 0.5 + bend - Vector2(0, rise)
 		var jitter := 12.0 if element == "spark" and not ward else 0.0
+		var turn := randf() * TAU
 		var travel := func(progress: float) -> void:
 			var a := from.lerp(control, progress)
 			var b := control.lerp(to, progress)
 			var point := a.lerp(b, progress) + across * sin(progress * TAU * 4.0) * jitter * (1.0 - progress)
+			if coil > 0.0:
+				var angle := turn + progress * TAU * 2.5
+				point += (across * sin(angle) + (b - a).normalized() * cos(angle) * 0.4) * coil * (1.0 - progress)
 			head.position = point
 			head.rotation = (b - a).angle()
 			trail.add_point(point)

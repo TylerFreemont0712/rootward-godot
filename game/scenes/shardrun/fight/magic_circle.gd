@@ -36,6 +36,8 @@ const RUNES_FALLBACK := "λ ∑ { } => ; ∀ ∃ ( ) 0 1 ⊕ ⊗ != == [ ] ≤ �
 const ELEMENT_LAYERS: Array[String] = ["fire", "frost", "spark"]
 
 var tier := 0
+## How it is drawn (ADR-0037): "codex" (the pen-stroke rings and ruled star below), or one of CircleStyles'.
+var style := "codex"
 var radius := 100.0
 ## How fast it writes itself (a snapped spell writes faster); once complete it turns at its own pace.
 var speed := 1.0
@@ -210,10 +212,16 @@ func _draw() -> void:
 		var size := radius * pow(STACK_SHRINK, index) * (0.5 + 0.5 * _ease_out(appear)) * swell
 		var spin := clock * (0.9 if index % 2 == 1 else -0.7) * (1.0 + closing * 6.0)
 		_disc_space(index, spin)
-		_front_disc(size, appear * fade * breathe, index)
+		if style == "codex":
+			_front_disc(size, appear * fade * breathe, index)
+		else:
+			CircleStyles.front_disc(self, size, appear * fade * breathe, index)
 	var spin_outer := _spin(0.35)
 	_disc_space(0, spin_outer)
-	_main_disc(radius * swell * pop, fade, breathe, closing)
+	if style == "codex":
+		_main_disc(radius * swell * pop, fade, breathe, closing)
+	else:
+		CircleStyles.main_disc(self, radius * swell * pop, fade, breathe, closing)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 	_light(fade)
 

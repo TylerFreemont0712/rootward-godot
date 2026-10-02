@@ -20,6 +20,8 @@ const KEY_LIGHT := Vector3(0.45, 0.62, 0.64)
 
 ## A rehearsal skin can be browsed without changing the equipped appearance.
 var preview_skin := ""
+## A rehearsal can also try a look on its moves and spells without saving it ({}: the saved loadout, ADR-0037).
+var preview_loadout: Dictionary = {}
 var character: StageCharacter
 var sprite: SpriteCharacter
 var _viewport: SubViewport
@@ -104,6 +106,7 @@ func _build_skin() -> void:
 	_camera.position = Vector3(0.0, _camera.size * (0.5 - FLOOR_MARGIN), 6.0)
 	_camera.current = true
 	_viewport.add_child(_camera)
+	actor.idle_clip = move_clip("idle")
 	# Cant the model toward the foes.
 	actor.rotation_degrees.y = 35.0
 	_viewport.add_child(actor)
@@ -125,6 +128,43 @@ func _light(viewport: SubViewport) -> void:
 	key.light_energy = 1.1
 	viewport.add_child(key)
 	key.basis = Basis.looking_at(-KEY_LIGHT)
+
+
+## The loadout worn: the rehearsal's while it tries one on, else the saved one, every slot filled.
+func loadout() -> Dictionary:
+	return Cosmetics.loadout(preview_loadout if not preview_loadout.is_empty() else null)
+
+
+## The option worn in a slot (`circle`, `bolt`, `impact`, or a move), as the catalogue has it.
+func look(slot: String) -> Dictionary:
+	return CosmeticRules.option(Cosmetics.catalog(), slot, String(loadout().get(slot, "")))
+
+
+## Tries a loadout on (the rehearsal); the idle changes at once, the rest on the next cast.
+func set_preview_loadout(chosen: Dictionary) -> void:
+	preview_loadout = chosen.duplicate()
+	if character != null:
+		character.set_idle(move_clip("idle"))
+
+
+## The clips this skin can play (a drawn skin's sheets, a model's clips).
+func clips() -> Array[String]:
+	var found: Array[String] = []
+	if sprite != null:
+		found.assign(sprite.manifest.get("clips", {}).keys())
+	elif character != null and character.player != null:
+		found.assign(character.player.get_animation_list())
+	return found
+
+
+## The clip a move slot plays on this skin: the chosen one when the skin has it, else the skin's own.
+func move_clip(slot: String) -> String:
+	return CosmeticRules.clip(Cosmetics.catalog(), loadout(), slot, clips())
+
+
+## Plays the worn cast for a light or a heavy spell.
+func play_cast(heavy: bool) -> void:
+	play(move_clip("cast_heavy" if heavy else "cast_light"))
 
 
 ## Plays a rigged clip. Spell sigils, shields, projectiles, and impact art remain on the separate BattleFX layer.
@@ -202,7 +242,10 @@ func hand_point() -> Vector2:
 ## Where the cast's magic circle stands: just beyond her palm at the strike, toward the foes (a circle of `size`
 ## pixels in radius stands a little in front of her hand, not on it).
 func circle_point(size: float) -> Vector2:
-	return hand_point() + Vector2(size * 0.42 + self.size.y * 0.05, self.size.y * 0.005)
+	var at := hand_point() + Vector2(size * 0.42 + self.size.y * 0.05, self.size.y * 0.005)
+	# A cast that ends on the floor (a palm pressed to it) still stands its circle on the floor, not through it.
+	at.y = minf(at.y, position.y + self.size.y - size * 0.95)
+	return at
 
 
 ## A point in the character's world, in this view's own coordinates.

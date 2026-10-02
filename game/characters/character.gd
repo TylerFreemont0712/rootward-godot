@@ -48,6 +48,8 @@ var face: AnimationPlayer
 ## The move library's facts per clip (moves.json): length, loop, release, hand, release_point, face.
 var moves: Dictionary = {}
 var current := ""
+## The idle this character returns to after every clip (the player's chosen one, ADR-0037; IDLE by default).
+var idle_clip := IDLE
 var _serial := 0
 ## Anime-shaded faces, which need the head's facing every frame (AnimeSkin, ADR-0029).
 var _faces: Array[ShaderMaterial] = []
@@ -102,7 +104,22 @@ static func has_skin(character_id: String) -> bool:
 
 func _ready() -> void:
 	if player != null:
-		play(IDLE)
+		play(idle_clip)
+
+
+## Wears a different idle, playing it now if the character is idling (an unknown clip keeps IDLE).
+func set_idle(clip: String) -> void:
+	var was_idle := current == idle_clip or current == ""
+	idle_clip = clip if player != null and player.has_animation(clip) else IDLE
+	if was_idle and player != null and is_inside_tree():
+		play(idle_clip)
+
+
+## A cast: a clip with a release (the strike the stage times its circle to), other than a cast's hold and letting go.
+func is_cast(clip: String) -> bool:
+	if clip.ends_with("-hold") or clip.ends_with("-end"):
+		return false
+	return clip in CASTS or moves.get(clip, {}).get("release") != null
 
 
 func has_model() -> bool:
@@ -137,7 +154,7 @@ func set_light_direction(direction: Vector3) -> void:
 func play(clip: String) -> void:
 	if player == null or not player.has_animation(clip):
 		return
-	_cast = clip if clip in CASTS else ""
+	_cast = clip if is_cast(clip) else ""
 	_letting_go = false
 	_play(clip)
 
@@ -236,7 +253,9 @@ func _let_go() -> void:
 	var ending := _cast + "-end"
 	_cast = ""
 	_letting_go = false
-	_play(ending if player.has_animation(ending) else IDLE, BLEND if player.has_animation(ending) else BLEND_TO_IDLE)
+	_play(
+		ending if player.has_animation(ending) else idle_clip, BLEND if player.has_animation(ending) else BLEND_TO_IDLE
+	)
 
 
 ## Where the casting palm will be at the current clip's release, in world space; null when the clip has none.
@@ -501,11 +520,11 @@ func _after(clip: String) -> Array:
 		# The push is reached: held while the circle fires, unless the volley is already over.
 		if _letting_go or not player.has_animation(clip + "-hold"):
 			var ending := clip + "-end"
-			return [ending, BLEND] if player.has_animation(ending) else [IDLE, BLEND_TO_IDLE]
+			return [ending, BLEND] if player.has_animation(ending) else [idle_clip, BLEND_TO_IDLE]
 		return [clip + "-hold", BLEND]
 	if clip in HOLDS or is_loop(clip):
 		return []
-	return [IDLE, BLEND_TO_IDLE]
+	return [idle_clip, BLEND_TO_IDLE]
 
 
 func _hand_off(clip: String) -> void:
