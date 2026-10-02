@@ -21,6 +21,7 @@ var _adventure: FoundryAdventurePanel
 var _setup := false
 var _menu_motion: Tween
 var _overlay_motion: Tween
+var _archive_transition: ArchivePassage
 var _overlay_return: Control
 var _focus_modes: Dictionary = {}
 var _refresh_adventure := false
@@ -411,6 +412,9 @@ func _open_how_to() -> void:
 
 
 func _show_overlay(panel: Control, library_room := false) -> void:
+	if is_instance_valid(_archive_transition):
+		panel.queue_free()
+		return
 	if _overlay_motion != null:
 		_overlay_motion.kill()
 	if _overlay.get_child_count() == 0:
@@ -422,25 +426,34 @@ func _show_overlay(panel: Control, library_room := false) -> void:
 	dim.color = Color(UiTheme.GROUND, 0.62)
 	dim.size = DESIGN
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
+	dim.visible = not library_room
 	_overlay.add_child(dim)
 	var page: Control = FoundryLibraryRoom.make(panel) if library_room else Ui.centered_scroll(panel)
 	page.size = DESIGN
 	_overlay.add_child(page)
 	_canvas.move_child(_overlay, -1)
-	if not Settings.reduced_motion:
+	if library_room and not Settings.reduced_motion:
+		page.hide()
+		_archive_passage(page.show, _focus_first.bind(panel))
+		return
+	if not library_room and not Settings.reduced_motion:
 		page.modulate.a = 0.0
 		_overlay_motion = create_tween()
-		_overlay_motion.set_parallel(true)
-		_overlay_motion.tween_property(page, "modulate:a", 1.0, 0.22)
-		if library_room:
-			page.position.x = 24.0
-			_overlay_motion.tween_property(page, "position:x", 0.0, 0.22).set_trans(Tween.TRANS_CUBIC).set_ease(
-				Tween.EASE_OUT
-			)
-	_focus_first.call_deferred(panel)
+		_overlay_motion.tween_property(page, "modulate:a", 1.0, 0.2)
+	# LEARN: a page can close before deferred focus runs; capture it in a checked closure, not a typed deferred argument.
+	var pending_focus: WeakRef = weakref(panel)
+	(
+		(func() -> void:
+			var target := pending_focus.get_ref() as Control
+			if target != null:
+				_focus_first(target))
+		. call_deferred()
+	)
 
 
 func _close_overlay() -> void:
+	if is_instance_valid(_archive_transition):
+		return
 	if _overlay.get_child_count() == 0:
 		return
 	if _overlay_motion != null:
@@ -448,17 +461,39 @@ func _close_overlay() -> void:
 	if Settings.reduced_motion:
 		_finish_close()
 	else:
+		if _overlay.get_child(1) is FoundryLibraryRoom:
+			_archive_passage(_finish_close.bind(false), _restore_navigation)
+			return
 		_overlay_motion = create_tween()
 		_overlay_motion.tween_property(_overlay, "modulate:a", 0.0, 0.12)
-		var room := _overlay.get_child(1) as FoundryLibraryRoom
-		if room != null:
-			_overlay_motion.parallel().tween_property(room, "position:x", -16.0, 0.12)
 		_overlay_motion.tween_callback(_finish_close)
 
 
-func _finish_close() -> void:
+func _archive_passage(midpoint: Callable, finished: Callable) -> void:
+	_archive_transition = ArchivePassage.new()
+	_canvas.add_child(_archive_transition)
+	_archive_transition.grab_focus()
+	_archive_transition.midpoint.connect(midpoint, CONNECT_ONE_SHOT)
+	_archive_transition.finished.connect(
+		func() -> void:
+			# LEARN: the veil still emits finished here; detach it now and free after signal dispatch.
+			_canvas.remove_child(_archive_transition)
+			_archive_transition.queue_free()
+			_archive_transition = null
+			finished.call(),
+		CONNECT_ONE_SHOT
+	)
+	_archive_transition.play()
+
+
+func _finish_close(restore_navigation := true) -> void:
 	Ui.clear(_overlay)
 	_overlay.modulate.a = 1.0
+	if restore_navigation:
+		_restore_navigation()
+
+
+func _restore_navigation() -> void:
 	for id: int in _focus_modes:
 		var control := instance_from_id(id) as Control
 		if is_instance_valid(control):
@@ -494,6 +529,9 @@ func _focus_first(root: Control) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
+		if is_instance_valid(_archive_transition):
+			get_viewport().set_input_as_handled()
+			return
 		if _overlay.get_child_count() > 0:
 			_close_overlay()
 		elif _setup:

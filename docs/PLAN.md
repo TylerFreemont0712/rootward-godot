@@ -274,6 +274,9 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       navigation, remembered searches/selections and reset; creatures and bosses separated by live encounter pools
       with mode-specific layer filters, base stats and multipart companions. Shared art and run archives retained.
 
+- [x] Integrate the Library catalogue into the room at 1520×760, with wider reading/navigation areas and a smooth
+      mist/sigil passage in both directions. The opaque midpoint hides the swap; input stays blocked until reveal.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

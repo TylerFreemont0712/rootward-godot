@@ -14,12 +14,18 @@ The earlier compact typography and the unchanged presentation of run menus remai
   cabinets, root-threaded shelves and a reading desk replaces the station visually. Real localized controls sit
   on top. The built-in imagegen prompt and provenance are in `finalMenuConcept/library/`; the production painting
   is `game/assets/menus/living-archive.png`. Missing art falls back to the room's solid background.
-- Enter with a 220 ms fade and small sideways movement; return with a 120 ms fade and reverse movement. Reduced
-  motion bypasses both. A clock we own supplies very subtle variation at the desk lamp and freezes immediately
+- Enter and return through a one-second procedural mist/sigil passage: 420 ms to conceal the old room,
+  then 580 ms to reveal the new one. Teal mist, rotating brass arcs and drifting sparks surround the reveal.
+  The veil is fully opaque at the midpoint, when the room swaps. It owns mouse and keyboard focus until it clears,
+  ignores repeated navigation, and restores station focus only after the return finishes. Reduced motion bypasses
+  both. A clock we own supplies very subtle variation at the desk lamp and freezes immediately
   under reduced motion. Background controls remain blocked, and returning restores the same home/departure desk
   and its opener's keyboard focus without changing runs or saves.
-- Keep a compact 960 × 570 catalogue: collection navigation on the left, illustrated entries in the middle,
-  and a reading pane on the right. Collections are Shards, Relics, Creatures, Bosses and Concepts. Search, Reset,
+- Integrate a larger 1520 × 760 catalogue directly into the room, with no outer window frame. A room title
+  sits above the collection navigation, illustrated entries and wide reading pane. Soft shading behind the
+  navigation keeps the painting visible while separating text from bright shelf details. Local typography uses
+  18-pixel body text, 24-pixel headings and 14–16-pixel captions. Collections are Shards, Relics, Creatures, Bosses
+  and Concepts. Search, Reset,
   rarity/role selectors and the two mode choices reuse real catalog data and canonical art. Each collection/mode
   remembers its query, selection and filters while the room is open. Long lists and source listings scroll inside
   the reading area; keyboard focus reveals list entries automatically.
@@ -38,6 +44,7 @@ run archives and battle screens keep their existing controls. A long dossier can
 identity and location share a row so the useful facts fit without excessive vertical space.
 
 Tests cover mode-specific boss membership, layer filtering, multipart guardians, catalogue immutability, shelf
-memory/reset, refactor retention, compact English/Japanese bounds, and animated/reduced-motion focus restoration.
+memory/reset, refactor retention, English/Japanese screen bounds, animated/reduced-motion focus restoration, blocked transition reentry and
+station focus staying disabled until the return veil clears.
 The actual mouse walkthrough includes an offscreen boss entry, revealed through the list's focus-following scroll.
 Screenshot fixtures cover ordinary creatures, the Root guardian shelf, relics, both modes, Japanese and 1280 × 720.

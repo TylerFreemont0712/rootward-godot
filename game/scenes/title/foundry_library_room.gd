@@ -5,6 +5,7 @@ extends Control
 var _painting: TextureRect
 var _light: ShaderMaterial
 var _clock := 0.0
+var _catalogue: ScrollContainer
 
 
 static func make(panel: FoundryLibraryPanel) -> FoundryLibraryRoom:
@@ -28,21 +29,28 @@ static func make(panel: FoundryLibraryPanel) -> FoundryLibraryRoom:
 	room._painting.material = room._light
 	room.add_child(room._painting)
 	var shade := ColorRect.new()
-	shade.color = Color(0.02, 0.06, 0.07, 0.22)
+	shade.color = Color(0.02, 0.06, 0.07, 0.48)
 	shade.size = room.size
 	shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	room.add_child(shade)
+	var reading_shade := ColorRect.new()
+	var reading_material := ShaderMaterial.new()
+	reading_material.shader = preload("res://scenes/title/library_reading_shade.gdshader")
+	reading_shade.material = reading_material
+	reading_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	FoundryUi.place(room, reading_shade, Rect2(168, 184, 570, 800))
 	var plaque := Ui.vbox(
 		[
-			Ui.tint(Ui.label(FoundryUi.text("THE LIVING ARCHIVE", "記憶の図書室"), "Heading"), UiTheme.AMBER),
+			Ui.tint(Ui.sized(Ui.label(FoundryUi.text("THE LIVING ARCHIVE", "記憶の図書室"), "Heading"), 32), UiTheme.AMBER),
 			Ui.label(FoundryUi.text("A quiet room. A thousand ways forward.", "静かな部屋に、旅のヒントがいっぱい。"), "Muted")
 		],
 		6
 	)
-	FoundryUi.place(room, plaque, Rect2(480, 160, 960, 60))
-	var page := Ui.centered_scroll(panel)
-	page.size = room.size
-	room.add_child(page)
+	FoundryUi.place(room, plaque, Rect2(200, 92, 1520, 76))
+	room._catalogue = Ui.centered_scroll(panel)
+	FoundryUi.place(room, room._catalogue, Rect2(200, 200, 1520, 760))
+	room._catalogue.minimum_size_changed.connect(room._fit_catalogue)
+	room._fit_catalogue.call_deferred()
 	FoundryUi.place(
 		room,
 		Ui.label(
@@ -51,7 +59,7 @@ static func make(panel: FoundryLibraryPanel) -> FoundryLibraryRoom:
 			),
 			"Muted"
 		),
-		Rect2(480, 860, 960, 28)
+		Rect2(200, 1006, 1520, 28)
 	)
 	return room
 
@@ -61,3 +69,8 @@ func _process(delta: float) -> void:
 		return
 	_clock += delta
 	_light.set_shader_parameter("clock", _clock)
+
+
+func _fit_catalogue() -> void:
+	# LEARN: wrapped labels can shrink their minimum after layout; restore this room's intended rectangle too.
+	_catalogue.size = Vector2(1520, 760)

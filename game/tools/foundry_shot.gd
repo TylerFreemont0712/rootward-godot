@@ -15,7 +15,7 @@ func _ready() -> void:
 	Game.profiles.save_profile(Game.profile)
 	Game.select_profile(String(Game.profile.id), false)
 	Game.use("program")
-	Settings.reduced_motion = moment != "motion"
+	Settings.reduced_motion = not moment in ["motion", "library-transition"]
 	if moment in ["resume", "adventure-resume"]:
 		Game.session.start("javascript", "beginner", "foundry-review")
 	var title := (load(Game.TITLE) as PackedScene).instantiate()
@@ -41,9 +41,14 @@ func _ready() -> void:
 			title.call("_open_skins")
 		"academy":
 			title.call("_open_academy")
-		"library", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":
+		"library", "library-transition", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":
 			title.call("_open_archive")
-			if moment.trim_suffix("-ja") != "library":
+			if moment == "library-transition":
+				await get_tree().create_timer(0.46).timeout
+				var passage := title.get("_archive_transition") as ArchivePassage
+				(passage.get("_motion") as Tween).kill()
+				passage.call("_advance", 0.73)
+			elif moment.trim_suffix("-ja") != "library":
 				var panel := _panel(title, "FoundryLibraryPanel")
 				var kind := "foes" if moment == "foes" else "bosses"
 				if moment == "library-relics":

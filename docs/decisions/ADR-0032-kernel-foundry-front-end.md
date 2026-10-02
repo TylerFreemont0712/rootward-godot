@@ -41,7 +41,7 @@ would introduce a larger art and camera task than the approved concept requires.
 
 The compact revision reduces the large panels' width and height by roughly one-third. It keeps normal text at
 16 pixels on the design canvas, with 20-pixel headings and 12–14-pixel captions. Panel padding is 14 × 10 pixels,
-ordinary controls are 28 pixels tall. The Library's later illustrated rows use 36 pixels (ADR-0034). It puts language and difficulty alongside each other, uses a rarity
+ordinary controls are 28 pixels tall. The Library's later illustrated rows use 38 pixels (ADR-0034). It puts language and difficulty alongside each other, uses a rarity
 picker, and arranges the Academy's plans horizontally. Scrolling belongs inside long library/history contents;
 the outer pages fit without scrolling. A wrapper measures the scaled carousel stage, while the shared run
 wardrobe keeps its existing geometry. Buttons use warm translucent highlights and amber underlines rather than

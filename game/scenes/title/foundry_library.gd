@@ -13,15 +13,21 @@ static func make(catalog: Dictionary) -> FoundryLibraryPanel:
 	panel._catalog = catalog
 	panel._language = Settings.language
 	panel.theme_type_variation = "Overlay"
-	panel.add_theme_stylebox_override(
-		"panel", UiTheme.box(Color("142124"), Color(UiTheme.AMBER_DIM, 0.8), 1, 10, Vector2(14, 12))
-	)
+	panel.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+	panel.theme = FoundryUi.theme()
+	panel.theme.default_font_size = 18
+	for variation: String in ["Heading", "Subheading", "Muted", "Faint", "Button", "PrimaryButton", "QuietButton"]:
+		panel.theme.set_font_size(
+			"font_size",
+			variation,
+			24 if variation == "Heading" else (14 if variation == "Faint" else (16 if variation == "Muted" else 18))
+		)
 	panel._build()
 	return panel
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(960, 570)
+	custom_minimum_size = Vector2(1520, 760)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
@@ -34,7 +40,7 @@ func _build() -> void:
 		8
 	)
 	var sidebar := Ui.vbox([], 6)
-	sidebar.custom_minimum_size.x = 128
+	sidebar.custom_minimum_size.x = 176
 	sidebar.add_child(Ui.label(FoundryUi.text("COLLECTIONS", "コレクション"), "Faint"))
 	var symbols := {"cards": "◆", "relics": "✦", "foes": "◇", "bosses": "♜", "glossary": "≡"}
 	for kind: String in ["cards", "relics", "foes", "bosses", "glossary"]:
@@ -127,7 +133,7 @@ func _build() -> void:
 	_list = Ui.vbox([], 4)
 	_browse = Ui.scroll(_list)
 	_browse.follow_focus = true
-	_browse.custom_minimum_size.x = 238
+	_browse.custom_minimum_size.x = 310
 	_details = Ui.vbox([], 8)
 	var details := Ui.scroll(_details)
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -253,7 +259,7 @@ func _refresh() -> void:
 			item.id == _selected
 		)
 		row.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		row.custom_minimum_size = Vector2(238, 36)
+		row.custom_minimum_size = Vector2(310, 38)
 		row.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		row.icon = Art.texture(_entry_art(item))
 		row.add_theme_constant_override("icon_max_width", 28)
@@ -301,7 +307,7 @@ func _show_entry(base: Dictionary) -> void:
 			UiTheme.TEAL
 		)
 	)
-	var art := Ui.picture(_entry_art(base), Vector2(144, 140), "◇")
+	var art := Ui.picture(_entry_art(base), Vector2(196, 190), "◇")
 	art.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	art.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	var identity := Ui.vbox(

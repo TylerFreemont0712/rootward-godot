@@ -154,6 +154,10 @@ func _expect_scene(path: String) -> void:
 
 func _settle() -> void:
 	await create_timer(0.55).timeout
+	if current_scene != null and current_scene.scene_file_path == Game.TITLE:
+		var passage := current_scene.get("_archive_transition") as ArchivePassage
+		if passage != null:
+			await passage.finished
 	await process_frame
 	await process_frame
 

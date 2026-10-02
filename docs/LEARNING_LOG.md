@@ -621,3 +621,16 @@ The filter row is only attached for collections with filters. Creating it for ev
 empty ones unattached leaked two orphan nodes in the navigation tests. Free unused, unattached containers; defer
 deletion for attached controls that may still be emitting a click. Check for a null focus owner before asking
 whether a list contains it: an open menu can legitimately have no focused control yet.
+
+## Conceal the swap before revealing the room (`game/scenes/title/archive_passage.gd`)
+A fade that starts after adding the new room exposes both screens at once. The passage first covers the old view,
+emits its midpoint when every pixel is opaque, then reveals the new room. Shader progress comes from the same
+Tween that times the swap, so mist, sigil arcs and drifting sparks stay synchronized. The veil owns keyboard focus
+and accepts input until it clears; restoring station focus at the midpoint would let Enter launch a run behind it.
+
+## A shrinking minimum does not shrink a freely placed Control (`game/scenes/title/foundry_library_room.gd`)
+Wrapped labels initially reported a larger minimum, expanding the catalogue beyond the screen. Later its minimum
+shrunk, but the freely placed wrapper kept its expanded size. The centred container now remeasures the panel, and
+its minimum-size change restores the wrapper’s intended room rectangle. The geometry tests caught the overflow.
+A deferred closure captures a WeakRef to the page: capturing a freed node directly reports an error before the
+closure can check its validity. Resolving the WeakRef inside the callback avoids passing a freed typed argument.

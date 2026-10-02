@@ -216,7 +216,7 @@ func test_compact_pages_fit_their_space_in_both_ui_languages() -> void:
 		for entry: Array in [
 			["_open_options", "FoundrySettingsPanel", Vector2(770, 490)],
 			["_open_skins", "FoundryCharacterPanel", Vector2(1040, 590)],
-			["_open_archive", "FoundryLibraryPanel", Vector2(970, 600)]
+			["_open_archive", "FoundryLibraryPanel", Vector2(1550, 790)]
 		]:
 			_title.call(entry[0])
 			await get_tree().process_frame
@@ -290,17 +290,43 @@ func test_library_room_returns_to_the_same_departure_desk_and_restores_focus() -
 		Settings.reduced_motion = reduced
 		opener.grab_focus()
 		opener.pressed.emit()
-		await get_tree().create_timer(0.26).timeout
+		await _settle_archive()
 		var room := _panel("FoundryLibraryRoom")
 		assert_object(room).is_not_null()
 		assert_float(room.position.x).is_equal(0.0)
 		assert_int(opener.focus_mode).is_equal(Control.FOCUS_NONE)
 		_button(room, "Back").pressed.emit()
-		await get_tree().create_timer(0.16).timeout
+		await _settle_archive()
 		assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
 		assert_bool(_title.get("_setup")).is_true()
 		assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
 		assert_bool(Game.session.in_progress()).is_false()
+
+
+func test_library_passage_blocks_reentry_and_defers_focus_restoration_until_the_veil_clears() -> void:
+	Settings.reduced_motion = false
+	var opener := _button(_title, "Library")
+	opener.grab_focus()
+	opener.pressed.emit()
+	var passage := _title.get("_archive_transition") as ArchivePassage
+	assert_object(passage).is_not_null()
+	assert_object(get_viewport().gui_get_focus_owner()).is_same(passage)
+	var room := _panel("FoundryLibraryRoom")
+	assert_bool(room.visible).is_false()
+	_title.call("_close_overlay")
+	_title.call("_open_options")
+	assert_object(_title.get("_archive_transition")).is_same(passage)
+	assert_object(_panel("FoundrySettingsPanel")).is_null()
+	await _settle_archive()
+	assert_bool(room.visible).is_true()
+	_button(room, "Back").pressed.emit()
+	await get_tree().create_timer(0.5).timeout
+	assert_int((_title.get("_overlay") as Control).get_child_count()).is_equal(0)
+	assert_int(opener.focus_mode).is_equal(Control.FOCUS_NONE)
+	assert_object(get_viewport().gui_get_focus_owner()).is_same(_title.get("_archive_transition"))
+	await _settle_archive()
+	assert_int(opener.focus_mode).is_equal(Control.FOCUS_ALL)
+	assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
 
 
 func _press(label: String) -> void:
@@ -313,8 +339,17 @@ func _press(label: String) -> void:
 	button.pressed.emit()
 	if not Settings.reduced_motion:
 		await get_tree().create_timer(0.25).timeout
+		await _settle_archive()
 	await get_tree().process_frame
 	await get_tree().process_frame
+
+
+func _settle_archive() -> void:
+	for i in 70:
+		if not is_instance_valid(_title.get("_archive_transition")):
+			return
+		await get_tree().create_timer(0.02).timeout
+	assert_bool(is_instance_valid(_title.get("_archive_transition"))).is_false()
 
 
 func _panel(wanted: String) -> Control:
