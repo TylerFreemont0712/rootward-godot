@@ -41,6 +41,9 @@
   the pick into the game with `master.py <id>`. Models: `scripts/fetch-music-models.sh yue2|ace|sa3`. Sound effects
   are timelines in `pipeline/audio/manifest.json` (docs/SOUND_DESIGN.md), drawn against their animations with
   `uv run --project pipeline python pipeline/audio/beats.py`.
+- Subagents (`.claude/agents/`, from agency-agents; `docs/AGENTS.md` says which to use for what): spawn the matching
+  specialist for design, Godot, asset, audio, test and review work, and pass it the rules above, since it does not
+  know this project.
 - Parse-check every script at once (faster than a test run for typos): `scripts/check.sh`.
 - A throwaway probe script: run it with `< /dev/null` (`godot --headless --path game -s res://probe.gd < /dev/null`),
   or a script error drops Godot into its interactive debugger and it waits forever.

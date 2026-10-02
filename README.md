@@ -16,4 +16,5 @@ Godot 4.7.2, typed GDScript. `scripts/play.sh` runs it; `scripts/test.sh` tests 
 | Guardians | `docs/NewEnemies.md` (built, ADR-0026) |
 | Run state's shape | `docs/shardrun-state.md` |
 | Art, sound, music | `pipeline/README.md`, `docs/ArtUpdate.md`, `docs/SOUND_DESIGN.md` |
+| Specialist agents | `docs/AGENTS.md` (the roster in `.claude/agents/`) |
 | What was learned | `docs/LEARNING_LOG.md` |
