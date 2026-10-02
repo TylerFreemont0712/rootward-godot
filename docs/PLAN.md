@@ -24,7 +24,6 @@ game/                 the Godot project (res://)
   test/               gdUnit4 suites, fixtures from the TypeScript engine
   tools/              in-engine tools (screenshot)
 pipeline/             making assets: ComfyUI art, Blender characters, audio; one manifest, one command per asset
-tools/                outside the engine: fixture writers, content converters
 scripts/              test, lint, screenshot
 docs/                 this plan, ADRs, the learning log
 ```
