@@ -19,13 +19,13 @@ static func make(history: Array[Dictionary]) -> FoundryRecordsPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(770, 530)
+	custom_minimum_size = Vector2(770, 450)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading("THE JOURNEY LEDGER", FoundryUi.text("Records", "冒険の記録"), func() -> void: closed.emit()),
 			FoundryUi.rule()
 		],
-		12
+		8
 	)
 	var wins := records.filter(func(record: Dictionary) -> bool: return record.get("status", "") == "won").size()
 	var best := 0
@@ -37,7 +37,7 @@ func _build() -> void:
 		[str(wins), FoundryUi.text("COMPLETED", "クリア")],
 		[str(best), FoundryUi.text("BEST SCORE", "最高スコア")]
 	]:
-		var stat := Ui.vbox([Ui.sized(Ui.label(pair[0], "Heading"), 28), Ui.label(pair[1], "Faint")], 8)
+		var stat := Ui.vbox([Ui.sized(Ui.label(pair[0], "Heading"), 22), Ui.label(pair[1], "Faint")], 8)
 		stat.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		stats.add_child(stat)
 	column.add_child(stats)
@@ -94,7 +94,7 @@ func _build() -> void:
 				],
 				12
 			)
-			var relics := Ui.flow([], 12)
+			var relics := Ui.flow([], 8)
 			for id: String in record.get("relics", []):
 				var art := Ui.picture("shardrun/relic-" + id, Vector2(40, 40), "◇")
 				art.tooltip_text = id.capitalize()
@@ -102,7 +102,7 @@ func _build() -> void:
 			detail.add_child(relics)
 			list.add_child(Ui.panel(detail, "Card"))
 	if shown == 0:
-		list.add_child(Ui.spacer(0, 30))
+		list.add_child(Ui.spacer(0, 20))
 		list.add_child(Ui.label(FoundryUi.text("Every descent leaves a trace.", "冒険は、ここに足あとを残す。"), "Heading"))
 		list.add_child(
 			Ui.label(
@@ -115,7 +115,7 @@ func _build() -> void:
 			)
 		)
 	var scroll := Ui.scroll(list)
-	scroll.custom_minimum_size.y = 240
+	scroll.custom_minimum_size.y = 200
 	column.add_child(scroll)
 	column.add_child(FoundryUi.rule())
 	column.add_child(

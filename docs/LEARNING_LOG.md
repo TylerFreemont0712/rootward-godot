@@ -596,3 +596,10 @@ group preferences in a row, and place the optional tutorial on its own tab. Norm
 design canvas. The carousel is the exception: its existing card geometry can be scaled inside a plain Control,
 but a surrounding wrapper must reserve the scaled footprint because containers measure unscaled minimum sizes.
 English and Japanese layout tests check the resulting panel bounds, and screenshots check the actual text flow.
+
+## Compact typography needs consistent button states (`game/scenes/title/foundry_ui.gd`)
+The next density pass reduces body text to 16 pixels and adjusts captions, padding and section gaps together.
+Godot uses `hover_pressed` for a selected button under the pointer: leaving that state inherited can restore the
+shared theme's larger padding and boxed appearance. Every button state, including focus, needs the same compact
+margins. Local Library rows also override the shared archive's minimum height after each refresh, keeping the
+run's archive unchanged. Screenshots caught clipped action captions at 48 pixels; 52 pixels keeps both lines visible.

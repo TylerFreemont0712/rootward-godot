@@ -39,7 +39,8 @@ would introduce a larger art and camera task than the approved concept requires.
 ## Consequences
 
 The compact revision reduces the large panels' width and height by roughly one-third. It keeps normal text at
-18 pixels on the design canvas, reduces padding, puts language and difficulty alongside each other, uses a rarity
+16 pixels on the design canvas, with 20-pixel headings and 12–14-pixel captions. Panel padding is 14 × 10 pixels,
+ordinary controls are 28 pixels tall, and Library entries are 32 pixels tall. It puts language and difficulty alongside each other, uses a rarity
 picker, and arranges the Academy's plans horizontally. Scrolling belongs inside long library/history contents;
 the outer pages fit without scrolling. A wrapper measures the scaled carousel stage, while the shared run
 wardrobe keeps its existing geometry. Buttons use warm translucent highlights and amber underlines rather than
@@ -51,7 +52,7 @@ English. The Shardrun screens and rules are unchanged.
 
 `scripts/menu-shots.sh` captures home, resume, Adventure, overlays, Japanese and a 1280 × 720 wardrobe in isolated
 saves. The front-end tests cover launch separation, modal focus, avatar persistence, motion settings, creature
-search and art, choice focus, the Trial offer and role-filtered refactors.
+search and art, choice focus, the optional Trial tab and role-filtered refactors.
 
 Menu rebuilds detach old controls and queue their deletion: the locale button can rebuild its own parent while its
 click signal is still being emitted. Direct method calls alone cannot verify that lifetime. The regression suite

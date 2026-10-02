@@ -27,7 +27,7 @@ static func make() -> FoundryAdventurePanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(700, 510)
+	custom_minimum_size = Vector2(700, 440)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
@@ -35,9 +35,9 @@ func _build() -> void:
 			),
 			FoundryUi.rule()
 		],
-		12
+		8
 	)
-	var tabs := Ui.hbox([], 18)
+	var tabs := Ui.hbox([], 8)
 	for tab: String in ["descent", "pip"]:
 		var choose := func() -> void:
 			_tab = tab
@@ -58,7 +58,7 @@ func _build() -> void:
 
 
 func _descent(column: VBoxContainer) -> void:
-	var modes := Ui.hbox([], 12)
+	var modes := Ui.hbox([], 8)
 	for mode: Dictionary in MODES:
 		if mode.id == "deck" and not (Game.sessions.deck as ShardrunSession).in_progress():
 			continue

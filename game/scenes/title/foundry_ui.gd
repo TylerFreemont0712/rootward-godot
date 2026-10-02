@@ -9,13 +9,13 @@ static func text(english: String, japanese: String) -> String:
 
 static func theme() -> Theme:
 	var result := UiTheme.shared().duplicate(true) as Theme
-	result.default_font_size = 18
+	result.default_font_size = 16
 	for variation: String in ["Heading", "Subheading", "Narration"]:
 		result.set_font("font", variation, UiTheme.ui_font(600 if variation != "Narration" else 400))
-		result.set_font_size("font_size", variation, 24 if variation == "Heading" else 18)
+		result.set_font_size("font_size", variation, 20 if variation == "Heading" else 16)
 		result.set_constant("shadow_outline_size", variation, 0)
-	result.set_font_size("font_size", "Muted", 16)
-	result.set_font_size("font_size", "Faint", 14)
+	result.set_font_size("font_size", "Muted", 14)
+	result.set_font_size("font_size", "Faint", 12)
 	result.set_color("font_color", "Faint", UiTheme.MUTED)
 	for variation: String in ["Button", "PrimaryButton", "DangerButton", "QuietButton"]:
 		if variation == "QuietButton":
@@ -23,36 +23,37 @@ static func theme() -> Theme:
 		var primary := variation == "PrimaryButton"
 		var quiet := variation == "QuietButton"
 		var accent := UiTheme.FAIL if variation == "DangerButton" else UiTheme.AMBER
-		result.set_font_size("font_size", variation, 18)
+		result.set_font_size("font_size", variation, 16)
 		result.set_color("font_color", variation, accent if primary else UiTheme.TEXT)
 		result.set_color("font_hover_color", variation, UiTheme.AMBER)
 		result.set_color("font_pressed_color", variation, UiTheme.TEXT)
 		result.set_color("font_focus_color", variation, UiTheme.TEXT)
 		result.set_color("font_disabled_color", variation, UiTheme.FAINT)
-		for state: String in ["normal", "hover", "pressed", "disabled"]:
-			var lit := state in ["hover", "pressed"]
+		# LEARN: selected buttons use hover_pressed too; keep its padding consistent with the other states.
+		for state: String in ["normal", "hover", "pressed", "hover_pressed", "disabled"]:
+			var lit := state in ["hover", "pressed", "hover_pressed"]
 			var fill := Color(UiTheme.AMBER, 0.12 if lit else (0.06 if primary else 0.0))
 			var edge := accent if lit or primary else Color.TRANSPARENT
 			if quiet and not lit:
 				edge = Color.TRANSPARENT
-			var style := UiTheme.box(fill, edge, 0, 6, Vector2(12, 6))
+			var style := UiTheme.box(fill, edge, 0, 6, Vector2(8, 4))
 			style.border_width_bottom = 1 if lit or primary else 0
 			result.set_stylebox(state, variation, style)
-		result.set_stylebox("focus", variation, UiTheme.box(Color.TRANSPARENT, UiTheme.AMBER, 1, 6))
+		result.set_stylebox("focus", variation, UiTheme.box(Color.TRANSPARENT, UiTheme.AMBER, 1, 6, Vector2(8, 4)))
 	for variation: String in ["Overlay", "Card", "Header", "Sunken"]:
-		var margin := Vector2(20, 16) if variation == "Overlay" else Vector2(14, 10)
+		var margin := Vector2(14, 10) if variation == "Overlay" else Vector2(10, 6)
 		result.set_stylebox(
 			"panel", variation, UiTheme.box(Color(UiTheme.PANEL, 0.94), UiTheme.AMBER_DIM, 1, 10, margin)
 		)
-	result.set_font_size("font_size", "LineEdit", 18)
-	result.set_font_size("font_size", "OptionButton", 18)
+	result.set_font_size("font_size", "LineEdit", 16)
+	result.set_font_size("font_size", "OptionButton", 16)
 	return result
 
 
 static func button(label: String, callback: Callable, primary := false, quiet := false) -> Button:
 	var variation := "QuietButton" if quiet else ("PrimaryButton" if primary else "")
 	var control := Ui.button(label, callback, variation)
-	control.custom_minimum_size.y = 34
+	control.custom_minimum_size.y = 28
 	control.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	return control
 
@@ -60,11 +61,11 @@ static func button(label: String, callback: Callable, primary := false, quiet :=
 static func heading(eyebrow: String, title: String, back: Callable) -> Control:
 	return Ui.hbox(
 		[
-			Ui.vbox([Ui.label(eyebrow, "Faint"), Ui.label(title, "Heading")], 8),
+			Ui.vbox([Ui.label(eyebrow, "Faint"), Ui.label(title, "Heading")], 4),
 			Ui.spacer(),
 			button(text("Back", "戻る"), back, false, true)
 		],
-		16
+		10
 	)
 
 
@@ -78,7 +79,7 @@ static func rule() -> Control:
 
 static func action(title: String, subtitle: String, callback: Callable, primary := false) -> Button:
 	var control := button(title, callback, primary)
-	control.custom_minimum_size.y = 60
+	control.custom_minimum_size.y = 52
 	control.tooltip_text = subtitle
 	# LEARN: keep the button's text for accessibility; its child labels supply the two visual text sizes.
 	for state: String in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
@@ -86,12 +87,12 @@ static func action(title: String, subtitle: String, callback: Callable, primary 
 	var title_label := Ui.label(title, "Subheading")
 	title_label.add_theme_color_override("font_color", UiTheme.AMBER if primary else UiTheme.TEXT)
 	var row := Ui.hbox(
-		[Ui.expand(Ui.vbox([title_label, Ui.label(subtitle, "Muted", true)], 6)), Ui.label("›", "Heading")], 16
+		[Ui.expand(Ui.vbox([title_label, Ui.label(subtitle, "Muted", true)], 4)), Ui.label("›", "Heading")], 10
 	)
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side: String in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 12 if side in ["left", "right"] else 6)
+		margin.add_theme_constant_override("margin_" + side, 8 if side in ["left", "right"] else 4)
 	margin.add_child(row)
 	control.add_child(margin)
 	HoverInfo._ignore_mouse(margin)
@@ -113,7 +114,7 @@ static func page(content: Control, minimum: Vector2) -> PanelContainer:
 static func icon_button(icon: String, label: String, callback: Callable, primary := false, quiet := false) -> Button:
 	var control := button(label, callback, primary, quiet)
 	control.icon = Art.texture("menus/icons/" + icon)
-	control.add_theme_constant_override("h_separation", 12)
+	control.add_theme_constant_override("h_separation", 8)
 	return control
 
 

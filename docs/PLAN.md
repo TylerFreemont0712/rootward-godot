@@ -267,6 +267,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Compact front-end panels, approximately one-third smaller in each dimension, with readable type, amber
       underline controls, side-by-side preferences and Academy plans, and a smaller wrapped skin-carousel stage.
       Pip's travels starts only by choice; ordinary descents no longer trigger a tutorial offer.
+- [x] Compact contents as well as panels: 16-pixel body text, 20-pixel headings, 12–14-pixel captions, tighter
+      padding and section gaps, and 32-pixel Library entries. Reviewed English, Japanese and 1280 × 720 layouts.
 - [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
 
 ### Later

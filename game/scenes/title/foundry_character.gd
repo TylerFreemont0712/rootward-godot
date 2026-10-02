@@ -17,7 +17,7 @@ static func make() -> FoundryCharacterPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(1010, 550)
+	custom_minimum_size = Vector2(1010, 500)
 	_looks = looks().filter(
 		func(look: Dictionary) -> bool: return look.id in CLASSES[0].skins or look.id not in Settings.CHARACTER_SKINS
 	)
@@ -30,7 +30,7 @@ func _build() -> void:
 			FoundryUi.heading("CHARACTER / SKINS", FoundryUi.text("Choose your appearance", "すがたを選ぶ"), _close),
 			FoundryUi.rule()
 		],
-		10
+		8
 	)
 	var classes := Ui.vbox([Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint")], 10)
 	classes.custom_minimum_size.x = 180
@@ -48,7 +48,7 @@ func _build() -> void:
 	)
 	classes.add_child(FoundryUi.rule())
 	classes.add_child(Ui.label(FoundryUi.text("More classes will arrive later.", "新しいクラスはこれから。"), "Faint", true))
-	classes.add_child(Ui.spacer(0, 20))
+	classes.add_child(Ui.spacer(0, 12))
 	classes.add_child(
 		Ui.label(
 			FoundryUi.text("Your skin stays with your player. Appearance only.", "すがたはプレイヤーごとに保存。強さは変わらないよ。"),
@@ -75,16 +75,16 @@ func _build() -> void:
 	_equip.custom_minimum_size.x = 190
 	_dots = Ui.hbox([], 8)
 	_dots.alignment = BoxContainer.ALIGNMENT_CENTER
-	var turning := Ui.hbox([FoundryUi.button("‹", _turn.bind(-1)), _dots, FoundryUi.button("›", _turn.bind(1))], 24)
+	var turning := Ui.hbox([FoundryUi.button("‹", _turn.bind(-1)), _dots, FoundryUi.button("›", _turn.bind(1))], 16)
 	turning.alignment = BoxContainer.ALIGNMENT_CENTER
 	# LEARN: containers measure unscaled minimums. A wrapper reserves the wheel's actual scaled footprint.
 	var stage_space := Control.new()
 	stage_space.custom_minimum_size = STAGE * 0.66
 	stage_space.add_child(_stage)
 	var identity := Ui.vbox([_epithet, _name], 2)
-	var footer := Ui.hbox([Ui.expand(identity), _equip], 12)
+	var footer := Ui.hbox([Ui.expand(identity), _equip], 8)
 	var wheel := Ui.vbox([stage_space, turning, footer, _note], 8)
-	column.add_child(Ui.hbox([classes, wheel], 18))
+	column.add_child(Ui.hbox([classes, wheel], 12))
 	add_child(column)
 	_arrange(false)
 

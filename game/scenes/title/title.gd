@@ -90,7 +90,7 @@ func _build(content_ok: bool) -> void:
 		_adventure.continue_requested.connect(_continue)
 		_adventure.trial_requested.connect(_start_trial)
 		var departure := Ui.scroll(_adventure)
-		FoundryUi.place(_menu, departure, Rect2(104, 220, 700, 540))
+		FoundryUi.place(_menu, departure, Rect2(104, 220, 700, 480))
 	else:
 		_home()
 	_reveal()
@@ -261,10 +261,10 @@ func _open_academy() -> void:
 			FoundryUi.heading("ACADEMY / THE LEARNING WORKSHOP", _text("A place to grow", "学びを育てる場所"), _close_overlay),
 			FoundryUi.rule()
 		],
-		12
+		8
 	)
 	column.add_child(Ui.tint(Ui.label(_text("IN PREPARATION", "準備中"), "Faint"), UiTheme.AMBER))
-	column.add_child(Ui.sized(Ui.label(_text("The workbench is taking shape.", "学びの工房を準備しているよ。"), "Heading", true), 26))
+	column.add_child(Ui.sized(Ui.label(_text("The workbench is taking shape.", "学びの工房を準備しているよ。"), "Heading", true), 22))
 	column.add_child(
 		Ui.label(
 			_text(
@@ -283,7 +283,7 @@ func _open_academy() -> void:
 			_text("Find another way. Understand the difference.", "別の方法を見つけ、その違いを知る。")
 		],
 	]
-	var plans := Ui.hbox([], 12)
+	var plans := Ui.hbox([], 8)
 	for i in paths.size():
 		var card := Ui.panel(
 			Ui.vbox(
@@ -304,7 +304,7 @@ func _open_academy() -> void:
 	)
 	existing.disabled = not Sandbox.is_available(SandboxJob.JAVASCRIPT)
 	column.add_child(Ui.hbox([existing]))
-	_show_overlay(FoundryUi.page(column, Vector2(700, 500)))
+	_show_overlay(FoundryUi.page(column, Vector2(700, 430)))
 
 
 func _open_profiles() -> void:
@@ -313,7 +313,7 @@ func _open_profiles() -> void:
 			FoundryUi.heading("LOCAL PLAYERS", _text("Who is at the station?", "駅にいるのはだれ？"), _close_overlay),
 			FoundryUi.rule()
 		],
-		20
+		12
 	)
 	for player: Dictionary in Game.profiles.list_profiles():
 		var id := String(player.id)
@@ -389,7 +389,7 @@ func _open_commit_log(history: Array[Dictionary]) -> void:
 func _open_how_to() -> void:
 	var column := Ui.vbox(
 		[FoundryUi.heading("THE FIELD GUIDE", _text("Before you descend", "降りる前に"), _close_overlay), FoundryUi.rule()],
-		12
+		8
 	)
 	column.add_child(
 		Ui.label(

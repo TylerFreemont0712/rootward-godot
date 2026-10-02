@@ -15,7 +15,7 @@ static func make(catalog: Dictionary) -> FoundryLibraryPanel:
 
 
 func _build() -> void:
-	custom_minimum_size = Vector2(940, 570)
+	custom_minimum_size = Vector2(940, 510)
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
@@ -25,7 +25,7 @@ func _build() -> void:
 			),
 			FoundryUi.rule()
 		],
-		10
+		8
 	)
 	var tabs := Ui.hbox([], 10)
 	for kind: String in ["cards", "relics", "foes", "glossary"]:
@@ -46,7 +46,7 @@ func _build() -> void:
 	_search = LineEdit.new()
 	_search.placeholder_text = FoundryUi.text("Search the shelves…", "図鑑を検索…")
 	_search.text = _query
-	_search.custom_minimum_size.y = 34
+	_search.custom_minimum_size.y = 28
 	_search.text_changed.connect(
 		func(value: String) -> void:
 			_query = value
@@ -90,11 +90,11 @@ func _build() -> void:
 	_list = Ui.vbox([], 6)
 	var browse := Ui.scroll(_list)
 	browse.custom_minimum_size.x = 255
-	_details = Ui.vbox([], 12)
+	_details = Ui.vbox([], 8)
 	var details := Ui.scroll(_details)
 	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var body := Ui.hbox([browse, details], 16)
-	body.custom_minimum_size.y = 290
+	var body := Ui.hbox([browse, details], 10)
+	body.custom_minimum_size.y = 260
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(body)
 	add_child(column)
@@ -168,3 +168,9 @@ func _show_entry(base: Dictionary) -> void:
 
 func _rebuild() -> void:
 	FoundryUi.rebuild(self, _build)
+
+
+func _refresh() -> void:
+	super._refresh()
+	for entry: Node in _list.get_children():
+		(entry as Control).custom_minimum_size.y = 32
