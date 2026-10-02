@@ -249,5 +249,304 @@
     "Head": {
       "bend": 12
     }
+  },
+  "lantern": {
+    "base": "idle_offsets",
+    "LeftUpperArm": {
+      "raise": 14
+    },
+    "LeftHand": {
+      "bend": -14,
+      "curl": 0.22,
+      "cascade": 0.5,
+      "spread": 14,
+      "thumb": 0.15,
+      "twist": -20
+    },
+    "Head": {
+      "turn": 10,
+      "bend": -6
+    }
+  },
+  "trace_set": {
+    "base": "idle_offsets",
+    "LeftUpperArm": {
+      "raise": 48,
+      "forward": 22,
+      "twist": 25
+    },
+    "LeftLowerArm": {
+      "bend": 62,
+      "twist": 30
+    },
+    "LeftHand": {
+      "bend": -6,
+      "point": 1.0,
+      "curl": 0.85,
+      "thumb": 0.6,
+      "spread": 0,
+      "cascade": 0
+    },
+    "Head": {
+      "turn": 16,
+      "bend": -14
+    }
+  },
+  "trace_cock": {
+    "base": "trace_set",
+    "LeftUpperArm": {
+      "raise": 54,
+      "forward": 16,
+      "twist": 25
+    },
+    "LeftLowerArm": {
+      "bend": 70,
+      "twist": 30
+    },
+    "LeftHand": {
+      "bend": 10
+    }
+  },
+  "trace_stroke": {
+    "base": "trace_set",
+    "LeftUpperArm": {
+      "raise": -4,
+      "forward": 42,
+      "twist": 8
+    },
+    "LeftLowerArm": {
+      "bend": 12,
+      "twist": 20
+    },
+    "LeftHand": {
+      "bend": -12
+    },
+    "Hips": {
+      "turn": 9
+    },
+    "Chest": {
+      "turn": 8,
+      "bend": 4
+    },
+    "Head": {
+      "turn": 18,
+      "bend": -10
+    }
+  },
+  "trace_after": {
+    "base": "trace_stroke",
+    "LeftUpperArm": {
+      "raise": -12,
+      "forward": 46,
+      "twist": 8
+    },
+    "LeftLowerArm": {
+      "bend": 20,
+      "twist": 20
+    },
+    "LeftHand": {
+      "bend": -4,
+      "point": 0.6
+    }
+  },
+  "sky_raise": {
+    "base": "gather",
+    "Hips": {
+      "lift": -0.015,
+      "turn": 8
+    },
+    "Spine": {
+      "bend": -4
+    },
+    "Chest": {
+      "bend": -8,
+      "turn": 6
+    },
+    "Head": {
+      "bend": -30,
+      "turn": 10
+    },
+    "LeftUpperArm": {
+      "raise": 78,
+      "forward": 14,
+      "twist": -40
+    },
+    "LeftLowerArm": {
+      "bend": 12,
+      "twist": 20
+    },
+    "LeftHand": {
+      "bend": -26,
+      "curl": 0.12,
+      "cascade": 0.3,
+      "spread": 16,
+      "thumb": 0.2
+    },
+    "RightUpperArm": {
+      "raise": -48,
+      "forward": 52,
+      "twist": -5
+    },
+    "RightLowerArm": {
+      "bend": 105,
+      "twist": 10
+    }
+  },
+  "sky_raise_b": {
+    "base": "sky_raise",
+    "LeftUpperArm": {
+      "raise": 84,
+      "forward": 12,
+      "twist": -40
+    },
+    "Head": {
+      "bend": -33,
+      "turn": 10
+    }
+  },
+  "sky_call": {
+    "base": "sky_raise",
+    "Hips": {
+      "lift": -0.035,
+      "forward": 0.03,
+      "turn": 12
+    },
+    "Spine": {
+      "bend": 6
+    },
+    "Chest": {
+      "bend": 5,
+      "turn": 9
+    },
+    "Head": {
+      "turn": 14,
+      "bend": -16
+    },
+    "LeftUpperArm": {
+      "raise": 14,
+      "forward": 34,
+      "twist": 0
+    },
+    "LeftLowerArm": {
+      "bend": 6,
+      "twist": 25
+    },
+    "LeftHand": {
+      "bend": -6,
+      "point": 1.0,
+      "curl": 0.85,
+      "thumb": 0.55,
+      "spread": 0,
+      "cascade": 0
+    }
+  },
+  "sky_hold": {
+    "base": "sky_call",
+    "Hips": {
+      "lift": -0.02,
+      "forward": 0.015,
+      "turn": 10
+    },
+    "Spine": {
+      "bend": 3
+    },
+    "LeftUpperArm": {
+      "raise": 12,
+      "forward": 35,
+      "twist": 0
+    },
+    "LeftLowerArm": {
+      "bend": 10,
+      "twist": 25
+    }
+  },
+  "sky_hold_b": {
+    "base": "sky_hold",
+    "LeftUpperArm": {
+      "raise": 15,
+      "forward": 33,
+      "twist": 0
+    },
+    "Head": {
+      "bend": -14
+    }
+  },
+  "seal_raise": {
+    "base": "idle_offsets",
+    "LeftUpperArm": {
+      "raise": 58,
+      "forward": 30,
+      "twist": -20
+    },
+    "LeftLowerArm": {
+      "bend": 70,
+      "twist": 10
+    },
+    "LeftHand": {
+      "bend": -30,
+      "curl": 0.1,
+      "cascade": 0.3,
+      "spread": 18,
+      "thumb": 0.15
+    },
+    "Head": {
+      "turn": 12,
+      "bend": 6
+    }
+  },
+  "seal_raise_b": {
+    "base": "seal_raise",
+    "LeftUpperArm": {
+      "raise": 62,
+      "forward": 28,
+      "twist": -20
+    }
+  },
+  "seal_press": {
+    "base": "seal_raise",
+    "LeftUpperArm": {
+      "raise": -74,
+      "forward": 62,
+      "twist": 0
+    },
+    "LeftLowerArm": {
+      "bend": 0,
+      "twist": 10
+    },
+    "LeftHand": {
+      "bend": -72,
+      "spread": 20,
+      "curl": 0.05
+    },
+    "Head": {
+      "turn": 14,
+      "bend": -8
+    },
+    "LeftShoulder": {
+      "raise": -6,
+      "forward": 14
+    }
+  },
+  "seal_hold": {
+    "base": "seal_press",
+    "LeftUpperArm": {
+      "raise": -72,
+      "forward": 61,
+      "twist": 0
+    },
+    "LeftHand": {
+      "bend": -68
+    }
+  },
+  "seal_hold_b": {
+    "base": "seal_hold",
+    "LeftUpperArm": {
+      "raise": -74,
+      "forward": 63,
+      "twist": 0
+    },
+    "Head": {
+      "bend": -10
+    }
   }
 }

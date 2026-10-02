@@ -1,0 +1,115 @@
+{
+  "_about": "The Rune Trace light cast (ADR-0037): over the breathing idle the lead hand rises with one finger out, cocks, and writes one quick diagonal stroke down toward the foes (the release: the circle closes on it), follows through and eases back.",
+  "length": 1.4,
+  "hand": "LeftHand",
+  "events": {
+    "release": 0.5
+  },
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 1.4
+    }
+  ],
+  "own": {
+    "bones": [
+      "LeftUpperArm",
+      "LeftLowerArm",
+      "LeftHand"
+    ],
+    "weight": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.3,
+        1.0
+      ],
+      [
+        0.85,
+        1.0
+      ],
+      [
+        1.4,
+        0.0
+      ]
+    ]
+  },
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "idle_offsets"
+    },
+    {
+      "t": 0.3,
+      "pose": "trace_set",
+      "ease": "smooth"
+    },
+    {
+      "t": 0.4,
+      "pose": "trace_cock",
+      "ease": "sine"
+    },
+    {
+      "t": 0.5,
+      "pose": "trace_stroke",
+      "ease": "expo_out"
+    },
+    {
+      "t": 0.85,
+      "pose": "trace_after",
+      "ease": "sine"
+    },
+    {
+      "t": 1.4,
+      "pose": "idle_offsets",
+      "ease": "smooth"
+    }
+  ],
+  "follow": {
+    "LowerArm": [
+      7,
+      0.45
+    ],
+    "Hand": [
+      8,
+      0.5
+    ],
+    "Head": [
+      5,
+      0.6
+    ]
+  },
+  "fingers": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.25,
+      1.0
+    ],
+    [
+      0.95,
+      1.0
+    ],
+    [
+      1.35,
+      0.0
+    ]
+  ],
+  "face": [
+    {
+      "t": 0.3,
+      "expression": "happy",
+      "weight": 0.5
+    },
+    {
+      "t": 1.2,
+      "expression": "neutral"
+    }
+  ]
+}

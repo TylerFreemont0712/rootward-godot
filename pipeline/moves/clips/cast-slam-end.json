@@ -1,0 +1,62 @@
+{
+  "_about": "Root Seal lets go: she rises from the knee (the end of Quaternius's Fixing_Kneeling) into the idle, the arm handed back to the capture.",
+  "length": 1.15,
+  "hand": "LeftHand",
+  "blend": 0.2,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Fixing_Kneeling",
+      "from": 4.3,
+      "to": 5.2
+    },
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 0.45
+    }
+  ],
+  "own": {
+    "bones": [
+      "LeftUpperArm",
+      "LeftLowerArm",
+      "LeftHand"
+    ],
+    "weight": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.7,
+        0.0
+      ]
+    ]
+  },
+  "plant": {
+    "LeftFoot": [],
+    "RightFoot": []
+  },
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "seal_hold"
+    },
+    {
+      "t": 1.15,
+      "pose": "idle_offsets",
+      "ease": "smooth"
+    }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ],
+    [
+      0.7,
+      0.0
+    ]
+  ]
+}

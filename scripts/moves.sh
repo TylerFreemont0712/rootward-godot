@@ -14,7 +14,8 @@ python3 -m unittest discover -s "$ROOT/pipeline/moves" -q
 reimport
 skin="${2:-dummy}"
 mkdir -p "$ROOT/shots/moves"
-for group in "cast-light,cast-heavy,cast-heavy-end:cast" "idle-breathe,hurt,guard,death:react"; do
+for group in "cast-light,cast-heavy,cast-heavy-end:cast" "idle-breathe,hurt,guard,death:react" \
+	"idle-lantern,cast-trace,cast-skyward,cast-skyward-end:more" "cast-slam,cast-slam-hold,cast-slam-end:seal"; do
 	ROOTWARD_SKIN="$skin" ROOTWARD_CLIPS="${group%%:*}" SHOT_SIZE=2560x1440 \
 		"$ROOT/scripts/screenshot.sh" res://tools/moves_sheet.tscn "shots/moves/${group##*:}.png" 20
 done

@@ -1,0 +1,56 @@
+{
+  "_about": "Skyward Call held while the volley comes down: the lead arm points at the foes, drifting, over Quaternius's Spell_Simple_Idle_Loop.",
+  "length": 2.1,
+  "loop": true,
+  "hand": "LeftHand",
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Spell_Simple_Idle_Loop",
+      "from": 0.0,
+      "to": 2.1
+    }
+  ],
+  "own": {
+    "bones": [
+      "UpperArm",
+      "LowerArm",
+      "Hand"
+    ],
+    "weight": [
+      [
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "sky_hold"
+    },
+    {
+      "t": 1.05,
+      "pose": "sky_hold_b",
+      "ease": "sine"
+    },
+    {
+      "t": 2.1,
+      "pose": "sky_hold",
+      "ease": "sine"
+    }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "face": [
+    {
+      "t": 0.0,
+      "expression": "angry",
+      "weight": 0.8
+    }
+  ]
+}

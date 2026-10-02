@@ -1,0 +1,58 @@
+{
+  "_about": "Skyward Call lets go: Quaternius's Spell_Simple_Exit settling into the idle, the arms handed back to the capture.",
+  "length": 0.75,
+  "hand": "LeftHand",
+  "blend": 0.2,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Spell_Simple_Exit",
+      "from": 0.0,
+      "to": 0.433
+    },
+    {
+      "source": "quaternius",
+      "action": "Idle_Loop",
+      "from": 0.0,
+      "to": 0.517
+    }
+  ],
+  "own": {
+    "bones": [
+      "UpperArm",
+      "LowerArm",
+      "Hand"
+    ],
+    "weight": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.6,
+        0.0
+      ]
+    ]
+  },
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "sky_hold"
+    },
+    {
+      "t": 0.75,
+      "pose": "idle_offsets",
+      "ease": "smooth"
+    }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ],
+    [
+      0.6,
+      0.0
+    ]
+  ]
+}

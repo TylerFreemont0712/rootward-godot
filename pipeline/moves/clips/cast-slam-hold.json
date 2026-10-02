@@ -1,0 +1,60 @@
+{
+  "_about": "Root Seal held while the volley erupts: kneeling, the palm pressed to the floor, over the kneel of Quaternius's Fixing_Kneeling.",
+  "length": 2.0,
+  "loop": true,
+  "hand": "LeftHand",
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Fixing_Kneeling",
+      "from": 1.3,
+      "to": 3.3
+    }
+  ],
+  "own": {
+    "bones": [
+      "LeftUpperArm",
+      "LeftLowerArm",
+      "LeftHand"
+    ],
+    "weight": [
+      [
+        0.0,
+        1.0
+      ]
+    ]
+  },
+  "plant": {
+    "LeftFoot": [],
+    "RightFoot": []
+  },
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "seal_hold"
+    },
+    {
+      "t": 1.0,
+      "pose": "seal_hold_b",
+      "ease": "sine"
+    },
+    {
+      "t": 2.0,
+      "pose": "seal_hold",
+      "ease": "sine"
+    }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "face": [
+    {
+      "t": 0.0,
+      "expression": "angry",
+      "weight": 0.8
+    }
+  ]
+}

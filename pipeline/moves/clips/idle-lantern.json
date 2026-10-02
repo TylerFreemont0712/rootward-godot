@@ -1,0 +1,50 @@
+{
+  "_about": "The Lantern Bearer idle (ADR-0037): Quaternius's Idle_Torch_Loop (CC0), the lead hand held up toward the foes, opened and cupped as if holding a light, the head toward them.",
+  "length": 2.533,
+  "loop": true,
+  "blend": 0.0,
+  "mocap": [
+    {
+      "source": "quaternius",
+      "action": "Idle_Torch_Loop",
+      "from": 0.0,
+      "to": 1.2667
+    },
+    {
+      "source": "quaternius",
+      "action": "Idle_Torch_Loop",
+      "from": 0.0,
+      "to": 1.2667
+    }
+  ],
+  "keys": [
+    {
+      "t": 0.0,
+      "pose": "lantern"
+    }
+  ],
+  "fingers": [
+    [
+      0.0,
+      1.0
+    ]
+  ],
+  "layers": [
+    {
+      "kind": "wave",
+      "bone": "LeftHand",
+      "param": "bend",
+      "amp": 4,
+      "period": 2.533,
+      "phase": 0.2
+    },
+    {
+      "kind": "wave",
+      "bone": "RightHand",
+      "param": "curl",
+      "amp": 0.05,
+      "period": 2.533,
+      "phase": 0.7
+    }
+  ]
+}
