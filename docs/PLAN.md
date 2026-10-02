@@ -280,6 +280,10 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] Detail the Library passage with a layered magic circle; begin feedback before destination construction,
       load only visible shelf icons in the background and retain a bounded canonical-art cache across reopenings.
 
+- [x] Settings control room with its own painting, subtle lighting, reversible passage and left-hand tabs.
+      Six saved/live font choices (current default plus five candidates), source spacing retained, English/Japanese
+      and small-window review, persistent preferences and focus-safe resets (ADR-0035).
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

@@ -97,7 +97,7 @@ var _rows := 0
 
 
 func _init() -> void:
-	_font = UiTheme.ui_font()
+	_font = UiTheme.code_font()
 	_char_w = _font.get_char_size("M".unicode_at(0), FONT_SIZE).x
 	_line_h = _font.get_height(FONT_SIZE) + LINE_GAP
 	_ascent = _font.get_ascent(FONT_SIZE)

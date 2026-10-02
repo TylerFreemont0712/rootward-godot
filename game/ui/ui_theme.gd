@@ -61,6 +61,7 @@ const SYSTEM_FALLBACKS: Array[String] = ["DejaVu Sans Mono", "DejaVu Sans", "Not
 
 static var _theme: Theme
 static var _fonts: Dictionary = {}
+static var _live_themes: Array[Dictionary] = []
 
 
 static func shared() -> Theme:
@@ -81,14 +82,52 @@ static func room(kind: String) -> Color:
 	return ROOMS.get(kind, ROOMS.fight)
 
 
-## The UI face (IBM Plex Mono), 400 or 600.
+## The selected UI face, retaining the original lettering by default.
 static func ui_font(weight := 400) -> Font:
+	var chosen := UiFonts.face(Settings.font_style, weight)
+	return chosen if chosen != null else code_font(weight)
+
+
+## The display face for titles and big numbers; VT323 remains the original default.
+static func crt_font() -> Font:
+	return _font("vt323", 400) if Settings.font_style == "default" else ui_font(600)
+
+
+## Source always retains a monospaced face, regardless of decorative UI lettering.
+static func code_font(weight := 400) -> Font:
 	return _font("ibm-plex-mono", weight)
 
 
-## The CRT face (VT323), for titles and big numbers.
-static func crt_font() -> Font:
-	return _font("vt323", 400)
+static func track(theme: Theme, foundry := false) -> void:
+	_live_themes = _live_themes.filter(func(item: Dictionary) -> bool: return item.ref.get_ref() != null)
+	_live_themes.append({"ref": weakref(theme), "foundry": foundry})
+	_apply_fonts(theme, foundry)
+
+
+static func refresh_fonts() -> void:
+	if _theme != null:
+		_apply_fonts(_theme, false)
+	for item: Dictionary in _live_themes:
+		var theme := item.ref.get_ref() as Theme
+		if theme != null:
+			_apply_fonts(theme, item.foundry)
+
+
+static func _apply_fonts(theme: Theme, foundry: bool) -> void:
+	# LEARN: mutate live Theme resources instead of rebuilding scenes and losing menu/run state.
+	theme.default_font = ui_font()
+	for variation: String in ["Title", "Heading", "Subheading", "Narration", "Big"]:
+		var font := crt_font()
+		if foundry and variation in ["Heading", "Subheading", "Narration"]:
+			font = ui_font(400 if variation == "Narration" else 600)
+		theme.set_font("font", variation, font)
+	theme.set_font("font", "Code", code_font())
+	for type: String in ["CodeEdit", "TextEdit"]:
+		theme.set_font("font", type, code_font())
+	theme.set_font("normal_font", "RichTextLabel", ui_font())
+	theme.set_font("bold_font", "RichTextLabel", ui_font(600))
+	theme.set_font("mono_font", "RichTextLabel", code_font())
+	theme.set_font("font", "TooltipLabel", ui_font())
 
 
 static func _font(family: String, weight: int) -> Font:
@@ -139,11 +178,12 @@ static func _build() -> Theme:
 	theme.set_color("default_color", rich, TEXT)
 	theme.set_font("normal_font", rich, ui_font())
 	theme.set_font("bold_font", rich, ui_font(600))
-	theme.set_font("mono_font", rich, ui_font())
+	theme.set_font("mono_font", rich, code_font())
 	theme.set_stylebox("panel", "TooltipPanel", box(PANEL_3, AMBER_DIM, 1, 3, Vector2(10, 8)))
 	theme.set_color("font_color", "TooltipLabel", TEXT)
 	theme.set_font("font", "TooltipLabel", ui_font())
 	theme.set_font_size("font_size", "TooltipLabel", 14)
+	_apply_fonts(theme, false)
 	return theme
 
 

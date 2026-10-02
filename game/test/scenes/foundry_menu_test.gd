@@ -7,12 +7,14 @@ var _title: Control
 var _old_path := ""
 var _old_skin := ""
 var _old_motion := false
+var _old_font := "default"
 
 
 func before_test() -> void:
 	_old_path = Settings.path
 	_old_skin = Settings.character_skin
 	_old_motion = Settings.reduced_motion
+	_old_font = Settings.font_style
 	Game.reset(ROOT)
 	assert_bool(Game.boot()).is_true()
 	Game.profile.name = "Menu Tester"
@@ -25,6 +27,8 @@ func before_test() -> void:
 	Game.use("program")
 	Settings.path = ROOT + "/settings.json"
 	Settings.reduced_motion = true
+	Settings.font_style = "default"
+	UiTheme.refresh_fonts()
 	_title = (load(Game.TITLE) as PackedScene).instantiate() as Control
 	add_child(_title)
 	await get_tree().process_frame
@@ -37,6 +41,8 @@ func after_test() -> void:
 	Settings.path = _old_path
 	Settings.character_skin = _old_skin
 	Settings.reduced_motion = _old_motion
+	Settings.font_style = _old_font
+	UiTheme.refresh_fonts()
 
 
 func test_home_separates_adventure_from_the_learning_placeholder() -> void:
@@ -97,6 +103,7 @@ func test_reduce_motion_applies_to_the_current_scene_immediately() -> void:
 	var backdrop := _title.get("_backdrop") as FoundryBackdrop
 	backdrop.apply_motion()
 	_title.call("_open_options")
+	await _settle_archive()
 	var panel := _panel("FoundrySettingsPanel") as FoundrySettingsPanel
 	Settings.reduced_motion = true
 	panel.call("_saved")
@@ -214,7 +221,7 @@ func test_compact_pages_fit_their_space_in_both_ui_languages() -> void:
 		assert_float(adventure.size.x).is_less_equal(730.0)
 		assert_float(adventure.size.y).is_less_equal(540.0)
 		for entry: Array in [
-			["_open_options", "FoundrySettingsPanel", Vector2(770, 490)],
+			["_open_options", "FoundrySettingsPanel", Vector2(1550, 790)],
 			["_open_skins", "FoundryCharacterPanel", Vector2(1040, 590)],
 			["_open_archive", "FoundryLibraryPanel", Vector2(1550, 790)]
 		]:
@@ -353,6 +360,40 @@ func test_library_loads_visible_canonical_icons_and_retains_them_on_reopen() -> 
 	panel._refresh()
 	await get_tree().process_frame
 	assert_int(panel._list.get_child_count()).is_equal(0)
+
+
+func test_settings_room_previews_every_face_live_and_restores_the_opener() -> void:
+	var opener := _button(_title, "Settings")
+	Settings.reduced_motion = false
+	opener.grab_focus()
+	opener.pressed.emit()
+	assert_object(_title.get("_archive_transition")).is_not_null()
+	assert_object(_panel("FoundrySettingsRoom")).is_null()
+	await _settle_archive()
+	var room := _panel("FoundrySettingsRoom")
+	assert_object(room).is_not_null()
+	assert_float(room.position.x).is_equal(0.0)
+	await _press("Fonts & text")
+	var panel := _panel("FoundrySettingsPanel") as FoundrySettingsPanel
+	var shared := UiTheme.shared()
+	for id: String in UiFonts.CHOICES:
+		var button := panel.find_child("Font_" + id, true, false) as Button
+		assert_object(button).is_not_null()
+		button.grab_focus()
+		button.pressed.emit()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		assert_str(Settings.font_style).is_equal(id)
+		assert_object(_title.theme.default_font).is_same(UiTheme.ui_font())
+		assert_object(shared.default_font).is_same(UiTheme.ui_font())
+		assert_object(panel.theme.get_font("font", "Code")).is_same(UiTheme.code_font())
+		assert_float(panel.size.x).is_less_equal(1550.0)
+		assert_float(panel.size.y).is_less_equal(790.0)
+		assert_int(get_viewport().gui_get_focus_owner().focus_mode).is_equal(Control.FOCUS_ALL)
+	await _press("Restore current font")
+	assert_str(Settings.font_style).is_equal("default")
+	await _press("Back")
+	assert_object(get_viewport().gui_get_focus_owner()).is_same(opener)
 
 
 func _press(label: String) -> void:

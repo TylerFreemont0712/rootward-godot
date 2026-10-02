@@ -47,6 +47,7 @@ static func theme() -> Theme:
 		)
 	result.set_font_size("font_size", "LineEdit", 16)
 	result.set_font_size("font_size", "OptionButton", 16)
+	UiTheme.track(result, true)
 	return result
 
 

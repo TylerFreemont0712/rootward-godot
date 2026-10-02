@@ -21,6 +21,8 @@ static var shake := true
 ## Calm menus and shard flourishes, while retaining the essential combat playback.
 static var reduced_motion := false
 static var fullscreen := false
+## The selected game lettering; old saves and fresh installs retain the current face.
+static var font_style := "default"
 ## The last journey selected on the title screen.
 static var playstyle := "program"
 ## The last selected battle look. Vesper is the first impression on a fresh install.
@@ -48,6 +50,9 @@ static func load_file(from := PATH) -> void:
 	shake = _bool(values, "shake", shake)
 	reduced_motion = _bool(values, "reduced_motion", reduced_motion)
 	fullscreen = _bool(values, "fullscreen", fullscreen)
+	var face: Variant = values.get("font_style", "default")
+	font_style = face if face is String and UiFonts.CHOICES.has(face) else "default"
+	UiTheme.refresh_fonts()
 	apply_display()
 	music_volume = _volume(values, "music_volume", music_volume)
 	sound_volume = _volume(values, "sound_volume", sound_volume)
@@ -83,6 +88,7 @@ static func save_file() -> void:
 		"shake": shake,
 		"reduced_motion": reduced_motion,
 		"fullscreen": fullscreen,
+		"font_style": font_style,
 		"music_volume": music_volume,
 		"sound_volume": sound_volume,
 		"language": language,

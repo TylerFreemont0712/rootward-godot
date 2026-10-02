@@ -40,8 +40,11 @@ func _walk() -> void:
 				await _click("‹")
 			await _click("Back")
 		await _click("Settings")
-		for label: String in ["Audio", "Spell playback", "Display"]:
+		for label: String in ["Audio", "Spell playback", "Display", "Fonts & text"]:
 			await _click(label)
+		for id: String in UiFonts.CHOICES:
+			await _click(String(UiFonts.CHOICES[id][0]))
+		await _click("Restore current font")
 		await _click("Back")
 		await _click("Library")
 		for label: String in [

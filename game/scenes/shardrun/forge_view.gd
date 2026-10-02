@@ -113,6 +113,7 @@ static func _code(diff: Array[Dictionary], language: String) -> Control:
 				painted.append("  " + CodeColors.bbcode(String(line.text), language))
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
+	rich.add_theme_font_override("normal_font", UiTheme.code_font())
 	rich.fit_content = true
 	rich.scroll_active = false
 	rich.autowrap_mode = TextServer.AUTOWRAP_OFF

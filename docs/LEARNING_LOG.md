@@ -650,3 +650,20 @@ still uses the existing atlas/null fallback. Godot’s headless dummy renderer r
 initialization from loading threads; it now loads one visible texture synchronously per frame. The rendered
 143-click navigation walkthrough separately checks the real threaded path. No second copy of Spellforge art is
 introduced.
+
+
+## Swap typography without rebuilding the game (`game/ui/ui_theme.gd`)
+A Theme is a shared Resource. Updating its font references changes inherited lettering immediately without
+throwing away a scene's state. Front-end theme copies are weakly registered with their own heading convention;
+font refresh changes fonts alone, retaining local text sizes and spacing. Dead copies are pruned on registration.
+Decorative proportional faces need a separate `code_font` role: RuneCode measures one fixed character cell, and
+source/diff panels rely on indentation. Their explicit monospaced font keeps both execution visuals and code
+inspection aligned while menus and card identity adopt the selected face.
+
+## Preview actual font resources, including fallbacks (`game/ui/ui_fonts.gd`)
+The font picker uses the same bundled FontVariation resources as the game, with a weight axis for four candidates
+and static regular/semibold Spectral files. Six samples can be compared before changing the live theme. Japanese
+serif/sans system fallback follows the candidate's style; the current default retains its original fallback chain.
+The original face's `has_char` does not enumerate automatically supplied system glyphs, although rendered Japanese
+works. Tests check explicit Japanese support for candidates and screenshots verify the actual default/fallback
+rendering. Persist validated ids so missing/invalid fields in older saves select the original face.

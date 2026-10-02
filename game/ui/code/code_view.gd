@@ -190,6 +190,7 @@ func _code() -> Control:
 		gutter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var text := RichTextLabel.new()
 		text.bbcode_enabled = true
+		text.add_theme_font_override("normal_font", UiTheme.code_font())
 		text.fit_content = true
 		text.scroll_active = false
 		text.autowrap_mode = TextServer.AUTOWRAP_OFF

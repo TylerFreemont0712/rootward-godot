@@ -15,6 +15,10 @@ func _ready() -> void:
 	Game.profiles.save_profile(Game.profile)
 	Game.select_profile(String(Game.profile.id), false)
 	Game.use("program")
+	Settings.font_style = OS.get_environment("ROOTWARD_FONT")
+	if not UiFonts.CHOICES.has(Settings.font_style):
+		Settings.font_style = "default"
+	UiTheme.refresh_fonts()
 	Settings.reduced_motion = not moment in ["motion", "library-transition"]
 	if moment in ["resume", "adventure-resume"]:
 		Game.session.start("javascript", "beginner", "foundry-review")
@@ -32,10 +36,17 @@ func _ready() -> void:
 			panel.call("_rebuild")
 		"settings":
 			title.call("_open_options")
-		"audio", "settings-battle":
+		"audio", "settings-battle", "settings-fonts":
 			title.call("_open_options")
 			var panel := _panel(title, "FoundrySettingsPanel")
-			panel.set("_tab", "Audio" if moment == "audio" else "Battle")
+			panel.set(
+				"_tab",
+				(
+					"Audio"
+					if moment == "audio"
+					else ("Fonts" if moment.trim_suffix("-ja") == "settings-fonts" else "Battle")
+				)
+			)
 			panel.call("_rebuild")
 		"character":
 			title.call("_open_skins")

@@ -42,7 +42,7 @@ func _build() -> void:
 	_text.fit_content = true
 	_text.scroll_active = false
 	_text.autowrap_mode = TextServer.AUTOWRAP_OFF
-	_text.add_theme_font_override("normal_font", UiTheme.ui_font())
+	_text.add_theme_font_override("normal_font", UiTheme.code_font())
 	_text.add_theme_font_size_override("normal_font_size", 15)
 	_text.meta_clicked.connect(_toggle)
 	# A terminal does not underline its lines; the hand cursor over them says they can be clicked.

@@ -34,6 +34,10 @@ func _ready() -> void:
 	var language := OS.get_environment("ROOTWARD_SHOT_LANGUAGE")
 	Game.reset(SAVES)
 	Game.boot()
+	var face := OS.get_environment("ROOTWARD_FONT")
+	if UiFonts.CHOICES.has(face):
+		Settings.font_style = face
+		UiTheme.refresh_fonts()
 	if shot == "trial":
 		await _show_trial(language)
 		return

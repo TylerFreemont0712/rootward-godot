@@ -269,10 +269,21 @@ func _focus_archive() -> void:
 
 
 func _open_options() -> void:
+	if is_instance_valid(_archive_transition):
+		return
+	if Settings.reduced_motion:
+		_mount_settings()
+		return
+	_overlay_return = get_viewport().gui_get_focus_owner()
+	_freeze_navigation()
+	_archive_passage(_mount_settings, _focus_archive)
+
+
+func _mount_settings() -> void:
 	var options := FoundrySettingsPanel.make()
 	options.closed.connect(_close_overlay)
 	options.changed.connect(_backdrop.apply_motion)
-	_show_overlay(options)
+	_show_overlay(options, false, true)
 
 
 func _open_skins() -> void:
@@ -441,8 +452,9 @@ func _open_how_to() -> void:
 	_show_overlay(FoundryUi.page(column, Vector2(650, 0)))
 
 
-func _show_overlay(panel: Control, library_room := false) -> void:
-	if is_instance_valid(_archive_transition) and not library_room:
+func _show_overlay(panel: Control, library_room := false, settings_room := false) -> void:
+	var destination_room := library_room or settings_room
+	if is_instance_valid(_archive_transition) and not destination_room:
 		panel.queue_free()
 		return
 	if _overlay_motion != null:
@@ -456,16 +468,22 @@ func _show_overlay(panel: Control, library_room := false) -> void:
 	dim.color = Color(UiTheme.GROUND, 0.62)
 	dim.size = DESIGN
 	dim.mouse_filter = Control.MOUSE_FILTER_STOP
-	dim.visible = not library_room
+	dim.visible = not destination_room
 	_overlay.add_child(dim)
-	var page: Control = FoundryLibraryRoom.make(panel) if library_room else Ui.centered_scroll(panel)
+	var page: Control
+	if library_room:
+		page = FoundryLibraryRoom.make(panel)
+	elif settings_room:
+		page = FoundrySettingsRoom.make(panel)
+	else:
+		page = Ui.centered_scroll(panel)
 	page.size = DESIGN
 	_overlay.add_child(page)
 	_canvas.move_child(_overlay, -1)
-	if library_room and is_instance_valid(_archive_transition):
+	if destination_room and is_instance_valid(_archive_transition):
 		_canvas.move_child(_archive_transition, -1)
 		return
-	if not library_room and not Settings.reduced_motion:
+	if not destination_room and not Settings.reduced_motion:
 		page.modulate.a = 0.0
 		_overlay_motion = create_tween()
 		_overlay_motion.tween_property(page, "modulate:a", 1.0, 0.2)
@@ -490,7 +508,7 @@ func _close_overlay() -> void:
 	if Settings.reduced_motion:
 		_finish_close()
 	else:
-		if _overlay.get_child(1) is FoundryLibraryRoom:
+		if _overlay.get_child(1) is FoundryLibraryRoom or _overlay.get_child(1) is FoundrySettingsRoom:
 			_archive_passage(_finish_close.bind(false), _restore_navigation)
 			return
 		_overlay_motion = create_tween()

@@ -145,7 +145,7 @@ func _build_lesson(lesson: Dictionary) -> void:
 	source.bbcode_enabled = true
 	source.selection_enabled = true
 	source.custom_minimum_size.y = 440
-	source.add_theme_font_override("normal_font", UiTheme.ui_font())
+	source.add_theme_font_override("normal_font", UiTheme.code_font())
 	source.add_theme_font_size_override("normal_font_size", 20)
 	source.add_theme_stylebox_override("normal", UiTheme.box(UiTheme.PANEL, UiTheme.LINE, 1, 8, Vector2(20, 20)))
 	var numbered := ""
