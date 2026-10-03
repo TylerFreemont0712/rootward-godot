@@ -241,9 +241,11 @@ func refresh_previews() -> void:
 	show_state(session.state)
 
 
-## Plays what a command did: a cast's code first (at the chosen speed), then its log on the stage.
+## Plays a command's code and stage together: work passing a faster foe's tempo starts its recorded action while
+## functions continue. Once those actions land, the remaining log releases the cast or presents its failure.
 func present(result: Dictionary) -> void:
 	stage.fast = false
+	var code_speed := Settings.code_speed
 	var before: Dictionary = result.before
 	var player := LogPlayer.new(stage, before)
 	for spell: Dictionary in before.get("spells", []):
@@ -255,28 +257,42 @@ func present(result: Dictionary) -> void:
 	var replay: Dictionary = result.get("replay", {})
 	var entries: Array = result.state.log
 	player.configure_replay(before, replay, session.catalog, entries)
-	var construction := not replay.is_empty() and Settings.code_speed != "off" and player.uses_construction(entries)
+	var construction := not replay.is_empty() and code_speed != "off" and player.uses_construction(entries)
 	if construction:
 		player.begin_construction(String(replay.spell_id), player.replay_element)
 	if not replay.is_empty() and _program != null:
 		# The optional circle is part of the code walk, so keep its stage readable while each call finishes.
-		stage.dim(0.12 if construction else 0.45, 0.25)
+		stage.dim(0.12, 0.25)
+		if code_speed != "off":
+			player.prepare_early(entries)
+			_program.work_counted.connect(player.count_work)
+			player.code_interrupted.connect(_program.abort)
 		if construction:
 			_program.shard_resolved.connect(player.resolve_shard)
 			_program.import_resolved.connect(player.resolve_import)
-		await _program.play_cast(replay.run, Settings.code_speed, construction)
+			_program.shard_progress.connect(player.trace_shard)
+			_program.import_progress.connect(player.trace_import)
+		await _program.play_cast(replay.run, code_speed, construction)
+		if code_speed != "off":
+			await player.drain_early()
+			_program.work_counted.disconnect(player.count_work)
+			player.code_interrupted.disconnect(_program.abort)
 		if construction:
 			_program.shard_resolved.disconnect(player.resolve_shard)
 			_program.import_resolved.disconnect(player.resolve_import)
+			_program.shard_progress.disconnect(player.trace_shard)
+			_program.import_progress.disconnect(player.trace_import)
 		stage.dim(0.0, 0.25)
-	elif not replay.is_empty() and Settings.code_speed != "off":
+	elif not replay.is_empty() and code_speed != "off":
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)
 		var view := _code_view(spell, replay.run, "cast")
 		if construction:
 			view.shard_resolved.connect(player.resolve_shard)
+			view.shard_progress.connect(player.trace_shard)
 		await view.finished
 		if construction:
 			view.shard_resolved.disconnect(player.resolve_shard)
+			view.shard_progress.disconnect(player.trace_shard)
 		_close_code(view)
 	await player.play(entries)
 	_write_log(player.lines)

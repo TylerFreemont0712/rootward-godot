@@ -95,9 +95,12 @@ func _tick(seconds: float) -> void:
 	_clock += seconds
 	if _effect is MagicCircle and (_effect as MagicCircle).external_construction:
 		var circle := _effect as MagicCircle
-		while circle._arrived < circle.layers.size() and _clock >= 0.15 + circle._arrived * 0.32:
-			circle.construct_shard(circle._arrived)
-		if circle._arrived == circle.layers.size():
+		for index in circle.layers.size():
+			var start := 0.15 + index * 0.32
+			if _clock < start:
+				break
+			circle.trace_shard(index, (_clock - start) / 0.32)
+		if _clock >= 0.15 + circle.layers.size() * 0.32:
 			circle.finish_construction()
 	_effect.call("_process", seconds)
 

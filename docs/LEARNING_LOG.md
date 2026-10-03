@@ -722,6 +722,14 @@ clash nudges the later one to the next free member (then the next free kind) in 
 and the first card played keeps its natural look. The same card played twice keeps its look and turns the other way.
 Keeping this in a pure function means the mapping is unit-tested and pinned, and the scene only draws what it is told.
 
+## Share progress, not just completion callbacks (`game/scenes/shardrun/fight/program_code.gd`)
+A callback at a function's return can only begin an animation after the work is over. To show construction during
+the function, the walkthrough supplies a monotonic progress share while traversing its lines and loops. The same
+share interpolates that call's recorded work. Circle strokes no longer finish on an independent timer, and work
+thresholds can unlock recorded enemy actions while the code keeps moving. Those entries must be consumed once:
+replaying the normal log afterward would otherwise apply the same damage twice. Their recorded order stays
+authoritative, even when battle order differs from tempo order.
+
 ## Separate visual time from execution progress (`game/scenes/shardrun/fight/magic_circle.gd`)
 The circle needs a clock for drawing strokes and rotation, but that clock cannot decide which shards have run:
 slow walkthroughs and pauses would otherwise construct unvisited layers. Shard Weave records an arrival time only

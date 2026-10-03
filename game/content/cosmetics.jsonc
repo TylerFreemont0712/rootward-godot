@@ -43,7 +43,7 @@
     {
       "id": "shard-weave",
       "name": "Shard Weave",
-      "note": "Each shard writes a new layer as its code finishes. The circle waits in front of any skin.",
+      "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
       "clip": "idle-breathe",
       "construction": "shards"
     }
@@ -71,7 +71,7 @@
     {
       "id": "shard-weave",
       "name": "Shard Weave",
-      "note": "Each shard writes a new layer as its code finishes. The circle waits in front of any skin.",
+      "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
       "clip": "idle-breathe",
       "construction": "shards"
     }

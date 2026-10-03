@@ -6,6 +6,8 @@ extends RefCounted
 
 ## The numbers on screen changed (Integrity, block, a foe's HP).
 signal numbers_changed
+## An already-recorded early attack reached zero Integrity; the visual code walk stops where it was interrupted.
+signal code_interrupted
 
 ## Flight times by how a bolt flies: straight, a lance that pierces, a rain on everyone, a seeker that picks a target.
 const FLIGHT := {"missile": 250.0, "lance": 140.0, "rain": 380.0, "seeker": 320.0}
@@ -55,6 +57,11 @@ var _construction_started := false
 var _resolved_shards := 0
 var _import_sources: Dictionary = {}
 var _failed_spell := ""
+var _early_groups: Array[Dictionary] = []
+var _early_unlocked := 0
+var _early_cursor := 0
+var _early_consumed := 0
+var _early_playing := false
 
 
 func _init(on_stage: BattleStage, before: Dictionary) -> void:
@@ -83,7 +90,7 @@ func play(entries: Array) -> void:
 			await _pace_construction()
 		await _finish_failed_construction()
 		_failed_spell = ""
-	var index := 0
+	var index := _early_consumed
 	while index < entries.size():
 		var entry: Dictionary = entries[index]
 		lines.append(entry)
@@ -100,6 +107,56 @@ func play(entries: Array) -> void:
 			continue
 		await _one(entry)
 		index += 1
+
+
+## Schedule only the command's recorded prefix. The rules keep foe order even when their tempos differ; the queue
+## must preserve that order because shields, damage and death may depend on it. Readiness never invents outcomes.
+func prepare_early(entries: Array) -> void:
+	var pending: Array[Dictionary] = []
+	var threshold := -1
+	for entry: Dictionary in entries:
+		if entry.kind in ["cast", "fizzle", "timeout"]:
+			break
+		if entry.kind == "tempo":
+			if threshold >= 0:
+				_early_groups.append({"threshold": threshold, "entries": pending})
+				pending = []
+			threshold = int(entry.amount)
+		pending.append(entry)
+		if entry.kind == "loss":
+			break
+	if threshold >= 0:
+		_early_groups.append({"threshold": threshold, "entries": pending})
+
+
+func count_work(work: int) -> void:
+	while _early_unlocked < _early_groups.size() and work > int(_early_groups[_early_unlocked].threshold):
+		_early_unlocked += 1
+	_start_early()
+
+
+func _start_early() -> void:
+	if not _early_playing and _early_cursor < _early_unlocked:
+		_play_early()
+
+
+func _play_early() -> void:
+	_early_playing = true
+	while _early_cursor < _early_unlocked and stage.is_inside_tree():
+		for entry: Dictionary in _early_groups[_early_cursor].entries:
+			lines.append(entry)
+			_early_consumed += 1
+			await _one(entry, true)
+		_early_cursor += 1
+	_early_playing = false
+
+
+## Skipping finishes measured work at once, but attacks that already started must land before the cast is released.
+func drain_early() -> void:
+	_early_unlocked = _early_groups.size()
+	_start_early()
+	while _early_playing and stage.is_inside_tree():
+		await stage.get_tree().process_frame
 
 
 ## Whether the first cast wears the optional circle constructed by the code's shard resolutions.
@@ -174,6 +231,31 @@ func begin_construction(spell_id: String, element: String) -> void:
 func resolve_shard(index: int) -> void:
 	var sources: Array = _import_sources.get(_construction_spell, [])
 	_resolve_layer(sources.size() + index)
+
+
+func trace_shard(index: int, progress: float) -> void:
+	var sources: Array = _import_sources.get(_construction_spell, [])
+	var layer := sources.size() + index
+	if _construction_started and layer == _resolved_shards and is_instance_valid(_circle):
+		_circle.trace_shard(layer, progress)
+
+
+func trace_import(source_id: String, progress: float) -> void:
+	if not _construction_started or not is_instance_valid(_circle):
+		return
+	var sources: Array = _import_sources.get(_construction_spell, [])
+	var first := sources.find(source_id)
+	if first < 0:
+		return
+	var last := first
+	while last + 1 < sources.size() and sources[last + 1] == source_id:
+		last += 1
+	var written := progress * (last - first + 1)
+	for index in range(first, last + 1):
+		var share := clampf(written - (index - first), 0.0, 1.0)
+		if index > first and share <= 0.0:
+			break
+		_circle.trace_shard(index, share)
 
 
 ## Only imports held in this spell add a layer. A module already in force can be shown by its base card's source
@@ -469,7 +551,7 @@ func _defeat(entry: Dictionary) -> void:
 		Sound.play("sfx-shatter", 0.8)
 
 
-func _one(entry: Dictionary) -> void:
+func _one(entry: Dictionary, overlapping := false) -> void:
 	match entry.kind:
 		"enter":
 			stage.banner(entry.text, UiTheme.AMBER, 900.0)
@@ -512,7 +594,8 @@ func _one(entry: Dictionary) -> void:
 				stage.popup(view.top_point() - Vector2(0, 24), "⚡ faster  %d ops" % int(entry.amount), UiTheme.WARN, 26)
 			if clock == null:
 				Sound.play("sfx-tempo", 0.6)
-			await stage.wait(560.0)
+			if not overlapping:
+				await stage.wait(560.0)
 		"timeout":
 			stage.banner("Time limit exceeded", UiTheme.FAIL, 1000.0)
 			stage.popup(stage.hero.hand_point(), "%d ops" % int(entry.amount), UiTheme.FAIL, 28)
@@ -580,6 +663,11 @@ func _enemy(entry: Dictionary) -> void:
 		stage.popup(at + Vector2(-60, -40), "%d blocked" % blocked, UiTheme.TEAL, 24)
 		Sound.play("sfx-clang", 0.6)
 	numbers_changed.emit()
+	if _early_playing and int(shown.integrity) <= 0:
+		if is_instance_valid(_circle):
+			_circle.finish_construction()
+			_circle.close()
+		code_interrupted.emit()
 	await stage.wait(360.0)
 
 

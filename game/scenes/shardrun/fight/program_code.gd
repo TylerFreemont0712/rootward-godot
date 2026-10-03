@@ -6,12 +6,16 @@ signal card_resolved(card_id: String)
 signal shard_resolved(index: int)
 ## A top-level import line was walked; its representative may be a module already in force in this battle.
 signal import_resolved(card_id: String)
+signal shard_progress(index: int, progress: float)
+signal import_progress(card_id: String, progress: float)
+signal work_counted(work: int)
 ## The fight's Program, always on the table (ADR-0012): the code its played cards make, written in with runes as each
 ## card lands (RuneCode); the race between its work and each foe's tempo; and what it will do.
 ##
 ## During a cast it runs, and draws the eye while it does: the panel lights up, each call steps into its card's
 ## function, loops go round (their rounds counted up to what the sandbox measured), recursion shows its calls, and every
-## result lands like a hit, harder for bigger numbers. The ops counter and the race climb as each stage finishes.
+## result lands like a hit, harder for bigger numbers. The work counter, race and optional circle advance throughout
+## each function, and the fight plays already-recorded faster foes' actions as their tempos are crossed.
 
 ## Seconds a call line holds the light during a cast, by the code speed option, and a line inside a card's function.
 const PACE := {"slow": 0.62, "normal": 0.34, "fast": 0.14}
@@ -36,6 +40,15 @@ var _look: StyleBoxFlat
 ## The ops shown in the header while a cast counts them up, and the foes already passed.
 var _counted := 0
 var _passed: Dictionary = {}
+var _aborted := false
+var _active_slot := -1
+var _active_import := ""
+var _active_elapsed := 0.0
+var _active_duration := 1.0
+var _active_from := 0
+var _active_work := 0
+var _active_budget := 0
+var _active_race: Array = []
 
 
 static func create(run_session: ShardrunSession) -> ProgramCode:
@@ -234,6 +247,7 @@ func _reveal(index: int) -> void:
 ## the return. `view` is the cast's run view (ProgramViews.run_view).
 func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 	_hurry = false
+	_aborted = false
 	if speed == "off" or not PACE.has(speed):
 		return
 	var pace: float = PACE[speed]
@@ -249,16 +263,24 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 	_counted = 0
 	_count_ops(0, budget, race)
 	var ops := 0
-	var walked := {}
 	for index in _lines.size():
+		if _aborted:
+			break
 		var line: Dictionary = _lines[index]
 		match String(line.kind):
 			"import":
 				if not construction:
 					continue
 				_focus(index)
-				await _wait(pace)
+				_active_import = String(line.card)
+				_active_duration = maxf(0.45, pace)
+				_active_elapsed = 0.0
+				import_progress.emit(_active_import, 0.0)
+				await _wait(_active_duration)
+				if _aborted:
+					break
 				import_resolved.emit(String(line.card))
+				_active_import = ""
 			"seed":
 				_focus(index)
 				_code.set_note(
@@ -270,20 +292,33 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				if slot >= steps.size():
 					continue
 				var step: Dictionary = steps[slot]
+				var timing := _walk_timing(String(line.card), step, line_time, float(BUDGET[speed]))
+				_active_slot = slot
+				_active_elapsed = 0.0
+				_active_duration = maxf(float(BUDGET[speed]), pace * 0.5 + float(timing.duration))
+				_active_from = ops
+				_active_work = mini(ProgramRules.WORK_CAP, ops + int(step.work)) - ops
+				_active_budget = budget
+				_active_race = race
+				shard_progress.emit(slot, 0.0)
 				_focus(index)
 				_code.set_note(index, "▶ running…", UiTheme.MUTED)
 				# Each step's rune a little higher than the last: the program climbing through its lines.
 				Sound.play("sfx-glyph", 0.35, 0.9 + 0.06 * slot)
 				await _wait(pace * 0.5)
-				# A card's function is walked the first time it runs; the same card again only shows its result.
-				if not walked.has(line.card) and not _hurry:
-					walked[line.card] = true
+				# Each invocation does measured work, including a duplicate card calling this function again.
+				if not _hurry and not _aborted:
 					await _walk(String(line.card), step, line_time, float(BUDGET[speed]))
+				await _wait(maxf(0.0, _active_duration - _active_elapsed))
+				if _aborted:
+					break
+				_progress(1.0)
+				_active_slot = -1
 				_focus(index)
 				ops = mini(ProgramRules.WORK_CAP, ops + int(step.work))
 				var note := "n %d → %d ops · %d bolts" % [int(step.n), int(step.work), int(step.returned)]
 				_code.set_note(index, note, _status_colour(ops, budget, race), _strength(int(step.work)))
-				_count_ops(ops, budget, race)
+				_count_ops(ops, budget, race, true)
 				# The volley so far lands in the meter; if its element changed, the panel takes the new colour.
 				var elements: Dictionary = step.get("elements", {})
 				_meter.show_volley(int(step.returned), float(step.get("power", 0.0)), elements, true)
@@ -308,35 +343,28 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				Sound.play("sfx-glyph", 0.6, 0.75)
 				await _wait(pace * 1.4)
 	_code.set_cursor(-1)
+	_active_slot = -1
+	_active_import = ""
 	_running(false)
 
 
 ## Walks the function of `card` line by line (comments are passed over): each loop goes round, its rounds counted up to
 ## the sandbox's count; a recursive function shows how often it was entered; its last return shows what it gave back.
 func _walk(card: String, step: Dictionary, most_line: float, budget: float) -> void:
-	var first := _code.line_of("fn:%s:0" % card)
+	var timing := _walk_timing(card, step, most_line, budget)
+	var first := int(timing.first)
 	if first < 0:
 		return
-	var last := first
-	while last + 1 < _code.line_count() and _lines[last + 1].key == "fn:%s:%d" % [card, last + 1 - first]:
-		last += 1
+	var last := int(timing.last)
 	var loops: Dictionary = step.get("loops", {})
-	# Paced to the budget: every line it will light, and the rounds its loops walk, share the time.
-	var lit := 0
-	for index in range(first, last + 1):
-		if not _is_quiet(index):
-			lit += 1
-	for number: String in loops:
-		var header := first + int(number) - 1
-		lit += (_body_end(header, last) - header + 1) * mini(int(loops[number]), 2) + 4
-	var line_time := minf(most_line, budget / maxf(1.0, float(lit)))
+	var line_time := float(timing.line_time)
 	var calls := int(step.get("calls", 1))
 	var final_return := first
 	for index in range(first, last + 1):
 		if _code.text_of(index).strip_edges().begins_with("return"):
 			final_return = index
 	var index := first
-	while index <= last and not _hurry:
+	while index <= last and not _hurry and not _aborted:
 		if _is_quiet(index):
 			index += 1
 			continue
@@ -355,6 +383,49 @@ func _walk(card: String, step: Dictionary, most_line: float, budget: float) -> v
 		index += 1
 
 
+## Plan the same dwell weights the walker uses. Interpolating measured work along them is presentation, never a
+## claim that the sandbox measured an individual line's cost; exact totals still come from each completed call.
+func _walk_timing(card: String, step: Dictionary, most_line: float, budget: float) -> Dictionary:
+	var first := _code.line_of("fn:%s:0" % card)
+	if first < 0:
+		return {"first": -1, "last": -1, "line_time": 0.0, "duration": 0.0}
+	var last := first
+	while last + 1 < _code.line_count() and _lines[last + 1].key == "fn:%s:%d" % [card, last + 1 - first]:
+		last += 1
+	var loops: Dictionary = step.get("loops", {})
+	var lit := 0
+	for index in range(first, last + 1):
+		if not _is_quiet(index):
+			lit += 1
+	for number: String in loops:
+		var header := first + int(number) - 1
+		lit += (_body_end(header, last) - header + 1) * mini(int(loops[number]), 2) + 4
+	var line_time := minf(most_line, budget / maxf(1.0, float(lit)))
+	var weight := 0.0
+	var index := first
+	while index <= last:
+		if _is_quiet(index):
+			index += 1
+			continue
+		var number := str(index - first + 1)
+		if not loops.has(number):
+			weight += 1.0
+			index += 1
+			continue
+		var end := _body_end(index, last)
+		var body := 0
+		for row in range(index, end + 1):
+			if not _is_quiet(row):
+				body += 1
+		var rounds := int(loops[number])
+		var walked := mini(rounds, 2)
+		for round in walked:
+			weight += (0.7 * body + (1.5 if index == end else 0.0)) * (1.0 if round == 0 else 0.55)
+		weight += mini(8, maxi(0, rounds - walked)) * 0.4 + 2.0
+		index = end + 1
+	return {"first": first, "last": last, "line_time": line_time, "duration": weight * line_time}
+
+
 ## A loop goes round: a bracket down its lines, its body walked for up to two rounds (the second faster), then the rest
 ## of its rounds counted up quickly to the total, which lands like a hit. Loops inside it show their totals.
 func _loop(header: int, end: int, rounds: int, loops: Dictionary, first: int, line_time: float) -> void:
@@ -362,17 +433,19 @@ func _loop(header: int, end: int, rounds: int, loops: Dictionary, first: int, li
 	var walked := mini(rounds, 2)
 	var quicker: Array[float] = [1.0, 0.55]
 	for round in walked:
-		if _hurry:
+		if _hurry or _aborted:
 			break
 		_code.set_note(header, "↻ %d / %d" % [round + 1, rounds], colour.lightened(0.2), 0.12)
 		for index in range(header, end + 1):
+			if _aborted:
+				return
 			if _is_quiet(index):
 				continue
 			_focus(index)
 			await _wait(line_time * 0.7 * quicker[round])
 		if header == end:
 			await _wait(line_time * 1.5 * quicker[round])
-	if rounds > walked and not _hurry:
+	if rounds > walked and not _hurry and not _aborted:
 		_focus(header)
 		var ticks := mini(8, rounds - walked)
 		for tick in ticks:
@@ -434,15 +507,14 @@ func _status_colour(ops: int, budget: int, race: Array) -> Color:
 
 
 ## The header's ops climb to `ops` and pop; the race's marker moves with them, and a foe it passes is called out.
-func _count_ops(ops: int, budget: int, race: Array) -> void:
+func _count_ops(ops: int, budget: int, race: Array, emphasis := false) -> void:
 	var from := _counted
 	_counted = ops
 	var shown_colour := _status_colour(ops, budget, race)
-	var count := func(value: float) -> void: _ops.text = "%d / %d ops" % [roundi(value), budget]
-	var tween := create_tween()
-	tween.tween_method(count, float(from), float(ops), 0.25)
+	_ops.text = "%d / %d ops" % [ops, budget]
 	_ops.add_theme_color_override("font_color", shown_colour)
-	_pop(_ops, _strength(ops - from))
+	if emphasis:
+		_pop(_ops, _strength(ops - from))
 	var passed_now: Array[String] = []
 	var marks: Array = []
 	for entry: Dictionary in race:
@@ -461,6 +533,8 @@ func _count_ops(ops: int, budget: int, race: Array) -> void:
 		_footer.add_theme_color_override("font_color", UiTheme.WARN)
 		_pop(_footer, 0.6)
 		Sound.play("sfx-tempo", 0.45)
+	if ops != from:
+		work_counted.emit(ops)
 
 
 ## A label lands like a hit: it swells and flashes, then settles.
@@ -497,11 +571,31 @@ func skip() -> void:
 	_hurry = true
 
 
+func abort() -> void:
+	_aborted = true
+
+
+func _progress(progress: float) -> void:
+	if _aborted:
+		return
+	if _active_import != "":
+		import_progress.emit(_active_import, progress)
+	elif _active_slot >= 0:
+		shard_progress.emit(_active_slot, progress)
+		_count_ops(_active_from + floori(_active_work * progress), _active_budget, _active_race)
+
+
 func _wait(seconds: float) -> void:
 	var left := seconds
-	while left > 0.0 and not _hurry and is_inside_tree():
+	var from := _active_elapsed
+	while left > 0.0 and not _hurry and not _aborted and is_inside_tree():
 		await get_tree().process_frame
 		left -= get_process_delta_time()
+		if _active_slot >= 0 or _active_import != "":
+			_progress(clampf((from + seconds - maxf(0.0, left)) / _active_duration, 0.0, 1.0))
+	if not _aborted and (_active_slot >= 0 or _active_import != ""):
+		_active_elapsed = from + seconds
+		_progress(clampf(_active_elapsed / _active_duration, 0.0, 1.0))
 
 
 ## The race, drawn: a track from 1 to the budget on a log scale, each foe's tempo on it, and the program's work. Foes

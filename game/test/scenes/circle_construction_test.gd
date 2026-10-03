@@ -42,6 +42,44 @@ func test_each_callback_adds_one_layer_and_waiting_adds_nothing() -> void:
 	assert_float(circle.construction_share()).is_between(0.4999, 0.5001)
 
 
+func test_function_progress_draws_during_the_call_and_waiting_does_not_finish_it() -> void:
+	var circle := _circle(2)
+	var arrivals: Array[int] = []
+	circle.layer_added.connect(func(index: int) -> void: arrivals.append(index))
+	circle.trace_shard(0, 0.0)
+	circle.trace_shard(0, 0.4)
+	circle._process(20.0)
+	assert_array(arrivals).is_equal([0])
+	assert_float(circle._layer_progress(0)).is_equal(0.4)
+	assert_float(circle.construction_share()).is_equal(0.2)
+	circle.trace_shard(0, 0.1)
+	circle.trace_shard(2, 1.0)
+	assert_float(circle._layer_progress(0)).is_equal(0.4)
+	circle.trace_shard(0, 1.0)
+	circle.construct_shard(0)
+	circle.trace_shard(1, 0.5)
+	assert_array(arrivals).is_equal([0, 1])
+	assert_float(circle.construction_share()).is_equal(0.75)
+	circle.trace_shard(1, 1.0)
+	circle.finish_construction()
+	circle._process(0.0)
+	assert_bool(circle.is_constructed()).is_true()
+	assert_float(circle.construction_time_left()).is_equal(0.0)
+
+
+func test_a_failed_function_keeps_its_partial_stroke_when_sealed() -> void:
+	var circle := _circle(3)
+	circle.trace_shard(0, 1.0)
+	circle.trace_shard(1, 0.25)
+	circle.finish_construction()
+	circle._process(1.0)
+	circle.trace_shard(1, 1.0)
+	circle.trace_shard(2, 1.0)
+	assert_int(circle._arrived).is_equal(2)
+	assert_float(circle._layer_progress(1)).is_equal(0.25)
+	assert_bool(circle.is_constructed()).is_true()
+
+
 func test_sealing_waits_for_last_stroke_and_emits_once() -> void:
 	var circle := _circle(2)
 	var completions: Array[int] = []

@@ -372,3 +372,203 @@ func test_a_real_failed_program_constructs_only_visited_shards_then_cleans_up_wi
 func _play(player: LogPlayer, entries: Array, finished: Array[bool]) -> void:
 	await player.play(entries)
 	finished[0] = true
+
+
+func test_each_repeated_function_traces_and_counts_work_before_its_return() -> void:
+	var session := _program_session(["salvo", "salvo"])
+	var view := _measured_view(2)
+	var stage := _stage()
+	var player := LogPlayer.new(stage, session.state)
+	var spell_id: String = session.state.spells[0].id
+	player.cast_cards[spell_id] = [session.catalog.shards.salvo, session.catalog.shards.salvo]
+	player.begin_construction(spell_id, "none")
+	var circle: MagicCircle = player.get("_circle")
+	var panel: ProgramCode = auto_free(ProgramCode.create(session))
+	add_child(panel)
+	panel.show_program(session.state, {})
+	panel.shard_progress.connect(player.trace_shard)
+	panel.shard_resolved.connect(player.resolve_shard)
+	var samples: Array[Dictionary] = []
+	panel.shard_progress.connect(
+		func(index: int, progress: float) -> void:
+			if progress > 0.0 and progress < 1.0:
+				samples.append({"slot": index, "progress": progress, "stroke": circle._layer_progress(index)})
+	)
+	var counts: Array[int] = []
+	panel.work_counted.connect(
+		func(work: int) -> void:
+			counts.append(work)
+			assert_bool(panel._ops.text.begins_with("%d /" % work)).is_true()
+	)
+	var finished: Array[bool] = [false]
+	_play_code(panel, view, finished)
+	var deadline := Time.get_ticks_msec() + 5000
+	while panel._counted < 150 and not finished[0] and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(samples.any(func(sample: Dictionary) -> bool: return sample.slot == 0)).is_true()
+	assert_bool(samples.any(func(sample: Dictionary) -> bool: return sample.slot == 1)).is_true()
+	for sample in samples:
+		assert_float(float(sample.stroke)).is_equal_approx(float(sample.progress), 0.001)
+	assert_int(counts.size()).is_greater(5)
+	for index in range(1, counts.size()):
+		assert_int(counts[index]).is_greater_equal(counts[index - 1])
+	panel.skip()
+	while not finished[0] and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(finished[0]).is_true()
+	assert_int(panel._counted).is_equal(200)
+	assert_int(circle._arrived).is_equal(2)
+	assert_float(circle._layer_progress(1)).is_equal(1.0)
+
+
+func test_early_attack_queue_preserves_recorded_order_and_strict_tempo_ties_without_double_damage() -> void:
+	var stage := _stage()
+	stage.local_clock = true
+	var player := LogPlayer.new(stage, {"integrity": 100, "integrity_max": 100, "battle": {"mana": 0}})
+	var entries: Array = [
+		{"kind": "tempo", "foe": "first", "amount": 80},
+		{"kind": "enemy", "foe": "first", "amount": 3},
+		{"kind": "tempo", "foe": "second", "amount": 20},
+		{"kind": "enemy", "foe": "second", "amount": 5},
+		{"kind": "cast", "spell": "spell", "amount": 0},
+	]
+	player.prepare_early(entries)
+	player.count_work(20)
+	player.count_work(80)
+	assert_int(player._early_unlocked).is_equal(0)
+	assert_int(int(player.shown.integrity)).is_equal(100)
+	player.count_work(81)
+	assert_int(player._early_unlocked).is_equal(2)
+	assert_bool(player._early_playing).is_true()
+	for index in 60:
+		stage.advance(0.05)
+		await get_tree().process_frame
+		if not player._early_playing:
+			break
+	assert_bool(player._early_playing).is_false()
+	stage.fast = true
+	await player.drain_early()
+	assert_int(int(player.shown.integrity)).is_equal(92)
+	(
+		assert_array(player.lines.map(func(entry: Dictionary) -> String: return String(entry.foe)))
+		. is_equal(["first", "first", "second", "second"])
+	)
+	stage.fast = true
+	await player.play(entries)
+	assert_int(int(player.shown.integrity)).is_equal(92)
+	assert_int(player.lines.filter(func(entry: Dictionary) -> bool: return entry.kind == "enemy").size()).is_equal(2)
+
+
+func _measured_view(count: int) -> Dictionary:
+	var steps: Array[Dictionary] = []
+	for index in count:
+		steps.append({"shard": "salvo", "work": 100, "n": 1, "returned": 1})
+	return {"program": true, "base": {"bolts": []}, "steps": steps, "work": count * 100, "budget": 4096}
+
+
+func _play_code(panel: ProgramCode, view: Dictionary, finished: Array[bool]) -> void:
+	await panel.play_cast(view, "fast", true)
+	finished[0] = true
+
+
+func _fight_for(session: ShardrunSession) -> FightView:
+	var fight: FightView = auto_free(FightView.create(session))
+	fight.size = Vector2(1920, 1080)
+	fight.stage.hero.preview_loadout = {"cast_light": "shard-weave"}
+	fight.stage.hero.set_preview_skin("vesper")
+	add_child(fight)
+	return fight
+
+
+func test_faster_foe_lands_while_work_and_circle_continue_then_cast_logs_once() -> void:
+	Settings.code_speed = "fast"
+	var session := _program_session(["salvo", "salvo"])
+	var fight := _fight_for(session)
+	await get_tree().process_frame
+	var view := _measured_view(2)
+	var after := session.state.duplicate(true)
+	var uid: String = session.state.battle.foes[0].uid
+	after.log = [
+		{"kind": "tempo", "foe": uid, "amount": 5},
+		{"kind": "enemy", "foe": uid, "amount": 1},
+		{"kind": "cast", "spell": session.state.spells[0].id, "amount": 0},
+		{"kind": "ward", "amount": 4},
+	]
+	var circles: Array[MagicCircle] = []
+	fight.stage._fx.child_entered_tree.connect(
+		func(node: Node) -> void:
+			if node is MagicCircle:
+				circles.append(node as MagicCircle)
+	)
+	var finished: Array[bool] = [false]
+	var before_hp := int(session.state.integrity)
+	_present(
+		fight,
+		{"before": session.state, "state": after, "replay": {"spell_id": session.state.spells[0].id, "run": view}},
+		finished
+	)
+	var deadline := Time.get_ticks_msec() + 5000
+	while int(fight._integrity.text.get_slice("/", 0)) == before_hp and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_str(fight._program._title.text).contains("running")
+	assert_int(fight._program._counted).is_greater(5)
+	assert_int(fight._program._counted).is_less(100)
+	assert_float(circles[0]._layer_progress(0)).is_between(0.0, 1.0)
+	assert_int(int(fight._integrity.text.get_slice("/", 0))).is_equal(before_hp - 1)
+	fight._program.skip()
+	fight.stage.fast = true
+	while not finished[0] and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(finished[0]).is_true()
+	assert_int(int(fight._integrity.text.get_slice("/", 0))).is_equal(before_hp - 1)
+	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "enemy").size()).is_equal(1)
+	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "cast").size()).is_equal(1)
+
+
+func test_a_fatal_early_attack_stops_the_code_and_closes_a_partial_circle_without_release() -> void:
+	Settings.code_speed = "fast"
+	var session := _program_session(["salvo", "salvo"])
+	var fight := _fight_for(session)
+	await get_tree().process_frame
+	var after := session.state.duplicate(true)
+	var uid: String = session.state.battle.foes[0].uid
+	after.log = [
+		{"kind": "tempo", "foe": uid, "amount": 5},
+		{"kind": "enemy", "foe": uid, "amount": int(session.state.integrity)},
+		{"kind": "loss"},
+	]
+	var circles: Array[MagicCircle] = []
+	var arrivals: Array[int] = []
+	fight.stage._fx.child_entered_tree.connect(
+		func(node: Node) -> void:
+			if node is MagicCircle:
+				var circle := node as MagicCircle
+				circles.append(circle)
+				circle.layer_added.connect(func(index: int) -> void: arrivals.append(index))
+	)
+	var finished: Array[bool] = [false]
+	_present(
+		fight,
+		{
+			"before": session.state,
+			"state": after,
+			"replay": {"spell_id": session.state.spells[0].id, "run": _measured_view(2)},
+		},
+		finished
+	)
+	var deadline := Time.get_ticks_msec() + 5000
+	while int(fight._integrity.text.get_slice("/", 0)) > 0 and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(fight._program._aborted).is_true()
+	assert_int(fight._program._counted).is_less(100)
+	assert_array(arrivals).is_equal([0])
+	assert_float(circles[0]._layer_progress(0)).is_between(0.0, 1.0)
+	assert_bool(circles[0]._sealed).is_true()
+	assert_float(circles[0]._closing).is_greater_equal(0.0)
+	fight.stage.fast = true
+	while not finished[0] and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(finished[0]).is_true()
+	assert_array(arrivals).is_equal([0])
+	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "enemy").size()).is_equal(1)
+	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "cast").size()).is_equal(0)

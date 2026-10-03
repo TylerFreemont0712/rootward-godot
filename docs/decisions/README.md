@@ -49,3 +49,5 @@ The next number is **ADR-0041**.
 - [ADR-0039](ADR-0039-stacking-magic-circles.md): the magic circle stacks one layer per shard (twelve kinds drawn from the card), its tier from the shard count (1-2, 3-4, 5, 6 = the grand circle); the generic per-card flourish retired.
 
 - [ADR-0040](ADR-0040-shard-weave-during-code.md): optional Shard Weave constructs the circle from measured shard returns during the code walkthrough, independent of skin poses, and reuses it through the volley; selectable and previewable in Character.
+
+- [ADR-0041](ADR-0041-work-and-cast-playback-timeline.md): functions draw circle layers throughout their walkthrough while measured work advances; recorded faster foes act during that walk, and circle glare lines are removed.

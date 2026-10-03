@@ -13,6 +13,8 @@ extends PanelContainer
 signal finished
 ## A measured shard return, indexed by its call slot so duplicate shard cards remain distinct.
 signal shard_resolved(index: int)
+## The measured call's visual traversal, including its body, from its first line to its return.
+signal shard_progress(index: int, progress: float)
 
 const ROW_CURRENT := Color(0.95, 0.65, 0.25, 0.22)
 const ROW_ERROR := Color(0.89, 0.35, 0.31, 0.3)
@@ -37,6 +39,7 @@ var _misfire: Label
 var _take := 0
 var _done := false
 var _resolved := 0
+var _call_spans: Array[Vector2] = []
 
 
 static func create(
@@ -56,6 +59,7 @@ static func create(
 	view.source = SpellSource.compose(run_language, spell.name, spell.shards, shards, base_power)
 	if view.playable():
 		view.played = SpellSource.frames(view.source, run_view, view.speed)
+		view._plan_progress()
 	view.theme_type_variation = "Overlay"
 	view._build(spell)
 	return view
@@ -98,9 +102,11 @@ func play() -> void:
 	_reset()
 	var started := Time.get_ticks_msec()
 	for index in played.size():
-		var wait := float(played[index].at) - (Time.get_ticks_msec() - started)
-		if wait > 0.0:
-			await get_tree().create_timer(wait / 1000.0).timeout
+		while float(played[index].at) > Time.get_ticks_msec() - started:
+			await get_tree().process_frame
+			if take != _take or not is_inside_tree():
+				return
+			_trace_at(float(Time.get_ticks_msec() - started))
 		if take != _take or not is_inside_tree():
 			return
 		_show(index)
@@ -228,6 +234,7 @@ func _reset() -> void:
 
 func _show(index: int) -> void:
 	var frame := played[index]
+	_trace_at(float(frame.at))
 	var line := int(frame.line)
 	var active: String = (source.lines[line - 1] as Dictionary).get("shard", "")
 	for i in _rows.size():
@@ -258,8 +265,37 @@ func _show(index: int) -> void:
 func _resolve_shard(index: int) -> void:
 	if index != _resolved:
 		return
+	shard_progress.emit(index, 1.0)
 	_resolved += 1
 	shard_resolved.emit(index)
+
+
+## Only spans ending in a measured return are eligible; an unvisited or failing call gets no complete layer.
+func _plan_progress() -> void:
+	var from := 0
+	for frame_index in played.size():
+		var frame := played[frame_index]
+		if frame.get("mark", "") != "step":
+			continue
+		var slot := int(frame.step)
+		var call_line := int(source.calls[slot].line)
+		var start := float(frame.at)
+		for index in range(from, frame_index):
+			if int(played[index].line) == call_line:
+				start = float(played[index].at)
+				break
+		_call_spans.append(Vector2(start, float(frame.at)))
+		from = frame_index + 1
+
+
+func _trace_at(elapsed: float) -> void:
+	if _resolved >= _call_spans.size():
+		return
+	var span := _call_spans[_resolved]
+	if elapsed < span.x:
+		return
+	var share := clampf((elapsed - span.x) / maxf(1.0, span.y - span.x), 0.0, 1.0)
+	shard_progress.emit(_resolved, share)
 
 
 ## Scrolls up or down to keep the current line in view, a few lines from the edge; never sideways, so the start of

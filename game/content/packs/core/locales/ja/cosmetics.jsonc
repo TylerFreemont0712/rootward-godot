@@ -1,7 +1,7 @@
 // The cosmetic looks (content/cosmetics.jsonc, ADR-0037), keyed by the English name or note.
 [
   {"en": "Shard Weave", "to": "シャードの織り陣"},
-  {"en": "Each shard writes a new layer as its code finishes. The circle waits in front of any skin.", "to": "シャードのコードが終わるたびに、新しい層を描く。どのすがたでも、魔法陣は前に浮かぶ。"},
+  {"en": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.", "to": "関数のコードを実行しながら、新しい層を少しずつ描く。どのすがたでも、魔法陣は前に浮かぶ。"},
   {"en": "Guarded Breath", "to": "かまえの呼吸"},
   {"en": "Weight on the back foot, hands loose, eyes on the foes.", "to": "うしろ足に体重をのせ、手はゆったり。目は敵からはなさない。"},
   {"en": "Lantern Bearer", "to": "あかりを持つ者"},

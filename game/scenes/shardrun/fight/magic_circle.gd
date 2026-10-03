@@ -69,6 +69,8 @@ var layers: Array[Dictionary] = []
 ## Shard Weave takes its arrivals from the code walkthrough, rather than the tier's automatic timer.
 var external_construction := false
 var _layer_times: Array[float] = []
+## A negative share uses the rehearsal clock; a traced share follows the current function's walkthrough.
+var _traced_shares: Array[float] = []
 var _sealed := false
 var _facts: Dictionary = {}
 var _formed := false
@@ -136,8 +138,24 @@ func construct_shard(index: int) -> void:
 	if not external_construction or _sealed or _closing >= 0.0 or index != _arrived or index >= layers.size():
 		return
 	_layer_times.append(clock)
+	_traced_shares.append(-1.0)
 	_add_layer(index)
 	_arrived += 1
+	queue_redraw()
+
+
+## LEARN: Function progress owns the stroke, so a long function cannot finish its figure on a separate timer.
+## Only the current or next layer can be traced, and old callbacks never erase strokes already written.
+func trace_shard(index: int, progress: float) -> void:
+	if not external_construction or _sealed or _closing >= 0.0 or index < 0 or index >= layers.size():
+		return
+	if index == _arrived:
+		_layer_times.append(clock)
+		_traced_shares.append(clampf(progress, 0.0, 1.0))
+		_arrived += 1
+		_add_layer(index)
+	elif index == _arrived - 1 and _traced_shares[index] >= 0.0:
+		_traced_shares[index] = maxf(_traced_shares[index], clampf(progress, 0.0, 1.0))
 	queue_redraw()
 
 
@@ -153,7 +171,11 @@ func is_constructed() -> bool:
 func construction_time_left() -> float:
 	if _reduced or _layer_times.is_empty():
 		return 0.0
-	return maxf(0.0, SHARD_DRAW_SECONDS - (clock - _layer_times.back()))
+	var remaining := 0.0
+	for index in _arrived:
+		if _traced_shares[index] < 0.0:
+			remaining = maxf(remaining, SHARD_DRAW_SECONDS - (clock - _layer_times[index]))
+	return remaining
 
 
 ## The frame grows alongside the layers, never ahead of the walkthrough.
@@ -211,7 +233,9 @@ func _process(frame_delta: float) -> void:
 	clock += delta * (speed if not _formed and not external_construction else 1.0)
 	_flare = maxf(0.0, _flare - delta * 4.0)
 	# Motes spiral in while it writes itself and drift off its rim while it stands.
-	var writing := not external_construction or (_arrived > 0 and construction_time_left() > 0.0)
+	var writing := not external_construction
+	for index in _arrived:
+		writing = writing or _layer_progress(index) < 1.0
 	_mote_debt += delta * (36.0 if not _formed else 5.0 + 3.0 * tier) * (0.0 if _closing >= 0.0 or not writing else 1.0)
 	while _mote_debt >= 1.0:
 		_mote_debt -= 1.0
@@ -281,6 +305,8 @@ func _layer_progress(index: int) -> float:
 	if external_construction:
 		if index >= _arrived:
 			return 0.0
+		if _traced_shares[index] >= 0.0:
+			return 1.0 if _reduced else _traced_shares[index]
 		return 1.0 if _reduced else clampf((clock - _layer_times[index]) / SHARD_DRAW_SECONDS, 0.0, 1.0)
 	return clampf((clock / _form() - _layer_start(index)) / CircleLayers.DRAW, 0.0, 1.0) if index < _arrived else 0.0
 
@@ -413,25 +439,8 @@ func _crown(r: float, fade: float) -> void:
 			draw_polyline(PackedVector2Array([base + side, tip, base - side]), Color(hot, 0.8 * fade), 1.6, true)
 
 
-## What is drawn unnarrowed, in the stage's own plane: the beam through the stack as a bolt leaves, the glint on the
-## core, and the motes.
+## Motes in the stage's plane. Release emphasis stays on the rings instead of drawing glare across the hero.
 func _light(fade: float) -> void:
-	var front := int(_facts.front)
-	if _flare > 0.05 and (not external_construction or _formed):
-		var start := _disc_origin(0)
-		var end := _disc_origin(front) + Vector2(radius * 0.7, 0.0).rotated(TILT)
-		draw_line(start, end, Color(mid, 0.35 * _flare * fade), 10.0 * _flare, true)
-		draw_line(start, end, Color(hot, 0.9 * _flare * fade), 2.5 * _flare, true)
-		var core := _disc_origin(0)
-		var reach := radius * (0.9 + 0.7 * _flare)
-		for arm: Vector2 in [Vector2(reach, 0), Vector2(0, reach * 0.75)]:
-			draw_line(core - arm, core + arm, Color(mid, 0.3 * _flare * fade), 5.0, true)
-			draw_line(core - arm, core + arm, Color(hot, 0.85 * _flare * fade), 1.4, true)
-		var diagonal := Vector2(1, 1).normalized() * reach * 0.35
-		draw_line(core - diagonal, core + diagonal, Color(hot, 0.6 * _flare * fade), 1.0, true)
-		draw_line(
-			core - diagonal.orthogonal(), core + diagonal.orthogonal(), Color(hot, 0.6 * _flare * fade), 1.0, true
-		)
 	for mote in _motes:
 		var left := 1.0 - float(mote[2]) / float(mote[3])
 		var at: Vector2 = mote[0]

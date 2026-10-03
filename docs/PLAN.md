@@ -315,6 +315,13 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       skin-independent placement, paced practice/code-off playback, skip and reduced-motion support.
 - [x] Character Moves carousel construction preview, Wear this persistence, and live practice-ring playback.
 
+### Work and construction timeline (ADR-0041)
+- [x] Draw each function's layer throughout its walkthrough, sharing progress with the measured work counter;
+      imports and repeated calls retain their own construction, and Character uses the same progress API.
+- [x] Play recorded faster foes during the code walkthrough when work exceeds their tempo; consume actions once,
+      preserve recorded outcomes and ties, and interrupt construction on lethal damage.
+- [x] Remove axis/cross glare lines from magic circles; keep ring pulses and local particles.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).
