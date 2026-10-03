@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Measures a piece of music the way the music pipeline judges a take (pipeline/music/README.md), and draws it.
+"""Measures a piece of music (pipeline/music/README.md), and draws it. The library under `qc.py`, `master.py` and the
+loop finder; also a command of its own for any audio file:
 
-Nobody in the loop can hear, so every take gets numbers and a picture:
-  - tempo: the beat grid librosa tracks, its tempo against the brief's, and how steady it is (a drifting tempo puts a
-    loop's seam off the beat);
-  - key: the chroma's best match among the 24 major and minor key profiles;
+  - tempo: the beat grid librosa tracks and how steady it is (a drifting tempo puts a loop's seam off the beat). The
+    tracker often halves or doubles the tempo, so for the tempo a take was *made* at, read the planner's score;
+  - key: the chroma's best match among the 24 major and minor key profiles (a check on the master, after a key fix);
   - loudness and dynamics: EBU R128 integrated loudness, loudness range and true peak (ffmpeg), the spread of its
     one-second levels;
   - colour: brightness (spectral centroid, energy above 5 and 10 kHz), weight (energy below 150 Hz), stereo width;
-  - shape: how the piece repeats (a self-similarity matrix), where its sections turn, how dense its notes are;
-  - the score it was asked to play, when there is one: how well its chroma follows the score's, aligned by DTW.
+  - shape: how the piece repeats (a self-similarity matrix) and where its sections turn.
 The picture (a PNG beside the report) stacks the level envelope with the beat grid, a spectrogram, the chroma, and
 the self-similarity matrix, so a take can be looked at the way a producer looks at a DAW.
 
@@ -70,7 +69,7 @@ def key_of(chroma: np.ndarray) -> dict:
     return {"key": scores[0][1], "confidence": round(scores[0][0], 3), "margin": round(scores[0][0] - scores[1][0], 3)}
 
 
-def tempo_of(mono: np.ndarray, bpm: float | None) -> dict:
+def tempo_of(mono: np.ndarray, bpm: float | None) -> tuple[dict, np.ndarray]:
     """The beat grid and its tempo. A model asked for 138 bpm that plays at 69 or 276 is still in time (the tracker
     halves and doubles); a tempo that wanders is not, and `steadiness` says how much the beats' spacing varies."""
     onset = librosa.onset.onset_strength(y=mono, sr=SR, hop_length=HOP)
@@ -117,41 +116,6 @@ def grid(mono: np.ndarray, bpm: float) -> tuple[float, float]:
         near = np.abs(position - index) < 0.2  # beats the tracker put between the grid's (half-time locks, fills)
         beat, phase = (float(value) for value in np.polyfit(index[near], beats[near], 1))
     return beat, phase
-
-
-def adherence(mono: np.ndarray, bars: list[dict], first: float, bar_seconds: float) -> dict:
-    """How closely a performance holds what its score wrote, bar by bar: the correlation between the chroma heard in
-    the bar and the pitch classes the score spells there (its chords' tones, and its notes by how long they sound).
-    `first` is where bar 0 starts in the audio. A bar that plays the written harmony scores near 0.7 or better; a
-    random pairing scores near 0, so the mean says whether the model played the score at all."""
-    from notation import chord_classes  # the music pipeline's own module (sys.path is set by the entry points)
-
-    chroma = librosa.feature.chroma_cqt(y=mono, sr=SR, hop_length=HOP)
-    times = librosa.frames_to_time(np.arange(chroma.shape[1]), sr=SR, hop_length=HOP)
-    rows = []
-    for index, bar in enumerate(bars):
-        expected = np.zeros(12)
-        for symbol in bar["chords"]:
-            for pitch in chord_classes(symbol):
-                expected[pitch] += 1.0
-        total = sum(length for _, length in bar["notes"]) or 1.0
-        for pitch, length in bar["notes"]:
-            expected[pitch] += 1.5 * length / total
-        start = first + index * bar_seconds
-        window = (times >= start) & (times < start + bar_seconds)
-        if expected.std() == 0 or not window.any():
-            continue
-        heard = chroma[:, window].mean(axis=1)
-        if heard.std() == 0:
-            continue
-        rows.append((index, bar["section"], float(np.corrcoef(expected, heard)[0, 1])))
-    if not rows:
-        return {"mean": 0.0, "bars": 0, "weakest": []}
-    values = np.array([row[2] for row in rows])
-    weakest = sorted(rows, key=lambda row: row[2])[:5]
-    return {"mean": round(float(values.mean()), 3), "bars": len(rows),
-            "below_0.3": int(np.sum(values < 0.3)),
-            "weakest": [f"bar {index} ({section}) {value:.2f}" for index, section, value in weakest]}
 
 
 def colour(stereo: np.ndarray, mono: np.ndarray) -> dict:

@@ -1,0 +1,8 @@
+{
+  "comment": "takes_dir holds everything heavy and local (raw takes, masters, loop auditions, qc, the listening page); it is not in git. read_also are older folders whose takes, plans, masters and loop reports are found when they are not in takes_dir (read only: new files are always written to takes_dir). ROOTWARD_MUSIC_TAKES overrides takes_dir.",
+  "takes_dir": "pipeline/cache/music",
+  "read_also": ["test/music"],
+  "workflow": "pipeline/music/workflows/yue2_MusicGen.json",
+  "comfy_url": "http://127.0.0.1:8188",
+  "home_key": "D"
+}

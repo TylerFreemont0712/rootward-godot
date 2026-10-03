@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
-"""Masters a performance for the game (pipeline/music/README.md): the take a track's brief picks becomes the file the
-game plays, at the soundtrack's loudness and tone, looping where the score says.
+"""Masters a take the way the game will play it, and builds the game's file from the master (pipeline/music/README.md).
 
-  1. The grid: the take's own beat (a line fitted through its tracked beats, since a model asked for 132 bpm may play
-     129), and its first downbeat, found as the first strong onset and then confirmed against the score: of the
-     nearby beats, the one from which the score's harmony, bar by bar, best matches what is heard.
-  2. The loop, from the brief (`loop: {from, to, occurrence}`): from the downbeat of the first bar of `from` to the
-     downbeat after the `occurrence`-th `to`. The file ends at the loop's end, and its last moments are crossfaded
-     with the audio just before the loop's start, so the jump back is seamless (the game loops from `loopStart` to the
-     file's end). A cue or a song has no loop: it is cut after its last sound and faded.
-  3. Tone: a high-pass under the music, then shelves that correct a fault in the take's colour, never by more than
-     6 dB: a boomy take (over 20% of its energy under 150 Hz) is thinned, a dark one (under 1.2% over 5 kHz) lifted, a
-     harsh one (over 8%) tamed, and anything between is left as the model played it.
-  4. Level: one gain to the target loudness, capped by the peak; a single gain, because a loop's end has to meet its
-     start at the same level.
-  5. Ogg Vorbis: the take the brief picks (`pick`) into game/assets/audio/, with its loop into music.json; any other
-     take, and a bonus track, which is not in the game, beside the takes in the cache as `<take>.master.ogg`.
+`master` (per take, written to takes_dir/mastered/<take>.mastered.{flac,ogg,json}):
+  1. Key fix (optional, `tune` in the manifest): varispeed by whole semitones. The planner picks its own key, and a
+     take in D# minor is a semitone off the soundtrack's home D; played back 5.9% slower it is a semitone lower, in D
+     minor, and its tempo is 5.9% slower than the planner meant. (A resample, not a pitch shifter: no artefacts, and the
+     tempo moves with the pitch, which is why the loop grid and the style's "BPM" are read through the same ratio.)
+  2. Tone: a high-pass under the music, then shelves that correct a fault in the take's colour, never by more than
+     6 dB: a boomy take (over 20% of its energy under 150 Hz) is thinned, a dark one (under 1.2% over 5 kHz) lifted,
+     a harsh one (over 8%) tamed; anything between is left as the model played it.
+  3. Level: one gain to the kind's target loudness, capped by the peak; a single gain, because a loop's end has to meet
+     its start at the same level. A limiter only if that gain still leaves the peak over (not expected).
+`render` (per slot, used by install): trims the leading silence, cuts the loop at its end, crossfades the last 0.15 s
+with the audio just before the loop's start (so the game's jump back is seamless; the game loops from `loopStart` to
+the file's end) and levels again; a cue is trimmed and levelled as it is.
 
-    uv run --project pipeline python pipeline/music/master.py <track> [--take yue2-1000-1100-s32-abcdef]
+    uv run --project pipeline python pipeline/music/master.py <take>... [--kind loop|cue|bonus] [--tune -1]
 """
 
 from __future__ import annotations
@@ -28,22 +26,16 @@ import subprocess
 import sys
 from pathlib import Path
 
+import librosa
 import numpy as np
+import soundfile
 
 sys.path.insert(0, str(Path(__file__).parent))
 import analyze  # noqa: E402
-import notation  # noqa: E402
+import manifest  # noqa: E402
 
-ROOT = Path(__file__).resolve().parents[2]
-TRACKS = Path(__file__).with_name("tracks")
-CACHE = ROOT / "pipeline" / "cache" / "music"
-AUDIO = ROOT / "game" / "assets" / "audio"
-LOOPS = AUDIO / "music.json"
 RATE = analyze.FULL_SR
-# What each kind of piece is levelled to. Music sits under the sound effects; a cue is heard alone, briefly; a bonus
-# track is listened to for itself.
-TARGETS = {"loop": {"lufs": -20.0, "peak": -1.5}, "cue": {"lufs": -17.0, "peak": -2.5},
-           "bonus": {"lufs": -16.0, "peak": -1.0}}
+TARGETS = manifest.TARGETS
 # The soundtrack's colour: the most energy a master keeps under 150 Hz, the least it has over 5 kHz, and the most it
 # keeps over 5 kHz before it is harsh. Only a fault is corrected: a lullaby is light in the bass and a fanfare is bright
 # by nature, and neither is pushed toward an average.
@@ -59,54 +51,6 @@ def first_sound(mono: np.ndarray, below_peak_db: float = 30.0) -> float:
     levels = 10 * np.log10(np.mean(mono[: count * window].reshape(count, window) ** 2, axis=1) + 1e-12)
     loud = np.nonzero(levels > levels.max() - below_peak_db)[0]
     return float(loud[0] * window / analyze.SR) if len(loud) else 0.0
-
-
-def last_sound(stereo: np.ndarray, below_peak_db: float = 45.0) -> int:
-    """The sample where the music has died away."""
-    window = int(RATE * 0.05)
-    mono = stereo.mean(axis=1)
-    count = len(mono) // window
-    levels = 10 * np.log10(np.mean(mono[: count * window].reshape(count, window) ** 2, axis=1) + 1e-12)
-    loud = np.nonzero(levels > levels.max() - below_peak_db)[0]
-    return int((loud[-1] + 1) * window) if len(loud) else len(mono)
-
-
-def place(mono: np.ndarray, score: notation.Score) -> dict:
-    """Where bar 0 of the score starts in the take, how long its bars are, and how well it follows the score there."""
-    beat, phase = analyze.grid(mono, score.bpm)
-    per_bar = float(score.metre / notation.Fraction(1, 4))
-    bar_seconds = beat * per_bar
-    timeline = notation.timeline(score)
-    # The first bar that sounds: the score's leading silence is bar 0 (or more), the intro starts after it.
-    opening = next(part["bar"] for part in timeline if part["name"] != "silence")
-    onset = first_sound(mono)
-    nearest = phase + round((onset - phase) / beat) * beat
-    bars = notation.bars(score)
-    best = None
-    # The onset can be a pickup, or a quiet first bar can hide under the threshold: try the beats around it.
-    for shift in range(-int(per_bar) * 2, int(per_bar) * 2 + 1):
-        downbeat = nearest + shift * beat
-        start = downbeat - opening * bar_seconds
-        fit = analyze.adherence(mono, bars, start, bar_seconds)
-        if best is None or fit["mean"] > best[2]["mean"]:
-            best = (shift, start, fit)
-    shift, start, fit = best
-    return {"bar0": start, "bar_seconds": bar_seconds, "bpm": round(60.0 / beat, 2), "onset": round(onset, 3),
-            "shift_beats": shift, "adherence": fit, "timeline": timeline}
-
-
-def loop_points(brief: dict, placed: dict) -> tuple[float, float]:
-    """The loop's start and end in the take's seconds, from the brief's `loop`."""
-    spec = brief["loop"]
-    parts = placed["timeline"]
-    starts = [part for part in parts if part["name"] == spec["from"]]
-    ends = [part for part in parts if part["name"] == spec["to"]]
-    occurrence = spec.get("occurrence", 1)
-    if not starts or len(ends) < occurrence:
-        sys.exit(f"{brief['id']}: the score has no {spec['from']!r} or no {occurrence} {spec['to']!r} sections")
-    first_bar = starts[0]["bar"]
-    end_bar = ends[occurrence - 1]["bar"] + ends[occurrence - 1]["bars"]
-    return (placed["bar0"] + first_bar * placed["bar_seconds"], placed["bar0"] + end_bar * placed["bar_seconds"])
 
 
 def ffmpeg_filter(stereo: np.ndarray, chain: str) -> np.ndarray:
@@ -157,8 +101,6 @@ def seam(audio: np.ndarray, loop_start: int) -> float:
 def encode(stereo: np.ndarray, target: Path, quality: float = 0.5) -> None:
     """Ogg Vorbis with the exact sample count (libsndfile), a second a write (its Vorbis writer crashes on a whole
     track at once); quality 0.5 is about 160 kbps."""
-    import soundfile
-
     target.parent.mkdir(parents=True, exist_ok=True)
     samples = np.clip(stereo, -1, 1).astype(np.float32)
     with soundfile.SoundFile(str(target), "w", RATE, 2, format="OGG", subtype="VORBIS",
@@ -167,63 +109,106 @@ def encode(stereo: np.ndarray, target: Path, quality: float = 0.5) -> None:
             out.write(samples[start: start + RATE])
 
 
-def master(track: str, take: str | None) -> dict:
-    brief = json.loads((TRACKS / track / "brief.json").read_text())
-    take = take or brief.get("pick")
-    folder = CACHE / track
-    if not take:
-        names = sorted(path.stem for path in folder.glob("*.wav"))
-        sys.exit(f"{track}: no take picked; set \"pick\" in its brief or pass --take, one of:\n  " + "\n  ".join(names))
-    source = folder / f"{take}.wav"
-    score = notation.parse((TRACKS / track / "score.abc").read_text())
-    kind = brief.get("kind", "loop")
-    stereo, mono = analyze.load(source)
-    placed = place(mono, score)
-    report: dict = {"track": track, "take": take, "kind": kind, "bpm": placed["bpm"], "onset": placed["onset"],
-                    "shift_beats": placed["shift_beats"], "adherence": placed["adherence"]}
-    begin = max(0, int((placed["onset"] - 0.02) * RATE))
-    stereo, report["tone"] = tone(stereo, mono)
-    if kind == "loop":
-        loop_start, loop_end = (int(round(seconds * RATE)) for seconds in loop_points(brief, placed))
-        if loop_end > len(stereo):
-            sys.exit(f"{track}: the loop ends at {loop_end / RATE:.1f}s, after the take does ({len(stereo) / RATE:.1f}s)")
-        piece = stereo[begin:loop_end].copy()
-        a, b = loop_start - begin, loop_end - begin
-        fade = min(int(CROSSFADE * RATE), a)
-        ramp = np.linspace(0, np.pi / 2, fade, dtype=np.float32)[:, None]
-        piece[b - fade: b] = piece[b - fade: b] * np.cos(ramp) + stereo[loop_start - fade: loop_start] * np.sin(ramp)
-        piece, report["level"] = level(piece, TARGETS[kind])
-        report["loop"] = {"loopStart": round(a / RATE, 7), "loopEnd": round(b / RATE, 7),
-                          "seconds": round((b - a) / RATE, 2)}
-        report["seam"] = seam(piece, a)
-        # The join as the game plays it, to listen to: the loop's last eight seconds, then its first eight.
-        encode(np.concatenate([piece[-8 * RATE:], piece[a: a + 8 * RATE]]), folder / f"{take}.seam.ogg")
-    else:
-        end = min(len(stereo), last_sound(stereo) + int(0.3 * RATE))
-        piece = stereo[begin:end].copy()
-        fade = min(int(1.0 * RATE), len(piece) // 4)
-        piece[-fade:] *= np.linspace(1, 0, fade, dtype=np.float32)[:, None] ** 2
-        piece, report["level"] = level(piece, TARGETS[kind])
-    report["seconds"] = round(len(piece) / RATE, 2)
-    # Only the take the brief picks goes into the game; any other is mastered beside its takes, to be listened to.
-    to_game = kind != "bonus" and take == brief.get("pick")
-    out = AUDIO / f"{brief['out']}.ogg" if to_game else folder / f"{take}.master.ogg"
-    encode(piece, out)
-    report["file"] = str(out.relative_to(ROOT))
-    if kind == "loop" and to_game:
-        loops = json.loads(LOOPS.read_text()) if LOOPS.exists() else {}
-        loops[brief["out"]] = {"loopStart": report["loop"]["loopStart"], "loopEnd": report["loop"]["loopEnd"]}
-        LOOPS.write_text(json.dumps(dict(sorted(loops.items())), indent=2) + "\n")
-    (folder / f"{take}.master.json").write_text(json.dumps(report, indent=2) + "\n")
+def varispeed(stereo: np.ndarray, tune: int) -> tuple[np.ndarray, np.ndarray, float]:
+    """Resample so the audio plays `tune` semitones higher (negative: lower and slower). Returns (stereo, mono, ratio)."""
+    ratio = 2 ** (-tune / 12)
+    if tune == 0:
+        return stereo, librosa.resample(stereo.mean(axis=1), orig_sr=RATE, target_sr=analyze.SR), 1.0
+    moved = np.stack([librosa.resample(stereo[:, c], orig_sr=RATE, target_sr=int(round(RATE * ratio)))
+                      for c in range(2)], axis=1).astype(np.float32)
+    return moved, librosa.resample(moved.mean(axis=1), orig_sr=RATE, target_sr=analyze.SR), ratio
+
+
+# --- takes ---------------------------------------------------------------------------------------------------------
+
+def ensure_raw(slot: dict, take: str) -> Path:
+    """The take's flac: the generated file, or (for a stinger cut from a longer take) the cut, made when missing."""
+    found = manifest.find("", manifest.raw_name(take))
+    if found:
+        return found
+    entry = slot["takes"][take]
+    if "derived_from" not in entry:
+        raise SystemExit(f"{take}: no file {manifest.raw_name(take)} in {manifest.takes_dir()} (music.sh run makes it)")
+    source = ensure_raw(slot, entry["derived_from"])
+    seconds, fade = entry["trim"]["seconds"], entry["trim"].get("fade", 1.2)
+    destination = manifest.where("", manifest.raw_name(take))
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["ffmpeg", "-hide_banner", "-nostdin", "-v", "error", "-y", "-i", str(source), "-t", f"{seconds}",
+                    "-af", f"afade=t=out:st={seconds - fade}:d={fade}", str(destination)], check=True)
+    return destination
+
+
+def mastered_path(take: str, suffix: str = "flac") -> Path | None:
+    return manifest.find("mastered", f"{take}.mastered.{suffix}")
+
+
+def master_take(slot: dict, take: str) -> dict:
+    """Master one take into takes_dir/mastered and return (and save) its report."""
+    kind = slot["kind"]
+    tune = slot["takes"][take].get("tune", 0)
+    stereo, _ = analyze.load(ensure_raw(slot, take))
+    stereo, mono, ratio = varispeed(stereo, tune)
+    before = analyze.loudness(stereo)
+    toned, tinfo = tone(stereo, mono)
+    out, linfo = level(toned, TARGETS[kind])
+    limited = False
+    if analyze.loudness(out)["true_peak"] > TARGETS[kind]["peak"] + 0.05:  # not expected: one capped gain
+        limit = 10 ** ((TARGETS[kind]["peak"] - 0.3) / 20)
+        out = ffmpeg_filter(out, f"alimiter=limit={limit:.4f}:level=disabled:attack=5:release=80")
+        limited = True
+    ogg, flac = manifest.where("mastered", f"{take}.mastered.ogg"), manifest.where("mastered", f"{take}.mastered.flac")
+    flac.parent.mkdir(parents=True, exist_ok=True)
+    encode(out, ogg, 0.7)
+    soundfile.write(str(flac), np.clip(out, -1, 1), RATE, subtype="PCM_24")
+    report = {"name": take, "kind": kind, "seconds": round(len(stereo) / RATE, 1), "tune": tune, "varispeed": ratio,
+              "before": before, "tone": tinfo, "gain_db": linfo["gain_db"], "limiter": limited,
+              "after_ogg": analyze.loudness(analyze.load(ogg)[0]), "ogg_kb": round(ogg.stat().st_size / 1024)}
+    manifest.where("mastered", f"{take}.mastered.json").write_text(json.dumps(report, indent=1, default=float) + "\n")
     return report
+
+
+# --- the game's file -------------------------------------------------------------------------------------------------
+
+def render(slot: dict, take: str, start: float | None, end: float | None) -> tuple[np.ndarray, dict | None]:
+    """The slot's game audio from the take's master, and its loop ({loopStart, loopEnd, seam}) when it has one.
+    start/end are the loop in the master's seconds; None for a cue."""
+    path = mastered_path(take)
+    if path is None:
+        raise SystemExit(f"{take}: not mastered yet (music.sh master {take})")
+    stereo, mono = analyze.load(path)
+    begin = max(0, int((first_sound(mono) - 0.02) * RATE))
+    if start is None or end is None:
+        piece, _ = level(stereo[begin:].copy(), TARGETS["cue"])
+        return piece, None
+    loop_start, loop_end = int(round(start * RATE)), int(round(end * RATE))
+    if loop_end > len(stereo):
+        raise SystemExit(f"{take}: the loop ends at {end:.1f}s, after the master does ({len(stereo) / RATE:.1f}s)")
+    piece = stereo[begin:loop_end].copy()
+    a, b = loop_start - begin, loop_end - begin
+    fade = min(int(CROSSFADE * RATE), a)
+    ramp = np.linspace(0, np.pi / 2, fade, dtype=np.float32)[:, None]
+    piece[b - fade: b] = piece[b - fade: b] * np.cos(ramp) + stereo[loop_start - fade: loop_start] * np.sin(ramp)
+    piece, _ = level(piece, TARGETS["loop"])
+    return piece, {"loopStart": round(a / RATE, 7), "loopEnd": round(b / RATE, 7), "seam": seam(piece, a)}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("track")
-    parser.add_argument("--take")
+    parser.add_argument("takes", nargs="+")
+    parser.add_argument("--kind", choices=list(TARGETS))
+    parser.add_argument("--tune", type=int)
     args = parser.parse_args()
-    print(json.dumps(master(args.track, args.take), indent=2))
+    data = manifest.load()
+    for take in args.takes:
+        found = manifest.slot_of(take, data)
+        if not found:
+            sys.exit(f"{take}: not a take in soundtrack.json")
+        slot = dict(found[1], takes={k: dict(v) for k, v in found[1]["takes"].items()})
+        if args.kind:
+            slot["kind"] = args.kind
+        if args.tune is not None:
+            slot["takes"][take]["tune"] = args.tune
+        print(json.dumps(master_take(slot, take), default=float))
 
 
 if __name__ == "__main__":
