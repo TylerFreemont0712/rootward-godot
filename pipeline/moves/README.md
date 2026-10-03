@@ -29,6 +29,9 @@ scripts/moves.sh --reel     # also films every clip in Godot (springs included):
 scripts/motion-lab.sh       # every clip on the dummy, live: slow motion, frame steps, limited/smooth, trails, circle
 ```
 
+With Blender already open (and ComfyUI up, so `moves.sh` refuses), the same build runs inside it through the Blender
+MCP server: `build_moves.main(scoped=True)` (the steps are in `.claude/skills/rootward-characters/SKILL.md`).
+
 Moves are judged on the **motion dummy** first (ADR-0030; `pipeline/blender/build_dummy.py` builds it on the same
 skeleton, so it plays exactly as any skin), then on the skins.
 

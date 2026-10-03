@@ -1,5 +1,5 @@
 {
-  "_about": "The light cast is a finger snap over the breathing idle: the lead hand rises beside her head, cocks, snaps toward the foes (the release: the circle appears) and eases back down into the idle. The body stays in the capture, turning a touch into the snap.",
+  "_about": "The light cast is a finger snap over the breathing idle: the lead hand rises beside her head, cocks, snaps toward the foes (the release: the circle appears) and eases back down into the idle. The body stays in the capture, turning a touch into the snap. The body's turn toward the foes builds while the hand rises (snap_set, snap_cock), so the snap itself moves only the hand, and a spring on the chest carries the last of it.",
   "length": 1.5,
   "hand": "LeftHand",
   "events": {
@@ -77,6 +77,10 @@
     "Head": [
       5,
       0.6
+    ],
+    "Chest": [
+      6,
+      0.75
     ]
   },
   "face": [

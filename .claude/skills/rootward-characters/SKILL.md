@@ -25,7 +25,9 @@ ADR-0005, ADR-0007, ADR-0008.
 - VRM: `AnimeSkin.restyle_vrm` (MToon -> anime); `ROOTWARD_STYLE=mtoon|anime|anime-ink` picks it for now.
 - Any rig -> skin: `~/blender/blender --background <src.blend> --python pipeline/blender/normalize_rig.py -- <map.json>`
   writes glb + textures + `skin.json`; copy the `.import` retarget block from `game/characters/moves/rootward.glb.import`
-  (skeleton path `PATH:Skin/Skeleton3D`, `fix_silhouette/enable` true for an A-pose).
+  (skeleton path `PATH:Skin/Skeleton3D`, `fix_silhouette/enable` true for an A-pose, **with the feet filtered out**:
+  `"retarget/rest_fixer/fix_silhouette/filter": [&"LeftFoot", &"RightFoot", &"LeftToes", &"RightToes"]`, or the fixer
+  tips the toes up; `test/characters/skin_import_test.gd` checks every skin's import).
 - Look dev: `ROOTWARD_CHARACTER=<id> ROOTWARD_LOOK=full|face [ROOTWARD_CLIP=.. ROOTWARD_AT=..]
   scripts/screenshot.sh res://tools/skin_look.tscn shots/look/x.png 20`.
 - Third-party models (e.g. the ZZZ fan rigs in `/data/Blender/ZZZ`) go ONLY under `game/characters/_local/` and
@@ -67,6 +69,26 @@ ADR-0005, ADR-0007, ADR-0008.
 - `scripts/moves.sh` sheets list their clip groups by hand; add a new clip to a group there.
 - In the Character room (Moves tab) every move plays at fight scale on a real BattleStage.
 
+## Building the moves in a live Blender (Blender MCP)
+
+`scripts/moves.sh` refuses to start Blender while ComfyUI is up. With Blender already open, build through the MCP
+server instead: `build_moves.main(scoped=True)` builds in a scene of its own (`RW_MoveBuild`), exports only that scene
+and its own clips (the glTF action filter leaves the session's out), steps the session's `Moves` object and actions
+aside by name for the build, and removes everything it made, so the session is left as it was:
+
+```python
+import sys, importlib
+for p in ("/home/joejin/personal-project/Rootward/pipeline/moves", "/home/joejin/personal-project/Rootward/pipeline/blender"):
+    sys.path.insert(0, p) if p not in sys.path else None
+for m in ("motion", "retarget", "build_moves"):
+    importlib.reload(sys.modules[m]) if m in sys.modules else None
+import build_moves; build_moves.main(scoped=True)   # redirect stdout: the importer is chatty
+```
+
+Then `godot --headless --import --path game`, the sheets and `scripts/test.sh -a res://test/characters`. To judge a
+clip's smoothness, import the glb into a temporary scene and print each bone's world angular speed per frame (a
+one-frame spike, or a jump from 0 to full speed, is what reads as a jerk); remove the scene and what it imported.
+
 ## Workflow for a new or changed clip
 
 1. Edit poses/clips (numbers only; no bone axes). Remember: foes are on her LEFT and 35 degrees forward; a torso
@@ -84,6 +106,7 @@ ADR-0005, ADR-0007, ADR-0008.
   `Hips.lift` <= 0 except in an unplanted window (`plant` in the clip). The Hips must stay disconnected (the build
   does it): Blender ignores a connected bone's location.
 - Every clip starts and ends in the `stance` pose (the guard idle); the foot spots are taken from each clip's frame 0.
+- Feet: `ROOTWARD_FEET=1` on `pose_views` frames them at floor level (`ROOTWARD_NO_IK=1` plays without leg IK).
 - A T-pose skin built on the move library's skeleton (the dummy) imports with `fix_silhouette` **off**, as
   `rootward.glb` does: on, it re-aims the VRoid feet and tips them toes-up. Only an A-pose rig needs it.
 - The VRoid `Toes` bone sits at ankle height; the floor (the sole) is at 0.

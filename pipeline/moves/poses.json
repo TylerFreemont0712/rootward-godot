@@ -52,6 +52,12 @@
     "Head": {
       "turn": 16,
       "bend": -12
+    },
+    "Hips": {
+      "turn": 6.5
+    },
+    "Chest": {
+      "turn": 4.5
     }
   },
   "snap_cock": {
@@ -65,6 +71,16 @@
       "middle": 0.4,
       "thumb": 0.3,
       "oppose": 40
+    },
+    "Hips": {
+      "turn": 7.2
+    },
+    "Chest": {
+      "turn": 5.8
+    },
+    "Head": {
+      "turn": 17,
+      "bend": -13
     }
   },
   "snap": {
@@ -174,6 +190,24 @@
     "Head": {
       "bend": -18,
       "turn": 12
+    }
+  },
+  "coil": {
+    "base": "unfold",
+    "Hips": {
+      "lift": -0.015,
+      "turn": 8
+    },
+    "Spine": {
+      "bend": -6
+    },
+    "Chest": {
+      "bend": -8,
+      "turn": 5
+    },
+    "Head": {
+      "bend": -19,
+      "turn": 11
     }
   },
   "thrust": {

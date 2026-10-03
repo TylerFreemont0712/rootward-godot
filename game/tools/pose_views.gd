@@ -3,7 +3,9 @@ extends Node3D
 ## behind her shoulder, on a floor with stride lines, the feet planted as in a fight.
 ##   ROOTWARD_CHARACTER=dummy ROOTWARD_CLIP=idle-breathe ROOTWARD_AT=0 \
 ##     scripts/screenshot.sh res://tools/pose_views.tscn shots/pose.png 20
-## ROOTWARD_REST=1 shows the model as built (no clip, no leg IK); ROOTWARD_ZOOM=1 frames the upper body only.
+## ROOTWARD_REST=1 shows the model as built (no clip, no leg IK); ROOTWARD_ZOOM=1 frames the upper body only;
+## ROOTWARD_FEET=1 frames the feet, level with the floor, to judge how they stand on it; ROOTWARD_NO_IK=1 plays the clip
+## without the runtime leg planting.
 
 const VIEWS: Array[Array] = [["stage", 35.0], ["front", 0.0], ["her side", 90.0], ["behind", 150.0]]
 const GAP := 1.15
@@ -29,7 +31,8 @@ func _ready() -> void:
 	add_child(key)
 	for i in VIEWS.size():
 		var view: Array = VIEWS[i]
-		var spot := Vector3((i - 1.5) * GAP * (0.55 if OS.get_environment("ROOTWARD_ZOOM") != "" else 1.0), 0.0, 0.0)
+		var narrow := OS.get_environment("ROOTWARD_ZOOM") != "" or OS.get_environment("ROOTWARD_FEET") != ""
+		var spot := Vector3((i - 1.5) * GAP * (0.55 if narrow else 1.0), 0.0, 0.0)
 		var hero := StageCharacter.create(id)
 		hero.position = spot
 		hero.rotation_degrees.y = float(view[1])
@@ -42,6 +45,9 @@ func _ready() -> void:
 			for ik in hero.skeleton.find_children("*", "TwoBoneIK3D", false, false):
 				(ik as TwoBoneIK3D).active = false
 		elif hero.player != null:
+			if OS.get_environment("ROOTWARD_NO_IK") != "":
+				for ik in hero.skeleton.find_children("*", "TwoBoneIK3D", false, false):
+					(ik as TwoBoneIK3D).active = false
 			hero.player.play(clip)
 			hero.player.seek(at, true)
 			hero.player.pause()
@@ -61,6 +67,11 @@ func _ready() -> void:
 		# The upper body only, for hands and faces.
 		camera.size = 1.15
 		camera.position = Vector3(0, 1.25, 6)
+		camera.rotation_degrees.x = 0.0
+	if OS.get_environment("ROOTWARD_FEET") != "":
+		# The feet at floor level: a toe lifted off the floor shows as a gap under the shoe.
+		camera.size = 0.75
+		camera.position = Vector3(0, 0.2, 6)
 		camera.rotation_degrees.x = 0.0
 	add_child(camera)
 

@@ -790,3 +790,16 @@ The rules record one entry per bolt, right for the stage that plays each one and
 thirty-bolt cast was thirty copies of one sentence. A digest at the point of reading folds the bolts of a volley by
 kind and foe into one entry carrying the sums, so the tallies still add up, and leaves the recorded entries alone, so
 the rules, the saves and the reference results never change for the sake of wording.
+
+## The silhouette fixer tips the toes up (`game/characters/_local/*/*.glb.import`, `test/characters/skin_import_test.gd`)
+Godot's rest fixer can re-aim an A-pose rig's limbs into the T-pose the moves were keyed in (`fix_silhouette`). It
+re-aims every bone it judges off the reference silhouette, the feet included, and a foot whose bone runs down to the
+toes is turned until it runs level: the mesh it carries ends up toes-up even at rest. Its `filter` leaves bones out;
+the normalised skins list both feet and toes there, and a test checks every skin import that uses the fixer.
+
+## A smoothness check is angular speed per frame (`pipeline/blender/build_moves.py`, `pipeline/moves/clips/`)
+Two things read as a jerk: one frame much faster than its neighbours (a key whose ease arrives in about a frame: the
+snap's torso turn), and a jump from standing still to full speed (`cubic_out` straight after a dead hold). Measured
+as each bone's world rotation between frames, both show as numbers, and the fixes are in the keys: let the body's
+turn arrive with the hand's rise, coil slowly through a wait, and accelerate out of it (`sine`) instead of starting
+at full speed. Measure with the quaternions' shortest angle, min(θ, 360° − θ): q and −q are the same turn.

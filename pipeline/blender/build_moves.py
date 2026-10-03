@@ -104,13 +104,14 @@ def rename_to_profile(armature: bpy.types.Object) -> int:
     return len(renames)
 
 
-def load_rig() -> bpy.types.Object:
+def load_rig(keep: set | frozenset = frozenset()) -> bpy.types.Object:
+    """The base model, imported; every other object is removed first, except those in `keep` (a live session's)."""
     rig = json.loads((ROOT / "pipeline" / "moves" / "rig.json").read_text())
     addon_utils.enable("bl_ext.blender_org.vrm", default_set=True)
-    for obj in list(bpy.data.objects):
+    for obj in [o for o in bpy.data.objects if o not in keep]:
         bpy.data.objects.remove(obj)
     bpy.ops.import_scene.vrm(filepath=str(ROOT / rig["base"]))
-    armature = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    armature = next(o for o in bpy.data.objects if o.type == "ARMATURE" and o not in keep)
     log(f"base {rig['base']}: {rename_to_profile(armature)} humanoid bones renamed")
     armature.name = "Moves"
     return armature
@@ -391,10 +392,60 @@ def release_point(armature: bpy.types.Object, clip: motion.Clip, rest: dict[str,
     return [round(palm.x / hips_height, 4), round(palm.z / hips_height, 4), round(-palm.y / hips_height, 4)]
 
 
-def main() -> None:
-    armature = load_rig()
+# LEARN: with one armature the glTF exporter takes every armature action in the file, so in a live session it would
+# also export the session's own (a "T-Pose" the VRM importer made). Its action filter (the scene property the export
+# dialog's "Filter Actions" registers) is the documented way to leave some out; it is registered here and removed after.
+def _skip_on_export(actions: frozenset) -> None:
+    """Marks `actions` to be left out of the next glTF export; an empty set takes the marks (and the filter, when this
+    registered it) away again. A filter the session already had keeps its own entries."""
+    import io_scene_gltf2
+
+    global _FILTER_ADDED
+    scene = bpy.data.scenes[0]
+    if not actions:
+        if hasattr(bpy.types.Scene, "gltf_action_filter"):
+            for index in reversed(range(len(scene.gltf_action_filter))):
+                if scene.gltf_action_filter[index].get("rootward_build"):
+                    scene.gltf_action_filter.remove(index)
+            if _FILTER_ADDED:
+                del bpy.types.Scene.gltf_action_filter
+                del bpy.types.Scene.gltf_action_filter_active
+        _FILTER_ADDED = False
+        return
+    if not hasattr(bpy.types.Scene, "gltf_action_filter"):
+        bpy.types.Scene.gltf_action_filter = bpy.props.CollectionProperty(type=io_scene_gltf2.GLTF2_filter_action)
+        bpy.types.Scene.gltf_action_filter_active = bpy.props.IntProperty()
+        _FILTER_ADDED = True
+    for action in actions:
+        item = scene.gltf_action_filter.add()
+        item.action = action
+        item.keep = False
+        item["rootward_build"] = True
+
+
+_FILTER_ADDED = False
+
+
+def main(scoped: bool = False) -> None:
+    """Builds and exports the library. `scoped` runs it inside a live Blender (the Blender MCP server): in a scene of
+    its own, removing only what the build made and returning to the scene that was open, so the session is left as it
+    was. Run from a shell (`--background`) it owns the whole file, as before."""
+    window = bpy.context.window if scoped else None
+    previous = window.scene if window is not None else None
+    keep = frozenset(bpy.data.objects) if scoped else frozenset()
+    kept_actions = frozenset(bpy.data.actions) if scoped else frozenset()
+    if window is not None:
+        window.scene = bpy.data.scenes.new("RW_MoveBuild")
+    # A live session's own actions and objects keep their names, but step aside for the build: the base model's
+    # "T-Pose" must not come out as "T-Pose.001" because the session already has one.
+    aside = {action: action.name for action in kept_actions}
+    # So is a session's object named as the build's skeleton is ("Moves"): Godot's import settings find it by name.
+    aside.update({obj: obj.name for obj in keep if obj.name == "Moves"})
+    for block in aside:
+        block.name = f"{block.name} (session)"
+    armature = load_rig(keep)
     # Only the skeleton is keyed; without the meshes every update (the leg solver makes many) is quick.
-    for obj in [o for o in bpy.data.objects if o is not armature]:
+    for obj in [o for o in bpy.data.objects if o is not armature and o not in keep]:
         bpy.data.objects.remove(obj)
     # LEARN: the glTF exporter turns frame numbers into seconds with the scene's frame rate (Blender's default is
     # 24), so a 30 fps clip keyed on a 24 fps scene plays 1.25 times too slow and misses its release.
@@ -440,10 +491,14 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / "rootward.glb"
     armature.select_set(True)
+    if scoped:
+        _skip_on_export(kept_actions)
     bpy.ops.export_scene.gltf(
         filepath=str(out),
         export_format="GLB",
         use_selection=True,
+        # Only the build's scene: in a live session the other scenes are the session's own.
+        use_active_scene=True,
         export_animations=True,
         export_animation_mode="ACTIONS",
         export_anim_slide_to_zero=True,
@@ -457,6 +512,21 @@ def main() -> None:
     meta["base"] = json.loads((ROOT / "pipeline" / "moves" / "rig.json").read_text())["base"]
     meta_path.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n")
     log(f"wrote {out.relative_to(ROOT)} ({out.stat().st_size / 1e6:.1f} MB) and {meta_path.relative_to(ROOT)}")
+    if scoped:
+        _skip_on_export(frozenset())
+    if window is not None:
+        # Leave the live session as it was: the build's skeleton, clips and scene go.
+        build = window.scene
+        data = armature.data
+        bpy.data.objects.remove(armature)
+        if data.users == 0:
+            bpy.data.armatures.remove(data)
+        for action in [a for a in bpy.data.actions if a not in kept_actions]:
+            bpy.data.actions.remove(action)
+        window.scene = previous
+        bpy.data.scenes.remove(build)
+    for block, name in aside.items():
+        block.name = name
 
 
 if __name__ == "__main__":

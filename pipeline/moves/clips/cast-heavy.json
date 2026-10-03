@@ -1,5 +1,5 @@
 {
-  "_about": "The heavy cast: both hands gather the power at her chest over the idle, then the lead hand sweeps out into Quaternius's simple spell (Spell_Simple_Enter), holds it while the circle completes (the charge), and pushes (Spell_Simple_Shoot, the release) with the body leaning in. It ends held: cast-heavy-hold, then cast-heavy-end.",
+  "_about": "The heavy cast: both hands gather the power at her chest over the idle, then the lead hand sweeps out into Quaternius's simple spell (Spell_Simple_Enter), holds it while the circle completes (the charge), and pushes (Spell_Simple_Shoot, the release) with the body leaning in. It ends held: cast-heavy-hold, then cast-heavy-end. Through the charge she coils (leans back a touch, slowly), and the push accelerates out of the coil rather than starting at full speed from a standstill.",
   "length": 1.85,
   "hand": "LeftHand",
   "events": {
@@ -91,13 +91,13 @@
     },
     {
       "t": 1.3,
-      "pose": "unfold",
+      "pose": "coil",
       "ease": "sine"
     },
     {
       "t": 1.5,
       "pose": "thrust",
-      "ease": "cubic_out"
+      "ease": "sine"
     },
     {
       "t": 1.85,
