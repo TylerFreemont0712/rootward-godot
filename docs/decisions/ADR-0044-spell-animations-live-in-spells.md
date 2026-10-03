@@ -31,3 +31,13 @@ circles facing a little the wrong way, the Spells previews blown out or unfinish
 
 The Moves tab is only gestures. A profile's circle choice now decides the whole look of a cast. The classic
 snap-and-write casts remain only where a cast cannot be constructed (a stage playing fast).
+
+## Follow-up (same day)
+
+- The circles lean less: the disc's tilt (and so the rise of the stack in front, and the centred styles' lean) is about
+  half what it was (-0.10 → -0.05, -0.12 → -0.06), so a circle no longer reads as lobbed upward.
+- A pulse is as big as the circle it leaves. Ring Bloom is only as wide as its outermost ring (`MagicCircle.reach()`),
+  so its shock ring, sparks and motes follow that, not the grand circle's radius; the centred styles pulse from their
+  own centre rather than from a stack disc they do not draw, with the squash and lean they are drawn with.
+- The constructed circle stands a little higher and further from the Maintainer (0.55 → 0.63 of her height up, 0.42 →
+  0.6 of its radius out), to sit where her gesture is.

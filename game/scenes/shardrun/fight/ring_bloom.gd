@@ -61,8 +61,10 @@ static func draw(c: MagicCircle, radius: float, fade: float) -> void:
 	for shock: float in c._shocks:
 		var age := (c.clock - shock) / 0.32
 		if age < 1.0:
+			# Out to the ring that stands outermost, not to the grand circle: a small spell has a small pulse.
+			var reach := radius * outer_share(count - 1)
 			c._arc(
-				radius * lerpf(0.2, 1.15, MagicCircle._ease_out(age)), 0.0, TAU, 3.0 * (1.0 - age), (1.0 - age) * fade
+				reach * lerpf(0.2, 1.15, MagicCircle._ease_out(age)), 0.0, TAU, 3.0 * (1.0 - age), (1.0 - age) * fade
 			)
 
 

@@ -300,7 +300,7 @@ func magic_circle(cards: Array, element: String, writing_speed := 1.0, construct
 	# Ring Bloom's size comes from its rings, one per shard up to six, so it is always drawn at the grand circle's scale.
 	var size := hero.circle_radius(CircleLayers.TIER_SHARDS.size() - 1 if style == "ring-bloom" else tier)
 	# Shard Weave stands on the stage, independent of skin bones and the currently playing pose.
-	var at := hero.position + Vector2(hero.size.x * 0.68 + size * 0.42, hero.size.y - hero.figure_height() * 0.55)
+	var at := hero.position + Vector2(hero.size.x * 0.7 + size * 0.6, hero.size.y - hero.figure_height() * 0.63)
 	var circle := MagicCircle.cast(
 		_fx,
 		at if construction else hero.circle_point(size),

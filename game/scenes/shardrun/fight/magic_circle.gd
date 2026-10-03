@@ -42,8 +42,8 @@ const SQUASH := 0.34
 ## toward the foes is seen at the cosine of its turn: these are about 12% further round than they were (0.72 and 0.46),
 ## because the player found the circles ever so slightly facing the wrong way.
 const CENTRED_SQUASH := 0.65
-const CENTRED_LEAN := -0.12
-const TILT := -0.1
+const CENTRED_LEAN := -0.06
+const TILT := -0.05
 ## How far in front of the first circle each smaller one stands (in radii), and how much smaller it is.
 const STACK_STEP := 0.55
 const STACK_SHRINK := 0.68
@@ -226,14 +226,39 @@ func launch_point() -> Vector2:
 func pulse() -> void:
 	_flare = 1.0
 	_shocks.append(clock)
-	_burst(_disc_origin(int(_facts.front)), 8 + 2 * tier, 1.0, radius * pow(STACK_SHRINK, int(_facts.front)))
+	if style in CosmeticRules.CENTRED_STYLES:
+		_burst(Vector2.ZERO, 8 + 2 * tier, 1.0, reach() * 0.6)
+	else:
+		_burst(_disc_origin(int(_facts.front)), 8 + 2 * tier, 1.0, radius * pow(STACK_SHRINK, int(_facts.front)))
+
+
+## How far the circle reaches from its centre as it stands: the radius, except for Ring Bloom, which is only as wide as
+## its outermost ring (a spell of two shards is a small circle, and its pulses, sparks and motes are small with it).
+func reach() -> float:
+	if style == "ring-bloom":
+		return radius * RingBloom.outer_share(maxi(layers.size(), 1) - 1)
+	return radius
+
+
+## The squash and lean this circle is drawn with (the centred styles stand a little less narrowed than a codex disc).
+func _squash() -> float:
+	return CENTRED_SQUASH if style in CosmeticRules.CENTRED_STYLES else SQUASH
+
+
+func _lean() -> float:
+	return CENTRED_LEAN if style in CosmeticRules.CENTRED_STYLES else TILT
+
+
+## The centre of the disc a burst starts from: a centred style has no stack in front of it.
+func _centre(index: int) -> Vector2:
+	return Vector2.ZERO if style in CosmeticRules.CENTRED_STYLES else _disc_origin(index)
 
 
 ## The volley is over: the circle spins up, swells and fades, its runes scattering, then it is gone.
 func close() -> void:
 	if _closing < 0.0:
 		_closing = clock
-		_burst(_disc_origin(0), 18, 0.2, radius * 0.7)
+		_burst(_centre(0), 18, 0.2, reach() * 0.7)
 
 
 func _process(frame_delta: float) -> void:
@@ -262,7 +287,7 @@ func _process(frame_delta: float) -> void:
 		_formed_at = clock
 		_flare = 1.4
 		_shocks.append(clock)
-		_burst(_disc_origin(0), 26 + 8 * tier, 1.0, radius * 0.9)
+		_burst(_centre(0), 26 + 8 * tier, 1.0, reach() * 0.9)
 		if _element in ELEMENT_LAYERS and not silent:
 			Sound.play("sfx-element-" + _element, SpellAnim.SOUND_VOLUME * 0.8)
 		formed.emit()
@@ -283,9 +308,9 @@ func _layer_start(index: int) -> float:
 
 ## Layer `index` arrives: a burst of light where it will stand, a sound that climbs with each, and the signal.
 func _add_layer(index: int) -> void:
-	var stands := radius * _layer_share(index)
+	var stands := radius * (RingBloom.outer_share(index) if style == "ring-bloom" else _layer_share(index))
 	if not _reduced and not external_construction:
-		_burst(_disc_origin(0), 6 + tier, 0.0, stands)
+		_burst(_centre(0), 6 + tier, 0.0, stands)
 	_flare = maxf(_flare, 0.45)
 	if not silent:
 		Sound.play("sfx-cast-layer", SpellAnim.SOUND_VOLUME * LAYER_SOUND, 0.88 + 0.07 * index)
@@ -322,17 +347,17 @@ func _layer_progress(index: int) -> float:
 
 ## A point on disc `index` at `angle`, `r` from its centre, in this node's space (the disc seen narrowed).
 func _on_disc(index: int, angle: float, r: float) -> Vector2:
-	return _disc_origin(index) + Vector2(cos(angle) * SQUASH, sin(angle)).rotated(TILT) * r
+	return _centre(index) + Vector2(cos(angle) * _squash(), sin(angle)).rotated(_lean()) * r
 
 
 func _spawn_mote(inward: bool) -> void:
 	var angle := randf() * TAU
 	if inward:
-		var from := _on_disc(0, angle, radius * randf_range(1.15, 1.6))
-		var to := _on_disc(0, angle + 0.8, radius * randf_range(0.2, 0.9))
+		var from := _on_disc(0, angle, reach() * randf_range(1.15, 1.6))
+		var to := _on_disc(0, angle + 0.8, reach() * randf_range(0.2, 0.9))
 		_motes.append([from, (to - from) * 2.4, 0.0, 0.42, randf_range(1.2, 2.4)])
 	else:
-		var from := _on_disc(0, angle, radius * 0.95)
+		var from := _on_disc(0, angle, reach() * 0.95)
 		_motes.append([from, Vector2(randf_range(-10, 30), randf_range(-60, -25)), 0.0, 0.9, randf_range(1.0, 2.0)])
 
 
@@ -341,7 +366,7 @@ func _burst(at: Vector2, count: int, forward: float, spread: float) -> void:
 	for i in count:
 		var angle := randf() * TAU
 		var speed := randf_range(0.6, 1.4) * spread * 2.2
-		var velocity := Vector2(cos(angle) * SQUASH, sin(angle)).rotated(TILT) * speed
+		var velocity := Vector2(cos(angle) * _squash(), sin(angle)).rotated(_lean()) * speed
 		velocity.x += forward * randf_range(0.0, 1.0) * spread * 1.6
 		_motes.append([at, velocity, 0.0, randf_range(0.25, 0.5), randf_range(1.4, 2.8)])
 

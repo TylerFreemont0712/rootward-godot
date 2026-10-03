@@ -94,3 +94,38 @@ func test_a_stage_draws_the_worn_ring_bloom_at_the_grand_size() -> void:
 	assert_str(six.style).is_equal("ring-bloom")
 	assert_float(one.radius).is_equal(six.radius)
 	assert_float(six.radius).is_equal(stage.hero.circle_radius(3))
+
+
+func test_a_small_spell_pulses_small() -> void:
+	var small := _circle(2)
+	var grand := _circle(6)
+	assert_float(small.reach()).is_less(grand.reach() * 0.5)
+	assert_float(grand.reach()).is_equal(grand.radius)
+	small.pulse()
+	grand.pulse()
+	var farthest := func(circle: MagicCircle) -> float:
+		var most := 0.0
+		for mote: Array in circle._motes:
+			most = maxf(most, (mote[1] as Vector2).length())
+		return most
+	# The sparks leave the centre, at speeds that follow the circle's own size.
+	for mote: Array in small._motes:
+		assert_vector(mote[0]).is_equal(Vector2.ZERO)
+	assert_float(farthest.call(small)).is_less(farthest.call(grand))
+
+
+func test_every_style_pulses_in_proportion_to_its_circle() -> void:
+	for style: String in ["codex", "script-loom", "ring-bloom"]:
+		var small: MagicCircle = auto_free(MagicCircle.cast(self, Vector2.ZERO, 0, "none", 50.0, "", 1.0, true))
+		var large: MagicCircle = auto_free(MagicCircle.cast(self, Vector2.ZERO, 0, "none", 200.0, "", 1.0, true))
+		for circle: MagicCircle in [small, large]:
+			circle.style = style
+			circle.use_plan(CircleLayers.plan(CircleLayers.demo_cards(6)))
+			circle.set_process(false)
+			circle.pulse()
+		var reach_of := func(circle: MagicCircle) -> float:
+			var most := 0.0
+			for mote: Array in circle._motes:
+				most = maxf(most, (mote[1] as Vector2).length())
+			return most
+		assert_float(reach_of.call(large)).override_failure_message(style).is_greater(reach_of.call(small) * 2.0)
