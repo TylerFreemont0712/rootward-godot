@@ -12,8 +12,8 @@ writing and improving real code) and every answer is graded by running it in the
 - **Not a run.** No foes, no Integrity, no losing. Progress is evidence of skill, kept forever.
 - **Not the Shardrun's progression.** Learning never makes Shardrun cards stronger (the old repo learned this the hard
   way: two power bars fight each other). Rewards are cosmetic, knowledge (the Library) and new things to do.
-- **It absorbs the Verifier.** The Verifier's twelve code-reading lessons become the Academy's *Predict* exercises;
-  its title tile becomes the Academy's.
+- **It starts fresh.** The Verifier, an earlier code-reading course, was removed (ADR-0045) rather than absorbed; its
+  Predict and Trace interactions are rebuilt inside the Academy's own lesson screen.
 - **Two audiences**: the player (an adult, self-taught, aiming to become a much better programmer) and their
   daughters (beginners, playing in Japanese). Pip's Path (section 8) is for the second.
 
@@ -25,7 +25,7 @@ writing and improving real code) and every answer is graded by running it in the
 | stdout grading | `sandbox/io_grader.gd` | programs that read input and print |
 | Loop and call counting | the spell harness, ADR-0015 | measuring how much work a solution does |
 | The code walkthrough | `ui/code/code_view.gd`, ADR-0015 | stepping through a worked example |
-| The Verifier's course, trace board and stars | `core/verifier_course.gd`, `scenes/verifier/` | the Predict exercise, the first saves |
+| The removed Verifier's course, trace board and stars (ADR-0045) | git history before ADR-0045 | ideas for Predict and Trace, if they help |
 | Content as JSONC with code beside it, Japanese overlays | ADR-0004 | the lesson format |
 | 17 Foundry challenges: prompt, starter, solution, visible and hidden tests, four-step hint ladder, explanation, in Python and JavaScript | `../ProgramMe/content/packs/core/challenges/foundry/` | the first Fix and Write exercises |
 | A concept graph (12 shared nodes, 23 Python nodes, prerequisites) | `../ProgramMe/content/packs/core/skills/` | the Root Map |
@@ -38,7 +38,7 @@ predict, run, investigate, modify, make), then an improvement step:
 
 1. **Read** a short explanation (under 200 words) with one worked example you can step through: the walkthrough
    shows each line run and the variables changing.
-2. **Predict** what a snippet prints, or a value mid-way (the Verifier's interaction).
+2. **Predict** what a snippet prints, or a value mid-way.
 3. **Investigate**: trace a table of variables, or spot the bug.
 4. **Modify**: fix a buggy program, or complete a Parsons puzzle.
 5. **Make**: write the function from a spec, against visible and hidden tests.
@@ -52,8 +52,8 @@ the Make step (productive failure), with the reading kept one click away.
 | Type | The player | Graded by | Built from |
 |---|---|---|---|
 | Walkthrough | steps through a worked example | not graded | the code walkthrough, plus a variables panel |
-| Predict | picks a mid-way value, types the exact output | the real stdout | the Verifier |
-| Trace | fills a table of variables, step by step | an instrumented run of the snippet | the Verifier's trace board, generalised |
+| Predict | picks a mid-way value, types the exact output | the real stdout | new (the removed Verifier's idea) |
+| Trace | fills a table of variables, step by step | an instrumented run of the snippet | new |
 | Parsons | drags shuffled lines (with distractors) into order and indentation | runs the result: any order that passes is right | new |
 | Fill the blank | types the missing tokens | tests | new |
 | Spot the bug | clicks the wrong line, picks the kind of bug | the recorded bug line; explanation shown | new |
@@ -113,7 +113,7 @@ times this week: try the Boundaries drill", "Dictionaries is due for review", "n
 - **Mastery 0 to 5 per concept**, from evidence: an unaided first-try pass counts most, a pass after hints less, a
   review passed days later most of all. Shared concepts (iteration, recursion) take the best of their Python and
   JavaScript nodes, so switching language does not start over.
-- **Stars per lesson** (1 to 3: passed, first try, no hints), as the Verifier has them now.
+- **Stars per lesson** (1 to 3: passed, first try, no hints), as the Verifier had them.
 - **Your version.** Your rank is a semantic version: a patch for each exercise, a minor for each lesson, a major for
   each tier. "Maintainer v1.4.2" means Apprentice done, well into the next tier.
 - **Daily maintenance** (spaced review): a short queue (about five minutes) of small items (a predict, a fix, a
@@ -202,7 +202,7 @@ game/content/packs/core/academy/
 - every Predict answer is the real stdout, and every Parsons arrangement that is accepted passes;
 - `scripts/locale.sh ja` counts untranslated lesson text.
 
-The ports: the Verifier's twelve lessons (with Python versions added), the Foundry's seventeen challenges (hints and
+The ports: the Foundry's seventeen challenges (hints and
 explanations included), the concept graph.
 
 ## 10. Screens
@@ -231,7 +231,7 @@ local by default, no telemetry. Whether it belongs in the game at all is the pla
 ## 13. The order to build it in
 
 1. **Foundation**: the journey, the lesson format and its checks, the function harness, the editor with friendly
-   errors, saves and stars, the Verifier's lessons moved in, the Foundry's challenges ported, the first unit complete
+   errors, saves and stars, the Foundry's challenges ported, the first unit complete
    in both languages; all Academy text translatable from the first line.
 2. **Progression and improvement**: the Root Map, mastery, your version, daily maintenance, the review panel (measured
    work, style rules, reference solutions), the coach; the Foundations tier complete.

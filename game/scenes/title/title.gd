@@ -173,7 +173,7 @@ func _home() -> void:
 		Ui.label(_text("Program the spell.\nDescend into the machine.", "呪文をプログラムしよう。\n機械の奥へ、降りていこう。"), "Narration"),
 		Rect2(104, 290, 550, 68)
 	)
-	var underway := Game.session.in_progress() and Settings.playstyle != "verifier"
+	var underway := Game.session.in_progress()
 	var resume := FoundryUi.button(
 		_text("↓  Resume descent", "↓  冒険のつづき"), _continue if underway else _show_setup, true
 	)
@@ -216,8 +216,6 @@ func _home() -> void:
 
 
 func _show_setup() -> void:
-	if Settings.playstyle == "verifier":
-		Game.use("program")
 	_setup = true
 	_build(true)
 
@@ -352,12 +350,7 @@ func _open_academy() -> void:
 		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		plans.add_child(card)
 	column.add_child(plans)
-	var existing := FoundryUi.button(
-		_text("Open existing Verifier course", "今あるコード読解コースを開く"), func() -> void: Game.go(Game.VERIFIER), false, true
-	)
-	existing.disabled = not Sandbox.is_available(SandboxJob.JAVASCRIPT)
-	column.add_child(Ui.hbox([existing]))
-	_show_overlay(FoundryUi.page(column, Vector2(700, 430)))
+	_show_overlay(FoundryUi.page(column, Vector2(700, 0)))
 
 
 func _open_profiles() -> void:
@@ -651,7 +644,7 @@ func _start_trial() -> void:
 
 
 func _confirm_new_run(sandbox: bool) -> void:
-	var text := "Starting anew replaces the run underway. Your Verifier course progress is saved separately."
+	var text := "Starting anew replaces the run underway."
 	var yes := Ui.button("Start anew", _begin.bind(sandbox), "DangerButton")
 	var no := Ui.button("Keep the run", _close_overlay, "PrimaryButton")
 	var panel := Ui.panel(

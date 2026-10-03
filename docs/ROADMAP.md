@@ -151,7 +151,7 @@ player to produce (predict, trace, order, fix, write, improve), graded by runnin
 measures the solution's work as the input grows, names its complexity against the reference's, points out style
 fixes, and shows another way to write it. Progress is the Root Map (the concept graph drawn as roots), mastery per
 concept, a version number as rank, and five minutes of spaced review a day. Pip's Path teaches young players with a
-character walking a grid. The Verifier's lessons move in. See `docs/ACADEMY_DESIGN.md`.
+character walking a grid. (The Verifier was removed instead of moved in, ADR-0045.) See `docs/ACADEMY_DESIGN.md`.
 
 ### 3.3 Where they meet, lightly
 
@@ -238,13 +238,12 @@ paradigm and says what feels off.
 
 The goal: a separate journey in which one unit teaches from start to finish, graded by running code.
 
-- [ ] The Academy on the title in the Verifier's place; its hub, the lesson screen, an editor (`CodeEdit`, the game's
+- [ ] The Academy on the title (the Verifier was removed, ADR-0045); its hub, the lesson screen, an editor (`CodeEdit`, the game's
       code colours), a console and test results; tracebacks mapped to the player's line and explained in plain words.
 - [ ] The lesson format, its schema and its checks (ACADEMY_DESIGN section 9); a function-test harness in Python and
       JavaScript beside the stdout grader.
 - [ ] Exercise types: Walkthrough, Predict, Parsons, Fix, Write, Explain.
-- [ ] Content: the Verifier's twelve lessons (with Python versions), the Foundry's seventeen challenges, units F1 and
-      F2 whole, in both languages and in Japanese.
+- [ ] Content: the Foundry's seventeen challenges, units F1 and F2 whole, in both languages and in Japanese.
 - [ ] Saves in `user://academy/`, stars, the hint ladder (never the answer).
 - [ ] ADR-0018.
 
@@ -352,7 +351,8 @@ Done when the whole game plays in Japanese and the daughters finish Pip's first 
 1. **Which first after stage 0**: the Shardrun fix (recommended: small, and you feel those problems now) or the
    Academy's foundation (if learning is the more urgent of the two)? They do not depend on each other.
 2. **The learning mode's name**: "Academy" is a working name (others: Rootwork, the Grove, the Foundry). And does it
-   take the Verifier's place on the title? (Recommended: yes, the Verifier's lessons move in.)
+   take the Verifier's place on the title? (Recommended: yes, the Verifier's lessons move in.) *Answered 2026-10-04: the Verifier is removed
+   instead (ADR-0045).*
 3. **The second class**: Kurogane (recommended: the most different playstyle and the most beginner concepts), Sai
    (graphs, the biggest spell show), or Oren (async)?
 4. **The roster**: are the nine concepts in `Concept/newCharacters/` the classes, drawn as small, cute sprites the way

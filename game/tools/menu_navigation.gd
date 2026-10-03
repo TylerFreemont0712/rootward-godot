@@ -46,11 +46,11 @@ func _walk() -> void:
 					"0.5x",
 					"Loop animation",
 					"Spells",
-					"Test spell",
+					"Cast it",
 					"Circle only",
 					"View",
-					"Floor guides",
-					"High contrast",
+					"Floor and height guides",
+					"Arena backdrop",
 					"Motion",
 					"Reset pose"
 				]:
@@ -104,11 +104,6 @@ func _walk() -> void:
 		await _click("Continue tutorial" if _button("Continue tutorial") != null else "Start tutorial")
 		await _expect_scene(Game.SHARDRUN)
 		await _return_from_run()
-		await _click("Academy")
-		await _click("Open existing Verifier course")
-		await _expect_scene(Game.VERIFIER)
-		await _click("← Title")
-		await _expect_scene(Game.TITLE)
 	var output := OS.get_environment("ROOTWARD_NAVIGATION_SHOT")
 	if output != "":
 		await RenderingServer.frame_post_draw

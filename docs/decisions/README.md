@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0041**.
+The next number is **ADR-0046**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -57,3 +57,5 @@ The next number is **ADR-0041**.
 - [ADR-0043](ADR-0043-construction-is-the-cast-and-ring-bloom.md): constructing the circle during the code walkthrough is the default cast; Script Loom and Ring Bloom (whole rings growing from a core, one per shard to six) are chosen in Spells.
 
 - [ADR-0044](ADR-0044-spell-animations-live-in-spells.md): Shard Weave and Script Loom move from Moves to Spells; every spell is built during the code walk and a worn move looses it; circles face the foes more; richer Ring Bloom with rune bands.
+
+- [ADR-0045](ADR-0045-the-verifier-course-removed.md): the Verifier course is removed from the game; the Academy is built fresh instead of absorbing it.

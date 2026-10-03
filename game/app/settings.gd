@@ -70,8 +70,11 @@ static func load_file(from := PATH) -> void:
 		language = chosen
 	if values.get("difficulty") is String:
 		difficulty = values.difficulty
-	if values.get("playstyle") in ["program", "deck", "spellbook", "verifier"]:
+	if values.get("playstyle") in ["program", "deck", "spellbook"]:
 		playstyle = values.playstyle
+	elif values.get("playstyle") == "verifier":
+		# The Verifier course was removed (ADR-0045); its players land on the Shardrun.
+		playstyle = "program"
 	var skin: Variant = values.get("character_skin")
 	if skin is String:
 		if skin in ["moonlit_kitsune", "tamamo_no_mae"]:

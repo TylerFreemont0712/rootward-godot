@@ -9,10 +9,9 @@ extends RefCounted
 const SAVES_ENV := "ROOTWARD_SAVES"
 const TITLE := "res://scenes/title/title.tscn"
 const SHARDRUN := "res://scenes/shardrun/shardrun.tscn"
-const VERIFIER := "res://scenes/verifier/verifier.tscn"
-## Each combat playstyle keeps its own run; Verifier is a saved code-reading course. The Shardrun is the program run
-## (ADR-0012); the card Shardrun it grew from stays playable for a run already underway.
-const PLAYSTYLES := {"program": "Shardrun", "deck": "Card Shardrun", "spellbook": "Spellforge", "verifier": "Verifier"}
+## Each playstyle keeps its own run. The Shardrun is the program run (ADR-0012); the card Shardrun it grew from stays
+## playable for a run already underway.
+const PLAYSTYLES := {"program": "Shardrun", "deck": "Card Shardrun", "spellbook": "Spellforge"}
 const COMBAT: Array[String] = ["program", "deck", "spellbook"]
 
 ## The rules read English content (old ADR-0018); screens show the same catalog, translated later (phase "Later").
@@ -150,10 +149,6 @@ static func reset(save_root := "") -> void:
 
 ## Plays `playstyle` from now on (and remembers it as the player's choice).
 static func use(playstyle: String) -> void:
-	if playstyle == "verifier":
-		session = sessions.program
-		Settings.playstyle = playstyle
-		return
 	if not sessions.has(playstyle):
 		playstyle = "program"
 	session = sessions[playstyle]

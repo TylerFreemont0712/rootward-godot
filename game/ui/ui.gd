@@ -64,6 +64,8 @@ static func panel(child: Control, variation := "") -> PanelContainer:
 
 static func scroll(child: Control, horizontal := false) -> ScrollContainer:
 	var node := ScrollContainer.new()
+	# Keyboard focus moved to a control below the fold scrolls it into view (Tab and the menu walk both need it).
+	node.follow_focus = true
 	node.horizontal_scroll_mode = (
 		ScrollContainer.SCROLL_MODE_AUTO if horizontal else ScrollContainer.SCROLL_MODE_DISABLED
 	)

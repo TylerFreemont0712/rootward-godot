@@ -55,7 +55,7 @@ has nothing playable in it, only its "in preparation" panel.
 
 ## 3. Track A: clear the ground
 
-### A1. Remove the Verifier course
+### A1. Remove the Verifier course (done 2026-10-04, ADR-0045)
 
 Why: the player's call. It is a code-reading drill in its own look and its own save, it doesn't fit the Academy
 `docs/ACADEMY_DESIGN.md` describes, and it holds the Academy's place without being its start. The Academy (track D)
@@ -283,7 +283,9 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-41 | Low | The Character room lists eight locked classes as full-height rows that look selectable. Make the locked ones compact and dimmed; the column fills as classes are built (track B) |
 | P2-42 | Low | `scripts/screenshot.sh` of the rest moment failed once (exit 1) while the test suite ran at the same time, then passed alone. Not measured; the shot tool may share a `user://` folder with the tests |
 | P2-43 | Low | Docs drift: `docs/decisions/README.md` says the next ADR is 0041 (0044 exists). `docs/PLAN.md` has two "Phase 9" headings. ROADMAP's per-stage ADR numbers (0018 to 0022) collide with ADRs already written |
-| P2-44 | Low | Untracked probe files in `game/` (`probe_glb.gd`, `probe_glb.gd.uid`, `probe_head.gd.uid`) |
+| P2-44 | Low | Untracked probe files in `game/` (`probe_glb.gd`, `probe_glb.gd.uid`, `probe_head.gd.uid`) Deleted with A1 |
+| P2-45 | Medium | `scripts/menu-navigation.sh` (181 real clicks) had been failing since the Character room's rework: it clicked "Test spell", "Floor guides" and "High contrast", which were renamed or removed, and keyboard focus never scrolled a hidden control into view (`Ui.scroll` lacked `follow_focus`). Fixed with A1 |
+| P2-46 | Low | Character → Spells with three practice targets: their name plates and "Watching" tags overlap one another (`shots/phase2/menu-character-spells.png`) |
 
 ## 7. Decisions that are yours
 
