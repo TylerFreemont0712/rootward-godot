@@ -292,7 +292,9 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 ## The cast's magic circle (MagicCircle) for a spell of `cards`, written in the air in front of the Maintainer: its tier
 ## follows the number of cards and it stacks one layer per card, in order (CircleLayers, ADR-0039). Sized to her; null
 ## when the stage plays fast.
-func magic_circle(cards: Array, element: String, writing_speed := 1.0, construction := false) -> MagicCircle:
+func magic_circle(
+	cards: Array, element: String, writing_speed := 1.0, construction := false, construction_style := ""
+) -> MagicCircle:
 	if fast:
 		return null
 	var tier := CircleLayers.tier_for(cards.size())
@@ -309,7 +311,11 @@ func magic_circle(cards: Array, element: String, writing_speed := 1.0, construct
 		writing_speed
 	)
 	circle.external_construction = construction
-	circle.style = String(hero.look("circle").get("style", "codex"))
+	circle.style = (
+		construction_style
+		if construction and construction_style != ""
+		else String(hero.look("circle").get("style", "codex"))
+	)
 	circle.use_plan(CircleLayers.plan(cards))
 	return circle
 

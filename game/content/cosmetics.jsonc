@@ -46,6 +46,14 @@
       "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
       "clip": "idle-breathe",
       "construction": "shards"
+    },
+    {
+      "id": "script-loom",
+      "name": "Script Loom",
+      "note": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.",
+      "clip": "idle-breathe",
+      "construction": "shards",
+      "circle_style": "script-loom"
     }
   ],
   "cast_heavy": [
@@ -74,6 +82,14 @@
       "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
       "clip": "idle-breathe",
       "construction": "shards"
+    },
+    {
+      "id": "script-loom",
+      "name": "Script Loom",
+      "note": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.",
+      "clip": "idle-breathe",
+      "construction": "shards",
+      "circle_style": "script-loom"
     }
   ],
   "circle": [

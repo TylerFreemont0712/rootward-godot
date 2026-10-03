@@ -55,3 +55,14 @@ func test_check_names_what_is_wrong() -> void:
 	var problems := CosmeticRules.check(broken)
 	assert_array(problems).contains(["circle.x: unknown style", "impact: no options"])
 	assert_bool(problems.any(func(p: String) -> bool: return p.begins_with("idle: the default"))).is_true()
+
+
+func test_only_construction_casts_may_override_their_circle_with_a_known_style() -> void:
+	var catalog := CATALOG.duplicate(true)
+	var entry := {"id": "loom", "name": "Loom", "note": "", "clip": "idle-breathe", "circle_style": "script-loom"}
+	catalog.cast_light.append(entry)
+	assert_array(CosmeticRules.check(catalog)).contains(["cast_light.loom: unknown construction style"])
+	entry.construction = "shards"
+	assert_array(CosmeticRules.check(catalog)).is_empty()
+	entry.circle_style = "unknown"
+	assert_array(CosmeticRules.check(catalog)).contains(["cast_light.loom: unknown construction style"])

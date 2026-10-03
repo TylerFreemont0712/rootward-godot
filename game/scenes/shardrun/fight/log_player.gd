@@ -161,6 +161,14 @@ func drain_early() -> void:
 
 ## Whether the first cast wears the optional circle constructed by the code's shard resolutions.
 func uses_construction(entries: Array) -> bool:
+	for entry: Dictionary in entries:
+		if entry.kind == "cast":
+			return _constructs(heavy_cast(entries))
+	return _failed_spell != "" and _constructs(false)
+
+
+## Cosmetic weight comes from the actual volley, so a strong program selects its heavy option before code walks.
+func heavy_cast(entries: Array) -> bool:
 	for index in entries.size():
 		if entries[index].kind != "cast":
 			continue
@@ -170,8 +178,8 @@ func uses_construction(entries: Array) -> bool:
 			if entries[next].kind in BOLT_KINDS:
 				bolts.append(entries[next])
 			next += 1
-		return _constructs(bolts.size() >= 4 or _total(bolts) >= 30)
-	return _failed_spell != "" and _constructs(false)
+		return bolts.size() >= 4 or _total(bolts) >= 30
+	return false
 
 
 ## The trace counts executable calls, while held imports run at the top of the source. Keep that distinction local
@@ -219,12 +227,15 @@ func _constructs(heavy: bool) -> bool:
 
 
 ## Start before the code walks, keeping the hero idle and the circle on the stage rather than on its hand.
-func begin_construction(spell_id: String, element: String) -> void:
+func begin_construction(spell_id: String, element: String, heavy := false) -> void:
 	_construction_spell = spell_id
 	_construction_started = true
 	_resolved_shards = 0
 	stage.hero.play(stage.hero.move_clip("idle"))
-	_circle = stage.magic_circle(_construction_cards(spell_id), element, 1.0, true)
+	var look := stage.hero.look("cast_heavy" if heavy else "cast_light")
+	_circle = stage.magic_circle(
+		_construction_cards(spell_id), element, 1.0, true, String(look.get("circle_style", ""))
+	)
 
 
 ## Exact slots matter: the same shard can run twice, and an unvisited or failing function must not invent a layer.
@@ -324,7 +335,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var tier := CircleLayers.tier_for(cards.size())
 	if construction:
 		if not _construction_started or _construction_spell != String(entry.get("spell", "")):
-			begin_construction(String(entry.get("spell", "")), element)
+			begin_construction(String(entry.get("spell", "")), element, heavy)
 			await _pace_construction()
 		else:
 			# A faster foe may have hurt the hero after the code walk; this cast still uses an idle pose.

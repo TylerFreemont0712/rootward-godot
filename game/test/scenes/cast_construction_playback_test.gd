@@ -572,3 +572,71 @@ func test_a_fatal_early_attack_stops_the_code_and_closes_a_partial_circle_withou
 	assert_array(arrivals).is_equal([0])
 	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "enemy").size()).is_equal(1)
 	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "cast").size()).is_equal(0)
+
+
+func test_script_loom_uses_the_actual_cast_slot_and_overrides_worn_circle_during_the_code_walk() -> void:
+	Settings.code_speed = "fast"
+	for heavy: bool in [false, true]:
+		var session := _program_session(["salvo", "salvo"])
+		var fight := _fight_for(session)
+		fight.stage.hero.preview_loadout = {
+			"cast_light": "finger-snap" if heavy else "script-loom",
+			"cast_heavy": "script-loom" if heavy else "grand-push",
+			"circle": "constellation",
+		}
+		await get_tree().process_frame
+		var after := session.state.duplicate(true)
+		after.log = [
+			{"kind": "cast", "spell": session.state.spells[0].id, "amount": 0},
+			{"kind": "ward", "amount": 30 if heavy else 4},
+		]
+		var circles: Array[MagicCircle] = []
+		fight.stage._fx.child_entered_tree.connect(
+			func(node: Node) -> void:
+				if node is MagicCircle:
+					circles.append(node as MagicCircle)
+		)
+		var finished: Array[bool] = [false]
+		_present(
+			fight,
+			{
+				"before": session.state,
+				"state": after,
+				"replay": {"spell_id": session.state.spells[0].id, "run": _measured_view(2)},
+			},
+			finished
+		)
+		assert_int(circles.size()).is_equal(1)
+		var circle := circles[0]
+		assert_str(circle.style).is_equal("script-loom")
+		assert_int(circle._arrived).is_equal(0)
+		assert_str(String(fight.stage.hero.look("circle").style)).is_equal("constellation")
+		var deadline := Time.get_ticks_msec() + 5000
+		while fight._program._counted < 30 and not finished[0] and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+		assert_str(fight._program._title.text).contains("running")
+		assert_int(circle._arrived).is_equal(1)
+		assert_float(circle._layer_progress(0)).is_greater(0.0)
+		assert_float(circle._layer_progress(0)).is_less(1.0)
+		fight._program.skip()
+		fight.stage.fast = true
+		while not finished[0] and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+		assert_bool(finished[0]).is_true()
+		assert_int(circles.size()).is_equal(1)
+		assert_str(circle.style).is_equal("script-loom")
+		assert_int(circle._arrived).is_equal(2)
+		fight.queue_free()
+		await get_tree().process_frame
+
+
+func test_new_cast_style_override_leaves_earlier_cast_and_circle_choices_available() -> void:
+	var stage := _stage()
+	stage.hero.preview_loadout = {"cast_light": "shard-weave", "circle": "clockwork"}
+	var player := LogPlayer.new(stage, {})
+	player.cast_cards["spell"] = CircleLayers.demo_cards(3)
+	player.begin_construction("spell", "none")
+	var old_circle: MagicCircle = player.get("_circle")
+	assert_str(old_circle.style).is_equal("clockwork")
+	var ordinary := stage.magic_circle(CircleLayers.demo_cards(3), "none", 1.0, false, "script-loom")
+	assert_str(ordinary.style).is_equal("clockwork")

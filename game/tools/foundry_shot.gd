@@ -72,7 +72,8 @@ func _ready() -> void:
 				Settings.reduced_motion = false
 				panel._tab = "Moves"
 				panel._move_slot = "cast_heavy"
-				rehearsal.set_look("cast_heavy", "shard-weave")
+				var cast_choice := OS.get_environment("ROOTWARD_SHOT_CAST")
+				rehearsal.set_look("cast_heavy", cast_choice if cast_choice != "" else "shard-weave")
 				panel._build_controls()
 				panel._show_look()
 				rehearsal.shards = 6

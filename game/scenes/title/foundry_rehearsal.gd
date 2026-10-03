@@ -165,8 +165,9 @@ func preview_circle() -> void:
 	_serial += 1
 	var serial := _serial
 	_playing = true
-	var construction: bool = hero.look("cast_heavy" if heavy else "cast_light").get("construction", "") == "shards"
-	_circle = stage.magic_circle(cards(), element, 1.0, construction)
+	var cast_look := hero.look("cast_heavy" if heavy else "cast_light")
+	var construction: bool = cast_look.get("construction", "") == "shards"
+	_circle = stage.magic_circle(cards(), element, 1.0, construction, String(cast_look.get("circle_style", "")))
 	if _circle != null:
 		if construction:
 			for index in _circle.layers.size():

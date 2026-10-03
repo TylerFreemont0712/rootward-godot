@@ -259,7 +259,7 @@ func present(result: Dictionary) -> void:
 	player.configure_replay(before, replay, session.catalog, entries)
 	var construction := not replay.is_empty() and code_speed != "off" and player.uses_construction(entries)
 	if construction:
-		player.begin_construction(String(replay.spell_id), player.replay_element)
+		player.begin_construction(String(replay.spell_id), player.replay_element, player.heavy_cast(entries))
 	if not replay.is_empty() and _program != null:
 		# The optional circle is part of the code walk, so keep its stage readable while each call finishes.
 		stage.dim(0.12, 0.25)

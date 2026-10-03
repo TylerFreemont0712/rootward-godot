@@ -12,7 +12,7 @@ const SLOTS: Array[String] = ["idle", "cast_light", "cast_heavy", "circle", "bol
 ## The slots that are moves (a clip of the shared move library), and the clip a skin plays when it cannot play the
 ## chosen one: a drawn skin or a model with its own clips answers with its own.
 const NATIVE := {"idle": "idle-breathe", "cast_light": "cast-light", "cast_heavy": "cast-heavy"}
-const CIRCLE_STYLES: Array[String] = ["codex", "rootglass", "clockwork", "constellation"]
+const CIRCLE_STYLES: Array[String] = ["codex", "rootglass", "clockwork", "constellation", "script-loom"]
 const BOLT_PATHS: Array[String] = ["arc", "straight", "spiral"]
 ## What each slot's options must carry besides an id and a name.
 const FIELDS := {
@@ -103,6 +103,9 @@ static func check(catalog: Dictionary) -> Array[String]:
 			if entry.has("construction"):
 				if slot not in ["cast_light", "cast_heavy"] or entry.construction != "shards":
 					problems.append("%s.%s: unknown construction" % [slot, id])
+			if entry.has("circle_style"):
+				if entry.get("construction", "") != "shards" or not String(entry.circle_style) in CIRCLE_STYLES:
+					problems.append("%s.%s: unknown construction style" % [slot, id])
 		if NATIVE.has(slot) and String(options[0].get("clip", "")) != NATIVE[slot]:
 			problems.append("%s: the default must be the native clip %s" % [slot, NATIVE[slot]])
 	return problems

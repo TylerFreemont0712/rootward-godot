@@ -1,5 +1,7 @@
 // The cosmetic looks (content/cosmetics.jsonc, ADR-0037), keyed by the English name or note.
 [
+  {"en": "Script Loom", "to": "コードの織り陣"},
+  {"en": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.", "to": "関数ごとに、光の筆先が魔法陣の一部を縫うように描く。すべての呪文に使うには、軽い詠唱と重い詠唱の両方に着せてね。"},
   {"en": "Shard Weave", "to": "シャードの織り陣"},
   {"en": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.", "to": "関数のコードを実行しながら、新しい層を少しずつ描く。どのすがたでも、魔法陣は前に浮かぶ。"},
   {"en": "Guarded Breath", "to": "かまえの呼吸"},

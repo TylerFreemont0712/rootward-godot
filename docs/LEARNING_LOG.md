@@ -746,3 +746,10 @@ one readable, and the layers still accumulate from the rim inward. Stroke widths
 The fitting room used to choose a tier; it now chooses a shard count and the tier follows. `tier` stayed as a
 property whose getter is `CircleLayers.tier_for(shards)` and whose setter picks as many shards as that tier holds, so
 the older callers (a tool, a test, the carousel's browse-to-try) did not change.
+
+## Test the visible geometry, not just the progress value (`game/scenes/shardrun/fight/script_loom.gd`)
+An animation can report a partial progress value while drawing a whole circle underneath it. Full-disc glows and
+arrival rings made the first construction look complete even though shard counters advanced correctly. Script Loom
+has no underlying full shape: a function owns an angular sector, and its paths are clipped by total traversed
+distance. A geometry test proves the first function leaves other quadrants empty. Holding geometry still while
+the tip moves makes construction legible; rotation can start after completion without obscuring that movement.

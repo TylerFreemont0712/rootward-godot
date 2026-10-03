@@ -329,8 +329,8 @@ func _moves_controls() -> void:
 		_controls.add_child(
 			Ui.label(
 				FoundryUi.text(
-					"Shard Weave works with every skin. Other moves use this skin's own animations.",
-					"シャードの織り陣はどのすがたでも使えるよ。他の動きは、このすがたのアニメーションになる。"
+					"Script Loom and Shard Weave work with every skin. Other moves use this skin's own animations.",
+					"コードの織り陣とシャードの織り陣はどのすがたでも使えるよ。他の動きは、このすがたのアニメーションになる。"
 				),
 				"Muted",
 				true

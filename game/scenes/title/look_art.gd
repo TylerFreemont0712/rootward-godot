@@ -47,6 +47,7 @@ func _restart() -> void:
 	var middle := Vector2(size.x * 0.5, (size.y - 30.0) * 0.5)
 	if construction:
 		var circle := MagicCircle.cast(self, middle, 1, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
+		circle.style = String(option.get("circle_style", "codex"))
 		circle.external_construction = true
 		circle.use_plan(CircleLayers.demo_plan(1))
 		circle.position.x -= circle.radius * 0.35

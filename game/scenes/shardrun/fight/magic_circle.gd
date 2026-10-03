@@ -74,6 +74,7 @@ var _traced_shares: Array[float] = []
 var _sealed := false
 var _facts: Dictionary = {}
 var _formed := false
+var _formed_at := 0.0
 var _flare := 0.0
 var _shocks: Array[float] = []
 var _closing := -1.0
@@ -208,6 +209,8 @@ func spark_from(point: Vector2) -> void:
 
 ## Where a bolt is born: somewhere on the front circle, in the parent's coordinates.
 func launch_point() -> Vector2:
+	if style == "script-loom":
+		return position
 	var front := int(_facts.front)
 	var angle := randf() * TAU
 	var reach := radius * pow(STACK_SHRINK, front) * randf_range(0.0, 0.45)
@@ -251,6 +254,7 @@ func _process(frame_delta: float) -> void:
 	var complete := _sealed and construction_time_left() <= 0.0 if external_construction else clock >= _form()
 	if not _formed and complete and _closing < 0.0:
 		_formed = true
+		_formed_at = clock
 		_flare = 1.4
 		_shocks.append(clock)
 		_burst(_disc_origin(0), 26 + 8 * tier, 1.0, radius * 0.9)
@@ -275,7 +279,7 @@ func _layer_start(index: int) -> float:
 ## Layer `index` arrives: a burst of light where it will stand, a sound that climbs with each, and the signal.
 func _add_layer(index: int) -> void:
 	var stands := radius * _layer_share(index)
-	if not _reduced:
+	if not _reduced and not external_construction:
 		_burst(_disc_origin(0), 6 + tier, 0.0, stands)
 	_flare = maxf(_flare, 0.45)
 	if not silent:
@@ -369,18 +373,33 @@ func _draw() -> void:
 	var swell := 1.0 + closing * 0.35
 	var pop := 1.0 + 0.08 * maxf(0.0, _flare - 0.4)
 	var breathe := 0.85 + 0.15 * sin(clock * 5.0)
+	if style == "script-loom":
+		var turn := (clock - _formed_at) * 0.08 if _formed else 0.0
+		_disc_xf = Transform2D(-0.12, Vector2(0.72, 1.0), 0.0, Vector2.ZERO) * Transform2D(turn, Vector2.ZERO)
+		draw_set_transform_matrix(_disc_xf)
+		ScriptLoom.draw(self, radius * swell, fade)
+		draw_set_transform_matrix(Transform2D.IDENTITY)
+		return
 	# The smaller circles in front first, so the first circle is laid over them toward the caster.
 	for index in range(int(_facts.front), 0, -1):
 		var appear := _front_appear(index)
 		if appear <= 0.0:
 			continue
-		var size := radius * pow(STACK_SHRINK, index) * (0.5 + 0.5 * _ease_out(appear)) * swell
-		var spin := clock * (0.9 if index % 2 == 1 else -0.7) * (1.0 + closing * 6.0)
+		var growth := 1.0 if external_construction else 0.5 + 0.5 * _ease_out(appear)
+		var size := radius * pow(STACK_SHRINK, index) * growth * swell
+		var spin := drawing_clock() * (0.9 if index % 2 == 1 else -0.7) * (1.0 + closing * 6.0)
 		_disc_space(index, spin)
 		if style == "codex":
-			_front_disc(size, appear * fade * breathe, index)
+			_front_disc(
+				size,
+				fade * breathe if external_construction else appear * fade * breathe,
+				index,
+				appear if external_construction else 1.0
+			)
 		else:
-			CircleStyles.front_disc(self, size, appear * fade * breathe, index)
+			CircleStyles.front_disc(
+				self, size, appear * fade * breathe, index, appear if external_construction else 1.0
+			)
 	var spin_outer := _spin(0.35)
 	_disc_space(0, spin_outer)
 	var r := radius * swell * pop
@@ -412,9 +431,9 @@ func _stack(r: float, fade: float) -> void:
 		if progress <= 0.0:
 			continue
 		var stands := r * _layer_share(index)
-		var grow := 1.0 if _reduced else _ease_out(progress)
+		var grow := progress if external_construction else (1.0 if _reduced else _ease_out(progress))
 		var alpha := fade * minf(1.0, progress * 4.0) * (1.0 + 0.35 * _flare)
-		if not _reduced and progress < 1.0:
+		if not external_construction and not _reduced and progress < 1.0:
 			var left := 1.0 - progress
 			draw_circle(Vector2.ZERO, stands * 1.05, Color(mid, 0.12 * left * fade))
 			_arc(lerpf(r * 1.2, stands, _ease_out(progress)), 0.0, TAU, 2.6 * left, left * fade)
@@ -426,7 +445,7 @@ func _stack(r: float, fade: float) -> void:
 func _crown(r: float, fade: float) -> void:
 	if tier < 2:
 		return
-	var set_in := _ease_out(_phase(0.0, 0.5))
+	var set_in := construction_share() if external_construction else _ease_out(_phase(0.0, 0.5))
 	var beads := 36 + 12 * tier
 	for i in int(beads * set_in):
 		draw_circle(Vector2.from_angle(TAU * i / beads) * r * 1.07, 1.5, Color(hot, 0.65 * fade))
@@ -453,7 +472,16 @@ func _light(fade: float) -> void:
 func _spin(rate: float) -> float:
 	var settle := 1.0 if external_construction else 1.0 + 3.0 * (1.0 - _phase(0.0, 1.0))
 	var closing := 0.0 if _closing < 0.0 else (clock - _closing) * 8.0
-	return clock * rate * settle + closing * rate
+	return drawing_clock() * rate * settle + closing * rate
+
+
+## Unfinished strokes stay in place while the nib writes; the finished seal may turn afterward.
+func drawing_clock() -> float:
+	return (
+		maxf(0.0, clock - _formed_at)
+		if external_construction and _formed
+		else (0.0 if external_construction else clock)
+	)
 
 
 # LEARN: everything is drawn in a flat "disc space" (a circle of radius r round the origin) and this transform maps it
@@ -471,9 +499,10 @@ func _disc_space(index: int, spin: float) -> void:
 func _main_disc(r: float, fade: float, breathe: float) -> void:
 	var written := construction_share() if external_construction else 1.0
 	var glow := Color(mid, (0.1 * fade * breathe + 0.12 * _flare) * written)
-	for i in 4:
-		draw_circle(Vector2.ZERO, r * (0.35 + 0.22 * i), Color(dark, 0.07 * fade * _phase(0.0, 0.4)))
-	draw_circle(Vector2.ZERO, r * 0.95, glow)
+	if not external_construction or _formed:
+		for i in 4:
+			draw_circle(Vector2.ZERO, r * (0.35 + 0.22 * i), Color(dark, 0.07 * fade * _phase(0.0, 0.4)))
+		draw_circle(Vector2.ZERO, r * 0.95, glow)
 	# The outer rings, drawn like pen strokes from two points at once, a bright nib on each.
 	var stroke := construction_share() if external_construction else _ease_out(_phase(0.0, 0.34))
 	for start: float in [-PI * 0.5, PI * 0.5]:
@@ -507,15 +536,17 @@ func _shocks_draw(r: float, fade: float) -> void:
 
 
 ## One of the smaller circles in front: a ring, a few runes' worth of ticks, a turning square, a bright centre.
-func _front_disc(r: float, alpha: float, index: int) -> void:
-	draw_circle(Vector2.ZERO, r * 0.9, Color(mid, 0.08 * alpha + 0.1 * _flare * alpha))
-	_arc(r, 0.0, TAU, 2.4, alpha)
-	_arc(r * 0.82, 0.0, TAU, 1.2, alpha * 0.8)
-	for i in 12:
+func _front_disc(r: float, alpha: float, index: int, progress := 1.0) -> void:
+	if not external_construction or _formed:
+		draw_circle(Vector2.ZERO, r * 0.9, Color(mid, 0.08 * alpha + 0.1 * _flare * alpha))
+	_arc(r, 0.0, TAU * progress, 2.4, alpha)
+	_arc(r * 0.82, 0.0, TAU * progress, 1.2, alpha * 0.8)
+	for i in int(12 * progress):
 		var a := TAU * i / 12.0
 		draw_line(Vector2.from_angle(a) * r * 0.82, Vector2.from_angle(a) * r * 0.92, Color(hot, 0.6 * alpha), 1.2)
-	_star(r * 0.7, 4 + index, 1 if index % 2 == 0 else 2, 1.0, 0.0, alpha)
-	draw_circle(Vector2.ZERO, r * 0.12, Color(hot, (0.4 + 0.6 * _flare) * alpha))
+	_star(r * 0.7, 4 + index, 1 if index % 2 == 0 else 2, progress, 0.0, alpha)
+	if progress >= 1.0:
+		draw_circle(Vector2.ZERO, r * 0.12, Color(hot, (0.4 + 0.6 * _flare) * alpha))
 
 
 ## A stroke of light: a wide faint halo under a thin bright line, an arc of radius `r` about `centre`.

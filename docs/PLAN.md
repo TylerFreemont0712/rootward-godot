@@ -322,6 +322,14 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       preserve recorded outcomes and ties, and interrupt construction on lethal damage.
 - [x] Remove axis/cross glare lines from magic circles; keep ring pulses and local particles.
 
+### Visible stroke construction and Script Loom (ADR-0042)
+- [x] Diagnose the actual saved cast selection and full-circle glow/arrival effects that hid partial construction.
+- [x] Add a unique Script Loom alternate to both cast slots, with sectors drawn by function progress and a moving
+      writing tip; reuse the finished seal at release, independent of skin and the worn circle style.
+- [x] Hold unfinished geometry still and suppress prebuilt disc/arrival rings in Shard Weave; original automatic
+      casts retain their selection and timing. Check actual clipped geometry and live fight phases.
+- [x] Character card/practice previews and English/Japanese notes clearly show the new option and both-slot equip.
+
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).

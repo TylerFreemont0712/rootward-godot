@@ -103,7 +103,7 @@ static func _runes(c: MagicCircle, word: String, band: Vector2, grow: float, alp
 	CircleStyles.ring(c, r + size * 0.62, 0.0, TAU * grow, 1.0, alpha * 0.7)
 	CircleStyles.ring(c, r - size * 0.62, 0.0, TAU * grow, 1.0, alpha * 0.7)
 	var count := maxi(8, int(TAU * r / (size * 0.82)))
-	var turn := dir * c.clock * 0.5
+	var turn := dir * c.drawing_clock() * 0.5
 	for i in count:
 		var shown := clampf(grow * count - i, 0.0, 1.0)
 		if shown <= 0.0:
@@ -122,7 +122,7 @@ static func _runes(c: MagicCircle, word: String, band: Vector2, grow: float, alp
 static func _star(c: MagicCircle, r: float, grow: float, alpha: float, dir: float, seed: int) -> void:
 	var shape := STARS[seed % STARS.size()]
 	var points := shape.x
-	var turn := dir * c.clock * 0.4 - PI * 0.5
+	var turn := dir * c.drawing_clock() * 0.4 - PI * 0.5
 	CircleStyles.ring(c, r, 0.0, TAU * grow, 1.0, alpha * 0.6)
 	var corners: Array[Vector2] = []
 	for i in points:
@@ -142,7 +142,7 @@ static func _lattice(c: MagicCircle, band: Vector2, grow: float, alpha: float, d
 	var mid := (band.x + band.y) * 0.5
 	var cell := minf((band.y - band.x) * 0.5, mid * 0.5)
 	var count := clampi(roundi(TAU * mid / (cell * 1.75)), 6, 18)
-	var turn := dir * c.clock * 0.25
+	var turn := dir * c.drawing_clock() * 0.25
 	for index in count:
 		var share := clampf(grow * count - index, 0.0, 1.0)
 		if share <= 0.0:
@@ -160,7 +160,7 @@ static func _lattice(c: MagicCircle, band: Vector2, grow: float, alpha: float, d
 ## Three arms spiralling across the band, turning.
 static func _spiral(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir: float, seed: int) -> void:
 	var arms := 3 + seed % 2
-	var turn := dir * c.clock * 0.7
+	var turn := dir * c.drawing_clock() * 0.7
 	for arm in arms:
 		var points := PackedVector2Array()
 		var steps := maxi(4, int(36.0 * grow))
@@ -178,7 +178,7 @@ static func _satellites(
 ) -> void:
 	var r := (band.x + band.y) * 0.5
 	var count := 3 + seed % 3
-	var turn := dir * c.clock * 0.65
+	var turn := dir * c.drawing_clock() * 0.65
 	var body := clampf((band.y - band.x) * 0.45, 5.0, 15.0)
 	CircleStyles.ring(c, r, 0.0, TAU * grow, 0.9, alpha * 0.55)
 	var text := (word if word != "" else "{}") + "  "
@@ -199,7 +199,7 @@ static func _satellites(
 ## Short arcs with caps, like the brackets round a block of code, turning against the circle.
 static func _brackets(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir: float, seed: int) -> void:
 	var count := 3 + seed % 3
-	var turn := dir * c.clock * 0.45
+	var turn := dir * c.drawing_clock() * 0.45
 	var length := TAU / count * 0.58
 	var high := band.y
 	var low := lerpf(band.x, band.y, 0.45)
@@ -217,11 +217,11 @@ static func _brackets(c: MagicCircle, band: Vector2, grow: float, alpha: float, 
 ## Beams radiating across the band, long and short by turns, shimmering.
 static func _spokes(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir: float, seed: int) -> void:
 	var count := clampi(int(TAU * band.y / (8.0 + 2.0 * (seed % 3))), 10, 40)
-	var turn := dir * c.clock * 0.3
+	var turn := dir * c.drawing_clock() * 0.3
 	for i in count:
 		var a := turn + TAU * i / count
 		var reach := band.y if i % 2 == 0 else lerpf(band.x, band.y, 0.6)
-		var shimmer := 0.55 + 0.45 * sin(c.clock * 4.0 + i * 0.9)
+		var shimmer := 0.55 + 0.45 * sin(c.drawing_clock() * 4.0 + i * 0.9)
 		var tip := Vector2.from_angle(a) * lerpf(band.x, reach, grow)
 		_line(c, Vector2.from_angle(a) * band.x, tip, 1.1, alpha * shimmer)
 		if i % 2 == 0:
@@ -240,7 +240,9 @@ static func _wave(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir:
 		var steps := maxi(8, int(120.0 * grow))
 		for i in steps + 1:
 			var angle := sweep * float(i) / steps - PI * 0.5
-			points.append(Vector2.from_angle(angle) * (mid + amp * sin(angle * lobes + dir * side * c.clock * 1.9)))
+			points.append(
+				Vector2.from_angle(angle) * (mid + amp * sin(angle * lobes + dir * side * c.drawing_clock() * 1.9))
+			)
 		_poly(c, points, 1.4 if pass_index == 0 else 1.0, alpha * (1.0 if pass_index == 0 else 0.7))
 
 
@@ -248,9 +250,16 @@ static func _wave(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir:
 static func _pulses(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir: float) -> void:
 	CircleStyles.ring(c, band.y, 0.0, TAU * grow, 1.0, alpha * 0.55)
 	for k in 3:
-		var phase := fposmod(c.clock * 0.6 + k / 3.0, 1.0)
+		var phase := fposmod(c.drawing_clock() * 0.6 + k / 3.0, 1.0)
 		var moving := phase if dir > 0.0 else 1.0 - phase
-		CircleStyles.ring(c, lerpf(band.x, band.y, moving), 0.0, TAU, 1.6, alpha * sin(phase * PI) * grow)
+		CircleStyles.ring(
+			c,
+			lerpf(band.x, band.y, moving),
+			0.0,
+			TAU * (grow if c.external_construction else 1.0),
+			1.6,
+			alpha * sin(phase * PI) * grow
+		)
 
 
 ## Polygons set one inside another through the band, each turning its own way.
@@ -261,7 +270,7 @@ static func _nested(c: MagicCircle, band: Vector2, grow: float, alpha: float, di
 		if share <= 0.0:
 			break
 		var reach := lerpf(band.y, band.x, level / 2.0)
-		var turn := dir * c.clock * (0.35 + 0.15 * level) * (1.0 if level % 2 == 0 else -1.0) - PI * 0.5
+		var turn := dir * c.drawing_clock() * (0.35 + 0.15 * level) * (1.0 if level % 2 == 0 else -1.0) - PI * 0.5
 		var corners := PackedVector2Array()
 		for i in sides:
 			corners.append(Vector2.from_angle(turn + TAU * i / sides) * reach)
@@ -281,7 +290,7 @@ static func _dashes(c: MagicCircle, r: float, grow: float, alpha: float, dir: fl
 			break
 		var from := TAU * i / count
 		c.draw_arc(Vector2.ZERO, r, from, from + width * shown, 4, Color(c.hot, 0.7 * alpha), 1.8, true)
-	var head := dir * c.clock * 1.6
+	var head := dir * c.drawing_clock() * 1.6
 	CircleStyles.ring(c, r * 0.94, head - dir * 1.0, dir * 1.0 * grow, 2.4, alpha)
 	CircleStyles.node(c, Vector2.from_angle(head) * r * 0.94, 2.0, alpha * grow)
 
@@ -290,7 +299,7 @@ static func _dashes(c: MagicCircle, r: float, grow: float, alpha: float, dir: fl
 static func _rosette(c: MagicCircle, band: Vector2, grow: float, alpha: float, dir: float, seed: int) -> void:
 	var mid := (band.x + band.y) * 0.5
 	var count := 6 + 2 * (seed % 3)
-	var turn := dir * c.clock * 0.3
+	var turn := dir * c.drawing_clock() * 0.3
 	var petal := minf((band.y - band.x) * 0.6, mid * sin(PI / count) * 1.7)
 	for k in count:
 		var shown := clampf(grow * 1.6 - float(k) / count * 0.6, 0.0, 1.0)

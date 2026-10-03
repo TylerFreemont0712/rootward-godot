@@ -17,7 +17,8 @@ const STARS := 18
 
 
 static func main_disc(c: MagicCircle, r: float, fade: float, breathe: float) -> void:
-	c.draw_circle(Vector2.ZERO, r * 0.95, Color(c.mid, 0.1 * fade * breathe + 0.12 * c._flare))
+	if not c.external_construction or c._formed:
+		c.draw_circle(Vector2.ZERO, r * 0.95, Color(c.mid, 0.1 * fade * breathe + 0.12 * c._flare))
 	match c.style:
 		"rootglass":
 			_rootglass(c, r, fade)
@@ -27,20 +28,22 @@ static func main_disc(c: MagicCircle, r: float, fade: float, breathe: float) -> 
 			_constellation(c, r, fade)
 
 
-static func front_disc(c: MagicCircle, r: float, alpha: float, index: int) -> void:
-	c.draw_circle(Vector2.ZERO, r * 0.9, Color(c.mid, 0.08 * alpha + 0.1 * c._flare * alpha))
+static func front_disc(c: MagicCircle, r: float, alpha: float, index: int, progress := 1.0) -> void:
+	if not c.external_construction or c._formed:
+		c.draw_circle(Vector2.ZERO, r * 0.9, Color(c.mid, 0.08 * alpha + 0.1 * c._flare * alpha))
 	match c.style:
 		"rootglass":
-			_vine(c, r, 0.0, 1.0, 6, alpha)
-			_branches(c, r * 0.7, 3 + index, 1.0, alpha)
+			_vine(c, r, 0.0, progress, 6, alpha)
+			_branches(c, r * 0.7, 3 + index, progress, alpha)
 		"clockwork":
-			_gear(c, r, 10 + 2 * index, 1.0, alpha)
-			_arc_ring(c, r * 0.55, alpha * 0.8)
+			_gear(c, r, 10 + 2 * index, progress, alpha)
+			c._arc(r * 0.55, 0.0, TAU * progress, 1.2, alpha * 0.8)
 		"constellation":
-			for i in 8:
+			for i in int(8 * progress):
 				_sparkle(c, Vector2.from_angle(TAU * i / 8.0) * r, 3.0, alpha)
-			c._star(r * 0.65, 4 + index, 1, 1.0, 0.0, alpha * 0.7)
-	c.draw_circle(Vector2.ZERO, r * 0.12, Color(c.hot, (0.4 + 0.6 * c._flare) * alpha))
+			c._star(r * 0.65, 4 + index, 1, progress, 0.0, alpha * 0.7)
+	if progress >= 1.0:
+		c.draw_circle(Vector2.ZERO, r * 0.12, Color(c.hot, (0.4 + 0.6 * c._flare) * alpha))
 
 
 ## A ring (or the arc of one from `from`, `sweep` long) of radius `r` about `centre`, in the circle's style: a pen
@@ -79,7 +82,7 @@ static func node(c: MagicCircle, at: Vector2, size: float, alpha: float) -> void
 			)
 			c.draw_circle(at, size * 0.5, Color(c.hot, alpha))
 		"clockwork":
-			_small_gear(c, at, size * 2.2, c.clock * 1.6, alpha)
+			_small_gear(c, at, size * 2.2, c.drawing_clock() * 1.6, alpha)
 		"constellation":
 			_sparkle(c, at, size * 2.2, alpha)
 		_:
@@ -149,17 +152,17 @@ static func _starry_arc(
 
 static func _rootglass(c: MagicCircle, r: float, fade: float) -> void:
 	# The vine grows from two points at once, a bud of light at each tip, and leaves open where it has passed.
-	var grown := MagicCircle._ease_out(c._phase(0.0, 0.4))
+	var grown := _grow(c, 0.0, 0.4)
 	for start: float in [-PI * 0.5, PI * 0.5]:
 		_vine(c, r, start, grown * 0.5, LEAVES / 2, fade)
 		if grown < 1.0:
 			c.draw_circle(_vine_point(r, start + PI * grown), 5.0, Color(c.hot, fade))
-	c._arc(r * 0.9, 0.0, TAU * MagicCircle._ease_out(c._phase(0.1, 0.45)), 1.2, fade * 0.7)
+	c._arc(r * 0.9, 0.0, TAU * _grow(c, 0.1, 0.45), 1.2, fade * 0.7)
 	# The seed in the middle blooms last.
-	var bloom := MagicCircle._ease_out(c._phase(0.72, 1.0))
+	var bloom := _grow(c, 0.72, 1.0)
 	if bloom > 0.0:
 		for i in 5:
-			var a := TAU * i / 5.0 + c.clock * 0.4
+			var a := TAU * i / 5.0 + c.drawing_clock() * 0.4
 			var petal := PackedVector2Array()
 			for k in 9:
 				var u := float(k) / 8.0
@@ -223,8 +226,8 @@ static func _branches(c: MagicCircle, r: float, count: int, drawn: float, alpha:
 
 
 static func _clockwork(c: MagicCircle, r: float, fade: float) -> void:
-	_gear(c, r, int(c._facts.ticks) / 2, MagicCircle._ease_out(c._phase(0.0, 0.36)), fade)
-	c._arc(r * 0.88, 0.0, TAU * MagicCircle._ease_out(c._phase(0.06, 0.4)), 1.4, fade)
+	_gear(c, r, int(c._facts.ticks) / 2, _grow(c, 0.0, 0.36), fade)
+	c._arc(r * 0.88, 0.0, TAU * _grow(c, 0.06, 0.4), 1.4, fade)
 	# The clock face: twelve marks set in turn on the rim, then a hand that sweeps once round while it writes itself.
 	var marks := int(12 * c._phase(0.2, 0.5))
 	for i in marks:
@@ -235,7 +238,7 @@ static func _clockwork(c: MagicCircle, r: float, fade: float) -> void:
 	if sweep > 0.0:
 		var hand := Vector2.from_angle(-PI * 0.5 + TAU * sweep - c._spin(0.35)) * r * 0.2
 		_stroke(c, PackedVector2Array([Vector2.ZERO, hand]), 1.8, fade)
-	var hub := MagicCircle._ease_out(c._phase(0.74, 1.0))
+	var hub := _grow(c, 0.74, 1.0)
 	if hub > 0.0:
 		c._arc(r * 0.12, 0.0, TAU * hub, 2.0, fade)
 		c.draw_circle(Vector2.ZERO, r * (0.07 + 0.04 * c._flare) * hub, Color(c.hot, (0.6 + 0.4 * c._flare) * fade))
@@ -281,7 +284,7 @@ static func _constellation(c: MagicCircle, r: float, fade: float) -> void:
 	for i in dots:
 		if i % 2 == 0:
 			c.draw_circle(Vector2.from_angle(TAU * i / 96.0) * r * 0.9, 1.1, Color(c.hot, 0.5 * fade))
-	var core := MagicCircle._ease_out(c._phase(0.74, 1.0))
+	var core := _grow(c, 0.74, 1.0)
 	if core > 0.0:
 		_sparkle(c, Vector2.ZERO, r * (0.12 + 0.06 * c._flare) * core, fade)
 
@@ -294,3 +297,9 @@ static func _sparkle(c: MagicCircle, at: Vector2, size: float, alpha: float) -> 
 	for arm: Vector2 in [Vector2(size, 0), Vector2(0, size)]:
 		c.draw_line(at - arm, at + arm, Color(c.hot, 0.9 * alpha), maxf(1.0, size * 0.18), true)
 	c.draw_circle(at, maxf(1.0, size * 0.22), Color(c.hot, alpha))
+
+
+## Explicit walkthrough progress stays linear; automatic casts keep their original easing.
+static func _grow(c: MagicCircle, start: float, end: float) -> float:
+	var progress := c._phase(start, end)
+	return progress if c.external_construction else MagicCircle._ease_out(progress)
