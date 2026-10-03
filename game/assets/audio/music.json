@@ -1,11 +1,23 @@
 {
   "music-battle-heap": {
-    "loopStart": 25.7541875,
-    "loopEnd": 67.3871875
+    "loopStart": 47.7951875,
+    "loopEnd": 82.0811875
   },
   "music-battle-kernel": {
     "loopStart": 56.9781458,
     "loopEnd": 109.9381458
+  },
+  "music-battle-ring0": {
+    "loopStart": 96.9012292,
+    "loopEnd": 145.6512292
+  },
+  "music-battle-ring1": {
+    "loopStart": 61.7105,
+    "loopEnd": 141.6235
+  },
+  "music-battle-ring2": {
+    "loopStart": 98.24125,
+    "loopEnd": 135.22625
   },
   "music-battle-salvage": {
     "loopStart": 35.6842292,
@@ -16,27 +28,39 @@
     "loopEnd": 138.1201875
   },
   "music-guardian-final": {
-    "loopStart": 125.5801667,
-    "loopEnd": 148.0101667
+    "loopStart": 119.9711667,
+    "loopEnd": 169.0371667
   },
   "music-heap": {
-    "loopStart": 104.5601458,
-    "loopEnd": 125.2001458
+    "loopStart": 55.5401458,
+    "loopEnd": 86.5001458
   },
   "music-kernel": {
     "loopStart": 94.2331458,
     "loopEnd": 122.0591458
   },
   "music-rest": {
-    "loopStart": 47.1900625,
-    "loopEnd": 81.4800625
+    "loopStart": 27.9070625,
+    "loopEnd": 79.3360625
+  },
+  "music-ring0": {
+    "loopStart": 70.2502292,
+    "loopEnd": 118.2502292
+  },
+  "music-ring1": {
+    "loopStart": 110.21425,
+    "loopEnd": 155.41825
+  },
+  "music-ring2": {
+    "loopStart": 113.2992292,
+    "loopEnd": 155.6782292
   },
   "music-salvage": {
     "loopStart": 25.6501458,
     "loopEnd": 64.5901458
   },
   "music-title": {
-    "loopStart": 70.410125,
-    "loopEnd": 93.267125
+    "loopStart": 65.7591458,
+    "loopEnd": 116.7721458
   }
 }
