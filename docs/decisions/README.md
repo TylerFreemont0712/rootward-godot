@@ -55,3 +55,5 @@ The next number is **ADR-0041**.
 - [ADR-0042](ADR-0042-script-loom-stroke-construction.md): a distinct Script Loom cast stitches a seal in visible sectors during code; geometry follows traversed stroke distance, and Shard Weave stops showing full-disc arrival effects before construction finishes.
 
 - [ADR-0043](ADR-0043-construction-is-the-cast-and-ring-bloom.md): constructing the circle during the code walkthrough is the default cast; Script Loom and Ring Bloom (whole rings growing from a core, one per shard to six) are chosen in Spells.
+
+- [ADR-0044](ADR-0044-spell-animations-live-in-spells.md): Shard Weave and Script Loom move from Moves to Spells; every spell is built during the code walk and a worn move looses it; circles face the foes more; richer Ring Bloom with rune bands.

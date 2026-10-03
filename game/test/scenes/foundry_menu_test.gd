@@ -199,8 +199,15 @@ func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> vo
 	stage.step(1)
 	assert_float(stage._circle.clock).is_greater(clock)
 	stage.set_paused(false)
-	await get_tree().create_timer(3.0).timeout
+	# The circle is built a shard at a time (450 ms each), looses six pulses and closes.
+	var finish := Time.get_ticks_msec() + 9000
+	while stage._playing and Time.get_ticks_msec() < finish:
+		await get_tree().process_frame
 	assert_bool(stage._playing).is_false()
+	# It closes (a fraction of a second) and then is gone.
+	var gone := Time.get_ticks_msec() + 3000
+	while is_instance_valid(stage._circle) and Time.get_ticks_msec() < gone:
+		await get_tree().process_frame
 	assert_bool(is_instance_valid(stage._circle)).is_false()
 	stage.play("cast-heavy")
 	stage.set_skin("dummy")
@@ -262,9 +269,11 @@ func test_a_practice_cast_plays_the_fight_and_leaves_the_targets_whole() -> void
 	ring.set_look("impact", "judgment-pillar")
 	ring.set_speed(1.5)
 	ring.test_cast(3)
-	await get_tree().process_frame
-	assert_str(ring.hero.character.current).is_equal("cast-slam")
+	# The circle is built first with the hero idle; the worn move looses it.
 	var deadline := Time.get_ticks_msec() + 9000
+	while ring.hero.character.current != "cast-slam" and ring._playing and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_str(ring.hero.character.current).is_equal("cast-slam")
 	while ring._playing and Time.get_ticks_msec() < deadline:
 		await get_tree().process_frame
 	assert_bool(ring._playing).is_false()
@@ -296,30 +305,28 @@ func test_look_carousels_browse_without_wearing_and_wear_on_request() -> void:
 	assert_int(panel._carousel._cards[1].get_child_count()).is_greater(4)
 
 
-func test_script_loom_is_browsable_and_wearable_on_a_painted_skin() -> void:
+func test_the_spell_animations_are_browsable_and_wearable_in_spells_and_not_in_moves() -> void:
 	_title.call("_open_skins")
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
 	_button(panel, "Moves").pressed.emit()
-	var options := Cosmetics.options("cast_heavy")
+	for slot: String in ["cast_light", "cast_heavy"]:
+		for option in Cosmetics.options(slot):
+			assert_str(String(option.name)).is_not_equal("Script Loom")
+			assert_str(String(option.name)).is_not_equal("Shard Weave")
+	_button(panel, "Spells").pressed.emit()
+	var options := Cosmetics.options("circle")
 	var index := 0
 	for option in options:
-		if option.id == "script-loom":
+		if option.id == "ring-bloom":
 			break
 		index += 1
 	panel._carousel.turn(index)
-	assert_str(panel._carousel.current().id).is_equal("script-loom")
-	assert_str(panel.rehearsal.preview_loadout.cast_heavy).is_equal("script-loom")
-	assert_str(Cosmetics.look("cast_heavy").id).is_equal("shard-weave")
+	assert_str(panel._carousel.current().id).is_equal("ring-bloom")
+	assert_str(panel.rehearsal.preview_loadout.circle).is_equal("ring-bloom")
+	assert_str(Cosmetics.look("circle").id).is_not_equal("ring-bloom")
 	_button(panel, "Wear this").pressed.emit()
-	assert_str(Cosmetics.look("cast_heavy").id).is_equal("script-loom")
-	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.cast_heavy).is_equal("script-loom")
-	var circle: MagicCircle = null
-	for node: Node in panel.rehearsal.stage._fx.get_children():
-		if node is MagicCircle:
-			circle = node as MagicCircle
-	assert_object(circle).is_not_null()
-	assert_bool(circle.external_construction).is_true()
-	assert_int(circle._arrived).is_less(circle.layers.size())
+	assert_str(Cosmetics.look("circle").id).is_equal("ring-bloom")
+	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.circle).is_equal("ring-bloom")
 	await panel.rehearsal._cancel()
 
 

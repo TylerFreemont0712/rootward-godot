@@ -136,19 +136,17 @@ func test_construction_clock_obeys_pause_speed_and_close() -> void:
 	assert_bool(circle.is_queued_for_deletion()).is_true()
 
 
-func test_procedural_cast_is_available_on_skins_without_the_clip() -> void:
+func test_moves_are_gestures_and_shard_weave_is_a_circle() -> void:
 	for slot: String in ["cast_light", "cast_heavy"]:
-		var option := CosmeticRules.find(Cosmetics.catalog(), slot, "shard-weave")
-		assert_bool(CosmeticRules.playable(option, [])).is_true()
-		# Construction is the default (ADR-0043): an unknown id reads as it.
-		assert_str(CosmeticRules.option(Cosmetics.catalog(), slot, "unknown").id).is_equal("shard-weave")
+		assert_dict(CosmeticRules.find(Cosmetics.catalog(), slot, "shard-weave")).is_empty()
+		assert_str(CosmeticRules.option(Cosmetics.catalog(), slot, "unknown").id).is_not_equal("shard-weave")
+	var weave := CosmeticRules.find(Cosmetics.catalog(), "circle", "codex")
+	assert_str(weave.name).is_equal("Shard Weave")
 	assert_array(CosmeticRules.check(Cosmetics.catalog())).is_empty()
 
 
 func test_live_carousel_restarts_after_a_construction_preview_frees_itself() -> void:
-	var art: LookArt = auto_free(
-		LookArt.make("cast_light", CosmeticRules.find(Cosmetics.catalog(), "cast_light", "shard-weave"))
-	)
+	var art: LookArt = auto_free(LookArt.make("circle", CosmeticRules.find(Cosmetics.catalog(), "circle", "codex")))
 	art.size = Vector2(180, 210)
 	add_child(art)
 	art.set_process(false)

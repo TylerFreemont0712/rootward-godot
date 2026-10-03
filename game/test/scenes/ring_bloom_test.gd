@@ -72,15 +72,6 @@ func test_bolts_leave_from_its_centre() -> void:
 	assert_vector(circle.launch_point()).is_equal(circle.position)
 
 
-func test_the_style_worn_in_spells_wins_over_a_move_s_own() -> void:
-	var loom := {"circle_style": "script-loom"}
-	assert_str(CosmeticRules.construction_style(loom, "ring-bloom")).is_equal("ring-bloom")
-	assert_str(CosmeticRules.construction_style({}, "ring-bloom")).is_equal("ring-bloom")
-	assert_str(CosmeticRules.construction_style(loom, "script-loom")).is_equal("script-loom")
-	assert_str(CosmeticRules.construction_style(loom, "codex")).is_equal("script-loom")
-	assert_str(CosmeticRules.construction_style({}, "constellation")).is_equal("constellation")
-
-
 func test_spells_offers_script_loom_and_ring_bloom_and_the_catalogue_is_sound() -> void:
 	assert_array(CosmeticRules.check(Cosmetics.catalog())).is_empty()
 	for style: String in ["script-loom", "ring-bloom"]:
@@ -97,8 +88,8 @@ func test_a_stage_draws_the_worn_ring_bloom_at_the_grand_size() -> void:
 	stage.hero.set_preview_skin("vesper")
 	stage.hero.preview_loadout = {"circle": "ring-bloom"}
 	add_child(stage)
-	var one := stage.magic_circle(CircleLayers.demo_cards(1), "none", 1.0, true, "")
-	var six := stage.magic_circle(CircleLayers.demo_cards(6), "none", 1.0, true, "script-loom")
+	var one := stage.magic_circle(CircleLayers.demo_cards(1), "none", 1.0, true)
+	var six := stage.magic_circle(CircleLayers.demo_cards(6), "none", 1.0, true)
 	assert_str(one.style).is_equal("ring-bloom")
 	assert_str(six.style).is_equal("ring-bloom")
 	assert_float(one.radius).is_equal(six.radius)

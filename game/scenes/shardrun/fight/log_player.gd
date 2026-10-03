@@ -25,6 +25,8 @@ const SNAP_SPEED := 1.5
 const SNAP_SPEEDS: Array[float] = [1.5, 1.5, 1.3, 1.15]
 ## A heavy cast gathers at least this long, whatever its circle: a small circle is written more slowly, not hurried.
 const HEAVY_GATHER := 1.0
+## How long after the circle is sealed the worn move looses the volley, in seconds.
+const RELEASE_AFTER_SEAL := 0.45
 ## Without a code walk (including practice), each shard gets a readable construction beat.
 const SHARD_BEAT_MS := 450.0
 ## The longest a cast waits (in real time) for its bolts to land before it lets the log move on regardless: a guard
@@ -222,20 +224,18 @@ func configure_replay(before: Dictionary, replay: Dictionary, catalog: Dictionar
 	_import_sources[spell_id] = sources
 
 
-func _constructs(heavy: bool) -> bool:
-	return stage.hero.look("cast_heavy" if heavy else "cast_light").get("construction", "") == "shards"
+## Every spell builds its circle while the code walks (ADR-0044); the worn moves are the gesture that looses it.
+func _constructs(_heavy: bool) -> bool:
+	return true
 
 
 ## Start before the code walks, keeping the hero idle and the circle on the stage rather than on its hand.
-func begin_construction(spell_id: String, element: String, heavy := false) -> void:
+func begin_construction(spell_id: String, element: String, _heavy := false) -> void:
 	_construction_spell = spell_id
 	_construction_started = true
 	_resolved_shards = 0
 	stage.hero.play(stage.hero.move_clip("idle"))
-	var look := stage.hero.look("cast_heavy" if heavy else "cast_light")
-	_circle = stage.magic_circle(
-		_construction_cards(spell_id), element, 1.0, true, String(look.get("circle_style", ""))
-	)
+	_circle = stage.magic_circle(_construction_cards(spell_id), element, 1.0, true)
 
 
 ## Exact slots matter: the same shard can run twice, and an unvisited or failing function must not invent a layer.
@@ -342,6 +342,9 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 			stage.hero.play(stage.hero.move_clip("idle"))
 		if is_instance_valid(_circle):
 			_circle.finish_construction()
+		# The worn move looses the sealed circle (a move is a gesture; the circle is the spell, ADR-0044).
+		stage.hero.play_cast(heavy)
+		stage.hero.release_in(RELEASE_AFTER_SEAL)
 	elif heavy:
 		_circle = stage.magic_circle(cards, element, gather_speed(tier))
 		stage.hero.release_in(_circle.form_time() if _circle != null else 0.38)
@@ -356,8 +359,8 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	if heavy:
 		stage.dim(0.38, 0.3)
 	if construction:
-		if is_instance_valid(_circle):
-			await stage.wait(_circle.construction_time_left() * 1000.0)
+		var sealing := _circle.construction_time_left() if is_instance_valid(_circle) else 0.0
+		await stage.wait(maxf(sealing, RELEASE_AFTER_SEAL) * 1000.0)
 	elif _circle == null:
 		Sound.play("sfx-cast-tier-2", 0.8)
 		stage.cast_flash(element, heavy)

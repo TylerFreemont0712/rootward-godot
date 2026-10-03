@@ -328,10 +328,7 @@ func _moves_controls() -> void:
 	if hero == null or hero.character == null or not hero.character.is_humanoid():
 		_controls.add_child(
 			Ui.label(
-				FoundryUi.text(
-					"Script Loom and Shard Weave work with every skin. Other moves use this skin's own animations.",
-					"コードの織り陣とシャードの織り陣はどのすがたでも使えるよ。他の動きは、このすがたのアニメーションになる。"
-				),
+				FoundryUi.text("This skin has its own animations for the moves.", "このすがたには、動きのための専用アニメーションがあるよ。"),
 				"Muted",
 				true
 			)

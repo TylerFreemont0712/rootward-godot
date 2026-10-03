@@ -18,7 +18,7 @@ func after_test() -> void:
 	Settings.code_speed = _code_speed
 
 
-func _stage(light := "shard-weave", heavy := "grand-push") -> BattleStage:
+func _stage(light := "finger-snap", heavy := "grand-push") -> BattleStage:
 	var stage: BattleStage = auto_free(BattleStage.new())
 	stage.size = Vector2(1200, 700)
 	stage.hero.set_preview_skin("vesper")
@@ -31,18 +31,14 @@ func _entries(power := 4, cost := 2) -> Array:
 	return [{"kind": "cast", "spell": "spell", "amount": cost}, {"kind": "ward", "amount": power}]
 
 
-func test_construction_is_selected_by_the_actual_cast_weight() -> void:
-	var stage := _stage("shard-weave", "shard-weave")
+func test_every_cast_with_a_spell_is_constructed_whatever_move_is_worn() -> void:
+	var stage := _stage()
 	var player := LogPlayer.new(stage, {})
-	# Construction is how a spell is cast unless the older moves are worn (ADR-0043); the weight picks the slot.
-	assert_bool(player.uses_construction(_entries())).is_true()
-	assert_bool(player.uses_construction(_entries(30))).is_true()
-	stage.hero.preview_loadout = {"cast_light": "finger-snap", "cast_heavy": "shard-weave"}
-	assert_bool(player.uses_construction(_entries())).is_false()
-	assert_bool(player.uses_construction(_entries(30))).is_true()
-	stage.hero.preview_loadout = {"cast_light": "shard-weave", "cast_heavy": "grand-push"}
-	assert_bool(player.uses_construction(_entries())).is_true()
-	assert_bool(player.uses_construction(_entries(30))).is_false()
+	# Construction is how a spell is cast (ADR-0044); the worn move is the gesture that looses the circle.
+	for moves: Array in [["finger-snap", "grand-push"], ["rune-trace", "skyward-call"], ["finger-snap", "root-seal"]]:
+		stage.hero.preview_loadout = {"cast_light": moves[0], "cast_heavy": moves[1]}
+		assert_bool(player.uses_construction(_entries())).is_true()
+		assert_bool(player.uses_construction(_entries(30))).is_true()
 	assert_bool(player.uses_construction([{"kind": "timeout", "cost": 2}])).is_false()
 
 
@@ -194,7 +190,6 @@ func test_fight_constructs_during_the_code_walk_and_keeps_that_circle_after_a_fa
 	session.state.spells[0].shards = ["salvo", "salvo"]
 	var fight: FightView = auto_free(FightView.create(session))
 	fight.size = Vector2(1920, 1080)
-	fight.stage.hero.preview_loadout = {"cast_light": "shard-weave"}
 	fight.stage.hero.set_preview_skin("vesper")
 	add_child(fight)
 	await get_tree().process_frame
@@ -337,7 +332,6 @@ func test_a_real_failed_program_constructs_only_visited_shards_then_cleans_up_wi
 		display.state = (result.before as Dictionary).duplicate(true)
 		var fight: FightView = auto_free(FightView.create(display))
 		fight.size = Vector2(1920, 1080)
-		fight.stage.hero.preview_loadout = {"cast_light": "shard-weave"}
 		fight.stage.hero.set_preview_skin("vesper")
 		add_child(fight)
 		await get_tree().process_frame
@@ -478,7 +472,6 @@ func _play_code(panel: ProgramCode, view: Dictionary, finished: Array[bool]) -> 
 func _fight_for(session: ShardrunSession) -> FightView:
 	var fight: FightView = auto_free(FightView.create(session))
 	fight.size = Vector2(1920, 1080)
-	fight.stage.hero.preview_loadout = {"cast_light": "shard-weave"}
 	fight.stage.hero.set_preview_skin("vesper")
 	add_child(fight)
 	return fight
@@ -578,15 +571,13 @@ func test_a_fatal_early_attack_stops_the_code_and_closes_a_partial_circle_withou
 	assert_int(fight._entries.filter(func(entry: Dictionary) -> bool: return entry.kind == "cast").size()).is_equal(0)
 
 
-func test_script_loom_uses_the_actual_cast_slot_and_overrides_worn_circle_during_the_code_walk() -> void:
+func test_script_loom_worn_in_spells_draws_the_circle_during_the_code_walk() -> void:
 	Settings.code_speed = "fast"
 	for heavy: bool in [false, true]:
 		var session := _program_session(["salvo", "salvo"])
 		var fight := _fight_for(session)
 		fight.stage.hero.preview_loadout = {
-			"cast_light": "finger-snap" if heavy else "script-loom",
-			"cast_heavy": "script-loom" if heavy else "grand-push",
-			"circle": "constellation",
+			"cast_light": "finger-snap", "cast_heavy": "grand-push", "circle": "script-loom"
 		}
 		await get_tree().process_frame
 		var after := session.state.duplicate(true)
@@ -614,7 +605,7 @@ func test_script_loom_uses_the_actual_cast_slot_and_overrides_worn_circle_during
 		var circle := circles[0]
 		assert_str(circle.style).is_equal("script-loom")
 		assert_int(circle._arrived).is_equal(0)
-		assert_str(String(fight.stage.hero.look("circle").style)).is_equal("constellation")
+		assert_str(String(fight.stage.hero.look("circle").style)).is_equal("script-loom")
 		var deadline := Time.get_ticks_msec() + 5000
 		while fight._program._counted < 30 and not finished[0] and Time.get_ticks_msec() < deadline:
 			await get_tree().process_frame
@@ -634,13 +625,13 @@ func test_script_loom_uses_the_actual_cast_slot_and_overrides_worn_circle_during
 		await get_tree().process_frame
 
 
-func test_new_cast_style_override_leaves_earlier_cast_and_circle_choices_available() -> void:
+func test_every_circle_style_is_drawn_as_worn_and_ordinary_casts_keep_it() -> void:
 	var stage := _stage()
-	stage.hero.preview_loadout = {"cast_light": "shard-weave", "circle": "clockwork"}
+	stage.hero.preview_loadout = {"circle": "clockwork"}
 	var player := LogPlayer.new(stage, {})
 	player.cast_cards["spell"] = CircleLayers.demo_cards(3)
 	player.begin_construction("spell", "none")
-	var old_circle: MagicCircle = player.get("_circle")
-	assert_str(old_circle.style).is_equal("clockwork")
-	var ordinary := stage.magic_circle(CircleLayers.demo_cards(3), "none", 1.0, false, "script-loom")
+	var built: MagicCircle = player.get("_circle")
+	assert_str(built.style).is_equal("clockwork")
+	var ordinary := stage.magic_circle(CircleLayers.demo_cards(3), "none", 1.0, false)
 	assert_str(ordinary.style).is_equal("clockwork")

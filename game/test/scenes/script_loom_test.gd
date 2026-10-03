@@ -46,15 +46,13 @@ func test_each_shard_count_makes_a_distinct_finite_seal_without_missing_sectors(
 		assert_vector(end).is_equal_approx(Vector2.UP * 100.0, Vector2.ONE * 0.001)
 
 
-func test_unique_cast_is_optional_and_available_on_every_skin() -> void:
+func test_script_loom_is_a_circle_in_spells_not_a_move() -> void:
 	var catalog := Cosmetics.catalog()
 	assert_array(CosmeticRules.check(catalog)).is_empty()
-	assert_str(CosmeticRules.defaults(catalog).cast_light).is_equal("shard-weave")
+	assert_str(CosmeticRules.defaults(catalog).cast_light).is_equal("finger-snap")
 	for slot: String in ["cast_light", "cast_heavy"]:
-		var entry := CosmeticRules.find(catalog, slot, "script-loom")
-		assert_bool(CosmeticRules.playable(entry, [])).is_true()
-		assert_str(entry.circle_style).is_equal("script-loom")
-		assert_str(entry.construction).is_equal("shards")
+		assert_dict(CosmeticRules.find(catalog, slot, "script-loom")).is_empty()
+	assert_str(CosmeticRules.find(catalog, "circle", "script-loom").style).is_equal("script-loom")
 
 
 func test_unfinished_drawing_stays_still_while_time_passes_and_starts_turning_after_sealing() -> void:
@@ -77,7 +75,7 @@ func test_unfinished_drawing_stays_still_while_time_passes_and_starts_turning_af
 
 func test_character_option_preview_uses_the_unique_renderer_while_its_strokes_are_partial() -> void:
 	var art: LookArt = auto_free(
-		LookArt.make("cast_heavy", CosmeticRules.find(Cosmetics.catalog(), "cast_heavy", "script-loom"))
+		LookArt.make("circle", CosmeticRules.find(Cosmetics.catalog(), "circle", "script-loom"))
 	)
 	art.size = Vector2(180, 210)
 	add_child(art)

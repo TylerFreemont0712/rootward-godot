@@ -37,7 +37,12 @@ const LAYER_ALONE := 0.74
 ## A layer's arrival is heard at this share of the tier's volume, rising a little with each.
 const LAYER_SOUND := 0.55
 ## The disc faces the foes, so from the camera it is narrowed to this share of its width, leaning back this far.
-const SQUASH := 0.46
+const SQUASH := 0.34
+## The same for the styles drawn on the circle's centre (Script Loom, Ring Bloom) and how far they lean. A disc turned
+## toward the foes is seen at the cosine of its turn: these are about 12% further round than they were (0.72 and 0.46),
+## because the player found the circles ever so slightly facing the wrong way.
+const CENTRED_SQUASH := 0.65
+const CENTRED_LEAN := -0.12
 const TILT := -0.1
 ## How far in front of the first circle each smaller one stands (in radii), and how much smaller it is.
 const STACK_STEP := 0.55
@@ -375,7 +380,7 @@ func _draw() -> void:
 	var breathe := 0.85 + 0.15 * sin(clock * 5.0)
 	if style == "ring-bloom":
 		# Seen from the same slant as the loom's seal: whole rings round a core, growing outward with each shard.
-		_disc_xf = Transform2D(-0.12, Vector2(0.72, 1.0), 0.0, Vector2.ZERO)
+		_disc_xf = Transform2D(CENTRED_LEAN, Vector2(CENTRED_SQUASH, 1.0), 0.0, Vector2.ZERO)
 		draw_set_transform_matrix(_disc_xf)
 		RingBloom.draw(self, radius * swell, fade)
 		draw_set_transform_matrix(Transform2D.IDENTITY)
@@ -383,7 +388,9 @@ func _draw() -> void:
 		return
 	if style == "script-loom":
 		var turn := (clock - _formed_at) * 0.08 if _formed else 0.0
-		_disc_xf = Transform2D(-0.12, Vector2(0.72, 1.0), 0.0, Vector2.ZERO) * Transform2D(turn, Vector2.ZERO)
+		_disc_xf = (
+			Transform2D(CENTRED_LEAN, Vector2(CENTRED_SQUASH, 1.0), 0.0, Vector2.ZERO) * Transform2D(turn, Vector2.ZERO)
+		)
 		draw_set_transform_matrix(_disc_xf)
 		ScriptLoom.draw(self, radius * swell, fade)
 		draw_set_transform_matrix(Transform2D.IDENTITY)

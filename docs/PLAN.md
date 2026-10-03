@@ -341,3 +341,10 @@ player's characters from the old game's SQLite, and retiring the old repo (only 
 - [x] Ring Bloom: a core and one whole ring more per shard to six, each turning a little into place.
 - [ ] Play-test the ring timing at the real code speeds, and decide whether the hero should make a gesture at release.
 
+### Spell animations in Spells (ADR-0044)
+
+- [x] Shard Weave and Script Loom out of Moves; Spells lists Shard Weave, Script Loom and Ring Bloom among the circles.
+- [x] Every spell is built during the code walk; the worn move looses the sealed circle.
+- [x] Circles face the foes about 12% further; previews settle before they show; Ring Bloom gets rune bands and motifs.
+- [ ] Play-test the move timing after the seal (0.45 s) with each of the five moves.
+

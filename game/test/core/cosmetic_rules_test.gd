@@ -57,12 +57,32 @@ func test_check_names_what_is_wrong() -> void:
 	assert_bool(problems.any(func(p: String) -> bool: return p.begins_with("idle: the default"))).is_true()
 
 
-func test_only_construction_casts_may_override_their_circle_with_a_known_style() -> void:
-	var catalog := CATALOG.duplicate(true)
-	var entry := {"id": "loom", "name": "Loom", "note": "", "clip": "idle-breathe", "circle_style": "script-loom"}
-	catalog.cast_light.append(entry)
-	assert_array(CosmeticRules.check(catalog)).contains(["cast_light.loom: unknown construction style"])
-	entry.construction = "shards"
-	assert_array(CosmeticRules.check(catalog)).is_empty()
-	entry.circle_style = "unknown"
-	assert_array(CosmeticRules.check(catalog)).contains(["cast_light.loom: unknown construction style"])
+func test_a_save_that_wore_the_loom_as_a_move_keeps_it_as_a_circle() -> void:
+	var catalog := Cosmetics.catalog()
+	var kept := CosmeticRules.sanitize(
+		{"cast_light": "script-loom", "cast_heavy": "script-loom", "circle": "constellation"}, catalog
+	)
+	assert_str(kept.circle).is_equal("script-loom")
+	# The moves it named no longer exist, so those slots read as their defaults.
+	assert_str(kept.cast_light).is_equal("finger-snap")
+	assert_str(kept.cast_heavy).is_equal("grand-push")
+	var chosen := CosmeticRules.sanitize({"cast_light": "script-loom", "circle": "ring-bloom"}, catalog)
+	assert_str(chosen.circle).is_equal("ring-bloom")
+	var weave := CosmeticRules.sanitize({"cast_heavy": "shard-weave", "circle": "rootglass"}, catalog)
+	assert_str(weave.circle).is_equal("rootglass")
+	assert_str(weave.cast_heavy).is_equal("grand-push")
+
+
+func test_no_move_carries_a_spell_animation() -> void:
+	for slot: String in ["cast_light", "cast_heavy"]:
+		for option in Cosmetics.options(slot):
+			(
+				assert_bool(option.has("construction") or option.has("circle_style"))
+				. override_failure_message(option.id)
+				. is_false()
+			)
+	for style: String in ["script-loom", "ring-bloom"]:
+		var found := false
+		for option in Cosmetics.options("circle"):
+			found = found or option.style == style
+		assert_bool(found).override_failure_message(style).is_true()

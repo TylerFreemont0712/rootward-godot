@@ -30,13 +30,6 @@
   ],
   "cast_light": [
     {
-      "id": "shard-weave",
-      "name": "Shard Weave",
-      "note": "The circle is built while your code runs, one layer for each function, in the circle you wear under Spells. The way every spell is cast.",
-      "clip": "idle-breathe",
-      "construction": "shards"
-    },
-    {
       "id": "finger-snap",
       "name": "Finger Snap",
       "note": "A snap beside the face, and the circle is simply there.",
@@ -47,24 +40,9 @@
       "name": "Rune Trace",
       "note": "One finger writes a quick stroke in the air; the circle closes on its last line.",
       "clip": "cast-trace"
-    },
-    {
-      "id": "script-loom",
-      "name": "Script Loom",
-      "note": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.",
-      "clip": "idle-breathe",
-      "construction": "shards",
-      "circle_style": "script-loom"
     }
   ],
   "cast_heavy": [
-    {
-      "id": "shard-weave",
-      "name": "Shard Weave",
-      "note": "The circle is built while your code runs, one layer for each function, in the circle you wear under Spells. The way every spell is cast.",
-      "clip": "idle-breathe",
-      "construction": "shards"
-    },
     {
       "id": "grand-push",
       "name": "Grand Push",
@@ -83,21 +61,13 @@
       "name": "Root Seal",
       "note": "Down on one knee, a palm pressed to the floor wakes what grows under it.",
       "clip": "cast-slam"
-    },
-    {
-      "id": "script-loom",
-      "name": "Script Loom",
-      "note": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.",
-      "clip": "idle-breathe",
-      "construction": "shards",
-      "circle_style": "script-loom"
     }
   ],
   "circle": [
     {
       "id": "codex",
-      "name": "Codex Circle",
-      "note": "Pen-stroke rings, a ruled star and the spell's own function names as runes.",
+      "name": "Shard Weave",
+      "note": "Every function weaves a new layer into the circle while its code runs: pen-stroke rings, a ruled star, and the spell's own function names as runes.",
       "style": "codex"
     },
     {

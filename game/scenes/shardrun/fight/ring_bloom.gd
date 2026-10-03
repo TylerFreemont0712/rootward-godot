@@ -8,26 +8,11 @@ extends RefCounted
 const MAX_RINGS := 6
 ## The core ring's share of the radius, and how wide a ring's band is (also as shares of the radius).
 const CORE := 0.2
-const BAND := 0.1
+const BAND := 0.125
 ## The small turn a ring makes as it is set, in radians, and the share of its function it appears in.
 const SET_TURN := 0.5
 const APPEAR := 0.12
 const SCALE_IN := 0.08
-## How the ornament on a ring is drawn, by the look the shard's layer has (CircleLayers.KINDS).
-const ORNAMENTS := {
-	"runes": "ticks",
-	"dashes": "ticks",
-	"brackets": "ticks",
-	"spokes": "ticks",
-	"pulses": "beads",
-	"satellites": "beads",
-	"rosette": "beads",
-	"wave": "dashes",
-	"spiral": "dashes",
-	"star": "polygon",
-	"lattice": "polygon",
-	"nested": "polygon",
-}
 
 
 ## The outer radius of ring `index` (0 the core), as a share of the radius: even steps from the core to the rim.
@@ -58,18 +43,21 @@ static func draw(c: MagicCircle, radius: float, fade: float) -> void:
 		if progress <= 0.0:
 			continue
 		var layer: Dictionary = {} if c.layers.is_empty() else c.layers[index]
-		var shown := state(progress, int(layer.get("dir", 1)))
+		var direction := int(layer.get("dir", 1))
+		var seed := int(layer.get("seed", index * 7))
+		var shown := state(progress, direction)
 		var drift := 0.0
 		if c._formed:
-			drift = (c.clock - c._formed_at) * 0.05 * float(layer.get("dir", 1))
+			drift = (c.clock - c._formed_at) * 0.05 * float(direction)
 		var alpha: float = fade * float(shown.alpha)
 		var outer := radius * outer_share(index) * float(shown.scale)
-		var inner := outer - radius * BAND * float(shown.scale) if index > 0 else outer * 0.62
-		var turn: float = float(shown.turn) + drift + float(int(layer.get("seed", index * 7)) % 628) / 100.0
+		var inner := outer - radius * BAND * float(shown.scale) if index > 0 else outer * 0.6
+		var turn: float = float(shown.turn) + drift + float(seed % 628) / 100.0
 		_ring(c, outer, inner, alpha, width, pulse)
-		_ornament(c, String(ORNAMENTS.get(String(layer.get("kind", "")), "ticks")), outer, inner, turn, alpha, index)
 		if index == 0:
-			_core(c, inner, alpha, pulse)
+			RingMotifs.core(c, inner, turn, alpha, pulse)
+		else:
+			RingMotifs.draw(c, RingMotifs.band_for(index, seed), outer, inner, turn, alpha, seed)
 	for shock: float in c._shocks:
 		var age := (c.clock - shock) / 0.32
 		if age < 1.0:
@@ -85,47 +73,3 @@ static func _ring(c: MagicCircle, outer: float, inner: float, alpha: float, widt
 	c.draw_arc(Vector2.ZERO, outer, 0.0, TAU, 96, Color(c.mid, 0.28 * alpha), width * 4.0 * pulse, true)
 	c.draw_arc(Vector2.ZERO, outer, 0.0, TAU, 96, Color(c.hot, 0.92 * alpha), width * 1.7, true)
 	c.draw_arc(Vector2.ZERO, inner, 0.0, TAU, 96, Color(c.hot, 0.55 * alpha), width * 0.9, true)
-
-
-static func _ornament(
-	c: MagicCircle, kind: String, outer: float, inner: float, turn: float, alpha: float, index: int
-) -> void:
-	var middle := (outer + inner) * 0.5
-	var count := 12 + 4 * index
-	match kind:
-		"ticks":
-			for i in count:
-				var a := turn + TAU * i / count
-				var length := 0.5 if i % 3 == 0 else 0.3
-				c.draw_line(
-					Vector2.from_angle(a) * (middle - (outer - inner) * length),
-					Vector2.from_angle(a) * (middle + (outer - inner) * length),
-					Color(c.hot, 0.7 * alpha),
-					1.3,
-					true
-				)
-		"beads":
-			for i in count:
-				var at := Vector2.from_angle(turn + TAU * i / count) * middle
-				c.draw_circle(at, 2.8, Color(c.mid, 0.3 * alpha))
-				c.draw_circle(at, 1.4, Color(c.hot, 0.9 * alpha))
-		"dashes":
-			for i in count:
-				var from := turn + TAU * i / count
-				c.draw_arc(
-					Vector2.ZERO, middle, from, from + TAU / count * 0.55, 6, Color(c.hot, 0.8 * alpha), 2.0, true
-				)
-		_:
-			# A polygon turned inside the ring, its corners touching the inner line.
-			var sides := 5 + index
-			var corners := PackedVector2Array()
-			for i in sides + 1:
-				corners.append(Vector2.from_angle(turn + TAU * i / sides - PI * 0.5) * inner)
-			c.draw_polyline(corners, Color(c.mid, 0.28 * alpha), 4.0, true)
-			c.draw_polyline(corners, Color(c.hot, 0.85 * alpha), 1.3, true)
-
-
-## The core of the first ring: a bright jewel that flares with each bolt.
-static func _core(c: MagicCircle, inner: float, alpha: float, pulse: float) -> void:
-	c.draw_circle(Vector2.ZERO, inner * 0.55 * pulse, Color(c.mid, 0.2 * alpha))
-	c.draw_circle(Vector2.ZERO, inner * 0.26 * pulse, Color(c.hot, (0.55 + 0.45 * c._flare) * alpha))

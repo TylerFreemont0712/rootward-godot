@@ -5,7 +5,9 @@ extends Control
 ## on the motion dummy (a picture made by tools/move_thumbs). While `live` it plays on a loop; otherwise it holds its
 ## most telling moment, still. Silent: the cards never make a sound.
 
-const LOOP_SECONDS := 2.6
+## A card replays its demonstration this often, and lets a finished circle rest this long before it closes it.
+const LOOP_SECONDS := 5.0
+const SETTLE := 1.0
 
 var slot := ""
 var option: Dictionary = {}
@@ -20,7 +22,7 @@ static func make(for_slot: String, for_option: Dictionary) -> LookArt:
 	art.option = for_option
 	art.clip_contents = true
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if for_slot in CosmeticRules.NATIVE and for_option.get("construction", "") != "shards":
+	if for_slot in CosmeticRules.NATIVE:
 		var picture := Ui.picture("menus/moves/" + String(for_option.get("clip", "")), Vector2(150, 150), "✦")
 		picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		picture.offset_bottom = -30
@@ -37,35 +39,26 @@ func set_live(value: bool) -> void:
 
 
 func _restart() -> void:
-	var construction: bool = option.get("construction", "") == "shards"
-	if (slot in CosmeticRules.NATIVE and not construction) or size.x < 8.0 or not is_inside_tree():
+	if slot in CosmeticRules.NATIVE or size.x < 8.0 or not is_inside_tree():
 		return
 	if is_instance_valid(_effect):
 		_effect.queue_free()
 	_effect = null
 	_clock = 0.0
 	var middle := Vector2(size.x * 0.5, (size.y - 30.0) * 0.5)
-	if construction:
-		var circle := MagicCircle.cast(self, middle, 1, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
-		circle.style = String(option.get("circle_style", "codex"))
-		circle.external_construction = true
-		circle.use_plan(CircleLayers.demo_plan(1))
-		circle.position.x -= circle.radius * 0.35
-		circle.set_process(false)
-		_effect = circle
-		if not live:
-			_advance(1.6)
-		return
 	match slot:
 		"circle":
 			var circle := MagicCircle.cast(self, middle, 2, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
 			circle.style = String(option.get("style", "codex"))
+			# Built layer by layer, as a spell is, then left to settle: the card shows the circle at rest, not the
+			# flare of the moment it was sealed.
+			circle.external_construction = true
 			circle.use_plan(CircleLayers.demo_plan(3 if circle.style == "ring-bloom" else 2))
 			circle.position.x -= circle.radius * 0.35
 			circle.set_process(false)
 			_effect = circle
 			if not live:
-				_advance(circle.form_time() * 1.1)
+				_advance(_built_by(circle) + SETTLE)
 		"bolt":
 			var bolt := SpellAnim.play(
 				self, String(option.get("sprite", "")), middle, "none", size.x / 300.0, 0.0, true
@@ -82,6 +75,11 @@ func _restart() -> void:
 				blow.set_process(false)
 				_effect = blow
 				_advance(blow.impact_time() + 0.12)
+
+
+## When the card's demonstration spell has drawn its last layer, in seconds.
+func _built_by(circle: MagicCircle) -> float:
+	return 0.15 + circle.layers.size() * 0.32 + 0.35
 
 
 func _advance(seconds: float) -> void:
@@ -115,7 +113,7 @@ func _process(delta: float) -> void:
 	_tick(delta)
 	if _effect is MagicCircle:
 		var circle := _effect as MagicCircle
-		if _clock > circle.form_time() + 1.2 and circle._closing < 0.0:
+		if _clock > _built_by(circle) + SETTLE + 0.3 and circle._closing < 0.0:
 			circle.close()
 	if _clock >= LOOP_SECONDS:
 		_restart()

@@ -104,8 +104,14 @@ func _ready() -> void:
 				panel._tab = "Spells"
 				panel._spell_slot = "circle"
 				panel._build_controls()
-				rehearsal.set_look("circle", "clockwork")
-				panel._carousel.at = 2
+				# ROOTWARD_SHOT_CIRCLE (an option id) wears that circle and puts it in the middle of the carousel.
+				var wanted_circle := OS.get_environment("ROOTWARD_SHOT_CIRCLE")
+				wanted_circle = wanted_circle if wanted_circle != "" else "clockwork"
+				rehearsal.set_look("circle", wanted_circle)
+				var circle_options := Cosmetics.options("circle")
+				for i in circle_options.size():
+					if circle_options[i].id == wanted_circle:
+						panel._carousel.at = i
 				panel._carousel.arrange(false)
 				panel._show_look()
 				# ROOTWARD_SHARDS (1..6) picks the practice spell's shards: the layers of its circle (ADR-0039).

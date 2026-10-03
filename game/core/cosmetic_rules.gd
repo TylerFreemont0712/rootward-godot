@@ -13,8 +13,7 @@ const SLOTS: Array[String] = ["idle", "cast_light", "cast_heavy", "circle", "bol
 ## chosen one: a drawn skin or a model with its own clips answers with its own.
 const NATIVE := {"idle": "idle-breathe", "cast_light": "cast-light", "cast_heavy": "cast-heavy"}
 const CIRCLE_STYLES: Array[String] = ["codex", "rootglass", "clockwork", "constellation", "script-loom", "ring-bloom"]
-## The styles with a renderer of their own, standing on the circle's centre: whichever the player wears in Spells draws
-## every constructed circle, over any cast option's own style (ADR-0043).
+## The styles with a renderer of their own, standing on the circle's centre (ADR-0043).
 const CENTRED_STYLES: Array[String] = ["script-loom", "ring-bloom"]
 const BOLT_PATHS: Array[String] = ["arc", "straight", "spiral"]
 ## What each slot's options must carry besides an id and a name.
@@ -46,6 +45,11 @@ static func sanitize(loadout: Variant, catalog: Dictionary) -> Dictionary:
 		var wanted: Variant = (loadout as Dictionary).get(slot)
 		if wanted is String and not find(catalog, slot, wanted).is_empty():
 			clean[slot] = wanted
+	# Script Loom and Shard Weave used to be worn as moves (ADR-0040 to 0042). They are circles now (ADR-0044): a save
+	# that wore the loom as a move keeps its look as the circle, unless a circle of the new kind was chosen.
+	var old: Array = [(loadout as Dictionary).get("cast_light"), (loadout as Dictionary).get("cast_heavy")]
+	if "script-loom" in old and not String(clean.circle) in CENTRED_STYLES:
+		clean.circle = "script-loom"
 	return clean
 
 
@@ -72,19 +76,8 @@ static func clip(catalog: Dictionary, loadout: Dictionary, slot: String, availab
 	return chosen if chosen in available else String(NATIVE.get(slot, ""))
 
 
-## The style a constructed circle is drawn in: a centred style worn in Spells (Script Loom, Ring Bloom) wins, then the
-## cast option's own style (the older Script Loom move), then whatever circle is worn.
-static func construction_style(cast_look: Dictionary, worn_style: String) -> String:
-	if worn_style in CENTRED_STYLES:
-		return worn_style
-	var own := String(cast_look.get("circle_style", ""))
-	return own if own != "" else worn_style
-
-
 ## Whether a skin that can play `available` plays the option itself rather than its own clip.
 static func playable(entry: Dictionary, available: Array) -> bool:
-	if entry.get("construction", "") == "shards":
-		return true
 	return not entry.has("clip") or String(entry.clip) in available
 
 
@@ -112,16 +105,6 @@ static func check(catalog: Dictionary) -> Array[String]:
 				problems.append("circle.%s: unknown style" % id)
 			if slot == "bolt" and not String(entry.get("path", "")) in BOLT_PATHS:
 				problems.append("bolt.%s: unknown path" % id)
-			if entry.has("construction"):
-				if slot not in ["cast_light", "cast_heavy"] or entry.construction != "shards":
-					problems.append("%s.%s: unknown construction" % [slot, id])
-			if entry.has("circle_style"):
-				if entry.get("construction", "") != "shards" or not String(entry.circle_style) in CIRCLE_STYLES:
-					problems.append("%s.%s: unknown construction style" % [slot, id])
-		if (
-			NATIVE.has(slot)
-			and options[0].get("construction", "") != "shards"
-			and String(options[0].get("clip", "")) != NATIVE[slot]
-		):
+		if NATIVE.has(slot) and String(options[0].get("clip", "")) != NATIVE[slot]:
 			problems.append("%s: the default must be the native clip %s" % [slot, NATIVE[slot]])
 	return problems

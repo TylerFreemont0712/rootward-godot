@@ -34,7 +34,7 @@ func test_every_move_is_in_the_library_and_every_sheet_is_drawn() -> void:
 	for slot: String in ["idle", "cast_light", "cast_heavy"]:
 		for entry in Cosmetics.options(slot):
 			assert_bool(moves.has(entry.clip)).override_failure_message(entry.clip).is_true()
-			if slot != "idle" and entry.get("construction", "") != "shards":
+			if slot != "idle":
 				assert_that(moves[entry.clip].get("release")).override_failure_message(entry.clip).is_not_null()
 	for entry in Cosmetics.options("bolt"):
 		(

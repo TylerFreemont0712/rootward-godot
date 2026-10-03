@@ -142,8 +142,7 @@ func test_cast(power := -1) -> void:
 				"target": "all" if targets > 1 else "front"
 			}
 		)
-	var slot := "cast_heavy" if int(chosen[0]) >= 4 else "cast_light"
-	clip = hero.move_clip("idle" if hero.look(slot).get("construction", "") == "shards" else slot)
+	clip = hero.move_clip("idle")
 	_elapsed = 0.0
 	set_paused(false)
 	_serial += 1
@@ -165,21 +164,16 @@ func preview_circle() -> void:
 	_serial += 1
 	var serial := _serial
 	_playing = true
-	var cast_look := hero.look("cast_heavy" if heavy else "cast_light")
-	var construction: bool = cast_look.get("construction", "") == "shards"
-	_circle = stage.magic_circle(cards(), element, 1.0, construction, String(cast_look.get("circle_style", "")))
+	_circle = stage.magic_circle(cards(), element, 1.0, true)
 	if _circle != null:
-		if construction:
-			for index in _circle.layers.size():
-				if serial != _serial or not is_instance_valid(_circle):
-					break
-				_circle.construct_shard(index)
-				await stage.wait(450.0)
-			if serial == _serial and is_instance_valid(_circle):
-				_circle.finish_construction()
-				await stage.wait(_circle.construction_time_left() * 1000.0)
-		else:
-			await stage.wait(_circle.form_time() * 1000.0)
+		for index in _circle.layers.size():
+			if serial != _serial or not is_instance_valid(_circle):
+				break
+			_circle.construct_shard(index)
+			await stage.wait(450.0)
+		if serial == _serial and is_instance_valid(_circle):
+			_circle.finish_construction()
+			await stage.wait(_circle.construction_time_left() * 1000.0)
 		for i in 6:
 			if serial != _serial or not is_instance_valid(_circle):
 				break

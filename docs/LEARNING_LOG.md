@@ -767,3 +767,12 @@ remaining turn of its ornaments. A plain circle looks the same however it turns,
 beads, dashes and polygon. Direct `_draw()` calls fail outside the draw notification: a test that must exercise drawing
 queues a redraw and waits a frame.
 
+## Draw glyphs as strokes, not text (`game/scenes/shardrun/fight/rune_glyphs.gd`)
+A font may lack the characters a magic circle wants (futhark, alchemical signs), and the project's fonts are chosen by
+the player. Twenty-three glyphs are a few polylines each in a half-by-two box; placing one on a ring is a rotation of
+its points. They draw the same in every font and under the circle's slanted transform, and a test can count them.
+
+## A preview should show the thing at rest (`game/scenes/title/look_art.gd`)
+A card that advances an animation to the moment it finishes shows the flare of finishing: a blown-out core. The card
+now builds the circle layer by layer and then lets it settle for a second before it shows it.
+
