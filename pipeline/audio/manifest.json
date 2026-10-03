@@ -140,187 +140,57 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "shimmer",
-          "length": 0.12,
-          "note": "D6",
-          "gain_db": -19
-        },
-        {
-          "synth": "shimmer",
-          "length": 0.12,
-          "note": "E6",
-          "delay_ms": 160,
-          "gain_db": -19
-        },
-        {
-          "synth": "shimmer",
-          "length": 0.12,
-          "note": "A5",
-          "delay_ms": 320,
-          "gain_db": -18
-        },
-        {
-          "synth": "whiff",
-          "length": 0.19,
-          "delay_ms": 196,
-          "gain_db": -16
-        },
-        {
-          "synth": "whiff",
-          "length": 0.19,
-          "delay_ms": 388,
-          "gain_db": -16
-        },
-        {
-          "synth": "whiff",
-          "length": 0.22,
-          "delay_ms": 676,
-          "gain_db": -14
-        },
-        {
-          "synth": "thud",
-          "pitch": 150,
-          "length": 0.3,
-          "crunch": 0.8,
-          "knock": 0.8,
-          "delay_ms": 384,
-          "gain_db": -5,
-          "vary": {
-            "rate": [
-              -0.04,
-              0.04
-            ]
-          }
-        },
-        {
-          "synth": "crystal_burst",
-          "length": 0.15,
-          "count": 10,
-          "delay_ms": 388,
-          "gain_db": -14
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_000.ogg",
-          "delay_ms": 384,
-          "gain_db": -10,
-          "rate": 0.85,
-          "hp": 150,
-          "lp": 5000,
-          "trim_ms": 350,
-          "fade_out_ms": 150,
-          "vary": {
-            "rate": [
-              -0.05,
-              0.05
-            ]
-          }
-        },
-        {
-          "synth": "thud",
-          "pitch": 130,
-          "length": 0.3,
-          "crunch": 0.8,
-          "knock": 0.8,
-          "delay_ms": 576,
-          "gain_db": -4,
-          "vary": {
-            "rate": [
-              -0.04,
-              0.04
-            ]
-          }
-        },
-        {
-          "synth": "crystal_burst",
-          "length": 0.15,
-          "count": 10,
-          "delay_ms": 580,
-          "gain_db": -14
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_002.ogg",
-          "delay_ms": 576,
-          "gain_db": -10,
-          "rate": 0.85,
-          "hp": 150,
-          "lp": 5000,
-          "trim_ms": 350,
-          "fade_out_ms": 150,
-          "vary": {
-            "rate": [
-              -0.05,
-              0.05
-            ]
-          }
-        },
-        {
-          "synth": "thud",
-          "pitch": 100,
-          "length": 0.6,
-          "crunch": 0.8,
-          "knock": 0.8,
-          "delay_ms": 896,
-          "gain_db": -1
-        },
-        {
-          "synth": "sub_boom",
-          "start": 82,
-          "end": 48,
-          "length": 0.7,
-          "delay_ms": 896,
-          "gain_db": -15
-        },
-        {
-          "synth": "release",
-          "size": 0.9,
-          "note": "D6",
-          "delay_ms": 896,
-          "gain_db": -7
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactPlate_heavy_004.ogg",
-          "delay_ms": 896,
-          "gain_db": -8,
-          "rate": 0.7,
-          "hp": 120,
-          "lp": 5000,
-          "trim_ms": 600,
-          "fade_out_ms": 250,
-          "vary": {
-            "rate": [
-              -0.04,
-              0.04
-            ]
-          }
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
-          "delay_ms": 898,
+          "source": "vendor/oga-80-cc0-rpg-sfx/spell_02.ogg",
+          "anchor_ms": 384,
           "gain_db": -9,
-          "hp": 1000,
-          "lp": 9000,
-          "trim_ms": 500,
+          "hp": 200,
+          "trim_ms": 800,
           "fade_out_ms": 200
         },
         {
-          "synth": "crystal_burst",
-          "length": 0.45,
-          "count": 30,
-          "delay_ms": 900,
-          "gain_db": -10
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/spell_01.ogg",
+            "vendor/oga-rpg-sound-pack/RPG Sound Pack/battle/magic1.wav"
+          ],
+          "anchor_ms": 576,
+          "gain_db": -6,
+          "hp": 200,
+          "trim_ms": 1000,
+          "fade_out_ms": 200
         },
         {
-          "synth": "ring_sweep",
-          "length": 0.4,
-          "low": 400,
-          "high": 3000,
-          "delay_ms": 900,
-          "gain_db": -16
+          "source": "vendor/ccby-oga/Magic_Smite.wav",
+          "anchor_ms": 896,
+          "hp": 150,
+          "fade_in_ms": 4,
+          "vary": {
+            "rate": [
+              -0.05,
+              0.05
+            ]
+          },
+          "trim_ms": 1900,
+          "fade_out_ms": 400
+        },
+        {
+          "source": "vendor/kenney-sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+          "anchor_ms": 896,
+          "gain_db": -10,
+          "lp": 300
+        },
+        {
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_04.ogg",
+          "anchor_ms": 900,
+          "gain_db": -9,
+          "hp": 2500,
+          "trim_ms": 450,
+          "fade_out_ms": 120
         }
       ],
       "post": {
         "k_lufs": -15
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-shatter",
@@ -336,82 +206,33 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "crackle",
-          "length": 0.3,
-          "gain_db": -9
+          "source": "vendor/oga-ice-shatters/LedasLuzta.ogg",
+          "delay_ms": 0,
+          "gain_db": -10,
+          "trim_ms": 295,
+          "fade_out_ms": 60
         },
         {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
-          "delay_ms": 120,
-          "gain_db": -17,
-          "rate": 1.4,
+          "source": [
+            "vendor/oga-ice-shatters/LedasLuzta4.ogg",
+            "vendor/oga-ice-shatters/LedasLuzta33.ogg"
+          ],
+          "anchor_ms": 340,
+          "hp": 200
+        },
+        {
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_04.ogg",
+          "delay_ms": 363,
+          "gain_db": -11,
           "hp": 2000,
-          "lp": 9000,
-          "trim_ms": 250,
-          "fade_out_ms": 100
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_004.ogg",
-          "delay_ms": 230,
-          "gain_db": -15,
-          "rate": 1.2,
-          "hp": 2000,
-          "lp": 9000,
-          "trim_ms": 250,
-          "fade_out_ms": 100
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
-          "delay_ms": 338,
-          "gain_db": -6,
-          "hp": 800,
-          "lp": 9000,
-          "trim_ms": 600,
-          "fade_out_ms": 250
-        },
-        {
-          "synth": "release",
-          "size": 0.9,
-          "note": "A5",
-          "delay_ms": 338,
-          "gain_db": -6
-        },
-        {
-          "synth": "thud",
-          "pitch": 100,
-          "length": 0.35,
-          "crunch": 0.5,
-          "knock": 0.4,
-          "delay_ms": 340,
-          "gain_db": -7
-        },
-        {
-          "synth": "sub_boom",
-          "start": 90,
-          "end": 55,
-          "length": 0.35,
-          "delay_ms": 340,
-          "gain_db": -13
-        },
-        {
-          "synth": "crystal_burst",
-          "length": 0.7,
-          "count": 40,
-          "decay": 0.5,
-          "delay_ms": 360,
-          "gain_db": -10
-        },
-        {
-          "synth": "shimmer",
-          "length": 0.5,
-          "note": "D6",
-          "delay_ms": 380,
-          "gain_db": -15
+          "trim_ms": 450,
+          "fade_out_ms": 150
         }
       ],
       "post": {
         "k_lufs": -16.5
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-heal",
@@ -594,58 +415,60 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "shimmer",
-          "length": 0.26,
-          "note": "D6",
-          "gain_db": -12
+          "source": [
+            "vendor/oga-magic-spell-sfx/magical_2.ogg",
+            "vendor/oga-magic-spell-sfx/magical_5.ogg"
+          ],
+          "anchor_ms": 616,
+          "hp": 200,
+          "fade_in_ms": 15,
+          "trim_ms": 1350,
+          "fade_out_ms": 300
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
           "delay_ms": 73,
-          "gain_db": -14
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "F#6",
-          "delay_ms": 128,
-          "gain_db": -14
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 160,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "A6",
-          "delay_ms": 183,
-          "gain_db": -14
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D7",
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
           "delay_ms": 238,
-          "gain_db": -14
-        },
-        {
-          "synth": "bracket_clack",
-          "weight": 0.6,
-          "delay_ms": 215,
-          "gain_db": -16
-        },
-        {
-          "synth": "gather",
-          "length": 0.18,
-          "delay_ms": 436,
-          "gain_db": -10
-        },
-        {
-          "synth": "release",
-          "size": 0.6,
-          "note": "D6",
-          "delay_ms": 612,
-          "gain_db": -3
+          "gain_db": -13,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         }
       ],
       "post": {
         "k_lufs": -23
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-cast-tier-2",
@@ -664,105 +487,56 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "shimmer",
-          "length": 0.36,
-          "note": "D6",
-          "gain_db": -11
+          "source": [
+            "vendor/oga-magic-spell-sfx/magical_3.ogg",
+            "vendor/oga-magic-spell-sfx/magical_1_0.ogg"
+          ],
+          "anchor_ms": 860,
+          "hp": 200,
+          "fade_in_ms": 15,
+          "trim_ms": 1700,
+          "fade_out_ms": 300
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
+          "source": "vendor/ccby-oga/shimmer_1.flac",
+          "delay_ms": 250,
+          "gain_db": -11,
+          "trim_ms": 900,
+          "fade_out_ms": 200
+        },
+        {
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
           "delay_ms": 80,
-          "gain_db": -16
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
-          "delay_ms": 105,
-          "gain_db": -16
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 200,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "E6",
-          "delay_ms": 130,
-          "gain_db": -16
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+          "delay_ms": 320,
+          "gain_db": -13,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "F#6",
-          "delay_ms": 155,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A6",
-          "delay_ms": 180,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B6",
-          "delay_ms": 205,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D7",
-          "delay_ms": 230,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "E7",
-          "delay_ms": 255,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#7",
-          "delay_ms": 280,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A7",
-          "delay_ms": 305,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B7",
-          "delay_ms": 330,
-          "gain_db": -16
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 355,
-          "gain_db": -16
-        },
-        {
-          "synth": "bracket_clack",
-          "delay_ms": 350,
-          "gain_db": -8
-        },
-        {
-          "synth": "gather",
-          "length": 0.24,
-          "delay_ms": 620,
-          "gain_db": -8
-        },
-        {
-          "synth": "release",
-          "size": 0.9,
-          "note": "D6",
-          "delay_ms": 856,
-          "gain_db": -2
+          "source": "vendor/oga-80-cc0-rpg-sfx/lock_01.ogg",
+          "delay_ms": 358,
+          "gain_db": -13,
+          "hp": 1800,
+          "trim_ms": 150
         }
       ],
       "post": {
         "k_lufs": -21
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-cast-tier-3",
@@ -781,125 +555,86 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "shimmer",
-          "length": 0.4,
-          "note": "D6",
-          "gain_db": -10
+          "source": [
+            "vendor/oga-magic-spell-sfx/magical_4.ogg",
+            "vendor/oga-rpg-sound-pack/RPG Sound Pack/battle/spell.wav"
+          ],
+          "anchor_ms": 1008,
+          "hp": 200,
+          "fade_in_ms": 15,
+          "trim_ms": 1900,
+          "fade_out_ms": 300
         },
         {
-          "synth": "shimmer",
-          "length": 0.45,
-          "note": "A5",
-          "delay_ms": 120,
-          "gain_db": -14
+          "source": "vendor/oga-magic-spell-sfx/magical_3.ogg",
+          "anchor_ms": 1056,
+          "gain_db": -7,
+          "hp": 300,
+          "trim_ms": 1900,
+          "fade_out_ms": 300
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
+          "source": "vendor/oga-spell-sounds/teleport.ogg",
+          "from_ms": 5200,
+          "trim_ms": 1400,
+          "anchor_ms": 900,
+          "gain_db": -10,
+          "hp": 300,
+          "fade_out_ms": 300
+        },
+        {
+          "source": "vendor/ccby-oga/shimmer_1.flac",
+          "delay_ms": 300,
+          "gain_db": -11,
+          "trim_ms": 500,
+          "fade_out_ms": 150
+        },
+        {
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
           "delay_ms": 180,
-          "gain_db": -17
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
-          "delay_ms": 215,
-          "gain_db": -17
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 300,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "E6",
-          "delay_ms": 250,
-          "gain_db": -17
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+          "delay_ms": 420,
+          "gain_db": -13,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "F#6",
-          "delay_ms": 285,
-          "gain_db": -17
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 540,
+          "gain_db": -13,
+          "hp": 800,
+          "trim_ms": 120
         },
         {
-          "synth": "rune_tick",
-          "note": "A6",
-          "delay_ms": 320,
-          "gain_db": -17
+          "source": "vendor/oga-80-cc0-rpg-sfx/lock_01.ogg",
+          "delay_ms": 458,
+          "gain_db": -13,
+          "hp": 1800,
+          "trim_ms": 150
         },
         {
-          "synth": "rune_tick",
-          "note": "B6",
-          "delay_ms": 355,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D7",
-          "delay_ms": 390,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "E7",
-          "delay_ms": 425,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#7",
-          "delay_ms": 460,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A7",
-          "delay_ms": 495,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B7",
-          "delay_ms": 530,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 565,
-          "gain_db": -17
-        },
-        {
-          "synth": "bracket_clack",
-          "weight": 1.3,
-          "delay_ms": 455,
-          "gain_db": -6
-        },
-        {
-          "synth": "gather",
-          "length": 0.24,
-          "delay_ms": 770,
-          "gain_db": -6
-        },
-        {
-          "synth": "release",
-          "size": 1.2,
-          "note": "D6",
-          "delay_ms": 1004,
-          "gain_db": -1
-        },
-        {
-          "synth": "sub_boom",
-          "delay_ms": 1004,
-          "gain_db": -10
-        },
-        {
-          "synth": "release",
-          "size": 0.7,
-          "note": "A6",
-          "delay_ms": 1056,
-          "gain_db": -7
+          "source": "vendor/kenney-sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg",
+          "anchor_ms": 1008,
+          "gain_db": -17,
+          "lp": 300
         }
       ],
       "post": {
         "k_lufs": -19
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-cast-tier-4",
@@ -918,261 +653,147 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "shimmer",
-          "length": 0.6,
-          "note": "D6",
-          "gain_db": -9
+          "source": [
+            "vendor/oga-rpg-sound-pack/RPG Sound Pack/battle/spell.wav",
+            "vendor/oga-magic-spell-sfx/magical_4.ogg"
+          ],
+          "anchor_ms": 1232,
+          "hp": 150,
+          "fade_in_ms": 15,
+          "trim_ms": 2300,
+          "fade_out_ms": 400
         },
         {
-          "synth": "shimmer",
-          "length": 0.7,
-          "note": "A5",
-          "delay_ms": 70,
-          "gain_db": -13
+          "source": [
+            "vendor/oga-magic-spell-sfx/magical_4.ogg",
+            "vendor/oga-magic-spell-sfx/magical_1_0.ogg"
+          ],
+          "anchor_ms": 1291,
+          "gain_db": -5,
+          "hp": 300,
+          "trim_ms": 2300,
+          "fade_out_ms": 400
         },
         {
-          "synth": "shimmer",
-          "length": 0.5,
-          "note": "D7",
+          "source": "vendor/oga-spell-sounds/teleport.ogg",
+          "from_ms": 5000,
+          "trim_ms": 1600,
+          "anchor_ms": 1100,
+          "gain_db": -8,
+          "hp": 300,
+          "fade_out_ms": 350
+        },
+        {
+          "source": "vendor/oga-magic-spell-sfx/magical_3.ogg",
+          "anchor_ms": 600,
+          "gain_db": -10,
+          "hp": 400,
+          "trim_ms": 1300,
+          "fade_out_ms": 300
+        },
+        {
+          "source": "vendor/ccby-oga/shimmer_1.flac",
           "delay_ms": 360,
-          "gain_db": -15
+          "gain_db": -10,
+          "trim_ms": 500,
+          "fade_out_ms": 150
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
-          "delay_ms": 180,
-          "gain_db": -17
+          "source": "vendor/kenney-sci-fi-sounds/Audio/lowFrequency_explosion_000.ogg",
+          "anchor_ms": 1232,
+          "gain_db": -13,
+          "lp": 300
         },
         {
-          "synth": "rune_tick",
-          "note": "D6",
-          "delay_ms": 215,
-          "gain_db": -17
+          "source": "vendor/oga-80-cc0-rpg-sfx/lock_01.ogg",
+          "delay_ms": 558,
+          "gain_db": -12,
+          "hp": 1800,
+          "trim_ms": 150
         },
         {
-          "synth": "rune_tick",
-          "note": "E6",
-          "delay_ms": 250,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#6",
-          "delay_ms": 285,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A6",
-          "delay_ms": 320,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B6",
-          "delay_ms": 355,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D7",
-          "delay_ms": 390,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "E7",
-          "delay_ms": 425,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#7",
-          "delay_ms": 460,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A7",
-          "delay_ms": 495,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B7",
-          "delay_ms": 530,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 565,
-          "gain_db": -17
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A6",
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
           "delay_ms": 367,
-          "gain_db": -19
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "A6",
-          "delay_ms": 393,
-          "gain_db": -19
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+          "delay_ms": 462,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "B6",
-          "delay_ms": 419,
-          "gain_db": -19
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 557,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "B6",
-          "delay_ms": 445,
-          "gain_db": -19
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+          "delay_ms": 652,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "D7",
-          "delay_ms": 471,
-          "gain_db": -19
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+          "delay_ms": 747,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         },
         {
-          "synth": "rune_tick",
-          "note": "D7",
-          "delay_ms": 497,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "E7",
-          "delay_ms": 523,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "E7",
-          "delay_ms": 549,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#7",
-          "delay_ms": 575,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "F#7",
-          "delay_ms": 601,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "A7",
-          "delay_ms": 627,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B7",
-          "delay_ms": 653,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "B7",
-          "delay_ms": 679,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 705,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 731,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 757,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 783,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 809,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 835,
-          "gain_db": -19
-        },
-        {
-          "synth": "rune_tick",
-          "note": "D8",
-          "delay_ms": 861,
-          "gain_db": -19
-        },
-        {
-          "synth": "ward_hum",
-          "length": 0.9,
-          "note": "D3",
-          "delay_ms": 300,
-          "gain_db": -14
-        },
-        {
-          "synth": "bracket_clack",
-          "weight": 1.5,
-          "delay_ms": 550,
-          "gain_db": -5
-        },
-        {
-          "synth": "gather",
-          "length": 0.3,
-          "delay_ms": 935,
-          "gain_db": -5
-        },
-        {
-          "synth": "release",
-          "size": 1.5,
-          "note": "D6",
-          "delay_ms": 1228
-        },
-        {
-          "synth": "sub_boom",
-          "start": 80,
-          "end": 30,
-          "length": 0.8,
-          "delay_ms": 1228,
-          "gain_db": -6
-        },
-        {
-          "synth": "release",
-          "size": 0.9,
-          "note": "A6",
-          "delay_ms": 1290,
-          "gain_db": -6
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+          "delay_ms": 842,
+          "gain_db": -14,
+          "hp": 800,
+          "trim_ms": 120,
+          "vary": {
+            "rate": [
+              -0.1,
+              0.1
+            ]
+          }
         }
       ],
       "post": {
         "k_lufs": -17.5
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-hit-compile",
@@ -1187,79 +808,41 @@
       "variants": 4,
       "layers": [
         {
-          "synth": "gather",
-          "length": 0.14,
-          "bright": 5000,
-          "delay_ms": 52,
-          "gain_db": -17
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/spell_01.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/spell_02.ogg",
+            "vendor/oga-rpg-sound-pack/RPG Sound Pack/battle/magic1.wav",
+            "vendor/ccby-oga/Magic_SFX_Preview_Pack/Misc 02.wav"
+          ],
+          "anchor_ms": 192,
+          "hp": 150,
+          "fade_in_ms": 4
         },
         {
-          "synth": "bracket_clack",
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_01.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_02.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_04.ogg"
+          ],
+          "anchor_ms": 192,
+          "gain_db": -8,
+          "hp": 2500,
+          "trim_ms": 350,
+          "fade_out_ms": 100
+        },
+        {
+          "source": "vendor/oga-80-cc0-rpg-sfx/lock_02.ogg",
           "delay_ms": 186,
-          "gain_db": -7,
-          "vary": {
-            "delay_ms": [
-              -2,
-              2
-            ]
-          }
-        },
-        {
-          "synth": "thud",
-          "pitch": 150,
-          "length": 0.22,
-          "crunch": 0.3,
-          "knock": 0.3,
-          "delay_ms": 188,
-          "gain_db": -9,
-          "vary": {
-            "rate": [
-              -0.05,
-              0.05
-            ]
-          }
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_light_00{v}.ogg",
-          "delay_ms": 188,
-          "gain_db": -11,
-          "hp": 1500,
-          "lp": 8500,
-          "trim_ms": 300,
-          "fade_out_ms": 120,
-          "vary": {
-            "rate": [
-              -0.06,
-              0.06
-            ]
-          }
-        },
-        {
-          "synth": "crystal_burst",
-          "length": 0.3,
-          "count": 20,
-          "delay_ms": 192,
-          "gain_db": -10
-        },
-        {
-          "synth": "release",
-          "size": 0.5,
-          "note": "D6",
-          "delay_ms": 190,
-          "gain_db": -10
-        },
-        {
-          "synth": "ring_sweep",
-          "length": 0.28,
-          "low": 1500,
-          "high": 7000,
-          "delay_ms": 200,
-          "gain_db": -19
+          "gain_db": -13,
+          "hp": 1800,
+          "trim_ms": 140
         }
       ],
       "post": {
         "k_lufs": -17.5
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-hit-critical",
@@ -1275,95 +858,52 @@
       "variants": 2,
       "layers": [
         {
-          "synth": "gather",
-          "length": 0.19,
-          "bright": 6500,
-          "gain_db": -8
+          "source": [
+            "vendor/ccby-oga/Magic_Smite.wav",
+            "vendor/ccby-oga/Magic_Smite.wav"
+          ],
+          "anchor_ms": 192,
+          "hp": 150,
+          "fade_in_ms": 4,
+          "vary": {
+            "rate": [
+              -0.04,
+              0.04
+            ]
+          },
+          "trim_ms": 1300,
+          "fade_out_ms": 350
         },
         {
-          "synth": "shimmer",
-          "length": 0.18,
-          "note": "A5",
-          "delay_ms": 10,
-          "gain_db": -15
+          "source": "vendor/kenney-sci-fi-sounds/Audio/lowFrequency_explosion_001.ogg",
+          "anchor_ms": 192,
+          "gain_db": -12,
+          "lp": 300
         },
         {
-          "synth": "release",
-          "size": 1.2,
-          "note": "D6",
-          "delay_ms": 190,
-          "gain_db": -2
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/spell_02.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/spell_01.ogg"
+          ],
+          "anchor_ms": 333,
+          "gain_db": -7,
+          "hp": 200,
+          "trim_ms": 900,
+          "fade_out_ms": 250
         },
         {
-          "synth": "bracket_clack",
-          "weight": 1.4,
-          "delay_ms": 188,
-          "gain_db": -6
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_heavy_00{v}.ogg",
-          "delay_ms": 190,
+          "source": "vendor/oga-80-cc0-rpg-sfx/item_gem_04.ogg",
+          "anchor_ms": 200,
           "gain_db": -8,
-          "hp": 1000,
-          "lp": 9000,
-          "trim_ms": 500,
-          "fade_out_ms": 200
-        },
-        {
-          "synth": "thud",
-          "pitch": 105,
-          "length": 0.5,
-          "crunch": 0.4,
-          "knock": 0.3,
-          "delay_ms": 190,
-          "gain_db": -6
-        },
-        {
-          "synth": "sub_boom",
-          "start": 85,
-          "end": 50,
-          "length": 0.6,
-          "delay_ms": 190,
-          "gain_db": -13
-        },
-        {
-          "synth": "thud",
-          "pitch": 100,
-          "length": 0.3,
-          "crunch": 0.3,
-          "knock": 0.3,
-          "delay_ms": 333,
-          "gain_db": -9
-        },
-        {
-          "source": "vendor/kenney-impact-sounds/Audio/impactGlass_medium_00{v}.ogg",
-          "delay_ms": 333,
-          "gain_db": -11,
-          "hp": 1000,
-          "lp": 9000,
-          "trim_ms": 400,
-          "fade_out_ms": 150
-        },
-        {
-          "synth": "ring_sweep",
-          "length": 0.35,
-          "low": 1200,
-          "high": 7000,
-          "delay_ms": 336,
-          "gain_db": -15
-        },
-        {
-          "synth": "crystal_burst",
-          "length": 0.7,
-          "count": 40,
-          "decay": 0.6,
-          "delay_ms": 200,
-          "gain_db": -9
+          "hp": 2500,
+          "trim_ms": 450,
+          "fade_out_ms": 120
         }
       ],
       "post": {
         "k_lufs": -15
-      }
+      },
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-ward-hex",
@@ -1677,10 +1217,17 @@
       },
       "layers": [
         {
-          "synth": "flare",
-          "length": 0.35
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/spell_fire_06.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/spell_fire_03.ogg"
+          ],
+          "trim_ms": 900,
+          "fade_in_ms": 6,
+          "fade_out_ms": 200,
+          "hp": 200
         }
-      ]
+      ],
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-element-frost",
@@ -1694,10 +1241,17 @@
       },
       "layers": [
         {
-          "synth": "crackle",
-          "length": 0.35
+          "source": [
+            "vendor/oga-ice/ice.wav",
+            "vendor/ccby-oga/Magic_SFX_Preview_Pack/Ice attack 2.wav"
+          ],
+          "trim_ms": 900,
+          "fade_in_ms": 6,
+          "fade_out_ms": 200,
+          "hp": 300
         }
-      ]
+      ],
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-element-spark",
@@ -1711,15 +1265,45 @@
       },
       "layers": [
         {
-          "synth": "zap"
+          "source": "vendor/oga-spell-sounds/electricspell.ogg",
+          "from_ms": 11300,
+          "trim_ms": 800,
+          "fade_in_ms": 6,
+          "fade_out_ms": 200,
+          "hp": 300,
+          "vary": {
+            "rate": [
+              -0.08,
+              0.08
+            ],
+            "delay_ms": [
+              0,
+              60
+            ]
+          }
         },
         {
-          "synth": "zap",
-          "length": 0.1,
-          "delay_ms": 40,
-          "gain_db": -4
+          "source": "vendor/oga-spell-sounds/electricspell2.ogg",
+          "from_ms": 9000,
+          "trim_ms": 800,
+          "fade_in_ms": 6,
+          "fade_out_ms": 200,
+          "hp": 300,
+          "delay_ms": 120,
+          "gain_db": -4,
+          "vary": {
+            "rate": [
+              -0.08,
+              0.08
+            ],
+            "delay_ms": [
+              0,
+              60
+            ]
+          }
         }
-      ]
+      ],
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     },
     {
       "id": "sfx-ricochet",
@@ -2164,6 +1748,37 @@
           }
         }
       ]
+    },
+    {
+      "id": "sfx-cast-layer",
+      "out": "audio/sfx-cast-layer",
+      "style": "timeline",
+      "about": "a rune clicking into place on the circle: each shard adds a layer; pitched up 0.88x..1.23x by the game",
+      "seed": 73000,
+      "variants": 2,
+      "post": {
+        "k_lufs": -24
+      },
+      "layers": [
+        {
+          "source": [
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_03.ogg",
+            "vendor/oga-80-cc0-rpg-sfx/item_gem_04.ogg"
+          ],
+          "gain_db": 0,
+          "hp": 500,
+          "trim_ms": 400,
+          "fade_out_ms": 120
+        },
+        {
+          "source": "vendor/ccby-oga/shimmer_1.flac",
+          "delay_ms": 15,
+          "gain_db": -9,
+          "trim_ms": 380,
+          "fade_out_ms": 200
+        }
+      ],
+      "note": "outsourced: CC0/CC-BY recordings (pipeline/sources/vendor, docs/SOUND_DESIGN.md); each take picks the next source of a list"
     }
   ]
 }

@@ -230,7 +230,8 @@ def ensure_raws(comfy: str, job: dict, force: bool, reprocess_only: bool) -> lis
     if layers:
         # Recorded sounds need no GPU; every layer is mixed, trimmed, levelled and encoded below. A made ingredient
         # has no file, and a source that differs by take (`{v}`) is checked for every take.
-        sources = [ROOT / "pipeline" / "sources" / layer["source"].format(v=v)
+        sources = [ROOT / "pipeline" / "sources" / (layer["source"][v % len(layer["source"])]
+                                                    if isinstance(layer["source"], list) else layer["source"].format(v=v))
                    for layer in layers if "source" in layer for v in range(max(1, variant_count(job)))]
         if not sources:
             return [DEFAULT_MANIFEST]
@@ -299,7 +300,7 @@ def retime(audio: np.ndarray, rate: float) -> np.ndarray:
 
 
 LAYER_KEYS = {"source", "synth", "delay_ms", "gain_db", "rate", "reverse", "pan", "vary", "lp", "hp", "trim_ms",
-              "fade_in_ms", "fade_out_ms"}
+              "fade_in_ms", "fade_out_ms", "from_ms", "anchor_ms"}
 
 
 def shape_layer(audio: np.ndarray, settings: dict) -> np.ndarray:
@@ -343,10 +344,24 @@ def mix_recorded(job: dict, variant: int = 0) -> np.ndarray:
             args = {key: value for key, value in layer.items() if key not in LAYER_KEYS}
             audio = synth.make(layer["synth"], int(rng.integers(1 << 30)), **args)
         else:
-            audio = decode(ROOT / "pipeline" / "sources" / layer["source"].format(v=variant))
+            # `source` may be a list (one recording per take of the sound); `from_ms` skips the start of a long
+            # recording, and `anchor_ms` places the recording so its loudest moment lands at that time on the sound's
+            # own timeline (cutting the front when it would have to start before 0): the hit of a spell on its beat.
+            source = layer["source"]
+            source = source[variant % len(source)] if isinstance(source, list) else source.format(v=variant)
+            audio = decode(ROOT / "pipeline" / "sources" / source)
+            audio = audio[round(float(settings.get("from_ms", 0)) / 1000 * SAMPLE_RATE):]
         if settings.get("reverse", False):
             audio = audio[::-1].copy()
         audio = retime(audio, float(settings.get("rate", 1)))
+        if "anchor_ms" in settings:
+            hop = round(0.005 * SAMPLE_RATE)
+            frames = len(audio) // hop
+            power = (audio[: frames * hop].astype(np.float64) ** 2).mean(axis=1).reshape(frames, hop).mean(axis=1)
+            shift = float(settings["anchor_ms"]) - float(np.argmax(power)) * 5.0
+            settings["delay_ms"] = max(0.0, shift) + float(settings.get("delay_ms", 0))
+            if shift < 0:
+                audio = audio[round(-shift / 1000 * SAMPLE_RATE):]
         audio = shape_layer(audio, settings)
         audio *= np.float32(10 ** (float(settings.get("gain_db", 0)) / 20))
         pan = float(settings.get("pan", 0))
