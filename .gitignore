@@ -21,4 +21,4 @@ game/characters/_local/
 pipeline/local/
 
 # Old local music takes (read-only, found through pipeline/music/config.json read_also)
-test/
+/test/
