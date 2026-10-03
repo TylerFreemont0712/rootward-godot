@@ -4,11 +4,13 @@ Written on 2026-10-04, at the player's request: *"go through the game and start 
 new character (sec ops) adding a new language C++ or C# to shardrun, or getting academy started. Artificer really
 isn't cutting it right now, and should be taken out of the Adventure menu … I'd like for it to be removed entirely to
 make way for other features … Also use this to write down any bugs or things that could be improved upon that you see
-before fixing them."*
+before fixing them."* The player then corrected one word: *"I meant the verifier course in the academy, not the
+artificer class."* So what goes is the **Verifier course**, from the Academy and from the game. The Artificer class
+stays.
 
 This file is a proposal. Nothing in it is decided until the player says so; section 7 lists the calls that are theirs.
 `docs/PLAN.md` stays the live checklist: once a track below starts, it becomes a phase there with its own ADR (the next
-number is **ADR-0045**; `docs/decisions/README.md` still says 0041, see P2-29).
+number is **ADR-0045**; `docs/decisions/README.md` still says 0041, see P2-43).
 
 ## 1. Where the game stands (measured 2026-10-04)
 
@@ -18,8 +20,8 @@ number is **ADR-0045**; `docs/decisions/README.md` still says 0041, see P2-29).
 | Shardrun (program run) | 5 paradigms, 71 cards (139 records with `+` versions and refactors), 43 program relics, 4 layers, 16 guardians in pools of five, the speed race, the code walkthrough, magic circles built during the code |
 | Hallway foes | the 12 creatures from Spellforge (weakness, resistance, a few traits); none of them reads your program |
 | Spellforge, Card Shardrun | both still playable; Card Shardrun only for a run already underway |
-| Classes | one, "Artificer", a label: no class exists in the rules or the run state; eight future classes listed but locked |
-| Academy | a placeholder panel ("The workbench is taking shape") with a button into the old Verifier (12 JavaScript lessons) |
+| Classes | one, the Artificer (Vesper), and only as a label: no class exists in the rules or the run state; eight future classes listed but locked |
+| Academy | a placeholder panel ("The workbench is taking shape") with one working button, "Open existing Verifier course" (12 JavaScript code-reading lessons, no test suite of its own) |
 | Languages | Python (CPython 3.14) and JavaScript (QuickJS) under wasmtime |
 | Japanese | all content; the title, Trial and Library; not the run screens |
 | Open bugs | 30 of the 2026-10-01 audit's 33 still open or not yet rechecked, plus 15 found in this pass (section 6) |
@@ -32,55 +34,65 @@ code window and end.
 
 Phase 2 has four tracks. In this order:
 
-1. **A. Clear the ground** (1 to 2 sessions). Remove the Artificer. Fix the high-priority bugs, with the preview first,
-   because a preview that differs from the cast breaks the game's first rule. Put the interface's text through a
-   translation catalogue before more screens are built on top of it.
-2. **B. Kurogane, the sec-ops class** (3 to 4 sessions). Add the class frame, plus the rules primitives a defender
-   needs: branches, `try`/`except`/`finally`, early return. Then his cards, art, spells and a balance report.
-   `docs/prompt2.md` is already the brief.
+1. **A. Clear the ground** (1 to 2 sessions). Remove the Verifier course. Fix the high-priority bugs, with the preview
+   first, because a preview that differs from the cast breaks the game's first rule. Put the interface's text through
+   a translation catalogue before more screens are built on top of it.
+2. **B. Kurogane, the sec-ops class** (3 to 4 sessions). The class frame, then the second class beside Vesper the
+   Artificer, plus the rules primitives a defender needs: branches, `try`/`except`/`finally`, early return. Then his
+   cards, art, spells and a balance report. `docs/prompt2.md` is already the brief.
 3. **C. A third language: C++** (a 1-session spike, then 2 to 3 sessions if it passes). C# can't run in the sandbox
    today (section 4.2). C++ can, and it suits the game: the bestiary is already made of C and C++ bugs.
-4. **D. The Academy's foundation** (2 to 3 sessions). The ROADMAP's stage 2: a lesson screen with an editor, graded
-   exercises, the Verifier moved in, and units F1 and F2.
+4. **D. The Academy's foundation** (2 to 3 sessions). The ROADMAP's stage 2, built fresh now that the Verifier is gone:
+   a lesson screen with an editor, graded exercises, and units F1 and F2.
 
-**Why B and C before D.** Taking out the Artificer leaves an empty class column, and Kurogane fills it. Kurogane's
-primitives (conditionals, early return, exceptions) are the same ideas the Academy teaches first, so the Academy can
-reuse them later. The C++ spike carries the most risk, so it should be settled early, as Phase 1 did for the sandbox
-itself.
+**Why B and C before D.** Kurogane's primitives (conditionals, early return, exceptions) are the same ideas the
+Academy teaches first, so the Academy can borrow his worked examples and link to his cards. The C++ spike carries the
+most risk, so it should be settled early, as Phase 1 did for the sandbox itself.
 
 **If learning matters more right now, run D straight after A.** D depends on none of B or C. The daughters' Japanese
-course depends only on A's translation slice.
+course depends only on A's translation slice. One cost of removing the Verifier first: until D lands, the Academy
+has nothing playable in it, only its "in preparation" panel.
 
 ## 3. Track A: clear the ground
 
-### A1. Remove the Artificer
+### A1. Remove the Verifier course
 
-Where it lives today (all presentation; the rules never knew it):
+Why: the player's call. It is a code-reading drill in its own look and its own save, it doesn't fit the Academy
+`docs/ACADEMY_DESIGN.md` describes, and it holds the Academy's place without being its start. The Academy (track D)
+is built fresh instead of absorbing it, as the design had planned.
 
-- Adventure: the "Artificer · Vesper · Class & skin" row (`game/scenes/title/foundry_adventure.gd:70-75`). Character
-  stays reachable from the station's dock.
-- Character room: the class column, the `CLASSES` table and the skin filter on `CLASSES[0].skins`
-  (`game/scenes/title/foundry_character.gd:4-20`, `:56`). Until a second class exists, the room shows skins only;
-  the eight locked class rows come back as each class is actually built.
-- Run screens: `"/ ARTIFICER"` in the deck playstyle's heading (`game/scenes/shardrun/shardrun_screen.gd:122`),
-  `"· Artificer ·"` in the run menu (`:436`), `"ARTIFICER · FIELD PORTRAIT"` (`game/scenes/shardrun/run_summary.gd:129`).
-- Flavour: the Exo 2 font's note "The artificer's precise instruments" (`game/ui/ui_fonts.gd:11`).
-- Tests and tools that click it: `game/test/scenes/foundry_menu_test.gd:72,101,420`,
-  `game/tools/menu_navigation.gd:38,80`.
-- Docs: SHARDRUN_DESIGN sections 5 and 7, ROADMAP stage 6, ADR-0032's note. The existing ADRs stay as written,
-  and the new ADR records the removal.
+Where it lives today:
 
-What changes for the player: nothing in a run. Vesper's cards and paradigms become simply "the Shardrun's cards". When
-Kurogane arrives (track B), classes come back as real rules. The open question is what Vesper's playstyle is called
-then, or whether her paradigm cards become a shared pool (section 7, question 1).
+- The scene and its parts: `game/scenes/verifier/` (`verifier.tscn`, `verifier_screen.gd`, `trace_board.gd`).
+- The course rules and save: `game/core/verifier_course.gd`, which writes one global `user://verifier-course.json`.
+- The content: `game/content/packs/core/verifier/course.jsonc` (12 lessons in three chapters).
+- The glue: `Game.VERIFIER`, the `"verifier"` entry in `Game.PLAYSTYLES` and its branch in `Game.use`
+  (`game/app/game.gd:12-15`, `:153`), the playstyles `Settings` accepts (`game/app/settings.gd:73`), and the title's
+  checks for it (`game/scenes/title/title.gd:176`, `:219`).
+- The Academy panel's "Open existing Verifier course" button (`game/scenes/title/title.gd:356`). The panel keeps its
+  three plans and says the workbench is in preparation, with no button, until D.
+- The replace-run warning, "Your Verifier course progress is saved separately" (`game/scenes/title/title.gd:654`).
+- The menu walk that clicks into it: `game/tools/menu_navigation.gd:108-109`. No test suite covers the Verifier.
+- Docs: ACADEMY_DESIGN sections 1, 2 and 4 and ROADMAP 3.2 and stage 2 say the Academy absorbs the Verifier. Correct
+  them to "built fresh". PLAN.md's Phase 7 and Kernel Foundry items keep their history. ADR-0010 and ADR-0011 stay as
+  written, and the new ADR records the removal.
+
+Care points:
+
+- A settings file saved with `playstyle: "verifier"` must load as `"program"` (a test for it).
+- The player's `verifier-course.json` is their data. Leave it on disk and stop reading it, rather than deleting it.
+- Removing it also closes P2-18 (its progress is shared between players) and P2-33 (its screen's look).
+- Keep the parts worth reusing in git history, not in the tree: the trace board's step-through and the exact-output
+  check are what D's Predict and Trace exercises need, and they can be rebuilt there from the commit before removal.
+
+What changes for the player: the Academy shows only its "in preparation" panel until track D. Nothing else changes.
 
 ### A2. Retire what nobody plays (proposed, needs the player's yes)
 
 - **Card Shardrun** (the deck playstyle) can only be continued, never started. The ROADMAP recommended retiring it
   once no run of it is underway (decision 9). Retiring it removes `"deck"` from `Game.PLAYSTYLES`, its session, its
   screen branches and the "Card Shardrun" choice, and keeps its fixtures in git history.
-- **Spellforge** stays: it is tested against reference results and was something the player loved (AGENT.md). If
-  "Artificer" in the request meant Spellforge, that changes this section (section 7, question 2).
+- **Spellforge** stays: it is tested against reference results and was something the player loved (AGENT.md).
 - The untracked probes `game/probe_glb.gd`, `.uid` and `game/probe_head.gd.uid` get deleted.
 
 ### A3. Fix the high-priority bugs (section 6)
@@ -92,9 +104,7 @@ In this order, each with a failing test first:
 2. P2-04 and P2-05, overflow bypasses the guardians and counts shield as damage. P2-03, the shielded Thunk.
 3. P2-06, dead cards still run their after-effects. P2-08, summons shift targets.
 4. P2-11, keys act under menus. P2-12, P2-13, P2-15, saves.
-5. P2-18, the Verifier's progress is shared between players. Fix it here or in track D, where the Academy takes over
-   that save.
-6. P2-21, the sandbox output limit, because grading in the Academy will depend on it.
+5. P2-21, the sandbox output limit, because grading in the Academy will depend on it.
 
 ### A4. The interface through a catalogue
 
@@ -102,8 +112,9 @@ Every run-screen string goes through Godot's `TranslationServer` (ROADMAP stage 
 translated catalog for display while the rules keep reading English (P2-24). Doing this now stops tracks B to D from
 adding hundreds of new English-only strings. It is also what lets the daughters play a run in Japanese.
 
-**Done when:** no "Artificer" is left on any screen, the A3 bugs have tests and are fixed, a Japanese profile sees
-a fight, map and reward in Japanese, and `scripts/locale.sh ja --missing` covers the interface as well as the content.
+**Done when:** the Verifier is gone from the game and old settings still load, the A3 bugs have tests and are fixed,
+a Japanese profile sees a fight, map and reward in Japanese, and `scripts/locale.sh ja --missing` covers the interface
+as well as the content.
 
 ## 4. Track C first, briefly: which language
 
@@ -162,7 +173,8 @@ fail-open, defence in depth). He never teaches an attack and never shows a paylo
 Slices (from the brief, with what has changed since):
 
 1. **The class frame as data**: a `class` in run state (defaulted for old saves), a per-class pool, starter deck and
-   relic, a picker before the draft, history per class. This is also where the Artificer's empty column gets refilled.
+   relic, a picker before the draft, history per class. The Artificer becomes the first class in the rules, not
+   just a label, with Vesper's paradigms as its archetypes; nothing in her runs changes.
 2. **The balance sim as a tool** (ROADMAP stage 0, still undone; Phase 9's four-layer probe is also undone). The
    brief asks for a balance report per archetype, so the tool has to exist first.
 3. **The rules primitives, with tests**: branches, Raised, `finally`, early return. The preview is the cast, with
@@ -180,7 +192,7 @@ branch, a riposte, a `finally` after a timeout, the forge diff), and the player 
 
 ### Track D: the Academy's foundation
 
-ROADMAP stage 2 and `docs/ACADEMY_DESIGN.md`, unchanged in substance:
+ROADMAP stage 2 and `docs/ACADEMY_DESIGN.md`, except that it starts from nothing instead of absorbing the Verifier:
 
 - The Academy room on the title in place of the placeholder: a hub, a lesson screen with a `CodeEdit` editor in the
   game's code colours, a console, test results, and tracebacks mapped to the player's line and explained in plain
@@ -188,8 +200,10 @@ ROADMAP stage 2 and `docs/ACADEMY_DESIGN.md`, unchanged in substance:
 - A lesson format with its schema and checks, plus a function-test harness in Python and JavaScript beside the stdout
   grader.
 - Exercise types: Walkthrough, Predict, Parsons, Fix, Write. Explain can follow.
-- The Verifier moves in. Its 12 lessons become Predict exercises, gain Python versions, and get the station's look,
-  which the current screen lacks (P2-33). Its save moves into the profile folder (fixes P2-18).
+- Predict and Trace are built new inside the lesson screen, in the station's look. The removed Verifier's step-through
+  and exact-output check are in git history to borrow from, if they still help.
+- Saves per profile from the start (`user://<profile>/academy/`), never one global file (the Verifier's mistake,
+  P2-18).
 - Content: the old Foundry's 17 challenges (`../ProgramMe/content/packs/core/challenges/foundry/`) and units F1 and
   F2, in both languages and in Japanese.
 - Stars and the hint ladder, which never gives the answer.
@@ -197,7 +211,7 @@ ROADMAP stage 2 and `docs/ACADEMY_DESIGN.md`, unchanged in substance:
   Kurogane's cards link to the lessons on `if`, early return and exceptions.
 
 **Done when:** the player, and the daughters if ready, can finish unit F1 without outside help, every lesson
-validates in both languages, and the Verifier's old entry is gone.
+validates in both languages, and the Academy's "in preparation" panel is gone.
 
 ### Not in Phase 2 (kept so they aren't lost)
 
@@ -236,7 +250,7 @@ the finding needs re-testing before it is fixed. *Seen* means it shows in this p
 | P2-15 | Medium | unchanged | [22] A truncated history line also swallows the next finished run |
 | P2-16 | High | unchanged | [25] Malformed profile metadata can stop startup instead of being skipped |
 | P2-17 | Medium | recheck | [12] With predictions off, the final predicted volley still shows before the cast |
-| P2-18 | High | verified | [23] Verifier progress is one global file, shared by every player and not covered by `ROOTWARD_SAVES` (`core/verifier_course.gd:6`) |
+| P2-18 | High | closed by A1 | [23] Verifier progress is one global file, shared by every player and not covered by `ROOTWARD_SAVES` (`core/verifier_course.gd:6`) |
 | P2-19 | Medium | verified | [24] Editing a profile offers only Vesper and Emberfox and resets any other avatar (`ui/profile_panel.gd:23-35`) |
 | P2-20 | Medium | recheck | [13] The speed label uses base complexity, not the stage's effective one (Quick Sort on sorted input) |
 | P2-21 | Medium | verified | [31] A fast process can exceed the output limit and still pass, silently truncated (`sandbox/sandbox.gd:112-123`: the loop exits on process end before the size check) |
@@ -258,7 +272,7 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-30 | Medium | **Card names are clipped** in the hand ("Knapsack Stri", "Round Robi") and shrink to unreadable in the five slots (`run-fight.png`, `run-cast.png`). Fit the title to the card (shrink to a floor, then two lines) |
 | P2-31 | Medium | **The code panel's loop count covers the code**: `↻ ×3` sits over the end of `charge`'s `return` line and hides `+ 1 }));` during the walkthrough (`run-cast.png`, line 47). Reserve a gutter for it, or wrap the line under it |
 | P2-32 | Low | **Complexity reads as struck through**: the card face's `O(N)` sits on the frame's divider line (every card, hand and deck). Move it off the line, or give it a plate |
-| P2-33 | Low | The Verifier screen has none of the station's look (plain dark panels, "← Title"), so it stands apart from every other room. Restyle it in track D |
+| P2-33 | Low | The Verifier screen has none of the station's look (plain dark panels, "← Title"), so it stands apart from every other room. Closed by A1, which removes it |
 | P2-34 | Medium | **Layer names and numbers disagree.** The title says "Salvage → Heap → Kernel" (three layers, old names). The program run has four: Sandbox, Heapworks, Interrupt Foundry, Kernel. The end screen says "The Salvage keeps what you carried". The map counts rings down ("Ring 3 · layer 1 of 4") while the Library counts layers up ("Layer 2 · The Heapworks"). Pick one name per layer and one count, and show both only where both help |
 | P2-35 | Low | The end screen greets a Japanese-preferring profile in Japanese ("Player 1、おつかれさま！") above an English summary (`scenes/shardrun/run_summary.gd:32`). Resolved by A4 |
 | P2-36 | Low | After a win, the "4 incoming" badge stays up beside the victory banner over the fading foe (`run-volley.png`) |
@@ -266,19 +280,18 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-38 | Improvement | **Rest, cache and forge rooms are a line of text and a button** on a 1,350-pixel empty panel (`run-rest.png`, `run-treasure.png`). Give each room its painting, centre the choice, and consider the ROADMAP's single campfire (heal or refactor, decision 8) |
 | P2-39 | Low | In the deck panel, the "×2" count tiles look like empty card slots (`run-reward.png`). A badge on the card's corner reads better |
 | P2-40 | Parked | Hallway foes are Spellforge's elemental creatures with weakness and resistance; they don't touch your program, and several clash with the dungeon backdrops (the player's note; ROADMAP stage 4) |
-| P2-41 | Low | The Character room lists eight locked classes as full-height rows that look selectable. Removed by A1 |
+| P2-41 | Low | The Character room lists eight locked classes as full-height rows that look selectable. Make the locked ones compact and dimmed; the column fills as classes are built (track B) |
 | P2-42 | Low | `scripts/screenshot.sh` of the rest moment failed once (exit 1) while the test suite ran at the same time, then passed alone. Not measured; the shot tool may share a `user://` folder with the tests |
 | P2-43 | Low | Docs drift: `docs/decisions/README.md` says the next ADR is 0041 (0044 exists). `docs/PLAN.md` has two "Phase 9" headings. ROADMAP's per-stage ADR numbers (0018 to 0022) collide with ADRs already written |
 | P2-44 | Low | Untracked probe files in `game/` (`probe_glb.gd`, `probe_glb.gd.uid`, `probe_head.gd.uid`) |
 
 ## 7. Decisions that are yours
 
-1. **What "remove the Artificer" means for Vesper.** (a) Recommended: no class at all until Kurogane lands. Vesper is
-   a skin, her paradigms are "the Shardrun", and when classes return, her playstyle gets a new name you choose.
-   (b) Her paradigm cards become a shared pool every class can draw from, and each class adds its own.
-2. **Was "Artificer" the class row, or Spellforge?** This file reads it as the "Artificer · Class & skin" row and the
-   class behind it. If you meant the Spellforge mode, A1 becomes "retire Spellforge", which also means retiring its
-   reference fixtures.
+1. **The Academy empty until track D.** Removing the Verifier in A leaves the Academy with nothing to play until D
+   lands. Recommended: remove it now, as asked, so nothing new gets built on it. The alternative is to keep its
+   button until D replaces it.
+2. **The old Verifier save** (`verifier-course.json`, your stars). Recommended: leave the file on disk and stop
+   reading it. Or delete it as part of the removal.
 3. **Retire the Card Shardrun?** Recommended: yes (A2).
 4. **The order**: A, B with C's spike, then D (recommended), or A then D first?
 5. **Kurogane's name and look.** You called him "sec ops". Keep "Kurogane, the Ward Duelist" with security in the
