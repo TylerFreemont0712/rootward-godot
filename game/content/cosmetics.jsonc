@@ -39,6 +39,13 @@
       "name": "Rune Trace",
       "note": "One finger writes a quick stroke in the air; the circle closes on its last line.",
       "clip": "cast-trace"
+    },
+    {
+      "id": "shard-weave",
+      "name": "Shard Weave",
+      "note": "Each shard writes a new layer as its code finishes. The circle waits in front of any skin.",
+      "clip": "idle-breathe",
+      "construction": "shards"
     }
   ],
   "cast_heavy": [
@@ -60,6 +67,13 @@
       "name": "Root Seal",
       "note": "Down on one knee, a palm pressed to the floor wakes what grows under it.",
       "clip": "cast-slam"
+    },
+    {
+      "id": "shard-weave",
+      "name": "Shard Weave",
+      "note": "Each shard writes a new layer as its code finishes. The circle waits in front of any skin.",
+      "clip": "idle-breathe",
+      "construction": "shards"
     }
   ],
   "circle": [

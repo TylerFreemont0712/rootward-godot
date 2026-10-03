@@ -7,9 +7,9 @@ extends Control
 
 signal skin_ready
 
-## A test cast's power: [bolts, power each]. The fight decides from these, as from any volley, how heavy the cast
-## is and which tier of circle it writes (LogPlayer.TIERS): light I, light II, heavy III, heavy IV.
-const POWERS: Array[Array] = [[3, 3], [3, 8], [5, 9], [8, 12]]
+## A test cast's volley by weight: [bolts, power each]. The fight decides from these, as from any volley, whether she
+## casts it light (a snap) or heavy (a gathering). Its circle follows the shards chosen, not the volley (ADR-0039).
+const WEIGHTS: Array[Array] = [[3, 3], [6, 10]]
 const PRACTICE_FOE := "tally-wisp"
 const PRACTICE_HP := 999
 const ARENA := "arena-salvage"
@@ -22,7 +22,17 @@ var clip := StageCharacter.IDLE
 var speed := 1.0
 var paused := true
 var looping := false
-var tier := 1
+## How many shards the practice spell has (1..6): the circle's tier and its layers.
+var shards := 4
+## Cast it heavy (a gathering and a falling blow) rather than light (a snap).
+var heavy := false
+## The circle's tier for the shards chosen; setting it chooses as many shards as that tier holds (the fight's four
+## circles by name: light I, II, heavy III, IV as the room used to offer them).
+var tier: int:
+	get:
+		return CircleLayers.tier_for(shards)
+	set(value):
+		shards = CircleLayers.capacity(value)
 var element := "none"
 var targets := 1
 var arena := true
@@ -103,13 +113,22 @@ func play(animation: String) -> void:
 		_replay_after(duration() + 0.6, _serial)
 
 
-## A test cast at the chosen power, against the practice targets, as the fight plays it: the worn (or tried-on) cast,
-## circle, bolts and impact. Loops while `looping`.
+## The practice spell's cards: as many of the demonstration cards as there are shards (one of each role, up to six).
+func cards() -> Array[Dictionary]:
+	return CircleLayers.demo_cards(shards)
+
+
+## A test cast with the chosen shards, against the practice targets, as the fight plays it: the worn (or tried-on)
+## cast, circle, bolts and impact. Loops while `looping`. `power` is the older way to choose (a tier 0..3, which also
+## set the cast heavy from the third): it sets the shards and the weight.
 func test_cast(power := -1) -> void:
 	await _cancel()
-	var chosen: Array = POWERS[clampi(power if power >= 0 else tier, 0, POWERS.size() - 1)]
+	if power >= 0:
+		tier = clampi(power, 0, 3)
+		heavy = power >= 2
+	var chosen: Array = WEIGHTS[1 if heavy else 0]
 	var player := LogPlayer.new(stage, _state())
-	player.motifs_shown = true
+	player.cast_cards["practice"] = cards()
 	var entries: Array = [{"kind": "cast", "spell": "practice", "amount": 0}]
 	var uids: Array = stage.foes.keys()
 	for i in int(chosen[0]):
@@ -123,7 +142,8 @@ func test_cast(power := -1) -> void:
 				"target": "all" if targets > 1 else "front"
 			}
 		)
-	clip = hero.move_clip("cast_heavy" if int(chosen[0]) >= 4 else "cast_light")
+	var slot := "cast_heavy" if int(chosen[0]) >= 4 else "cast_light"
+	clip = hero.move_clip("idle" if hero.look(slot).get("construction", "") == "shards" else slot)
 	_elapsed = 0.0
 	set_paused(false)
 	_serial += 1
@@ -138,16 +158,27 @@ func test_cast(power := -1) -> void:
 		_replay_after(0.8, serial, true)
 
 
-## The worn circle alone at the chosen tier: written, firing six times, closing.
+## The worn circle alone with the chosen shards: written layer by layer, firing six times, closing.
 func preview_circle() -> void:
 	await _cancel()
 	set_paused(false)
 	_serial += 1
 	var serial := _serial
 	_playing = true
-	_circle = stage.magic_circle(tier, element, "")
+	var construction: bool = hero.look("cast_heavy" if heavy else "cast_light").get("construction", "") == "shards"
+	_circle = stage.magic_circle(cards(), element, 1.0, construction)
 	if _circle != null:
-		await stage.wait(_circle.form_time() * 1000.0)
+		if construction:
+			for index in _circle.layers.size():
+				if serial != _serial or not is_instance_valid(_circle):
+					break
+				_circle.construct_shard(index)
+				await stage.wait(450.0)
+			if serial == _serial and is_instance_valid(_circle):
+				_circle.finish_construction()
+				await stage.wait(_circle.construction_time_left() * 1000.0)
+		else:
+			await stage.wait(_circle.form_time() * 1000.0)
 		for i in 6:
 			if serial != _serial or not is_instance_valid(_circle):
 				break

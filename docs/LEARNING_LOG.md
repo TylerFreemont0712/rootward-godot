@@ -334,7 +334,8 @@ region. The stage then sizes the visible sprite using both arena height and avai
 ## A card event can drive art without deciding combat (`game/scenes/shardrun/fight/shard_flourish.gd`)
 The code player emits the resolved card as it reads the program. A flourish can draw a motif for that card at that
 moment without changing the sandbox output or the combat log. This gives each role a visual language while the
-verified program remains the only source of damage and timing.
+verified program remains the only source of damage and timing. (The flourish itself was retired for the magic
+circle's layers, ADR-0039; the principle holds for them too.)
 
 ## A scene cannot add to root while root is attaching it (`game/ui/screen_transition.gd`)
 The boot scene calls `Game.go` from `_ready`, while Godot is still attaching the boot scene to the root. Adding the
@@ -714,3 +715,26 @@ not an imitation of it.
 test that boots and then switches profiles writes the player's real settings unless it redirects the path after
 booting. A diff of the real file before and after a full run is the cheap check.
 
+## Let the data choose the picture, and make clashes deterministic (`game/core/circle_layers.gd`)
+A spell's circle has one layer per shard, and which figure a shard draws is a pure function of the card: its role picks
+a family of looks, the FNV hash of its id picks the member. Two different cards in one spell must not look alike, so a
+clash nudges the later one to the next free member (then the next free kind) in a fixed order: still deterministic,
+and the first card played keeps its natural look. The same card played twice keeps its look and turns the other way.
+Keeping this in a pure function means the mapping is unit-tested and pinned, and the scene only draws what it is told.
+
+## Separate visual time from execution progress (`game/scenes/shardrun/fight/magic_circle.gd`)
+The circle needs a clock for drawing strokes and rotation, but that clock cannot decide which shards have run:
+slow walkthroughs and pauses would otherwise construct unvisited layers. Shard Weave records an arrival time only
+when `shard_resolved(index)` fires. Each layer interpolates from that timestamp; the frame follows their combined
+progress. Exact call indices distinguish repeated shards, and sealing a partial program never fills missing slots.
+
+## Draw fills as bands, not discs (`game/scenes/shardrun/fight/circle_layer_art.gd`)
+Six figures that each fill a disc pile into mush when nested. Giving every layer an outer and an inner radius (the next
+layer's) and making the filling kinds (spokes, a spiral, a honeycomb, a rosette) draw only inside their band keeps each
+one readable, and the layers still accumulate from the rim inward. Stroke widths scale with the circle's radius
+(`CircleLayerArt.weight`), since the same hairline reads fine at 100 px and vanishes at 400.
+
+## A property that derives from another keeps old callers working (`game/scenes/title/foundry_rehearsal.gd`)
+The fitting room used to choose a tier; it now chooses a shard count and the tier follows. `tier` stayed as a
+property whose getter is `CircleLayers.tier_for(shards)` and whose setter picks as many shards as that tier holds, so
+the older callers (a tool, a test, the carousel's browse-to-try) did not change.

@@ -20,7 +20,7 @@ static func make(for_slot: String, for_option: Dictionary) -> LookArt:
 	art.option = for_option
 	art.clip_contents = true
 	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if for_slot in CosmeticRules.NATIVE:
+	if for_slot in CosmeticRules.NATIVE and for_option.get("construction", "") != "shards":
 		var picture := Ui.picture("menus/moves/" + String(for_option.get("clip", "")), Vector2(150, 150), "✦")
 		picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		picture.offset_bottom = -30
@@ -37,17 +37,29 @@ func set_live(value: bool) -> void:
 
 
 func _restart() -> void:
-	if slot in CosmeticRules.NATIVE or size.x < 8.0 or not is_inside_tree():
+	var construction: bool = option.get("construction", "") == "shards"
+	if (slot in CosmeticRules.NATIVE and not construction) or size.x < 8.0 or not is_inside_tree():
 		return
 	if is_instance_valid(_effect):
 		_effect.queue_free()
 	_effect = null
 	_clock = 0.0
 	var middle := Vector2(size.x * 0.5, (size.y - 30.0) * 0.5)
+	if construction:
+		var circle := MagicCircle.cast(self, middle, 1, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
+		circle.external_construction = true
+		circle.use_plan(CircleLayers.demo_plan(1))
+		circle.position.x -= circle.radius * 0.35
+		circle.set_process(false)
+		_effect = circle
+		if not live:
+			_advance(1.6)
+		return
 	match slot:
 		"circle":
 			var circle := MagicCircle.cast(self, middle, 2, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
 			circle.style = String(option.get("style", "codex"))
+			circle.use_plan(CircleLayers.demo_plan(2))
 			circle.position.x -= circle.radius * 0.35
 			circle.set_process(false)
 			_effect = circle
@@ -75,15 +87,28 @@ func _advance(seconds: float) -> void:
 	var left := seconds
 	while left > 0.0 and is_instance_valid(_effect):
 		var step := minf(left, 1.0 / 30.0)
-		_effect.call("_process", step)
+		_tick(step)
 		left -= step
 
 
+func _tick(seconds: float) -> void:
+	_clock += seconds
+	if _effect is MagicCircle and (_effect as MagicCircle).external_construction:
+		var circle := _effect as MagicCircle
+		while circle._arrived < circle.layers.size() and _clock >= 0.15 + circle._arrived * 0.32:
+			circle.construct_shard(circle._arrived)
+		if circle._arrived == circle.layers.size():
+			circle.finish_construction()
+	_effect.call("_process", seconds)
+
+
 func _process(delta: float) -> void:
-	if not live or not is_instance_valid(_effect):
+	if not live:
 		return
-	_clock += delta
-	_effect.call("_process", delta)
+	if not is_instance_valid(_effect):
+		_restart()
+		return
+	_tick(delta)
 	if _effect is MagicCircle:
 		var circle := _effect as MagicCircle
 		if _clock > circle.form_time() + 1.2 and circle._closing < 0.0:

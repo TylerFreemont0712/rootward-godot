@@ -214,6 +214,28 @@ func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> vo
 	assert_bool(Game.session.has_run()).is_false()
 
 
+func test_the_rehearsal_offers_one_to_six_shards_and_stacks_that_many_layers() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	var stage := panel.rehearsal
+	_button(panel, "Spells").pressed.emit()
+	for count in range(1, 7):
+		assert_object(_button(panel, str(count))).is_not_null()
+	for count in range(1, 7):
+		stage.shards = count
+		stage.preview_circle()
+		# A circle still being written is cancelled first (a few frames), then the new one is written.
+		var deadline := Time.get_ticks_msec() + 3000
+		while (stage._circle == null or stage._circle.layers.size() != count) and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+		assert_object(stage._circle).is_not_null()
+		assert_int(stage._circle.layers.size()).is_equal(count)
+		assert_int(stage._circle.tier).is_equal(CircleLayers.tier_for(count))
+		assert_int(stage.tier).is_equal(CircleLayers.tier_for(count))
+	stage.tier = 2
+	assert_int(stage.shards).is_equal(5)
+
+
 func test_practice_ring_is_a_fight_stage_at_fight_proportions() -> void:
 	_title.call("_open_skins")
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
@@ -270,6 +292,33 @@ func test_look_carousels_browse_without_wearing_and_wear_on_request() -> void:
 	assert_str(panel._carousel.slot).is_equal("cast_heavy")
 	# Vesper plays her own moves: the 3D-only casts are marked on their cards.
 	assert_int(panel._carousel._cards[1].get_child_count()).is_greater(4)
+
+
+func test_shard_weave_is_browsable_and_wearable_on_a_painted_skin() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	_button(panel, "Moves").pressed.emit()
+	var options := Cosmetics.options("cast_heavy")
+	var index := 0
+	for option in options:
+		if option.id == "shard-weave":
+			break
+		index += 1
+	panel._carousel.turn(index)
+	assert_str(panel._carousel.current().id).is_equal("shard-weave")
+	assert_str(panel.rehearsal.preview_loadout.cast_heavy).is_equal("shard-weave")
+	assert_str(Cosmetics.look("cast_heavy").id).is_equal("grand-push")
+	_button(panel, "Wear this").pressed.emit()
+	assert_str(Cosmetics.look("cast_heavy").id).is_equal("shard-weave")
+	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.cast_heavy).is_equal("shard-weave")
+	var circle: MagicCircle = null
+	for node: Node in panel.rehearsal.stage._fx.get_children():
+		if node is MagicCircle:
+			circle = node as MagicCircle
+	assert_object(circle).is_not_null()
+	assert_bool(circle.external_construction).is_true()
+	assert_int(circle._arrived).is_less(circle.layers.size())
+	await panel.rehearsal._cancel()
 
 
 func test_reduce_motion_applies_to_the_current_scene_immediately() -> void:

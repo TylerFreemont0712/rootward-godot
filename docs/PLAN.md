@@ -206,7 +206,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       discard pile's hover stays centred on its card.
 - [x] Three more Imports, three elemental Constants and six combination cards, each with Python and JavaScript code,
       worked examples, a +, Japanese content text and its own themed picture.
-- [x] Casts draw a different flourish for split, sort, search, merge, element, guard and import cards.
+- [x] Casts draw a different flourish for split, sort, search, merge, element, guard and import cards (replaced by the
+      circle's layers, ADR-0039).
 - [x] Title, run setup, scene changes and options refreshed; an Archives browser searches cards, relics and game terms
       from the live catalogs in both playstyles. Two mismatched old card pictures replaced.
 - [x] Boot enters the title through the new curtain safely, including when `Boot._ready` runs while root is attaching
@@ -301,6 +302,18 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 - [x] The practice ring as a real fight stage on a local clock, with practice targets; Moves and Spells carousels
       with live previews, browse-to-try and Wear this.
 - [ ] Tune the new moves and looks by play (a lantern light in the idle hand, snap/strike sounds per cast).
+
+### Stacking magic circles (ADR-0039)
+- [x] The circle's tier from the spell's shard count (1-2, 3-4, 5, 6), one layer per shard in play order, twelve
+      kinds of layer chosen from the card's role and id, in every circle style; the per-card generic flourish retired.
+- [x] The fitting room offers 1-6 shards and Light/Heavy; circle sheet modes for stacks and a cast over time.
+- [ ] Sound designer: `sfx-cast-layer` (called once per layer, pitch rising), and a listen to the new tier timing.
+
+### Circle construction during code (ADR-0040)
+- [x] Optional Shard Weave in both cast slots, keeping the existing animations and defaults.
+- [x] Exact shard-return callbacks construct one persistent circle during Program and Spellforge walkthroughs;
+      skin-independent placement, paced practice/code-off playback, skip and reduced-motion support.
+- [x] Character Moves carousel construction preview, Wear this persistence, and live practice-ring playback.
 
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the

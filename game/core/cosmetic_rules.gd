@@ -71,6 +71,8 @@ static func clip(catalog: Dictionary, loadout: Dictionary, slot: String, availab
 
 ## Whether a skin that can play `available` plays the option itself rather than its own clip.
 static func playable(entry: Dictionary, available: Array) -> bool:
+	if entry.get("construction", "") == "shards":
+		return true
 	return not entry.has("clip") or String(entry.clip) in available
 
 
@@ -98,6 +100,9 @@ static func check(catalog: Dictionary) -> Array[String]:
 				problems.append("circle.%s: unknown style" % id)
 			if slot == "bolt" and not String(entry.get("path", "")) in BOLT_PATHS:
 				problems.append("bolt.%s: unknown path" % id)
+			if entry.has("construction"):
+				if slot not in ["cast_light", "cast_heavy"] or entry.construction != "shards":
+					problems.append("%s.%s: unknown construction" % [slot, id])
 		if NATIVE.has(slot) and String(options[0].get("clip", "")) != NATIVE[slot]:
 			problems.append("%s: the default must be the native clip %s" % [slot, NATIVE[slot]])
 	return problems

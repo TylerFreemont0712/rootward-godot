@@ -253,21 +253,32 @@ func present(result: Dictionary) -> void:
 		player.cast_cards[spell.id] = cards
 	player.numbers_changed.connect(func() -> void: _show_numbers(player.shown))
 	var replay: Dictionary = result.get("replay", {})
+	var entries: Array = result.state.log
+	player.configure_replay(before, replay, session.catalog, entries)
+	var construction := not replay.is_empty() and Settings.code_speed != "off" and player.uses_construction(entries)
+	if construction:
+		player.begin_construction(String(replay.spell_id), player.replay_element)
 	if not replay.is_empty() and _program != null:
-		var flourish := func(id: String) -> void: stage.shard_effect(session.catalog.shards.get(id, {"id": id}))
-		_program.card_resolved.connect(flourish)
-		# The program runs first, and the eye goes with it: the stage dims until its code has run.
-		stage.dim(0.45, 0.25)
-		await _program.play_cast(replay.run, Settings.code_speed)
-		_program.card_resolved.disconnect(flourish)
-		player.motifs_shown = Settings.code_speed != "off"
+		# The optional circle is part of the code walk, so keep its stage readable while each call finishes.
+		stage.dim(0.12 if construction else 0.45, 0.25)
+		if construction:
+			_program.shard_resolved.connect(player.resolve_shard)
+			_program.import_resolved.connect(player.resolve_import)
+		await _program.play_cast(replay.run, Settings.code_speed, construction)
+		if construction:
+			_program.shard_resolved.disconnect(player.resolve_shard)
+			_program.import_resolved.disconnect(player.resolve_import)
 		stage.dim(0.0, 0.25)
 	elif not replay.is_empty() and Settings.code_speed != "off":
 		var spell := Shardrun.spell_by_id(before, replay.spell_id)
 		var view := _code_view(spell, replay.run, "cast")
+		if construction:
+			view.shard_resolved.connect(player.resolve_shard)
 		await view.finished
+		if construction:
+			view.shard_resolved.disconnect(player.resolve_shard)
 		_close_code(view)
-	await player.play(result.state.log)
+	await player.play(entries)
 	_write_log(player.lines)
 
 

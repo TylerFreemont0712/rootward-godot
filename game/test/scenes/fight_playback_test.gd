@@ -89,3 +89,36 @@ func test_skipping_in_the_middle_of_a_volley_still_lands_every_hit_first() -> vo
 		await get_tree().process_frame
 	assert_bool(_played).is_true()
 	_assert_bars_match(player, result)
+
+
+func test_the_cast_writes_the_circle_of_its_shards_a_layer_for_each() -> void:
+	var fight := await _ready_to_cast()
+	var result: Dictionary = await Game.session.command({"type": "cast", "spell_id": "spell-1"})
+	var player := LogPlayer.new(fight.stage, result.before)
+	for spell: Dictionary in result.before.get("spells", []):
+		var cards: Array[Dictionary] = []
+		for id: String in spell.shards:
+			cards.append(Game.session.catalog.shards.get(id, {"id": id}))
+		player.cast_cards[spell.id] = cards
+	_played = false
+	_play(player, result.state.log)
+	var circle: MagicCircle = null
+	var give_up := Time.get_ticks_msec() + 5000
+	while circle == null and Time.get_ticks_msec() < give_up:
+		await get_tree().process_frame
+		for node: Node in fight.stage._fx.get_children():
+			if node is MagicCircle:
+				circle = node as MagicCircle
+	assert_object(circle).is_not_null()
+	# Three cards (salvo, fork, round-robin): the second tier, three layers, whatever the volley deals.
+	assert_int(circle.tier).is_equal(1)
+	assert_int(circle.layers.size()).is_equal(3)
+	(
+		assert_array(circle.layers.map(func(layer: Dictionary) -> String: return layer.id))
+		. is_equal(["salvo", "fork", "round-robin"])
+	)
+	fight.stage.fast = true
+	give_up = Time.get_ticks_msec() + 15000
+	while not _played and Time.get_ticks_msec() < give_up:
+		await get_tree().process_frame
+	assert_bool(_played).is_true()

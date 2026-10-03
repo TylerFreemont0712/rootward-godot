@@ -329,7 +329,8 @@ func _moves_controls() -> void:
 		_controls.add_child(
 			Ui.label(
 				FoundryUi.text(
-					"This skin plays its own moves; the choices show on 3D skins.", "このすがたは自分の動きを使うよ。選んだ動きは3Dのすがたで見られる。"
+					"Shard Weave works with every skin. Other moves use this skin's own animations.",
+					"シャードの織り陣はどのすがたでも使えるよ。他の動きは、このすがたのアニメーションになる。"
 				),
 				"Muted",
 				true
@@ -347,17 +348,38 @@ func _spell_controls() -> void:
 		func(slot: String) -> void: _spell_slot = slot
 	)
 	_look_controls(_spell_slot)
+	var shard_row := Ui.hbox([Ui.label(FoundryUi.text("Shards", "シャード"), "Faint")], 6)
+	for count in range(1, CircleLayers.DEMO_CARDS.size() + 1):
+		var choose := func() -> void:
+			rehearsal.shards = count
+			_build_controls()
+		shard_row.add_child(Ui.choice(str(count), rehearsal.shards == count, choose))
+	_controls.add_child(shard_row)
+	(
+		_controls
+		. add_child(
+			(
+				Ui
+				. label(
+					(
+						FoundryUi
+						. text(
+							"Each shard adds a layer to the circle: 1-2 a simple circle, 3-4 a second tier, 5 a third, 6 the grand circle.",
+							"シャードが1つ増えるごとに魔法陣に層が1つ重なる。1〜2は小さな陣、3〜4は二段、5は三段、6は大魔法陣。"
+						)
+					),
+					"Muted",
+					true
+				)
+			)
+		)
+	)
 	_controls.add_child(
 		_picker(
-			FoundryUi.text("Practice power", "練習の強さ"),
-			[
-				FoundryUi.text("I · Light", "I · 軽い"),
-				FoundryUi.text("II · Light", "II · 軽い"),
-				FoundryUi.text("III · Heavy", "III · 重い"),
-				FoundryUi.text("IV · Grand", "IV · 大魔法")
-			],
-			rehearsal.tier,
-			func(index: int) -> void: rehearsal.tier = index
+			FoundryUi.text("Cast", "唱え方"),
+			[FoundryUi.text("Light", "軽い"), FoundryUi.text("Heavy", "重い")],
+			1 if rehearsal.heavy else 0,
+			func(index: int) -> void: rehearsal.heavy = index == 1
 		)
 	)
 	_controls.add_child(

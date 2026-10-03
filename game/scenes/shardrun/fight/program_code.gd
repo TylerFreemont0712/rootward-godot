@@ -2,6 +2,10 @@ class_name ProgramCode
 extends PanelContainer
 
 signal card_resolved(card_id: String)
+## The completed call's slot, including repeated cards; consumed by the optional construction animation.
+signal shard_resolved(index: int)
+## A top-level import line was walked; its representative may be a module already in force in this battle.
+signal import_resolved(card_id: String)
 ## The fight's Program, always on the table (ADR-0012): the code its played cards make, written in with runes as each
 ## card lands (RuneCode); the race between its work and each foe's tempo; and what it will do.
 ##
@@ -228,7 +232,7 @@ func _reveal(index: int) -> void:
 
 ## Runs the Program on screen: the seed, then each call lit in turn with the n it handled and the work it did, then
 ## the return. `view` is the cast's run view (ProgramViews.run_view).
-func play_cast(view: Dictionary, speed: String) -> void:
+func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 	_hurry = false
 	if speed == "off" or not PACE.has(speed):
 		return
@@ -249,6 +253,12 @@ func play_cast(view: Dictionary, speed: String) -> void:
 	for index in _lines.size():
 		var line: Dictionary = _lines[index]
 		match String(line.kind):
+			"import":
+				if not construction:
+					continue
+				_focus(index)
+				await _wait(pace)
+				import_resolved.emit(String(line.card))
 			"seed":
 				_focus(index)
 				_code.set_note(
@@ -279,6 +289,8 @@ func play_cast(view: Dictionary, speed: String) -> void:
 				_meter.show_volley(int(step.returned), float(step.get("power", 0.0)), elements, true)
 				if not _hurry:
 					card_resolved.emit(String(line.card))
+				# LEARN: skipping shortens the walk, but these are still measured, completed calls.
+				shard_resolved.emit(slot)
 				var now := VolleyMeter.colour_of(elements)
 				if not now.is_equal_approx(tint):
 					tint = now

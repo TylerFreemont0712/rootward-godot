@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0038**.
+The next number is **ADR-0041**.
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.
@@ -45,3 +45,7 @@ The next number is **ADR-0038**.
 - [ADR-0037](ADR-0037-cosmetic-loadout-and-fight-scale-rehearsal.md): every skin fitted to one figure height; a six-slot cosmetic loadout (idle, casts, circle style, bolt, impact) saved with the profile; four new moves and sheets; the Character room's practice ring as a real fight stage on its own clock, with carousels.
 
 - [ADR-0038](ADR-0038-prompted-soundtrack-glass-circuit.md): a prompted "Glass Circuit" soundtrack replaces the composed one slot by slot, as the player approves each track.
+
+- [ADR-0039](ADR-0039-stacking-magic-circles.md): the magic circle stacks one layer per shard (twelve kinds drawn from the card), its tier from the shard count (1-2, 3-4, 5, 6 = the grand circle); the generic per-card flourish retired.
+
+- [ADR-0040](ADR-0040-shard-weave-during-code.md): optional Shard Weave constructs the circle from measured shard returns during the code walkthrough, independent of skin poses, and reuses it through the volley; selectable and previewable in Character.

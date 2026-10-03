@@ -289,21 +289,29 @@ func spell(id: String, at: Vector2, ramp: String, size := 1.0, angle := 0.0) -> 
 	return SpellAnim.play(_fx, id, at, ramp, size, angle)
 
 
-## The cast's magic circle (MagicCircle), written in the air in front of the Maintainer and sized to her; null when the
-## stage plays fast.
-func magic_circle(tier: int, element: String, words: String, writing_speed := 1.0) -> MagicCircle:
+## The cast's magic circle (MagicCircle) for a spell of `cards`, written in the air in front of the Maintainer: its tier
+## follows the number of cards and it stacks one layer per card, in order (CircleLayers, ADR-0039). Sized to her; null
+## when the stage plays fast.
+func magic_circle(cards: Array, element: String, writing_speed := 1.0, construction := false) -> MagicCircle:
 	if fast:
 		return null
+	var tier := CircleLayers.tier_for(cards.size())
 	var size := hero.circle_radius(tier)
-	var circle := MagicCircle.cast(_fx, hero.circle_point(size), tier, element, size, words, writing_speed)
+	# Shard Weave stands on the stage, independent of skin bones and the currently playing pose.
+	var at := hero.position + Vector2(hero.size.x * 0.68 + size * 0.42, hero.size.y - hero.figure_height() * 0.55)
+	var circle := MagicCircle.cast(
+		_fx,
+		at if construction else hero.circle_point(size),
+		tier,
+		element,
+		size,
+		CircleLayers.words(cards),
+		writing_speed
+	)
+	circle.external_construction = construction
 	circle.style = String(hero.look("circle").get("style", "codex"))
+	circle.use_plan(CircleLayers.plan(cards))
 	return circle
-
-
-func shard_effect(card: Dictionary) -> void:
-	if fast or Settings.reduced_motion:
-		return
-	ShardFlourish.play(_fx, card, hero.hand_point(), clampf(hero.figure_height() / 280.0, 0.65, 1.5))
 
 
 ## A bolt from `from` to `to`; `arrive` is called when it lands. It leaves slowly, curving off to one side, and speeds

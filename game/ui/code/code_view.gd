@@ -11,6 +11,8 @@ extends PanelContainer
 ##   await view.finished
 
 signal finished
+## A measured shard return, indexed by its call slot so duplicate shard cards remain distinct.
+signal shard_resolved(index: int)
 
 const ROW_CURRENT := Color(0.95, 0.65, 0.25, 0.22)
 const ROW_ERROR := Color(0.89, 0.35, 0.31, 0.3)
@@ -34,6 +36,7 @@ var _scroll: ScrollContainer
 var _misfire: Label
 var _take := 0
 var _done := false
+var _resolved := 0
 
 
 static func create(
@@ -82,6 +85,10 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func skip() -> void:
 	if mode == "cast":
+		# The omitted animation still represents measured returns, never unvisited or failing functions.
+		for frame: Dictionary in played:
+			if frame.get("mark", "") == "step":
+				_resolve_shard(int(frame.step))
 		_finish()
 
 
@@ -129,7 +136,7 @@ func _build(spell: Dictionary) -> void:
 	var actions := Ui.hbox()
 	if mode == "explore" and playable():
 		actions.add_child(Ui.button("Run it", play))
-	actions.add_child(Ui.button("Skip" if mode == "cast" else "Close", _finish))
+	actions.add_child(Ui.button("Skip" if mode == "cast" else "Close", skip if mode == "cast" else _finish))
 	var header := Ui.hbox([Ui.label(spell.name, "Subheading"), Ui.label(meta, "Muted"), Ui.spacer(), actions], 12)
 	header.alignment = BoxContainer.ALIGNMENT_BEGIN
 	var body := Ui.vbox([header], 8)
@@ -212,6 +219,7 @@ func _code() -> Control:
 
 
 func _reset() -> void:
+	_resolved = 0
 	for i in _rows.size():
 		_style(i, "")
 		_notes[i].text = ""
@@ -241,9 +249,17 @@ func _show(index: int) -> void:
 		if int(outcome.get("block", 0)) > 0:
 			note += " · %d block" % int(outcome.block)
 		_notes[line - 1].text = note + " · %d work" % int(step.work)
+		_resolve_shard(int(frame.step))
 	if mark == "error":
 		_misfire.text = "Misfire: %s" % (run.get("misfire", {}) as Dictionary).get("reason", "")
 		_misfire.visible = true
+
+
+func _resolve_shard(index: int) -> void:
+	if index != _resolved:
+		return
+	_resolved += 1
+	shard_resolved.emit(index)
 
 
 ## Scrolls up or down to keep the current line in view, a few lines from the edge; never sideways, so the start of

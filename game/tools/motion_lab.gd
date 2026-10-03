@@ -271,6 +271,7 @@ func _play(clip: String) -> void:
 	var where := at + Vector2(size * 0.42 + height * 0.05, height * 0.005)
 	if heavy:
 		_circle = MagicCircle.cast(_overlay, where, tier, _element, size)
+		_circle.use_plan(CircleLayers.demo_plan(tier))
 		_hero.release_in(_circle.form_time())
 	else:
 		# As in a fight: the snap calls the circle, which writes itself quickly.
@@ -278,6 +279,7 @@ func _play(clip: String) -> void:
 		if serial != _serial:
 			return
 		_circle = MagicCircle.cast(_overlay, where, tier, _element, size, "", LogPlayer.SNAP_SPEED)
+		_circle.use_plan(CircleLayers.demo_plan(tier))
 		_circle.spark_from(at)
 	await _circle.formed
 	for i in VOLLEY:

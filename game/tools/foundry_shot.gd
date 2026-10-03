@@ -48,11 +48,11 @@ func _ready() -> void:
 				)
 			)
 			panel.call("_rebuild")
-		"character", "character-spells", "character-dummy", "character-moves", "character-circle":
+		"character", "character-spells", "character-dummy", "character-moves", "character-circle", "character-weave":
 			title.call("_open_skins")
 			var base := moment.trim_suffix("-ja")
 			var panel := _panel(title, "FoundryCharacterPanel") as FoundryCharacterPanel
-			if base in ["character-dummy", "character-moves"]:
+			if base in ["character-dummy", "character-moves", "character-weave"]:
 				var wanted := OS.get_environment("ROOTWARD_SHOT_SKIN")
 				if wanted == "":
 					wanted = "dummy"
@@ -68,7 +68,17 @@ func _ready() -> void:
 				if OS.get_environment("ROOTWARD_SHOT_AFTER_MS")
 				else 1.6
 			)
-			if base == "character-moves":
+			if base == "character-weave":
+				Settings.reduced_motion = false
+				panel._tab = "Moves"
+				panel._move_slot = "cast_heavy"
+				rehearsal.set_look("cast_heavy", "shard-weave")
+				panel._build_controls()
+				panel._show_look()
+				rehearsal.shards = 6
+				rehearsal.heavy = true
+				rehearsal.test_cast()
+			elif base == "character-moves":
 				panel._tab = "Moves"
 				panel._move_slot = "cast_heavy"
 				panel._build_controls()
@@ -97,8 +107,15 @@ func _ready() -> void:
 				panel._carousel.at = 2
 				panel._carousel.arrange(false)
 				panel._show_look()
-				rehearsal.tier = 3
-				rehearsal.element = "spark"
+				# ROOTWARD_SHARDS (1..6) picks the practice spell's shards: the layers of its circle (ADR-0039).
+				rehearsal.shards = (
+					clampi(int(OS.get_environment("ROOTWARD_SHARDS")), 1, 6)
+					if OS.has_environment("ROOTWARD_SHARDS")
+					else 6
+				)
+				rehearsal.element = (
+					OS.get_environment("ROOTWARD_ELEMENT") if OS.has_environment("ROOTWARD_ELEMENT") else "spark"
+				)
 				rehearsal.preview_circle()
 			if base != "character" and base != "character-dummy":
 				await get_tree().create_timer(at).timeout

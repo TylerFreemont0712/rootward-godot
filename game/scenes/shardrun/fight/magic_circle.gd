@@ -1,13 +1,15 @@
 class_name MagicCircle
 extends Node2D
 ## A magic circle written in the air in front of the caster, as isekai anime draws them (ADR-0030): a disc standing
-## between her and the foes, facing them, so it is seen narrowed. It writes itself (rings drawn like pen strokes,
-## runes set one by one, a star ruled edge by edge, a core lit), stays turning while the volley lasts, flares as each
-## bolt leaves it, and closes when the program has finished. A stronger cast writes more rings, a finer star and
-## more, smaller circles stacked in front of the first, the bolts passing through them all. Drawn in code, in the
-## element's colours, added onto the stage as light.
+## between her and the foes, facing them, so it is seen narrowed. It writes itself (rings drawn like pen strokes, a
+## core lit) and, shard by shard, the spell's layers (ADR-0039): each shard of the spell adds one figure to the stack
+## (CircleLayerArt), a rune ring, a ruled star, a honeycomb, orbiting letters, as it is played. It stays turning while
+## the volley lasts, flares as each bolt leaves it, and closes when the program has finished. A spell of more shards
+## is a larger circle (its tier, CircleLayers) with more, smaller circles stacked in front of the first, the bolts
+## passing through them all. Drawn in code, in the element's colours, added onto the stage as light.
 ##
-##   var circle := MagicCircle.cast(fx, at, 2, "fire", 110.0, "knapsackStrike → chill")
+##   var circle := MagicCircle.cast(fx, at, 2, "fire", 110.0)
+##   circle.use_plan(CircleLayers.plan(cards))        # one layer per shard
 ##   await circle.formed                              # its blow: the first bolt may leave
 ##   stage.fly(circle.launch_point(), ...)            # every bolt is born on its front circle
 ##   circle.pulse()
@@ -15,15 +17,25 @@ extends Node2D
 
 ## The circle has finished writing itself: the strike lands on it now.
 signal formed
+## The layer of the shard at `index` (0 the first played) has just arrived on the circle.
+signal layer_added(index: int)
 
-## Per tier: how long it takes to write itself (the beats of the sheets it replaced, so their sounds still land), the
-## sound it brings, its rune rings, its star {points / step}, and how many smaller circles stand in front of it.
+## Per tier: how long it takes to write itself (the beats of the sheets it replaced, so their sounds still land, and
+## the budget its layers share), the sound it brings, how many smaller circles stand in front of it, and the ticks of
+## its rim. The shards that write it, and so its layers, are CircleLayers'.
 const TIERS: Array[Dictionary] = [
-	{"form": 0.62, "sound": "sfx-cast-tier-1", "runes": 1, "star": [3, 1], "front": 1, "ticks": 36},
-	{"form": 0.86, "sound": "sfx-cast-tier-2", "runes": 1, "star": [6, 2], "front": 1, "ticks": 48},
-	{"form": 1.0, "sound": "sfx-cast-tier-3", "runes": 2, "star": [7, 3], "front": 2, "ticks": 60},
-	{"form": 1.23, "sound": "sfx-cast-tier-4", "runes": 2, "star": [8, 3], "front": 3, "ticks": 72},
+	{"form": 0.62, "sound": "sfx-cast-tier-1", "front": 1, "ticks": 36},
+	{"form": 0.86, "sound": "sfx-cast-tier-2", "front": 1, "ticks": 48},
+	{"form": 1.0, "sound": "sfx-cast-tier-3", "front": 2, "ticks": 60},
+	{"form": 1.23, "sound": "sfx-cast-tier-4", "front": 3, "ticks": 72},
 ]
+## Where the layers stand: the first played outermost, the last innermost (shares of the radius). One alone stands at
+## the middle one.
+const LAYER_OUTER := 0.8
+const LAYER_INNER := 0.3
+const LAYER_ALONE := 0.74
+## A layer's arrival is heard at this share of the tier's volume, rising a little with each.
+const LAYER_SOUND := 0.55
 ## The disc faces the foes, so from the camera it is narrowed to this share of its width, leaning back this far.
 const SQUASH := 0.46
 const TILT := -0.1
@@ -31,6 +43,8 @@ const TILT := -0.1
 const STACK_STEP := 0.55
 const STACK_SHRINK := 0.68
 const CLOSE_SECONDS := 0.42
+## A resolved shard writes its contribution over this many stage seconds.
+const SHARD_DRAW_SECONDS := 0.34
 const RUNES_FALLBACK := "λ ∑ { } => ; ∀ ∃ ( ) 0 1 ⊕ ⊗ != == [ ] ≤ ≥ :: -> & | ^"
 ## The elements whose layer (sfx-element-fire ...) sounds as the circle completes.
 const ELEMENT_LAYERS: Array[String] = ["fire", "frost", "spark"]
@@ -50,11 +64,23 @@ var mid := Color.WHITE
 var hot := Color.WHITE
 var runes := RUNES_FALLBACK
 var clock := 0.0
+## The spell's layers (CircleLayers.plan), one per shard.
+var layers: Array[Dictionary] = []
+## Shard Weave takes its arrivals from the code walkthrough, rather than the tier's automatic timer.
+var external_construction := false
+var _layer_times: Array[float] = []
+var _sealed := false
 var _facts: Dictionary = {}
 var _formed := false
 var _flare := 0.0
 var _shocks: Array[float] = []
 var _closing := -1.0
+## How many of the layers have arrived so far.
+var _arrived := 0
+## Reduced motion (ADR-0030): the layers appear whole, without their arrival flourishes.
+var _reduced := false
+## The main disc's transform as last drawn (set by _disc_space), for the glyphs a layer sets upright in it.
+var _disc_xf := Transform2D.IDENTITY
 var _font: Font
 var _element := "none"
 ## Light in the air round it: [position, velocity, age, life, size] in this node's space.
@@ -92,10 +118,52 @@ static func cast(
 	circle.material = light
 	circle._font = UiTheme.crt_font()
 	circle.silent = silent
+	circle._reduced = Settings.reduced_motion
 	parent.add_child(circle)
 	if not silent:
 		Sound.play(String(circle._facts.sound), SpellAnim.SOUND_VOLUME, circle.speed)
 	return circle
+
+
+## Gives the circle the layers of a spell, one per shard (CircleLayers.plan): they arrive in order while it writes
+## itself. Set before the first frame; a circle with none is the bare frame.
+func use_plan(plan: Array[Dictionary]) -> void:
+	layers = plan
+
+
+## Only the next shard may add a layer. Repeated or out-of-order callbacks cannot duplicate the drawing.
+func construct_shard(index: int) -> void:
+	if not external_construction or _sealed or _closing >= 0.0 or index != _arrived or index >= layers.size():
+		return
+	_layer_times.append(clock)
+	_add_layer(index)
+	_arrived += 1
+	queue_redraw()
+
+
+## The walkthrough ended. A failed program can seal a partial circle without inventing unexecuted shards.
+func finish_construction() -> void:
+	_sealed = true
+
+
+func is_constructed() -> bool:
+	return _formed
+
+
+func construction_time_left() -> float:
+	if _reduced or _layer_times.is_empty():
+		return 0.0
+	return maxf(0.0, SHARD_DRAW_SECONDS - (clock - _layer_times.back()))
+
+
+## The frame grows alongside the layers, never ahead of the walkthrough.
+func construction_share() -> float:
+	if layers.is_empty():
+		return 1.0 if _sealed else 0.0
+	var written := 0.0
+	for index in _arrived:
+		written += _layer_progress(index)
+	return written / float(layers.size())
 
 
 ## Seconds from its first stroke to its completion (the strike's beat), in real time.
@@ -140,14 +208,24 @@ func close() -> void:
 
 func _process(frame_delta: float) -> void:
 	var delta := frame_delta * time_scale
-	clock += delta * (speed if not _formed else 1.0)
+	clock += delta * (speed if not _formed and not external_construction else 1.0)
 	_flare = maxf(0.0, _flare - delta * 4.0)
 	# Motes spiral in while it writes itself and drift off its rim while it stands.
-	_mote_debt += delta * (36.0 if not _formed else 5.0 + 3.0 * tier) * (0.0 if _closing >= 0.0 else 1.0)
+	var writing := not external_construction or (_arrived > 0 and construction_time_left() > 0.0)
+	_mote_debt += delta * (36.0 if not _formed else 5.0 + 3.0 * tier) * (0.0 if _closing >= 0.0 or not writing else 1.0)
 	while _mote_debt >= 1.0:
 		_mote_debt -= 1.0
 		_spawn_mote(not _formed)
-	if not _formed and clock >= _form():
+	while (
+		not external_construction
+		and _arrived < layers.size()
+		and _closing < 0.0
+		and clock >= _layer_start(_arrived) * _form()
+	):
+		_add_layer(_arrived)
+		_arrived += 1
+	var complete := _sealed and construction_time_left() <= 0.0 if external_construction else clock >= _form()
+	if not _formed and complete and _closing < 0.0:
 		_formed = true
 		_flare = 1.4
 		_shocks.append(clock)
@@ -163,6 +241,48 @@ func _process(frame_delta: float) -> void:
 	if _closing >= 0.0 and clock - _closing >= CLOSE_SECONDS:
 		queue_free()
 	queue_redraw()
+
+
+## When layer `index` lands, in the circle's own clock.
+func _layer_start(index: int) -> float:
+	return CircleLayers.start_share(index, layers.size())
+
+
+## Layer `index` arrives: a burst of light where it will stand, a sound that climbs with each, and the signal.
+func _add_layer(index: int) -> void:
+	var stands := radius * _layer_share(index)
+	if not _reduced:
+		_burst(_disc_origin(0), 6 + tier, 0.0, stands)
+	_flare = maxf(_flare, 0.45)
+	if not silent:
+		Sound.play("sfx-cast-layer", SpellAnim.SOUND_VOLUME * LAYER_SOUND, 0.88 + 0.07 * index)
+	layer_added.emit(index)
+
+
+## Where layer `index` stands, as a share of the circle's radius.
+func _layer_share(index: int) -> float:
+	if layers.size() <= 1:
+		return LAYER_ALONE
+	return lerpf(LAYER_OUTER, LAYER_INNER, float(index) / float(layers.size() - 1))
+
+
+## How far in layer `index`'s band reaches, as a share of the radius: to just short of the next layer's, the innermost
+## to the middle.
+func _layer_inner(index: int) -> float:
+	var count := layers.size()
+	if count <= 1:
+		return 0.12
+	var step := (LAYER_OUTER - LAYER_INNER) / float(count - 1)
+	return _layer_share(index) - step * 1.25 if index < count - 1 else 0.1
+
+
+## 0 → 1 as layer `index` draws itself in; 0 before it arrives.
+func _layer_progress(index: int) -> float:
+	if external_construction:
+		if index >= _arrived:
+			return 0.0
+		return 1.0 if _reduced else clampf((clock - _layer_times[index]) / SHARD_DRAW_SECONDS, 0.0, 1.0)
+	return clampf((clock / _form() - _layer_start(index)) / CircleLayers.DRAW, 0.0, 1.0) if index < _arrived else 0.0
 
 
 ## A point on disc `index` at `angle`, `r` from its centre, in this node's space (the disc seen narrowed).
@@ -208,11 +328,16 @@ func _disc_origin(index: int) -> Vector2:
 
 ## 0 → 1 as `clock` crosses the share `from`..`to` of the forming time.
 func _phase(from: float, to: float) -> float:
-	var u := clock / _form()
+	var u := construction_share() if external_construction else clock / _form()
+	# LEARN: remap early frame phases to the entire shard sequence. Its rim must keep writing until the last shard.
+	if external_construction and to <= 0.5:
+		return u
 	return clampf((u - from) / (to - from), 0.0, 1.0)
 
 
 func _draw() -> void:
+	if external_construction and _arrived == 0:
+		return
 	var closing := 0.0 if _closing < 0.0 else clampf((clock - _closing) / CLOSE_SECONDS, 0.0, 1.0)
 	var fade := 1.0 - closing * closing
 	var swell := 1.0 + closing * 0.35
@@ -220,7 +345,7 @@ func _draw() -> void:
 	var breathe := 0.85 + 0.15 * sin(clock * 5.0)
 	# The smaller circles in front first, so the first circle is laid over them toward the caster.
 	for index in range(int(_facts.front), 0, -1):
-		var appear := _phase(0.5 + 0.12 * index, 0.78 + 0.08 * index)
+		var appear := _front_appear(index)
 		if appear <= 0.0:
 			continue
 		var size := radius * pow(STACK_SHRINK, index) * (0.5 + 0.5 * _ease_out(appear)) * swell
@@ -232,19 +357,67 @@ func _draw() -> void:
 			CircleStyles.front_disc(self, size, appear * fade * breathe, index)
 	var spin_outer := _spin(0.35)
 	_disc_space(0, spin_outer)
+	var r := radius * swell * pop
 	if style == "codex":
-		_main_disc(radius * swell * pop, fade, breathe, closing)
+		_main_disc(r, fade, breathe)
 	else:
-		CircleStyles.main_disc(self, radius * swell * pop, fade, breathe, closing)
+		CircleStyles.main_disc(self, r, fade, breathe)
+	_crown(r, fade)
+	_stack(r, fade)
+	_shocks_draw(r, fade)
 	draw_set_transform_matrix(Transform2D.IDENTITY)
 	_light(fade)
+
+
+## How far the smaller circle `index` (1 the nearest) has appeared, 0 → 1. With layers it comes with one of the last
+## of them, so the stack in front grows as the spell does; without, in the last half of the writing.
+func _front_appear(index: int) -> float:
+	if layers.is_empty():
+		return _phase(0.5 + 0.12 * index, 0.78 + 0.08 * index)
+	var follows := clampi(layers.size() - int(_facts.front) + index - 1, 0, layers.size() - 1)
+	return _layer_progress(follows)
+
+
+## The layers, outermost first: each arrives with a ring of light closing in on where it will stand, then draws itself
+## in as its own figure (CircleLayerArt) and turns on.
+func _stack(r: float, fade: float) -> void:
+	for index in layers.size():
+		var progress := _layer_progress(index)
+		if progress <= 0.0:
+			continue
+		var stands := r * _layer_share(index)
+		var grow := 1.0 if _reduced else _ease_out(progress)
+		var alpha := fade * minf(1.0, progress * 4.0) * (1.0 + 0.35 * _flare)
+		if not _reduced and progress < 1.0:
+			var left := 1.0 - progress
+			draw_circle(Vector2.ZERO, stands * 1.05, Color(mid, 0.12 * left * fade))
+			_arc(lerpf(r * 1.2, stands, _ease_out(progress)), 0.0, TAU, 2.6 * left, left * fade)
+		CircleLayerArt.draw(self, layers[index], stands, r * _layer_inner(index), grow, alpha)
+		_disc_space(0, _spin(0.35))
+
+
+## The rim of a stronger circle: a ring of beads for the third tier, the grand circle's chevrons beyond it.
+func _crown(r: float, fade: float) -> void:
+	if tier < 2:
+		return
+	var set_in := _ease_out(_phase(0.0, 0.5))
+	var beads := 36 + 12 * tier
+	for i in int(beads * set_in):
+		draw_circle(Vector2.from_angle(TAU * i / beads) * r * 1.07, 1.5, Color(hot, 0.65 * fade))
+	if tier >= 3:
+		for i in int(12 * set_in):
+			var a := TAU * i / 12.0 + _spin(0.2)
+			var tip := Vector2.from_angle(a) * r * 1.2
+			var base := Vector2.from_angle(a) * r * 1.1
+			var side := Vector2.from_angle(a + PI * 0.5) * r * 0.04
+			draw_polyline(PackedVector2Array([base + side, tip, base - side]), Color(hot, 0.8 * fade), 1.6, true)
 
 
 ## What is drawn unnarrowed, in the stage's own plane: the beam through the stack as a bolt leaves, the glint on the
 ## core, and the motes.
 func _light(fade: float) -> void:
 	var front := int(_facts.front)
-	if _flare > 0.05:
+	if _flare > 0.05 and (not external_construction or _formed):
 		var start := _disc_origin(0)
 		var end := _disc_origin(front) + Vector2(radius * 0.7, 0.0).rotated(TILT)
 		draw_line(start, end, Color(mid, 0.35 * _flare * fade), 10.0 * _flare, true)
@@ -269,7 +442,7 @@ func _light(fade: float) -> void:
 
 ## Rotation speeds that start fast while it writes itself and settle once it is complete; closing spins it up.
 func _spin(rate: float) -> float:
-	var settle := 1.0 + 3.0 * (1.0 - _phase(0.0, 1.0))
+	var settle := 1.0 if external_construction else 1.0 + 3.0 * (1.0 - _phase(0.0, 1.0))
 	var closing := 0.0 if _closing < 0.0 else (clock - _closing) * 8.0
 	return clock * rate * settle + closing * rate
 
@@ -279,16 +452,21 @@ func _spin(rate: float) -> float:
 # rings, the star and the runes all narrow correctly however they turn.
 func _disc_space(index: int, spin: float) -> void:
 	var disc := Transform2D(TILT, Vector2(SQUASH, 1.0), 0.0, _disc_origin(index))
-	draw_set_transform_matrix(disc * Transform2D(spin, Vector2.ZERO))
+	# The last one set is the main disc's (drawn after the smaller ones): the layers set their letters upright in it.
+	_disc_xf = disc * Transform2D(spin, Vector2.ZERO)
+	draw_set_transform_matrix(_disc_xf)
 
 
-func _main_disc(r: float, fade: float, breathe: float, closing: float) -> void:
-	var glow := Color(mid, 0.1 * fade * breathe + 0.12 * _flare)
+## The frame of the codex circle: the glow, the two outer rings drawn like pen strokes, the ticks between them and the
+## core. What stands inside it is the layers' (_stack).
+func _main_disc(r: float, fade: float, breathe: float) -> void:
+	var written := construction_share() if external_construction else 1.0
+	var glow := Color(mid, (0.1 * fade * breathe + 0.12 * _flare) * written)
 	for i in 4:
 		draw_circle(Vector2.ZERO, r * (0.35 + 0.22 * i), Color(dark, 0.07 * fade * _phase(0.0, 0.4)))
 	draw_circle(Vector2.ZERO, r * 0.95, glow)
 	# The outer rings, drawn like pen strokes from two points at once, a bright nib on each.
-	var stroke := _ease_out(_phase(0.0, 0.34))
+	var stroke := construction_share() if external_construction else _ease_out(_phase(0.0, 0.34))
 	for start: float in [-PI * 0.5, PI * 0.5]:
 		_arc(r, start, PI * stroke, 3.2, fade)
 		_arc(r * 0.93, start + PI * 0.25, PI * _ease_out(_phase(0.08, 0.4)), 1.6, fade)
@@ -302,19 +480,6 @@ func _main_disc(r: float, fade: float, breathe: float, closing: float) -> void:
 		var a := TAU * i / ticks
 		var long := 0.84 if i % 6 == 0 else 0.88
 		draw_line(Vector2.from_angle(a) * r * long, Vector2.from_angle(a) * r * 0.92, Color(hot, 0.7 * fade), 1.4)
-	# The runes: the spell's own names, round the band, each set with a small pop.
-	for ring in int(_facts.runes):
-		var band := r * (0.78 - 0.17 * ring)
-		_rune_ring(band, ring, fade, closing)
-		_arc(band - r * 0.075, 0.0, TAU * _ease_out(_phase(0.25 + ring * 0.1, 0.6)), 1.2, fade * 0.8)
-	# The star, ruled edge by edge, turning the other way.
-	var star: Array = _facts.star
-	var inner := r * (0.6 if int(_facts.runes) == 1 else 0.43)
-	# Drawn inside the turning disc: its own turn is the disc's taken away, so it counter-rotates.
-	var turn := -_spin(0.6) - _spin(0.35)
-	_star(inner, int(star[0]), int(star[1]), _phase(0.42, 0.84), turn, fade)
-	if tier >= 3:
-		_star(inner * 0.62, 4, 1, _phase(0.6, 0.9), -turn * 1.6, fade)
 	# The core: lit last, flaring on each bolt.
 	var core := _ease_out(_phase(0.74, 1.0))
 	if core > 0.0:
@@ -322,6 +487,10 @@ func _main_disc(r: float, fade: float, breathe: float, closing: float) -> void:
 		_arc(r * 0.15, PI, TAU * core, 1.2, fade)
 		draw_circle(Vector2.ZERO, r * (0.1 + 0.05 * _flare) * core, Color(hot, (0.55 + 0.45 * _flare) * fade))
 		draw_circle(Vector2.ZERO, r * 0.2 * core, Color(mid, 0.25 * fade))
+
+
+## The ring of light that runs out through the circle as each bolt leaves it.
+func _shocks_draw(r: float, fade: float) -> void:
 	for shock: float in _shocks:
 		var age := (clock - shock) / 0.32
 		if age < 1.0:
@@ -340,13 +509,13 @@ func _front_disc(r: float, alpha: float, index: int) -> void:
 	draw_circle(Vector2.ZERO, r * 0.12, Color(hot, (0.4 + 0.6 * _flare) * alpha))
 
 
-## A stroke of light: a wide faint halo under a thin bright line.
-func _arc(r: float, from: float, sweep: float, width: float, alpha: float) -> void:
+## A stroke of light: a wide faint halo under a thin bright line, an arc of radius `r` about `centre`.
+func _arc(r: float, from: float, sweep: float, width: float, alpha: float, centre := Vector2.ZERO) -> void:
 	if sweep <= 0.001 or alpha <= 0.0:
 		return
 	var points := maxi(8, int(48.0 * sweep / TAU) + 8)
-	draw_arc(Vector2.ZERO, r, from, from + sweep, points, Color(mid, 0.28 * alpha), width * 3.2, true)
-	draw_arc(Vector2.ZERO, r, from, from + sweep, points, Color(hot, 0.9 * alpha), width, true)
+	draw_arc(centre, r, from, from + sweep, points, Color(mid, 0.28 * alpha), width * 3.2, true)
+	draw_arc(centre, r, from, from + sweep, points, Color(hot, 0.9 * alpha), width, true)
 
 
 ## A star polygon {points / step} in radius r, its edges ruled one after another as `drawn` goes 0 → 1.
@@ -366,30 +535,6 @@ func _star(r: float, points: int, step: int, drawn: float, turn: float, alpha: f
 		draw_line(a, b, Color(mid, 0.3 * alpha), 4.5, true)
 		draw_line(a, b, Color(hot, 0.85 * alpha), 1.5, true)
 		draw_circle(a, 2.6, Color(hot, alpha))
-
-
-func _rune_ring(band: float, ring: int, fade: float, closing: float) -> void:
-	var size := maxi(10, int(radius * 0.13))
-	var spacing := float(size) * 0.82
-	var count := maxi(8, int(TAU * band / spacing))
-	var set_in := _phase(0.24 + ring * 0.1, 0.7)
-	var turn := -_spin(0.5 if ring == 0 else -0.4) - _spin(0.35)
-	var scatter := band * (1.0 + closing * 0.6)
-	var disc := Transform2D(TILT, Vector2(SQUASH, 1.0), 0.0, _disc_origin(0)) * Transform2D(_spin(0.35), Vector2.ZERO)
-	var text := runes
-	for i in count:
-		var shown := clampf(set_in * count - i, 0.0, 1.0)
-		if shown <= 0.0:
-			break
-		var a := turn + TAU * i / count
-		var glyph := text[(i + ring * 7) % text.length()]
-		if glyph == " ":
-			continue
-		var place := Transform2D(a, Vector2.ZERO) * Transform2D(0.0, Vector2(0.0, -scatter))
-		var grow := Transform2D(0.0, Vector2.ONE * (1.6 - 0.6 * shown), 0.0, Vector2.ZERO)
-		draw_set_transform_matrix(disc * place * grow)
-		draw_char(_font, Vector2(-size * 0.3, size * 0.35), glyph, size, Color(hot, shown * fade))
-	draw_set_transform_matrix(disc)
 
 
 static func _ease_out(u: float) -> float:

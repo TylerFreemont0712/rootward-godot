@@ -12,16 +12,19 @@ const FLIGHT := {"missile": 250.0, "lance": 140.0, "rain": 380.0, "seeker": 320.
 const BOLT_KINDS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", "wasted"]
 ## What a cast logs after itself, before the next thing happens: its bolts, and what fizzled or burned on the way.
 const CAST_PARTS: Array[String] = ["hit", "absorb", "glance", "locked", "ward", "wasted", "defeat", "fizzle", "curse"]
-## A cast's magic circle by how much its volley deals (damage and block together), as the old games drew a higher spell
-## with a more elaborate circle: the most power for each tier; stronger still is the grand circle (MagicCircle.TIERS).
-const TIERS: Array[int] = [11, 34, 79]
 ## A blow at least this big (or this share of the foe's health) lands as a critical, with its own animation.
 const CRITICAL_AMOUNT := 18
 const CRITICAL_SHARE := 0.45
 ## A volley spreads its launches over about this long, one bolt every `max` ms at most and `min` at least.
 const VOLLEY := {"spread": 1300.0, "max": 190.0, "min": 45.0}
-## A light cast's circle is called by a snap of the fingers and writes itself this much faster than a heavy one's.
+## A light cast's circle is called by a snap of the fingers and writes itself this much faster than a heavy one's (a
+## bigger circle, more layers to set, is hurried less, so each layer can still be seen arrive: ADR-0039).
 const SNAP_SPEED := 1.5
+const SNAP_SPEEDS: Array[float] = [1.5, 1.5, 1.3, 1.15]
+## A heavy cast gathers at least this long, whatever its circle: a small circle is written more slowly, not hurried.
+const HEAVY_GATHER := 1.0
+## Without a code walk (including practice), each shard gets a readable construction beat.
+const SHARD_BEAT_MS := 450.0
 ## The longest a cast waits (in real time) for its bolts to land before it lets the log move on regardless: a guard
 ## against an animation that never finishes, never a pace.
 const LANDING_CAP_MS := 8000
@@ -31,9 +34,13 @@ var stage: BattleStage
 var shown: Dictionary = {}
 ## The log lines played so far, for the battle log.
 var lines: Array[Dictionary] = []
+## The cards of each spell, {spell id: Array[Dictionary]}: what its circle stacks (one layer per card).
 var cast_cards: Dictionary = {}
-## The walkthrough already showed these cards; with code playback off, the cast shows their motifs instead.
-var motifs_shown := false
+## Completed shard calls measured in the replay, {spell id: count}; absent for practice or logs without a replay.
+var cast_steps: Dictionary = {}
+## Procedural circles follow source execution order; legacy cast cards keep their original slot order.
+var construction_cards: Dictionary = {}
+var replay_element := "none"
 ## The cast being played is a heavy one (many bolts, or a big total): its first blow on each foe falls from above.
 var _heavy := false
 ## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
@@ -43,6 +50,11 @@ var _circle: MagicCircle
 ## Bolts launched and not landed yet. The cast's playback ends when this is back to zero, so every hit is on the bars
 ## before the screen draws the true state.
 var _in_flight := 0
+var _construction_spell := ""
+var _construction_started := false
+var _resolved_shards := 0
+var _import_sources: Dictionary = {}
+var _failed_spell := ""
 
 
 func _init(on_stage: BattleStage, before: Dictionary) -> void:
@@ -65,6 +77,12 @@ static func numbers_of(state: Dictionary) -> Dictionary:
 
 
 func play(entries: Array) -> void:
+	if _failed_spell != "" and _constructs(false):
+		if not _construction_started:
+			begin_construction(_failed_spell, replay_element)
+			await _pace_construction()
+		await _finish_failed_construction()
+		_failed_spell = ""
 	var index := 0
 	while index < entries.size():
 		var entry: Dictionary = entries[index]
@@ -84,6 +102,125 @@ func play(entries: Array) -> void:
 		index += 1
 
 
+## Whether the first cast wears the optional circle constructed by the code's shard resolutions.
+func uses_construction(entries: Array) -> bool:
+	for index in entries.size():
+		if entries[index].kind != "cast":
+			continue
+		var bolts: Array = []
+		var next := index + 1
+		while next < entries.size() and entries[next].kind in CAST_PARTS:
+			if entries[next].kind in BOLT_KINDS:
+				bolts.append(entries[next])
+			next += 1
+		return _constructs(bolts.size() >= 4 or _total(bolts) >= 30)
+	return _failed_spell != "" and _constructs(false)
+
+
+## The trace counts executable calls, while held imports run at the top of the source. Keep that distinction local
+## to procedural construction so the original cast remains unchanged and a rehearsal's demo cards stay sequential.
+func configure_replay(before: Dictionary, replay: Dictionary, catalog: Dictionary, entries: Array) -> void:
+	if replay.is_empty():
+		return
+	var spell_id := String(replay.spell_id)
+	var run: Dictionary = replay.get("run", {})
+	var steps: Array = run.get("steps", [])
+	if run.has("steps"):
+		cast_steps[spell_id] = steps.size()
+	var last: Dictionary = steps.back() if not steps.is_empty() else {}
+	replay_element = VolleyMeter.dominant(last.get("elements", {}))
+	_failed_spell = spell_id
+	var cast_seen := false
+	for entry: Dictionary in entries:
+		if entry.kind == "cast" and entry.get("spell", "") == spell_id:
+			_failed_spell = ""
+			cast_seen = true
+		elif cast_seen and entry.kind in BOLT_KINDS:
+			replay_element = String(entry.get("element", "none"))
+			break
+	if before.get("playstyle", "") != "program":
+		return
+	var held: Array = cast_cards.get(spell_id, [])
+	var ordered: Array[Dictionary] = []
+	var sources: Array[String] = []
+	for source_id: String in ProgramDeck.imports(before, catalog):
+		var source: Dictionary = catalog.shards.get(source_id, {})
+		var module := String(source.get("module", source_id))
+		for card: Dictionary in held:
+			if ProgramDeck.is_import(String(card.id), catalog) and String(card.get("module", card.id)) == module:
+				ordered.append(card)
+				sources.append(source_id)
+	for card: Dictionary in held:
+		if not ProgramDeck.is_import(String(card.id), catalog):
+			ordered.append(card)
+	construction_cards[spell_id] = ordered
+	_import_sources[spell_id] = sources
+
+
+func _constructs(heavy: bool) -> bool:
+	return stage.hero.look("cast_heavy" if heavy else "cast_light").get("construction", "") == "shards"
+
+
+## Start before the code walks, keeping the hero idle and the circle on the stage rather than on its hand.
+func begin_construction(spell_id: String, element: String) -> void:
+	_construction_spell = spell_id
+	_construction_started = true
+	_resolved_shards = 0
+	stage.hero.play(stage.hero.move_clip("idle"))
+	_circle = stage.magic_circle(_construction_cards(spell_id), element, 1.0, true)
+
+
+## Exact slots matter: the same shard can run twice, and an unvisited or failing function must not invent a layer.
+func resolve_shard(index: int) -> void:
+	var sources: Array = _import_sources.get(_construction_spell, [])
+	_resolve_layer(sources.size() + index)
+
+
+## Only imports held in this spell add a layer. A module already in force can be shown by its base card's source
+## line even when the held shard is its upgraded variant; configure_replay maps that representative by module.
+func resolve_import(source_id: String) -> void:
+	if not _construction_started:
+		return
+	var sources: Array = _import_sources.get(_construction_spell, [])
+	while _resolved_shards < sources.size() and sources[_resolved_shards] == source_id:
+		_resolve_layer(_resolved_shards)
+
+
+func _construction_cards(spell_id: String) -> Array:
+	return construction_cards.get(spell_id, cast_cards.get(spell_id, []))
+
+
+func _resolve_layer(index: int) -> void:
+	var cards := _construction_cards(_construction_spell)
+	if not _construction_started or index != _resolved_shards or index >= cards.size():
+		return
+	_resolved_shards += 1
+	if is_instance_valid(_circle):
+		_circle.construct_shard(index)
+
+
+func _pace_construction() -> void:
+	var cards := _construction_cards(_construction_spell)
+	var imports := (_import_sources.get(_construction_spell, []) as Array).size()
+	var steps := clampi(int(cast_steps.get(_construction_spell, cards.size() - imports)), 0, cards.size() - imports)
+	var count := imports + steps
+	for index in count:
+		_resolve_layer(index)
+		if index + 1 < count:
+			await stage.wait(SHARD_BEAT_MS)
+
+
+func _finish_failed_construction() -> void:
+	if is_instance_valid(_circle):
+		_circle.finish_construction()
+		await stage.wait(_circle.construction_time_left() * 1000.0)
+		if is_instance_valid(_circle):
+			_circle.close()
+	_circle = null
+	_construction_started = false
+	_construction_spell = ""
+
+
 func _cast(entry: Dictionary, volley: Array) -> void:
 	var bolts := volley.filter(func(e: Dictionary) -> bool: return e.kind in BOLT_KINDS)
 	var element: String = bolts[0].get("element", "none") if not bolts.is_empty() else "none"
@@ -92,38 +229,43 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var heavy := bolts.size() >= 4 or _total(bolts) >= 30
 	_heavy = heavy
 	_crashed = {}
-	stage.hero.play_cast(heavy)
+	var construction := _constructs(heavy)
+	if not construction:
+		stage.hero.play_cast(heavy)
 	stage.hero.flash(Color(UiTheme.element(element), 0.3), 0.4)
-	if not motifs_shown:
-		for card: Dictionary in cast_cards.get(entry.get("spell", ""), []):
-			stage.shard_effect(card)
-			if not Settings.reduced_motion:
-				await stage.wait(140.0)
 	# The program runs. A heavy cast's circle writes itself in the air in front of the Maintainer while she gathers the
 	# power, and her strike lands on it as it completes; a light cast is a snap of her fingers, and the circle appears
-	# on the snap. Either way the circle is more elaborate the more it will deal (a heavy one is at least the third),
-	# stays while the volley flies, and every bolt leaves from it.
-	var power := _total(bolts)
-	var tier := TIERS.size()
-	for i in TIERS.size():
-		if power <= TIERS[i]:
-			tier = i
-			break
-	if heavy:
-		tier = maxi(tier, 2)
-		_circle = stage.magic_circle(tier, element, _words(entry))
+	# on the snap. Either way the circle follows the spell's shards (ADR-0039): its tier from how many there are, one
+	# layer for each, set in the order they were played; it stays while the volley flies, and every bolt leaves it. How
+	# much the volley deals decides only how she casts (heavy or light), never how elaborate the circle is.
+	var cards: Array = cast_cards.get(entry.get("spell", ""), [])
+	var tier := CircleLayers.tier_for(cards.size())
+	if construction:
+		if not _construction_started or _construction_spell != String(entry.get("spell", "")):
+			begin_construction(String(entry.get("spell", "")), element)
+			await _pace_construction()
+		else:
+			# A faster foe may have hurt the hero after the code walk; this cast still uses an idle pose.
+			stage.hero.play(stage.hero.move_clip("idle"))
+		if is_instance_valid(_circle):
+			_circle.finish_construction()
+	elif heavy:
+		_circle = stage.magic_circle(cards, element, gather_speed(tier))
 		stage.hero.release_in(_circle.form_time() if _circle != null else 0.38)
 	else:
 		await stage.wait(stage.hero.release_left() * 1000.0)
-		_circle = stage.magic_circle(tier, element, _words(entry), SNAP_SPEED)
+		_circle = stage.magic_circle(cards, element, snap_speed(tier))
 		if _circle != null:
 			_circle.spark_from(stage.hero.hand_point())
-	if tier >= 2:
+	if tier >= 2 or heavy:
 		var feet := stage.hero.position + Vector2(stage.hero.size.x * 0.5, stage.hero.size.y)
 		stage.spell("cast-ground", feet, element, stage.hero.figure_height() / 390.0)
 	if heavy:
 		stage.dim(0.38, 0.3)
-	if _circle == null:
+	if construction:
+		if is_instance_valid(_circle):
+			await stage.wait(_circle.construction_time_left() * 1000.0)
+	elif _circle == null:
 		Sound.play("sfx-cast-tier-2", 0.8)
 		stage.cast_flash(element, heavy)
 		if heavy:
@@ -154,6 +296,8 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	if is_instance_valid(_circle):
 		_circle.close()
 	_circle = null
+	_construction_started = false
+	_construction_spell = ""
 	stage.hero.end_cast()
 	# LEARN: wait for the landings themselves, not for a guess at how long they take. A heavy cast's later bolts wait
 	# for the blow falling on their foe, every blow waits for its brackets to slam, and hit-stops stretch all of it; a
@@ -176,18 +320,15 @@ static func impact_sheet(look: Dictionary) -> String:
 	return ""
 
 
-## The cast's runes: the names of the functions its cards are, as its code calls them (`knapsackStrike()`).
-func _words(entry: Dictionary) -> String:
-	var names: PackedStringArray = []
-	for card: Dictionary in cast_cards.get(entry.get("spell", ""), []):
-		var words := String(card.get("name", "")).split(" ", false)
-		if words.is_empty():
-			continue
-		var called := words[0].to_lower()
-		for word in words.slice(1):
-			called += word.capitalize().replace(" ", "")
-		names.append(called + "()")
-	return "  ".join(names) + "  " if not names.is_empty() else ""
+## How fast a heavy cast's circle of `tier` writes itself: in a gather of at least HEAVY_GATHER seconds.
+static func gather_speed(tier: int) -> float:
+	var form := float(MagicCircle.TIERS[clampi(tier, 0, MagicCircle.TIERS.size() - 1)].form)
+	return form / maxf(form, HEAVY_GATHER)
+
+
+## How fast a light cast's circle of `tier` writes itself, on the snap.
+static func snap_speed(tier: int) -> float:
+	return SNAP_SPEEDS[clampi(tier, 0, SNAP_SPEEDS.size() - 1)]
 
 
 func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
