@@ -77,13 +77,10 @@ def profile_name(vrm_name: str, vrm0: bool) -> str:
     return vrm_name[0].upper() + vrm_name[1:]
 
 
-def load_rig() -> bpy.types.Object:
-    rig = json.loads((ROOT / "pipeline" / "moves" / "rig.json").read_text())
-    addon_utils.enable("bl_ext.blender_org.vrm", default_set=True)
-    for obj in list(bpy.data.objects):
-        bpy.data.objects.remove(obj)
-    bpy.ops.import_scene.vrm(filepath=str(ROOT / rig["base"]))
-    armature = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+def rename_to_profile(armature: bpy.types.Object) -> int:
+    """Renames a VRM armature's humanoid bones to Godot's humanoid profile names (`leftUpperArm` -> `LeftUpperArm`),
+    frees the profile's `Root`, and disconnects the hips. Returns the number of humanoid bones renamed. Shared with
+    the live-Blender tools (pipeline/blender/mcp/rig.py)."""
     extension = armature.data.vrm_addon_extension
     vrm0 = extension.spec_version == "0.0"
     if vrm0:
@@ -104,7 +101,17 @@ def load_rig() -> bpy.types.Object:
     bpy.ops.object.mode_set(mode="EDIT")
     armature.data.edit_bones["Hips"].use_connect = False
     bpy.ops.object.mode_set(mode="OBJECT")
-    log(f"base {rig['base']}: {len(renames)} humanoid bones renamed")
+    return len(renames)
+
+
+def load_rig() -> bpy.types.Object:
+    rig = json.loads((ROOT / "pipeline" / "moves" / "rig.json").read_text())
+    addon_utils.enable("bl_ext.blender_org.vrm", default_set=True)
+    for obj in list(bpy.data.objects):
+        bpy.data.objects.remove(obj)
+    bpy.ops.import_scene.vrm(filepath=str(ROOT / rig["base"]))
+    armature = next(o for o in bpy.data.objects if o.type == "ARMATURE")
+    log(f"base {rig['base']}: {rename_to_profile(armature)} humanoid bones renamed")
     armature.name = "Moves"
     return armature
 
