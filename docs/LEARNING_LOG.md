@@ -753,3 +753,17 @@ arrival rings made the first construction look complete even though shard counte
 has no underlying full shape: a function owns an angular sector, and its paths are clipped by total traversed
 distance. A geometry test proves the first function leaves other quadrants empty. Holding geometry still while
 the tip moves makes construction legible; rotation can start after completion without obscuring that movement.
+
+## A pure function for a rule that has three callers (`game/core/cosmetic_rules.gd`)
+Which circle style a constructed cast draws used to be decided in three places (the stage, the rehearsal and the card
+preview), each with its own `if`. `CosmeticRules.construction_style` holds the precedence once (a centred style worn in
+Spells, then the move's own, then the worn circle), so adding Ring Bloom was one list entry and one function, and a
+test states the order.
+
+## Draw a ring whole, animate only what turns it (`game/scenes/shardrun/fight/ring_bloom.gd`)
+The earlier circles clip their strokes by progress so a figure appears to be written. For a ring that must appear at
+once, the progress value is spent on something else: opacity over the first part, a small pop in scale, and the
+remaining turn of its ornaments. A plain circle looks the same however it turns, so the turn only shows on the ticks,
+beads, dashes and polygon. Direct `_draw()` calls fail outside the draw notification: a test that must exercise drawing
+queues a redraw and waits a frame.
+

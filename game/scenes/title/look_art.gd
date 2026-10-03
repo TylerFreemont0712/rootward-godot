@@ -60,7 +60,7 @@ func _restart() -> void:
 		"circle":
 			var circle := MagicCircle.cast(self, middle, 2, "none", minf(size.x, size.y) * 0.3, "", 1.0, true)
 			circle.style = String(option.get("style", "codex"))
-			circle.use_plan(CircleLayers.demo_plan(2))
+			circle.use_plan(CircleLayers.demo_plan(3 if circle.style == "ring-bloom" else 2))
 			circle.position.x -= circle.radius * 0.35
 			circle.set_process(false)
 			_effect = circle

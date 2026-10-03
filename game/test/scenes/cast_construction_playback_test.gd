@@ -32,13 +32,17 @@ func _entries(power := 4, cost := 2) -> Array:
 
 
 func test_construction_is_selected_by_the_actual_cast_weight() -> void:
-	var stage := _stage()
+	var stage := _stage("shard-weave", "shard-weave")
 	var player := LogPlayer.new(stage, {})
+	# Construction is how a spell is cast unless the older moves are worn (ADR-0043); the weight picks the slot.
 	assert_bool(player.uses_construction(_entries())).is_true()
-	assert_bool(player.uses_construction(_entries(30))).is_false()
-	stage.hero.preview_loadout = {"cast_heavy": "shard-weave"}
+	assert_bool(player.uses_construction(_entries(30))).is_true()
+	stage.hero.preview_loadout = {"cast_light": "finger-snap", "cast_heavy": "shard-weave"}
 	assert_bool(player.uses_construction(_entries())).is_false()
 	assert_bool(player.uses_construction(_entries(30))).is_true()
+	stage.hero.preview_loadout = {"cast_light": "shard-weave", "cast_heavy": "grand-push"}
+	assert_bool(player.uses_construction(_entries())).is_true()
+	assert_bool(player.uses_construction(_entries(30))).is_false()
 	assert_bool(player.uses_construction([{"kind": "timeout", "cost": 2}])).is_false()
 
 

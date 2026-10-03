@@ -298,7 +298,10 @@ func magic_circle(
 	if fast:
 		return null
 	var tier := CircleLayers.tier_for(cards.size())
-	var size := hero.circle_radius(tier)
+	var worn := String(hero.look("circle").get("style", "codex"))
+	var style := CosmeticRules.construction_style({"circle_style": construction_style}, worn) if construction else worn
+	# Ring Bloom's size comes from its rings, one per shard up to six, so it is always drawn at the grand circle's scale.
+	var size := hero.circle_radius(CircleLayers.TIER_SHARDS.size() - 1 if style == "ring-bloom" else tier)
 	# Shard Weave stands on the stage, independent of skin bones and the currently playing pose.
 	var at := hero.position + Vector2(hero.size.x * 0.68 + size * 0.42, hero.size.y - hero.figure_height() * 0.55)
 	var circle := MagicCircle.cast(
@@ -311,11 +314,7 @@ func magic_circle(
 		writing_speed
 	)
 	circle.external_construction = construction
-	circle.style = (
-		construction_style
-		if construction and construction_style != ""
-		else String(hero.look("circle").get("style", "codex"))
-	)
+	circle.style = style
 	circle.use_plan(CircleLayers.plan(cards))
 	return circle
 

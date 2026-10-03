@@ -333,3 +333,11 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
 ### Later
 The World (towns, NPCs, quests, code-graded fights), the Codex, the stats drawer, Japanese throughout, importing the
 player's characters from the old game's SQLite, and retiring the old repo (only with the player's go-ahead).
+
+### Construction as the cast, and Ring Bloom (ADR-0043)
+
+- [x] Shard Weave is the default cast in both slots; the older moves stay selectable.
+- [x] Script Loom and Ring Bloom are circles in Spells, and a centred style worn there draws every constructed circle.
+- [x] Ring Bloom: a core and one whole ring more per shard to six, each turning a little into place.
+- [ ] Play-test the ring timing at the real code speeds, and decide whether the hero should make a gesture at release.
+

@@ -49,7 +49,7 @@ func test_each_shard_count_makes_a_distinct_finite_seal_without_missing_sectors(
 func test_unique_cast_is_optional_and_available_on_every_skin() -> void:
 	var catalog := Cosmetics.catalog()
 	assert_array(CosmeticRules.check(catalog)).is_empty()
-	assert_str(CosmeticRules.defaults(catalog).cast_light).is_equal("finger-snap")
+	assert_str(CosmeticRules.defaults(catalog).cast_light).is_equal("shard-weave")
 	for slot: String in ["cast_light", "cast_heavy"]:
 		var entry := CosmeticRules.find(catalog, slot, "script-loom")
 		assert_bool(CosmeticRules.playable(entry, [])).is_true()

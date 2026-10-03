@@ -53,3 +53,5 @@ The next number is **ADR-0041**.
 - [ADR-0041](ADR-0041-work-and-cast-playback-timeline.md): functions draw circle layers throughout their walkthrough while measured work advances; recorded faster foes act during that walk, and circle glare lines are removed.
 
 - [ADR-0042](ADR-0042-script-loom-stroke-construction.md): a distinct Script Loom cast stitches a seal in visible sectors during code; geometry follows traversed stroke distance, and Shard Weave stops showing full-disc arrival effects before construction finishes.
+
+- [ADR-0043](ADR-0043-construction-is-the-cast-and-ring-bloom.md): constructing the circle during the code walkthrough is the default cast; Script Loom and Ring Bloom (whole rings growing from a core, one per shard to six) are chosen in Spells.

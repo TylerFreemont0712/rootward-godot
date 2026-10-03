@@ -140,7 +140,8 @@ func test_procedural_cast_is_available_on_skins_without_the_clip() -> void:
 	for slot: String in ["cast_light", "cast_heavy"]:
 		var option := CosmeticRules.find(Cosmetics.catalog(), slot, "shard-weave")
 		assert_bool(CosmeticRules.playable(option, [])).is_true()
-		assert_str(CosmeticRules.option(Cosmetics.catalog(), slot, "unknown").id).is_not_equal("shard-weave")
+		# Construction is the default (ADR-0043): an unknown id reads as it.
+		assert_str(CosmeticRules.option(Cosmetics.catalog(), slot, "unknown").id).is_equal("shard-weave")
 	assert_array(CosmeticRules.check(Cosmetics.catalog())).is_empty()
 
 

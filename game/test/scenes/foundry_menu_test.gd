@@ -187,6 +187,8 @@ func test_rehearsal_uses_live_circles_and_cleans_up_when_switching_skins() -> vo
 	var stage := panel.rehearsal
 	stage.tier = 3
 	stage.element = "spark"
+	# The older, timed casts: this test is about a circle's clock and its clean-up, not the construction.
+	stage.hero.preview_loadout = {"cast_light": "finger-snap", "cast_heavy": "grand-push"}
 	stage.preview_circle()
 	assert_object(stage._circle).is_not_null()
 	assert_int(stage._circle.tier).is_equal(3)
@@ -294,23 +296,23 @@ func test_look_carousels_browse_without_wearing_and_wear_on_request() -> void:
 	assert_int(panel._carousel._cards[1].get_child_count()).is_greater(4)
 
 
-func test_shard_weave_is_browsable_and_wearable_on_a_painted_skin() -> void:
+func test_script_loom_is_browsable_and_wearable_on_a_painted_skin() -> void:
 	_title.call("_open_skins")
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
 	_button(panel, "Moves").pressed.emit()
 	var options := Cosmetics.options("cast_heavy")
 	var index := 0
 	for option in options:
-		if option.id == "shard-weave":
+		if option.id == "script-loom":
 			break
 		index += 1
 	panel._carousel.turn(index)
-	assert_str(panel._carousel.current().id).is_equal("shard-weave")
-	assert_str(panel.rehearsal.preview_loadout.cast_heavy).is_equal("shard-weave")
-	assert_str(Cosmetics.look("cast_heavy").id).is_equal("grand-push")
-	_button(panel, "Wear this").pressed.emit()
+	assert_str(panel._carousel.current().id).is_equal("script-loom")
+	assert_str(panel.rehearsal.preview_loadout.cast_heavy).is_equal("script-loom")
 	assert_str(Cosmetics.look("cast_heavy").id).is_equal("shard-weave")
-	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.cast_heavy).is_equal("shard-weave")
+	_button(panel, "Wear this").pressed.emit()
+	assert_str(Cosmetics.look("cast_heavy").id).is_equal("script-loom")
+	assert_str(Game.profiles.get_profile(String(Game.profile.id)).loadout.cast_heavy).is_equal("script-loom")
 	var circle: MagicCircle = null
 	for node: Node in panel.rehearsal.stage._fx.get_children():
 		if node is MagicCircle:

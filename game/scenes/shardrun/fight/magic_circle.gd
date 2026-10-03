@@ -209,7 +209,7 @@ func spark_from(point: Vector2) -> void:
 
 ## Where a bolt is born: somewhere on the front circle, in the parent's coordinates.
 func launch_point() -> Vector2:
-	if style == "script-loom":
+	if style in CosmeticRules.CENTRED_STYLES:
 		return position
 	var front := int(_facts.front)
 	var angle := randf() * TAU
@@ -373,6 +373,14 @@ func _draw() -> void:
 	var swell := 1.0 + closing * 0.35
 	var pop := 1.0 + 0.08 * maxf(0.0, _flare - 0.4)
 	var breathe := 0.85 + 0.15 * sin(clock * 5.0)
+	if style == "ring-bloom":
+		# Seen from the same slant as the loom's seal: whole rings round a core, growing outward with each shard.
+		_disc_xf = Transform2D(-0.12, Vector2(0.72, 1.0), 0.0, Vector2.ZERO)
+		draw_set_transform_matrix(_disc_xf)
+		RingBloom.draw(self, radius * swell, fade)
+		draw_set_transform_matrix(Transform2D.IDENTITY)
+		_light(fade)
+		return
 	if style == "script-loom":
 		var turn := (clock - _formed_at) * 0.08 if _formed else 0.0
 		_disc_xf = Transform2D(-0.12, Vector2(0.72, 1.0), 0.0, Vector2.ZERO) * Transform2D(turn, Vector2.ZERO)

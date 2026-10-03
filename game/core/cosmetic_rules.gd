@@ -12,7 +12,10 @@ const SLOTS: Array[String] = ["idle", "cast_light", "cast_heavy", "circle", "bol
 ## The slots that are moves (a clip of the shared move library), and the clip a skin plays when it cannot play the
 ## chosen one: a drawn skin or a model with its own clips answers with its own.
 const NATIVE := {"idle": "idle-breathe", "cast_light": "cast-light", "cast_heavy": "cast-heavy"}
-const CIRCLE_STYLES: Array[String] = ["codex", "rootglass", "clockwork", "constellation", "script-loom"]
+const CIRCLE_STYLES: Array[String] = ["codex", "rootglass", "clockwork", "constellation", "script-loom", "ring-bloom"]
+## The styles with a renderer of their own, standing on the circle's centre: whichever the player wears in Spells draws
+## every constructed circle, over any cast option's own style (ADR-0043).
+const CENTRED_STYLES: Array[String] = ["script-loom", "ring-bloom"]
 const BOLT_PATHS: Array[String] = ["arc", "straight", "spiral"]
 ## What each slot's options must carry besides an id and a name.
 const FIELDS := {
@@ -69,6 +72,15 @@ static func clip(catalog: Dictionary, loadout: Dictionary, slot: String, availab
 	return chosen if chosen in available else String(NATIVE.get(slot, ""))
 
 
+## The style a constructed circle is drawn in: a centred style worn in Spells (Script Loom, Ring Bloom) wins, then the
+## cast option's own style (the older Script Loom move), then whatever circle is worn.
+static func construction_style(cast_look: Dictionary, worn_style: String) -> String:
+	if worn_style in CENTRED_STYLES:
+		return worn_style
+	var own := String(cast_look.get("circle_style", ""))
+	return own if own != "" else worn_style
+
+
 ## Whether a skin that can play `available` plays the option itself rather than its own clip.
 static func playable(entry: Dictionary, available: Array) -> bool:
 	if entry.get("construction", "") == "shards":
@@ -106,6 +118,10 @@ static func check(catalog: Dictionary) -> Array[String]:
 			if entry.has("circle_style"):
 				if entry.get("construction", "") != "shards" or not String(entry.circle_style) in CIRCLE_STYLES:
 					problems.append("%s.%s: unknown construction style" % [slot, id])
-		if NATIVE.has(slot) and String(options[0].get("clip", "")) != NATIVE[slot]:
+		if (
+			NATIVE.has(slot)
+			and options[0].get("construction", "") != "shards"
+			and String(options[0].get("clip", "")) != NATIVE[slot]
+		):
 			problems.append("%s: the default must be the native clip %s" % [slot, NATIVE[slot]])
 	return problems

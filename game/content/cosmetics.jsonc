@@ -6,7 +6,8 @@
 //
 //   idle, cast_light, cast_heavy  a clip of the shared move library (pipeline/moves/clips/); `thumb` is the moment
 //                                 its card shows (tools/move_thumbs; the release by default)
-//   circle                        a MagicCircle style: codex, rootglass, clockwork, constellation
+//   circle                        a MagicCircle style: codex, rootglass, clockwork, constellation, script-loom,
+//                                 ring-bloom (the last two are drawn by their own renderer, ADR-0043)
 //   bolt                          a spell sheet for the bolt in flight (assets/fx/spells/), the sheet a strong bolt
 //                                 flies as, and its path: arc, straight or spiral
 //   impact                        the sheet a heavy cast's first blow on each foe arrives as (anchored at its feet)
@@ -29,6 +30,13 @@
   ],
   "cast_light": [
     {
+      "id": "shard-weave",
+      "name": "Shard Weave",
+      "note": "The circle is built while your code runs, one layer for each function, in the circle you wear under Spells. The way every spell is cast.",
+      "clip": "idle-breathe",
+      "construction": "shards"
+    },
+    {
       "id": "finger-snap",
       "name": "Finger Snap",
       "note": "A snap beside the face, and the circle is simply there.",
@@ -41,13 +49,6 @@
       "clip": "cast-trace"
     },
     {
-      "id": "shard-weave",
-      "name": "Shard Weave",
-      "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
-      "clip": "idle-breathe",
-      "construction": "shards"
-    },
-    {
       "id": "script-loom",
       "name": "Script Loom",
       "note": "A bright writing tip stitches one section of the seal during each function. Wear for both light and heavy casts to weave every spell.",
@@ -57,6 +58,13 @@
     }
   ],
   "cast_heavy": [
+    {
+      "id": "shard-weave",
+      "name": "Shard Weave",
+      "note": "The circle is built while your code runs, one layer for each function, in the circle you wear under Spells. The way every spell is cast.",
+      "clip": "idle-breathe",
+      "construction": "shards"
+    },
     {
       "id": "grand-push",
       "name": "Grand Push",
@@ -75,13 +83,6 @@
       "name": "Root Seal",
       "note": "Down on one knee, a palm pressed to the floor wakes what grows under it.",
       "clip": "cast-slam"
-    },
-    {
-      "id": "shard-weave",
-      "name": "Shard Weave",
-      "note": "Each function slowly draws a new layer while its code runs. The circle floats in front of any skin.",
-      "clip": "idle-breathe",
-      "construction": "shards"
     },
     {
       "id": "script-loom",
@@ -116,6 +117,18 @@
       "name": "Constellation",
       "note": "Stars pricked in the air and joined one line at a time, as Vesper writes.",
       "style": "constellation"
+    },
+    {
+      "id": "script-loom",
+      "name": "Script Loom",
+      "note": "A bright writing tip stitches one section of the seal during each function, round a single clasp.",
+      "style": "script-loom"
+    },
+    {
+      "id": "ring-bloom",
+      "name": "Ring Bloom",
+      "note": "The first shard sets a core, and every shard after it sets another whole ring round the others, up to six. Each turns a little as it settles.",
+      "style": "ring-bloom"
     }
   ],
   "bolt": [
