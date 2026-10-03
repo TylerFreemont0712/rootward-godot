@@ -1,6 +1,8 @@
 shader_type canvas_item;
 
 uniform float progress : hint_range(0.0, 1.0) = 0.0;
+// Width over height of what the veil covers, so the sigil stays round in any window.
+uniform float aspect = 1.77778;
 
 float hash(vec2 p) {
 	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -68,7 +70,7 @@ float circle_sigil(vec2 p, float radius, float angle) {
 }
 
 void fragment() {
-	vec2 p = (UV - vec2(0.5)) * vec2(1.77778, 1.0);
+	vec2 p = (UV - vec2(0.5)) * vec2(aspect, 1.0);
 	float radius = length(p);
 	float angle = atan(p.y, p.x);
 	float bloom = sin(progress * 3.14159265);

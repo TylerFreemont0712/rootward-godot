@@ -100,7 +100,15 @@ func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	_bar = ProgressBar.new()
 	_bar.show_percentage = false
 	_bar.custom_minimum_size = Vector2(150, 10)
-	_hp = Ui.label("", "Faint")
+	_bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	# The placard is dark and the bar red beside it; faint text melted into both, so the HP is bold, bright and outlined.
+	_hp = Ui.tint(Ui.sized(Ui.label(""), 17), Color("#fff3d6")) as Label
+	var heavy := FontVariation.new()
+	heavy.base_font = UiTheme.ui_font(700)
+	heavy.variation_embolden = 0.6
+	_hp.add_theme_font_override("font", heavy)
+	_hp.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.95))
+	_hp.add_theme_constant_override("outline_size", 4)
 	_shield = Ui.tint(Ui.label("", "Muted"), UiTheme.TEAL) as Label
 	_tags = Ui.flow([], 4)
 	var hp_row := Ui.hbox([_bar, _hp], 6)

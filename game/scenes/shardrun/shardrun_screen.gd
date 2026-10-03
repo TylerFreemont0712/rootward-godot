@@ -6,7 +6,7 @@ extends Control
 
 var session: ShardrunSession
 var _busy := false
-var _backdrop: TextureRect
+var _backdrop: DungeonBackdrop
 var _header: PanelContainer
 var _body: Control
 var _overlay: Control
@@ -41,11 +41,11 @@ func _build() -> void:
 	ground.color = UiTheme.GROUND
 	ground.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(ground)
-	_backdrop = TextureRect.new()
+	_backdrop = DungeonBackdrop.new()
 	_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	_backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	_backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_backdrop.modulate = Color(0.28, 0.25, 0.23)
 	add_child(_backdrop)
 	var margin := MarginContainer.new()
@@ -81,7 +81,9 @@ func _show(state: Dictionary) -> void:
 	Ui.clear(_body)
 	_show_header(state)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
-	_backdrop.texture = Art.texture("backgrounds/" + String(layer.backdrop))
+	_backdrop.show_scene(
+		"backgrounds/" + String(layer.get("map_backdrop", layer.backdrop)), int(layer.get("ring", -1)), true
+	)
 	var view: Control
 	if state.status in Shardrun.ENDED:
 		view = _ending(state)
@@ -142,8 +144,15 @@ func _show_header(state: Dictionary) -> void:
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var layers: Array = session.catalog.config.layers
 	var meta := (
-		"%s (%d/%d) · %s · %s"
-		% [layer.name, int(state.layer) + 1, layers.size(), session.difficulty().get("name", ""), state.language]
+		"RING %d · %s (%d/%d) · %s · %s"
+		% [
+			int(layer.get("ring", layers.size() - int(state.layer) - 1)),
+			String(layer.name).get_slice(" / ", 0),
+			int(state.layer) + 1,
+			layers.size(),
+			session.difficulty().get("name", ""),
+			state.language
+		]
 	)
 	if Game.trial_active:
 		meta = "4 STOPS · %s · %s" % [session.difficulty().get("name", ""), state.language]
@@ -199,7 +208,7 @@ func _between(state: Dictionary) -> Control:
 		map.show_map(state, session.catalog)
 		var next_rooms := ShardrunMap.next_rooms(state.map, state.position)
 		_trial_targets["map"] = map._rooms.get(next_rooms[0].id, map) if not next_rooms.is_empty() else map
-	_chronicle = Ui.label(_story(state.log), "Muted", true)
+	_chronicle = Ui.label(_story(state.log, state, " "), "Muted", true)
 	left.add_child(_chronicle)
 	# A deck run's map fills the screen: the deck opens from its pile, the next rooms sit in the map's route drawer.
 	if ShardrunRules.is_deck(state) and on_map:
@@ -229,7 +238,7 @@ func _ending(state: Dictionary) -> Control:
 			8
 		)
 	)
-	var column := Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log), "Narration", true)], 16)
+	var column := Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log, state), "Narration", true)], 16)
 	var history := [] if Game.trial_active else session.saves.load_history()
 	if not history.is_empty() and String(history[0].get("seed", "")) == String(state.seed):
 		# What git prints after a commit: the run is in the history now (the title's git log shows them all).
@@ -245,12 +254,10 @@ func _ending(state: Dictionary) -> Control:
 	return Ui.centered_scroll(panel)
 
 
-static func _story(entries: Array) -> String:
-	var texts: PackedStringArray = []
-	for entry: Dictionary in entries:
-		if entry.has("text"):
-			texts.append(entry.text)
-	return " ".join(texts)
+## What a command's log says, a volley of bolts folded into a line a foe (LogDigest): a sentence to a line, or run on
+## as one paragraph where it shares a screen.
+static func _story(entries: Array, state := {}, joiner := "\n") -> String:
+	return LogDigest.story(entries, LogDigest.names_of(state), joiner)
 
 
 # --- Commands -------------------------------------------------------------------------------------------------------
@@ -290,7 +297,7 @@ func _present(result: Dictionary, command: Dictionary) -> void:
 	if String(command.type).begins_with("dev-"):
 		# A dev command can replace the whole fight (a spawn), so the screen is drawn afresh rather than played.
 		_show(after)
-		toast(_story(after.log))
+		toast(_story(after.log, after, " "))
 		if _fight != null:
 			_fight.write_entries(after.log)
 			_fight.refresh_previews()

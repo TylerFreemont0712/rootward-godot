@@ -57,6 +57,8 @@ static func catalog_for(catalog: Dictionary) -> Dictionary:
 		var layer := extra.duplicate(true)
 		layer.foe_hp = float(foe_hp[mini(layers.size(), foe_hp.size() - 1)]) if not foe_hp.is_empty() else layer.foe_hp
 		layers.append(layer)
+	for layer: Dictionary in layers:
+		layer.merge(programs.config.get("layer_looks", {}).get(layer.id, {}), true)
 	config.layers = layers
 	var derived := catalog.duplicate()
 	derived.playstyle = "program"

@@ -20,6 +20,8 @@ var _incoming: Label
 var _end_turn: Button
 ## Everything the rules logged in this fight, each with the turn it happened on, for the ".log" window.
 var _entries: Array[Dictionary] = []
+## The names of the foes seen so far, by uid, which the log's folded lines say.
+var _foe_names := {}
 var _log_turn := 1
 var _portrait: TextureRect
 var _portrait_name: Label
@@ -62,7 +64,7 @@ func _build() -> void:
 			_program = ProgramCode.create(session)
 			for card: SpellCard in cards.values():
 				card.hide_code()
-			bottom.add_child(_program)
+			bottom.add_child(_code_slot(_program))
 	else:
 		_work_area = _spellbook(state)
 		bottom = Ui.hbox([_hero_panel(), _make_surface(_work_area)], 10)
@@ -73,9 +75,23 @@ func _build() -> void:
 	add_child(bottom)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var boss: bool = state.battle.kind == "boss"
-	stage.set_backdrop(layer.get("boss_backdrop", layer.backdrop) if boss else layer.backdrop)
+	stage.set_backdrop(
+		layer.get("boss_backdrop", layer.backdrop) if boss else layer.backdrop, int(layer.get("ring", -1))
+	)
 	stage.set_foes(state.battle.foes, session.catalog, true, boss)
 	show_state(state)
+
+
+## Holds the Program's panel in the lower row at its usual size. The panel may stretch upward past the slot's top (its
+## Expand button) over the stage without moving anything else in the row.
+func _code_slot(panel: ProgramCode) -> Control:
+	var slot := Control.new()
+	slot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	slot.custom_minimum_size = panel.get_combined_minimum_size()
+	slot.add_child(panel)
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.minimum_size_changed.connect(func() -> void: slot.custom_minimum_size = panel.get_combined_minimum_size())
+	return slot
 
 
 func _make_surface(content: Control) -> Control:
@@ -108,6 +124,10 @@ func _hero_panel() -> Control:
 	_incoming = Ui.tint(Ui.label("", "Subheading"), UiTheme.FAIL.lightened(0.2)) as Label
 	_incoming.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
 	_incoming.add_theme_constant_override("outline_size", 6)
+	# A plate behind it, so it reads over any backdrop.
+	_incoming.add_theme_stylebox_override(
+		"normal", UiTheme.box(Color(0.04, 0.02, 0.03, 0.86), UiTheme.FAIL.darkened(0.25), 2, 8, Vector2(14, 4))
+	)
 	stage.set_incoming(_incoming)
 	return panel
 
@@ -191,6 +211,7 @@ func show_state(state: Dictionary) -> void:
 	var battle: Dictionary = state.get("battle", {})
 	if battle.is_empty():
 		return
+	_foe_names.merge(LogDigest.names_of(state), true)
 	_show_numbers(LogPlayer.numbers_of(state))
 	var incoming := ShardrunViews.incoming(state)
 	_incoming.text = "⚔ %d incoming" % incoming if incoming > 0 else ""
@@ -335,6 +356,8 @@ func _write_log(entries: Array[Dictionary]) -> void:
 			_log_turn = int(entry.get("amount", _log_turn + 1))
 		var kept := entry.duplicate()
 		kept.turn_number = _log_turn
+		if entry.has("foe") and _foe_names.has(entry.foe):
+			kept.foe_name = _foe_names[entry.foe]
 		_entries.append(kept)
 
 
@@ -347,6 +370,9 @@ func write_entries(entries: Array) -> void:
 func set_busy(value: bool) -> void:
 	busy = value
 	_end_turn.disabled = value
+	if _program != null:
+		# The animations need the stage: a stretched code panel folds away when a command starts.
+		_program.set_locked(value)
 	if _table != null:
 		_table.set_busy(value)
 	for card: SpellCard in cards.values():

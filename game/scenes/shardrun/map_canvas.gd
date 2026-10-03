@@ -7,7 +7,7 @@ extends Control
 const ROW_STEP := 196.0
 const RADIUS := 30.0
 const BOSS_RADIUS := 70.0
-## From the map's top to its top row: room for the guardian's medallion and name plate.
+## Extra room for the guardian's medallion and name plate below the final row.
 const HEAD := 372.0
 const FOOT := 92.0
 const SIDE_PAD := 74.0
@@ -41,15 +41,14 @@ func height_for(rows: int) -> float:
 	return HEAD + (rows - 1) * ROW_STEP + foot
 
 
-## Where a room sits: rows climb from the bottom, a little off the grid so the map reads as a place, and the guardian
-## alone at the top.
+## Rows descend from the entry, a little off the grid, and the guardian waits beneath the final regular row.
 func place(node: Dictionary) -> Vector2:
 	if node.kind == "boss":
-		return Vector2(size.x * 0.5, 30.0 + BOSS_RADIUS * 1.18)
+		return Vector2(size.x * 0.5, size.y - foot - 100.0)
 	var columns := int(state.get("trial", {}).get("map_columns", ShardrunRules.layer_of(state, catalog).columns))
 	var column := (size.x - SIDE_PAD * 2.0) / columns
 	var x := SIDE_PAD + (int(node.col) + 0.5) * column
-	var y := size.y - foot - int(node.row) * ROW_STEP
+	var y := FOOT + int(node.row) * ROW_STEP
 	return Vector2(x, y) + jitter(String(node.id), minf(JITTER.x, column * 0.14))
 
 
@@ -110,7 +109,7 @@ func _draw_paths(flow: float) -> void:
 		var a := place(from)
 		var b := place(to)
 		if to.kind == "boss":
-			# Paths climb to the guardian's name plate, not through it.
+			# Paths meet the guardian from above, clear of the name plate below.
 			b = _gate(b)
 			trims.y = 4.0
 		var wind := _wind("%s>%s" % [edge[0], edge[1]])
@@ -119,12 +118,12 @@ func _draw_paths(flow: float) -> void:
 		MapMarkers.draw_trail(self, trail, colour, dot, DOT_GAP, trims, phase)
 	if state.position == null:
 		for node: Dictionary in state.map.nodes:
-			if int(node.row) == 0:
+			if int(node.row) == 0 and node.kind != "boss":
 				var at := place(node)
 				var colour := UiTheme.TEAL if node.id == focused else UiTheme.AMBER
 				var trims := Vector2(0.0, RADIUS + 10.0)
-				MapMarkers.draw_path(self, at + Vector2(0, 80), at, Color(0, 0, 0, 0.6), 6.0, DOT_GAP, trims, flow)
-				MapMarkers.draw_path(self, at + Vector2(0, 80), at, colour, 4.2, DOT_GAP, trims, flow)
+				MapMarkers.draw_path(self, at - Vector2(0, 80), at, Color(0, 0, 0, 0.6), 6.0, DOT_GAP, trims, flow)
+				MapMarkers.draw_path(self, at - Vector2(0, 80), at, colour, 4.2, DOT_GAP, trims, flow)
 
 
 ## How a path winds, (amplitude, half-waves): steady for the same path on every run (see jitter).
@@ -138,9 +137,9 @@ func _radius_of(node: Dictionary) -> float:
 	return BOSS_RADIUS * 1.18 if node.kind == "boss" else RADIUS
 
 
-## The foot of the guardian's name plate, where the paths below it meet.
+## The top of the guardian's medallion, where the descending paths meet.
 func _gate(guardian: Vector2) -> Vector2:
-	return guardian + Vector2(0, BOSS_RADIUS * 1.18 + 70.0)
+	return guardian - Vector2(0, BOSS_RADIUS * 1.18 + 12.0)
 
 
 func _draw_room(node: Dictionary, glow: float, calm: bool) -> void:
@@ -199,7 +198,7 @@ func _draw_guardian(node: Dictionary, glow: float) -> void:
 	var caption := "GUARDIAN OF %s" % String(ShardrunRules.layer_of(state, catalog).name).to_upper()
 	var line := Vector2(0, at.y + radius * 1.18 + 36.0)
 	var plate_width := maxf(font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 34).x, 200.0) + 40.0
-	var plate := Rect2(at.x - plate_width * 0.5, line.y - 32.0, plate_width, _gate(at).y - line.y + 32.0)
+	var plate := Rect2(at.x - plate_width * 0.5, line.y - 32.0, plate_width, 64.0)
 	UiTheme.box(Color(UiTheme.GROUND, 0.92), Color(hue, 0.5), 1, 8).draw(get_canvas_item(), plate)
 	draw_string_outline(font, line, title, HORIZONTAL_ALIGNMENT_CENTER, size.x, 34, 8, Color.BLACK)
 	draw_string(font, line, title, HORIZONTAL_ALIGNMENT_CENTER, size.x, 34, hue)
@@ -207,8 +206,7 @@ func _draw_guardian(node: Dictionary, glow: float) -> void:
 	draw_string(small, line + Vector2(0, 22), caption, HORIZONTAL_ALIGNMENT_CENTER, size.x, 12, UiTheme.MUTED)
 
 
-## The margin of a code editor: every row is a numbered line of the climb, lit up to the one you stand on, and the
-## guardian waits at the `return`.
+## Every landing is a numbered line of the descent, lit through the current room.
 func _draw_gutter() -> void:
 	var font := UiTheme.ui_font()
 	var rows := int(state.get("trial", {}).get("map_rows", ShardrunRules.layer_of(state, catalog).rows))
@@ -218,7 +216,7 @@ func _draw_gutter() -> void:
 			reached = int(node.row)
 	draw_line(Vector2(42, 0), Vector2(42, size.y), Color(UiTheme.LINE, 0.6), 1.0)
 	for row in rows:
-		var y := size.y - foot - row * ROW_STEP
+		var y := FOOT + row * ROW_STEP
 		var colour := UiTheme.AMBER_DIM if row <= reached else Color(UiTheme.FAINT, 0.8)
 		if row == reached:
 			colour = UiTheme.TEAL

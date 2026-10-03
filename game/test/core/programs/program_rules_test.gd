@@ -81,6 +81,24 @@ func test_work_follows_the_complexity_class() -> void:
 	assert_int(ProgramRules.work_units("pseudo", 5, 0, 40)).is_equal(200)
 
 
+func test_the_four_ring_looks_preserve_layer_ids_and_full_routes() -> void:
+	var base: Dictionary = ContentLoader.load_shardrun().catalog
+	var rings: Array = content.config.layers
+	assert_int(rings.size()).is_equal(4)
+	assert_array(rings.map(func(layer: Dictionary) -> int: return layer.ring)).is_equal([3, 2, 1, 0])
+	(
+		assert_array(rings.map(func(layer: Dictionary) -> String: return layer.id))
+		. is_equal(["salvage", "heap", "kernel", "root"])
+	)
+	for index in (base.config.layers as Array).size():
+		assert_int(rings[index].rows).is_equal(base.config.layers[index].rows)
+		assert_int(rings[index].paths).is_equal(base.config.layers[index].paths)
+	assert_str(rings[2].name).is_equal("The Interrupt Foundry")
+	assert_int(base.config.layers[2].ring).is_equal(0)
+	assert_str(base.config.layers[2].backdrop).is_equal("arena-ring-0-kernel")
+	assert_str(base.config.layers[2].id).is_equal("kernel")
+
+
 func test_a_stage_is_as_big_as_the_larger_of_its_input_and_output() -> void:
 	var state := _fight()
 	var trace := [{"shard": "salvo", "given": 1, "returned": 7}, {"shard": "merge-sort", "given": 7, "returned": 7}]

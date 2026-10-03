@@ -136,16 +136,27 @@
       "boss": [["root-daemon"], ["call-stack-colossus"], ["int-max"], ["profiler"], ["livelock-a", "livelock-b"]]
     }
   },
-  // A program run goes one layer deeper than Spellforge (docs/NewEnemies.md): the Root, under the Kernel, whose
-  // hallways mix the Kernel's worst bugs and whose guardian reprints your own programs. The Kernel's budget holds here.
-  // Its arenas and music are the Kernel's until the Root has its own.
+  // Preserve all four existing layer ids and encounters. Their presentation now descends through privilege rings.
+  "layer_looks": {
+    "kernel": {
+      "name": "The Interrupt Foundry",
+      "flavor": "Copper buses carry requests into the deep. Please hold: your interrupt is important to us.",
+      "ring": 1,
+      "backdrop": "arena-ring-1-interrupt-foundry",
+      "boss_backdrop": "arena-ring-1-interrupt-foundry",
+      "map_backdrop": "map-machine-shaft"
+    }
+  },
+  // The existing fourth layer (id root) is Ring 0; its maps, foes, budget and difficulty stay as before.
   "layers": [
     {
       "id": "root",
-      "name": "The Root",
-      "flavor": "Beneath the Kernel, the machine's own source. Everything that runs was written by something that ran first.",
-      "backdrop": "arena-throne",
-      "boss_backdrop": "arena-throne",
+      "name": "The Kernel / Root Sanctum",
+      "flavor": "All roots lead here. Every process answers to one owner; permission denied is no longer a suggestion.",
+      "backdrop": "arena-ring-0-kernel",
+      "boss_backdrop": "arena-ring-0-kernel",
+      "ring": 0,
+      "map_backdrop": "map-machine-shaft",
       "ambience": "embers",
       "music": "music-kernel",
       "battle_music": "music-battle-kernel",

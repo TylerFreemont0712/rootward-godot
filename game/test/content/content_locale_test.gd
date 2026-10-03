@@ -38,6 +38,7 @@ func test_the_program_runs_content_is_translated_and_its_code_is_not() -> void:
 	assert_str(ja.programs.foes["deadlock-lock-a"].name).is_equal("ゴーレムのロックA")
 	assert_str(ja.programs.config.paradigms[0].name).is_equal("分割統治")
 	assert_str(ja.programs.config.keywords.once).contains("一度だけ")
+	assert_str(ProgramRules.catalog_for(ja).config.layers[2].name).is_equal("割り込み鋳造所")
 	# A name that is code stays code.
 	assert_str(ja.programs.cards["import-heapq"].name).is_equal("import heapq")
 

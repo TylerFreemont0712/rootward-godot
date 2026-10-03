@@ -69,11 +69,14 @@ func show_hand(ids: Array, make: Callable, deal: bool, origins: Dictionary) -> v
 			_arriving.append(face)
 		face.spot = {"zone": "hand", "index": index}
 		next.append(face)
+	# LEARN: swap the hand before any card leaves. Leaving sets a card's mouse_filter, and Godot answers a pointed-at
+	# card turning IGNORE with mouse_exited at once; _point would then re-arrange the OLD hand, cancelling the discard
+	# tweens of the cards already sent off, which stayed on screen as a ghost of the previous hand.
+	cards = next
+	hovered = -1
 	for face: CardFace in old:
 		if not kept.has(face):
 			_leave(face, deal)
-	cards = next
-	hovered = -1
 	for index in cards.size():
 		move_child(cards[index], index)
 	if dealt > 0:

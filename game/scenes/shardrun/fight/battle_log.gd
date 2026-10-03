@@ -36,6 +36,11 @@ static func detail(entry: Dictionary) -> String:
 					notes.append("weak to it ×1.5")
 				"resist":
 					notes.append("resists it ×0.5")
+			# A folded volley (LogDigest) counts the bolts that were weak or resisted instead.
+			if int(entry.get("weak", 0)) > 0:
+				notes.append("%d weak ×1.5" % int(entry.weak))
+			if int(entry.get("resist", 0)) > 0:
+				notes.append("%d resisted ×0.5" % int(entry.resist))
 			if int(entry.get("overkill", 0)) > 0:
 				notes.append("%d past its HP, wasted" % int(entry.overkill))
 		"enemy":
@@ -46,8 +51,10 @@ static func detail(entry: Dictionary) -> String:
 	return text + ("  [%s]" % ", ".join(notes) if not notes.is_empty() else "")
 
 
-## The log as BBCode, turn by turn, each line tagged with its kind.
-static func text(entries: Array[Dictionary]) -> String:
+## The log as BBCode, turn by turn, each line tagged with its kind. A volley's repeated bolts are folded into one line
+## each (LogDigest); the log is for reading.
+static func text(raw: Array[Dictionary]) -> String:
+	var entries := LogDigest.digest(raw)
 	var lines: PackedStringArray = []
 	var turn := -1
 	var tally := {}

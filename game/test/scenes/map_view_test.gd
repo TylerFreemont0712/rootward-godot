@@ -1,5 +1,5 @@
 extends GdUnitTestSuite
-## The layer map as a scroll: taller than its window, gliding where the wheel asks, opening a new layer on its guardian,
+## The layer map as a descent: taller than its window, gliding where the wheel asks, previewing its lower guardian,
 ## and a guardian on the rail for every layer.
 
 var catalog: Dictionary
@@ -86,17 +86,36 @@ func test_the_view_never_scrolls_past_either_end() -> void:
 	assert_float(map.scroll_target()).is_equal(map.max_scroll())
 
 
-func test_a_new_layer_opens_on_its_guardian_then_glides_down_to_the_start() -> void:
+func test_a_new_layer_previews_its_guardian_then_returns_to_the_entry_above() -> void:
 	_open(_start("map-intro"))
-	assert_float(map.scroll_target()).is_equal(0.0)
-	map.call("_process", MapView.INTRO_HOLD + 0.1)
 	assert_float(map.scroll_target()).is_equal(map.max_scroll())
+	map.call("_process", MapView.INTRO_HOLD + 0.1)
+	assert_float(map.scroll_target()).is_equal(0.0)
 
 
 func test_with_reduced_motion_a_new_layer_opens_at_the_start() -> void:
 	Settings.reduced_motion = true
 	_open(_start("map-calm"))
-	assert_float(map.get("_scroll")).is_equal(map.max_scroll())
+	assert_float(map.get("_scroll")).is_equal(0.0)
+
+
+func test_every_edge_descends_and_each_ring_keeps_a_full_sized_map() -> void:
+	for layer_index: int in catalog.config.layers.size():
+		var state := _start("map-descent")
+		state.layer = layer_index
+		state.map = ShardrunMap.generate("map-descent", layer_index, catalog.config.layers[layer_index])
+		_open(state)
+		var canvas: MapCanvas = map.get("_canvas")
+		assert_float(canvas.size.y).is_greater(1800.0)
+		assert_int(state.map.nodes.size()).is_greater(15)
+		var by_id := {}
+		for node: Dictionary in state.map.nodes:
+			by_id[node.id] = node
+		for edge: Array in state.map.edges:
+			assert_float(canvas.place(by_id[edge[1]]).y).is_greater(canvas.place(by_id[edge[0]]).y)
+		var rail: GuardianRail = map.get("_rail")
+		assert_float(rail.centre(0).y).is_less(rail.centre(rail.guardians.size() - 1).y)
+		map.free()
 
 
 func test_the_rail_shows_a_guardian_for_every_layer() -> void:

@@ -17,6 +17,18 @@ func _init() -> void:
 	_veil = ShaderMaterial.new()
 	_veil.shader = preload("res://scenes/title/archive_passage.gdshader")
 	material = _veil
+	resized.connect(_fit_aspect)
+
+
+## Covers the whole window, whatever its shape: the stretch setting makes the viewport larger than the 1920x1080 design
+## size in a window of another shape or scale, and a veil left at 1920x1080 would only reach part of it.
+func cover_viewport() -> void:
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+
+func _fit_aspect() -> void:
+	if size.y > 0.0:
+		_veil.set_shader_parameter("aspect", size.x / size.y)
 
 
 func play() -> void:

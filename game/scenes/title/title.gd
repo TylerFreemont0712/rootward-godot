@@ -240,7 +240,7 @@ func _reveal() -> void:
 func _continue() -> void:
 	if Game.session.in_progress():
 		Game.trial_active = false
-		Game.go(Game.SHARDRUN)
+		Game.go(Game.SHARDRUN, true)
 	else:
 		_show_setup()
 
@@ -638,7 +638,7 @@ func _launch_run(sandbox: bool) -> void:
 	var difficulties: Array = Game.catalog.config.difficulties
 	var known := difficulties.any(func(d: Dictionary) -> bool: return d.id == Settings.difficulty)
 	Game.session.start(Settings.language, Settings.difficulty if known else String(difficulties[0].id), "", sandbox)
-	Game.go(Game.SHARDRUN)
+	Game.go(Game.SHARDRUN, true)
 
 
 func _start_trial() -> void:
@@ -647,7 +647,7 @@ func _start_trial() -> void:
 		return
 	var active: bool = Game.trial_session.has_run() and not Game.trial_session.state.get("trial", {}).get("done", false)
 	if Game.resume_trial() if active else Game.start_trial():
-		Game.go(Game.SHARDRUN)
+		Game.go(Game.SHARDRUN, true)
 
 
 func _confirm_new_run(sandbox: bool) -> void:

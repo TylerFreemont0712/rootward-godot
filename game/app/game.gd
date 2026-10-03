@@ -232,5 +232,5 @@ static func quit() -> void:
 	tree.quit()
 
 
-static func go(scene: String) -> void:
-	ScreenTransition.go(scene)
+static func go(scene: String, sigil := false) -> void:
+	ScreenTransition.go(scene, sigil)

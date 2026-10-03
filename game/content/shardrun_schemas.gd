@@ -232,6 +232,8 @@ static func layer() -> Dictionary:
 				"flavor": Schema.TEXT,
 				"backdrop": Schema.ID,
 				"boss_backdrop": Schema.optional(Schema.ID),
+				"ring": Schema.optional(Schema.int_range(0, 3)),
+				"map_backdrop": Schema.optional(Schema.ID),
 				"ambience": Schema.with_default(Schema.one_of(AMBIENCES), "dust"),
 				"boss_ambience": Schema.optional(Schema.one_of(AMBIENCES)),
 				"music": Schema.optional(Schema.ID),

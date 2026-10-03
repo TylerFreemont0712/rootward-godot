@@ -776,3 +776,17 @@ its points. They draw the same in every font and under the circle's slanted tran
 A card that advances an animation to the moment it finishes shows the flare of finishing: a blown-out core. The card
 now builds the circle layer by layer and then lets it settle for a second before it shows it.
 
+
+## Swap the list before you touch the nodes (`game/scenes/shardrun/fight/hand_view.gd`)
+Setting a pointed-at card's `mouse_filter` to IGNORE makes Godot send `mouse_exited` at once, in the middle of the
+loop that is sending the old hand to the discard pile. The handler re-arranged `cards`, which still named the old hand,
+and cancelled the discard tweens of the cards already sent: they stayed on screen as a ghost of the previous hand. A
+handler that can fire during a loop must see the finished state, so `cards` and `hovered` are swapped before any card
+leaves. The bug needed a real pointer to show (the headless tests never hover), so the test fires `mouse_exited` itself
+from inside the loop.
+
+## One line for a volley (`game/scenes/shardrun/log_digest.gd`)
+The rules record one entry per bolt, right for the stage that plays each one and wrong for a person reading the log: a
+thirty-bolt cast was thirty copies of one sentence. A digest at the point of reading folds the bolts of a volley by
+kind and foe into one entry carrying the sums, so the tallies still add up, and leaves the recorded entries alone, so
+the rules, the saves and the reference results never change for the sake of wording.

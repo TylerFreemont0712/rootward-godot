@@ -367,6 +367,32 @@ static func config() -> Dictionary:
 				),
 				# Layers a program run goes on to after the Shardrun's (the Root): Spellforge never reaches them.
 				"layers": Schema.with_default(Schema.list_of(ShardrunSchemas.layer()), []),
+				# Presentation overrides keep the existing layer ids, maps and encounters intact.
+				"layer_looks":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. record(
+								(
+									Schema
+									. object(
+										{
+											"name": Schema.TEXT,
+											"flavor": Schema.TEXT,
+											"ring": Schema.int_range(0, 3),
+											"backdrop": Schema.ID,
+											"boss_backdrop": Schema.optional(Schema.ID),
+											"map_backdrop": Schema.optional(Schema.ID),
+										}
+									)
+								)
+							)
+						),
+						{}
+					)
+				),
 				# What each keyword means, for the cards' tooltips (and their translations).
 				"keywords": Schema.record(Schema.TEXT, KEYWORDS),
 				# Initiative: how much more a foe takes from a program that lands before it moves (0.25 is 25% more).
@@ -425,6 +451,9 @@ static func check(catalog: Dictionary, file: String, diagnostics: Array[Dictiona
 			_error(diagnostics, 'foe "%s" is deadlocked with an unknown foe "%s"' % [foe.id, partner], file)
 	var all_layers: Array = (catalog.config.layers as Array) + (config.layers as Array)
 	var layer_ids: Array = all_layers.map(func(layer: Dictionary) -> String: return layer.id)
+	for layer_id: String in config.layer_looks:
+		if not layer_id in layer_ids:
+			_error(diagnostics, 'layer look names an unknown layer "%s"' % layer_id, file)
 	for layer: Dictionary in config.layers:
 		for kind: String in layer.encounters:
 			for group: Array in layer.encounters[kind]:

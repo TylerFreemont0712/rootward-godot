@@ -1,9 +1,9 @@
 class_name MapView
 extends Control
-## A layer of the Machine as a tall scroll of rooms, in the spirit of Slay the Spire's map: dotted paths climb from the
-## bottom row to the guardian waiting at the top. The map is taller than its window and glides: the wheel, a drag, the
+## A full layer of the Machine as a tall descent: dotted paths lead from the entry at the top to its guardian below.
+## The map is taller than its window and glides: the wheel, a drag, the
 ## scroll bar, Page Up/Down or a room taking focus moves it, eased toward where it was asked to be. A new layer opens on
-## its guardian and pans down to where you start. Every kind of room has its own hue and outline (MapMarkers). The
+## its guardian and returns to the entry before the dive. Every kind of room has its own hue and outline (MapMarkers).
 ## guardians of every layer stand on the rail at the left; the route drawer at the right (the layer, the rooms you can
 ## enter next, the legend) folds away, and the deck lies face down at the map's foot, opened with a click.
 
@@ -25,16 +25,16 @@ const LEGEND: Array[String] = ["fight", "elite", "rest", "forge", "treasure", "b
 const HINT := "Hover a room to see what waits there."
 const RAIL_WIDTH := 128.0
 const SIDE_WIDTH := 290.0
-## The map's column is never wider than this, so a layer reads as a climb rather than a field.
+## The map's column is never wider than this, so a layer reads as a shaft rather than a field.
 const MAP_WIDTH := 960.0
 const PILE := Vector2(66, 92)
 const WHEEL_STEP := 120.0
 const DRAG_START := 6.0
 ## How quickly the view catches up with its target: the gap shrinks by e^(-GLIDE * seconds).
 const GLIDE := 9.0
-## Where the row you stand on sits in the window, from its top: low, so the rooms ahead are in view.
-const STAND_AT := 0.76
-## Seconds a new layer holds on its guardian before gliding down to the first row.
+## Stand near the top of the window so the rooms ahead remain visible below.
+const STAND_AT := 0.24
+## Seconds a new layer holds on its guardian before returning to the entry.
 const INTRO_HOLD := 0.9
 
 ## Where each layer's view was left ("seed:layer" -> scroll), so a rebuilt screen glides on from there.
@@ -53,7 +53,8 @@ var _reachable: Dictionary = {}
 var _rail: GuardianRail
 var _view: Control
 var _canvas: MapCanvas
-var _wall: TextureRect
+var _wall: DungeonBackdrop
+var _scenery: MapScenery
 var _fade: Control
 var _bar: VScrollBar
 var _side: VBoxContainer
@@ -82,7 +83,7 @@ var _drag_scroll := 0.0
 
 func _init() -> void:
 	clip_contents = true
-	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_view = Control.new()
 	_view.clip_contents = true
 	_view.gui_input.connect(_on_view_input)
@@ -90,12 +91,14 @@ func _init() -> void:
 	_canvas = MapCanvas.new()
 	for kind: String in LEGEND:
 		_canvas.icons[kind] = Art.texture("shardrun/map-" + kind)
-	_wall = TextureRect.new()
-	_wall.stretch_mode = TextureRect.STRETCH_TILE
+	_wall = DungeonBackdrop.new()
+	_wall.stretch_mode = TextureRect.STRETCH_SCALE
 	_wall.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_wall.modulate = Color(0.4, 0.34, 0.29)
+	_wall.modulate = Color(0.57, 0.55, 0.52)
 	_wall.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_view.add_child(_wall)
+	_scenery = MapScenery.new()
+	_view.add_child(_scenery)
 	_view.add_child(_canvas)
 	_fade = Control.new()
 	_fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -109,11 +112,11 @@ func _init() -> void:
 	)
 	_view.add_child(_bar)
 	_rail = GuardianRail.new()
-	_rail.guardian_pressed.connect(func() -> void: scroll_to(0.0))
+	_rail.guardian_pressed.connect(func() -> void: scroll_to(max_scroll()))
 	add_child(_rail)
 	_side = Ui.vbox([], 10)
 	add_child(_side)
-	_title = Ui.label("", "Subheading")
+	_title = Ui.label("", "Subheading", true)
 	_subtitle = Ui.tint(Ui.label("", "Faint"), UiTheme.AMBER_DIM) as Label
 	_flavor = Ui.sized(Ui.label("", "Muted", true), 14) as Label
 	_detail_text = Ui.label(HINT, "Muted", true)
@@ -154,13 +157,22 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	var layer := ShardrunRules.layer_of(state, catalog)
 	var layers: Array = catalog.config.layers
 	_title.text = layer.name
-	_subtitle.text = "LAYER %d OF %d" % [int(state.layer) + 1, layers.size()]
+	_subtitle.text = (
+		"RING %d · LAYER %d OF %d"
+		% [int(layer.get("ring", layers.size() - int(state.layer) - 1)), int(state.layer) + 1, layers.size()]
+	)
 	_flavor.text = String(layer.get("flavor", ""))
 	if state.has("trial"):
 		_title.text = "Pip's Trial"
 		_subtitle.text = "%d STOPS · ONE ROUTE" % (state.map.nodes as Array).size()
-		_flavor.text = "A little climb to the Kiln Warden."
-	_wall.texture = Art.texture("shardrun/map-wall-%s-0" % layer.id)
+		_flavor.text = "A short descent to the Kiln Warden."
+	var shaft := String(layer.get("map_backdrop", ""))
+	_wall.show_scene(
+		"backgrounds/" + shaft if shaft != "" else "shardrun/map-wall-%s-0" % layer.id,
+		int(layer.get("ring", -1)),
+		shaft != ""
+	)
+	_scenery.configure(state, layer)
 	_states = ShardrunViews.node_states(state)
 	_reachable = ShardrunViews.reachable(state)
 	var guardians := ShardrunViews.guardians(state, catalog)
@@ -380,11 +392,11 @@ func _key() -> String:
 	return "%s:%d" % [state.get("seed", ""), int(state.get("layer", 0))]
 
 
-## Where the view rests: the row you stand on low in the window, or the bottom row before the first step.
+## Where the view rests: the current row high in the window, or the entry before the first step.
 func _standing_scroll() -> float:
 	var room: Button = _rooms.get(state.position) if state.position != null else null
 	if room == null:
-		return max_scroll()
+		return 0.0
 	return room.position.y + room.size.y * 0.5 - _view.size.y * STAND_AT
 
 
@@ -392,8 +404,8 @@ func _place_view() -> void:
 	_placed = true
 	var key := _key()
 	if state.position == null and not _left_at.has(key) and not Settings.reduced_motion:
-		_scroll = 0.0
-		_scroll_to = 0.0
+		_scroll = max_scroll()
+		_scroll_to = max_scroll()
 		_intro = INTRO_HOLD
 		return
 	_scroll = clampf(float(_left_at.get(key, _standing_scroll())), 0.0, max_scroll())
@@ -468,7 +480,7 @@ func _process(delta: float) -> void:
 	if _intro > 0.0:
 		_intro -= delta
 		if _intro <= 0.0:
-			scroll_to(max_scroll())
+			scroll_to(0.0)
 	# LEARN: lerping by a fixed fraction each frame glides faster on a faster screen. Keeping e^(-rate * delta) of the
 	# gap instead is the same curve at any frame rate, so the scroll feels the same at 30 and 144 frames a second.
 	if not _dragging:
@@ -482,6 +494,7 @@ func _apply_scroll() -> void:
 	var slack := maxf(0.0, (_view.size.y - _canvas.size.y) * 0.5)
 	_canvas.position = Vector2(roundf((_view.size.x - _canvas.size.x) * 0.5), roundf(slack - _scroll))
 	_wall.position = Vector2(0, _canvas.position.y)
+	_scenery.position = _wall.position
 	_bar.visible = max_scroll() > 0.0
 	_bar.max_value = _canvas.size.y
 	_bar.page = _view.size.y
@@ -535,6 +548,7 @@ func _layout() -> void:
 	var rows := int(state.get("trial", {}).get("map_rows", ShardrunRules.layer_of(state, catalog).rows))
 	_canvas.size = Vector2(minf(MAP_WIDTH, _view.size.x - 16.0), _canvas.height_for(rows))
 	_wall.size = Vector2(_view.size.x, _canvas.size.y)
+	_scenery.size = _wall.size
 	for node: Dictionary in state.map.nodes:
 		var room: Button = _rooms.get(node.id)
 		if room != null:
@@ -557,7 +571,7 @@ func _draw() -> void:
 		draw_line(Vector2(x, 0), Vector2(x, size.y), UiTheme.LINE, 1.0)
 
 
-## Shadows at the window's edges where the map goes on beyond them, and a chevron while there is more above.
+## Shadows at the window's edges, and a downward chevron when the dive continues below.
 func _draw_fade() -> void:
 	var width := _fade.size.x
 	var depth := 64.0
@@ -566,10 +580,6 @@ func _draw_fade() -> void:
 	if _scroll > 1.0:
 		var top := PackedVector2Array([Vector2(0, 0), Vector2(width, 0), Vector2(width, depth), Vector2(0, depth)])
 		_fade.draw_polygon(top, PackedColorArray([dark, dark, clear, clear]))
-		var bob := 0.0 if Settings.reduced_motion else 3.0 * sin(_pulse * 3.0)
-		var tip := Vector2(width * 0.5, 14.0 + bob)
-		var chevron := PackedVector2Array([tip + Vector2(-14, 10), tip, tip + Vector2(14, 10)])
-		_fade.draw_polyline(chevron, Color(UiTheme.AMBER, 0.8), 3.0, true)
 	if _scroll < max_scroll() - 1.0:
 		var bottom := PackedVector2Array(
 			[
@@ -580,3 +590,7 @@ func _draw_fade() -> void:
 			]
 		)
 		_fade.draw_polygon(bottom, PackedColorArray([clear, clear, dark, dark]))
+		var bob := 0.0 if Settings.reduced_motion else 3.0 * sin(_pulse * 3.0)
+		var tip := Vector2(width * 0.5, _fade.size.y - 14.0 + bob)
+		var chevron := PackedVector2Array([tip + Vector2(-14, -10), tip, tip + Vector2(14, -10)])
+		_fade.draw_polyline(chevron, Color(UiTheme.AMBER, 0.8), 3.0, true)

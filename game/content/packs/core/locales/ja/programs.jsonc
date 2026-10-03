@@ -1299,11 +1299,15 @@
     "to": "知っているプログラムはひとつだけ。あなたがいま走らせたものです。それをもう一度、あなたに向けて走らせます。"
   },
   {
-    "en": "The Root",
-    "to": "ルート"
+    "en": "The Interrupt Foundry",
+    "to": "割り込み鋳造所"
   },
   {
-    "en": "Beneath the Kernel, the machine's own source. Everything that runs was written by something that ran first.",
-    "to": "カーネルの下にある、機械そのもののソース。動くものはすべて、先に動いた何かが書いたものです。"
+    "en": "Copper buses carry requests into the deep. Please hold: your interrupt is important to us.",
+    "to": "銅のバスが要求を深部へ運びます。お待ちください。あなたの割り込みは大切です。"
+  },
+  {
+    "en": "All roots lead here. Every process answers to one owner; permission denied is no longer a suggestion.",
+    "to": "すべての根がここへ通じます。全プロセスがひとりの所有者に従い、権限拒否はもう忠告ではありません。"
   }
 ]

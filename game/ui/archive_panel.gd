@@ -8,7 +8,7 @@ var _catalog: Dictionary
 var _mode := "program"
 var _kind := "cards"
 var _query := ""
-var _role := "all"
+var _rarity := "all"
 var _language := "python"
 var _selected := ""
 var _upgraded := false
@@ -65,14 +65,14 @@ func _build() -> void:
 			_refresh()
 	)
 	column.add_child(_search)
-	if _kind == "cards" and _mode == "program":
-		var roles := Ui.hbox([], 6)
-		for role: String in ["all", "source", "shape", "order", "strike", "guard", "import", "const"]:
+	if _kind == "cards":
+		var rarities := Ui.hbox([], 6)
+		for rarity: String in ["all", "common", "uncommon", "rare", "boss"]:
 			var choose := func() -> void:
-				_role = role
+				_rarity = rarity
 				_rebuild()
-			roles.add_child(Ui.choice(role.capitalize(), _role == role, choose))
-		column.add_child(roles)
+			rarities.add_child(Ui.choice(rarity.capitalize(), _rarity == rarity, choose))
+		column.add_child(rarities)
 	_count = Ui.label("", "Faint")
 	column.add_child(_count)
 	_list = Ui.vbox([], 5)
@@ -125,13 +125,12 @@ func _refresh() -> void:
 	for item: Dictionary in entries.values():
 		if _kind == "cards" and String(item.id).ends_with("-plus"):
 			continue
-		if _kind == "cards" and _mode == "program" and _role != "all":
-			if _role == "const":
-				if not "const" in item.get("keywords", []):
-					continue
-			elif item.get("role", "") != _role:
-				continue
-		var haystack := "%s %s %s %s" % [item.name, item.summary, item.get("paradigm", ""), item.get("keywords", [])]
+		if _kind == "cards" and _rarity != "all" and item.get("rarity", "") != _rarity:
+			continue
+		var haystack := (
+			"%s %s %s %s %s"
+			% [item.name, item.summary, item.get("paradigm", ""), item.get("keywords", []), item.get("role", "")]
+		)
 		if _query != "" and not _query.to_lower() in haystack.to_lower():
 			continue
 		shown.append(item)
@@ -208,6 +207,6 @@ func _rebuild() -> void:
 
 
 func _kind_name(kind: String) -> String:
-	if kind == "cards" and _mode == "spellbook":
+	if kind == "cards":
 		return "Shards"
 	return kind.capitalize()

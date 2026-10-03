@@ -12,7 +12,7 @@ signal skin_ready
 const WEIGHTS: Array[Array] = [[3, 3], [6, 10]]
 const PRACTICE_FOE := "tally-wisp"
 const PRACTICE_HP := 999
-const ARENA := "arena-salvage"
+const ARENA := "arena-ring-3-sandbox"
 
 var stage: BattleStage
 var hero: HeroView:

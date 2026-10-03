@@ -685,24 +685,24 @@
   },
   // --- Layers and difficulties --------------------------------------------------------------------------------------
   {
-    "en": "The Salvage",
-    "to": "遺構"
+    "en": "The Sandbox",
+    "to": "サンドボックス"
   },
   {
     "en": "Broken programs, shattered into shards. The first guardians still keep their posts.",
     "to": "砕けて欠片になった、壊れたプログラムたち。最初の守り手たちは、いまも持ち場を離れません。"
   },
   {
-    "en": "The Heap",
-    "to": "ヒープ"
+    "en": "The Heapworks",
+    "to": "ヒープ工房"
   },
   {
     "en": "Memory that was never freed, piled into caverns. Things live in the leaks.",
     "to": "解放されなかったメモリが、洞のように積み上がっています。漏れのなかに、何かが棲んでいます。"
   },
   {
-    "en": "The Kernel",
-    "to": "カーネル"
+    "en": "The Kernel / Root Sanctum",
+    "to": "カーネル / ルート聖域"
   },
   {
     "en": "The core of the Machine, where every process answers to one owner.",

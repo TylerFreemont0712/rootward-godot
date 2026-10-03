@@ -7,7 +7,7 @@ extends Control
 ##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window), relics
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs), layer (a
 ##   sandbox run jumped to ROOTWARD_SHOT_LAYER, the deepest by default: its map, or a fight there with the foes below).
-##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the guardian at the top);
+##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the entry at the top);
 ##   ROOTWARD_SHOT_DRAWER=closed folds its route drawer, ROOTWARD_SHOT_DECK=1 opens the deck over it, and
 ##   ROOTWARD_SHOT_TURNS ends that many turns of a fight first
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
@@ -19,10 +19,12 @@ extends Control
 ##       ROOTWARD_SHOT_CARDS=salvo,merge-strike scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/locks.png 60
 ## It plays in its own save folder, so the player's run is never touched:
 ##   ROOTWARD_SHOT=cast scripts/screenshot.sh res://tools/shardrun_shot.tscn shots/cast.png 90
+## ROOTWARD_SHOT_EXPAND=1 stretches the Program's code panel upward, as its Expand button does.
 ## ROOTWARD_SHOT_SKIN wears a battle skin for the shot (not saved). ROOTWARD_SHOT_AFTER_MS catches the moment that many
 ## milliseconds after the action, in real time (a headless run draws frames far faster than 60 a second):
 ##   ROOTWARD_SHOT=volley ROOTWARD_SHOT_SKIN=vesper ROOTWARD_SHOT_AFTER_MS=700 scripts/screenshot.sh \
 ##       res://tools/shardrun_shot.tscn shots/vesper-volley.png 1
+## ROOTWARD_SHOT_CAPACITY=6 gives the Program six slots, to cast the grand circle's six shards.
 ## ROOTWARD_SHOT_LOADOUT wears cosmetic looks (ADR-0037), slot=id pairs: "circle=rootglass,impact=starfall".
 
 signal shot_ready
@@ -100,6 +102,9 @@ func _ready() -> void:
 				await bot.send({"type": "dev-grant-shard", "shard_id": id})
 			if chosen != "":
 				var ids := chosen.split(",", false)
+				# ROOTWARD_SHOT_CAPACITY widens the Program (a spell holds up to six cards) for the grand circle.
+				if OS.has_environment("ROOTWARD_SHOT_CAPACITY"):
+					session.state.spells[0].capacity = int(OS.get_environment("ROOTWARD_SHOT_CAPACITY"))
 				for id in ids:
 					await bot.send({"type": "dev-grant-shard", "shard_id": id})
 				await bot.send({"type": "dev-set", "mana": 9})
@@ -175,6 +180,9 @@ func _ready() -> void:
 	add_child(screen)
 	for i in 10:
 		await get_tree().process_frame
+	if OS.get_environment("ROOTWARD_SHOT_EXPAND") == "1":
+		for panel: ProgramCode in screen.find_children("*", "ProgramCode", true, false):
+			panel.set_expanded(true, false)
 	var after_ms := int(OS.get_environment("ROOTWARD_SHOT_AFTER_MS"))
 	if after_ms > 0:
 		_act(shot, screen)
@@ -338,7 +346,7 @@ func _act(shot: String, screen: Control) -> void:
 				if table != null:
 					table.call("_open_pile", "draw")
 		"map", "layer":
-			# ROOTWARD_SHOT_SCROLL holds the map that far down (in pixels; 0 is the guardian at the top).
+			# ROOTWARD_SHOT_SCROLL holds the map that far down (in pixels; 0 is the entry at the top).
 			# ROOTWARD_SHOT_DRAWER=closed folds the route drawer away; ROOTWARD_SHOT_DECK=1 opens the deck over the map.
 			for map: MapView in screen.find_children("*", "MapView", true, false):
 				if OS.get_environment("ROOTWARD_SHOT_DRAWER") == "closed" and MapView.drawer_open:

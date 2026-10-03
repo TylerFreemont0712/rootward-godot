@@ -16,6 +16,8 @@ const FLOOR := 0.79
 ## Where the painted floor meets the characters' feet in an arena picture (a share of its height): the backdrop is
 ## placed so this line lies on FLOOR.
 const ART_FLOOR := 0.84
+## The new paintings have broad floors with different front edges. Stand inside the floor, clear of the ledge face.
+const RING_FLOORS := {3: 0.78, 2: 0.75, 1: 0.76, 0: 0.78}
 
 ## Every stage skips its waits and animations (tests and tools that drive the screens).
 static var instant := false
@@ -40,7 +42,7 @@ var _boss_bar: Control
 ## The Maintainer's numbers over their head, and what the foes will deal over the foes (FightView's).
 var _status: Control
 var _incoming: Control
-var _backdrop: TextureRect
+var _backdrop: DungeonBackdrop
 var _grade: _Grade
 var _shadows: _Shadows
 var _fx: Control
@@ -55,7 +57,8 @@ func _init() -> void:
 	_world = Control.new()
 	_world.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_world)
-	_backdrop = TextureRect.new()
+	_backdrop = DungeonBackdrop.new()
+	_backdrop.automatic = false
 	_backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_backdrop.stretch_mode = TextureRect.STRETCH_SCALE
 	_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -76,10 +79,13 @@ func _notification(what: int) -> void:
 		_layout()
 
 
-func set_backdrop(id: String) -> void:
-	_backdrop.texture = Art.texture("backgrounds/" + id)
+func set_backdrop(id: String, ring := -1) -> void:
+	_backdrop.show_scene("backgrounds/" + id, ring)
 	# A painted arena keeps its colours; the old pixel art was dimmed so the fighters stood out, and is drawn sharp.
-	var painted := _backdrop.texture != null and _backdrop.texture.resource_path.ends_with(".webp")
+	var painted := (
+		_backdrop.texture != null
+		and (_backdrop.texture.resource_path.ends_with(".webp") or id.begins_with("arena-ring-"))
+	)
 	_backdrop.modulate = Color(0.79, 0.77, 0.76) if painted else Color(0.85, 0.82, 0.8)
 	_backdrop.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR if painted else CanvasItem.TEXTURE_FILTER_NEAREST
 	_layout()
@@ -223,7 +229,8 @@ func _place_backdrop(floor_y: float) -> void:
 	var drawn := Vector2(size.x, size.x / aspect)
 	if drawn.y < size.y:
 		drawn = Vector2(size.y * aspect, size.y)
-	var top := clampf(floor_y - drawn.y * ART_FLOOR, size.y - drawn.y, 0.0)
+	var art_floor := float(RING_FLOORS.get(_backdrop.ring, ART_FLOOR))
+	var top := clampf(floor_y - drawn.y * art_floor, size.y - drawn.y, 0.0)
 	_backdrop.size = drawn
 	_backdrop.position = Vector2((size.x - drawn.x) * 0.5, top)
 
@@ -257,6 +264,8 @@ func tween_on(node: Node) -> Tween:
 func _process(delta: float) -> void:
 	if local_clock:
 		_keep_time(delta * tempo, false)
+	else:
+		_backdrop.advance(delta)
 
 
 ## Moves a rehearsal stage `seconds` on, at once (a frame step while paused): its clock, every effect and tween.
@@ -269,6 +278,7 @@ func advance(seconds: float) -> void:
 # the stage's clock, which stands still while the stage is disabled.
 func _keep_time(seconds: float, by_hand: bool) -> void:
 	_clock += seconds
+	_backdrop.advance(seconds)
 	for node in _fx.get_children():
 		if "time_scale" in node:
 			node.set("time_scale", tempo)

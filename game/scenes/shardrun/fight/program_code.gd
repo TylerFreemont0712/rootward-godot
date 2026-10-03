@@ -23,8 +23,17 @@ const STEP := {"slow": 0.16, "normal": 0.07, "fast": 0.03}
 ## About how long one card's function may take to walk, by the code speed option: a long function walks faster.
 const BUDGET := {"slow": 3.0, "normal": 1.2, "fast": 0.5}
 
+## How much taller the panel stands, upward over the stage, when it is expanded: a share of the screen's height.
+const EXPAND_SHARE := 0.30
+const EXPAND_SECONDS := 0.2
+
+## Whether the panel is stretched upward so the whole program can be read before it runs. Temporary: it folds away when
+## a command starts (`set_locked`), so the animations are seen.
+var expanded := false
 var session: ShardrunSession
 var colour := UiTheme.SHARD
+var _expand: Button
+var _expand_motion: Tween
 var _code: RuneCode
 var _scroll: ScrollContainer
 var _title: Label
@@ -85,8 +94,45 @@ func _build() -> void:
 	_scroll.custom_minimum_size.y = 120
 	_footer = Ui.label("", "Muted", true)
 	_footer.add_theme_font_size_override("font_size", 13)
-	var header := Ui.hbox([_title, school, Ui.spacer(), _speed, _ops], 10)
+	_expand = Ui.button("", func() -> void: set_expanded(not expanded))
+	_expand.add_theme_font_size_override("font_size", 13)
+	_show_expand()
+	var header := Ui.hbox([_title, school, Ui.spacer(), _speed, _ops, _expand], 10)
 	add_child(Ui.vbox([header, _meter, _race, _scroll, _footer], 6))
+
+
+## Stretches the panel upward over the stage, or sets it back. It needs to be a full-rectangle child of a plain Control
+## (FightView's slot), which its top edge then moves in; in a container it only changes the button.
+func set_expanded(on: bool, animate := true) -> void:
+	expanded = on
+	_show_expand()
+	if _expand_motion != null:
+		_expand_motion.kill()
+	var top := -_extra() if on else 0.0
+	if not animate or Settings.reduced_motion or not is_inside_tree():
+		offset_top = top
+		return
+	_expand_motion = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_expand_motion.tween_property(self, "offset_top", top, EXPAND_SECONDS)
+
+
+## Locking (a command is running) folds the panel and disables its button; unlocking enables it again.
+func set_locked(locked: bool) -> void:
+	_expand.disabled = locked
+	if locked and expanded:
+		set_expanded(false)
+
+
+func _extra() -> float:
+	var screen := get_viewport_rect().size.y if is_inside_tree() else 1080.0
+	return screen * EXPAND_SHARE
+
+
+func _show_expand() -> void:
+	_expand.text = "Shrink" if expanded else "Expand"
+	_expand.tooltip_text = (
+		"Fold the code back down." if expanded else "Stretch the code upward to read the whole program."
+	)
 
 
 ## Draws the Program as it stands: its code (new lines written in), the race, and the preview when it has one.
