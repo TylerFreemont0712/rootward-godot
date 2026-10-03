@@ -1,0 +1,22 @@
+[
+	{
+		"animated_changed_samples": 660,
+		"reduced_motion_changed_samples": 0,
+		"ring": 0
+	},
+	{
+		"animated_changed_samples": 410,
+		"reduced_motion_changed_samples": 0,
+		"ring": 1
+	},
+	{
+		"animated_changed_samples": 494,
+		"reduced_motion_changed_samples": 0,
+		"ring": 2
+	},
+	{
+		"animated_changed_samples": 529,
+		"reduced_motion_changed_samples": 0,
+		"ring": 3
+	}
+]

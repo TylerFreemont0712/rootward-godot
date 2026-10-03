@@ -1,0 +1,148 @@
+{
+  "title": "Dive to the Kernel",
+  "direction": "Four privilege rings expressed as an underground fantasy Machine. Start in Ring 3 and descend through 2 and 1 to Ring 0. Brown stone, aged brass, amber lamps and cable roots connect the world to the title and character rooms.",
+  "scope": "Concept proposal only. Four arena paintings and one map environment. Existing game content, enemies, saves and menus are unchanged.",
+  "rings": [
+    {
+      "ring": 3,
+      "name": "The Sandbox",
+      "subtitle": "Userspace / abandoned test chambers",
+      "file": "01-ring-3-sandbox.png",
+      "color": "#e9b75f",
+      "hook": "Every great disaster starts with Hello, World.",
+      "story": "The first dive beneath the lift station: discarded experiments, reclaimed code-stone and bounded sand trays. A damaged but approachable place where someone once tried things safely.",
+      "forms": "Ochre masonry, repaired timber, low trays, broad broken arches, lift cages and rough root cables.",
+      "motion": [
+        "Lantern flames vary locally on independent 4\u20137 second loops.",
+        "Dust settles beside the rear sandbox; 6\u201310 slow motes, clear of fighters.",
+        "One distant lift descends between galleries every 20\u201330 seconds; hold between trips."
+      ],
+      "reaction": "At room entry, the chmod gate's boundary strip lights once, then settles.",
+      "humour": [
+        "Hello, World bench",
+        "chmod +x exit gate",
+        "Sandbox boundary",
+        "Future room signs: Works on my machine; TODO: remove before release"
+      ],
+      "map": "Uneven test-cell landings and patched bridges; route markers sit on warm stone trays.",
+      "gate": "chmod +x / executable granted"
+    },
+    {
+      "ring": 2,
+      "name": "The Heapworks",
+      "subtitle": "Allocation caverns / forgotten memory",
+      "file": "02-ring-2-heapworks.png",
+      "color": "#79b9ad",
+      "hook": "Someone allocated this. Nobody remembers why.",
+      "story": "Abandoned allocations have become a cavern of mismatched vault blocks. Copper coolant leaks through the empty slots; a collector sorts the leftovers.",
+      "forms": "Offset cuboid memory vaults, empty sockets, dangling tagged cables, crane claws and teal seams.",
+      "motion": [
+        "An isolated coolant drip falls every 3\u20135 seconds; a small ripple stays inside its rear drain.",
+        "Collector claw lowers a little, pauses, then returns over a 16\u201324 second cycle.",
+        "Dim allocation lights switch between two background vaults every 8\u201312 seconds."
+      ],
+      "reaction": "A distant empty vault lights briefly after an encounter ends: memory reclaimed.",
+      "humour": [
+        "free() collection bin",
+        "DO NOT DEREFERENCE cable",
+        "Literal memory leak",
+        "Future room signs: malloc inn; Cache miss; Out of memory"
+      ],
+      "map": "Routes pass through block clusters, empty memory sockets and bridges over leaks; chambers remain readable.",
+      "gate": "free() / allocation released"
+    },
+    {
+      "ring": 1,
+      "name": "The Interrupt Foundry",
+      "subtitle": "Driver works / timing and device buses",
+      "file": "03-ring-1-interrupt-foundry.png",
+      "color": "#e28a4d",
+      "hook": "Please hold. Your interrupt is important to us.",
+      "story": "The Machine's devices report into a heavy machinery hall. Copper buses carry requests, flywheels keep time, and the next gate waits for an acknowledgement.",
+      "forms": "Basalt, broad pipe bundles, timing flywheels, rectangular gates, red-amber signal lenses and bus bridges.",
+      "motion": [
+        "Three interrupt lamps light in a slow sequence over 5\u20138 seconds, never flash.",
+        "A masked timing wheel turns one revolution per 40\u201360 seconds; paint its axle and housing separately.",
+        "A brief side-valve breath of steam appears every 14\u201320 seconds behind the railing."
+      ],
+      "reaction": "The lamps acknowledge entry one at a time; a short rear conduit pulse follows a resolved turn.",
+      "humour": [
+        "IRQ 01 gate",
+        "BUSY WAIT bell",
+        "Actual bus bridges",
+        "Future room signs: Driver not found; Race condition crossing; Deadlock ahead"
+      ],
+      "map": "Routes follow copper buses through switchyards and timing assemblies; permission gate is below the final row.",
+      "gate": "ACK / interrupt acknowledged"
+    },
+    {
+      "ring": 0,
+      "name": "The Kernel / Root Sanctum",
+      "subtitle": "Privileged core / the bottom of the Machine",
+      "file": "04-ring-0-root-sanctum.png",
+      "color": "#f0d797",
+      "hook": "With great privilege comes an extremely small blast radius. Allegedly.",
+      "story": "All descending roots terminate at one square processor shrine. Stonework becomes ordered, traces become precise, and the Machine's ownership is finally visible.",
+      "forms": "Fitted black basalt, nested square brass plates, exact trace channels, concentric permission seal and ivory-gold core.",
+      "motion": [
+        "Core glow breathes locally by 4\u20136% over 8\u201312 seconds; exposure of the room stays fixed.",
+        "A slow gold packet travels along one rear root conduit every 10\u201315 seconds.",
+        "Very thin side-vent haze drifts behind the shrine; the foreground remains still."
+      ],
+      "reaction": "The permission seal traces once on entry; the final encounter's end can unlock the square socket.",
+      "humour": [
+        "RING 0 core plate",
+        "sudo access gate",
+        "Root cables terminate at the actual root",
+        "Future room signs: Permission denied; Kernel panic; Here be daemons"
+      ],
+      "map": "Branches narrow into deliberate gold channels and converge at the lowest core room; final destination stays visible.",
+      "gate": "sudo / root access"
+    }
+  ],
+  "map": {
+    "file": "05-descent-map.png",
+    "reading": "Entry at the top. Every edge ends lower than it starts. Ring numbers decrease as physical depth increases. Guardians or permission gates sit at the bottom of each ring, and their exit leads into the next ring.",
+    "layout": "One continuous shaft establishes the whole dive; the proposed playable map can focus or scroll through one ring at a time while retaining a compact four-ring depth rail. Each ring reuses the same marker shapes and controls over its own architecture.",
+    "states": "Visited route: steady amber. Current room: strong amber with YOU label. Available rooms: ivory border. Future routes: thin muted brass. Ring identity appears in scenery, labels and small accents, so colour is never the sole cue.",
+    "rooms": [
+      [
+        "fight",
+        "Process encounter"
+      ],
+      [
+        "elite",
+        "Exception handler"
+      ],
+      [
+        "rest",
+        "Sleep() alcove"
+      ],
+      [
+        "forge",
+        "Hot patch bench"
+      ],
+      [
+        "treasure",
+        "Cache"
+      ],
+      [
+        "boss",
+        "Permission gate"
+      ]
+    ],
+    "motion": "Small lift marker travels downward only on an explicit room selection; route previews are steady. Decorative light stays local. Static mode disables all decorative motion."
+  },
+  "production": {
+    "camera": "Fixed camera and scale; broad continuous floor. Review actors against the scenery at actual battle size before integration.",
+    "staging": "Preserve the current hero-left / foes-right layout. BattleStage uses hero x 7%, foes x 58\u201394%, and aligns artwork's 84% floor line to the stage's 79% floor. These concepts need final crop/floor checks against that placement.",
+    "readability": "The paintings are environment concepts. Keep health, intent, damage and code in separate UI layers; reserve dark silhouette areas at x 7\u201320% and 58\u201394%. Final integration should mask or soften hotspots behind those zones.",
+    "layers": "Painted base; optional separated far machinery; isolated lamp/coolant/core emission masks; sparse rear particles; actors; combat effects; UI. Wheel/crane/lift animations need separately painted cutouts rather than moving the whole image.",
+    "motion": "Choose at most two persistent ambient effects per ring, plus one infrequent mechanism. No camera drift, global brightness pulse or automatic zoom. Honour reduced motion with a still base and steady state indicators.",
+    "transition": "After the bottom permission gate, the lift or route marker descends and the next material palette appears; do not zoom the combat camera.",
+    "content": "The program Shardrun already has four full layers: salvage, heap, kernel and root. Their existing IDs, indices, maps and encounters are retained. Presentation maps these to Rings 3, 2, 1 and 0. Shorter modes keep three layers and end at Ring 0. See implementation.json and implemented.html for the integrated environments.",
+    "reference": "game/assets/menus/kernel-foundry.png (primary style reference); game/assets/menus/character-room.png (visual review); game/scenes/shardrun/fight/battle_stage.gd and game/content/packs/core/shardrun/run.jsonc (layout/current structure review)."
+  },
+  "generator": "Built-in image_gen.imagegen",
+  "promptSet": "prompts.json"
+}

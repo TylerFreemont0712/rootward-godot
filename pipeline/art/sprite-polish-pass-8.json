@@ -1,0 +1,776 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-09-30",
+  "intent": "Review all 72 shard icons for effect recognition; repaint confusing groups, then finish all 55 unchecked relic icons.",
+  "shards": {
+    "adapt": {
+      "subject": "A faceted chameleon head changing from neutral ivory at its snout into clearly separated fire-orange and frost-blue planes. A small matching blue enemy weakness crack in front of snout. Adapt changes every bolt to a foe's weakness. Bold chameleon silhouette, no lightning bolt.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-adapt.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A faceted chameleon head changing from neutral ivory at its snout into clearly separated fire-orange and frost-blue planes. A small matching blue enemy weakness crack in front of snout. Adapt changes every bolt to a foe's weakness. Bold chameleon silhouette, no lightning bolt.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-4e04bf1b-861d-4a3a-b355-1a9a9f12f50f.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "alternating-current": {
+      "subject": "Exactly three zigzag energy segments linked in an S-shaped chain: orange, cyan, orange. A violet multiplication X sits at the center join. Element alternation amplifies multipliers. Open serpentine silhouette, no ring.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-alternating-current.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Exactly three zigzag energy segments linked in an S-shaped chain: orange, cyan, orange. A violet multiplication X sits at the center join. Element alternation amplifies multipliers. Open serpentine silhouette, no ring.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-26b8a2e5-1e86-4473-9170-424cd542dd54.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "amplify": {
+      "subject": "A thick gold magic projectile seen diagonally with THREE broad orange expansion bands behind it, like a growing sound cone. Power becomes larger, never duplicates. Dominant widening cone silhouette, no multiplication X.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-amplify.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A thick gold magic projectile seen diagonally with THREE broad orange expansion bands behind it, like a growing sound cone. Power becomes larger, never duplicates. Dominant widening cone silhouette, no multiplication X.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-6d82b522-0b62-410f-a932-0f821967e048.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "attune": {
+      "subject": "A tall violet tuning crystal between two shorter violet crystals, connected by a broad white-violet horizontal resonance bar at the same height. All crystals share the strongest multiplier. Three-prong comb silhouette, no bolt.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-attune.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A tall violet tuning crystal between two shorter violet crystals, connected by a broad white-violet horizontal resonance bar at the same height. All crystals share the strongest multiplier. Three-prong comb silhouette, no bolt.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-fc992d5c-9544-4f49-b982-647e5bd5bf98.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "bulwark": {
+      "subject": "One broad squat icy-blue tower shield with exactly three large silver reinforcing plates. A tiny gold arrow curls inward and terminates inside the shield. Entire volley becomes defense. No lightning emblem, no sword.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-bulwark.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One broad squat icy-blue tower shield with exactly three large silver reinforcing plates. A tiny gold arrow curls inward and terminates inside the shield. Entire volley becomes defense. No lightning emblem, no sword.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-aecc563a-b74d-4e7a-8852-fccdfe816b6a.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "charge": {
+      "subject": "One thick upright brass battery with exactly two large luminous violet cells stacked vertically, a white-violet multiplication X across its front and a small gold lightning terminal at top. Battery silhouette dominates, two cells obvious. No numerals.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-charge.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Charge adds to every bolt's multiplier. Subject: one thick upright brass battery with exactly two large luminous violet cells stacked vertically, a white-violet multiplication X across its front and a small gold lightning terminal at the top. Battery silhouette is dominant, the two charged cells are obvious. No ring, no floating gem, no numerals.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-8ee20637-04df-4e10-a161-bf52f912cb93.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "compound": {
+      "subject": "A large violet multiplication X reflected inside a second interlocking violet X, forming one bold diamond-shaped knot. Squared multiplier is the theme. Bronze corners, white highlights, no bolt, no gem pile.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-compound.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A large violet multiplication X reflected inside a second interlocking violet X, forming one bold diamond-shaped knot. Squared multiplier is the theme. Bronze corners, white highlights, no bolt, no gem pile.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-1963421b-e9e0-4998-9ae1-0b5b4d12628d.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "counterweight": {
+      "subject": "A broad brass balance beam with a gold attacking spear on one pan and TWO chunky cyan shield plates on the other. Protection strengthens attacks. Exactly two shields, legible horizontal balance silhouette.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-counterweight.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A broad brass balance beam with a gold attacking spear on one pan and TWO chunky cyan shield plates on the other. Protection strengthens attacks. Exactly two shields, legible horizontal balance silhouette.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-02e8a0b1-c8dc-4669-bd8e-7aa37096467c.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "crosslink": {
+      "subject": "Two upright orange flame crystals joined by ONE broad horizontal violet link; a large violet multiplication X forms the central joint. Matching elements strengthen each other. Few large shapes, no gold bolts.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-crosslink.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Two upright orange flame crystals joined by ONE broad horizontal violet link; a large violet multiplication X forms the central joint. Matching elements strengthen each other. Few large shapes, no gold bolts.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-9e27ba7d-f84c-4a11-b94d-2ad7fd3d6d79.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "crowd-surge": {
+      "subject": "Exactly THREE large pale-lavender round enemy heads in a horizontal row across the UPPER HALF, with obvious ivory eyes and simple dark purple contours; below them ONE oversized orange attacking arrow points right, carrying ONE bold violet multiplication X. Heads occupy 45 percent of icon height, arrow 45 percent. More living enemies multiply attack strength. Very few large shapes, no dark tiny silhouettes, no full bodies or weapons.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-crowd-surge.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Exactly THREE large pale-lavender round enemy heads in a horizontal row across the UPPER HALF, with obvious ivory eyes and simple dark purple contours; below them ONE oversized orange attacking arrow points right, carrying ONE bold violet multiplication X. Heads occupy 45 percent of icon height, arrow 45 percent. More living enemies multiply attack strength. Very few large shapes, no dark tiny silhouettes, no full bodies or weapons.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-cf1046c6-0797-4faf-b206-dd31d2b0ab4e.png",
+      "rejected": [
+        {
+          "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-1fc28d54-a3e2-4c27-a73e-cbe97d7bfe04.png",
+          "reason": "Enemy silhouettes too dark at 32 pixels."
+        }
+      ],
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "double-tap": {
+      "subject": "Two equal bold gold arrowheads in a close horizontal pair, the second a bright full-strength duplicate. Behind them a single short silver tail. First projectile duplicates once. No circle, no extra projectiles.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-double-tap.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Two equal bold gold arrowheads in a close horizontal pair, the second a bright full-strength duplicate. Behind them a single short silver tail. First projectile duplicates once. No circle, no extra projectiles.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-adc11e8a-8b36-4da7-91e0-2f222018c1c8.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "echo": {
+      "subject": "Two matching rows of THREE small gold arrowheads, one row above the other, separated by a bold curved violet repeat hook. Repeat the whole volley. Six simple broad heads, no rune or decorative ring.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-echo.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Two matching rows of THREE small gold arrowheads, one row above the other, separated by a bold curved violet repeat hook. Repeat the whole volley. Six simple broad heads, no rune or decorative ring.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-53a5d531-0718-4e7b-81ed-d338ed8dac32.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "entrench": {
+      "subject": "One cyan fortress shield rooted in a wide dark stone foundation, with THREE broad rising violet growth bands behind it. Defense gets stronger over later turns. Foundation and widening shield dominate.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-entrench.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One cyan fortress shield rooted in a wide dark stone foundation, with THREE broad rising violet growth bands behind it. Defense gets stronger over later turns. Foundation and widening shield dominate.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-9ebd1dd0-3038-46b0-92c2-969b4fdfc5f6.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "execution": {
+      "subject": "One broad silver guillotine blade descending diagonally onto a HALF-EMPTY violet heart: left half bright violet, right half dark hollow. Finishing blow against wounded enemies. Two large shapes, no crosshair or skull.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-execution.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Execution finishes enemies at half health or less. Subject: one broad silver guillotine blade descending diagonally onto a visibly HALF-EMPTY violet heart; the heart left half glows violet and right half is dark hollow. Blade and half-heart are two bold shapes. Brass blade top, crimson impact notch. No crosshair, no skull, no circular medallion.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-a5566258-274d-4841-8388-08b5494b4eb3.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "exploit": {
+      "subject": "One open broken bronze shield with a very wide central gap; a thick gold attack arrow travels cleanly through the undefended opening. Broken shield is unmistakably open, no enclosing target ring.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-exploit.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One open broken bronze shield with a very wide central gap; a thick gold attack arrow travels cleanly through the undefended opening. Broken shield is unmistakably open, no enclosing target ring.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-af4a7d0c-76f6-4621-84ea-dbca0ba019bb.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "flash-freeze": {
+      "subject": "One broad orange flame freezing inside a large cyan ice shield, a clear diagonal boundary between orange input and blue ward result. Fire becomes defensive frost. Shield outline dominates.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-flash-freeze.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One broad orange flame freezing inside a large cyan ice shield, a clear diagonal boundary between orange input and blue ward result. Fire becomes defensive frost. Shield outline dominates.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-6db9ebfd-ffd9-49da-8305-b3b4fa3a4b30.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "fortify": {
+      "subject": "One broad blue ward shield absorbing THREE clearly separated gold arrowheads at its outer rim. Attacks in a volley strengthen wards. Shield large, arrows small; no wings or ornament.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-fortify.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One broad blue ward shield absorbing THREE clearly separated gold arrowheads at its outer rim. Attacks in a volley strengthen wards. Shield large, arrows small; no wings or ornament.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-04fa3468-29fc-4f09-90d6-bc4f9fe753f7.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "guard-echo": {
+      "subject": "One gold attack arrow with a smaller cyan shield immediately trailing behind it, connected by one short violet thread. Each attack creates a weak ward copy. Arrow larger than shield. No heart.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-guard-echo.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One gold attack arrow with a smaller cyan shield immediately trailing behind it, connected by one short violet thread. Each attack creates a weak ward copy. Arrow larger than shield. No heart.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-c55174de-bdc3-495a-9e1e-cf3eb55713c6.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "headcount": {
+      "subject": "A brass counting abacus with exactly THREE ivory enemy-head beads on one broad rail, and a large gold upward arrow at its right end. More living enemies add power. Abacus silhouette, no multiplication X.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-headcount.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A brass counting abacus with exactly THREE ivory enemy-head beads on one broad rail, and a large gold upward arrow at its right end. More living enemies add power. Abacus silhouette, no multiplication X.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-7dccb5b9-72d8-4c10-98d6-294a640aac7c.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "last-stand": {
+      "subject": "A fractured crimson heart firmly braced behind an upright silver sword, violet multiplication X at sword hilt. Half-health emergency attack amplification. Two bold forms, no ornate medallion.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-last-stand.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A fractured crimson heart firmly braced behind an upright silver sword, violet multiplication X at sword hilt. Half-health emergency attack amplification. Two bold forms, no ornate medallion.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-0fd5860c-8a2c-41a7-9d50-436a740efe2c.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "lodestone": {
+      "subject": "One large U-shaped blue magnet pulling a gold arrow toward a small violet rear enemy silhouette behind a larger dim front silhouette. Magnet silhouette dominates. Rear targeting and magnet obvious.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-lodestone.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One large U-shaped blue magnet pulling a gold arrow toward a small violet rear enemy silhouette behind a larger dim front silhouette. Magnet silhouette dominates. Rear targeting and magnet obvious.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-665ab5de-f89d-4117-9b6a-ab821fe1a357.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "mirror-power": {
+      "subject": "One large gold projectile mirrored in a broad silver hand-mirror into an equally large gold projectile. All power rises to the highest. Bold rectangular mirror and matching projectiles, no purple X.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-mirror-power.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One large gold projectile mirrored in a broad silver hand-mirror into an equally large gold projectile. All power rises to the highest. Bold rectangular mirror and matching projectiles, no purple X.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-f96f4e26-7c46-4937-bdc7-ebb2d9e43298.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "monochrome": {
+      "subject": "Exactly THREE matching orange flame crystals tightly grouped under one broad orange arch, with one violet multiplication X at the arch apex. Same-element volley, all crystals same orange. No gold bolts.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-monochrome.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Exactly THREE matching orange flame crystals tightly grouped under one broad orange arch, with one violet multiplication X at the arch apex. Same-element volley, all crystals same orange. No gold bolts.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-255ecb68-3864-4660-a05d-e6c80f6a0dd9.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "overclock": {
+      "subject": "One gold projectile driven by a crimson cracked gear, with THREE thick speed streaks and one tiny red heart fragment breaking off. Tripled power costs own health. Gear is dominant distinct shape.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-overclock.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One gold projectile driven by a crimson cracked gear, with THREE thick speed streaks and one tiny red heart fragment breaking off. Tripled power costs own health. Gear is dominant distinct shape.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-14870c12-6538-4c58-9c49-aadc6e35819c.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "rebuke": {
+      "subject": "One thick curved cyan shield visibly unfolding into a long gold sword pointed right; short violet reversal arrow above transition. Defense becomes attacking force. Clear sword/shield transition, no lightning bolt.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-rebuke.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One thick curved cyan shield visibly unfolding into a long gold sword pointed right; short violet reversal arrow above transition. Defense becomes attacking force. Clear sword/shield transition, no lightning bolt.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-bfe39f81-04fd-4a4c-becb-59c6932b2c31.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "reserve-tap": {
+      "subject": "One intact blue shield standing upright while a curved gold siphon tube draws a bright violet charge from its center into a gold arrow. Protection is tapped, not broken. Large shield and tube, no burst.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-reserve-tap.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One intact blue shield standing upright while a curved gold siphon tube draws a bright violet charge from its center into a gold arrow. Protection is tapped, not broken. Large shield and tube, no burst.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-5e33ab9b-9229-4594-bfee-79d5b88e08cf.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "resonate": {
+      "subject": "One thick violet tuning fork radiating exactly TWO broad white-violet sound arcs. Doubles multiplier. Tuning fork silhouette rather than gold lightning bolt or ring.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-resonate.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One thick violet tuning fork radiating exactly TWO broad white-violet sound arcs. Doubles multiplier. Tuning fork silhouette rather than gold lightning bolt or ring.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-b92e1935-94cb-4cb7-9d1f-5ef5e97dcf38.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "rewind": {
+      "subject": "Exactly THREE simple distinct gems in a horizontal row: orange, cyan, violet; ONE thick brass arrow above them points from right to left. Reverse the volley order, no loop.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-rewind.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Exactly THREE simple distinct gems in a horizontal row: orange, cyan, violet; ONE thick brass arrow above them points from right to left. Reverse the volley order, no loop.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-8c8a98d2-3621-466a-8b20-7afaad3a853b.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "seeker": {
+      "subject": "One wounded ivory enemy skull with a large crimson crack, with a short curved violet homing arrow entering the crack from upper left. Targets weakest health. Skull dominates, no crosshair.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-seeker.png",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-dad3f4b0-9193-416a-8a79-13bcf04a9488.png",
+      "prompt": "Use case: stylized-concept. Asset: Seeker shard inventory icon for Rootward, fantasy programming roguelite, displayed at 32 pixels. One wounded ivory enemy skull with a large crimson crack, with a short curved violet homing arrow entering the crack from upper left. Seeker targets the enemy with least health. Skull dominates silhouette, curved arrow clearly communicates aiming. No circular crosshair. Polished chunky pixel art with bold dark plum contour, large intentional clusters, ivory bone, crimson wound, violet magic, restrained brass detail, only 3 tones per material, no tiny ornament. Design as a crisp 32-pixel icon enlarged, hard-edged flat colors without bloom or gradients. Centered square filling 82 percent, complete object with transparent margins. Genuinely transparent background. One icon only. No words, numerals, UI, frame, ground, scene, watermark.",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "siege-breaker": {
+      "subject": "One thick silver battering ram smashing through a dark blue castle gate shield, with two large cyan shield fragments flying outward. Piercing attacks against shielded foes. Horizontal ram silhouette, no bolt or crossed swords.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-siege-breaker.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One thick silver battering ram smashing through a dark blue castle gate shield, with two large cyan shield fragments flying outward. Piercing attacks against shielded foes. Horizontal ram silhouette, no bolt or crossed swords.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-b3978e15-6b46-4644-9ea1-c28418ac0cd4.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "siphon": {
+      "subject": "Two gold arrowheads flying past ONE smaller gold arrowhead being pulled downward into a blue shield by a curved cyan hook. Only weakest projectile becomes defense. Three simple arrowheads total.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-siphon.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: Two gold arrowheads flying past ONE smaller gold arrowhead being pulled downward into a blue shield by a curved cyan hook. Only weakest projectile becomes defense. Three simple arrowheads total.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-73a05f09-4ab2-4bee-95c4-08c4cf46aa77.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "take-two": {
+      "subject": "One broad bronze gate with exactly TWO bright violet projectile slots; two large gold arrowheads pass through, one dim gray third arrowhead stops outside. Select first two and amplify. Gate outline dominant.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-take-two.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One broad bronze gate with exactly TWO bright violet projectile slots; two large gold arrowheads pass through, one dim gray third arrowhead stops outside. Select first two and amplify. Gate outline dominant.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-e65664d1-1c99-4c19-baba-761691cd711b.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "tally": {
+      "subject": "A chunky brass tally counter with THREE broad gold projectile beads along one rail and one large gold power-growth arrow above it. Volley width adds power. No enemy faces, no violet X.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-tally.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: A chunky brass tally counter with THREE broad gold projectile beads along one rail and one large gold power-growth arrow above it. Volley width adds power. No enemy faces, no violet X.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-ad47cd94-c6ad-47a2-b503-de9b3890f8f6.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "transduce": {
+      "subject": "One short thick brass reducer pipe: wide orange mouth at left narrowing to a small bright gold outlet at right, with a LARGE violet multiplication X at the outlet. Compress power preserving effective strength. Horizontal pipe silhouette.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-transduce.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One short thick brass reducer pipe: wide orange mouth at left narrowing to a small bright gold outlet at right, with a LARGE violet multiplication X at the outlet. Compress power preserving effective strength. Horizontal pipe silhouette.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-8001f2d9-13d9-42e7-85d7-35ca6652e5bb.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "triage": {
+      "subject": "One sturdy ivory horned enemy head with a large FULL vivid green heart above its brow; one short green upward arrow alongside heart. Target highest health. Intact uninjured head, no skull, crosshair, or blade.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-triage.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Triage aims at the healthiest enemy. Subject: one sturdy ivory horned enemy head with a large FULL vivid green heart sitting above its brow; one short green upward arrow alongside the heart. Full heart is the main health cue, head is intact and uninjured. Few large forms. No crosshair, no wounded skull, no weapons.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-2ab5138e-48fc-4980-963e-4bd4a68bfd50.png",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    "vengeance": {
+      "subject": "One very large cracked crimson heart releasing a broad orange attack plume to the right. Low health adds power. Heart dominates, three bold flame tongues, no bolt or multiplication X.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-vengeance.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One very large cracked crimson heart releasing a broad orange attack plume to the right. Low health adds power. Heart dominates, three bold flame tongues, no bolt or multiplication X.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-13265f32-4792-41a9-8a1e-c006ea973cda.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "review_sizes": [
+        32,
+        128
+      ]
+    },
+    "weave": {
+      "subject": "One woven braid of alternating cyan shield plates and gold spear points, crossing diagonally as TWO broad interlaced ribbons. Defense and attack alternate. Three large crossings, no single shield with lightning emblem.",
+      "status": "accepted",
+      "out": "game/assets/shardrun/shard-weave.png",
+      "prompt": "Use case: stylized-concept. Asset: ONE Rootward fantasy programming roguelite inventory icon, displayed at 32 pixels. Style: polished chunky fantasy pixel art; bold dark plum contour, strong silhouette, large simple pixel clusters and hard-edged flat colors, three tones per material, restrained bronze fittings, no tiny ornament or bloom. Design as a 32-pixel icon enlarged crisply. Centered square, fills 80 percent with clear transparent margins. Genuinely transparent background. No text, letters, numbers, UI, decorative frame, ground, scenery, watermark. Subject: One woven braid of alternating cyan shield plates and gold spear points, crossing diagonally as TWO broad interlaced ribbons. Defense and attack alternate. Three large crossings, no single shield with lightning emblem.",
+      "source": "/home/joejin/.codex/generated_images/01a0f295-132a-7e41-836b-34e45bc91916/exec-e7ede269-6fe6-4379-ba21-402cc1d8c7db.png",
+      "size": [
+        1254,
+        1254
+      ]
+    }
+  },
+  "relics": {
+    "blood-contract": {
+      "subject": "One rolled ivory contract scroll tied with a thick crimson cord ending in a large red droplet. Cursed parchment, no writing.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-blood-contract.png"
+    },
+    "firewall": {
+      "subject": "One squat wall of THREE broad red-orange bricks with a solid cyan defensive barrier along its top. Clearly a brick wall, no shield or engine. Start turn with protection.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-firewall.png"
+    },
+    "grimoire-page": {
+      "subject": "One ivory loose spellbook page with a LARGE empty violet square socket at center and a broad brass tab at top. Extra spell slot. No book, no writing.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-grimoire-page.png"
+    },
+    "leaking-capacitor": {
+      "subject": "One chipped squat blue cylindrical mana capacitor with an obvious crack, leaking THREE large cyan droplets downward. Dark brass cap, cursed device.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-leaking-capacitor.png"
+    },
+    "lens-of-types": {
+      "subject": "One brass magnifying glass with three broad lens sectors: orange fire, cyan frost, yellow spark. A bright weakness crack in its glass. Recognizes elemental weakness.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-lens-of-types.png"
+    },
+    "overclocked-core": {
+      "subject": "One round red-orange turbine core with thick black cooling fins and a blazing central orange furnace. Running hot increases damage. No hourglass, no heart.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-overclocked-core.png"
+    },
+    "persistent-cache": {
+      "subject": "One rectangular layered teal memory crystal enclosing ONE intact bright blue shield, with dim outer layers. Retained protection.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-persistent-cache.png"
+    },
+    "runic-loom": {
+      "subject": "One simple rectangular brass loom weaving a wide teal cloth panel from two large gold threads. Defense from completed spells. Large bars and cloth, no fine runes.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-runic-loom.png"
+    },
+    "rusted-lens": {
+      "subject": "One amber magnifying glass clouded by THREE thick branching rust stains, broken copper rim. Visibly murky cursed lens, no multicolor sectors.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-rusted-lens.png"
+    },
+    "thread-pool": {
+      "subject": "Exactly TWO squat blue spools connected by a bright cyan mana thread, simple brass end caps. Extra mana. No many small spools.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-thread-pool.png"
+    },
+    "bulwark-engine": {
+      "subject": "One heavy teal armored engine block with a large gold turbine at its side and a broad cyan shield plate on front. Protection drives amplified spells. Engine silhouette, no flames or brick wall.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-bulwark-engine.png"
+    },
+    "cache-hit": {
+      "subject": "One small green brass cache drawer already open, with a single bright violet spell card emerging and a large green check-shaped latch. First spell mana discount.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-cache-hit.png"
+    },
+    "compacting-collector": {
+      "subject": "One broad brass press compressing THREE dark memory cubes into ONE dense cyan defensive block. Heavy top plate, compact square machine.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-compacting-collector.png"
+    },
+    "debugger-duck": {
+      "subject": "One bright yellow rubber duck wearing a tiny purple wizard cap; large orange beak and clean round silhouette. Spell power boost. No scene.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-debugger-duck.png"
+    },
+    "drill-bit": {
+      "subject": "One oversized spiral silver drill bit with THREE thick visible grooves and a sharp glowing orange point. Piercing strength. No drill motor.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-drill-bit.png"
+    },
+    "duplex-core": {
+      "subject": "One cyan shield-shaped core and one orange spear-shaped core joined by a wide violet filament into a single two-lobed device. Attack and ward synergy.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-duplex-core.png"
+    },
+    "generator": {
+      "subject": "One brass hand-cranked dynamo with a bright violet spell card emerging from its top. Generates an extra card. Large crank and machine block.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-generator.png"
+    },
+    "last-resort": {
+      "subject": "One half-broken crimson lantern with a very large living orange flame above its broken rim. Emergency multiplier boost.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-last-resort.png"
+    },
+    "memory-toll": {
+      "subject": "One narrow black iron toll gate with large teeth clamping one bright blue mana orb. Brass crossbar, clearly consumes mana.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-memory-toll.png"
+    },
+    "patient-engine": {
+      "subject": "One three-stage brass clockwork chamber: first two broad segments dim, final segment blazing violet-gold. Later-turn multiplier boost. Horizontal cylinder.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-patient-engine.png"
+    },
+    "read-ahead-buffer": {
+      "subject": "One ivory card sticking above a blue upright buffer tray, with one broad cyan forward arrow on tray. Extra card every turn. Simple two-shape silhouette.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-read-ahead-buffer.png"
+    },
+    "rearview-lens": {
+      "subject": "One brass rearview mirror on a short stem: bright small purple rear enemy reflected behind a dim large foreground shape. Mirror silhouette, blue glass.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-rearview-lens.png"
+    },
+    "riposte-clock": {
+      "subject": "One round brass clock split into TWO large halves: cyan shield left, silver sword right; one thick violet clockwise hand. Defense then counterattack. No numbers.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-riposte-clock.png"
+    },
+    "runaway-coil": {
+      "subject": "One large violet wire coil with THREE thick visible turns and one white-violet multiplication X at its center; gold terminals. Final multiplier doubles.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-runaway-coil.png"
+    },
+    "second-grimoire": {
+      "subject": "Exactly TWO closed violet spellbooks stacked at a clear offset, each with one large gold clasp. Additional spellbook. No loose pages.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-second-grimoire.png"
+    },
+    "small-batch": {
+      "subject": "One tiny brass vial containing exactly TWO intensely bright violet motes, large simple glass shape, no other motes. Few bolts amplify.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-small-batch.png"
+    },
+    "swarm-banner": {
+      "subject": "One torn indigo pennant on short brass pole, trailing EIGHT simple gold motes in two neat rows of four. Wide volley bonus. Flag dominates.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-swarm-banner.png"
+    },
+    "tree-shaker": {
+      "subject": "One squat jade tree with three broad branches, shedding gray leaf shards while ONE bright gold spell gem stays attached. Smaller deck gains power.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-tree-shaker.png"
+    },
+    "tuning-fork": {
+      "subject": "One plain silver tuning fork with a small bright violet resonance bead between its prongs, ONE broad sound arc on each side. Multiplier addition. No brass coil.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-tuning-fork.png"
+    },
+    "wardstone": {
+      "subject": "One smooth teal oval stone projecting ONE broad translucent cyan dome shield over itself. Defense multiplier. Stone and dome, no carved details.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-wardstone.png"
+    },
+    "warm-cache": {
+      "subject": "One closed amber cache chest with exactly TWO ivory card corners visible under lid and a gentle orange heat plume. First-turn extra cards.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-warm-cache.png"
+    },
+    "wider-aperture": {
+      "subject": "One large OPEN brass iris aperture with three chunky blades spread outward; a wide bundle of gold projectiles passes through open center. Wider volley limit.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-wider-aperture.png"
+    },
+    "branch-predictor": {
+      "subject": "One forked brass signpost, one branch bright green and pointing forward, the other dark gray and down; small violet clock hand behind bright branch. Enemy initiative delayed. No letters.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-branch-predictor.png"
+    },
+    "checksum": {
+      "subject": "One broad round green wax seal with a LARGE ivory check mark and three same-orange beads embedded along bottom. Element consistency bonus.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-checksum.png"
+    },
+    "compiler-o3": {
+      "subject": "One squat silver compiler furnace with a wide violet intake at left and a bright orange speed arrow exiting right; THREE large brass cog teeth on top. Efficient stronger programs.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-compiler-o3.png"
+    },
+    "cron-job": {
+      "subject": "One brass clock with exactly THREE broad cyan lit segments, a blue mana droplet at its center. Periodic free program. No numerals or small marks.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-cron-job.png"
+    },
+    "dual-core": {
+      "subject": "Exactly TWO matching bright violet spherical cores in one horizontal brass socket; two equal orange firing arrowheads rise above them. Whole volley repeats. No shields.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-dual-core.png"
+    },
+    "hot-path": {
+      "subject": "One wide orange glowing track with ONE oversized silver attacking spear racing along it; two dim smaller paths peel away. Strongest attack amplified.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-hot-path.png"
+    },
+    "immutable-state": {
+      "subject": "One tall ice-blue shield frozen inside a clear angular cyan ice block with a heavy sealed bronze bottom. Permanent protection. Block silhouette.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-immutable-state.png"
+    },
+    "jit-compiler": {
+      "subject": "One small brass stamp pressing a bright green check into an ivory spell card, a violet speed trail behind stamp. Card compiled once. No text.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-jit-compiler.png"
+    },
+    "lazy-evaluation": {
+      "subject": "One dark sleeping crescent-shaped brass mechanism catching a leftover orange projectile and converting it into a cyan shield beneath. Waste becomes defense. Two clear symbols.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-lazy-evaluation.png"
+    },
+    "load-balancer": {
+      "subject": "One broad brass Y-shaped distribution pipe sending ONE orange energy stream past a dark depleted enemy bead into a bright purple next enemy bead. Spillover damage. Pipe dominates.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-load-balancer.png"
+    },
+    "overclock": {
+      "subject": "One brass stopwatch with a broad orange speed wing on right and violet energy at its center. Extended operation budget. No red turbine, no heart, no clock numerals.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-overclock.png"
+    },
+    "pipeline": {
+      "subject": "One straight brass pipe with exactly THREE contiguous full violet square chambers and an orange output jet. All slots filled boosts damage. Horizontal pipe silhouette.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-pipeline.png"
+    },
+    "preemption": {
+      "subject": "One silver attacking spear overtaking a small brass clock, three violet speed bars behind spear. First strike bonus. Simple diagonal two-shape emblem.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-preemption.png"
+    },
+    "profiler": {
+      "subject": "One brass magnifying glass inspecting the FRONT ivory card in a short stack of two; front card glows green and has one small fast arrow. First card free work.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-profiler.png"
+    },
+    "reference-counter": {
+      "subject": "One brass counter with TWO large ivory skull beads and a bright cyan mana orb beneath. Defeated foes repay mana. Clear beads, no digits.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-reference-counter.png"
+    },
+    "root-access": {
+      "subject": "One large brass master key with a crimson toothed bit and THREE blue mana gems in its broad head. Power with costly constraints. Bold key silhouette.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-root-access.png"
+    },
+    "stable-sort": {
+      "subject": "Exactly THREE cyan bars ordered short-medium-tall, standing on one brass rail, with a small orange upward arrow across their tops. Sorted volley bonus.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-stable-sort.png"
+    },
+    "stdin-buffer": {
+      "subject": "One broad blue input tray holding exactly FOUR equal gold projectile gems in a clean 2-by-2 arrangement. Fourth input bolt. No letters.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-stdin-buffer.png"
+    },
+    "sticky-note": {
+      "subject": "One large square golden sticky note with a visibly folded adhesive top edge clamping an ivory card corner. Extra held card. No writing.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-sticky-note.png"
+    },
+    "superposition": {
+      "subject": "One large faceted crystal containing THREE clearly separated elemental faces: orange flame, cyan snowflake, yellow spark; violet refracted edge. Matches every enemy weakness.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-superposition.png"
+    },
+    "try-finally": {
+      "subject": "One ivory spell card securely tucked inside a broad cyan shield, with a large bronze closing bracket on each side. Completed program gives block. No words.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-try-finally.png"
+    },
+    "type-hints": {
+      "subject": "One brass tag attached to THREE small simple elemental jewels: fire orange, frost blue, spark yellow, all tied with one violet cord. Elemental power addition. Tag blank.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-type-hints.png"
+    },
+    "warm-start": {
+      "subject": "One cyan mana droplet rising from an orange sunrise half-disc with two thick warm rays. First turn mana. Two bold shapes, no gear.",
+      "status": "pending",
+      "out": "game/assets/shardrun/relic-warm-start.png"
+    }
+  },
+  "review_images": [],
+  "review_screenshots": [
+    "shots/polish/shards-pass8-targeting.png",
+    "shots/polish/shards-pass8-deck-01.png",
+    "shots/polish/shards-pass8-deck-02.png",
+    "shots/polish/shards-pass8-deck-03.png",
+    "shots/polish/shards-pass8-deck-04.png",
+    "shots/polish/shards-pass8-deck-05.png",
+    "shots/polish/shards-pass8-deck-06.png",
+    "shots/polish/shards-pass8-deck-07.png",
+    "shots/polish/shards-pass8-deck-08.png",
+    "shots/polish/shards-pass8-deck-09.png",
+    "shots/polish/shards-pass8-deck-10.png"
+  ],
+  "retained_shards": {
+    "apex": "One tall dominant crystal communicates keeping the strongest bolt.",
+    "arc": "A spark-lit crystal keeps the elemental conversion distinct.",
+    "backdraft": "A bellows and flame communicate fire amplification.",
+    "blood-price": "A crimson blood droplet and heart communicate the casting health cost.",
+    "cascade": "Successively larger projectiles communicate growing multipliers.",
+    "census": "A counting tablet communicates ranking the volley.",
+    "chill": "An icy enclosed crystal communicates frost conversion.",
+    "confluence": "Three different elemental crystals visibly join into one.",
+    "cross-product": "Crossing axes keep the pairwise combination distinct.",
+    "focus": "Multiple branches visibly merge into a single bolt.",
+    "fork": "A two-pronged fork communicates splitting.",
+    "frontload": "A large first bolt followed by small ones shows the uneven boost.",
+    "fuse": "A three-pronged convergence communicates combining attacks.",
+    "glass-cannon": "A literal glass cannon communicates risky damage amplification.",
+    "kindle": "A flame crystal communicates fire conversion.",
+    "lazy-fork": "A damaged two-pronged fork remains distinct from the repaired Fork.",
+    "overflow": "A large projectile divides into smaller branches.",
+    "pair-fold": "Two adjacent crystals share a joining seam.",
+    "patience": "An hourglass communicates power earned through time.",
+    "pierce": "A spear passes through a shield.",
+    "prefix-charge": "A row of successively charged chambers communicates accumulating prefixes.",
+    "priority-queue": "A ranked vertical stack communicates priority ordering.",
+    "prism": "A triangular prism separates colored light.",
+    "ramp": "A staircase of crystals communicates stepped power growth.",
+    "resonant-run": "Matching bolts increase in size across a consecutive run.",
+    "scatter": "A radial cluster communicates spreading attacks.",
+    "sieve": "A physical sieve communicates removing weak bolts.",
+    "singularity": "One black-hole vortex communicates collapsing the volley.",
+    "spectrum-wheel": "Three elemental sectors communicate cycling elements.",
+    "superconductor": "A blue frost crystal transitions into a yellow spark.",
+    "temper": "An anvil and hammer communicate rounding and refining.",
+    "thermal-shock": "A frost crystal explodes into fire.",
+    "time-dilation": "An hourglass with increasingly filled chambers communicates later-turn multipliers.",
+    "tithe": "A balance scale communicates exchanging power for multiplier.",
+    "ward": "A single bright ward gemstone keeps the starter defense distinct."
+  }
+}

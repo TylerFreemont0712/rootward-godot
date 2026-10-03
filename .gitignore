@@ -19,3 +19,6 @@ pipeline/sources/vendor
 # Local-only reference skins (third-party models studied for style, never shipped): ADR-0029
 game/characters/_local/
 pipeline/local/
+
+# Old local music takes (read-only, found through pipeline/music/config.json read_also)
+test/

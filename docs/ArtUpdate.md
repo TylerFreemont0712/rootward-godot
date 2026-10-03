@@ -1,8 +1,8 @@
 # Art update checklist
 
 Checked images have been repainted and reviewed at their intended display size, in the game when that content is
-playable. Unchecked images still use the earlier, smaller concept art. The enemy list includes unused concepts as
-well as playable foes.
+playable. Unchecked images have not yet completed a polish pass; some still use earlier concept art. The enemy list
+includes unused concepts as well as playable foes.
 
 Last reviewed: 2026-10-02. Keep this list current as later small art passes are accepted.
 
@@ -69,88 +69,100 @@ at that size; the playable Quine was also [checked in battle](images/artupdate-q
 
 ## Relics (21/76 updated)
 
-Four more relics were redrawn in pass 7 and reviewed at 32 pixels ([review](images/artupdate-relics-pass7.png)). ECC Memory, Ember Infection and Feedback Loop appear in the in-game header capture at `shots/polish/relics-pass7.png`; Garbage Collection is an unused concept and was reviewed on the board. The Firewall candidate looked too much like Bulwark Engine, so it remains unchecked.
+Relics are grouped by the live catalogs that use their icons. Shared relics appear in both modes; the other groups
+appear only in the named mode. Four more relics were redrawn in pass 7 and reviewed at 32 pixels
+([review](images/artupdate-relics-pass7.png)). ECC Memory, Ember Infection and Feedback Loop appear in the in-game
+header capture at `shots/polish/relics-pass7.png`; Garbage Collection is an unused program-run concept reviewed on
+the board. The Firewall candidate looked too much like Bulwark Engine, so it remains unchecked.
 
-The new icon shapes were also compared at 32 pixels ([pass 4](images/artupdate-icon-readability.png),
-[pass 5](images/artupdate-older-icons.png), [pass 7 relics](images/artupdate-relics-pass7.png)) and checked in their run headers or card hands.
+The new icon shapes were compared at 32 pixels ([pass 4](images/artupdate-icon-readability.png),
+[pass 5](images/artupdate-older-icons.png), [pass 7 relics](images/artupdate-relics-pass7.png)) and checked in their
+run headers or card hands.
 
-- [x] [relic-arcane-seal.png](../game/assets/shardrun/relic-arcane-seal.png)
-- [x] [relic-clipboard.png](../game/assets/shardrun/relic-clipboard.png)
-- [x] [relic-cracked-mirror.png](../game/assets/shardrun/relic-cracked-mirror.png)
-- [x] [relic-ember-heart.png](../game/assets/shardrun/relic-ember-heart.png)
+### Shared relics (4/14 updated)
+
+- [ ] [relic-blood-contract.png](../game/assets/shardrun/relic-blood-contract.png)
+- [x] [relic-ecc-memory.png](../game/assets/shardrun/relic-ecc-memory.png)
+- [x] [relic-ember-infection.png](../game/assets/shardrun/relic-ember-infection.png)
+- [ ] [relic-firewall.png](../game/assets/shardrun/relic-firewall.png)
+- [ ] [relic-grimoire-page.png](../game/assets/shardrun/relic-grimoire-page.png)
+- [ ] [relic-leaking-capacitor.png](../game/assets/shardrun/relic-leaking-capacitor.png)
+- [ ] [relic-lens-of-types.png](../game/assets/shardrun/relic-lens-of-types.png)
 - [x] [relic-mana-capacitor.png](../game/assets/shardrun/relic-mana-capacitor.png)
+- [ ] [relic-overclocked-core.png](../game/assets/shardrun/relic-overclocked-core.png)
 - [x] [relic-patch-kit.png](../game/assets/shardrun/relic-patch-kit.png)
-- [x] [relic-prismatic-dynamo.png](../game/assets/shardrun/relic-prismatic-dynamo.png)
-- [x] [relic-rime-crown.png](../game/assets/shardrun/relic-rime-crown.png)
-- [x] [relic-storm-bottle.png](../game/assets/shardrun/relic-storm-bottle.png)
+- [ ] [relic-persistent-cache.png](../game/assets/shardrun/relic-persistent-cache.png)
+- [ ] [relic-runic-loom.png](../game/assets/shardrun/relic-runic-loom.png)
+- [ ] [relic-rusted-lens.png](../game/assets/shardrun/relic-rusted-lens.png)
+- [ ] [relic-thread-pool.png](../game/assets/shardrun/relic-thread-pool.png)
+
+### Spellforge relics (11/33 updated)
 
 - [x] [relic-amortized-ledger.png](../game/assets/shardrun/relic-amortized-ledger.png)
-- [x] [relic-big-o-compass.png](../game/assets/shardrun/relic-big-o-compass.png)
-- [ ] [relic-blood-contract.png](../game/assets/shardrun/relic-blood-contract.png)
+- [x] [relic-arcane-seal.png](../game/assets/shardrun/relic-arcane-seal.png)
 - [x] [relic-blood-engine.png](../game/assets/shardrun/relic-blood-engine.png)
-- [ ] [relic-branch-predictor.png](../game/assets/shardrun/relic-branch-predictor.png)
 - [ ] [relic-bulwark-engine.png](../game/assets/shardrun/relic-bulwark-engine.png)
 - [ ] [relic-cache-hit.png](../game/assets/shardrun/relic-cache-hit.png)
-- [ ] [relic-checksum.png](../game/assets/shardrun/relic-checksum.png)
+- [x] [relic-clipboard.png](../game/assets/shardrun/relic-clipboard.png)
 - [ ] [relic-compacting-collector.png](../game/assets/shardrun/relic-compacting-collector.png)
-- [ ] [relic-compiler-o3.png](../game/assets/shardrun/relic-compiler-o3.png)
-- [ ] [relic-cron-job.png](../game/assets/shardrun/relic-cron-job.png)
+- [x] [relic-cracked-mirror.png](../game/assets/shardrun/relic-cracked-mirror.png)
 - [ ] [relic-debugger-duck.png](../game/assets/shardrun/relic-debugger-duck.png)
 - [x] [relic-dependency-bundle.png](../game/assets/shardrun/relic-dependency-bundle.png)
 - [ ] [relic-drill-bit.png](../game/assets/shardrun/relic-drill-bit.png)
+- [ ] [relic-duplex-core.png](../game/assets/shardrun/relic-duplex-core.png)
+- [x] [relic-ember-heart.png](../game/assets/shardrun/relic-ember-heart.png)
+- [x] [relic-feedback-loop.png](../game/assets/shardrun/relic-feedback-loop.png)
+- [ ] [relic-generator.png](../game/assets/shardrun/relic-generator.png)
+- [ ] [relic-last-resort.png](../game/assets/shardrun/relic-last-resort.png)
+- [ ] [relic-memory-toll.png](../game/assets/shardrun/relic-memory-toll.png)
+- [ ] [relic-patient-engine.png](../game/assets/shardrun/relic-patient-engine.png)
+- [x] [relic-prismatic-dynamo.png](../game/assets/shardrun/relic-prismatic-dynamo.png)
+- [ ] [relic-read-ahead-buffer.png](../game/assets/shardrun/relic-read-ahead-buffer.png)
+- [ ] [relic-rearview-lens.png](../game/assets/shardrun/relic-rearview-lens.png)
+- [x] [relic-rime-crown.png](../game/assets/shardrun/relic-rime-crown.png)
+- [ ] [relic-riposte-clock.png](../game/assets/shardrun/relic-riposte-clock.png)
+- [ ] [relic-runaway-coil.png](../game/assets/shardrun/relic-runaway-coil.png)
+- [ ] [relic-second-grimoire.png](../game/assets/shardrun/relic-second-grimoire.png)
+- [ ] [relic-small-batch.png](../game/assets/shardrun/relic-small-batch.png)
+- [x] [relic-storm-bottle.png](../game/assets/shardrun/relic-storm-bottle.png)
+- [ ] [relic-swarm-banner.png](../game/assets/shardrun/relic-swarm-banner.png)
+- [ ] [relic-tree-shaker.png](../game/assets/shardrun/relic-tree-shaker.png)
+- [ ] [relic-tuning-fork.png](../game/assets/shardrun/relic-tuning-fork.png)
+- [ ] [relic-wardstone.png](../game/assets/shardrun/relic-wardstone.png)
+- [ ] [relic-warm-cache.png](../game/assets/shardrun/relic-warm-cache.png)
+- [ ] [relic-wider-aperture.png](../game/assets/shardrun/relic-wider-aperture.png)
+
+### Program-run relics (6/29 updated)
+
+- [x] [relic-big-o-compass.png](../game/assets/shardrun/relic-big-o-compass.png)
+- [ ] [relic-branch-predictor.png](../game/assets/shardrun/relic-branch-predictor.png)
+- [ ] [relic-checksum.png](../game/assets/shardrun/relic-checksum.png)
+- [ ] [relic-compiler-o3.png](../game/assets/shardrun/relic-compiler-o3.png)
+- [ ] [relic-cron-job.png](../game/assets/shardrun/relic-cron-job.png)
 - [x] [relic-dry-principle.png](../game/assets/shardrun/relic-dry-principle.png)
 - [ ] [relic-dual-core.png](../game/assets/shardrun/relic-dual-core.png)
-- [ ] [relic-duplex-core.png](../game/assets/shardrun/relic-duplex-core.png)
-- [x] [relic-ecc-memory.png](../game/assets/shardrun/relic-ecc-memory.png)
-- [x] [relic-ember-infection.png](../game/assets/shardrun/relic-ember-infection.png)
-- [x] [relic-feedback-loop.png](../game/assets/shardrun/relic-feedback-loop.png)
-- [ ] [relic-firewall.png](../game/assets/shardrun/relic-firewall.png)
 - [x] [relic-garbage-collection.png](../game/assets/shardrun/relic-garbage-collection.png)
-- [ ] [relic-generator.png](../game/assets/shardrun/relic-generator.png)
-- [ ] [relic-grimoire-page.png](../game/assets/shardrun/relic-grimoire-page.png)
 - [x] [relic-hello-world.png](../game/assets/shardrun/relic-hello-world.png)
 - [ ] [relic-hot-path.png](../game/assets/shardrun/relic-hot-path.png)
 - [ ] [relic-immutable-state.png](../game/assets/shardrun/relic-immutable-state.png)
 - [ ] [relic-jit-compiler.png](../game/assets/shardrun/relic-jit-compiler.png)
-- [ ] [relic-last-resort.png](../game/assets/shardrun/relic-last-resort.png)
 - [ ] [relic-lazy-evaluation.png](../game/assets/shardrun/relic-lazy-evaluation.png)
-- [ ] [relic-leaking-capacitor.png](../game/assets/shardrun/relic-leaking-capacitor.png)
-- [ ] [relic-lens-of-types.png](../game/assets/shardrun/relic-lens-of-types.png)
 - [ ] [relic-load-balancer.png](../game/assets/shardrun/relic-load-balancer.png)
-- [ ] [relic-memory-toll.png](../game/assets/shardrun/relic-memory-toll.png)
 - [ ] [relic-overclock.png](../game/assets/shardrun/relic-overclock.png)
-- [ ] [relic-overclocked-core.png](../game/assets/shardrun/relic-overclocked-core.png)
-- [ ] [relic-patient-engine.png](../game/assets/shardrun/relic-patient-engine.png)
-- [ ] [relic-persistent-cache.png](../game/assets/shardrun/relic-persistent-cache.png)
 - [ ] [relic-pipeline.png](../game/assets/shardrun/relic-pipeline.png)
 - [ ] [relic-preemption.png](../game/assets/shardrun/relic-preemption.png)
 - [ ] [relic-profiler.png](../game/assets/shardrun/relic-profiler.png)
 - [x] [relic-radix-sort.png](../game/assets/shardrun/relic-radix-sort.png)
-- [ ] [relic-read-ahead-buffer.png](../game/assets/shardrun/relic-read-ahead-buffer.png)
-- [ ] [relic-rearview-lens.png](../game/assets/shardrun/relic-rearview-lens.png)
 - [ ] [relic-reference-counter.png](../game/assets/shardrun/relic-reference-counter.png)
-- [ ] [relic-riposte-clock.png](../game/assets/shardrun/relic-riposte-clock.png)
 - [ ] [relic-root-access.png](../game/assets/shardrun/relic-root-access.png)
-- [ ] [relic-runaway-coil.png](../game/assets/shardrun/relic-runaway-coil.png)
-- [ ] [relic-runic-loom.png](../game/assets/shardrun/relic-runic-loom.png)
-- [ ] [relic-rusted-lens.png](../game/assets/shardrun/relic-rusted-lens.png)
-- [ ] [relic-second-grimoire.png](../game/assets/shardrun/relic-second-grimoire.png)
-- [ ] [relic-small-batch.png](../game/assets/shardrun/relic-small-batch.png)
 - [ ] [relic-stable-sort.png](../game/assets/shardrun/relic-stable-sort.png)
 - [ ] [relic-stdin-buffer.png](../game/assets/shardrun/relic-stdin-buffer.png)
 - [ ] [relic-sticky-note.png](../game/assets/shardrun/relic-sticky-note.png)
 - [ ] [relic-superposition.png](../game/assets/shardrun/relic-superposition.png)
-- [ ] [relic-swarm-banner.png](../game/assets/shardrun/relic-swarm-banner.png)
-- [ ] [relic-thread-pool.png](../game/assets/shardrun/relic-thread-pool.png)
-- [ ] [relic-tree-shaker.png](../game/assets/shardrun/relic-tree-shaker.png)
 - [ ] [relic-try-finally.png](../game/assets/shardrun/relic-try-finally.png)
-- [ ] [relic-tuning-fork.png](../game/assets/shardrun/relic-tuning-fork.png)
 - [ ] [relic-type-hints.png](../game/assets/shardrun/relic-type-hints.png)
 - [x] [relic-unix-philosophy.png](../game/assets/shardrun/relic-unix-philosophy.png)
-- [ ] [relic-wardstone.png](../game/assets/shardrun/relic-wardstone.png)
-- [ ] [relic-warm-cache.png](../game/assets/shardrun/relic-warm-cache.png)
 - [ ] [relic-warm-start.png](../game/assets/shardrun/relic-warm-start.png)
-- [ ] [relic-wider-aperture.png](../game/assets/shardrun/relic-wider-aperture.png)
 
 ## Shardrun program cards (71/71 updated)
 

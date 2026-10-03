@@ -1,0 +1,65 @@
+{
+  "created": "2026-10-02",
+  "generator": "Built-in image_gen.imagegen",
+  "prompt_set": "prompts.json",
+  "style_reference": "game/assets/menus/kernel-foundry.png",
+  "design_brief": "design.json",
+  "gallery": "index.html",
+  "images": [
+    {
+      "file": "01-ring-3-sandbox.png",
+      "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-f71abd13-06eb-4eb6-854e-ecb7d5e7951c.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2635901,
+      "sha256": "5e165e19311e5063746a0ddc4a87e1ba4977843d450e16830e09ef2336ac910b"
+    },
+    {
+      "file": "02-ring-2-heapworks.png",
+      "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-16adc9cc-c055-4e74-b2b9-003138a59e23.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2612290,
+      "sha256": "6295a8feebafaacf0ea4be260b78079174992f7fe9f12a1ab34d6e6d75e8d261"
+    },
+    {
+      "file": "03-ring-1-interrupt-foundry.png",
+      "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-f4b5787e-cbed-4b91-bfe4-e0021ca756a8.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2557408,
+      "sha256": "c2f9416275def2f96153366cc7a7294e07c09c1cd323f7164d5a9393ba864aa4"
+    },
+    {
+      "file": "04-ring-0-root-sanctum.png",
+      "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-c4aa7c28-0d60-4883-b0eb-9e3b37b01a67.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2338351,
+      "sha256": "4a5daf91ed5e67c785fecf50186bc6bb7d996c1b2d23382899ed2523e3cdb710"
+    },
+    {
+      "file": "05-descent-map.png",
+      "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-807c8a0f-f6e3-40aa-9058-0deed8ba559b.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2777848,
+      "sha256": "263766aeb35607a73f8038a02642bf9e2f0fa096302068e3fd80a006b4293ae5"
+    }
+  ],
+  "map_ui": {
+    "file": "06-descent-map-ui.png",
+    "method": "Firefox headless 1920\u00d71080 render of index.html?capture=map. Painted background generated with imagegen; labels and interactive room markers built with HTML/CSS/SVG.",
+    "illustrative_route": true,
+    "width": 1920,
+    "height": 1080,
+    "bytes": 3106944,
+    "sha256": "669e3d060dd7f5e5da524ebbd72b761ea12a994b10a46771a6ef82eafee463af"
+  },
+  "validation": [
+    "Reviewed all five generated paintings visually.",
+    "Gallery JavaScript passed node --check.",
+    "Map gallery rendered in Firefox and screenshot reviewed.",
+    "JSON documents parse; all image links resolve."
+  ]
+}

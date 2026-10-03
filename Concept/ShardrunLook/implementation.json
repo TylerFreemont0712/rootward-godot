@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-02",
+  "scope": "Implemented four ring environments on the existing main Shardrun layers. The 8/9/9/9-row maps, encounter pools, HP scaling, layer indices and saved IDs are retained.",
+  "rings": [
+    {
+      "ring": 3,
+      "id": "salvage",
+      "name": "The Sandbox",
+      "art": "game/assets/backgrounds/arena-ring-3-sandbox.png",
+      "source_concept": "01-ring-3-sandbox.png",
+      "floor_share": 0.78
+    },
+    {
+      "ring": 2,
+      "id": "heap",
+      "name": "The Heapworks",
+      "art": "game/assets/backgrounds/arena-ring-2-heapworks.png",
+      "source_concept": "02-ring-2-heapworks.png",
+      "floor_share": 0.75
+    },
+    {
+      "ring": 1,
+      "id": "kernel",
+      "name": "The Interrupt Foundry",
+      "art": "game/assets/backgrounds/arena-ring-1-interrupt-foundry.png",
+      "source_concept": "03-ring-1-interrupt-foundry.png",
+      "floor_share": 0.76
+    },
+    {
+      "ring": 0,
+      "id": "root",
+      "name": "The Kernel / Root Sanctum",
+      "art": "game/assets/backgrounds/arena-ring-0-kernel.png",
+      "source_concept": "04-ring-0-root-sanctum.png",
+      "floor_share": 0.78
+    }
+  ],
+  "shorter_modes": "Spellforge and the earlier card-deck mode retain their original three layers and end in Ring 0; the program mode retains four.",
+  "map": {
+    "file": "game/assets/backgrounds/map-machine-shaft.png",
+    "concept_copy": "07-map-machine-shaft.png",
+    "generator": "Built-in image_gen.imagegen",
+    "source": "/home/joejin/.codex/generated_images/01a0fbc6-189b-7e12-99cb-cdf969202238/exec-cea8dca4-b3fe-4dba-a06b-99b64f7ade8a.png",
+    "reference": "game/assets/menus/kernel-foundry.png",
+    "prompt": "Use case: stylized-concept. Asset type: playable scrolling dungeon route-map background for Rootward. Reference image is the game's title environment and is a STYLE reference only. Create one NEW portrait-format 2:3 painting of a VERY LONG underground brass lift shaft inside warm ancient sandstone and charcoal basalt. A single coherent level of a vast inhabited buried Machine, not a cross-section with different biomes, not concentric circles, not hell, no lava, no open sky. View straight into the shaft in an architectural elevation with gentle depth perspective: many narrow masonry galleries and arch openings, little iron bridges, distant lift cages on vertical chains, copper rootlike cable bundles, inset vault cabinet doors, a few old timing gear housings at the far edges. Architecture repeats naturally down the entire image; no giant final shrine or singular destination. Dominant deep brown, muted antique brass, tiny amber lanterns, smoky cool charcoal recesses. The central 65% should be broad quiet dark shadowed shaft space to support a LONG overlaid branching game map of 8-9 rows of room markers, with small ledges receding behind it. Push ornate machinery and large bright lamps to the outer left/right 18% so route dots remain legible. Keep contrast restrained; no huge bright central hotspot. Top and bottom both continue into more dungeon so a scrolling viewport reads as a descent. Painterly detailed stylized fantasy RPG environment, same worn stone/brass richness as title image. NO characters, NO enemies, NO UI, NO text, NO numbers, NO arrows, NO route lines, NO nodes or map markers, NO logos, NO border. Single full-bleed portrait painting, artwork only."
+  },
+  "animation": {
+    "implementation": [
+      "game/ui/dungeon_backdrop.gd",
+      "game/ui/dungeon_lights.gdshader",
+      "game/scenes/shardrun/map_scenery.gd"
+    ],
+    "effects": [
+      "Localized lantern flicker",
+      "Rear mist and slow settling dust",
+      "Heapworks coolant drips",
+      "Interrupt lamp sequence",
+      "Localized kernel glow and moving conduit packet",
+      "Slow map mechanisms: lift cages, timing wheels, coolant, trace packets"
+    ],
+    "clock": "BattleStage drives the ambient clock, including rehearsal pause/speed/frame stepping. Map scenery advances separately. Reduced motion disables all decorative effects.",
+    "shader_color_reference": "https://docs.godotengine.org/en/latest/tutorials/shaders/shader_reference/canvas_item_shader.html#color-and-texture"
+  },
+  "map_scenery": "One long shared shaft changes patina and fittings by ring. Seeded wall notices use hash() rather than the rules RNG. Route markers, connectors and interaction sit in their own layer above scenery.",
+  "validation": {
+    "content": "0 errors, 0 warnings (--no-exec)",
+    "full_suite": "318 tests passed; 0 errors, failures or orphans",
+    "final_scene_suite": "14 tests passed after final crop and title wrapping changes",
+    "lint": "212 GDScript files pass gdlint and gdformat checks",
+    "rendered_motion_probe": "Every arena changed between rendered frames at t=0 and t=2.7; reduced-motion frames remained identical after advancing 12 seconds.",
+    "rendered_motion_results": "implemented/motion-check.json"
+  },
+  "assets": [
+    {
+      "file": "game/assets/backgrounds/arena-ring-3-sandbox.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "5e165e19311e5063746a0ddc4a87e1ba4977843d450e16830e09ef2336ac910b"
+    },
+    {
+      "file": "game/assets/backgrounds/arena-ring-2-heapworks.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "6295a8feebafaacf0ea4be260b78079174992f7fe9f12a1ab34d6e6d75e8d261"
+    },
+    {
+      "file": "game/assets/backgrounds/arena-ring-1-interrupt-foundry.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "c2f9416275def2f96153366cc7a7294e07c09c1cd323f7164d5a9393ba864aa4"
+    },
+    {
+      "file": "game/assets/backgrounds/arena-ring-0-kernel.png",
+      "width": 1672,
+      "height": 941,
+      "sha256": "4a5daf91ed5e67c785fecf50186bc6bb7d996c1b2d23382899ed2523e3cdb710"
+    },
+    {
+      "file": "game/assets/backgrounds/map-machine-shaft.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "7fc8f476628d204d1576f6b30489ca89b83cb1b505bc04bac48d39146233d5a4"
+    }
+  ],
+  "previews": [
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-0-battle.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "54677253281547cc53f6efb38f01f3e347b62430d6cf74d65ba442e287aa6a53"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-0-map.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "758d71a2022bee4dae61b37b0ac826ca215e59761cfbf08b7926e08449564d23"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-1-battle.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a550b96b22bb7345b9a655b56c046e7be96f44732b056d73b2ce71252cd0b46a"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-1-map.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "5cdb6edacdcc389704b51cd7ad5e729f40f8bdad67a69a89aa20f72678e1bf37"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-2-battle.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "1ebfed5faafbe0cfc4c444c086f5dcc4f31ebbb5a3ce6aeff8765df00bb9b01f"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-2-map.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "a751e687e3a7a31370668d6f399113d6ac950524170989c70d0a19d80c95437c"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-3-battle.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "cdeea13984f9fe8d138114b7bfb2aec16b66d87f553867b15b5dc6055b695c1f"
+    },
+    {
+      "file": "Concept/ShardrunLook/implemented/ring-3-map.png",
+      "width": 1920,
+      "height": 1080,
+      "sha256": "2b20e1f8ea376caea9c67cb519cc36dd76dc7af56b7243545d0b9ddee2dda479"
+    }
+  ]
+}
