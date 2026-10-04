@@ -58,9 +58,10 @@ static func steps(card_ids: Array, catalog: Dictionary) -> Array:
 
 
 ## After a program runs: its imports stay in force for the fight, `once` cards are gone for the fight, the rest go to
-## the discard pile. A card that makes cards puts them on top of the draw pile; a global the program spends starts
-## again from 0.
+## the discard pile. A card that ran and makes cards puts them on top of the draw pile; a global a card that ran spends
+## starts again from 0. Dead code (`battle.last_ran`, ProgramRules.ran_cards) is spent but did neither.
 static func spend(state: Dictionary, battle: Dictionary, spell: Dictionary, catalog: Dictionary) -> void:
+	var ran: Array = battle.get("last_ran", spell.shards)
 	for id: String in spell.shards:
 		var card: Dictionary = catalog.shards.get(id, {})
 		if is_import(id, catalog):
@@ -72,6 +73,8 @@ static func spend(state: Dictionary, battle: Dictionary, spell: Dictionary, cata
 			(battle.gone as Array).append(id)
 		else:
 			(battle.discard as Array).append(id)
+		if not id in ran:
+			continue
 		var adds: Dictionary = card.get("adds", {})
 		if not adds.is_empty():
 			for i in int(adds.count):

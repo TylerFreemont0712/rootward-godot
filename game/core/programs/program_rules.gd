@@ -295,11 +295,15 @@ static func play(
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
 	var work := total_work(stage_list)
 	var context := landing_context(state, battle, spell, stage_list, work, catalog)
+	# What ran is what the cards spent afterwards may do (ProgramDeck.spend), so it is kept with the battle.
+	battle.last_ran = context.ran
 	battle.mana -= cost
 	(battle.cast as Array).append(spell.id)
 	battle.casts += 1
 	state.stats.casts += 1
 	state.stats.mana_spent += cost
+	# The program aimed at the foes alive when it ran; a faster foe may summon, swap or fall before it lands.
+	var aimed_at := alive_uids(battle)
 	# Faster foes first: each acts once, now, and not again at the end of the turn.
 	for foe in faster_foes(state, battle, work, catalog):
 		var tempo := tempo_of(foe, state, catalog)
@@ -323,7 +327,7 @@ static func play(
 		Shardrun.record(state, {"kind": "timeout", "spell": spell.id, "amount": work, "cost": cost, "text": text})
 		remember(battle, spell.shards, [])
 		return played
-	var bolts := normalize(outcome.bolts, catalog)
+	var bolts := reaim(normalize(outcome.bolts, catalog), aimed_at, battle)
 	state.stats.bolts += bolts.size()
 	var noun := "bolt" if bolts.size() == 1 else "bolts"
 	var cast_text := "%s: %d %s, %d ops, %d mana." % [spell.name, bolts.size(), noun, work, cost]
@@ -337,7 +341,7 @@ static func play(
 	remember(battle, spell.shards, bolts)
 	battle.last_work = work
 	ShardrunBattle.cast_defense(state, battle, catalog)
-	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
+	ProgramRelics.after_cast(state, battle, context.ran, int(landed.kills), catalog)
 	ProgramDeck.after_cast(state, battle, int(landed.dealt), catalog)
 	played.landed = landed
 	played.gained = int(landed.block) + int(battle.block) - landed_block
@@ -355,7 +359,8 @@ static func play(
 
 
 ## What the landing needs to know about the program that made the bolts: how many cards it ran of how many slots, its
-## slowest class, and which foes it out-sped (they have not moved yet when it lands).
+## slowest class, which foes it out-sped (they have not moved yet when it lands), and the cards that ran (`ran`).
+## The cards that ran are judged now, before any faster foe acts, as the sandbox judged them.
 static func landing_context(
 	state: Dictionary,
 	battle: Dictionary,
@@ -373,7 +378,27 @@ static func landing_context(
 		"capacity": int(spell.capacity),
 		"speed": slowest_class(stage_list),
 		"out_sped": out_sped,
+		"ran": ran_cards(battle, spell.shards, catalog),
 	}
+
+
+## The cards of a program that actually run: its imports, and its steps up to a living Unreachable's `return`. Dead
+## code after it still costs mana and is still spent, but whatever a card does by running (cards it makes, a global it
+## spends, block per card, the Mutator's tests) it does only if it ran (docs/PHASE2.md P2-06).
+static func ran_cards(battle: Dictionary, card_ids: Array, catalog: Dictionary) -> Array:
+	var cut := ProgramGuardians.dead_from(battle)
+	if cut < 0:
+		return card_ids.duplicate()
+	var out: Array = []
+	var step := 0
+	for id: String in card_ids:
+		if ProgramDeck.is_import(id, catalog):
+			out.append(id)
+			continue
+		if step < cut:
+			out.append(id)
+		step += 1
+	return out
 
 
 ## Program output as bolts the rules accept: {power (whole, 0..max_power), element, foe?, block?}, at most max_bolts.
@@ -397,6 +422,31 @@ static func normalize(raw: Array, catalog: Dictionary) -> Array[Dictionary]:
 			clean.block = true
 		out.append(clean)
 	return out
+
+
+## The uids of a battle's living foes, in order: what a program's `foe` indices count in.
+static func alive_uids(battle: Dictionary) -> Array:
+	var out: Array = []
+	for foe: Dictionary in battle.foes:
+		if int(foe.hp) > 0:
+			out.append(foe.uid)
+	return out
+
+
+## Bolts aimed by index into the foes alive when the program ran (`aimed_at`, their uids), re-aimed at the same foes in
+## the battle as it is now, after faster foes acted: a summon or a swap moves the indices, not the aim (P2-08). A bolt
+## aimed at a foe that has since fallen flies at the front foe, as one aimed past the last does.
+static func reaim(bolts: Array[Dictionary], aimed_at: Array, battle: Dictionary) -> Array[Dictionary]:
+	var now := alive_uids(battle)
+	if now == aimed_at or aimed_at.is_empty():
+		return bolts
+	for bolt in bolts:
+		if not bolt.has("foe"):
+			continue
+		var at := int(bolt.foe)
+		var uid: String = aimed_at[at] if at < aimed_at.size() else aimed_at[0]
+		bolt.foe = maxi(0, now.find(uid))
+	return bolts
 
 
 ## Lands bolts in order. A bolt with `block` shields you; any other flies at the foe its `foe` names (an index into

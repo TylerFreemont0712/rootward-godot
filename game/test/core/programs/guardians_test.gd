@@ -403,3 +403,50 @@ func test_the_hit_a_restored_mutant_deals_counts_as_dealt() -> void:
 	var hp := int(mutator.hp)
 	var landed := _land(state, _bolts([30]), {"cards": [mutant], "speed": "linear"})
 	assert_int(int(landed.dealt)).is_equal(hp - int(mutator.hp))
+
+
+## P2-06: dead code after the Unreachable's `return` makes no cards, spends no global and earns no block per card.
+func test_dead_cards_do_nothing_after_the_cast() -> void:
+	var state := _against(["unreachable"])
+	state.battle.turn = 3
+	ShardrunBattle.begin_turn(state.battle)
+	assert_int(ProgramGuardians.dead_from(state.battle)).is_equal(2)
+	state.relics = ["try-finally"]
+	state.battle.globals = {"total": 17}
+	state.battle.mana = 20
+	state.spells[0].shards = ["salvo", "amplify", "higher-order", "release"]
+	var outcome := {"ok": true, "bolts": _bolts([3]), "work": [{"shard": "salvo", "given": 3, "returned": 3}]}
+	var result := Shardrun.step(state, {"type": "cast", "spell_id": state.spells[0].id, "outcome": outcome}, catalog)
+	assert_bool(result.ok).override_failure_message(str(result.get("error", ""))).is_true()
+	var after: Dictionary = result.state
+	assert_int(int((after.battle.globals as Dictionary).get("total", 0))).is_equal(17)
+	assert_bool("lambda" in after.battle.draw).override_failure_message("dead Higher Order made cards").is_false()
+	var wards := (after.log as Array).filter(func(entry: Dictionary) -> bool: return entry.kind == "ward")
+	assert_int(int(wards[0].amount)).override_failure_message("2 block for each of the 2 cards that ran").is_equal(4)
+
+
+func test_a_cast_records_the_cards_that_ran() -> void:
+	var state := _against(["unreachable"])
+	state.battle.turn = 3
+	ShardrunBattle.begin_turn(state.battle)
+	var ran := ProgramRules.ran_cards(state.battle, ["salvo", "amplify", "higher-order", "release"], catalog)
+	assert_array(ran).is_equal(["salvo", "amplify"])
+
+
+## P2-08: a bolt the program aimed at a foe still flies at that foe when a faster Malloc allocates a block before it.
+func test_a_faster_summon_does_not_move_the_programs_aim() -> void:
+	var state := _against(["malloc-matron", "thunk"])
+	var malloc := _foe(state)
+	malloc.intent_index = 0
+	var thunk := _foe(state, 1)
+	var hp := int(thunk.hp)
+	state.spells[0].shards = ["salvo"]
+	# 60 ops: Malloc's malloc() (tempo 48) acts first, and her block lands between her and the Thunk.
+	var work := [{"shard": "salvo", "given": 60, "returned": 60}]
+	var outcome := {"ok": true, "bolts": _bolts([30], 1), "work": work}
+	var result := Shardrun.step(state, {"type": "cast", "spell_id": state.spells[0].id, "outcome": outcome}, catalog)
+	assert_bool(result.ok).override_failure_message(str(result.get("error", ""))).is_true()
+	var foes: Array = result.state.battle.foes
+	assert_str(String(foes[1].id)).is_equal("heap-block")
+	assert_int(int(foes[1].hp)).override_failure_message("the new block took the bolt").is_equal(int(foes[1].max))
+	assert_int(int(foes[2].hp)).is_less(hp)

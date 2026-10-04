@@ -367,7 +367,7 @@ static func finish(state: Dictionary, battle: Dictionary, plan_of: Dictionary, c
 					ShardrunBattle.hit_maintainer(state, battle, foe, power)
 			"mutator":
 				if int((plan_of.dealt as Dictionary).get(foe.uid, 0)) >= int(foe_trait.kill_at):
-					dealt += _kill_mutants(state, battle, foe, foe_trait, context.get("cards", []))
+					dealt += _kill_mutants(state, battle, foe, foe_trait, context.get("ran", context.get("cards", [])))
 		if foe.has("compiler"):
 			RootCompiler.check(state, battle, foe)
 	return dealt

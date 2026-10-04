@@ -361,6 +361,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [x] Landing totals: a forced Thunk's shield counts once (P2-03); overflow passes over any foe with landing rules of
       its own, to the next plain foe or wasted (P2-04); overflow a shield absorbs is not damage (P2-05); a restored
       mutant's hit counts as dealt (P2-07).
-- [ ] The other high-priority bugs, each with a failing test first: dead cards and summons (P2-06, P2-08), keys under menus (P2-11),
+- [x] Dead code after the Unreachable's `return` makes no cards, spends no global, earns no block per card and runs
+      no Mutator tests (`ProgramRules.ran_cards`, P2-06); bolts keep their aim when a faster foe summons or swaps
+      before the program lands (`ProgramRules.reaim`, P2-08).
+- [ ] The other high-priority bugs, each with a failing test first: keys under menus (P2-11),
       saves (P2-12, P2-13, P2-15), the sandbox output limit (P2-21).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).
