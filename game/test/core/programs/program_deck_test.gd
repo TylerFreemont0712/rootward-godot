@@ -158,3 +158,13 @@ func test_hooks_change_the_order_the_lint_sees() -> void:
 	var warned := ProgramRules.lint(["salvo", "merge-sort", "binary-execute"], catalog, heapq)
 	assert_int(warned.size()).is_equal(1)
 	assert_str(String(warned[0].message)).contains("import heapq")
+
+
+func test_a_dev_spawned_fight_has_the_program_runs_battle_memory() -> void:
+	var options := {
+		"seed": "spawn", "language": "python", "difficulty": "beginner", "playstyle": "program", "sandbox": true
+	}
+	var state := Shardrun.start(catalog, options)
+	state = _step(state, {"type": "dev-spawn", "kind": "fight", "foes": ["tally-wisp"]})
+	for field: String in ["gone", "imports", "globals", "index", "dp", "hits", "last_volley"]:
+		assert_bool(state.battle.has(field)).override_failure_message("battle.%s is missing" % field).is_true()

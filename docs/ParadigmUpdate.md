@@ -1112,27 +1112,113 @@ Fixed during recovery:
 - Screenshots in `shots/paradigm-update/`: `focus-en.png`, `focus-ja-cpp.png`, `pack-focus-en.png`,
   `index-fight.png`, `recurse-cpp.png`.
 
+## Session log: the four law tests, and what the code panel really does
+
+**Started 2026-10-04, after the recovery commit `a17b99d`.** This session closed gap 1 below (the four untested
+focus rules) and settled gap 2 with numbers instead of a screenshot.
+
+### 1. The four law tests — done, and they pass
+
+All four now live in `game/test/core/programs/paradigm_laws_test.gd`, each measured **through the cast and then through
+the preview**, which is the shape the other tests in that file use (the panel must never promise more than the cast
+delivers):
+
+| Test | Rule | The number it pins |
+|---|---|---|
+| `test_hasher_adds_two_power_to_a_bolt_that_lands_on_a_weakness` | `weak-flat-bonus` | 13 dealt with the focus, 10 without — the +2, through the 1.5 fire affinity |
+| `test_enumerator_raises_the_volley_cap_from_128_to_192` | `max-bolts` | `bolt_limit` 128 → 192; a 200-bolt flood previews as 192 and still only lands 20 (the first foe) |
+| `test_partitioner_doubles_the_pivot_and_aims_it_at_the_toughest_foe` | `pivot-mark` | 9 dealt, foes at 17 and 24 — both bolts were aimed at foe 0 |
+| `test_tabulator_starts_the_table_bolt_on_turn_two_and_shares_it_thirds` | `table-from`, `table-divisor` | 3 seed bolts on turn 1, 4 on turn 2; the extra is 10, i.e. (18 + 12) // 3 |
+
+Each also asserts `preview.damage == played.landed.dealt`, so a future change that makes the panel lie fails here.
+
+`scripts/test.sh -a res://test/core/programs/paradigm_laws_test.gd`: **16 test cases, 0 failures.**
+
+One lint fix came with them: the Tabulator test's focus list was a 121-character line, over the 120 limit. It is a
+multi-line array now. `scripts/lint.sh` is clean apart from the temporary probe (see §3).
+
+### 2. The C++ long line was never clipped — it wraps, and the panel is wider than the probe assumed
+
+The screenshot (`recurse-cpp.png`, line 12) *looked* like a line running off the right edge. It is not a clipping bug,
+and the fix is not in `CodeView`. Two findings:
+
+1. **The panel already wraps.** `RuneCode._layout()` (`game/ui/code/rune_code.gd:256`) computes the columns from the
+   live width and breaks a too-long line at the last space before the edge, continuing it on the next row with an
+   indent. So "runs past the right edge" was never possible; a long line becomes two rows.
+2. **What the screenshot actually caught** was the listing *scrolled*, so the wrapped continuation of the long
+   comment was below the fold. The apparent cut-off was the scroll container's edge.
+
+To measure instead of squint, `game/tools/listing_probe.gd` prints every line of a listing with its length and flags
+anything wider than the panel. Against the Deep Recursion program (`split`, `merge-strike`, `divide`), at the design
+width of 780 (`program_code.gd:78`, `custom_minimum_size.x = 780`) the panel holds **87 columns**:
+
+| Language | Longest line | Over 87 |
+|---|---|---|
+| C++ | 117 | 10 lines, all 94–117 |
+| Python | 118 | 6 lines |
+| JavaScript | 79 | none |
+
+Every one of those over-wide lines is **authored card source in `game/content/packs/core/programs/cards/`** — the
+long explanatory comments in `split.cpp:15`, `merge-strike.cpp:2-3`, `divide.cpp:2-3` — not the panel's own generated
+rows. The generated rows are now short: `program_body_source.gd` writes a Deep Recursion body's four calls
+(`left_left`, `left_right`, `right_left`, `right_right`) **one call per line** when there are more than two parts, so no
+generated row is over 88 columns. That change is in the working tree, uncommitted.
+
+So the residual gap is a content choice, not a rendering bug: the card comments are wider than the panel and wrap.
+Whether to rewrap those comments to 87 is a content pass over the cards, best done with slice 10 when the other 65
+cards land, so it is done once for all of them.
+
+### 3. Temporary tooling (remove before committing)
+
+- `game/tools/_tmp_crop.gd` — crops and scales a screenshot region so the code panel can be read back. Diagnostic only.
+- `game/tools/listing_probe.gd` — the listing/length probe above. Also diagnostic; it is the one remaining lint
+  failure (line 13 is over 120 characters).
+
+Both are untracked. Delete them, or keep `listing_probe.gd` deliberately as a `game/tools/` tool with its line
+wrapped, and say which in the commit.
+
+### 4. A real bug found on the way: `dev-spawn` skips the program's battle setup
+
+Running a screenshot with `ROOTWARD_SHOT_FOES` (which sends `dev-spawn`) produced:
+
+```
+SCRIPT ERROR: Invalid access to property or key 'gone' on a base object of type 'Dictionary'.
+   at: spend (res://core/programs/program_deck.gd:77)
+```
+
+Cause: `ShardrunDev._spawn` (`game/core/shardrun/shardrun_dev.gd:138`) builds the fight with
+`ShardrunBattle.new_battle(...)` and never calls `ProgramDeck.on_battle_start` / `ProgramRelics.on_battle_start`. Only
+`ShardrunBattle.start_with` does that (`shardrun_battle.gd:56-58`). So a dev-spawned fight in a program run has no
+`gone`, `imports`, `globals`, `index`, `dp`, `hits` or `last_volley`, and any card with the `once` keyword
+(`reduce`, `reduce-plus`, `lambda`) crashes the cast in `ProgramDeck.spend`.
+
+This is dev-only, so it never reached a player, but it makes every `dev-spawn` screenshot of a `once` card
+misleading. Fix: have `_spawn` run the same two setup calls when `state.playstyle == "program"`, and cover it with a
+test that spawns a fight in a program run and casts a `once` card.
+
 ## Gaps before ticking slices 1 to 3 in PLAN.md
 
-1. Four focus rules have code but no test of their own:
-   - Hasher's +2 on a weakness (`weak-flat-bonus`)
-   - Enumerator's 192-bolt cap (`max-bolts`; its `source-power` is tested)
-   - Partitioner's pivot (`pivot-mark`: doubled and aimed at the toughest foe)
-   - Tabulator's earlier, larger Table bolt (`table-from`, `table-divisor`)
+Gap 1 (the four untested focus rules) is **closed** — see the session log in §1 above. What is left:
 
-   Each needs a test that the preview equals the cast, like the others in `paradigm_laws_test.gd`.
-2. Cosmetic: the focus cards on the pick screen have an empty emblem space (the emblems are slice 12's art), and in
-   C++ a long line of the Deep Recursion listing runs past the code panel's right edge (`recurse-cpp.png`, line 12).
-   Wrap it, or write each call on its own line.
+1. ~~Four focus rules have code but no test of their own~~ — done, all four tested and passing.
+2. The focus cards on the pick screen still have an empty emblem space (the emblems are slice 12's art).
+3. The card comments in C++ and Python are wider than the 87-column panel and wrap onto a second row (§2). Not a
+   rendering bug; rewrap the card comments in one pass with slice 10.
+4. `dev-spawn` does not run a program run's battle setup, so a dev-spawned fight crashes on a `once` card (§4).
 
 ## Next step, exactly
 
-1. Write the four tests above, fix the C++ listing's long line, then tick slices 1, 2 and 3 in `docs/PLAN.md` and
-   commit.
+1. Fix `dev-spawn`'s missing program setup (§4) with a test, delete the two temporary tools, then tick slices 1, 2 and 3
+   in `docs/PLAN.md` and commit (the four law tests and the body-slot wrapping are already in the tree).
 2. Slice 4, **Rewards** (B4): the 50 / 30 / 20 shares with focus-tagged cards ×2, one own card guaranteed, the
    elite's fourth card from another paradigm, rare pity, and cycles for a skip (wait for slice 5 for the cycles, or
-   land skip pay with it). Test the shares over many seeds.
-3. Then slices 5 to 13 in order. The remaining 65 cards of B8 come in slice 10, a paradigm at a time.
+   land skip pay with it). Test the shares over many seeds. The rules to write are `ShardrunBattle.draft_shards`
+   (called from `win`, currently a rarity-only `_draft`) and `draft_relics`; the rarity shares live in
+   `game/content/packs/core/shardrun/run.jsonc` under `rewards.shards`, and the new 50 / 30 / 20 paradigm / other /
+   cross-paradigm shares go alongside them. `Rng.create(state.seed, "reward:%d:%d" % [layer, visited])` is already the
+   deterministic stream to keep.
+3. Then slices 5 to 13 in order. The remaining 65 cards of B8 come in slice 10, a paradigm at a time — rewrap the card
+   comments to 87 columns in that pass (§2, gap 3).
 
 Notes for the next session:
 - Concurrent probe runs share Godot's sandbox scratch folder unless `XDG_DATA_HOME` is set per run (ADR-0048).

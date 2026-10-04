@@ -45,18 +45,42 @@ static func _body(
 	var statements: Array[String] = []
 	for part in parts:
 		statements.append("%s = %s(%s, battle)" % [part, function, part])
-	var text := (
-		"    %s = %s"
-		% [
-			", ".join(parts),
-			", ".join(parts.map(func(part: String) -> String: return "%s(%s, battle)" % [function, part]))
-		]
-	)
-	if language != "python":
-		text = "  " + "; ".join(statements) + ";"
-	var kind := "body" if used.has(slot) else "call"
+	var kind := "call" if not used.has(slot) else "body"
 	used[slot] = true
-	out.append({"text": text, "kind": kind, "key": "body:%d:%s" % [slot, prefix], "card": steps[slot], "slot": slot})
+	# LEARN: quarters (Deep Recursion) make four calls, and one row of them runs past the code panel's right edge
+	# (docs/ParadigmUpdate.md). Past a pair, each call is a line of its own: that is both shorter and what the generated
+	# code in docs/CPP_CARDS.md looks like.
+	var rows: Array[String] = []
+	if parts.size() > 2:
+		for statement in statements:
+			rows.append("    " + statement if language == "python" else "  " + statement + ";")
+	else:
+		rows.append(
+			(
+				(
+					"    %s = %s"
+					% [
+						", ".join(parts),
+						", ".join(parts.map(func(part: String) -> String: return "%s(%s, battle)" % [function, part]))
+					]
+				)
+				if language == "python"
+				else "  " + "; ".join(statements) + ";"
+			)
+		)
+	for index in rows.size():
+		(
+			out
+			. append(
+				{
+					"text": rows[index],
+					"kind": kind if index == 0 else "body",
+					"key": "body:%d:%s:%d" % [slot, prefix, index],
+					"card": steps[slot],
+					"slot": slot,
+				}
+			)
+		)
 	var called: Array = [steps[slot]]
 	for hook: Dictionary in hooks:
 		if hook.role == card.get("role", ""):

@@ -14,9 +14,9 @@ Implementation follows [ParadigmUpdate.md](ParadigmUpdate.md), parts A and B, in
 Program runs only; Spellforge and existing card runs keep their catalogs and saved maps.
 
 - [x] 0. Reproducible Beginner/JavaScript baseline, six paired seeds per paradigm, retained raw runs and report.
-- [ ] 1. Five law relics, fifteen focuses, explicit focus pick, basic swaps, weighted draft, trial and save compatibility.
-- [ ] 2. Index, Table, landed-hit memory and program-only sandbox input, remaining memory laws, preview equality.
-- [ ] 3. General next-card body primitive, half/quarter execution in all three languages, matching code listing.
+- [x] 1. Five law relics, fifteen focuses, explicit focus pick, basic swaps, weighted draft, trial and save compatibility.
+- [x] 2. Index, Table, landed-hit memory and program-only sandbox input, remaining memory laws, preview equality.
+- [x] 3. General next-card body primitive, half/quarter execution in all three languages, matching code listing.
 - [ ] 4. Paradigm/focus rewards, guaranteed own card, cross-paradigm elite offer, rarity pity and paid skips.
 - [ ] 5. Cycles per kill, complete formula tests, reward receipt, HUD and history.
 - [ ] 6. Program-only map overrides, extra fight, fixed Registry and weighted Issues; unchanged Spellforge maps.

@@ -136,6 +136,11 @@ static func _spawn(state: Dictionary, command: Dictionary, catalog: Dictionary) 
 		return _no("unknown-foe", "No such foes.")
 	state.erase("reward")
 	var battle := ShardrunBattle.new_battle(state, command.kind, foes, catalog)
+	# A program run's fight keeps imports, the Index and the Table in its battle; a room's fight sets them up, so a
+	# spawned one must too, or a `once` card crashes the cast.
+	if state.get("playstyle", "") == "program":
+		ProgramDeck.on_battle_start(battle)
+		ProgramRelics.on_battle_start(state, battle, catalog)
 	ShardrunBattle.begin_turn(battle)
 	state.battle = battle
 	state.status = "battle"

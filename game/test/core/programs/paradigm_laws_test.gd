@@ -146,6 +146,84 @@ func test_overflow_kills_count_for_initiative_and_exact_table_rows() -> void:
 	assert_int(int(state.battle.hits[state.battle.foes[1].uid])).is_equal(1)
 
 
+## The four focus rules that had code but no test of their own (docs/ParadigmUpdate.md, the gaps before ticking slices
+## 1 to 3). Each one is measured through the cast, and each one through the preview the code panel shows.
+
+
+func test_hasher_adds_two_power_to_a_bolt_that_lands_on_a_weakness() -> void:
+	var state := _fight([{"kind": "weak-flat-bonus", "add": 2}])
+	state.battle.foes[0].weak = ["fire"]
+	var outcome := {
+		"ok": true,
+		"bolts": [{"power": 4, "element": "fire"}, {"power": 4, "element": "none", "foe": 1}],
+		"work": [],
+	}
+	var preview := ProgramRules.preview(state, state.spells[0].id, outcome, catalog)
+	var played := _play(state, outcome.bolts)
+	# The fire bolt: 4 + 2 for the weakness, through the 1.5 affinity. The plain bolt is 4, weakness or not.
+	assert_int(int(played.landed.dealt)).is_equal(13)
+	assert_int(int(preview.damage)).is_equal(int(played.landed.dealt))
+	# The same volley without the focus: the weakness alone is 4 * 1.5, so exactly 3 less lands.
+	var plain := _fight([])
+	plain.battle.foes[0].weak = ["fire"]
+	assert_int(int(_play(plain, outcome.bolts).landed.dealt)).is_equal(10)
+
+
+func test_enumerator_raises_the_volley_cap_from_128_to_192() -> void:
+	assert_int(int(ProgramRules.config_of(catalog).max_bolts)).is_equal(128)
+	var state := _fight([{"kind": "max-bolts", "count": 192}])
+	assert_int(ProgramRules.bolt_limit(state, catalog)).is_equal(192)
+	var flood := []
+	for i in 200:
+		flood.append({"power": 1, "element": "none"})
+	var outcome := {"ok": true, "bolts": flood, "work": []}
+	var preview := ProgramRules.preview(state, state.spells[0].id, outcome, catalog)
+	var played := _play(state, flood)
+	assert_int(int(preview.bolts)).is_equal(192)
+	# The cap is what the panel counts, not what lands: the first foe (20 hp) falls and the rest are wasted.
+	assert_int(int(played.landed.dealt)).is_equal(20)
+	assert_int(int(preview.damage)).is_equal(int(played.landed.dealt))
+
+
+func test_partitioner_doubles_the_pivot_and_aims_it_at_the_toughest_foe() -> void:
+	var state := _fight([{"kind": "pivot-mark", "factor": 2}])
+	state.battle.foes[1].hp = 30
+	var outcome := {
+		"ok": true,
+		"bolts": [{"power": 3, "element": "none", "foe": 0}, {"power": 3, "element": "none", "foe": 0, "pivot": true}],
+		"work": [],
+	}
+	var preview := ProgramRules.preview(state, state.spells[0].id, outcome, catalog)
+	var played := _play(state, outcome.bolts)
+	# Both bolts were aimed at the first foe; the pivot is moved to the tougher one and doubled there.
+	assert_int(int(played.landed.dealt)).is_equal(9)
+	assert_int(int(state.battle.foes[0].hp)).is_equal(17)
+	assert_int(int(state.battle.foes[1].hp)).is_equal(24)
+	assert_int(int(preview.damage)).is_equal(int(played.landed.dealt))
+
+
+func test_tabulator_starts_the_table_bolt_on_turn_two_and_shares_it_thirds() -> void:
+	var state := _fight(
+		[
+			{"kind": "table", "from": 3, "divisor": 4},
+			{"kind": "table-from", "turn": 2},
+			{"kind": "table-divisor", "divisor": 3},
+		]
+	)
+	state.battle.dp = [12, 18]
+	assert_int(ProgramRules.seed(state, catalog).size()).is_equal(3)
+	state.battle.turn = 2
+	var seeded := ProgramRules.seed(state, catalog)
+	assert_int(seeded.size()).is_equal(4)
+	assert_int(int(seeded.back().power)).is_equal(10)
+	var outcome := {"ok": true, "bolts": seeded, "work": []}
+	var preview := ProgramRules.preview(state, state.spells[0].id, outcome, catalog)
+	var played := _play(state, seeded)
+	# 3 + 3 + 3 from the seed, and the Table's own (18 + 12) // 3.
+	assert_int(int(played.landed.dealt)).is_equal(19)
+	assert_int(int(preview.damage)).is_equal(int(played.landed.dealt))
+
+
 func test_stash_does_not_complete_scheduler_target_coverage() -> void:
 	var state := _fight([{"kind": "full-spread-power", "add": 1}])
 	var played := _play(
