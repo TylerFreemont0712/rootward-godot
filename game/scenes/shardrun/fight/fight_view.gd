@@ -10,6 +10,8 @@ var session: ShardrunSession
 var stage: BattleStage
 var cards: Dictionary = {}
 var busy := false
+## True while something covers the fight (a menu, the deck): its keys wait (docs/PHASE2.md P2-11).
+var covered := func() -> bool: return false
 var _state: Dictionary = {}
 var _previews: Dictionary = {}
 var _integrity_bar: ProgressBar
@@ -397,7 +399,7 @@ func _on_stage_input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or key.echo:
+	if key == null or not key.pressed or key.echo or covered.call():
 		return
 	if key.keycode == KEY_SPACE and busy:
 		if _program != null:

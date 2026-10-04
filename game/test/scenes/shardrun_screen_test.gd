@@ -197,3 +197,47 @@ func test_a_dev_spawn_replaces_the_foes_on_the_stage() -> void:
 
 static func _rooms(root: Node) -> int:
 	return root.find_children("*", "", true, false).filter(func(n: Node) -> bool: return n is RoomPanel).size()
+
+
+func _key(code: Key) -> void:
+	for down: bool in [true, false]:
+		var event := InputEventKey.new()
+		event.keycode = code
+		event.physical_keycode = code
+		event.pressed = down
+		get_tree().root.push_input(event)
+	await _settle()
+
+
+## P2-11: the fight's keys (E ends the turn, digits cast) wait while a menu is open over it.
+func test_the_fights_keys_wait_under_an_open_menu() -> void:
+	Game.use("program")
+	Game.session.saves.delete_run("program")
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-keys")
+	var run_screen := await _open()
+	var session := Game.session
+	var bot := ShardrunBot.new(session)
+	for i in 30:
+		if session.state.status == "battle":
+			break
+		await run_screen.send(await bot.next_command())
+	assert_str(String(session.state.status)).is_equal("battle")
+	var turn := int(session.state.battle.turn)
+	run_screen.call("_open_run_menu")
+	await _settle()
+	await _key(KEY_E)
+	await _key(KEY_1)
+	assert_int(int(session.state.battle.turn)).override_failure_message("E ended the turn under the menu").is_equal(
+		turn
+	)
+	assert_array(session.state.battle.cast as Array).is_empty()
+	# Closed, the same key ends the turn: the test above is not passing because keys never arrive.
+	run_screen.call("_close_overlay")
+	await _settle()
+	await _key(KEY_E)
+	for i in 120:
+		if session.state.status != "battle" or int(session.state.battle.turn) != turn:
+			break
+		await get_tree().process_frame
+	assert_bool(session.state.status != "battle" or int(session.state.battle.turn) != turn).is_true()
+	await _settle()

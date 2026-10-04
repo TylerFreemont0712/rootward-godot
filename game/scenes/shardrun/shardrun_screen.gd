@@ -97,6 +97,7 @@ func _show(state: Dictionary) -> void:
 	elif state.status == "battle":
 		_fight = FightView.create(session)
 		_fight.wants.connect(send)
+		_fight.covered = _covered
 		view = _fight
 		_trial_targets["hand"] = _fight._table
 		_trial_targets["program"] = _fight._program
@@ -198,6 +199,7 @@ func _between(state: Dictionary) -> Control:
 		left.add_child(Ui.expand(Ui.panel(scroll, ""), true))
 	else:
 		var map := MapView.new()
+		map.covered = _covered
 		_trial_targets["guardian"] = map._rail
 		_trial_targets["deck"] = map._deck
 		map.show_deck = ShardrunRules.is_deck(state)
@@ -411,6 +413,12 @@ func _open(panel: Control) -> void:
 
 func _close_overlay() -> void:
 	Ui.clear(_overlay)
+
+
+## Whether a menu or panel is open over the run. The views' keys wait while one is: an overlay takes the mouse, but a
+## key it does not use (E, a digit) would otherwise reach the fight underneath.
+func _covered() -> bool:
+	return _overlay.get_children().any(func(child: Node) -> bool: return not child.is_queued_for_deletion())
 
 
 func _unhandled_key_input(event: InputEvent) -> void:

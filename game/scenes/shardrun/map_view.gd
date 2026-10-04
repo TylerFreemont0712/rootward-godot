@@ -44,6 +44,8 @@ static var drawer_open := true
 
 ## Show the deck's face-down pile (a deck run); set before show_map.
 var show_deck := false
+## True while something covers the map (a menu, the deck): its keys wait.
+var covered := func() -> bool: return false
 
 var state: Dictionary = {}
 var catalog: Dictionary = {}
@@ -458,7 +460,7 @@ func _on_view_input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	var key := event as InputEventKey
-	if key == null or not key.pressed or not is_visible_in_tree():
+	if key == null or not key.pressed or not is_visible_in_tree() or covered.call():
 		return
 	match key.keycode:
 		KEY_PAGEUP:
