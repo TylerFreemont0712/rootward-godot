@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="216" viewBox="0 0 152 216" role="img" aria-labelledby="title desc">
+  <title id="title">Terminal tile card concept — import copy</title>
+  <desc id="desc">A compact 152 by 216 terminal-inspired card with clear code labels, a visible full illustration, and a separate hook.</desc>
+  <defs>
+    <linearGradient id="shell" x2=".8" y2="1"><stop stop-color="#17362f"/><stop offset=".55" stop-color="#151f21"/><stop offset="1" stop-color="#1e1c2c"/></linearGradient>
+    <linearGradient id="mint" x2="0" y2="1"><stop stop-color="#a9f0c8"/><stop offset="1" stop-color="#57ac92"/></linearGradient>
+    <radialGradient id="art"><stop stop-color="#5e4975"/><stop offset="1" stop-color="#172422"/></radialGradient>
+  </defs>
+  <rect x="1" y="1" width="150" height="214" rx="9" fill="url(#shell)" stroke="#70b294" stroke-width="2"/>
+  <rect x="5" y="5" width="142" height="206" rx="6" fill="none" stroke="#a5eac33b"/>
+  <rect x="9" y="9" width="134" height="21" rx="3" fill="#102722" stroke="#376b56"/>
+  <circle cx="18" cy="19.5" r="2" fill="#8be4b5"/><circle cx="25" cy="19.5" r="2" fill="#4b9b7d"/>
+  <text x="34" y="22" fill="#9ed9b7" font-family="DejaVu Sans Mono, monospace" font-size="7" letter-spacing=".35">PROGRAM / IMPORT</text>
+  <rect x="119" y="11" width="20" height="17" rx="4" fill="#d3aa64"/>
+  <text x="129" y="23" fill="#211c1a" text-anchor="middle" font-family="DejaVu Sans" font-size="10" font-weight="700">1</text>
+  <text x="13" y="51" fill="#9ed9b7" font-family="DejaVu Sans Mono, monospace" font-size="10" letter-spacing=".1">import</text>
+  <text x="13" y="68" fill="#fff0cf" font-family="DejaVu Sans Mono, monospace" font-size="15" font-weight="700">copy</text>
+  <rect x="10" y="76" width="132" height="77" rx="4" fill="url(#art)" stroke="#7ac29b55"/>
+  <image href="../../../game/assets/shardrun/card-import-copy.png" x="15" y="78" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
+  <path d="M89 82v65" stroke="#5b9477"/>
+  <text x="116" y="95" fill="#d6b9ef" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8" font-weight="700">IMPORT</text>
+  <text x="116" y="122" fill="url(#mint)" text-anchor="middle" font-family="DejaVu Sans" font-size="19" font-weight="700">O(1)</text>
+  <text x="116" y="137" fill="#a5dec0" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="7.3" letter-spacing=".25">CONSTANT</text>
+  <rect x="10" y="159" width="132" height="21" rx="3" fill="#222a25" stroke="#59846b"/>
+  <text x="19" y="173" fill="#9ec5aa" font-family="DejaVu Sans Mono, monospace" font-size="6.6" letter-spacing=".25">HOOK</text>
+  <text x="134" y="173" fill="#f0e0ba" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="8" font-weight="700">BEFORE STRIKE</text>
+  <text x="14" y="194" fill="#98d6af" font-family="DejaVu Sans Mono, monospace" font-size="7.2">&gt; COPY LAST ATTACK</text>
+  <text x="14" y="204" fill="#b5a4c7" font-family="DejaVu Sans Mono, monospace" font-size="7.2">&gt; HALF POWER</text>
+</svg>

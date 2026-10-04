@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="258" viewBox="0 0 184 258" role="img" aria-labelledby="title desc">
+  <title id="title">Big-O first card concept — import copy</title>
+  <desc id="desc">An 184 by 258 portrait card that makes the constant-time complexity the main visual feature.</desc>
+  <defs>
+    <linearGradient id="shell" x2=".85" y2="1"><stop stop-color="#453452"/><stop offset=".5" stop-color="#201d29"/><stop offset="1" stop-color="#10272a"/></linearGradient>
+    <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe7ad"/><stop offset=".52" stop-color="#c28b4e"/><stop offset="1" stop-color="#67472e"/></linearGradient>
+    <linearGradient id="teal" x2="1" y2="0"><stop stop-color="#153533"/><stop offset="1" stop-color="#1c4541"/></linearGradient>
+    <radialGradient id="art"><stop stop-color="#745493"/><stop offset="1" stop-color="#211c2c"/></radialGradient>
+  </defs>
+  <rect x="1" y="1" width="182" height="256" rx="16" fill="url(#shell)" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="6" y="6" width="172" height="246" rx="12" fill="none" stroke="#f3dca344"/>
+  <path d="M13 42h158" stroke="#d9bb8160"/>
+  <circle cx="25" cy="24" r="14" fill="#30201b" stroke="url(#gold)" stroke-width="2"/>
+  <text x="25" y="29" fill="#ffdfa0" text-anchor="middle" font-family="DejaVu Sans" font-size="14" font-weight="700">1</text>
+  <text x="169" y="22" fill="#d7c3e8" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="7.5" letter-spacing=".8">DIVIDE &amp; CONQUER</text>
+  <text x="169" y="33" fill="#a99ab6" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="6.5" letter-spacing=".7">IMPORT · MERGER</text>
+  <text x="92" y="65" fill="#fff2df" text-anchor="middle" font-family="DejaVu Sans" font-size="18" font-weight="700">import copy</text>
+  <rect x="15" y="74" width="154" height="91" rx="8" fill="url(#art)" stroke="#d5b4e35c"/>
+  <path d="M21 84v-4h4M163 84v-4h-4M21 155v4h4M163 155v4h-4" fill="none" stroke="#f2d8a1" stroke-opacity=".7"/>
+  <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="74" width="80" height="80" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="15" y="171" width="154" height="42" rx="5" fill="url(#teal)" stroke="#5fb5a2"/>
+  <path d="M20 177v30" stroke="#96eddd" stroke-width="2.5"/>
+  <text x="32" y="201" fill="#9af0df" font-family="DejaVu Sans" font-size="27" font-weight="700">O(1)</text>
+  <text x="157" y="188" fill="#d5f2e9" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="9" font-weight="700" letter-spacing=".4">CONSTANT</text>
+  <text x="157" y="201" fill="#aad8cd" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="7.2" letter-spacing=".6">WORK</text>
+  <text x="23" y="228" fill="#a99bb5" font-family="DejaVu Sans Mono, monospace" font-size="6.5" letter-spacing=".7">HOOK</text>
+  <text x="161" y="228" fill="#eee0f7" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="8" font-weight="700" letter-spacing=".3">BEFORE STRIKE</text>
+  <text x="92" y="242" fill="#dfd1e7" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="7.2" letter-spacing=".25">COPY LAST ATTACK · HALF POWER</text>
+  <text x="92" y="251" fill="#93869f" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="6" letter-spacing=".7">CONSTANT-TIME IMPORT</text>
+</svg>
