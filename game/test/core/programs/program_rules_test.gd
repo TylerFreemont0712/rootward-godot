@@ -93,8 +93,9 @@ func test_the_four_ring_looks_preserve_layer_ids_and_full_routes() -> void:
 		assert_array(rings.map(func(layer: Dictionary) -> String: return layer.id))
 		. is_equal(["salvage", "heap", "kernel", "root"])
 	)
+	# A program run's maps are two rows longer than the Shardrun's (a second guaranteed fight and the Registry).
 	for index in (base.config.layers as Array).size():
-		assert_int(rings[index].rows).is_equal(base.config.layers[index].rows)
+		assert_int(rings[index].rows).is_equal(base.config.layers[index].rows + 2)
 		assert_int(rings[index].paths).is_equal(base.config.layers[index].paths)
 	assert_str(rings[2].name).is_equal("The Interrupt Foundry")
 	assert_int(base.config.layers[2].ring).is_equal(0)

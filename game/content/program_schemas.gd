@@ -9,7 +9,7 @@ extends RefCounted
 const COMPLEXITIES := ["constant", "logarithmic", "linear", "linearithmic", "quadratic", "exponential", "pseudo"]
 ## What a card does, shown on its face: makes bolts, changes them, arranges them, aims them, or guards with them. An
 ## import is not a step of the program but a line at the top of it, holding for the rest of the fight (ADR-0018).
-const ROLES := ["source", "shape", "order", "strike", "guard", "import"]
+const ROLES := ["source", "shape", "order", "strike", "guard", "import", "utility"]
 ## Programming words for what a card does in the deck (ADR-0018), their meanings in programs.jsonc `keywords`:
 ## `once` runs once a fight, `volatile` leaves the hand at the end of the turn, `const` stays in it, `__init__` is in
 ## the opening hand, `lambda` is a card made by another card.
@@ -111,6 +111,9 @@ static func card() -> Dictionary:
 				"paradigm": Schema.ID,
 				"focus": Schema.optional(Schema.ID),
 				"splits": Schema.with_default(Schema.BOOL, false),
+				# Draw this many more cards next turn (Prefetch); the next this many cards do no work (Tail Call).
+				"draws_next": Schema.optional(Schema.int_min(1)),
+				"waives_next": Schema.optional(Schema.int_min(1)),
 				"work_mode": Schema.optional(Schema.one_of(["measured"])),
 				"role": Schema.one_of(ROLES),
 				"complexity": Schema.one_of(COMPLEXITIES),
@@ -297,6 +300,10 @@ static func effect() -> Dictionary:
 				"recurse-depth": {"depth": Schema.int_range(1, 4)},
 				"rejoin-power": {"add": positive},
 				"pivot-mark": {"factor": factor},
+				"table-best-seed": {"divisor": positive},
+				"index-open": {},
+				"index-size-add": {"size": positive},
+				"index-keep": {"count": positive},
 				"turn-block": {"amount": positive},
 				"heal-after-fight": {"amount": positive},
 				"max-integrity": {"add": positive},
@@ -434,6 +441,38 @@ static func config() -> Dictionary:
 					),
 					{}
 				),
+				# A program run's own map for a layer (by layer id): more rows, a fixed Registry row, Issue rooms. Merged
+				# over the Shardrun's layer (ProgramRules.catalog_for), which Spellforge keeps untouched.
+				"map":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. record(
+								(
+									Schema
+									. object(
+										{
+											"rows": Schema.int_range(3, 15),
+											"fixed_rows":
+											Schema.record(
+												Schema.one_of(ShardrunSchemas.LAYER_ROOM_KINDS), [], "^-?\\d+$"
+											),
+											"weights":
+											Schema.record(
+												{"type": "number", "min": 0.0},
+												[],
+												"^(%s)$" % "|".join(ShardrunSchemas.LAYER_ROOM_KINDS)
+											),
+										}
+									)
+								)
+							)
+						),
+						{}
+					)
+				),
 				# Layers a program run goes on to after the Shardrun's (the Root): Spellforge never reaches them.
 				"layers": Schema.with_default(Schema.list_of(ShardrunSchemas.layer()), []),
 				# Presentation overrides keep the existing layer ids, maps and encounters intact.
@@ -464,6 +503,94 @@ static func config() -> Dictionary:
 				),
 				# What each keyword means, for the cards' tooltips (and their translations).
 				"keywords": Schema.record(Schema.TEXT, KEYWORDS),
+				# What a fight offers as cards (ProgramRewards): the share of own paradigm, neutral and another paradigm, how
+				# much likelier the focus's cards are inside the own share, whether an elite adds a fourth card from another
+				# paradigm, how much each reward without a rare raises the next rare chance, and what skipping pays.
+				"rewards":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. object(
+								{
+									"shares":
+									(
+										Schema
+										. with_default(
+											(
+												Schema
+												. object(
+													{
+														"own": Schema.with_default(Schema.RATIO, 0.5),
+														"neutral": Schema.with_default(Schema.RATIO, 0.3),
+														"other": Schema.with_default(Schema.RATIO, 0.2),
+													}
+												)
+											),
+											{"own": 0.5, "neutral": 0.3, "other": 0.2}
+										)
+									),
+									"focus_weight": Schema.with_default({"type": "number", "min": 1.0}, 2.0),
+									"elite_extra": Schema.with_default(Schema.int_range(0, 1), 1),
+									"pity": Schema.with_default(Schema.RATIO, 0.03),
+									"skip_cycles": Schema.with_default(Schema.int_min(0), 10),
+								}
+							)
+						),
+						{
+							"shares": {"own": 0.5, "neutral": 0.3, "other": 0.2},
+							"focus_weight": 2.0,
+							"elite_extra": 1,
+							"pity": 0.03,
+							"skip_cycles": 10
+						}
+					)
+				),
+				# Cycles, the money (ProgramCycles): what a kill pays by the fight's kind, the layer's and the difficulty's
+				# factors, the small bonuses, and a treasure's pay (times the layer's number).
+				"cycles":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. object(
+								{
+									"base":
+									(
+										Schema
+										. object(
+											{
+												"fight": Schema.int_min(0),
+												"elite": Schema.int_min(0),
+												"boss": Schema.int_min(0),
+												"summoned": Schema.int_min(0),
+											}
+										)
+									),
+									"layer": Schema.list_of({"type": "number", "positive": true}, null, 1),
+									"difficulty": Schema.record({"type": "number", "positive": true}),
+									"exact": Schema.int_min(0),
+									"initiative": Schema.int_min(0),
+									"clean": Schema.int_min(0),
+									"one_liner": Schema.int_min(0),
+									"treasure": Schema.int_min(0),
+								}
+							)
+						),
+						{
+							"base": {"fight": 6, "elite": 16, "boss": 45, "summoned": 1},
+							"layer": [1.0, 1.25, 1.5, 1.75],
+							"difficulty": {"beginner": 1.0, "programmer": 1.25},
+							"exact": 1,
+							"initiative": 1,
+							"clean": 5,
+							"one_liner": 3,
+							"treasure": 20
+						}
+					)
+				),
 				# Initiative: how much more a foe takes from a program that lands before it moves (0.25 is 25% more).
 				"initiative": Schema.with_default({"type": "number", "min": 0.0}, 0.0),
 			}

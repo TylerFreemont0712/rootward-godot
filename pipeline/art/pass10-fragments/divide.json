@@ -1,0 +1,44 @@
+{
+  "cards": {
+    "halve": {
+      "subject": "a single faceted crystal split cleanly in two by a vertical bronze blade, the two halves drifting apart",
+      "fallback_icon": "shardrun/card-divide"
+    },
+    "tower-of-hanoi": {
+      "subject": "three bronze pegs on a plinth, a stack of four crystal disks shrinking upward on the left peg, one disk in mid-air moving right",
+      "fallback_icon": "shardrun/card-fib-surge"
+    },
+    "fast-power": {
+      "subject": "a faceted crystal inside a bronze frame inside a larger bronze frame inside a larger one, each frame twice the last, glowing hotter outward",
+      "fallback_icon": "shardrun/card-import-math"
+    },
+    "karatsuba": {
+      "subject": "two faceted crystals crossed like an X inside a bronze square split into four quadrants, three quadrants lit and one dark",
+      "fallback_icon": "shardrun/card-power-set"
+    },
+    "max-subarray": {
+      "subject": "a row of faceted crystals with a bronze bracket spanning a stretch of them across the middle, that stretch glowing amber",
+      "fallback_icon": "shardrun/card-kadane"
+    },
+    "counting-inversions": {
+      "subject": "two faceted crystals in a row with small gold arrows crossing over each other between them, the pair glowing where the arrows cross",
+      "fallback_icon": "shardrun/card-bubble-sort"
+    },
+    "closest-pair": {
+      "subject": "two nearly identical cyan faceted crystals drawn together by a bronze caliper, a spark between them",
+      "fallback_icon": "shardrun/card-two-pointers"
+    },
+    "skyline": {
+      "subject": "a small city skyline of faceted crystal towers of different heights on a bronze base, the outline traced by one gold line",
+      "fallback_icon": "shardrun/card-sliding-window"
+    },
+    "median-of-medians": {
+      "subject": "five small bronze trays of five crystals each, the middle crystal of each lifted up, and the middle of those lifted highest and glowing",
+      "fallback_icon": "shardrun/card-quick-sort"
+    },
+    "introsort": {
+      "subject": "a bronze split arrow, one branch a quick lightning zig-zag and the other a neat tree, both ending in the same sorted row of faceted crystals",
+      "fallback_icon": "shardrun/card-quick-sort"
+    }
+  }
+}

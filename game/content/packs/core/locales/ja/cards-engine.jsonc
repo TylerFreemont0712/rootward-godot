@@ -1,0 +1,18 @@
+[
+  {"en": "Prefetch", "to": "プリフェッチ"},
+  {"en": "Prefetch+", "to": "プリフェッチ+"},
+  {"en": "Draw 2 more cards next turn. A cache that fetches before it is asked. It makes no bolts, and runs once.", "to": "次のターン、カードを2枚多く引く。たのまれる前に読みこんでおくキャッシュ。ボルトは作らず、1回だけ使える。"},
+  {"en": "Draw 2 more cards next turn, for no mana. It makes no bolts, and runs once.", "to": "次のターン、カードを2枚多く引く。マナはいらない。ボルトは作らず、1回だけ使える。"},
+  {"en": "Tail Call", "to": "末尾呼び出し（まつびよびだし）"},
+  {"en": "Tail Call+", "to": "末尾呼び出し（まつびよびだし）+"},
+  {"en": "The next card does no work: a call in tail position reuses the frame it is in. It makes no change to the bolts.", "to": "次のカードは仕事をしない。最後に呼ぶ関数は、今の枠をそのまま使える。ボルトは変わらない。"},
+  {"en": "The next two cards do no work: a call in tail position reuses the frame it is in. It makes no change to the bolts.", "to": "次の2枚のカードは仕事をしない。最後に呼ぶ関数は、今の枠をそのまま使える。ボルトは変わらない。"},
+  {"en": "from itertools import accumulate", "to": "from itertools import accumulate"},
+  {"en": "from itertools import accumulate+", "to": "from itertools import accumulate+"},
+  {"en": "For the rest of the fight, every program's seed gains a bolt of the Table's best row divided by 5. Build the answer from the smallest case up.", "to": "戦いのあいだずっと、毎回のプログラムの種に、表のいちばん大きい行を5でわったボルトが1本ふえる。小さいところから答えを積み上げよう。"},
+  {"en": "For the rest of the fight, every program's seed gains a bolt of the Table's best row divided by 4. Build the answer from the smallest case up.", "to": "戦いのあいだずっと、毎回のプログラムの種に、表のいちばん大きい行を4でわったボルトが1本ふえる。小さいところから答えを積み上げよう。"},
+  {"en": "from sortedcontainers import SortedList", "to": "from sortedcontainers import SortedList"},
+  {"en": "from sortedcontainers import SortedList+", "to": "from sortedcontainers import SortedList+"},
+  {"en": "For the rest of the fight, you have an Index of 8 more bolts, and the 2 strongest it holds at the end of the fight start the next one.", "to": "戦いのあいだずっと、インデックスにボルトを8本多くためられる。戦いの終わりにいちばん強い2本は、次の戦いに持ちこせる。"},
+  {"en": "For the rest of the fight, you have an Index of 12 more bolts, and the 3 strongest it holds at the end of the fight start the next one.", "to": "戦いのあいだずっと、インデックスにボルトを12本多くためられる。戦いの終わりにいちばん強い3本は、次の戦いに持ちこせる。"}
+]

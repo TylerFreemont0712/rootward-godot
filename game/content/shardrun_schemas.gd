@@ -12,6 +12,8 @@ const SHARD_RARITIES := ["common", "uncommon", "rare"]
 const RELIC_RARITIES := ["common", "uncommon", "rare", "boss"]
 const PLAYSTYLES := ["spellbook", "deck"]
 const ROOM_KINDS := ["fight", "elite", "rest", "forge", "treasure"]
+## Room kinds a layer may also name (a program run's Registry and Issues).
+const LAYER_ROOM_KINDS := ["fight", "elite", "rest", "forge", "treasure", "shop", "issue"]
 const FOE_SIZES := ["small", "medium", "large", "huge", "colossal"]
 const AMBIENCES := ["dust", "spores", "embers"]
 const LANGUAGES := ["python", "javascript", "typescript", "bash", "sql", "go", "rust", "c", "cpp"]
@@ -243,8 +245,8 @@ static func layer() -> Dictionary:
 				"rows": Schema.int_range(3, 15),
 				"columns": Schema.int_range(2, 7),
 				"paths": Schema.int_range(1, 8),
-				"fixed_rows": Schema.with_default(Schema.record(Schema.one_of(ROOM_KINDS), [], "^-?\\d+$"), {}),
-				"weights": Schema.record({"type": "number", "min": 0.0}, ROOM_KINDS),
+				"fixed_rows": Schema.with_default(Schema.record(Schema.one_of(LAYER_ROOM_KINDS), [], "^-?\\d+$"), {}),
+				"weights": Schema.record({"type": "number", "min": 0.0}, [], "^(%s)$" % "|".join(LAYER_ROOM_KINDS)),
 				"elite_from_row": Schema.with_default(NON_NEGATIVE, 3),
 				"foe_hp": Schema.with_default({"type": "number", "positive": true}, 1),
 				"encounters": Schema.object({"fight": foe_groups, "elite": foe_groups, "boss": foe_groups}),
@@ -390,7 +392,18 @@ static func sandbox_defaults() -> Dictionary:
 static func program_state_defaults(state: Dictionary) -> void:
 	if state.get("playstyle", "") != "program":
 		return
-	var defaults := {"focus": "", "cycles": 0, "belt": [], "pending": {}, "boons": [], "imports_enabled": []}
+	var defaults := {
+		"focus": "",
+		"cycles": 0,
+		"belt": [],
+		"pending": {},
+		"boons": [],
+		"imports_enabled": [],
+		"rare_pity": 0.0,
+		"cycles_earned": 0,
+		"cycles_spent": 0,
+		"kept_index": []
+	}
 	for field: String in defaults:
 		if not state.has(field):
 			state[field] = (

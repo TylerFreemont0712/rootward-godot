@@ -1,0 +1,203 @@
+{
+  "paradigm": "search-index",
+  "focus": "index",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(log n + k)",
+  "icon": "shardrun/card-sliding-window",
+  "id": "range-query",
+  "name": "Range Query",
+  "summary": "Two binary searches find, for each foe, the bolts with power from half its HP up to its HP; they fly at it. Needs a sorted volley. The rest are stashed in the index.",
+  "function": "range_query",
+  "keywords": [],
+  "needs": "sorted",
+  "makes": "unsorted",
+  "forge": {
+    "into": "range-query-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "each foe takes the bolts in its range",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 8,
+            "max": 8,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "stash": true
+        },
+        {
+          "power": 9,
+          "element": "none",
+          "stash": true
+        }
+      ]
+    },
+    {
+      "name": "bolts outside every range are stashed",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none",
+          "stash": true
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "stash": true
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "stash": true
+        }
+      ]
+    },
+    {
+      "name": "no foes leaves the volley alone",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

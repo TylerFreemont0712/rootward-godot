@@ -1,0 +1,52 @@
+{
+  "cards": {
+    "break-loop": {
+      "subject": "a row of four cyan crystals with a broad bronze bar slammed down between the second and third, the first two glowing amber; a small spark where the bar lands",
+      "fallback_icon": "shardrun/shard-execution"
+    },
+    "job-sequencing": {
+      "subject": "three small brass tags on hooks in a line, the middle tag larger and gilded, a cyan crystal bolt pinned to it with a ribbon",
+      "fallback_icon": "shardrun/shard-triage"
+    },
+    "boyer-moore": {
+      "subject": "a bronze ballot box with three crystals dropping in, two amber and one cyan, and a single large amber crystal rising out of its slot",
+      "fallback_icon": "shardrun/shard-census"
+    },
+    "stock-trader": {
+      "subject": "a zig-zag bronze line chart made of rods, each rising segment capped by a small amber crystal, a large amber crystal at the top right end",
+      "fallback_icon": "shardrun/card-kadane"
+    },
+    "brace": {
+      "subject": "a small bronze kite shield made of three stacked pale cyan crystal shards, the smallest at the top, a bold rim around them",
+      "fallback_icon": "shardrun/shard-bulwark"
+    },
+    "heapify": {
+      "subject": "a small bronze binary tree of seven sockets, the largest amber crystal in the top socket, smaller cyan crystals below, one curved arrow showing a crystal sifting down",
+      "fallback_icon": "shardrun/card-import-heapq"
+    },
+    "increase-key": {
+      "subject": "a small cyan crystal on a bronze lift platform rising beside a tall amber crystal, a broad upward arrow beneath it",
+      "fallback_icon": "shardrun/shard-priority-queue"
+    },
+    "heap-sort": {
+      "subject": "a bronze funnel shaped like an upside-down tree, crystals entering at the top in a jumble and leaving at the bottom in a neat row from small to large",
+      "fallback_icon": "shardrun/card-merge-sort"
+    },
+    "fractional-knapsack": {
+      "subject": "a large amber crystal sliced cleanly in two by a bronze cleaver, the bigger half slotted into a small leather knapsack, the smaller half floating beside it",
+      "fallback_icon": "shardrun/shard-prism"
+    },
+    "minimum-arrows": {
+      "subject": "one long bronze-fletched crystal arrow passing through three floating soap-bubble orbs in a line, each orb bursting into shards",
+      "fallback_icon": "shardrun/shard-pierce"
+    },
+    "nearest-neighbour": {
+      "subject": "a bronze compass rose with one cyan crystal at its centre and a gold needle pointing at the nearest of three small dots around it",
+      "fallback_icon": "shardrun/shard-seeker"
+    },
+    "task-scheduler": {
+      "subject": "a bronze conveyor with crystals alternating amber, cyan, violet, amber, cyan, and a tiny empty grey gem in one gap",
+      "fallback_icon": "shardrun/shard-alternating-current"
+    }
+  }
+}

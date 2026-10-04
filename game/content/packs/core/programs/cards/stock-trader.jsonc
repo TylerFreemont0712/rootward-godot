@@ -1,0 +1,263 @@
+{
+  "paradigm": "greedy",
+  "focus": "sprint",
+  "role": "shape",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/card-kadane",
+  "id": "stock-trader",
+  "name": "Stock Trader",
+  "summary": "Adds up every rise from one bolt to the next into a new bolt at the end. A rising volley pays well.",
+  "function": "stock_trader",
+  "keywords": [],
+  "forge": {
+    "into": "stock-trader-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "every rise is profit",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "frost"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "fire"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "frost"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "fire"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 11,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a falling volley earns nothing",
+      "bolts": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a rising volley pays well",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "one bolt",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

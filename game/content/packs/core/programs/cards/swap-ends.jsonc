@@ -1,0 +1,199 @@
+{
+  "paradigm": "neutral",
+  "role": "order",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "constant",
+  "big_o": "O(1)",
+  "icon": "shardrun/card-two-pointers",
+  "id": "swap-ends",
+  "name": "Swap",
+  "summary": "The first and last bolts change places.",
+  "function": "swap_ends",
+  "keywords": [],
+  "makes": "unsorted",
+  "forge": {
+    "into": "swap-ends-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "first and last change places",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a lone bolt stays",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "elements travel with their bolts",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "frost"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 8,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

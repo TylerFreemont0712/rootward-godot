@@ -1,0 +1,161 @@
+{
+  "paradigm": "brute-force",
+  "focus": "prune",
+  "role": "source",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "exponential",
+  "big_o": "O(n!) pruned, n = 6",
+  "icon": "shardrun/card-pascal-row",
+  "id": "n-queens",
+  "name": "N-Queens",
+  "summary": "Places six queens on a 6×6 board by backtracking, a row at a time. Each of the 4 solutions adds a 7-power bolt after your volley.",
+  "function": "n_queens",
+  "keywords": [],
+  "work_mode": "measured",
+  "forge": {
+    "into": "n-queens-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "the solutions follow the volley",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "foes do not matter",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

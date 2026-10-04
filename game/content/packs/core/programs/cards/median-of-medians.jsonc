@@ -1,0 +1,381 @@
+{
+  "id": "median-of-medians",
+  "name": "Median of Medians",
+  "rarity": "rare",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "focus": "pivot",
+  "role": "strike",
+  "icon": "shardrun/card-quick-sort",
+  "splits": true,
+  "complexity": "linear",
+  "big_o": "O(n) worst",
+  "summary": "Finds the median power in guaranteed linear time (groups of five), like Quickselect but never slow: bolts at or above it fly at the toughest foe, the rest at the weakest. The first bolt equal to the median is the pivot.",
+  "function": "median_of_medians",
+  "keywords": [],
+  "forge": {
+    "into": "median-of-medians-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "the strong half at the toughest",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 16,
+            "max": 16,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 2,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0,
+          "pivot": true
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "thirteen bolts make three groups",
+      "bolts": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 1,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "none",
+          "foe": 2
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 2
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "foe": 2
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 2
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 2,
+          "pivot": true
+        },
+        {
+          "power": 10,
+          "element": "none",
+          "foe": 2
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 2
+        }
+      ]
+    },
+    {
+      "name": "equal powers share one median",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 8,
+            "max": 8,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 2,
+            "max": 2,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0,
+          "pivot": true
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "no foes, nothing to aim at",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

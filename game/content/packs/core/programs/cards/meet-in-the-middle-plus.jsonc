@@ -1,0 +1,291 @@
+{
+  "paradigm": "brute-force",
+  "focus": "prune",
+  "role": "strike",
+  "cost": 2,
+  "rarity": "rare",
+  "complexity": "exponential",
+  "big_o": "O(2^(n/2)), cap 16",
+  "icon": "shardrun/card-two-pointers",
+  "id": "meet-in-the-middle-plus",
+  "name": "Meet in the Middle+",
+  "summary": "Exhaustive Kill's question for the first 16 bolts, answered from both ends: list the sums of each half, sort one, binary-search it for the other. The same kill, with the square root of the work.",
+  "function": "meet_in_the_middle_plus",
+  "keywords": [],
+  "cap_n": 16,
+  "work_mode": "measured",
+  "art": "meet-in-the-middle",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the smallest total that kills the front foe",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 9,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "equal totals keep the lowest bolts",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 8,
+            "max": 8,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "nothing reaches the foe so every bolt strikes it",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 30,
+            "max": 30,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "a single foe takes the rest too",
+      "bolts": [
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "paradigm": "search-index",
+  "focus": "bisect",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "logarithmic",
+  "big_o": "O(log i)",
+  "icon": "shardrun/card-binary-execute",
+  "id": "exponential-search",
+  "name": "Exponential Search",
+  "summary": "On a sorted volley, gallops 1, 2, 4, 8 ... until a bolt kills the front foe, then binary-searches the last gap. Cheapest when the answer is near the front.",
+  "function": "exponential_search",
+  "keywords": [],
+  "needs": "sorted",
+  "forge": {
+    "into": "exponential-search-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "the answer is near the front",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 2,
+            "max": 2,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 8,
+            "max": 8,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "a longer gallop, then a short search",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "nothing kills: the strongest",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

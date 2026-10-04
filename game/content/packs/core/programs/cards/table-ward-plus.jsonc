@@ -1,0 +1,174 @@
+{
+  "id": "table-ward-plus",
+  "icon": "shardrun/card-exhaustive-ward",
+  "name": "Table Ward+",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "focus": "table",
+  "role": "guard",
+  "complexity": "constant",
+  "big_o": "O(1)",
+  "summary": "Block equal to the table's last row divided by 2, at least 3.",
+  "function": "table_ward_plus",
+  "keywords": [],
+  "art": "table-ward",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a third of the last row",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "dp": [
+          12,
+          18,
+          30
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 15,
+          "element": "none",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "an empty table still guards",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "dp": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "a small row is lifted to 3",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [],
+        "dp": [
+          3,
+          2
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "block": true
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none",
+          "block": true
+        }
+      ]
+    }
+  ]
+}

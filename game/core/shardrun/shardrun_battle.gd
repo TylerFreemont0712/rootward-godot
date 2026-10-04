@@ -417,7 +417,9 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 			battle.hand = (battle.held as Array).duplicate()
 			battle.held = []
 			clear_spells(state)
-		draw(state, battle, ShardrunRules.hand_size(state, catalog), catalog)
+		# Cards a program set aside for this turn (Prefetch) are drawn on top of the hand.
+		draw(state, battle, ShardrunRules.hand_size(state, catalog) + int(battle.get("bonus_draw", 0)), catalog)
+		battle.erase("bonus_draw")
 	for foe: Dictionary in battle.foes:
 		foe.intent_index = (int(foe.intent_index) + 1) % (foe.intents as Array).size()
 	begin_turn(battle)
@@ -492,6 +494,8 @@ static func clear_spells(state: Dictionary) -> void:
 
 
 static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
+	if state.get("playstyle", "") == "program":
+		ProgramMemory.carry_over(state, battle, catalog)
 	state.erase("battle")
 	clear_spells(state)
 	var balance: Dictionary = catalog.balance
@@ -518,6 +522,10 @@ static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> v
 	var shards := draft_shards(state, battle.kind, catalog)
 	if not shards.is_empty():
 		reward.shards = shards
+	if state.get("playstyle", "") == "program":
+		var receipt := ProgramCycles.settle(state, battle, catalog)
+		if int(receipt.total) > 0:
+			reward.receipt = receipt
 	var relic_count := 0
 	if boss:
 		relic_count = int(balance.boss_relic_choices)
@@ -551,6 +559,9 @@ static func lose(state: Dictionary) -> void:
 
 ## Distinct draftable shards for a reward, rarity by the fight's weights, drawn from the run's seed.
 static func draft_shards(state: Dictionary, kind: String, catalog: Dictionary) -> Array:
+	# A program run that has picked a paradigm offers mostly its own cards (Paradigm Update B4).
+	if ProgramRewards.applies(state):
+		return ProgramRewards.draft_cards(state, kind, catalog)
 	var weights_by: Dictionary = catalog.config.rewards.shards[kind]
 	var rng := Rng.create(state.seed, "reward:%d:%d" % [state.layer, (state.visited as Array).size()])
 	var pool := ShardrunCatalog.sorted_values(catalog.shards).filter(

@@ -1,0 +1,189 @@
+{
+  "paradigm": "neutral",
+  "role": "order",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/shard-rewind",
+  "id": "rotate-bolts-plus",
+  "name": "Rotate+",
+  "summary": "The volley rotates by two: the last two bolts come first.",
+  "function": "rotate_bolts_plus",
+  "keywords": [],
+  "makes": "unsorted",
+  "art": "rotate-bolts",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the last bolt comes first",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a lone bolt stays",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "two bolts: one turn swaps them, two turns restore them",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

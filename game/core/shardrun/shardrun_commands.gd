@@ -231,6 +231,12 @@ static func _take(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 	if next.status != "reward" or not reward.has("shards"):
 		return _no("no-shards", "There are no shards to take.")
 	var shard_id: Variant = command.get("shard_id")
+	if shard_id == null and ProgramRewards.applies(next):
+		# Skipping the cards is a plan, and pays (ProgramCycles).
+		var pay := ProgramCycles.skip_pay(next, catalog)
+		ProgramCycles.earn(next, pay)
+		if pay > 0:
+			Shardrun.record(next, {"kind": "note", "amount": pay, "text": "You skip the cards: %d cycles." % pay})
 	if shard_id != null:
 		if not shard_id in reward.shards:
 			return _no("not-offered", "That shard was not offered.")

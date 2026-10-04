@@ -1,0 +1,52 @@
+{
+  "cards": {
+    "read-input": {
+      "subject": "A bronze funnel with three small foe-shaped shadows above it and three faceted crystals falling out of the bottom.",
+      "fallback_icon": "shardrun/shard-census"
+    },
+    "monte-carlo": {
+      "subject": "A bronze roulette wheel with crystal pockets, one pocket glowing, a small ivory ball resting in it.",
+      "fallback_icon": "shardrun/shard-spectrum-wheel"
+    },
+    "reservoir-sampling": {
+      "subject": "A small bronze water tank with three faceted crystals floating inside and a stream of crystals flowing past outside.",
+      "fallback_icon": "shardrun/card-dedupe"
+    },
+    "swap-ends": {
+      "subject": "Two faceted crystals exchanging places along two curved bronze arrows that form a circle.",
+      "fallback_icon": "shardrun/card-two-pointers"
+    },
+    "rotate-bolts": {
+      "subject": "A bronze wheel with faceted crystals around its rim and one bronze arrow showing a quarter turn.",
+      "fallback_icon": "shardrun/shard-rewind"
+    },
+    "enumerate-bolts": {
+      "subject": "A row of faceted crystals on a bronze rail, each with a growing row of small gold notches under it (notches only, no numerals).",
+      "fallback_icon": "shardrun/card-generator"
+    },
+    "slice-bolts": {
+      "subject": "A bronze knife cutting a row of faceted crystals after the fourth one, the cut end glowing.",
+      "fallback_icon": "shardrun/shard-sieve"
+    },
+    "pop-bolt": {
+      "subject": "A faceted crystal popping out of the end of a bronze tube like a cork, its glow streaming to the far end.",
+      "fallback_icon": "shardrun/shard-siphon"
+    },
+    "bit-shift": {
+      "subject": "A row of small square crystal bits sliding one step left on a bronze track, the leftmost bit falling off the edge.",
+      "fallback_icon": "shardrun/card-import-operator"
+    },
+    "sort-by-key": {
+      "subject": "Crystals of three colours being sorted into three neat bronze trays by colour, smallest to largest in each.",
+      "fallback_icon": "shardrun/card-merge-sort"
+    },
+    "range-source": {
+      "subject": "Four faceted crystals of evenly growing size standing on four evenly spaced bronze steps.",
+      "fallback_icon": "shardrun/card-literal"
+    },
+    "list-comprehension": {
+      "subject": "A bronze bracket frame with crystals passing through a small gate inside it, the weak ones turned away (no letters).",
+      "fallback_icon": "shardrun/card-higher-order"
+    }
+  }
+}

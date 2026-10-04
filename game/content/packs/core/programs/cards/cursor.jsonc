@@ -1,0 +1,199 @@
+{
+  "paradigm": "search-index",
+  "focus": "index",
+  "role": "source",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "constant",
+  "big_o": "O(1) per item",
+  "icon": "shardrun/card-two-pointers",
+  "id": "cursor",
+  "name": "Cursor",
+  "summary": "Takes the three weakest bolts from the index in order; each brings a 2-power bolt of its element.",
+  "function": "cursor",
+  "keywords": [],
+  "forge": {
+    "into": "cursor-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "the weakest bolts in order",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": [
+          {
+            "power": 2,
+            "element": "fire"
+          },
+          {
+            "power": 4,
+            "element": "none"
+          },
+          {
+            "power": 5,
+            "element": "frost"
+          },
+          {
+            "power": 9,
+            "element": "spark"
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "fire",
+          "from_index": true
+        },
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "from_index": true
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "frost",
+          "from_index": true
+        },
+        {
+          "power": 2,
+          "element": "frost"
+        }
+      ]
+    },
+    {
+      "name": "a short index gives what it has",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": [
+          {
+            "power": 7,
+            "element": "spark"
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "spark",
+          "from_index": true
+        },
+        {
+          "power": 2,
+          "element": "spark"
+        }
+      ]
+    },
+    {
+      "name": "an empty index gives nothing",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

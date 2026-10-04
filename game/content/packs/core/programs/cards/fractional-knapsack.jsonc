@@ -1,0 +1,368 @@
+{
+  "paradigm": "greedy",
+  "focus": "schedule",
+  "role": "shape",
+  "cost": 1,
+  "rarity": "common",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n)",
+  "icon": "shardrun/shard-prism",
+  "id": "fractional-knapsack",
+  "name": "Fractional Knapsack",
+  "summary": "Cuts the strongest bolt into exactly the front foe's HP plus a remainder, then the next strongest for the next foe.",
+  "function": "fractional_knapsack",
+  "keywords": [],
+  "makes": "unsorted",
+  "forge": {
+    "into": "fractional-knapsack-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "cut the strongest to fit the front foe",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 4,
+            "max": 4,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a weaker bolt stays whole",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 10,
+            "max": 10,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "more foes than bolts",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "fire"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "fire",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "a shield counts",
+      "bolts": [
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 2,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "block bolts are not cut",
+      "bolts": [
+        {
+          "power": 9,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 2,
+            "max": 2,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "no foes",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "cards": {
+    "range-query": {
+      "subject": "A bronze ruler with two gold brackets clamped on it, a cluster of cyan crystals glowing between the brackets.",
+      "fallback_icon": "shardrun/card-sliding-window"
+    },
+    "lower-bound-ward": {
+      "subject": "A bronze shield with one small amber crystal fitted exactly into a notch on its rim, a gold arrow pointing up to it.",
+      "fallback_icon": "shardrun/card-exhaustive-ward"
+    },
+    "write-ahead-log": {
+      "subject": "A rolled bronze scroll with small crystals slotted along its edge like beads, one large crystal waiting beside it.",
+      "fallback_icon": "shardrun/card-tabulate"
+    },
+    "cursor": {
+      "subject": "A bronze arrowhead cursor gliding along a shelf of crystals, the three it has passed glowing amber.",
+      "fallback_icon": "shardrun/card-two-pointers"
+    },
+    "bloom-filter": {
+      "subject": "A bronze sieve with a few lit holes, crystals passing through, one cyan crystal slipping through a hole marked with a tiny question-mark-shaped glint.",
+      "fallback_icon": "shardrun/card-dedupe"
+    },
+    "consistent-hashing": {
+      "subject": "A bronze ring with three small foe-shaped markers on its rim and crystals sitting at points around it, short gold arcs pointing clockwise.",
+      "fallback_icon": "shardrun/card-hash-aim"
+    },
+    "exponential-search": {
+      "subject": "A bronze frog mid-leap over a row of crystals, its jumps marked by gold arcs that double in length.",
+      "fallback_icon": "shardrun/card-binary-execute"
+    },
+    "ternary-search": {
+      "subject": "A bronze mountain silhouette made of stacked crystals, a gold flag planted on the single tallest crystal at the peak.",
+      "fallback_icon": "shardrun/card-kadane"
+    },
+    "counting-sort": {
+      "subject": "A bronze rack of pigeonholes, each holding a stack of identical crystals, the stacks of different heights.",
+      "fallback_icon": "shardrun/card-merge-sort"
+    }
+  }
+}

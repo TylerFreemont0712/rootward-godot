@@ -88,6 +88,8 @@ static func spend(state: Dictionary, battle: Dictionary, spell: Dictionary, cata
 			Shardrun.record(state, {"kind": "note", "amount": int(adds.count), "text": text})
 		if card.has("spends"):
 			(battle.globals as Dictionary)[card.spends] = 0
+		if card.has("draws_next"):
+			battle.bonus_draw = int(battle.get("bonus_draw", 0)) + int(card.draws_next)
 	spell.shards = []
 
 

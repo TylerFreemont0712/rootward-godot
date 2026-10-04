@@ -1,0 +1,4 @@
+function tailCallPlus(bolts, battle) {
+  // A tail call is the last thing a function does, so its frame can be reused: the callee costs no stack and no work.
+  return bolts;
+}

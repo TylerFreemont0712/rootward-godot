@@ -1,0 +1,4 @@
+Bolts b_tree_plus(Bolts bolts, const Battle& battle) {
+  // A B-tree keeps its keys sorted in wide nodes, so a database can find them with a few reads and keep them on disk.
+  return bolts;
+}

@@ -1,0 +1,170 @@
+{
+  "id": "catalan-plus",
+  "icon": "shardrun/card-fib-surge",
+  "name": "Catalan+",
+  "rarity": "rare",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "focus": "table",
+  "role": "source",
+  "complexity": "quadratic",
+  "big_o": "O(t²)",
+  "summary": "Appends a bolt of next turn's Catalan number (1, 2, 5, 14, 42, then 42 for good), built bottom up from the smaller ones: one turn ahead.",
+  "function": "catalan_plus",
+  "keywords": [],
+  "cap_n": 5,
+  "work_mode": "measured",
+  "art": "catalan",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "turn four: C4",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 4,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 42,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "the table stops at 42",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 9,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 42,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "turn one: C1",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

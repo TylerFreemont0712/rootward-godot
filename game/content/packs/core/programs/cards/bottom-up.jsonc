@@ -1,0 +1,107 @@
+{
+  "paradigm": "dynamic",
+  "focus": "table",
+  "role": "import",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "constant",
+  "big_o": "O(1)",
+  "icon": "shardrun/card-tabulate",
+  "id": "bottom-up",
+  "name": "from itertools import accumulate",
+  "summary": "For the rest of the fight, every program's seed gains a bolt of the Table's best row divided by 5. Build the answer from the smallest case up.",
+  "function": "bottom_up",
+  "keywords": [],
+  "module": "accumulate",
+  "line": {
+    "python": "from itertools import accumulate",
+    "javascript": "import { accumulate } from \"./itertools.js\";",
+    "cpp": "#include <numeric>"
+  },
+  "effects": [
+    {
+      "kind": "table-best-seed",
+      "divisor": 5
+    }
+  ],
+  "forge": {
+    "into": "bottom-up-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "the volley passes through",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "an empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

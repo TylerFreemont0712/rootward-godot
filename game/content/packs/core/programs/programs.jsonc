@@ -15,6 +15,51 @@
   // Work, in operations, above which a program times out: it lands nothing, and every foe acts. One per layer: the
   // Kernel gives you a short time slice, so a late program has to be efficient (ADR-0017). Relics may raise it.
   "budget": [4096, 2048, 1024],
+  // A program run's map for each layer (Paradigm Update B6): two more rows than the Shardrun's (a second guaranteed
+  // fight, and a fixed Registry two rows before the guardian's rest) and Issue rooms by weight. Merged over the layer
+  // (ProgramRules.catalog_for); Spellforge keeps its own maps.
+  "map": {
+    "salvage": {
+      "rows": 10,
+      "fixed_rows": { "0": "fight", "1": "fight", "4": "treasure", "7": "shop", "-1": "rest" },
+      "weights": { "fight": 44, "elite": 14, "issue": 18, "rest": 10, "forge": 10, "shop": 4, "treasure": 0 }
+    },
+    "heap": {
+      "rows": 11,
+      "fixed_rows": { "0": "fight", "1": "fight", "4": "treasure", "8": "shop", "-1": "rest" },
+      "weights": { "fight": 42, "elite": 16, "issue": 18, "rest": 10, "forge": 10, "shop": 4, "treasure": 0 }
+    },
+    "kernel": {
+      "rows": 11,
+      "fixed_rows": { "0": "fight", "1": "fight", "4": "treasure", "8": "shop", "-1": "rest" },
+      "weights": { "fight": 40, "elite": 18, "issue": 18, "rest": 10, "forge": 10, "shop": 4, "treasure": 0 }
+    }
+  },
+  // What a fight offers as cards (ProgramRewards, Paradigm Update B4). Each of the three cards comes from your own
+  // paradigm (50%), neutral (30%) or another paradigm (20%), and at least one is always your own; a guardian never
+  // offers another paradigm's. The focus's cards weigh double inside the own share. An elite adds a fourth card from
+  // another paradigm, one rarity up. Each reward without a rare card adds `pity` to the next rare chance. Skipping the
+  // cards pays `skip_cycles` per layer.
+  "rewards": {
+    "shares": { "own": 0.5, "neutral": 0.3, "other": 0.2 },
+    "focus_weight": 2.0,
+    "elite_extra": 1,
+    "pity": 0.03,
+    "skip_cycles": 10
+  },
+  // Cycles, the money (ProgramCycles, Paradigm Update B5): floor(base[kind] x layer x difficulty) a kill (a guardian's pay is
+  // shared by its bodies; a summoned foe pays `summoned`, never scaled), +exact, +initiative, +clean (no damage taken),
+  // +one_liner (won with one program); a treasure pays `treasure` x the layer's number.
+  "cycles": {
+    "base": { "fight": 6, "elite": 16, "boss": 45, "summoned": 1 },
+    "layer": [1.0, 1.25, 1.5, 1.75],
+    "difficulty": { "beginner": 1.0, "programmer": 1.25 },
+    "exact": 1,
+    "initiative": 1,
+    "clean": 5,
+    "one_liner": 3,
+    "treasure": 20
+  },
   // Initiative: a foe your program lands before (its tempo is not below the program's work) takes 25% more from it.
   "initiative": 0.25,
   // The strongest a bolt can be, and how many a volley can hold (more are dropped as fizzled).
@@ -41,7 +86,10 @@
         "divide",
         "merge-strike"
       ],
-      "pool": ["divide", "merge-strike", "quick-sort", "quickselect", "recursion-tree", "split", "import-math", "import-copy", "recursive-mirror", "base-case", "k-way-merge", "dutch-flag"],
+      "pool": ["divide", "merge-strike", "quick-sort", "quickselect", "recursion-tree", "split", "import-math",
+        "import-copy", "recursive-mirror", "base-case", "k-way-merge", "dutch-flag", "closest-pair",
+        "counting-inversions", "fast-power", "halve", "introsort", "karatsuba", "max-subarray", "median-of-medians",
+        "skyline", "tower-of-hanoi", "tail-call"],
       "law": "recurse",
       "swap": {
         "out": "fork",
@@ -90,7 +138,10 @@
         "prefix-sum",
         "binary-execute"
       ],
-      "pool": ["prefix-sum", "binary-execute", "hash-merge", "bisect-insert", "dedupe", "two-pointers", "hash-aim", "import-bisect", "import-collections", "run-length", "lookup", "two-sum", "interpolation-search"],
+      "pool": ["prefix-sum", "binary-execute", "hash-merge", "bisect-insert", "dedupe", "two-pointers", "hash-aim",
+        "import-bisect", "import-collections", "run-length", "lookup", "two-sum", "interpolation-search",
+        "bloom-filter", "consistent-hashing", "counting-sort", "cursor", "exponential-search", "lower-bound-ward",
+        "range-query", "ternary-search", "write-ahead-log", "b-tree"],
       "law": "the-index",
       "swap": {
         "out": "kindle",
@@ -139,7 +190,10 @@
         "greedy-assign",
         "take-max"
       ],
-      "pool": ["greedy-assign", "take-max", "sweep", "make-change", "huffman", "load-balance", "greedy-ward", "import-heapq", "stable-partition", "chain-lightning", "activity-selection", "top-k", "first-fit-decreasing"],
+      "pool": ["greedy-assign", "take-max", "sweep", "make-change", "huffman", "load-balance", "greedy-ward",
+        "import-heapq", "stable-partition", "chain-lightning", "activity-selection", "top-k", "first-fit-decreasing",
+        "boyer-moore", "brace", "break-loop", "fractional-knapsack", "heap-sort", "heapify", "increase-key",
+        "job-sequencing", "minimum-arrows", "nearest-neighbour", "stock-trader", "task-scheduler"],
       "law": "local-optimum",
       "swap": {
         "out": "round-robin",
@@ -188,7 +242,10 @@
         "pairwise",
         "exhaustive-kill"
       ],
-      "pool": ["pairwise", "exhaustive-kill", "bubble-sort", "power-set", "linear-search", "exhaustive-ward", "import-itertools", "cartesian-product", "backtracking", "nested-strike"],
+      "pool": ["pairwise", "exhaustive-kill", "bubble-sort", "power-set", "linear-search", "exhaustive-ward",
+        "import-itertools", "cartesian-product", "backtracking", "nested-strike", "all-pairs-rank", "bogosort",
+        "branch-and-bound", "combinations", "grid-search", "meet-in-the-middle", "n-queens", "permutations",
+        "selection-sort"],
       "law": "throw-hardware-at-it",
       "swap": {
         "out": "amplify",
@@ -237,7 +294,10 @@
         "tabulate",
         "knapsack-strike"
       ],
-      "pool": ["tabulate", "knapsack-strike", "fib-surge", "kadane", "lis-strike", "pascal-row", "knapsack-ward", "import-cache", "sliding-window", "memo-strike", "recurrence", "coin-change", "global-total", "release"],
+      "pool": ["tabulate", "knapsack-strike", "fib-surge", "kadane", "lis-strike", "pascal-row", "knapsack-ward",
+        "import-cache", "sliding-window", "memo-strike", "recurrence", "coin-change", "global-total", "release",
+        "catalan", "edit-distance", "equal-partition", "grid-paths", "lcs", "memo-ward", "rod-cutting", "table-ward",
+        "unbounded-knapsack", "bottom-up", "global-total", "release"],
       "law": "the-table",
       "swap": {
         "out": "ward",
@@ -278,7 +338,11 @@
     }
   ],
   // Cards any pack can offer beside the paradigm's own.
-  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "round-robin", "ward", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "generator", "higher-order", "import-operator", "fire-constant", "frost-constant", "spark-constant", "zip-ward"],
+  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "round-robin", "ward", "salvo", "literal",
+    "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "generator", "higher-order", "import-operator",
+    "fire-constant", "frost-constant", "spark-constant", "zip-ward", "bit-shift", "enumerate-bolts",
+    "list-comprehension", "monte-carlo", "pop-bolt", "range-source", "read-input", "reservoir-sampling",
+    "rotate-bolts", "slice-bolts", "sort-by-key", "swap-ends", "prefetch"],
   // Programming words for what a card does in the deck (ADR-0018), shown on the card with these meanings.
   "keywords": {
     "once": "Runs once a fight: after its program it leaves the deck until the next fight.",
@@ -357,11 +421,11 @@
       "battle_music": "music-battle-kernel",
       "boss_music": "music-guardian-final",
       "rest_music": "music-rest",
-      "rows": 9,
+      "rows": 11,
       "columns": 5,
       "paths": 6,
-      "fixed_rows": { "0": "fight", "4": "treasure", "-1": "rest" },
-      "weights": { "fight": 46, "elite": 20, "rest": 12, "forge": 12, "treasure": 0 },
+      "fixed_rows": { "0": "fight", "1": "fight", "4": "treasure", "8": "shop", "-1": "rest" },
+      "weights": { "fight": 38, "elite": 20, "issue": 18, "rest": 10, "forge": 10, "shop": 4, "treasure": 0 },
       "elite_from_row": 2,
       "encounters": {
         "fight": [

@@ -67,6 +67,8 @@ static func modifiers(state: Dictionary, catalog: Dictionary) -> Dictionary:
 		"recurse_depth": 0,
 		"rejoin_power": 0,
 		"pivot_factor": 1.0,
+		"table_best_divisor": 0,
+		"index_keep": 0,
 	}
 	for relic_id: String in state.get("relics", []):
 		for effect: Dictionary in (catalog.relics.get(relic_id, {}) as Dictionary).get("effects", []):
@@ -119,6 +121,14 @@ static func _apply(m: Dictionary, effect: Dictionary, source := "") -> void:
 			m.recurse_depth = maxi(int(m.recurse_depth), int(effect.depth))
 		"pivot-mark":
 			m.pivot_factor *= float(effect.factor)
+		"table-best-seed":
+			m.table_best_divisor = int(effect.divisor)
+		"index-open":
+			m.index = true
+		"index-size-add":
+			m.index_size += int(effect.size)
+		"index-keep":
+			m.index_keep = maxi(int(m.index_keep), int(effect.count))
 		"seed-bolts":
 			(m.seed_bolts as Array).append({"count": int(effect.count), "power": int(effect.power)})
 		"seed-power", "first-turn-mana", "element-power", "sorted-landing", "block-per-card", "kill-heal":
@@ -175,6 +185,12 @@ static func seed(base: Array, state: Dictionary, catalog: Dictionary) -> Array:
 		var previous := int(rows.back())
 		var before := int(rows[-2]) if rows.size() >= 2 else 0
 		bolts.append({"power": (previous + before) / int(m.table_divisor), "element": "none"})
+	if int(m.table_best_divisor) > 0 and not rows.is_empty():
+		var best := 0
+		for row: int in rows:
+			best = maxi(best, row)
+		if best / int(m.table_best_divisor) > 0:
+			bolts.append({"power": best / int(m.table_best_divisor), "element": "none"})
 	if m.index:
 		var bank: Array = battle.get("index", [])
 		for i in mini(int(m.index_seed), bank.size()):
@@ -296,6 +312,12 @@ static func after_cast(state: Dictionary, battle: Dictionary, card_ids: Array, k
 
 ## A fight begins: a relic's extra mana on the first turn.
 static func on_battle_start(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
+	ProgramCycles.on_battle_start(state, battle)
+	# What a B-Tree kept of the last fight's Index starts this one's (ProgramMemory.carry_over).
+	var kept: Array = state.get("kept_index", [])
+	if not kept.is_empty():
+		battle.index = kept.duplicate(true)
+		state.kept_index = []
 	var m := modifiers(state, catalog)
 	var extra := int(m.first_turn_mana)
 	if extra > 0:

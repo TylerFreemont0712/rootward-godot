@@ -1,0 +1,157 @@
+{
+  "paradigm": "neutral",
+  "role": "shape",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "constant",
+  "big_o": "O(k)",
+  "icon": "shardrun/shard-sieve",
+  "id": "slice-bolts",
+  "name": "Slice",
+  "summary": "Keeps the first four bolts (bolts[:4]), each gaining 2.",
+  "function": "slice_bolts",
+  "keywords": [],
+  "forge": {
+    "into": "slice-bolts-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "only the first four stay",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a short volley is kept whole",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 9,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "paradigm": "search-index",
+  "focus": "bisect",
+  "role": "order",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n + k)",
+  "icon": "shardrun/card-merge-sort",
+  "id": "counting-sort",
+  "name": "Counting Sort",
+  "summary": "Sorts weakest first by counting how many bolts have each power, never comparing two. Costs n plus the strongest bolt's power.",
+  "function": "counting_sort",
+  "keywords": [],
+  "makes": "sorted",
+  "work_mode": "measured",
+  "forge": {
+    "into": "counting-sort-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "weakest first, equal bolts keep their order",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 1,
+          "element": "frost"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "spark"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "frost"
+        },
+        {
+          "power": 2,
+          "element": "spark"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "one huge bolt makes the count long",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 70,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 70,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 70,
+          "element": "none"
+        },
+        {
+          "power": 70,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

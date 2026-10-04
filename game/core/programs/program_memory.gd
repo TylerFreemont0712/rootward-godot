@@ -11,6 +11,15 @@ static func remaining_index(state: Dictionary, catalog: Dictionary) -> Array:
 	return bank
 
 
+## A B-Tree keeps the strongest bolts of the Index into the next fight (state.kept_index, read when it begins).
+static func carry_over(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
+	var keep := int(ProgramRelics.modifiers(state, catalog).index_keep)
+	if keep <= 0:
+		return
+	var bank: Array = battle.get("index", [])
+	state.kept_index = bank.slice(maxi(0, bank.size() - keep)).duplicate(true)
+
+
 static func begin(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
 	var m := ProgramRelics.modifiers(state, catalog)
 	if m.index:

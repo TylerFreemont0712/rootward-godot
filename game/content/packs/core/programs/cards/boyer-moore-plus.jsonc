@@ -1,0 +1,237 @@
+{
+  "paradigm": "greedy",
+  "focus": "sprint",
+  "role": "shape",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/shard-census",
+  "id": "boyer-moore-plus",
+  "name": "Boyer-Moore Vote+",
+  "summary": "One pass and one counter find the volley's majority element. If there is one, every bolt becomes that element, 2 stronger.",
+  "function": "boyer_moore_plus",
+  "keywords": [],
+  "art": "boyer-moore",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "a majority takes the volley",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 1,
+          "element": "spark"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "fire"
+        },
+        {
+          "power": 7,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "the majority can arrive late",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "frost"
+        },
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "no majority changes nothing",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 2,
+          "element": "frost"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "frost"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 2,
+          "element": "frost"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "frost"
+        }
+      ]
+    },
+    {
+      "name": "one bolt is its own majority",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "spark"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "spark"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

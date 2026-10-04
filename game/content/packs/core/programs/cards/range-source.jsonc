@@ -1,0 +1,133 @@
+{
+  "paradigm": "neutral",
+  "role": "source",
+  "cost": 1,
+  "rarity": "common",
+  "complexity": "constant",
+  "big_o": "O(k)",
+  "icon": "shardrun/card-literal",
+  "id": "range-source",
+  "name": "Range",
+  "summary": "range(2, 10, 2): four more bolts, 2, 4, 6 and 8, rising by the step.",
+  "function": "range_source",
+  "keywords": [],
+  "forge": {
+    "into": "range-source-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "four rising bolts",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "they join the volley",
+      "bolts": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

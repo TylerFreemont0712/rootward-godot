@@ -45,6 +45,7 @@ static func catalog_for(catalog: Dictionary) -> Dictionary:
 	var layers: Array = []
 	for index in (config.layers as Array).size():
 		var layer: Dictionary = (config.layers[index] as Dictionary).duplicate()
+		layer.merge(programs.config.get("map", {}).get(layer.id, {}), true)
 		if not foe_hp.is_empty():
 			layer.foe_hp = float(foe_hp[mini(index, foe_hp.size() - 1)])
 		if encounters.has(layer.id):
@@ -112,6 +113,8 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 	var ran: Array = (state.get("battle", {}) as Dictionary).get("ran", [])
 	var order := "sorted"
 	var out: Array[Dictionary] = []
+	# A tail call (waives_next) lets the cards after it run without a frame of their own: no work.
+	var waived := 0
 	for index in trace.size():
 		var step: Dictionary = trace[index]
 		var card: Dictionary = catalog.shards.get(step.shard, {})
@@ -128,6 +131,10 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 			work = maxi(1, int(step.get("measured", work)))
 		if step.get("pruned", false):
 			work = 0
+		if waived > 0:
+			work = 0
+			waived -= 1
+		waived += int(card.get("waives_next", 0))
 		if (int(step.get("slot", index)) == 0 and m.free_first_work) or (m.jit and step.shard in ran):
 			work = 0
 		work = floori(work * float(m.work_factor))

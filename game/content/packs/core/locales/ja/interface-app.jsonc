@@ -230,6 +230,8 @@
   {"en": "STRIKE", "to": "攻撃"},
   {"en": "GUARD", "to": "防御"},
   {"en": "IMPORT", "to": "インポート"},
+  {"en": "UTILITY", "to": "ユーティリティ"},
+  {"en": "does something besides bolts", "to": "ボルトのほかのことをする"},
   {"en": "makes bolts", "to": "ボルトを作る"},
   {"en": "changes bolts", "to": "ボルトを変える"},
   {"en": "puts the volley in order", "to": "一斉射（いっせいしゃ）をならべる"},

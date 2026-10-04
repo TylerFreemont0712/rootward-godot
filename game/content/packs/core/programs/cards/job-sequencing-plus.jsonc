@@ -1,0 +1,367 @@
+{
+  "paradigm": "greedy",
+  "focus": "sprint",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n)",
+  "icon": "shardrun/shard-triage",
+  "id": "job-sequencing-plus",
+  "name": "Job Sequencing+",
+  "summary": "Each foe is a job. Foes are ranked by profit per HP, the damage they intend for each point of HP they have, then by profit.",
+  "function": "job_sequencing_plus",
+  "keywords": [],
+  "art": "job-sequencing",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "the biggest threat first",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 4,
+            "max": 4,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 9,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "a job that cannot beat its deadline is dropped",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 8,
+              "hits": 1,
+              "tempo": 4
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 2,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "profit per HP beats raw profit",
+      "bolts": [
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 10,
+              "hits": 1,
+              "tempo": 60
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 2,
+            "max": 2,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 8,
+              "hits": 1,
+              "tempo": 60
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 6,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "no intent to read",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 3,
+            "max": 3,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "no foes",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "cards": {
+    "combinations": {
+      "subject": "three faceted crystals bound together by a bronze triangle clasp, with a ghostly fan of other bronze triangle clasps fading behind it",
+      "fallback_icon": "shardrun/card-power-set"
+    },
+    "permutations": {
+      "subject": "a bronze revolving drum with six faceted crystal chambers, spun mid-motion, the crystals blurring into a fan",
+      "fallback_icon": "shardrun/card-exhaustive-kill"
+    },
+    "grid-search": {
+      "subject": "a flat bronze plate with a four-by-four lattice of small faceted crystals, brightening from pale cyan in one corner to deep amber in the opposite corner",
+      "fallback_icon": "shardrun/card-tabulate"
+    },
+    "n-queens": {
+      "subject": "a small bronze chessboard corner with three cyan crystal queens on it, none sharing a row or diagonal, and faint gold lines showing their reach",
+      "fallback_icon": "shardrun/card-pascal-row"
+    },
+    "branch-and-bound": {
+      "subject": "a bronze shield with a tree etched into it, most branches crossed out with short gold strokes, one branch leading to a glowing cyan crystal at its tip",
+      "fallback_icon": "shardrun/card-exhaustive-ward"
+    },
+    "meet-in-the-middle": {
+      "subject": "two bronze bridges reaching toward each other from left and right, each carrying a faceted crystal, meeting with a bright amber flash at the centre",
+      "fallback_icon": "shardrun/card-two-pointers"
+    },
+    "bogosort": {
+      "subject": "a bronze dice cup tipped over, faceted crystals tumbling out in every direction, one tiny neat sorted row of crystals among them",
+      "fallback_icon": "shardrun/shard-scatter"
+    },
+    "selection-sort": {
+      "subject": "a bronze pointer hand picking the smallest faceted crystal out of a jumbled row and placing it on a shelf at the left",
+      "fallback_icon": "shardrun/card-bubble-sort"
+    },
+    "all-pairs-rank": {
+      "subject": "a ring of five faceted crystals with thin gold lines joining every pair, forming a star polygon",
+      "fallback_icon": "shardrun/shard-cross-product"
+    }
+  }
+}

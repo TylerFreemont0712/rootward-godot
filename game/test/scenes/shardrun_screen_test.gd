@@ -119,7 +119,11 @@ func test_a_program_run_is_drafted_and_fought_through_the_screen() -> void:
 			)
 			var lines: Array = (code[0] as RuneCode).get("_lines")
 			var called := lines.filter(func(line: Dictionary) -> bool: return String(line.key).begins_with("call:"))
-			assert_int(called.size()).is_equal(calls.size())
+			# An import is a line at the top of the file, not a call (ADR-0018).
+			var steps := calls.filter(
+				func(id: String) -> bool: return session.catalog.shards[id].get("role", "") != "import"
+			)
+			assert_int(called.size()).is_equal(steps.size())
 			written = maxi(written, called.size())
 	for key: String in [
 		"draft", "command:pick-paradigm", "command:draft-card", "command:compose", "command:cast", "reward"

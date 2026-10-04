@@ -1,0 +1,192 @@
+{
+  "paradigm": "search-index",
+  "focus": "hash",
+  "role": "shape",
+  "cost": 0,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/card-dedupe",
+  "id": "bloom-filter",
+  "name": "Bloom Filter",
+  "summary": "One pass marks the elements the foes might be weak to; every bolt that might match gains 2. One false positive, picked by the turn, gains it wrongly; a real match is never missed.",
+  "function": "bloom_filter",
+  "keywords": [],
+  "forge": {
+    "into": "bloom-filter-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "weak elements gain, and one false positive slips through",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "frost"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [
+              "fire"
+            ],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "no weakness marks nothing",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        }
+      ]
+    },
+    {
+      "name": "every bolt really matches",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "fire"
+        }
+      ],
+      "battle": {
+        "turn": 2,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 12,
+            "max": 12,
+            "shield": 0,
+            "weak": [
+              "fire"
+            ],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [
+              "frost"
+            ],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

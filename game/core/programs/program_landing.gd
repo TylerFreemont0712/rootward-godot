@@ -139,6 +139,7 @@ static func resolve(
 			ProgramMemory.stash(battle, bolt, int(own.wasted), relics)
 			if int(foe.hp) == 0 and int(own.wasted) == 0:
 				exact_damage += int(damage_by_foe.get(foe.uid, 0))
+				ProgramCycles.mark(battle, foe.uid, "exact")
 				battle.block += int(relics.exact_kill_block)
 				gathered += int(relics.exact_kill_block)
 			GuardianLanding.count(plan, foe, int(own.dealt))
@@ -175,6 +176,7 @@ static func resolve(
 		if int(foe.hp) == 0:
 			if damage == landed:
 				exact_damage += int(damage_by_foe.get(foe.uid, 0))
+				ProgramCycles.mark(battle, foe.uid, "exact")
 				battle.block += int(relics.exact_kill_block)
 				gathered += int(relics.exact_kill_block)
 			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
@@ -189,6 +191,7 @@ static func resolve(
 				damage_by_foe[uid] = int(damage_by_foe.get(uid, 0)) + int(flowed.damage[uid])
 			for uid: String in flowed.exact:
 				exact_damage += int(damage_by_foe.get(uid, 0))
+				ProgramCycles.mark(battle, uid, "exact")
 				battle.block += int(relics.exact_kill_block)
 				gathered += int(relics.exact_kill_block)
 		wasted += spill
@@ -208,6 +211,7 @@ static func resolve(
 	for foe: Dictionary in alive:
 		if int(foe.hp) == 0 and foe.uid in out_sped and not foe.uid in acted:
 			initiative_kills += 1
+			ProgramCycles.mark(battle, String(foe.uid), "initiative")
 	ProgramMemory.initiative_mana(battle, initiative_kills, relics)
 	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
 	return {

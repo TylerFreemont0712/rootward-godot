@@ -13,6 +13,7 @@ const ROLES := {
 	"strike": {"word": "STRIKE", "colour": "#ff7a59", "hint": "aims bolts at foes"},
 	"guard": {"word": "GUARD", "colour": "#7fb8ff", "hint": "turns bolts into block"},
 	"import": {"word": "IMPORT", "colour": "#ff9ecf", "hint": "a line at the top, for the rest of the fight"},
+	"utility": {"word": "UTILITY", "colour": "#9fb4c8", "hint": "does something besides bolts"},
 }
 
 var role := ""
@@ -104,6 +105,20 @@ func _glyph(centre: Vector2, side: float, tint: Color) -> void:
 			)
 			draw_polyline(shield, tint, line, true)
 			draw_line(centre + Vector2(0, -r * 0.55), centre + Vector2(0, r * 0.55), tint, line, true)
+		"utility":
+			for offset: float in [-0.45, 0.1]:
+				draw_polyline(
+					PackedVector2Array(
+						[
+							centre + Vector2(r * offset - r * 0.1, -r * 0.7),
+							centre + Vector2(r * offset + r * 0.45, 0),
+							centre + Vector2(r * offset - r * 0.1, r * 0.7),
+						]
+					),
+					tint,
+					line,
+					true
+				)
 		"import":
 			var tray := PackedVector2Array(
 				[

@@ -1,0 +1,40 @@
+{
+  "cards": {
+    "grid-paths": {
+      "subject": "A bronze lattice of square tiles with two glowing routes from one corner to the opposite corner, one amber and one cyan, crossing in the middle.",
+      "fallback_icon": "shardrun/card-pascal-row"
+    },
+    "memo-ward": {
+      "subject": "A bronze shield with a small brass ledger book set into its centre and a cyan crystal bookmark sticking out of it.",
+      "fallback_icon": "shardrun/card-exhaustive-ward"
+    },
+    "lcs": {
+      "subject": "Two parallel bronze rails of crystals, the matching crystals in both rows joined by bright gold threads.",
+      "fallback_icon": "shardrun/card-tabulate"
+    },
+    "catalan": {
+      "subject": "A bronze bracket pair drawn as two curved metal arcs, nested twice, with a cyan crystal held at the centre.",
+      "fallback_icon": "shardrun/card-fib-surge"
+    },
+    "table-ward": {
+      "subject": "A bronze tablet shield with a small grid of glowing cells, the last cell bright cyan.",
+      "fallback_icon": "shardrun/card-exhaustive-ward"
+    },
+    "rod-cutting": {
+      "subject": "A long amber crystal rod on a bronze workbench, cut by two thin gold lines into three segments of different lengths.",
+      "fallback_icon": "shardrun/card-kadane"
+    },
+    "equal-partition": {
+      "subject": "A bronze balance scale perfectly level, each pan holding a different number of crystals.",
+      "fallback_icon": "shardrun/card-make-change"
+    },
+    "unbounded-knapsack": {
+      "subject": "A bronze knapsack with an endless stream of identical cyan crystals pouring into it from a small brass tap.",
+      "fallback_icon": "shardrun/card-make-change"
+    },
+    "edit-distance": {
+      "subject": "Two short bronze strips of crystals one above the other, small gold arrows linking each upper crystal to its partner below, one crystal struck through with a line.",
+      "fallback_icon": "shardrun/card-lis-strike"
+    }
+  }
+}

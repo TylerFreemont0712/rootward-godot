@@ -1,0 +1,185 @@
+{
+  "id": "grid-paths-plus",
+  "icon": "shardrun/card-pascal-row",
+  "name": "Grid Paths+",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "dynamic",
+  "focus": "memo",
+  "role": "source",
+  "complexity": "exponential",
+  "big_o": "O(2^(2k)) naive, O(k²) cached",
+  "summary": "Counts the paths across a 5x5 grid by recursion: 252 of them, one bolt of power 25. Naive recursion is exponential; with functools.cache in force every square is solved once.",
+  "function": "grid_paths_plus",
+  "keywords": [],
+  "cap_n": 10,
+  "work_mode": "measured",
+  "art": "grid-paths",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "naive recursion, no cache",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "imports": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 25,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "functools.cache in force: same answer",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "imports": [
+          "functools"
+        ]
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 25,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "no foes needed",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [],
+        "imports": [
+          "math"
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 25,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 25,
+          "element": "none"
+        }
+      ]
+    }
+  ]
+}

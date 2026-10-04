@@ -1,0 +1,148 @@
+{
+  "paradigm": "neutral",
+  "role": "shape",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/card-import-operator",
+  "id": "bit-shift-plus",
+  "name": "Bit Shift+",
+  "summary": "Every bolt doubles (bolt << 1), but a result past 63 wraps around (& 63).",
+  "function": "bit_shift_plus",
+  "keywords": [],
+  "makes": "unsorted",
+  "art": "bit-shift",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "doubling, with a wrap past the top",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 12,
+          "element": "none"
+        },
+        {
+          "power": 16,
+          "element": "none"
+        },
+        {
+          "power": 20,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 24,
+          "element": "none"
+        },
+        {
+          "power": 32,
+          "element": "none"
+        },
+        {
+          "power": 40,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "a power of 32 wraps to nothing",
+      "bolts": [
+        {
+          "power": 32,
+          "element": "none"
+        },
+        {
+          "power": 40,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 20
+            },
+            "hits": 0
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 0,
+          "element": "none"
+        },
+        {
+          "power": 16,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

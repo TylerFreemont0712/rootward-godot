@@ -6,9 +6,11 @@ extends RefCounted
 ##
 ## A map is {nodes: [{id, row, col, kind}], edges: [[from, to]]}.
 
-const ROOM_KINDS: Array[String] = ["fight", "elite", "rest", "forge", "treasure"]
+## The Registry (a shop) and an Issue (an event) only appear in a program run: a layer with no weight for them never
+## draws one, so Spellforge's maps come out exactly as before.
+const ROOM_KINDS: Array[String] = ["fight", "elite", "rest", "forge", "treasure", "shop", "issue"]
 ## Kinds that should not follow themselves along a path: two rests or two elites in a row waste a choice.
-const NO_REPEAT: Array[String] = ["elite", "rest", "forge", "treasure"]
+const NO_REPEAT: Array[String] = ["elite", "rest", "forge", "treasure", "shop", "issue"]
 ## Attempts to find a kind that does not repeat its parent before settling for a fight.
 const KIND_ATTEMPTS := 8
 
@@ -118,7 +120,7 @@ static func _pick_kind(layer: Dictionary, row: int, parents: Array, kinds: Dicti
 	for kind in ROOM_KINDS:
 		if kind != "elite" or row >= int(layer.get("elite_from_row", 3)):
 			candidates.append(kind)
-			weights.append(float(layer.weights[kind]))
+			weights.append(float((layer.weights as Dictionary).get(kind, 0.0)))
 	for attempt in KIND_ATTEMPTS:
 		var index := Rng.pick_weighted(weights, rng.next())
 		var kind := "fight" if index < 0 else candidates[index]

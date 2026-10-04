@@ -1,0 +1,693 @@
+{
+ "comfy_url": "http://127.0.0.1:8188",
+ "styles": {
+  "program-icon": {
+   "checkpoint": "sd_xl_base_1.0.safetensors",
+   "prefix": "(single object:1.3), fantasy rpg game item icon, polished digital painting, bronze and gold metalwork, faceted glowing crystals, bold dark plum outline, ",
+   "suffix": ", centered, whole object visible, plain white background, clean silhouette",
+   "negative": "blurry, text, letters, words, numbers, watermark, signature, logo, person, people, woman, man, character, body, face, hands, scenery, landscape, multiple objects, collage, tileset, grid, frame, border, cropped, photo, realistic, 3d render",
+   "width": 1024,
+   "height": 1024,
+   "steps": 28,
+   "cfg": 6,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": true,
+   "candidates": 1,
+   "post": {
+    "kind": "picture",
+    "size": [
+     320,
+     320
+    ],
+    "transparent": true,
+    "colors": 160,
+    "saturation": 1.08
+   }
+  },
+  "program-backdrop": {
+   "checkpoint": "novaAnimeXL_ilV190.safetensors",
+   "prefix": "masterpiece, best quality, very aesthetic, detailed fantasy game background illustration, ",
+   "suffix": ", warm lamplight, rich bronze and amber tones, no people, no text",
+   "negative": "worst quality, low quality, blurry, text, letters, watermark, signature, person, character, face, modern",
+   "width": 1344,
+   "height": 768,
+   "steps": 28,
+   "cfg": 6,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": false,
+   "candidates": 2,
+   "post": {
+    "kind": "picture",
+    "size": [
+     1344,
+     768
+    ],
+    "colors": 128
+   }
+  }
+ },
+ "assets": [
+  {
+   "id": "shardrun-card-activity-selection",
+   "out": "shardrun/card-activity-selection",
+   "style": "program-icon",
+   "seed": 321559,
+   "prompt": "(a bronze hourglass on its side with three crystal bolts racing out of its narrow neck in a row, the first one bright amber, the others cyan; a short golden arrow ahead of them.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-all-pairs-rank",
+   "out": "shardrun/card-all-pairs-rank",
+   "style": "program-icon",
+   "seed": 305625,
+   "prompt": "(a ring of five faceted crystals with thin gold lines joining every pair, forming a star polygon:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-b-tree",
+   "out": "shardrun/card-b-tree",
+   "style": "program-icon",
+   "seed": 280856,
+   "prompt": "(a wide bronze tree with short thick branches, each branch holding a small tray of three ordered faceted crystals:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-backtracking",
+   "out": "shardrun/card-backtracking",
+   "style": "program-icon",
+   "seed": 301843,
+   "prompt": "(a bronze branching tree whose limbs end in crystals; two limbs are snapped off with clean cuts and fade to grey, one limb glows amber to its tip.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-base-case",
+   "out": "shardrun/card-base-case",
+   "style": "program-icon",
+   "seed": 289939,
+   "prompt": "(the bottom of a bronze recursive ladder, its last rung holding two bright doubled crystals, the rungs above fading upward.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-bit-shift",
+   "out": "shardrun/card-bit-shift",
+   "style": "program-icon",
+   "seed": 291117,
+   "prompt": "(A row of small square crystal bits sliding one step left on a bronze track, the leftmost bit falling off the edge.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-bloom-filter",
+   "out": "shardrun/card-bloom-filter",
+   "style": "program-icon",
+   "seed": 301099,
+   "prompt": "(A bronze sieve with a few lit holes, crystals passing through, one cyan crystal slipping through a hole marked with a tiny question-mark-shaped glint.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-bogosort",
+   "out": "shardrun/card-bogosort",
+   "style": "program-icon",
+   "seed": 290280,
+   "prompt": "(a bronze dice cup tipped over, faceted crystals tumbling out in every direction, one tiny neat sorted row of crystals among them:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-bottom-up",
+   "out": "shardrun/card-bottom-up",
+   "style": "program-icon",
+   "seed": 292016,
+   "prompt": "(a short bronze staircase of three stone steps, each step holding a larger faceted crystal than the one below:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-boyer-moore",
+   "out": "shardrun/card-boyer-moore",
+   "style": "program-icon",
+   "seed": 298247,
+   "prompt": "(a bronze ballot box with three crystals dropping in, two amber and one cyan, and a single large amber crystal rising out of its slot:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-brace",
+   "out": "shardrun/card-brace",
+   "style": "program-icon",
+   "seed": 278810,
+   "prompt": "(a small bronze kite shield made of three stacked pale cyan crystal shards, the smallest at the top, a bold rim around them:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-branch-and-bound",
+   "out": "shardrun/card-branch-and-bound",
+   "style": "program-icon",
+   "seed": 311236,
+   "prompt": "(a bronze shield with a tree etched into it, most branches crossed out with short gold strokes, one branch leading to a glowing cyan crystal at its tip:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-break-loop",
+   "out": "shardrun/card-break-loop",
+   "style": "program-icon",
+   "seed": 294155,
+   "prompt": "(a row of four cyan crystals with a broad bronze bar slammed down between the second and third, the first two glowing amber; a small spark where the bar lands:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-cartesian-product",
+   "out": "shardrun/card-cartesian-product",
+   "style": "program-icon",
+   "seed": 317839,
+   "prompt": "(a bronze grid frame of three by three sockets, a crystal glowing in every socket, rows tinted amber and columns tinted cyan where they cross.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-catalan",
+   "out": "shardrun/card-catalan",
+   "style": "program-icon",
+   "seed": 285475,
+   "prompt": "(A bronze bracket pair drawn as two curved metal arcs, nested twice, with a cyan crystal held at the centre.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-closest-pair",
+   "out": "shardrun/card-closest-pair",
+   "style": "program-icon",
+   "seed": 301409,
+   "prompt": "(two nearly identical cyan faceted crystals drawn together by a bronze caliper, a spark between them:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-coin-change",
+   "out": "shardrun/card-coin-change",
+   "style": "program-icon",
+   "seed": 296635,
+   "prompt": "(three bronze coins of different sizes stacked in a precise tower that exactly reaches a gold notch on a measuring rod beside them.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-combinations",
+   "out": "shardrun/card-combinations",
+   "style": "program-icon",
+   "seed": 302897,
+   "prompt": "(three faceted crystals bound together by a bronze triangle clasp, with a ghostly fan of other bronze triangle clasps fading behind it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-consistent-hashing",
+   "out": "shardrun/card-consistent-hashing",
+   "style": "program-icon",
+   "seed": 321342,
+   "prompt": "(A bronze ring with three small foe-shaped markers on its rim and crystals sitting at points around it, short gold arcs pointing clockwise.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-counting-inversions",
+   "out": "shardrun/card-counting-inversions",
+   "style": "program-icon",
+   "seed": 325651,
+   "prompt": "(two faceted crystals in a row with small gold arrows crossing over each other between them, the pair glowing where the arrows cross:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-counting-sort",
+   "out": "shardrun/card-counting-sort",
+   "style": "program-icon",
+   "seed": 305563,
+   "prompt": "(A bronze rack of pigeonholes, each holding a stack of identical crystals, the stacks of different heights.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-cursor",
+   "out": "shardrun/card-cursor",
+   "style": "program-icon",
+   "seed": 283801,
+   "prompt": "(A bronze arrowhead cursor gliding along a shelf of crystals, the three it has passed glowing amber.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-dutch-flag",
+   "out": "shardrun/card-dutch-flag",
+   "style": "program-icon",
+   "seed": 293752,
+   "prompt": "(three vertical bands of crystals in a bronze frame, amber, ivory and cyan, the middle band a single bright crystal.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-edit-distance",
+   "out": "shardrun/card-edit-distance",
+   "style": "program-icon",
+   "seed": 303641,
+   "prompt": "(Two short bronze strips of crystals one above the other, small gold arrows linking each upper crystal to its partner below, one crystal struck through with a line.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-enumerate-bolts",
+   "out": "shardrun/card-enumerate-bolts",
+   "style": "program-icon",
+   "seed": 311360,
+   "prompt": "(A row of faceted crystals on a bronze rail, each with a growing row of small gold notches under it (notches only, no numerals).:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-equal-partition",
+   "out": "shardrun/card-equal-partition",
+   "style": "program-icon",
+   "seed": 311608,
+   "prompt": "(A bronze balance scale perfectly level, each pan holding a different number of crystals.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-exponential-search",
+   "out": "shardrun/card-exponential-search",
+   "style": "program-icon",
+   "seed": 320877,
+   "prompt": "(A bronze frog mid-leap over a row of crystals, its jumps marked by gold arcs that double in length.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-fast-power",
+   "out": "shardrun/card-fast-power",
+   "style": "program-icon",
+   "seed": 295023,
+   "prompt": "(a faceted crystal inside a bronze frame inside a larger bronze frame inside a larger one, each frame twice the last, glowing hotter outward:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-first-fit-decreasing",
+   "out": "shardrun/card-first-fit-decreasing",
+   "style": "program-icon",
+   "seed": 325341,
+   "prompt": "(three bronze bins of different heights side by side, each filled almost to the brim with stacked crystals, one amber crystal dropping into the fullest one.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-fractional-knapsack",
+   "out": "shardrun/card-fractional-knapsack",
+   "style": "program-icon",
+   "seed": 323419,
+   "prompt": "(a large amber crystal sliced cleanly in two by a bronze cleaver, the bigger half slotted into a small leather knapsack, the smaller half floating beside it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-grid-paths",
+   "out": "shardrun/card-grid-paths",
+   "style": "program-icon",
+   "seed": 294372,
+   "prompt": "(A bronze lattice of square tiles with two glowing routes from one corner to the opposite corner, one amber and one cyan, crossing in the middle.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-grid-search",
+   "out": "shardrun/card-grid-search",
+   "style": "program-icon",
+   "seed": 297038,
+   "prompt": "(a flat bronze plate with a four-by-four lattice of small faceted crystals, brightening from pale cyan in one corner to deep amber in the opposite corner:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-halve",
+   "out": "shardrun/card-halve",
+   "style": "program-icon",
+   "seed": 279399,
+   "prompt": "(a single faceted crystal split cleanly in two by a vertical bronze blade, the two halves drifting apart:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-heap-sort",
+   "out": "shardrun/card-heap-sort",
+   "style": "program-icon",
+   "seed": 291396,
+   "prompt": "(a bronze funnel shaped like an upside-down tree, crystals entering at the top in a jumble and leaving at the bottom in a neat row from small to large:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-heapify",
+   "out": "shardrun/card-heapify",
+   "style": "program-icon",
+   "seed": 286033,
+   "prompt": "(a small bronze binary tree of seven sockets, the largest amber crystal in the top socket, smaller cyan crystals below, one curved arrow showing a crystal sifting down:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-increase-key",
+   "out": "shardrun/card-increase-key",
+   "style": "program-icon",
+   "seed": 300727,
+   "prompt": "(a small cyan crystal on a bronze lift platform rising beside a tall amber crystal, a broad upward arrow beneath it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-interpolation-search",
+   "out": "shardrun/card-interpolation-search",
+   "style": "program-icon",
+   "seed": 327852,
+   "prompt": "(a bronze measuring tape stretched along a row of evenly growing crystals, a gold pin stuck precisely at one.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-introsort",
+   "out": "shardrun/card-introsort",
+   "style": "program-icon",
+   "seed": 294403,
+   "prompt": "(a bronze split arrow, one branch a quick lightning zig-zag and the other a neat tree, both ending in the same sorted row of faceted crystals:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-job-sequencing",
+   "out": "shardrun/card-job-sequencing",
+   "style": "program-icon",
+   "seed": 307485,
+   "prompt": "(three small brass tags on hooks in a line, the middle tag larger and gilded, a cyan crystal bolt pinned to it with a ribbon:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-k-way-merge",
+   "out": "shardrun/card-k-way-merge",
+   "style": "program-icon",
+   "seed": 295953,
+   "prompt": "(three bronze chutes converging into one, crystals from each chute merging into a single ordered line.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-karatsuba",
+   "out": "shardrun/card-karatsuba",
+   "style": "program-icon",
+   "seed": 292729,
+   "prompt": "(two faceted crystals crossed like an X inside a bronze square split into four quadrants, three quadrants lit and one dark:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-lcs",
+   "out": "shardrun/card-lcs",
+   "style": "program-icon",
+   "seed": 273013,
+   "prompt": "(Two parallel bronze rails of crystals, the matching crystals in both rows joined by bright gold threads.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-list-comprehension",
+   "out": "shardrun/card-list-comprehension",
+   "style": "program-icon",
+   "seed": 321652,
+   "prompt": "(A bronze bracket frame with crystals passing through a small gate inside it, the weak ones turned away (no letters).:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-lookup",
+   "out": "shardrun/card-lookup",
+   "style": "program-icon",
+   "seed": 283677,
+   "prompt": "(a bronze drawer cabinet with one small drawer sliding open on its own, an amber crystal resting inside.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-lower-bound-ward",
+   "out": "shardrun/card-lower-bound-ward",
+   "style": "program-icon",
+   "seed": 312910,
+   "prompt": "(A bronze shield with one small amber crystal fitted exactly into a notch on its rim, a gold arrow pointing up to it.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-max-subarray",
+   "out": "shardrun/card-max-subarray",
+   "style": "program-icon",
+   "seed": 301595,
+   "prompt": "(a row of faceted crystals with a bronze bracket spanning a stretch of them across the middle, that stretch glowing amber:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-median-of-medians",
+   "out": "shardrun/card-median-of-medians",
+   "style": "program-icon",
+   "seed": 314553,
+   "prompt": "(five small bronze trays of five crystals each, the middle crystal of each lifted up, and the middle of those lifted highest and glowing:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-meet-in-the-middle",
+   "out": "shardrun/card-meet-in-the-middle",
+   "style": "program-icon",
+   "seed": 316382,
+   "prompt": "(two bronze bridges reaching toward each other from left and right, each carrying a faceted crystal, meeting with a bright amber flash at the centre:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-memo-strike",
+   "out": "shardrun/card-memo-strike",
+   "style": "program-icon",
+   "seed": 298154,
+   "prompt": "(a bronze card-index drawer pulled open, one tab marked by a glowing amber crystal, a cyan bolt leaping out of it.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-memo-ward",
+   "out": "shardrun/card-memo-ward",
+   "style": "program-icon",
+   "seed": 291086,
+   "prompt": "(A bronze shield with a small brass ledger book set into its centre and a cyan crystal bookmark sticking out of it.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-minimum-arrows",
+   "out": "shardrun/card-minimum-arrows",
+   "style": "program-icon",
+   "seed": 308880,
+   "prompt": "(one long bronze-fletched crystal arrow passing through three floating soap-bubble orbs in a line, each orb bursting into shards:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-monte-carlo",
+   "out": "shardrun/card-monte-carlo",
+   "style": "program-icon",
+   "seed": 297782,
+   "prompt": "(A bronze roulette wheel with crystal pockets, one pocket glowing, a small ivory ball resting in it.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-n-queens",
+   "out": "shardrun/card-n-queens",
+   "style": "program-icon",
+   "seed": 288203,
+   "prompt": "(a small bronze chessboard corner with three cyan crystal queens on it, none sharing a row or diagonal, and faint gold lines showing their reach:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-nearest-neighbour",
+   "out": "shardrun/card-nearest-neighbour",
+   "style": "program-icon",
+   "seed": 317653,
+   "prompt": "(a bronze compass rose with one cyan crystal at its centre and a gold needle pointing at the nearest of three small dots around it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-nested-strike",
+   "out": "shardrun/card-nested-strike",
+   "style": "program-icon",
+   "seed": 304757,
+   "prompt": "(two bronze rings, one inside the other, both spinning, with crystals flying out from where they cross.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-permutations",
+   "out": "shardrun/card-permutations",
+   "style": "program-icon",
+   "seed": 304044,
+   "prompt": "(a bronze revolving drum with six faceted crystal chambers, spun mid-motion, the crystals blurring into a fan:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-pop-bolt",
+   "out": "shardrun/card-pop-bolt",
+   "style": "program-icon",
+   "seed": 288234,
+   "prompt": "(A faceted crystal popping out of the end of a bronze tube like a cork, its glow streaming to the far end.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-prefetch",
+   "out": "shardrun/card-prefetch",
+   "style": "program-icon",
+   "seed": 289350,
+   "prompt": "(a bronze hand reaching into a card-shaped slot ahead of a moving crystal, two card backs peeking out:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-range-query",
+   "out": "shardrun/card-range-query",
+   "style": "program-icon",
+   "seed": 298247,
+   "prompt": "(A bronze ruler with two gold brackets clamped on it, a cluster of cyan crystals glowing between the brackets.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-range-source",
+   "out": "shardrun/card-range-source",
+   "style": "program-icon",
+   "seed": 301068,
+   "prompt": "(Four faceted crystals of evenly growing size standing on four evenly spaced bronze steps.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-read-input",
+   "out": "shardrun/card-read-input",
+   "style": "program-icon",
+   "seed": 294558,
+   "prompt": "(A bronze funnel with three small foe-shaped shadows above it and three faceted crystals falling out of the bottom.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-recurrence",
+   "out": "shardrun/card-recurrence",
+   "style": "program-icon",
+   "seed": 296201,
+   "prompt": "(a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-reservoir-sampling",
+   "out": "shardrun/card-reservoir-sampling",
+   "style": "program-icon",
+   "seed": 321838,
+   "prompt": "(A small bronze water tank with three faceted crystals floating inside and a stream of crystals flowing past outside.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-rod-cutting",
+   "out": "shardrun/card-rod-cutting",
+   "style": "program-icon",
+   "seed": 298247,
+   "prompt": "(A long amber crystal rod on a bronze workbench, cut by two thin gold lines into three segments of different lengths.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-rotate-bolts",
+   "out": "shardrun/card-rotate-bolts",
+   "style": "program-icon",
+   "seed": 301719,
+   "prompt": "(A bronze wheel with faceted crystals around its rim and one bronze arrow showing a quarter turn.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-selection-sort",
+   "out": "shardrun/card-selection-sort",
+   "style": "program-icon",
+   "seed": 308508,
+   "prompt": "(a bronze pointer hand picking the smallest faceted crystal out of a jumbled row and placing it on a shelf at the left:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-skyline",
+   "out": "shardrun/card-skyline",
+   "style": "program-icon",
+   "seed": 286808,
+   "prompt": "(a small city skyline of faceted crystal towers of different heights on a bronze base, the outline traced by one gold line:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-slice-bolts",
+   "out": "shardrun/card-slice-bolts",
+   "style": "program-icon",
+   "seed": 297782,
+   "prompt": "(A bronze knife cutting a row of faceted crystals after the fourth one, the cut end glowing.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-sort-by-key",
+   "out": "shardrun/card-sort-by-key",
+   "style": "program-icon",
+   "seed": 296945,
+   "prompt": "(Crystals of three colours being sorted into three neat bronze trays by colour, smallest to largest in each.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-stock-trader",
+   "out": "shardrun/card-stock-trader",
+   "style": "program-icon",
+   "seed": 301316,
+   "prompt": "(a zig-zag bronze line chart made of rods, each rising segment capped by a small amber crystal, a large amber crystal at the top right end:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-swap-ends",
+   "out": "shardrun/card-swap-ends",
+   "style": "program-icon",
+   "seed": 291365,
+   "prompt": "(Two faceted crystals exchanging places along two curved bronze arrows that form a circle.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-table-ward",
+   "out": "shardrun/card-table-ward",
+   "style": "program-icon",
+   "seed": 293876,
+   "prompt": "(A bronze tablet shield with a small grid of glowing cells, the last cell bright cyan.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-tail-call",
+   "out": "shardrun/card-tail-call",
+   "style": "program-icon",
+   "seed": 290404,
+   "prompt": "(a bronze serpent biting its own tail to form a loop, one faceted cyan crystal riding smoothly around it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-task-scheduler",
+   "out": "shardrun/card-task-scheduler",
+   "style": "program-icon",
+   "seed": 307640,
+   "prompt": "(a bronze conveyor with crystals alternating amber, cyan, violet, amber, cyan, and a tiny empty grey gem in one gap:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-ternary-search",
+   "out": "shardrun/card-ternary-search",
+   "style": "program-icon",
+   "seed": 307919,
+   "prompt": "(A bronze mountain silhouette made of stacked crystals, a gold flag planted on the single tallest crystal at the peak.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-top-k",
+   "out": "shardrun/card-top-k",
+   "style": "program-icon",
+   "seed": 278252,
+   "prompt": "(a bronze pyramid stand with four cut crystals on its tiers, the top one largest, a stream of tiny cyan shards being poured into the lowest crystal.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-tower-of-hanoi",
+   "out": "shardrun/card-tower-of-hanoi",
+   "style": "program-icon",
+   "seed": 306152,
+   "prompt": "(three bronze pegs on a plinth, a stack of four crystal disks shrinking upward on the left peg, one disk in mid-air moving right:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-two-sum",
+   "out": "shardrun/card-two-sum",
+   "style": "program-icon",
+   "seed": 285723,
+   "prompt": "(two crystals, one amber and one cyan, sliding together into a single bronze ring that glows where they meet.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-unbounded-knapsack",
+   "out": "shardrun/card-unbounded-knapsack",
+   "style": "program-icon",
+   "seed": 320474,
+   "prompt": "(A bronze knapsack with an endless stream of identical cyan crystals pouring into it from a small brass tap.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-card-write-ahead-log",
+   "out": "shardrun/card-write-ahead-log",
+   "style": "program-icon",
+   "seed": 308477,
+   "prompt": "(A rolled bronze scroll with small crystals slotted along its edge like beads, one large crystal waiting beside it.:1.35)",
+   "pick": 0
+  }
+ ]
+}

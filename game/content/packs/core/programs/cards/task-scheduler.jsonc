@@ -1,0 +1,280 @@
+{
+  "paradigm": "greedy",
+  "focus": "schedule",
+  "role": "order",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/shard-alternating-current",
+  "id": "task-scheduler",
+  "name": "Task Scheduler",
+  "summary": "Reorders the volley so no two bolts of one element are neighbours. Where that is impossible, a 1-power idle bolt goes between them.",
+  "function": "task_scheduler",
+  "keywords": [],
+  "makes": "unsorted",
+  "forge": {
+    "into": "task-scheduler-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "neighbours of one element are pulled apart",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "fire"
+        },
+        {
+          "power": 4,
+          "element": "frost"
+        },
+        {
+          "power": 3,
+          "element": "fire"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "one element needs idle bolts",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "one element dominates",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost"
+        },
+        {
+          "power": 7,
+          "element": "fire"
+        },
+        {
+          "power": 8,
+          "element": "fire"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "fire"
+        },
+        {
+          "power": 6,
+          "element": "frost"
+        },
+        {
+          "power": 5,
+          "element": "fire"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "fire"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "fire"
+        }
+      ]
+    },
+    {
+      "name": "one bolt",
+      "bolts": [
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": [
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "hits": 0,
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          }
+        ]
+      },
+      "expect": []
+    }
+  ]
+}

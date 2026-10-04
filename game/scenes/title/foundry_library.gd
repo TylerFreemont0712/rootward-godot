@@ -16,6 +16,7 @@ const FILTER_NAMES := {
 	"strike": "ストライク",
 	"guard": "ガード",
 	"import": "インポート",
+	"utility": "ユーティリティ",
 }
 ## The Japanese of the elements a creature is weak to or resists.
 const ELEMENT_NAMES := {"fire": "火", "frost": "氷", "spark": "雷", "none": "なし"}

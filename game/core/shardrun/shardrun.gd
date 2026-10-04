@@ -146,6 +146,10 @@ static func enter_room(state: Dictionary, node: Dictionary, catalog: Dictionary)
 				else 0.0
 			)
 			state.reward = {"chest": {"curse_chance": chance}}
+			if state.get("playstyle", "") == "program":
+				var pay := ProgramCycles.treasure(state, catalog)
+				ProgramCycles.earn(state, pay)
+				record(state, {"kind": "note", "amount": pay, "text": "The cache holds %d cycles." % pay})
 			state.status = "reward"
 		"fight", "elite", "boss":
 			ShardrunBattle.start(state, node, node.kind, catalog)
