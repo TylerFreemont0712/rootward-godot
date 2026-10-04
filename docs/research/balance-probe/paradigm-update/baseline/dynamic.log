@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUN dynamic seed=dynamic-0~0 status=won layer=4 fights=23 secs=82
+RUN dynamic seed=dynamic-1~2 status=lost layer=3 fights=15 secs=54
+RUN dynamic seed=dynamic-2~3 status=lost layer=3 fights=17 secs=115
+RUN dynamic seed=dynamic-3~0 status=lost layer=4 fights=25 secs=117
+RUN dynamic seed=dynamic-4~0 status=lost layer=3 fights=20 secs=76
+RUN dynamic seed=dynamic-5~0 status=lost layer=4 fights=22 secs=162

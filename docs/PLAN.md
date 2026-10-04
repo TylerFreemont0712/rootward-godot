@@ -8,6 +8,28 @@ one replaces it, and is the reference for how the spellbook Shardrun plays.
 
 Each phase ends with tests green, screenshots of anything visible, this file ticked, and a commit.
 
+## The Paradigm Update (2026-10-04)
+
+Implementation follows [ParadigmUpdate.md](ParadigmUpdate.md), parts A and B, including the player's B14 choices.
+Program runs only; Spellforge and existing card runs keep their catalogs and saved maps.
+
+- [x] 0. Reproducible Beginner/JavaScript baseline, six paired seeds per paradigm, retained raw runs and report.
+- [ ] 1. Five law relics, fifteen focuses, explicit focus pick, basic swaps, weighted draft, trial and save compatibility.
+- [ ] 2. Index, Table, landed-hit memory and program-only sandbox input, remaining memory laws, preview equality.
+- [ ] 3. General next-card body primitive, half/quarter execution in all three languages, matching code listing.
+- [ ] 4. Paradigm/focus rewards, guaranteed own card, cross-paradigm elite offer, rarity pity and paid skips.
+- [ ] 5. Cycles per kill, complete formula tests, reward receipt, HUD and history.
+- [ ] 6. Program-only map overrides, extra fight, fixed Registry and weighted Issues; unchanged Spellforge maps.
+- [ ] 7. Seeded Registry stock, prices, purchases and services, Semver's shop screen.
+- [ ] 8. Sixteen consumable scripts, belt, fight effects and preview updates, drops and shop shelf.
+- [ ] 9. Thirty data-driven Issues, deferred effects and code-reading bets graded by real sandbox execution.
+- [ ] 10. Eighty new algorithms and their refactors, three languages, worked examples, Japanese and art subjects.
+- [ ] 11. Twenty-four new relics plus three script relics, with tested generic effect kinds.
+- [ ] 12. Pass-10 accepted card originals, focus/script/Registry/Issue/map art and reviewed boards.
+- [ ] 13. Probe updated for the new rooms and focuses, paired final report, data tuning and complete-run screenshots.
+
+Every slice must pass tests, lint, executable content validation and locale coverage before its completion box is ticked.
+
 ## Layout
 
 ```

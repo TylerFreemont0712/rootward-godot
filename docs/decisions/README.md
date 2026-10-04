@@ -1,7 +1,10 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0048**.
+The next number is **ADR-0049**.
+
+- [ADR-0048](ADR-0048-paradigm-laws-and-focuses.md): paradigm laws and focuses, fight memory, pure Index reads and
+  compatibility with existing drafts and trial lessons (implementation in progress).
 
 - [ADR-0001](ADR-0001-godot-rewrite.md): Rootward is rewritten in Godot, Shardrun first.
 - [ADR-0002](ADR-0002-sandbox-wasmtime-sidecar.md): player code runs as WebAssembly under wasmtime, one process per job.

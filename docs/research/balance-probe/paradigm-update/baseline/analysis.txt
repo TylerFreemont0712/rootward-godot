@@ -1,0 +1,136 @@
+runs: 30
+
+== Outcome by paradigm ==
+paradigm           n  won  L1 boss  L2 boss avg fights                                  died at
+brute-force        6    3        6        5       21.5   {'L4 fight': 1, 'L3 boss': 1, 'L2 fight': 1}
+divide-conquer     6    3        6        6       22.3   {'L3 boss': 1, 'L3 fight': 1, 'L4 elite': 1}
+dynamic            6    1        6        6       20.3   {'L3 elite': 1, 'L3 boss': 2, 'L4 boss': 1, 'L4 fight': 1}
+greedy             6    1        6        3       16.3   {'L3 boss': 1, 'L2 boss': 1, 'L2 elite': 1, 'L4 elite': 1}
+search-index       6    4        6        6       23.7   {'L4 fight': 1, 'L3 boss': 1}
+
+== Where runs end (last fight) ==
+    2  L4 fight  type-mimic+race-condition-imp+race-condition-imp
+    2  L3 boss   profiler
+    2  L2 fight  memory-leak-ooze+race-condition-imp
+    2  L3 boss   int-max
+    2  L4 elite  garbage-collector+stack-overflow-serpent
+    1  L3 fight  segfault-specter+race-condition-imp
+    1  L3 elite  garbage-collector+segfault-specter
+    1  L3 boss   call-stack-colossus
+    1  L4 boss   halting-oracle
+    1  L3 boss   root-daemon
+    1  L2 boss   deadlock-lock-a+deadlock-lock-b
+    1  L2 elite  garbage-collector
+    1  L4 fight  stack-overflow-serpent+segfault-specter
+
+== Fights by layer and kind ==
+fight           n  win%  turns  hp lost  foe hp  dmg/turn  waste%
+L1 boss       30   100    3.5      7.7     200      56.5     15%
+L1 elite       8   100    3.2      7.6      98      30.2     27%
+L1 fight     135   100    1.4      1.6      47      32.5     18%
+L2 boss       27    96    5.3     14.9     332      62.7     16%
+L2 elite      14    93    3.4      7.3     170      47.0     21%
+L2 fight     153    99    1.9      2.4      94      50.6     15%
+L3 boss       24    75    6.4     26.9     751     113.6      8%
+L3 elite      25    96    4.0     12.4     322      78.9     13%
+L3 fight     117    99    2.4      3.8     174      72.7     18%
+L4 boss       13    92    5.5     18.5     835     152.6      9%
+L4 elite      11    82    3.2     11.5     509     140.6     25%
+L4 fight      85    96    3.5      6.5     302      84.6     20%
+
+== Turns: 1743 ==
+chosen program had a foe act first: 17.6% of turns
+chosen program timed out: 0
+candidates: 2343298, of which time out 3.01%, have a faster foe 32.6%
+programs with a sorted-lint warning chosen: 20
+program sizes: {0: 85, 1: 39, 2: 179, 3: 221, 4: 355, 5: 829, 6: 35}
+turns where a reordered program beats the best dealt-order one: 45.7% (median gain 25.5)
+work (ops) of chosen programs: median 18, p90 63, max 2029
+
+== Salvo in hand ==
+damage/turn with salvo 75.5 (n=387), without 71.0 (n=1356)
+  L1: with 47.3 (164), without 32.7 (161); turns doing nothing 0%
+  L2: with 65.4 (122), without 49.9 (358); turns doing nothing 2%
+  L3: with 134.4 (60), without 79.4 (474); turns doing nothing 1%
+
+== Card play rate (chosen / in hand) ==
+  pascal-row          91%  (in hand 120)
+  salvo               90%  (in hand 387)
+  amplify-plus        89%  (in hand 19)
+  salvo-plus          88%  (in hand 372)
+  bisect-insert       88%  (in hand 104)
+  pairwise            87%  (in hand 175)
+  spark-constant      85%  (in hand 41)
+  prefix-sum          85%  (in hand 136)
+  lambda              85%  (in hand 27)
+  sliding-window      85%  (in hand 40)
+  amplify             84%  (in hand 432)
+  literal             83%  (in hand 71)
+  recursive-mirror    82%  (in hand 85)
+  global-total        82%  (in hand 149)
+  tabulate            82%  (in hand 154)
+  charge              82%  (in hand 110)
+  divide              81%  (in hand 188)
+  take-max            81%  (in hand 159)
+  chill               80%  (in hand 132)
+  import-operator     80%  (in hand 96)
+  repeat              79%  (in hand 33)
+  recursion-tree      76%  (in hand 76)
+  frost-constant      76%  (in hand 80)
+  fire-constant       76%  (in hand 98)
+  chain-lightning     75%  (in hand 133)
+  kindle              74%  (in hand 444)
+  power-set           74%  (in hand 72)
+  make-change         73%  (in hand 86)
+  fib-surge           72%  (in hand 69)
+  fork-plus           72%  (in hand 54)
+  generator           70%  (in hand 57)
+  higher-order        69%  (in hand 59)
+  hash-merge          69%  (in hand 132)
+  import-numpy        69%  (in hand 93)
+  zip-ward            69%  (in hand 105)
+  merge-strike        66%  (in hand 177)
+  import-heapq        66%  (in hand 112)
+  kadane              66%  (in hand 58)
+  import-copy         65%  (in hand 46)
+  huffman             65%  (in hand 37)
+  split               64%  (in hand 107)
+  fork                63%  (in hand 406)
+  load-balance        63%  (in hand 94)
+  greedy-assign       62%  (in hand 136)
+  import-collections    62%  (in hand 111)
+  dedupe              62%  (in hand 116)
+  stable-partition    61%  (in hand 70)
+  import-cache        61%  (in hand 104)
+  bubble-sort         60%  (in hand 164)
+  reduce              59%  (in hand 59)
+  reverse             58%  (in hand 78)
+  import-math         58%  (in hand 106)
+  round-robin         57%  (in hand 438)
+  filter-weak         56%  (in hand 100)
+  import-bisect       56%  (in hand 90)
+  lis-strike          55%  (in hand 91)
+  ward                55%  (in hand 682)
+  import-itertools    55%  (in hand 64)
+  hash-aim            54%  (in hand 91)
+  quickselect         53%  (in hand 128)
+  linear-search       52%  (in hand 75)
+  merge-sort          51%  (in hand 244)
+  exhaustive-kill     50%  (in hand 209)
+  run-length          50%  (in hand 119)
+  quick-sort          49%  (in hand 59)
+  two-pointers        48%  (in hand 73)
+  release             45%  (in hand 95)
+  sweep               39%  (in hand 169)
+  binary-execute      38%  (in hand 197)
+  exhaustive-ward     35%  (in hand 115)
+  ward-plus           33%  (in hand 6)
+  greedy-ward         33%  (in hand 131)
+  knapsack-ward       28%  (in hand 94)
+  knapsack-strike     14%  (in hand 244)
+
+== Picks (taken) ==
+{'merge-sort': 23, 'chain-lightning': 21, 'bubble-sort': 19, 'divide': 19, 'hash-merge': 18, 'chill': 18, 'sweep': 17, 'pairwise': 16, 'pascal-row': 16, 'run-length': 15, 'make-change': 15, 'fork': 15, 'import-numpy': 15, 'exhaustive-ward': 14, 'import-heapq': 14, 'quickselect': 14, 'charge': 14, 'bisect-insert': 14, 'greedy-ward': 14, 'filter-weak': 13, 'recursive-mirror': 13, 'power-set': 13, 'split': 13, 'import-collections': 13, 'merge-strike': 13, 'dedupe': 13, 'import-operator': 12, 'import-bisect': 12, 'linear-search': 12, 'lis-strike': 12, 'amplify': 12, 'knapsack-strike': 12, 'global-total': 11, 'release': 11, 'fire-constant': 11, 'exhaustive-kill': 11, 'import-math': 11, 'load-balance': 11, 'import-cache': 11, 'tabulate': 10, 'import-itertools': 10, 'hash-aim': 10, 'zip-ward': 10, 'kadane': 10, 'literal': 10, 'take-max': 9, 'fib-surge': 9, 'knapsack-ward': 9, 'generator': 9, 'reverse': 9, 'kindle': 8, 'repeat': 8, 'quick-sort': 8, 'recursion-tree': 8, 'greedy-assign': 8, 'higher-order': 8, 'two-pointers': 7, 'frost-constant': 7, 'stable-partition': 7, 'reduce': 6, 'prefix-sum': 6, 'spark-constant': 6, 'binary-execute': 6, 'huffman': 6, 'import-copy': 6, 'sliding-window': 6, 'salvo': 5, 'round-robin': 3}
+
+== Relics held at end ==
+{'immutable-state': 14, 'thread-pool': 12, 'hot-path': 12, 'radix-sort': 12, 'garbage-collection': 11, 'pipeline': 11, 'dual-core': 10, 'mana-capacitor': 9, 'superposition': 9, 'jit-compiler': 8, 'unix-philosophy': 8, 'checksum': 7, 'cron-job': 7, 'preemption': 7, 'compiler-o3': 6, 'load-balancer': 6, 'overclock': 6, 'stable-sort': 6, 'runic-loom': 6, 'lens-of-types': 4, 'grimoire-page': 4, 'branch-predictor': 4, 'overclocked-core': 4, 'dry-principle': 4, 'hello-world': 4, 'lazy-evaluation': 4, 'persistent-cache': 3, 'root-access': 3, 'try-finally': 3, 'rusted-lens': 3, 'warm-start': 3, 'big-o-compass': 3, 'firewall': 3, 'sticky-note': 2, 'stdin-buffer': 2, 'blood-contract': 2, 'type-hints': 2, 'ecc-memory': 2, 'patch-kit': 1, 'leaking-capacitor': 1, 'profiler': 1, 'reference-counter': 1}

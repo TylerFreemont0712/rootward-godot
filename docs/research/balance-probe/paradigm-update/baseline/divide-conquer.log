@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUN divide-conquer seed=divide-conquer-0~2 status=lost layer=3 fights=19 secs=90
+RUN divide-conquer seed=divide-conquer-1~0 status=won layer=4 fights=25 secs=119
+RUN divide-conquer seed=divide-conquer-2~1 status=won layer=4 fights=26 secs=400
+RUN divide-conquer seed=divide-conquer-3~0 status=won layer=4 fights=26 secs=329
+RUN divide-conquer seed=divide-conquer-4~0 status=lost layer=3 fights=14 secs=57
+RUN divide-conquer seed=divide-conquer-5~1 status=lost layer=4 fights=24 secs=184

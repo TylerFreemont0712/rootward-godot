@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUN search-index seed=search-index-0~0 status=won layer=4 fights=26 secs=98
+RUN search-index seed=search-index-1~0 status=lost layer=4 fights=20 secs=80
+RUN search-index seed=search-index-2~0 status=lost layer=3 fights=19 secs=101
+RUN search-index seed=search-index-3~1 status=won layer=4 fights=25 secs=251
+RUN search-index seed=search-index-4~0 status=won layer=4 fights=25 secs=98
+RUN search-index seed=search-index-5~1 status=won layer=4 fights=27 secs=229

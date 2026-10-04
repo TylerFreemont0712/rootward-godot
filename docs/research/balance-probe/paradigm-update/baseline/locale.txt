@@ -1,0 +1,6 @@
+
+ja: 808 of 808 content strings translated
+ja: 466 of 466 interface strings translated
+ja: 135 of 137 rule sentence strings translated
+- rule sentence: "%s%s takes %d."
+- rule sentence: "%s%s takes %d%s."

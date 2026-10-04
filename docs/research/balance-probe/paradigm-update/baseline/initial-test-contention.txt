@@ -1,0 +1,12 @@
+The initial full suite shared XDG_DATA_HOME with five balance probe workers.
+Its only failure, sandbox_test.test_job_folders_are_removed, counted their live job folders.
+All 23 sandbox tests and subsequently all 438 tests passed with XDG_DATA_HOME isolated.
+
+Overall Summary: 438 test cases | 0 errors | 1 failures | 0 flaky | 0 skipped | 0 orphans |
+Executed test suites: (66/66)
+Executed test cases : (438/438)
+Total execution time: 2min 54s 92ms
+ Open XML Report at: file:///tmp/rootward-paradigm-baseline/game/reports/report_1/results.xml
+Open HTML Report at: file:///tmp/rootward-paradigm-baseline/game/reports/report_1/index.html
+Exit code: 100
+Run dispose test resources

@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RUN brute-force seed=brute-force-0~2 status=lost layer=4 fights=21 secs=130
+RUN brute-force seed=brute-force-1~0 status=won layer=4 fights=26 secs=232
+RUN brute-force seed=brute-force-2~0 status=won layer=4 fights=28 secs=257
+RUN brute-force seed=brute-force-3~1 status=lost layer=3 fights=20 secs=118
+RUN brute-force seed=brute-force-4~0 status=won layer=4 fights=24 secs=199
+RUN brute-force seed=brute-force-5~0 status=lost layer=2 fights=10 secs=36
