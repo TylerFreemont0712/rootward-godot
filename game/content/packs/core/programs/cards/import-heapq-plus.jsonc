@@ -12,7 +12,7 @@
   "function": "import_heapq_plus",
   "keywords": ["__init__"],
   "module": "heapq",
-  "line": {"python": "import heapq", "javascript": "import { nlargest } from \"./heapq.js\";"},
+  "line": {"python": "import heapq", "javascript": "import { nlargest } from \"./heapq.js\";", "cpp": "#include <queue>"},
   "effects": [{"kind": "hook-before", "role": "strike"}],
   "draftable": false,
   "examples": [

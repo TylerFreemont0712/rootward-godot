@@ -1,10 +1,10 @@
 class_name ShardrunChecks
 extends RefCounted
 ## Checks between Shardrun content files, which no single file's schema can see (the old validateShardrun): the run
-## names shards, foes and relics that exist, every shard has code in both Shardrun languages, forges lead somewhere, and
+## names shards, foes and relics that exist, every shard has code in every Shardrun language, forges lead somewhere, and
 ## every reward pool can offer something.
 
-const LANGUAGES: Array[String] = ["python", "javascript"]
+const LANGUAGES: Array[String] = ["python", "javascript", "cpp"]
 
 
 static func check(catalog: Dictionary, run_file: String, diagnostics: Array[Dictionary]) -> void:

@@ -186,11 +186,13 @@ func _show_entry(base: Dictionary) -> void:
 			Ui.label("%s: %s" % [keyword, _catalog.programs.config.keywords.get(keyword, "")], "Muted", true)
 		)
 	var controls := Ui.hbox([], 6)
-	for language: String in ["python", "javascript"]:
+	for language: String in SandboxJob.LANGUAGES:
+		if not (item.get("code", {}) as Dictionary).has(language):
+			continue
 		var choose := func() -> void:
 			_language = language
 			_show_entry(base)
-		controls.add_child(Ui.choice(language.capitalize(), _language == language, choose))
+		controls.add_child(Ui.choice(CodeLanguage.display_name(language), _language == language, choose))
 	if upgrade_id != "":
 		controls.add_child(Ui.spacer())
 		var toggle := func() -> void:

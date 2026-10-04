@@ -8,7 +8,7 @@ extends RefCounted
 ## [card ids]}; `pack` is empty until a paradigm is picked.
 
 ## The Program is a file named for the run's language.
-const EXTENSIONS := {"python": "py", "javascript": "js"}
+const EXTENSIONS := {"python": "py", "javascript": "js", "cpp": "cpp"}
 ## How often a card of each rarity turns up in a pack, relative to a common one.
 const RARITY_WEIGHTS := {"common": 1.0, "uncommon": 0.6, "rare": 0.3}
 ## A card of the chosen paradigm is this much likelier than a neutral one.

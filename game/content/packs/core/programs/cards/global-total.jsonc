@@ -10,7 +10,7 @@
   "function": "global_total",
   "keywords": ["__init__"],
   "module": "total",
-  "line": {"python": "total = 0  # global: kept between programs", "javascript": "let total = 0; // global: kept between programs"},
+  "line": {"python": "total = 0  # global: kept between programs", "javascript": "let total = 0; // global: kept between programs", "cpp": "int total = 0;  // global: kept between programs"},
   "effects": [{"kind": "global", "name": "total"}],
   "forge": {"into": "global-total-plus", "verb": "upgrade"},
   "examples": [

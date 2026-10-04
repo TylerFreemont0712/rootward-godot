@@ -80,3 +80,35 @@ static func namespace_of(id: String) -> String:
 	for c in id:
 		out += c if (c >= "a" and c <= "z") or (c >= "0" and c <= "9") else "_"
 	return out
+
+
+## What a module is built from, hashed: the runtime's sources and every card's C++ code. The build writes it beside
+## the module (`<module>.stamp`); `stale` compares it with the content as it is now.
+static func stamp(module: String, cards: Array) -> String:
+	var hashing := HashingContext.new()
+	hashing.start(HashingContext.HASH_SHA256)
+	hashing.update(module.to_utf8_buffer())
+	for file: String in ["common.hpp", "program.hpp", "spellforge.hpp", "registry.hpp", "json.hpp", "harness.cpp"]:
+		hashing.update(FileAccess.get_file_as_string("res://sandbox/cpp".path_join(file)).to_utf8_buffer())
+	for card: Dictionary in cards:
+		var code := String((card.get("code", {}) as Dictionary).get("cpp", ""))
+		hashing.update(("%s\n%s\n" % [card.id, code]).to_utf8_buffer())
+	return hashing.finish().hex_encode()
+
+
+## The modules whose installed build no longer matches the content (a card's C++ changed since scripts/build-cpp.sh),
+## by name; empty when the build is current or there is none to compare.
+static func stale(catalog: Dictionary) -> Array[String]:
+	var programs: Dictionary = (catalog.get("programs", {}) as Dictionary).get("cards", {})
+	var sets := {
+		"program": ShardrunCatalog.sorted_values(programs), "spellforge": ShardrunCatalog.sorted_values(catalog.shards)
+	}
+	var out: Array[String] = []
+	for module: String in sets:
+		var path := Sandbox.runtime_dir().path_join("cpp/%s.stamp" % module)
+		if (
+			FileAccess.file_exists(path)
+			and FileAccess.get_file_as_string(path).strip_edges() != stamp(module, sets[module])
+		):
+			out.append(module)
+	return out

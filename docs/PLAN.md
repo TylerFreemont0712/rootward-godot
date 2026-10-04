@@ -375,3 +375,11 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [ ] More Spellforge passes as its screens are played (the player, 2026-10-04: both modes stay, each for its own
       reason).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).
+
+### Phase 2, track C: C++ (ADR-0046)
+
+- [x] The spike: wasi-sdk 34 with wasm exceptions under wasmtime 49; a three-card program in 12 ms, identical bolts.
+- [x] The runtime, harness, instrumenter, build (`scripts/build-cpp.sh`) and checker (`scripts/try-cpp.sh`).
+- [x] All 139 program cards and 77 Spellforge shards in C++, every worked example passing; import lines; the census.
+- [x] On screen: the language's name, `main.cpp`, `./main`, C++ colours, the program and spell listings as C++.
+- [ ] A C++ badge for the run button (the Python and JavaScript ones are pictures); C++ in the Academy, later.

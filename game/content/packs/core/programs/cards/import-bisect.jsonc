@@ -10,7 +10,7 @@
   "summary": "For the rest of the fight, every bolt a source card makes is put in its sorted place by a binary search: the volley stays sorted, weakest first, with no sort card.",
   "function": "import_bisect",
   "module": "bisect",
-  "line": {"python": "import bisect", "javascript": "import { insort } from \"./bisect.js\";"},
+  "line": {"python": "import bisect", "javascript": "import { insort } from \"./bisect.js\";", "cpp": "#include <algorithm>"},
   "effects": [{"kind": "hook-after", "role": "source"}],
   "forge": {"into": "import-bisect-plus", "verb": "upgrade"},
   "examples": [

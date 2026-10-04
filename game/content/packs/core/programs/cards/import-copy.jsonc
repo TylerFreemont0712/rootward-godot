@@ -13,7 +13,8 @@
   "module": "copy",
   "line": {
     "python": "import copy",
-    "javascript": "import { copy } from \"./copy.js\";"
+    "javascript": "import { copy } from \"./copy.js\";",
+    "cpp": "#include <utility>"
   },
   "effects": [
     {

@@ -6,7 +6,6 @@ extends SceneTree
 ##   godot --headless --path game -s res://tools/build_cpp.gd -- <out dir>
 
 const MODULES := {"program": "program.hpp", "spellforge": "spellforge.hpp"}
-const RUNTIME := "res://sandbox/cpp"
 
 
 func _initialize() -> void:
@@ -66,7 +65,7 @@ func _write_module(dir: String, module: String, cards: Array, mutants: bool) -> 
 		units.append("%s %s" % [file, entry.id])
 	_write(dir.path_join("registry.cpp"), _registry(entries, header))
 	_write(dir.path_join("units.txt"), "\n".join(units) + "\n")
-	_write(dir.path_join("STAMP"), stamp(module, cards) + "\n")
+	_write(dir.path_join("STAMP"), CppSource.stamp(module, cards) + "\n")
 	return entries.size()
 
 
@@ -82,20 +81,6 @@ func _registry(entries: Array[Dictionary], header: String) -> String:
 		text += '\t{"", nullptr},\n'
 	text += "};\nconst int rootward::CARD_COUNT = %d;\n" % entries.size()
 	return text
-
-
-## What a module is built from, hashed: the runtime's sources and every card's C++ code. Sandbox.cpp_stale compares
-## it with the installed build's.
-static func stamp(module: String, cards: Array) -> String:
-	var hashing := HashingContext.new()
-	hashing.start(HashingContext.HASH_SHA256)
-	hashing.update(module.to_utf8_buffer())
-	for file: String in ["common.hpp", "program.hpp", "spellforge.hpp", "registry.hpp", "json.hpp", "harness.cpp"]:
-		hashing.update(FileAccess.get_file_as_string(RUNTIME.path_join(file)).to_utf8_buffer())
-	for card: Dictionary in cards:
-		var code := String((card.get("code", {}) as Dictionary).get("cpp", ""))
-		hashing.update(("%s\n%s\n" % [card.id, code]).to_utf8_buffer())
-	return hashing.finish().hex_encode()
 
 
 func _write(path: String, text: String) -> void:

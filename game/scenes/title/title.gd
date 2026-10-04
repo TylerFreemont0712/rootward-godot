@@ -187,7 +187,7 @@ func _home() -> void:
 			% [
 				Game.PLAYSTYLES[Settings.playstyle],
 				ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name,
-				String(Game.session.state.language).capitalize()
+				CodeLanguage.display_name(String(Game.session.state.language))
 			]
 		)
 	FoundryUi.place(_menu, Ui.label(note, "Muted", true), Rect2(104, 492, 540, 54))

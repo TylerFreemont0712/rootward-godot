@@ -11,7 +11,7 @@
   "function": "import_math_plus",
   "keywords": ["__init__"],
   "module": "math",
-  "line": {"python": "import math", "javascript": "const { log2 } = Math;"},
+  "line": {"python": "import math", "javascript": "const { log2 } = Math;", "cpp": "#include <cmath>"},
   "draftable": false,
   "examples": [
     {

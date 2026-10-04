@@ -31,6 +31,10 @@ static func check(catalog: Dictionary, languages: Array[String] = ShardrunChecks
 				_diagnostic("warning", "not-executed", "no sandbox for %s: examples not run" % language, "")
 			)
 			continue
+		if language == SandboxJob.CPP:
+			for module in CppSource.stale(catalog):
+				var stale := "the C++ %s build is older than the cards: run scripts/build-cpp.sh" % module
+				diagnostics.append(_diagnostic("warning", "cpp-stale", stale, ""))
 		for group in sets:
 			diagnostics.append_array(_run(language, group.noun, group.cards, group.same, group.get("count", false)))
 	return diagnostics

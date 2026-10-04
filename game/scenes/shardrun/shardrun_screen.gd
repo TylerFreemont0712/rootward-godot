@@ -152,11 +152,11 @@ func _show_header(state: Dictionary) -> void:
 			int(state.layer) + 1,
 			layers.size(),
 			session.difficulty().get("name", ""),
-			state.language
+			CodeLanguage.display_name(state.language)
 		]
 	)
 	if Game.trial_active:
-		meta = "4 STOPS · %s · %s" % [session.difficulty().get("name", ""), state.language]
+		meta = "4 STOPS · %s · %s" % [session.difficulty().get("name", ""), CodeLanguage.display_name(state.language)]
 	var relics := Ui.hbox([], 4)
 	for relic_id: String in state.relics:
 		relics.add_child(Cards.relic_icon(session.catalog.relics.get(relic_id, {"name": relic_id, "summary": ""})))
@@ -443,7 +443,11 @@ func _open_run_menu() -> void:
 			[
 				Ui.hbox([Ui.label("RUN MENU", "Heading"), Ui.spacer(), Ui.button("Close", _close_overlay)], 12),
 				Ui.label(
-					"%s · Artificer · %s" % [Game.PLAYSTYLES.get(state.playstyle, "Shardrun"), state.language], "Muted"
+					(
+						"%s · Artificer · %s"
+						% [Game.PLAYSTYLES.get(state.playstyle, "Shardrun"), CodeLanguage.display_name(state.language)]
+					),
+					"Muted"
 				),
 				Ui.panel(
 					Ui.vbox(

@@ -70,7 +70,7 @@ func _build() -> void:
 			"%s · %s · %s · %d"
 			% [
 				record.get("date", "").get_slice("T", 0),
-				String(record.get("language", "")).capitalize(),
+				CodeLanguage.display_name(String(record.get("language", ""))),
 				names.get(record.get("status", ""), "Retired"),
 				int(record.get("score", 0))
 			]

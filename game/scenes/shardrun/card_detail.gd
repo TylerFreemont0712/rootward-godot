@@ -86,8 +86,7 @@ func _build(
 		painted.append(CodeColors.bbcode(line, language))
 	if lines.size() > CODE_LINES:
 		var more := (
-			"%s … %d more lines in the Program panel"
-			% ["#" if language == "python" else "//", lines.size() - CODE_LINES]
+			"%s … %d more lines in the Program panel" % [CodeLanguage.comment(language), lines.size() - CODE_LINES]
 		)
 		painted.append("[color=%s]%s[/color]" % [CodeColors.COMMENT, more])
 	var text := RichTextLabel.new()

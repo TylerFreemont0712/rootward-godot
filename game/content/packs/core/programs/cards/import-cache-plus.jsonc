@@ -11,7 +11,7 @@
   "function": "import_cache_plus",
   "keywords": ["__init__"],
   "module": "functools",
-  "line": {"python": "from functools import cache", "javascript": "const cache = new Map();"},
+  "line": {"python": "from functools import cache", "javascript": "const cache = new Map();", "cpp": "#include <unordered_map>"},
   "effects": [{"kind": "jit"}],
   "draftable": false,
   "examples": [

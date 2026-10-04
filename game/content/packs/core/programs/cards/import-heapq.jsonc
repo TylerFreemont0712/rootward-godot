@@ -10,7 +10,7 @@
   "summary": "For the rest of the fight, every strike card is handed the volley strongest first: a heap pops the biggest bolt in turn, before each aim, for free.",
   "function": "import_heapq",
   "module": "heapq",
-  "line": {"python": "import heapq", "javascript": "import { nlargest } from \"./heapq.js\";"},
+  "line": {"python": "import heapq", "javascript": "import { nlargest } from \"./heapq.js\";", "cpp": "#include <queue>"},
   "effects": [{"kind": "hook-before", "role": "strike"}],
   "forge": {"into": "import-heapq-plus", "verb": "upgrade"},
   "examples": [

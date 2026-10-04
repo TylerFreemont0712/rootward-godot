@@ -99,7 +99,7 @@ static func _code(diff: Array[Dictionary], language: String) -> Control:
 	if changed.removed == 0 and changed.added == 0:
 		var same := (
 			"%s The code is the same: the refactor is in what the card costs or does in the deck."
-			% ("#" if language == "python" else "//")
+			% CodeLanguage.comment(language)
 		)
 		painted.append("[color=%s]%s[/color]" % [CodeColors.COMMENT, same])
 	for line: Dictionary in diff:

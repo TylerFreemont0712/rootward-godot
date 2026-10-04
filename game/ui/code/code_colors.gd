@@ -1,6 +1,6 @@
 class_name CodeColors
 extends RefCounted
-## One line of Python or JavaScript as BBCode with its keywords, strings, numbers and comments coloured, for a
+## One line of Python, JavaScript or C++ as BBCode with its keywords, strings, numbers and comments coloured, for a
 ## RichTextLabel. A line at a time is enough: shard code has no strings that span lines.
 ##
 ## LEARN: a tiny tokenizer walks the line once, left to right, deciding what each character starts (a string, a number,
@@ -16,6 +16,11 @@ const KEYWORDS := {
 	),
 	"javascript":
 	"function return for of in if else while const let var true false null undefined new break continue typeof",
+	"cpp":
+	(
+		"int double bool void auto const for while if else return true false nullptr struct class static using "
+		+ "break continue size_t std Bolt Bolts Battle Foe throw try catch"
+	),
 }
 const KEYWORD := "#d19bff"
 const STRING := "#9fd07a"
@@ -36,7 +41,7 @@ static func bbcode(line: String, language: String) -> String:
 ## The line cut into pieces, each with its colour ("" for plain text), in order: joined, they are the line again.
 static func tokens(line: String, language: String) -> Array[Dictionary]:
 	var keywords := String(KEYWORDS.get(language, KEYWORDS.python)).split(" ")
-	var comment := "#" if language == "python" else "//"
+	var comment := CodeLanguage.comment(language)
 	var out: Array[Dictionary] = []
 	var i := 0
 	while i < line.length():
@@ -89,7 +94,7 @@ static func _is_word(character: String) -> bool:
 
 ## Plain words as comment lines of `language` ("# " or "// " before each), wrapped at `columns` characters.
 static func comment_lines(text: String, language: String, columns: int) -> PackedStringArray:
-	var mark := "# " if language == "python" else "// "
+	var mark := CodeLanguage.comment(language) + " "
 	var lines: PackedStringArray = []
 	var line := ""
 	for word in text.split(" ", false):
@@ -106,7 +111,7 @@ static func comment_lines(text: String, language: String, columns: int) -> Packe
 ## A card's code for a narrow box: comment lines longer than `columns` rewrapped under their own indentation and mark,
 ## code lines left as they are (the box clips them).
 static func fit_code(code: String, language: String, columns: int) -> PackedStringArray:
-	var mark := "#" if language == "python" else "//"
+	var mark := CodeLanguage.comment(language)
 	var out: PackedStringArray = []
 	for line in code.strip_edges(false, true).split("\n"):
 		var body := line.strip_edges(true, false)

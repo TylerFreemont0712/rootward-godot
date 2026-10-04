@@ -15,7 +15,8 @@
   "module": "collections",
   "line": {
     "python": "import collections",
-    "javascript": "import { groupBolts } from \"./collections.js\";"
+    "javascript": "import { groupBolts } from \"./collections.js\";",
+    "cpp": "#include <map>"
   },
   "effects": [
     {

@@ -12,7 +12,7 @@
   "function": "import_bisect_plus",
   "keywords": ["__init__"],
   "module": "bisect",
-  "line": {"python": "import bisect", "javascript": "import { insort } from \"./bisect.js\";"},
+  "line": {"python": "import bisect", "javascript": "import { insort } from \"./bisect.js\";", "cpp": "#include <algorithm>"},
   "effects": [{"kind": "hook-after", "role": "source"}],
   "draftable": false,
   "examples": [

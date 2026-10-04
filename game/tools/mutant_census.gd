@@ -14,7 +14,7 @@ func _initialize() -> void:
 		"// or hanging. A fight only draws mutants from here. Re-run the script when a card's code changes.",
 		"{",
 	]
-	var languages: Array[String] = [SandboxJob.PYTHON, SandboxJob.JAVASCRIPT]
+	var languages: Array[String] = SandboxJob.LANGUAGES
 	for l in languages.size():
 		var language := languages[l]
 		var census := ShardExamples.mutant_census(catalog, language)

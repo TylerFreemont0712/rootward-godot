@@ -48,9 +48,8 @@ func _build() -> void:
 			_hint.add_theme_font_size_override("font_size", 12)
 			card.side_by_side(_hint)
 		if session.state.get("playstyle") == "program":
-			var python: bool = session.state.language == "python"
-			var run := "%s %s" % ["py" if python else "node", spell.name]
-			card.set_runner(run, Art.texture("icons/python" if python else "icons/javascript"))
+			var language := String(session.state.language)
+			card.set_runner(CodeLanguage.run(language, spell.name), Art.texture(CodeLanguage.icon(language)))
 		card.gui_input.connect(_on_spell_input.bind(spell.id))
 		var slots := Ui.hbox([], 6)
 		card.set_slots(slots)

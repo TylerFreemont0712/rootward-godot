@@ -11,7 +11,7 @@
   "function": "global_total_plus",
   "keywords": ["__init__"],
   "module": "total",
-  "line": {"python": "total = 0  # global: kept between programs", "javascript": "let total = 0; // global: kept between programs"},
+  "line": {"python": "total = 0  # global: kept between programs", "javascript": "let total = 0; // global: kept between programs", "cpp": "int total = 0;  // global: kept between programs"},
   "effects": [{"kind": "global", "name": "total"}],
   "draftable": false,
   "examples": [

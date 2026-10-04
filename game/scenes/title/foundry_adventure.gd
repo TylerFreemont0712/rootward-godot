@@ -83,7 +83,7 @@ func _descent(column: VBoxContainer) -> void:
 			"%s · %s · %d/%d HP"
 			% [
 				where,
-				String(session.state.language).capitalize(),
+				CodeLanguage.display_name(String(session.state.language)),
 				int(session.state.integrity),
 				int(session.state.integrity_max)
 			]
@@ -109,9 +109,7 @@ func _descent(column: VBoxContainer) -> void:
 			Game.remember_profile_settings()
 			Settings.save_file()
 			_rebuild()
-		var control := Ui.choice(
-			"Python" if language == "python" else "JavaScript", Settings.language == language, choose
-		)
+		var control := Ui.choice(CodeLanguage.display_name(language), Settings.language == language, choose)
 		control.disabled = language not in usable
 		runtime.add_child(control)
 	var challenge := OptionButton.new()

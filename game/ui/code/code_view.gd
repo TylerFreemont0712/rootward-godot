@@ -134,7 +134,7 @@ func _build(spell: Dictionary) -> void:
 	for step: Dictionary in steps:
 		work += int(step.work)
 	var count := (spell.shards as Array).size()
-	var meta := "%s · %d %s" % [language, count, "shard" if count == 1 else "shards"]
+	var meta := "%s · %d %s" % [CodeLanguage.display_name(language), count, "shard" if count == 1 else "shards"]
 	if run.has("cost"):
 		meta += " · %d mana" % int(run.cost)
 	if work > 0:

@@ -15,7 +15,8 @@
   "module": "operator",
   "line": {
     "python": "import operator",
-    "javascript": "import { add } from \"./operator.js\";"
+    "javascript": "import { add } from \"./operator.js\";",
+    "cpp": "#include <functional>"
   },
   "effects": [
     {

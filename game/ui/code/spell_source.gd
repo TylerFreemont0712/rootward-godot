@@ -31,7 +31,8 @@ static func compose(
 ) -> SpellSource:
 	var source := SpellSource.new()
 	var python := language == SandboxJob.PYTHON
-	var comment := "#" if python else "//"
+	var cpp := language == SandboxJob.CPP
+	var comment := CodeLanguage.comment(language)
 	var names: Array[String] = []
 	for id: String in shard_ids:
 		names.append((shards.get(id, {}) as Dictionary).get("name", id))
@@ -40,19 +41,19 @@ static func compose(
 	source._add("", "blank")
 
 	# The cast comes first: it is what the spell is, and each call below leads down into the shard it names.
-	var cast_name := "cast_" + snake_case(spell_name) if python else "cast" + pascal_case(spell_name)
-	source._add("def %s(battle):" % cast_name if python else "function %s(battle) {" % cast_name, "def")
-	var start := (
-		(
-			'    bolts = [{"power": %d, "element": "none", "target": "front", "pierce": False, "ward": False, "mult": 1}]'
-			% base_power
-		)
-		if python
-		else (
-			'  let bolts = [{ power: %d, element: "none", target: "front", pierce: false, ward: false, mult: 1 }];'
-			% base_power
-		)
-	)
+	var cast_name := "cast_" + snake_case(spell_name) if python or cpp else "cast" + pascal_case(spell_name)
+	var opener := "function %s(battle) {" % cast_name
+	if python:
+		opener = "def %s(battle):" % cast_name
+	elif cpp:
+		opener = "Bolts %s(const Battle& battle) {" % cast_name
+	source._add(opener, "def")
+	var bolt := {"power": base_power, "element": "none", "target": "front", "pierce": false, "ward": false, "mult": 1}
+	var start := "  let bolts = %s;" % ProgramSource.list_literal([bolt], language)
+	if python:
+		start = "    bolts = %s" % ProgramSource.list_literal([bolt], language)
+	elif cpp:
+		start = "  Bolts bolts = %s;" % ProgramSource.list_literal([bolt], language)
 	source.start_line = source._add(start, "start")
 	for id: String in shard_ids:
 		var shard: Dictionary = shards.get(id, {})
@@ -74,14 +75,18 @@ static func compose(
 		if code == "":
 			source._add("%s %s: this shard is missing" % [comment, id], "comment")
 			continue
-		source._add_function(id, code.strip_edges(false, true), SpellHarness.function_name(shard, language), python)
+		source._add_function(id, code.strip_edges(false, true), SpellHarness.function_name(shard, language), language)
 	return source
 
 
-func _add_function(id: String, code: String, function: String, python: bool) -> void:
+func _add_function(id: String, code: String, function: String, language: String) -> void:
 	var def_line := 0
 	var body: Array[int] = []
-	var opener := ("def %s(" if python else "function %s(") % function
+	var opener := "function %s(" % function
+	if language == SandboxJob.PYTHON:
+		opener = "def %s(" % function
+	elif language == SandboxJob.CPP:
+		opener = "Bolts %s(" % function
 	var first := lines.size() + 1
 	for text in code.split("\n"):
 		var is_def := def_line == 0 and text.begins_with(opener)
