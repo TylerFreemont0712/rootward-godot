@@ -12,8 +12,8 @@ of … GO all out."*
 The diagnosis this builds on is `docs/PARADIGMS_AND_SECOPS.md` part 1. Sec Ops (its part 2) waits until after this.
 
 **How to use this file.** Part A is the prompt: paste it into a fresh session. Part B is the design that prompt
-builds. Every number in it is a first guess for the balance probe. Section B14 lists the calls left to the player, each
-with a default, so a session can proceed without waiting.
+builds. Every number in it is a first guess for the balance probe. Section B14 records the player's answers to the open
+calls (2026-10-04).
 
 ---
 
@@ -27,23 +27,24 @@ Read AGENT.md, CLAUDE.md, WIP.md, docs/PLAN.md, **docs/ParadigmUpdate.md (all of
 docs/PARADIGMS_AND_SECOPS.md (part 1), docs/SHARDRUN_DESIGN.md (sections 3, 4, 7 to 11), the ADRs 0012, 0016, 0017,
 0018, 0021, 0026, 0046 and 0047, docs/CPP_CARDS.md, docs/TRANSLATION.md, pipeline/README.md and
 pipeline/art/program-icons-pass-9.json. Then `git log --oneline -20` and `git status`. Say in one short message what you
-are picking up, ask the player any of the calls in ParadigmUpdate B14 they have not answered yet (with the defaults
-written there), and proceed with the defaults unless told otherwise.
+are picking up, and proceed. The player's answers to the design's open calls are recorded in B14 (2026-10-04); follow
+them.
 
 ## Goal
 
 Make the Artificer (Vesper's program Shardrun) whole before any second class is built:
 
 1. **Paradigms that play differently**: each of the five paradigms gets a **law** (a rule of its own), and after
-   picking one the player picks one of its **three strategies**, each a second, narrower rule with a signature card.
+   picking one the player picks one of its **three focuses**, each a second, narrower rule with a signature card.
 2. **A large card bank built on those laws**: the 80 new cards of B8, each a real algorithm in Python, JavaScript
    and C++, with worked examples, a `+` refactor, Japanese and an art subject.
-3. **Rewards tied to the paradigm, never sealed to it**: most offers come from the run's paradigm and strategy, and
+3. **Rewards tied to the paradigm, never sealed to it**: most offers come from the run's paradigm and focus, and
    other paradigms stay reachable through rewards, the shop and events.
 4. **An economy**: **cycles**, earned per foe killed and scaled by the foe's kind, the layer and the difficulty.
 5. **The Registry** (a shop): cards, random relics, services (`uninstall`, refactor, `pip install <paradigm>`).
 6. **Issues** (events): about 30 choice rooms, several of which read the player's own cards.
 7. **The map**: one more fight per layer, a fixed shop row, and event rooms, in the program run only.
+8. **Scripts** (consumables): one-use commands kept in a belt of three, found after fights and sold at the Registry.
 
 ## Rules of the work
 
@@ -54,24 +55,24 @@ Make the Artificer (Vesper's program Shardrun) whole before any second class is 
   are. Every change goes through the program run's own data (`packs/core/programs/programs.jsonc`) and
   `ProgramRules.catalog_for`, as ADR-0017 did for encounters. A test proves Spellforge's catalog and map are unchanged.
   If a shared rule must change, say so, re-record the fixtures on purpose (`ROOTWARD_GOLDEN=update`) and show the diff.
-- **Old saves load.** New run-state fields (`strategy`, `cycles`, `index`, `dp`, `pending`, `boons`, ...) get defaults in
-  `ShardrunSchemas` before anything uses them. A run started before this update plays on with no strategy, no cycles
+- **Old saves load.** New run-state fields (`focus`, `cycles`, `belt`, `index`, `dp`, `pending`, `boons`, ...) get defaults in
+  `ShardrunSchemas` before anything uses them. A run started before this update plays on with no focus, no cycles
   and no shop rooms on its existing map.
-- **Pip's Trial** (`core/trial_rules.gd`) sets a paradigm; give it a default strategy, and keep the trial's rooms as
+- **Pip's Trial** (`core/trial_rules.gd`) sets a paradigm; give it a default focus, and keep the trial's rooms as
   they are.
 - **Every card**: `<id>.jsonc` + `<id>.py` + `<id>.js` + C++ (`docs/CPP_CARDS.md`, then `scripts/build-cpp.sh`),
   worked examples that `scripts/validate.sh` runs in all three languages, a `<id>-plus` refactor read as a diff at the
-  forge, a role, keywords where they apply, a `strategy` tag, Japanese in `locales/ja/programs.jsonc`, and an art
+  forge, a role, keywords where they apply, a `focus` tag, Japanese in `locales/ja/programs.jsonc`, and an art
   subject queued in a new pass manifest (B11). After changing card code: `scripts/mutants.sh` (the Mutator's census,
   ADR-0026).
-- **New fields** (a card's `strategy` and `splits`, a paradigm's `strategies` and `swap`, a relic tier `paradigm` and
-  `strategy`, an event's data, the shop's data) go into `ProgramSchemas` with defaults before content uses them.
+- **New fields** (a card's `focus` and `splits`, a paradigm's `focuses` and `swap`, a relic tier `paradigm` and
+  `focus`, an event's data, a script's data, the shop's data) go into `ProgramSchemas` with defaults before content uses them.
 - **What the card code sees** grows in the program branch of `SpellRuns.input_for` only (B3.4), never in
   `ShardrunRules.shard_battle`, which Spellforge's code shares.
 - Japanese: `scripts/locale.sh ja --missing` reports zero at the end of every slice that adds text. Interface strings go
   through `Text` (ADR-0047).
 - ADRs: the next number is in `docs/decisions/README.md` (0048 at the time of writing). Proposed: one for paradigms
-  and strategies, one for cycles and the Registry, one for Issues.
+  and focuses, one for cycles, the Registry and scripts, one for Issues.
 - Do not run ComfyUI and Blender at once. Never push.
 
 ## Slices, in order
@@ -82,12 +83,12 @@ what changed, `docs/PLAN.md` ticked and a commit.
 0. **Baseline.** Run the balance probe (`docs/research/balance-probe/`) as it is, on the same seeds the report will
    reuse: the win rate per paradigm, the share of each final deck that is the paradigm's own, and gold-standard
    numbers for B13. Write them into the ADR draft. No game change.
-1. **Strategies as data, and the pick.** The run state's `strategy`; `programs.jsonc` paradigms gain `strategies`,
-   `swap` (one basic swapped) and their law relics; the draft asks for a strategy right after the paradigm
-   (`pick-strategy`), and its signature joins the deck. The picker screen (B2.3). History, the end screen and the git
-   log name the strategy (`feat(greedy/sprint): ship it`). Laws and strategies are relics of tier `paradigm` and
-   `strategy`, never loot, shown in the relic bar. Implement the laws that need no new primitive first (Greedy, Brute
-   Force and their strategies), with tests.
+1. **Focuses as data, and the pick.** The run state's `focus`; `programs.jsonc` paradigms gain `focuses`,
+   `swap` (one basic swapped) and their law relics; the draft asks for a focus right after the paradigm
+   (`pick-focus`), and its signature joins the deck. The picker screen (B2.3). History, the end screen and the git
+   log name the focus (`feat(greedy/sprint): ship it`). Laws and focuses are relics of tier `paradigm` and
+   `focus`, never loot, shown in the relic bar. Implement the laws that need no new primitive first (Greedy, Brute
+   Force and their focuses), with tests.
 2. **The fight state the laws need.** The Index (a sorted list in `battle`, bolts flagged `stash`), the Table
    (`battle.dp`, written after each program lands), what the code sees (B3.4), and the remaining laws (DP, Search),
    with tests that the preview equals the cast for each.
@@ -96,7 +97,7 @@ what changed, `docs/PLAN.md` ticked and a commit.
    (`left, right = f(left), f(right)`), measured as two runs on half n. Tests first, including the Mutator, the
    Unreachable's cut and the Race Condition Imp with a split in the program. This is also the primitive Sec Ops' `try:`
    will reuse; keep it general (a card that takes the next card as its body).
-4. **Rewards** (B4): shares by paradigm, strategy and other paradigms; one own card guaranteed; an elite's fourth
+4. **Rewards** (B4): shares by paradigm, focus and other paradigms; one own card guaranteed; an elite's fourth
    card from another paradigm; rare pity; skip pays cycles. Tests over many seeds for the shares.
 5. **Cycles** (B5): earned per kill as the formula says, shown in the HUD and as an itemised receipt on the reward
    screen, kept in the run state and history. Tests for every term of the formula.
@@ -104,33 +105,35 @@ what changed, `docs/PLAN.md` ticked and a commit.
    the new room kinds in `ShardrunMap` and on the map scroll. A test that Spellforge's map is unchanged.
 7. **The Registry** (B7): stock drawn from the seed, prices, purchases, services, the screen and its keeper.
    Screenshots of a full shop, a purchase, `uninstall`, and an empty wallet.
-8. **Issues** (B9): the event framework as data (an event is choices, each a list of effects), the screen, then the
-   events in three batches (the simple ones, the ones that need deferred state, the ones that read the player's code).
-9. **Cards, a paradigm at a time** (B8): Greedy, Brute Force, Dynamic Programming, Search & Index, Divide & Conquer,
-   then the neutral cards. Each batch has its code in three languages, examples, `+` refactors, Japanese, art subjects
-   queued, the mutants census, and screenshots of the forge diff for one card.
-10. **Relics** (B10): the new relics and their effect kinds, with tests.
-11. **Art** (B11): pass 10 of the program icons for every new card, plus strategy emblems, the Registry, its keeper,
-    the event pictures, and map icons. Review boards, accepted originals, screenshots in game.
-12. **Balance** (B13): the probe taught the new rooms (it may skip events and shop at first), the report in the ADR,
-    tuning in data only, and screenshots of a whole run.
-13. **Optional: scripts** (B12), the consumables, if the player wants them after playing 1 to 12.
+8. **Scripts** (B12): the belt in the run state and the fight HUD, scripts as data, their effects as rules (each one
+   reflected in the preview the moment it's used), drops after fights, the Registry's script shelf. Tests for every
+   effect kind and for the preview after a script. Screenshots of a full belt, a script used mid-turn and its preview.
+9. **Issues** (B9): the event framework as data (an event is choices, each a list of effects), the screen, then the
+   events in three batches (the simple ones, the ones that need deferred state, the ones that read the player's code,
+   with their stakes).
+10. **Cards, a paradigm at a time** (B8): Greedy, Brute Force, Dynamic Programming, Search & Index, Divide & Conquer,
+    then the neutral cards. Each batch has its code in three languages, examples, `+` refactors, Japanese, art
+    subjects queued, the mutants census, and screenshots of the forge diff for one card.
+11. **Relics** (B10): the new relics and their effect kinds, with tests.
+12. **Art** (B11): pass 10 of the program icons for every new card, plus focus emblems, script icons, the Registry,
+    its keeper, the event pictures, and map icons. Review boards, accepted originals, screenshots in game.
+13. **Balance** (B13): the probe taught the new rooms (it may skip events and shop at first, and use scripts by a
+    simple rule), the report in the ADR, tuning in data only, and screenshots of a whole run.
 
 ## Verify at the end
 
 - `scripts/test.sh`, `scripts/lint.sh`, `scripts/validate.sh`, `scripts/locale.sh ja --missing` (zero),
   `scripts/mutants.sh` current, `scripts/build-cpp.sh` current.
-- Screenshots: the paradigm and strategy picks, a fight under each of the five laws (the Index and the Table drawn),
-  Recurse in the code panel, the reward screen with its receipt, the map with a shop and events, the Registry, three
-  events (one that reads code), the forge diff of a new card, a new card's art in a hand. In both Python and C++, and
+- Screenshots: the paradigm and focus picks, a fight under each of the five laws (the Index and the Table drawn),
+  Recurse in the code panel, the reward screen with its receipt, the map with a shop and events, the Registry, a
+  script used mid-turn, three events (one that reads code, answered wrong), the forge diff of a new card, a new card's art in a hand. In both Python and C++, and
   once in Japanese.
 - The balance report against the baseline of slice 0.
 - Report faithfully: what changed, what was verified and how, what was skipped, the numbers, and what is next.
 
 ## Ask the player only
 
-What B14 lists, in one message at the start, with the defaults; and anything that would change what the player sees
-beyond this file.
+Anything that would change what the player sees beyond this file, or a call B14 doesn't settle.
 
 ---
 
@@ -141,17 +144,17 @@ beyond this file.
 ```
 title → Adventure → language, difficulty
   → pick a paradigm (3 of 5 offered)          its law joins the relic bar, its 2 signature cards the deck
-  → pick a strategy (all 3 of that paradigm)  its rule joins the relic bar, its signature card the deck
-  → the draft (5 packs of 3)                  weighted to the paradigm and strategy
+  → pick a focus (all 3 of that paradigm)  its rule joins the relic bar, its signature card the deck
+  → the draft (5 packs of 3)                  weighted to the paradigm and focus
   → Layer 1: the Salvage   10 rows: fights, elites, issues, a forge, a treasure, the Registry, a rest, the guardian
   → Layer 2: the Heap      11 rows
   → Layer 3: the Kernel    11 rows
   → Layer 4: the Root      11 rows
 ```
 
-A starting deck is the 8 basics (one swapped by the paradigm) + 2 paradigm signatures + 1 strategy signature = 11.
+A starting deck is the 8 basics (one swapped by the paradigm) + 2 paradigm signatures + 1 focus signature = 11.
 
-## B2. Paradigms, laws and strategies
+## B2. Paradigms, laws and focuses
 
 ### B2.1 The five laws
 
@@ -175,12 +178,12 @@ The basic each paradigm swaps (`swap` in `programs.jsonc`):
 | Search & Index | Kindle | Merge Sort |
 | Divide & Conquer | Fork | Split |
 
-### B2.2 The fifteen strategies
+### B2.2 The fifteen focuses
 
-A strategy is a relic of tier `strategy` given at the second pick, plus one signature card. Its `tag` names the cards
+A focus is a relic of tier `focus` given at the second pick, plus one signature card. Its `tag` names the cards
 it favours: rewards weight them (B4) and the cards in B8 carry the tag.
 
-| Paradigm | Strategy (`tag`) | Its rule | Signature | Plays like | Teaches |
+| Paradigm | Focus (`tag`) | Its rule | Signature | Plays like | Teaches |
 |---|---|---|---|---|---|
 | Greedy | **Sprint** (`sprint`) | A program of three cards or fewer counts 25% less work. | Activity Selection | tiny cheap programs every turn, always first, kill chains for mana | short-circuiting, `break`, streaming |
 | Greedy | **Priority Queue** (`heap`) | `import heapq` is in force from the first turn of every fight, free. | Top-K | a few huge bolts, strongest first | heaps, priority queues, heapify in O(n) |
@@ -200,7 +203,7 @@ it favours: rewards weight them (B4) and the cards in B8 carry the tag.
 
 ### B2.3 The pick, on screen
 
-After the paradigm is chosen, the draft panel turns into three tall strategy cards side by side: the strategy's
+After the paradigm is chosen, the draft panel turns into three tall focus cards side by side: the focus's
 emblem (B11), its name and tag in the paradigm's colour, the rule in a sentence, the signature card's face below, and
 one line of "plays like". All three are offered: the choice is the point. A run that reaches the end shows both on
 the end screen and in the git log (`feat(greedy/sprint): ship it`).
@@ -209,7 +212,7 @@ the end screen and in the git log (`feat(greedy/sprint): ship it`).
 
 ### B3.1 Effect kinds
 
-| Law or strategy | Effect kind in `ProgramRelics` | Hook |
+| Law or focus | Effect kind in `ProgramRelics` | Hook |
 |---|---|---|
 | Local Optimum | `kill-initiative-mana` | after landing; the next-turn mana hook exists |
 | Sprint | `small-program-work` | in `stages`: factor on total work when the program has ≤ 3 cards |
@@ -293,18 +296,18 @@ The rule: **most of what's offered is yours; something else is always reachable.
 
 | Where | Cards offered | From |
 |---|---|---|
-| Fight | 3 | each slot drawn: 50% own paradigm (strategy-tagged cards ×2 inside it), 30% neutral, 20% another paradigm; **at least one own card** |
+| Fight | 3 | each slot drawn: 50% own paradigm (focus-tagged cards ×2 inside it), 30% neutral, 20% another paradigm; **at least one own card** |
 | Elite | 4 | the fight's 3, plus a fourth **from another paradigm**, one rarity up |
 | Guardian | 3 | rare or better, own paradigm or neutral |
-| Draft packs | 3 a pack | own paradigm ×2, strategy ×3 inside it, neutral ×1 (as now, plus the strategy tilt) |
+| Draft packs | 3 a pack | own paradigm ×2, focus ×3 inside it, neutral ×1 (as now, plus the focus tilt) |
 
 - **Rarity pity**: each fight reward without a rare adds 3% to the next one's rare chance, reset when a rare is
   offered (Slay the Spire's rule).
-- **Skip pays**: skipping a card reward gives 10 cycles × the layer. A lean deck is a real strategy, and it's
+- **Skip pays**: skipping a card reward gives 10 cycles × the layer. Keeping a lean deck is a real plan, and it's
   rewarded.
 - Other ways to reach other paradigms: the Registry always stocks one (B7), `pip install <paradigm>` buys one on
   purpose, and the events Pair Programming, Conference Talk, Cross-Compilation and Paradigm Shift (B9).
-- Data: `programs.jsonc` `rewards: {fight: {own, neutral, other}, strategy_weight, elite_extra, pity, skip_cycles}`.
+- Data: `programs.jsonc` `rewards: {fight: {own, neutral, other}, focus_weight, elite_extra, pity, skip_cycles}`.
 
 ## B5. Cycles: the money
 
@@ -375,10 +378,10 @@ blinks.*
 
 | Shelf | Count | What | Price |
 |---|---|---|---|
-| Cards | 5 | 2 own paradigm (one strategy-tagged), 1 neutral, **1 another paradigm**, 1 any | common 50, uncommon 75, rare 150; one card **on sale** at half |
-| Relics | 3 | random, by tier weight: common 40, uncommon 35, rare 20, epic 5 (legendary never sold) | common 110, uncommon 160, rare 230, epic 320 |
+| Cards | 5 | 2 own paradigm (one focus-tagged), 1 neutral, **1 another paradigm**, 1 any | common 50, uncommon 75, rare 150; one card **on sale** at half |
+| Relics | 3 | random, by tier weight: common 40, uncommon 34, rare 20, epic 5, **legendary 1** | common 110, uncommon 160, rare 230, epic 320, legendary 450 |
 | Services | 3 | `uninstall` (remove a card), `refactor` (forge a card's `+`), `pip install <paradigm>` | 75 (+25 each use in the run), 90, 60 |
-| Scripts (B12, optional) | 3 | consumables | 30 to 80 |
+| Scripts (B12) | 3 | consumables, by rarity | 30 to 90 |
 
 `pip install <paradigm>`: choose any paradigm; three random cards of it are shown, and you take one. That makes
 reaching another paradigm a deliberate choice.
@@ -387,7 +390,7 @@ reaching another paradigm a deliberate choice.
 
 - Prices are data (`programs.jsonc` `registry`), with ±10% jitter from the seed so a shop isn't a price list.
 - Bought items leave the shelf; nothing restocks. A relic's tier colour and its tooltip are shown before buying.
-- A cursed relic is never sold. The relic pool excludes `paradigm` and `strategy` tiers and anything held.
+- A cursed relic is never sold. The relic pool excludes `paradigm` and `focus` tiers and anything held.
 - The commands: `buy {shelf, index}`, `service {kind, card_id?}`, `leave`. All pure, in `core/programs/program_shop.gd`,
   all tested (can't buy past the wallet, prices rise for `uninstall`, a bought card joins the deck, a relic's effect
   applies at the next fight).
@@ -402,7 +405,7 @@ Semver's lines (Japanese too): "Every package is signed. Mostly.", "Breaking cha
 
 ## B8. The card bank: 80 new cards
 
-Each card lists: **name** (`id`) · role · mana · rarity · class · strategy tag (★ = that strategy's signature). Then
+Each card lists: **name** (`id`) · role · mana · rarity · class · focus tag (★ = that focus's signature). Then
 what it does, what it teaches, its `+` refactor, and an **art** subject for the image pipeline (B11's shared prompt is
 prepended; subjects follow pass 9's style: bronze fittings, faceted crystals for bolts, one bold readable silhouette,
 no letters or numerals).
@@ -857,7 +860,7 @@ neutral 36 (25 − 2 moved + 13), about 150 in all, before `+` versions.
 
 An event is data (`packs/core/programs/issues/<id>.jsonc`): a title, a picture, a paragraph, and two to four choices,
 each a list of effects the rules know (`gain-cycles`, `lose-integrity`, `heal`, `max-integrity`, `add-card`,
-`remove-card`, `upgrade-card`, `transform-card`, `gain-relic`, `gain-curse`, `fight`, `pending`, `boon`, `swap-strategy`,
+`remove-card`, `upgrade-card`, `transform-card`, `gain-relic`, `gain-curse`, `fight`, `pending`, `boon`, `swap-focus`,
 `read-code`). Choices can need something (cycles, a card of a role) and are greyed out when you can't. Everything is
 drawn from the run's seed and the room. Each event names the layers it may appear in.
 
@@ -869,7 +872,7 @@ actions.
 
 | # | Issue | Layers | Choices |
 |---|---|---|---|
-| 1 | **The Coffee Machine** | all | heal 25% · +5 max Integrity · 30 cycles |
+| 1 | **The Coffee Machine** | all | heal 25% · +5 max Integrity · 30 cycles · a random common script |
 | 2 | **Code Review** | all | remove a card · refactor a card · 50 cycles |
 | 3 | **Legacy Codebase** | 1-2 | refactor two random cards, lose 8 Integrity · walk away |
 | 4 | **Dependency Hell** | 2-3 | a random epic relic and a random curse · walk away |
@@ -877,7 +880,7 @@ actions.
 | 6 | **Merge Conflict** | all | two random cards: keep one, lose the other · pay 40 cycles to keep both |
 | 7 | **Rewrite It in Rust** | 2-3 | every common becomes a random uncommon of its paradigm; lose 2 max Integrity per card changed · walk away |
 | 8 | **Garbage Collector** | all | mark and sweep: remove up to two basic cards for free · walk away |
-| 9 | **Abandoned Repository** | all | open it: a random relic, 30% cursed · read the README: a random card of a random paradigm |
+| 9 | **Abandoned Repository** | all | open it: a random relic, 30% cursed · read the README: a random card of a random paradigm · check the `bin/` folder: two random scripts |
 | 10 | **Fork the Repo** | 2-3 | duplicate a card, lose 8 Integrity · walk away |
 | 11 | **Code Golf** | all | remove two cards, lose 3 max Integrity each · walk away |
 | 12 | **Version Bump** | all | major: transform three random cards of your paradigm · minor: refactor one · patch: heal 12 |
@@ -889,7 +892,7 @@ actions.
 | 13 | **Pair Programming** | all | choose a paradigm, then one of three of its cards · decline (+10 cycles, they buy you coffee) |
 | 14 | **Conference Talk** | 1-3 | pay 75 cycles: one of three cards from another paradigm, already refactored · stay for the free swag: a random neutral card |
 | 15 | **Cross-Compilation** | 2-3 | trade a card of your paradigm for two random cards of another · walk away |
-| 16 | **Paradigm Shift** | 2-3, rare | switch your strategy to another of your paradigm's (the strategy relic swaps; the old signature card stays) · keep yours, +40 cycles |
+| 16 | **Paradigm Shift** | 2-3, rare | switch your focus to another of your paradigm's (the focus relic swaps; the old signature card stays) · keep yours, +40 cycles |
 
 ### B9.3 Deferred state (`pending`, `boon`, `fight`)
 
@@ -898,7 +901,7 @@ actions.
 | 17 | **The Open-Source Maintainer** | 1-2 | donate 50 cycles: two rooms later, a rare relic waits · donate nothing |
 | 18 | **Technical Debt** | all | borrow 120 cycles now; a curse "Tech Debt" (every third fight starts with 1 less mana) until you repay 150 at a Registry · decline |
 | 19 | **The Intern** | 1-2 | take them on: the next three card rewards offer a fourth card · decline |
-| 20 | **Daily Standup** | all | for the next three fights: +1 mana on turn 1 · or draw 1 more on turn 1 · or start with 5 block |
+| 20 | **Daily Standup** | all | for the next three fights: +1 mana on turn 1 · or draw 1 more on turn 1 · or start with 5 block · or skip it and take an uncommon script |
 | 21 | **Hackathon** | all | fight an elite now for a guaranteed rare-or-better relic · walk away |
 | 22 | **Bug Bounty** | 1-3 | the next fight's front foe carries a bounty: kill it in one program for 100 cycles · decline |
 | 23 | **Benchmark** | 2-3 | for the next fight, keep every program under 512 operations for 80 cycles · decline |
@@ -906,17 +909,21 @@ actions.
 
 ### B9.4 Reading code (the player's own deck, run for real in the sandbox)
 
-| # | Issue | Layers | Choices |
-|---|---|---|---|
-| 25 | **The Rubber Duck** | all | a card from your deck runs on a small volley; pick its output from four. Right: a rare card of your paradigm. Wrong: the duck explains the line you missed, no penalty. |
-| 26 | **The Oracle's Test Suite** | 2-3 | three versions of one of your cards (the real one and two of the Mutator's surviving mutants, `mutants.jsonc`); pick the one that passes the shown tests. Right: 60 cycles and that card refactored. |
-| 27 | **Stack Overflow Answer** | all | copy a card of your choice: a seeded half of the time the copy is a mutant (it runs, slightly wrong, and its diff is shown when it's taken) · read the comments first: see whether it's a mutant, then decide, for 15 cycles |
-| 28 | **Big-O Quiz** | all | two of your cards and a volley size: which does less work? Right: 40 cycles and the faster card refactored. |
-| 29 | **Will It Halt?** | the Root only | a tiny loop from the game's own content; say whether it halts on this input. Right: an epic relic. Wrong: lose 5 Integrity. (A wink at the Halting Oracle.) |
-| 30 | **Off-by-One** | all | a short loop over your volley; say how many times it runs. Right: +4 max Integrity. |
+These are bets: each states its stake before you answer, and walking away is always free. A wrong answer pays the
+stake and the event still explains the line you missed.
 
-Answers come from real runs in the sandbox, never from a written answer key, so they are right in every language.
-Wrong answers explain, they don't punish, except where the event says so up front.
+| # | Issue | Layers | Choices | Right | Wrong (the stake) |
+|---|---|---|---|---|---|
+| 25 | **The Rubber Duck** | all | a card from your deck runs on a small volley; pick its output from four · walk away | a rare card of your paradigm | 15 cycles |
+| 26 | **The Oracle's Test Suite** | 2-3 | three versions of one of your cards (the real one and two of the Mutator's surviving mutants, `mutants.jsonc`); pick the one that passes the shown tests · walk away | 60 cycles and that card refactored | 20 cycles |
+| 27 | **Stack Overflow Answer** | all | copy a card of your choice, blind: a seeded half of the time the copy is a mutant (it runs, slightly wrong; its diff is shown when it's taken) · read the comments first for 15 cycles: see whether it's a mutant, then decide · walk away | a clean copy | a mutant copy in your deck (removable like any card) |
+| 28 | **Big-O Quiz** | all | two of your cards and a volley size: which does less work? · walk away | 40 cycles and the faster card refactored | 15 cycles |
+| 29 | **Will It Halt?** | the Root only | a tiny loop from the game's own content; does it halt on this input? · walk away | an epic relic | 6 Integrity |
+| 30 | **Off-by-One** | all | a short loop over your volley; how many times does it run? · walk away | +4 max Integrity | 3 Integrity |
+
+Answers come from real runs in the sandbox, never from a written answer key, so they are right in every language. A
+stake you can't pay (too few cycles) greys out that event's answer, not the event: you can still walk away. The
+relic Rubber Duck (B10) waives every stake.
 
 ## B10. Relics (24 new)
 
@@ -935,9 +942,9 @@ Tiers as ADR-0016. "Kind" says whether the effect kind exists or is new.
 | **Monorepo** | uncommon | +1 mana while your deck has 25 cards or more. | new (SHARDRUN_DESIGN 8) |
 | **Microservices** | uncommon | Draw 1 more while your deck has 12 cards or fewer. | new (SHARDRUN_DESIGN 8) |
 | **Snapshot** | rare | Once a run, a blow that would end it restores you to the start of that turn. | new |
-| **Rubber Duck** | common | Reading-code events always give their reward, right or wrong. | new |
+| **Rubber Duck** | common | A wrong answer in a reading-code event costs nothing. | new |
 | **Polyglot** | uncommon | Fight rewards offer other paradigms at 35% instead of 20%. | new `reward-share` |
-| **Specialist** | uncommon | Fight rewards offer your strategy's cards at ×3 inside the paradigm. | new `reward-share` |
+| **Specialist** | uncommon | Fight rewards offer your focus's cards at ×3 inside the paradigm. | new `reward-share` |
 | **Amortised Analysis** | rare | The Table's rows never go down: a row lower than the one before is written as that one. (DP) | new |
 | **Memory Pool** | uncommon | The index holds 4 more, and the seed's index bolt gains 2. (Search) | new |
 | **Heat Sink** | uncommon | A timeout refunds its mana and gives block for the overrun ÷ 64. (Brute Force) | new |
@@ -968,36 +975,73 @@ share Merge Sort's until it has its own. Every card still has a picture from its
 
 | Asset | Subject |
 |---|---|
-| 15 strategy emblems (`shardrun/strategy-<id>`) | the strategy's signature card subject, framed in a round bronze medallion with the paradigm's colour as its jewel |
+| 15 focus emblems (`shardrun/focus-<id>`) | the focus's signature card subject, framed in a round bronze medallion with the paradigm's colour as its jewel |
 | `shardrun/registry` (the shop backdrop) | a tall cabinet of small brass drawers with tiny engraved tags, warm lamplight, a velvet counter in front; empty space at the top for the keeper |
 | `shardrun/semver` (the keeper, a small sprite) | a small round brass owl with big amber lens eyes, a monocle and a rubber stamp in one wing, house style: small, cute, simple |
 | `shardrun/cycles` (the currency icon) | a tiny bronze clock gear with a cyan crystal at its hub |
+| 16 script icons (`shardrun/script-<id>`) | the **Art** column of B12.3; a shared base, a small rolled bronze scroll with a crystal seal, so the belt reads as one family |
 | `map/shop`, `map/issue` (map icons) | a small crate stamped with an owl; a bronze ring around an exclamation mark made of a crystal shard |
 | `shardrun/issue-<id>` (30 event pictures) | one bold object each: a coffee machine with a crystal carafe; a rubber duck in bronze armour; a tangle of bronze pipes (Dependency Hell); a tiny brass crab in a hard hat (Rewrite It in Rust); an old chest wrapped in vines (Abandoned Repository); an owl-shaped lectern on a small stage (Conference Talk); two chairs at one desk (Pair Programming); a stopwatch on a podium (Benchmark); a gold coin with a beetle on it (Bug Bounty); a ledger with a red ribbon (Technical Debt); a looping bronze track with an ending flag (Will It Halt?) … |
 
-## B12. Optional: scripts (consumables)
+## B12. Scripts (consumables)
 
-If the player wants them after the rest: three belt slots, a 30% drop after a fight, three in each Registry. A script
-is used on your turn, costs no mana and isn't a card. From SHARDRUN_DESIGN 10:
+### B12.1 What a script is
 
-| Script | Effect | Price |
+A **script** is a one-use command you carry between fights, Rootward's version of Slay the Spire's potions. Scripts
+aren't cards: they don't go in the deck, cost no mana, take no program slot and are never drawn. You keep them in a
+**belt** of three slots (a fourth with the relic Dotfiles, below) shown beside the hand, and use one on your turn, at
+any moment before you cast. It does its effect at once and is gone. Each is named after a real command that does
+roughly that thing, so the name teaches a little too (`kill -9`, `nice`, `git revert`).
+
+The preview stays the cast: a script that changes the program (`sudo`, `nice -n -20`, `gc.collect()`) is applied to
+the battle state as a buff first, and the preview is recomputed with it.
+
+### B12.2 Getting them
+
+| Where | How |
+|---|---|
+| After a fight | 30%, +10% for every fight since the last drop (pity), back to 30% after one drops |
+| After an elite | 60% |
+| After a guardian | always |
+| The Registry | three on a shelf, priced by rarity |
+| Issues | Daily Standup, The Coffee Machine and Abandoned Repository may offer one (as a choice) |
+
+With a full belt, a new script asks which to drop (or to leave the new one). Scripts are data
+(`packs/core/programs/scripts/<id>.jsonc`: name, rarity, effect, when it can be used, an icon), validated by
+`ProgramSchemas`. They are drawn from the run's seed like everything else.
+
+### B12.3 The scripts
+
+| Script | Rarity | Effect | Price | Art |
+|---|---|---|---|---|
+| `hotfix.sh` | common | heal 10 (also usable on the map) | 40 | a small bronze scroll with a cyan crystal seal shaped like a plus |
+| `touch` | common | a 0-cost Literal in hand | 30 | a scroll with a single ivory crystal resting on it |
+| `print()` | common | see every foe's next two intents | 30 | a scroll unrolled into a short bronze speaking-trumpet |
+| `ulimit` | common | a foe's next attack deals half | 40 | a scroll bound by a tight bronze band with a lock |
+| `cache warm` | common | draw 3 | 45 | a scroll with three small card backs fanned from its end, glowing warm amber |
+| `pip install` | uncommon | a random card of your paradigm in hand; it costs 0 this turn | 45 | a scroll with a small owl-stamped crate sliding out of it |
+| `git revert` | uncommon | undo the damage taken last turn, up to 15 | 50 | a scroll with a curved bronze arrow looping back on itself |
+| `nice -n -20` | uncommon | this turn your program counts as 0 work (it lands first, with Initiative) | 50 | a scroll with a winged bronze stopwatch on it |
+| `kill -9` | uncommon | 25 damage to one foe | 60 | a scroll pierced by a short bronze dagger with an amber crystal pommel |
+| `strace` | uncommon | one foe's trait is off this turn | 60 | a scroll with a magnifying lens following a thin gold thread |
+| `sudo` | rare | your next program deals double | 70 | a scroll with a small bronze crown on its seal |
+| `fork()` | rare | your next program runs twice; the second run lands at half power | 80 | a scroll that splits into two identical scrolls at one end |
+| `gc.collect()` | uncommon | empties the index into this program's seed (Search), or writes a free row to the Table equal to its best row (DP), or 10 block for any other paradigm | 50 | a scroll with a small bronze broom sweeping crystals into a pile |
+| `git stash` | uncommon | put your whole hand aside: it comes back next turn, on top of the new draw | 45 | a scroll folded into a little bronze drawer |
+| `make -j8` | rare | this turn, your program's work is divided by 4 | 70 | a scroll with eight tiny bronze gears turning in a row |
+| `rm -rf build/` | rare | remove every curse relic's effect for this fight | 90 | a scroll with a bronze dustpan holding broken grey crystals |
+
+### B12.4 Relics that touch scripts (added to B10)
+
+| Relic | Tier | Effect |
 |---|---|---|
-| `hotfix.sh` | heal 10 | 40 |
-| `sudo` | the next program deals double | 70 |
-| `kill -9` | 25 damage to one foe | 60 |
-| `nice -n -20` | this turn your program counts as 0 work (it lands first, with Initiative) | 50 |
-| `git revert` | undo the damage taken last turn, up to 15 | 50 |
-| `print()` | see every foe's next two intents | 30 |
-| `pip install` | a random card of your paradigm in hand; costs 0 this turn | 45 |
-| `cache warm` | draw 3 | 45 |
-| `strace` | a foe's trait is off this turn | 60 |
-| `ulimit` | a foe's next attack deals half | 40 |
-| `touch` | a 0-cost Literal in hand | 30 |
-| `gc.collect()` | empty the index into the seed (Search) or write a free row to the Table (DP) | 50 |
+| **Dotfiles** | uncommon | the belt holds four |
+| **Shell History** | rare | the first script you use each fight comes back after the fight (once per fight) |
+| **Alias** | common | scripts cost 25% less at the Registry |
 
 ## B13. Balance: what to measure, and targets
 
-The probe (`docs/research/balance-probe/`) runs before (slice 0) and after (slice 12), on the same seeds, on Beginner,
+The probe (`docs/research/balance-probe/`) runs before (slice 0) and after (slice 13), on the same seeds, on Beginner,
 in JavaScript (the fastest). It may treat issues as "walk away" and the Registry as "buy the best card it can afford"
 at first.
 
@@ -1005,11 +1049,12 @@ at first.
 |---|---|
 | Win rate overall | 40 to 60% for the smart bot |
 | Win rate, worst paradigm | 30% or more; no paradigm above 75% |
-| Win rate, worst strategy | 25% or more |
+| Win rate, worst focus | 25% or more |
 | Share of the final deck from the paradigm | 50% or more (about 30% now) |
 | Other paradigms in the final deck | 10 to 25% |
 | Cycles at the layer-1 Registry | 150 to 250 |
 | Purchases per Registry | 1.5 to 2.5 |
+| Scripts used per fight | 0.3 to 0.8 |
 | Turns a law fired | 60% or more of turns, for every law |
 | Any single card that moves a paradigm's win rate by 20 points | flagged, reported |
 | Act 1 fights | 2 to 4 turns |
@@ -1017,16 +1062,15 @@ at first.
 Tuning is data: the laws' numbers, the shares, prices, earnings and card numbers live in `programs.jsonc` and the card
 files.
 
-## B14. The player's calls, with the defaults a session uses
+## B14. The player's calls (answered 2026-10-04)
 
-1. **Names**: "strategy" for the second pick (default), or "style", "focus", "school"? The money is "cycles"
-   (default). The shop is "the Registry", kept by Semver the owl (default).
-2. **The strategy pick**: all three offered (default), or two of three at random for replay?
-3. **Reward shares**: 50 / 30 / 20 (own, neutral, other), one own card guaranteed (default).
-4. **Map size**: +2 rows a layer (one fight, one Registry) as B6 (default), or +1 row with the Registry by weight
-   only?
-5. **Events per layer**: about 2 to 3 by weight 18 (default). More or fewer?
-6. **Scripts**: after the rest, only if wanted (default), or in this update?
-7. **Penalties in reading-code events**: none except Will It Halt? (default), or a small cost for a wrong answer to
-   make it a bet?
-8. **Legendary relics in the Registry**: never (default), or at 1%?
+1. **Names**: the second pick is a **focus** (focuses), the money is **cycles**, and the shop is **the Registry**,
+   kept by Semver the owl.
+2. **The focus pick**: all three focuses offered, for now.
+3. **Reward shares**: 50 / 30 / 20 (own paradigm, neutral, another paradigm), one own card guaranteed.
+4. **Map size**: +2 rows a layer (one fight, one fixed Registry), as B6.
+5. **Issues per layer**: about 2 to 3, by weight 18.
+6. **Scripts**: in this update (B12, slice 8).
+7. **Reading-code events are bets**: a wrong answer costs a small stake, stated before answering (B9.4); walking away
+   is free.
+8. **Legendary relics in the Registry**: at 1% (B7.1), priced 450.
