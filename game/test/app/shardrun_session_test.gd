@@ -158,3 +158,19 @@ func test_the_history_lists_the_newest_first_and_skips_a_broken_line() -> void:
 	saves.append_history({"hash": "bbbbbbb2", "status": "won"})
 	var history := saves.load_history()
 	assert_array(history.map(func(record: Dictionary) -> String: return record.hash)).is_equal(["bbbbbbb2", "aaaaaaa1"])
+
+
+## P2-13: a save that cannot be written is reported, not passed off as saved.
+func test_a_save_that_cannot_be_written_is_reported() -> void:
+	# A file where the save folder should be: the folder cannot be made, so nothing can be written.
+	var blocked := ROOT + "-blocked"
+	var file := FileAccess.open(blocked, FileAccess.WRITE)
+	file.store_string("not a folder")
+	file.close()
+	var session := ShardrunSession.new(catalog, SaveStore.new(blocked.path_join("inner")), "spellbook")
+	session.start(SandboxJob.JAVASCRIPT, "beginner", "unsaved")
+	assert_str(session.unsaved).is_not_empty()
+	DirAccess.remove_absolute(blocked)
+	var fine := _session()
+	fine.start(SandboxJob.JAVASCRIPT, "beginner", "saved")
+	assert_str(fine.unsaved).is_empty()

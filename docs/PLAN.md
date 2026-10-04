@@ -366,7 +366,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
       before the program lands (`ProgramRules.reaim`, P2-08).
 - [x] The fight's and the map's keys wait while a menu or panel covers them (P2-11).
 - [x] The sandbox's output cap holds for a program that prints past it and exits within one poll (P2-21).
-- [ ] The other high-priority bugs, each with a failing test first: saves (P2-12, P2-13, P2-15).
+- [x] Saves: a snapshot with fields of the wrong shape is set aside, not loaded (P2-12); a save that cannot be
+      written is reported in a toast and the run menu, and the save before it is kept (P2-13); a history line cut by a
+      crash no longer swallows the next finished run (P2-15).
 - [x] Spellforge's map: a spell's shard chips drew their (now large) pictures at full size, filling the spellbook and
       squeezing the map to half its width with the room legend over it; chips cap their pictures at chip size, the
       spells take only the height they need and the shard inspector follows them (P2-47).

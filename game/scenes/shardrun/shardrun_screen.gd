@@ -278,6 +278,8 @@ func send(command: Dictionary) -> void:
 		_set_busy(false)
 		return
 	await _present(result, command)
+	if session.unsaved != "":
+		toast(session.unsaved)
 	_refresh_coach()
 	_set_busy(false)
 
@@ -446,7 +448,11 @@ func _open_run_menu() -> void:
 				Ui.panel(
 					Ui.vbox(
 						[
-							Ui.label("The run is saved after every move.", "Muted"),
+							(
+								Ui.tint(Ui.label(session.unsaved, "Muted", true), UiTheme.WARN)
+								if session.unsaved != ""
+								else Ui.label("The run is saved after every move.", "Muted")
+							),
 							Ui.label("Return to title whenever you want to continue later.", "Faint")
 						],
 						5

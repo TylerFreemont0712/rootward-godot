@@ -23,6 +23,8 @@ var runs: SpellRuns
 var state: Dictionary = {}
 ## A command is being worked out; another one waits its turn rather than racing it.
 var busy := false
+## Why the last save failed, in plain words; "" when every move so far is on disk (docs/PHASE2.md P2-13).
+var unsaved := ""
 
 
 func _init(run_catalog: Dictionary, save_store: SaveStore, run_playstyle := "spellbook", run_save_key := "") -> void:
@@ -62,9 +64,18 @@ func start(language: String, difficulty: String, seed := "", sandbox := false) -
 	state = Shardrun.start(catalog, options)
 	if save_key == "trial" and not trial_content.is_empty():
 		state = TrialRules.begin(state, trial_content)
-	saves.save_run(save_key, state)
+	_saved(saves.save_run(save_key, state))
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": {}}
+
+
+## Notes whether a save went to disk. A failed one leaves the previous save as it was (SaveStore writes whole files).
+func _saved(error: Error) -> void:
+	unsaved = (
+		""
+		if error == OK
+		else "Your last move could not be saved (%s). The save before it is kept." % [error_string(error)]
+	)
 
 
 ## Applies one command. Returns {ok: true, before, state, replay} or {ok: false, error: {code, message}}; `replay` is
@@ -80,7 +91,7 @@ func command(request: Dictionary) -> Dictionary:
 	if save_key == "trial" and request.type == "trial-next":
 		var previous := state
 		state = TrialRules.coach_next(state, trial_content)
-		saves.save_run(save_key, state)
+		_saved(saves.save_run(save_key, state))
 		changed.emit()
 		return {"ok": true, "before": previous, "state": state, "replay": {}}
 	busy = true
@@ -107,11 +118,13 @@ func command(request: Dictionary) -> Dictionary:
 	state = result.state
 	if save_key == "trial":
 		state = TrialRules.after_command(before, state, request, trial_content, catalog)
-	saves.save_run(save_key, state)
+	_saved(saves.save_run(save_key, state))
 	if save_key != "trial" and state.status in Shardrun.ENDED and not before.get("status", "") in Shardrun.ENDED:
 		# A run just ended: it goes into the history as a commit (RunHistory), never to be rewritten.
 		var finished := Time.get_datetime_string_from_system(false, true)
-		saves.append_history(RunHistory.entry(state, catalog, finished, Settings.character_skin))
+		var kept := saves.append_history(RunHistory.entry(state, catalog, finished, Settings.character_skin))
+		if kept != OK:
+			unsaved = "This run could not be added to your history (%s)." % error_string(kept)
 	runs.warm(state)
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": replay}
