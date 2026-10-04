@@ -27,12 +27,15 @@ func _initialize() -> void:
 		"program": ShardrunCatalog.sorted_values(programs),
 		"spellforge": ShardrunCatalog.sorted_values(catalog.shards),
 	}
-	# ROOTWARD_CPP_ONLY (ids, comma separated) builds only those cards (scripts/try-cpp.sh).
+	# ROOTWARD_CPP_ONLY (ids, comma separated) builds only those cards (scripts/try-cpp.sh); "program:fork" or
+	# "spellforge:fork" names one mode's card where an id is in both.
 	var only := OS.get_environment("ROOTWARD_CPP_ONLY").split(",", false)
 	for module: String in MODULES:
 		var cards: Array = sets[module]
 		if not only.is_empty():
-			cards = cards.filter(func(card: Dictionary) -> bool: return card.id in only)
+			cards = cards.filter(
+				func(card: Dictionary) -> bool: return card.id in only or "%s:%s" % [module, card.id] in only
+			)
 		var count := _write_module(out.path_join(module), module, cards, module == "program")
 		print("%s: %d units" % [module, count])
 	quit(0)

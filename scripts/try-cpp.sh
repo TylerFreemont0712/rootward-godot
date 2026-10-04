@@ -2,6 +2,7 @@
 # Builds only the named cards' C++ into a private runtime and runs their worked examples (ADR-0046), leaving the
 # game's own build alone, so several ports can be checked at once. Ids of program cards or Spellforge shards:
 #   scripts/try-cpp.sh amplify divide fork
+# An id in both modes can be named with its mode: program:fork, spellforge:fork.
 # Prints each failure, then "C++ ok: N cards" or exits 1.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"

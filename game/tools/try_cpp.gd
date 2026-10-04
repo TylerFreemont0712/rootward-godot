@@ -10,12 +10,15 @@ func _initialize() -> void:
 	var picked := {"shards": {}, "programs": {"cards": {}}}
 	var missing := 0
 	# An id can name a program card and a Spellforge shard both (fork): whichever has C++ is tried.
-	for id in only:
+	# "program:fork" or "spellforge:fork" names one mode only.
+	for named in only:
+		var mode := named.get_slice(":", 0) if named.contains(":") else ""
+		var id := named.get_slice(":", 1) if named.contains(":") else named
 		var found := false
-		if (programs.get(id, {}).get("code", {}) as Dictionary).has("cpp"):
+		if mode != "spellforge" and (programs.get(id, {}).get("code", {}) as Dictionary).has("cpp"):
 			picked.programs.cards[id] = programs[id]
 			found = true
-		if (catalog.shards.get(id, {}).get("code", {}) as Dictionary).has("cpp"):
+		if mode != "program" and (catalog.shards.get(id, {}).get("code", {}) as Dictionary).has("cpp"):
 			picked.shards[id] = catalog.shards[id]
 			found = true
 		if not found:
