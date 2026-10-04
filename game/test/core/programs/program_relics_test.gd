@@ -258,3 +258,49 @@ func test_a_pattern_ward_lets_the_wrong_element_through_at_the_programs_rate() -
 	var cast := _cast(state, ["salvo"], bolts, _work("salvo"), base)
 	var off := float(ProgramRules.config_of(base).get("pattern_off", 0.25))
 	assert_int(_hp(cast)[1]).is_equal(30 - floori(10 * off * 1.5) - 10)
+
+
+func _preview(state: Dictionary, cards: Array, bolts: Array, work: Array, catalog: Dictionary) -> Dictionary:
+	var next := state.duplicate(true)
+	next.spells[0].shards = cards
+	var outcome := {"ok": true, "bolts": bolts, "work": work}
+	return ShardrunBattle.preview_cast(next, next.spells[0].id, outcome, catalog)
+
+
+## P2-01: a faster foe acts before the program lands, in the preview as in the cast.
+func test_the_preview_lets_a_faster_foe_shield_first() -> void:
+	var state := _fight(base)
+	state.battle.foes[0].intents = [{"kind": "shield", "amount": 10}]
+	var bolts := [{"power": 10, "element": "none", "foe": 0}]
+	var preview := _preview(state, ["salvo"], bolts, _work("salvo", 40), base)
+	var cast := _cast(state, ["salvo"], bolts, _work("salvo", 40), base)
+	assert_array(preview.faster).contains(["race-condition-imp"])
+	assert_int(int(preview.damage)).is_equal(20 - _hp(cast)[0])
+	assert_int(int(preview.damage)).is_equal(0)
+
+
+func test_the_preview_says_when_a_faster_foe_would_end_the_run_first() -> void:
+	var state := _fight(base)
+	state.integrity = 3
+	var bolts := [{"power": 10, "element": "none", "foe": 0}]
+	var preview := _preview(state, ["salvo"], bolts, _work("salvo", 40), base)
+	var cast := _cast(state, ["salvo"], bolts, _work("salvo", 40), base)
+	assert_str(String(cast.status)).is_equal("lost")
+	assert_bool(preview.get("lethal", false)).is_true()
+	assert_int(int(preview.damage)).is_equal(0)
+
+
+## P2-02: the block a relic adds after the cast is in the preview.
+func test_the_preview_counts_the_block_relics_add_after_the_cast() -> void:
+	var catalog := _with([{"kind": "block-per-card", "amount": 2}])
+	var state := _fight(catalog)
+	var bolts := [{"power": 4, "element": "none", "foe": 1}]
+	var preview := _preview(state, ["salvo", "fork"], bolts, _work("salvo"), catalog)
+	var cast := _cast(state, ["salvo", "fork"], bolts, _work("salvo"), catalog)
+	# The program ends the turn and the foes' strikes spend the block, so the cast's log says what it gathered.
+	var gathered := 0
+	for entry: Dictionary in cast.log:
+		if entry.kind == "ward":
+			gathered += int(entry.amount)
+	assert_int(gathered).is_equal(4)
+	assert_int(int(preview.block)).is_equal(4)

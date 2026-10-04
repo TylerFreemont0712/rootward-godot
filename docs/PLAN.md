@@ -356,7 +356,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [x] The Verifier course removed from the game; the Academy starts fresh (ADR-0045). Old settings on the Verifier
       open the Shardrun; a player's old course save is left on disk, unread. The leftover probe scripts deleted.
 - [ ] Card Shardrun retired (waiting for the player's yes).
-- [ ] The high-priority bugs, each with a failing test first: the preview is the cast (P2-01, P2-02, P2-07),
+- [x] The preview is the cast: both call `ProgramRules.play`, the preview on a copy; faster foes act and relics add
+      their block in the preview too, and it warns when a faster foe ends the run first (P2-01, P2-02).
+- [ ] The other high-priority bugs, each with a failing test first: the Mutator's bonus in the totals (P2-07),
       overflow and the guardians (P2-03 to P2-05), dead cards and summons (P2-06, P2-08), keys under menus (P2-11),
       saves (P2-12, P2-13, P2-15), the sandbox output limit (P2-21).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).

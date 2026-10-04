@@ -803,3 +803,11 @@ snap's torso turn), and a jump from standing still to full speed (`cubic_out` st
 as each bone's world rotation between frames, both show as numbers, and the fixes are in the keys: let the body's
 turn arrive with the hand's rise, coil slowly through a wait, and accelerate out of it (`sine`) instead of starting
 at full speed. Measure with the quaternions' shortest angle, min(θ, 360° − θ): q and −q are the same turn.
+
+## One function for the cast and its preview (`game/core/programs/program_rules.gd`, `play`)
+The preview used to repeat the cast's landing steps in its own code, and the two drifted: the cast let faster foes act
+first and gave the relics' block after landing, the preview did neither, so a preview could promise 10 damage the
+cast never landed (docs/PHASE2.md P2-01, P2-02). Now both call `play`, the preview on a deep copy of the state with
+`rehearsal` set (no win or loss is declared on the copy). A rule added to `play` reaches both at once. The same
+lesson as "don't repeat yourself", but with a sharper reason: here two copies of a rule are a bug waiting to happen,
+because the game promises they agree.

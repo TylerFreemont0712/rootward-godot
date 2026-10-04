@@ -270,6 +270,26 @@ static func cast(
 		return {
 			"code": "not-enough-mana", "message": "%s needs %d mana and you have %d." % [spell.name, cost, battle.mana]
 		}
+	play(state, battle, spell, outcome, catalog)
+	return {}
+
+
+## Everything a cast does once it is paid for, from the faster foes to the relics after it lands. The cast and its
+## preview both play it, the preview on a copy (`rehearsal`: no win or loss is declared), so the preview is the cast.
+## Returns {landed (the resolver's result, empty when nothing landed), gained (block the cast and the relics after it
+## added), lethal (the run ends during the cast)}.
+## LEARN: one function for both paths is what keeps them equal; two copies of the same steps drifted apart before
+## (a faster foe acted in the cast but not in the preview, docs/PHASE2.md P2-01).
+static func play(
+	state: Dictionary,
+	battle: Dictionary,
+	spell: Dictionary,
+	outcome: Dictionary,
+	catalog: Dictionary,
+	rehearsal := false
+) -> Dictionary:
+	var played := {"landed": {}, "gained": 0, "lethal": false}
+	var cost := cost_of(state, spell, catalog)
 	if not battle.has("acted"):
 		battle.acted = []
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
@@ -288,19 +308,21 @@ static func cast(
 		(battle.acted as Array).append(foe.uid)
 		ShardrunBattle.foe_act(state, battle, foe, catalog)
 		if int(state.integrity) <= 0:
-			ShardrunBattle.lose(state)
-			return {}
+			played.lethal = true
+			if not rehearsal:
+				ShardrunBattle.lose(state)
+			return played
 	if not outcome.ok:
 		var crashed := "%s crashes: %s" % [spell.name, outcome.reason]
 		Shardrun.record(state, {"kind": "fizzle", "spell": spell.id, "amount": cost, "text": crashed})
 		remember(battle, spell.shards, [])
-		return {}
+		return played
 	var limit := budget(state, catalog)
 	if work > limit:
 		var text := "%s runs out of time: %d ops against a budget of %d." % [spell.name, work, limit]
 		Shardrun.record(state, {"kind": "timeout", "spell": spell.id, "amount": work, "cost": cost, "text": text})
 		remember(battle, spell.shards, [])
-		return {}
+		return played
 	var bolts := normalize(outcome.bolts, catalog)
 	state.stats.bolts += bolts.size()
 	var noun := "bolt" if bolts.size() == 1 else "bolts"
@@ -311,20 +333,25 @@ static func cast(
 		state.integrity = maxi(0, int(state.integrity) - curse)
 		Shardrun.record(state, {"kind": "curse", "amount": curse, "text": "The cast burns %d Integrity." % curse})
 	var landed := resolve(state, battle, bolts, catalog, context)
+	var landed_block := int(battle.block)
 	remember(battle, spell.shards, bolts)
 	battle.last_work = work
 	ShardrunBattle.cast_defense(state, battle, catalog)
 	ProgramRelics.after_cast(state, battle, spell.shards, int(landed.kills), catalog)
 	ProgramDeck.after_cast(state, battle, int(landed.dealt), catalog)
+	played.landed = landed
+	played.gained = int(landed.block) + int(battle.block) - landed_block
 	state.stats.damage += int(landed.dealt)
 	var by_spell: Dictionary = state.stats.damage_by_spell
 	by_spell[spell.id] = int(by_spell.get(spell.id, 0)) + int(landed.dealt)
 	state.stats.best_cast = maxi(int(state.stats.best_cast), int(landed.dealt) + int(landed.wasted))
 	if int(state.integrity) <= 0:
-		ShardrunBattle.lose(state)
-	elif (battle.foes as Array).all(func(foe: Dictionary) -> bool: return int(foe.hp) == 0):
+		played.lethal = true
+		if not rehearsal:
+			ShardrunBattle.lose(state)
+	elif not rehearsal and (battle.foes as Array).all(func(foe: Dictionary) -> bool: return int(foe.hp) == 0):
 		ShardrunBattle.win(state, battle, catalog)
-	return {}
+	return played
 
 
 ## What the landing needs to know about the program that made the bolts: how many cards it ran of how many slots, its
@@ -654,28 +681,37 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 		"kills": 0,
 		"locked": 0,
 	}
-	if not outcome.ok:
-		view.misfire = outcome.reason
-		return view
-	if view.timeout:
-		return view
 	var copy := state.duplicate(true)
 	copy.log = []
 	var shadow: Dictionary = copy.battle
-	var context := landing_context(copy, shadow, spell, stage_list, work, catalog)
-	var bolts := normalize(outcome.bolts, catalog)
-	var landed := resolve(copy, shadow, bolts, catalog, context)
-	remember(shadow, spell.shards, bolts)
+	var played := play(copy, shadow, Shardrun.spell_by_id(copy, spell_id), outcome, catalog, true)
+	view.lethal = played.lethal
+	var notes: Array[String] = []
+	if played.lethal:
+		notes.append(
+			(
+				"A faster foe ends the run before this program lands."
+				if played.landed.is_empty()
+				else "The cast's burn takes your last Integrity."
+			)
+		)
+	if not outcome.ok:
+		view.misfire = outcome.reason
+		view.notes = notes
+		return view
+	if view.timeout or played.landed.is_empty():
+		view.notes = notes
+		return view
+	var landed: Dictionary = played.landed
 	view.reprints = reprints(battle, shadow, view.faster)
 	# What the guardians make of this program, before it runs (ADR-0026).
-	var notes: Array[String] = []
-	notes.assign(landed.notes)
+	notes.append_array(landed.notes)
 	notes.append_array(GuardianLanding.telegraph(battle, shadow, spell.shards, stage_list, catalog))
 	view.notes = notes
-	view.bolts = bolts.size()
+	view.bolts = normalize(outcome.bolts, catalog).size()
 	view.damage = landed.dealt
 	view.wasted = landed.wasted
-	view.block = landed.block
+	view.block = played.gained
 	view.kills = landed.kills
 	view.locked = landed.locked
 	view.fixed = landed.fixed
