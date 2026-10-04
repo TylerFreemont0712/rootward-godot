@@ -121,22 +121,22 @@ func _init() -> void:
 	_title = Ui.label("", "Subheading", true)
 	_subtitle = Ui.tint(Ui.label("", "Faint"), UiTheme.AMBER_DIM) as Label
 	_flavor = Ui.sized(Ui.label("", "Muted", true), 14) as Label
-	_detail_text = Ui.label(HINT, "Muted", true)
+	_detail_text = Ui.label(Text.t(HINT), "Muted", true)
 	_next = Ui.vbox([], 4)
 	_side.add_child(Ui.vbox([_title, _subtitle], 2))
 	_side.add_child(_flavor)
 	# The rooms ahead first, then the details of the one pointed at: a details box that grows and shrinks below them
 	# never moves the list you are pointing into.
-	_side.add_child(Ui.tint(Ui.label("NEXT ROOMS", "Faint"), UiTheme.TEAL))
+	_side.add_child(Ui.tint(Ui.label(Text.t("NEXT ROOMS"), "Faint"), UiTheme.TEAL))
 	_side.add_child(_next)
 	_side.add_child(Ui.panel(_detail_text, "Card"))
 	_side.add_child(Ui.expand(Ui.spacer(0, 1), true))
-	_side.add_child(Ui.label("ROOMS", "Faint"))
+	_side.add_child(Ui.label(Text.t("ROOMS"), "Faint"))
 	for kind: String in LEGEND:
 		_side.add_child(_legend_row(kind))
-	_side.add_child(Ui.sized(Ui.label("Wheel or drag to look ahead.", "Faint", true), 12))
+	_side.add_child(Ui.sized(Ui.label(Text.t("Wheel or drag to look ahead."), "Faint", true), 12))
 	_toggle = Ui.button("", _flip_drawer, "ChipButton")
-	_toggle.tooltip_text = "Show or hide the route: the layer, the rooms you can enter next, the legend."
+	_toggle.tooltip_text = Text.t("Show or hide the route: the layer, the rooms you can enter next, the legend.")
 	add_child(_toggle)
 	_deck = _pile()
 	_view.add_child(_deck)
@@ -158,16 +158,16 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	catalog = run_catalog
 	var layer := ShardrunRules.layer_of(state, catalog)
 	var layers: Array = catalog.config.layers
-	_title.text = layer.name
-	_subtitle.text = (
-		"RING %d · LAYER %d OF %d"
-		% [int(layer.get("ring", layers.size() - int(state.layer) - 1)), int(state.layer) + 1, layers.size()]
+	_title.text = Text.t(layer.name)
+	_subtitle.text = Text.f(
+		"RING %d · LAYER %d OF %d",
+		[int(layer.get("ring", layers.size() - int(state.layer) - 1)), int(state.layer) + 1, layers.size()]
 	)
-	_flavor.text = String(layer.get("flavor", ""))
+	_flavor.text = Text.t(String(layer.get("flavor", "")))
 	if state.has("trial"):
-		_title.text = "Pip's Trial"
-		_subtitle.text = "%d STOPS · ONE ROUTE" % (state.map.nodes as Array).size()
-		_flavor.text = "A short descent to the Kiln Warden."
+		_title.text = Text.t("Pip's Trial")
+		_subtitle.text = Text.f("%d STOPS · ONE ROUTE", [(state.map.nodes as Array).size()])
+		_flavor.text = Text.t("A short descent to the Kiln Warden.")
 	var shaft := String(layer.get("map_backdrop", ""))
 	_wall.show_scene(
 		"backgrounds/" + shaft if shaft != "" else "shardrun/map-wall-%s-0" % layer.id,
@@ -187,11 +187,11 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	_canvas.catalog = catalog
 	_canvas.states = _states
 	_canvas.reachable = _reachable
-	_canvas.guardian_name = ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name))
+	_canvas.guardian_name = _names(foes)
 	_canvas.portrait = null if foes.is_empty() else Art.texture("foes/" + String(foes[0].get("sprite", foes[0].id)))
 	_canvas.focused = ""
 	_traveling = false
-	_detail_text.text = HINT
+	_detail_text.text = Text.t(HINT)
 	for room: Button in _rooms.values():
 		room.queue_free()
 	_rooms.clear()
@@ -201,7 +201,7 @@ func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
 	for node: Dictionary in ShardrunMap.next_rooms(state.map, state.position):
 		_next.add_child(_next_room(node))
 	var deck: Array = state.get("deck", [])
-	_deck_count.text = "DECK · %d" % deck.size()
+	_deck_count.text = Text.f("DECK · %d", [deck.size()])
 	_deck.visible = show_deck
 	_placed = false
 	_layout()
@@ -212,10 +212,12 @@ func _next_room(node: Dictionary) -> Button:
 	var foes := ShardrunViews.room_foes(state, node, catalog)
 	if state.has("trial") and state.trial.get("room_foes", {}).has(node.id):
 		foes = [catalog.foes.get(state.trial.room_foes[node.id], {})]
-	var what := ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name)) if not foes.is_empty() else ""
+	var what := _names(foes)
 	if what == "":
-		what = String(WHAT.get(node.kind, ""))
-	var button := Ui.button("%s  ·  %s" % [NAMES.get(node.kind, node.kind), what], func() -> void: travel_to(node.id))
+		what = Text.t(String(WHAT.get(node.kind, "")))
+	var button := Ui.button(
+		"%s  ·  %s" % [Text.t(String(NAMES.get(node.kind, node.kind))), what], func() -> void: travel_to(node.id)
+	)
 	button.icon = _canvas.icons.get(node.kind)
 	button.expand_icon = false
 	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
@@ -232,7 +234,7 @@ func _pile() -> Button:
 	var pile := Button.new()
 	pile.custom_minimum_size = PILE + Vector2(0, 24)
 	pile.size = pile.custom_minimum_size
-	pile.tooltip_text = "Open your deck: every card, what it does and its code."
+	pile.tooltip_text = Text.t("Open your deck: every card, what it does and its code.")
 	pile.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	for look: String in ["normal", "pressed", "focus"]:
 		pile.add_theme_stylebox_override(look, StyleBoxEmpty.new())
@@ -284,7 +286,7 @@ func _legend_row(kind: String) -> Control:
 	var row := Control.new()
 	row.custom_minimum_size = Vector2(0, 34)
 	row.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	row.tooltip_text = WHAT[kind]
+	row.tooltip_text = Text.t(WHAT[kind])
 	row.draw.connect(
 		func() -> void:
 			var at := Vector2(18, 17)
@@ -295,7 +297,7 @@ func _legend_row(kind: String) -> Control:
 			else:
 				MapMarkers.draw_room(row, kind, at, 13.0, 1.0, _canvas.icons.get(kind))
 	)
-	var name := Ui.tint(Ui.label(NAMES[kind], "Muted"), UiTheme.room(kind))
+	var name := Ui.tint(Ui.label(Text.t(NAMES[kind]), "Muted"), UiTheme.room(kind))
 	name.position = Vector2(44, 5)
 	name.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	row.add_child(name)
@@ -317,15 +319,16 @@ func focus_room(id: String, reveal := true) -> void:
 	_canvas.focused = id
 	var node := _node(id)
 	if node.is_empty():
-		_detail_text.text = HINT
+		_detail_text.text = Text.t(HINT)
 		return
 	var where: String = _states.get(id, "ahead")
-	var status := where.to_upper()
+	var status := Text.t(where.to_upper())
 	if where == "open":
-		status = "AVAILABLE"
+		status = Text.t("AVAILABLE")
 	elif where == "ahead" and not _reachable.has(id):
-		status = "OUT OF REACH"
-	_detail_text.text = "%s  ·  %s\n%s" % [NAMES.get(node.kind, node.kind), status, _describe(node, where)]
+		status = Text.t("OUT OF REACH")
+	var name := Text.t(String(NAMES.get(node.kind, node.kind)))
+	_detail_text.text = "%s  ·  %s\n%s" % [name, status, _describe(node, where)]
 	if reveal:
 		_reveal(id)
 
@@ -344,19 +347,27 @@ func travel_to(id: String) -> void:
 
 
 func _describe(node: Dictionary, where: String) -> String:
-	var name: String = NAMES.get(node.kind, node.kind)
+	var name := Text.t(String(NAMES.get(node.kind, node.kind)))
 	var foes := ShardrunViews.room_foes(state, node, catalog)
 	var text := name
 	if not foes.is_empty():
-		text += ": " + ", ".join(foes.map(func(foe: Dictionary) -> String: return foe.name))
+		text += ": " + _names(foes)
 	elif WHAT.has(node.kind):
-		text += ": " + WHAT[node.kind]
+		text += ": " + Text.t(WHAT[node.kind])
 	match where:
 		"open":
-			text += "\nClick to go there."
+			text += "\n" + Text.t("Click to go there.")
 		"current":
-			text += "\nYou are here."
+			text += "\n" + Text.t("You are here.")
 	return text
+
+
+## Foes' names in the player's language, as a list.
+static func _names(foes: Array) -> String:
+	var names := PackedStringArray(
+		foes.map(func(foe: Dictionary) -> String: return Text.t(String(foe.get("name", ""))))
+	)
+	return ("、" if Text.japanese() else ", ").join(names)
 
 
 func _node(id: String) -> Dictionary:
@@ -520,7 +531,7 @@ func _layout() -> void:
 	_side.visible = side > 0.0
 	_strip.visible = not _side.visible
 	_toggle.visible = wide
-	_toggle.text = "Route  »" if drawer_open else "«  Route"
+	_toggle.text = Text.t("Route  »") if drawer_open else Text.t("«  Route")
 	_toggle.size = _toggle.get_combined_minimum_size()
 	_rail.position = Vector2.ZERO
 	_rail.size = Vector2(RAIL_WIDTH, size.y)

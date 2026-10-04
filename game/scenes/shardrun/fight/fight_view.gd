@@ -113,9 +113,9 @@ func _make_surface(content: Control) -> Control:
 ## The Maintainer's panel: their portrait, End turn, and the fight's log. Their numbers stand over them on the stage
 ## (`_status`), and what the foes will deal over the foes.
 func _hero_panel() -> Control:
-	_end_turn = Ui.button("End turn  [E]", func() -> void: _ask({"type": "end-turn"}), "PrimaryButton")
+	_end_turn = Ui.button(Text.t("End turn  [E]"), func() -> void: _ask({"type": "end-turn"}), "PrimaryButton")
 	var log_button := Ui.button(".log", func() -> void: BattleLog.open(self, _entries))
-	log_button.tooltip_text = "Everything that happened in this fight, turn by turn."
+	log_button.tooltip_text = Text.t("Everything that happened in this fight, turn by turn.")
 	log_button.add_theme_font_size_override("font_size", 13)
 	log_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	var column := Ui.vbox([_avatar(), _end_turn, Ui.spacer(), log_button], 8)
@@ -216,7 +216,7 @@ func show_state(state: Dictionary) -> void:
 	_foe_names.merge(LogDigest.names_of(state), true)
 	_show_numbers(LogPlayer.numbers_of(state))
 	var incoming := ShardrunViews.incoming(state)
-	_incoming.text = "⚔ %d incoming" % incoming if incoming > 0 else ""
+	_incoming.text = Text.f("⚔ %d incoming", [incoming]) if incoming > 0 else ""
 	stage.place_status()
 	stage.show_foes(battle.foes)
 	if state.get("playstyle", "") == "program":

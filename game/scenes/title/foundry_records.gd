@@ -22,7 +22,11 @@ func _build() -> void:
 	custom_minimum_size = Vector2(770, 450)
 	var column := Ui.vbox(
 		[
-			FoundryUi.heading("THE JOURNEY LEDGER", FoundryUi.text("Records", "冒険の記録"), func() -> void: closed.emit()),
+			FoundryUi.heading(
+				FoundryUi.text("THE JOURNEY LEDGER", "冒険の台帳"),
+				FoundryUi.text("Records", "冒険の記録"),
+				func() -> void: closed.emit()
+			),
 			FoundryUi.rule()
 		],
 		8
@@ -64,14 +68,14 @@ func _build() -> void:
 		var open := func() -> void:
 			_selected = "" if _selected == hash else hash
 			_rebuild()
-		var mode: String = Game.PLAYSTYLES.get(record.get("playstyle", "program"), "Shardrun")
-		var heading := "%s · %s" % [mode, record.get("place", "")]
+		var mode := FoundryAdventurePanel.mode_name(String(record.get("playstyle", "program")))
+		var heading := "%s · %s" % [mode, Text.t(String(record.get("place", "")))]
 		var summary := (
 			"%s · %s · %s · %d"
 			% [
 				record.get("date", "").get_slice("T", 0),
 				CodeLanguage.display_name(String(record.get("language", ""))),
-				names.get(record.get("status", ""), "Retired"),
+				names.get(record.get("status", ""), names.abandoned),
 				int(record.get("score", 0))
 			]
 		)
@@ -81,23 +85,26 @@ func _build() -> void:
 				[
 					Ui.label(
 						(
-							"%d rooms · %d fights · %d turns"
+							FoundryUi.text("%d rooms · %d fights · %d turns", "%d部屋 · %d戦 · %dターン")
 							% [int(record.get("rooms", 0)), int(record.get("fights", 0)), int(record.get("turns", 0))]
 						),
 						"Subheading"
 					),
 					Ui.label(
-						"%d damage · %d best cast" % [int(record.get("damage", 0)), int(record.get("best_cast", 0))],
+						(
+							FoundryUi.text("%d damage · %d best cast", "%dダメージ · 最高の詠唱 %d")
+							% [int(record.get("damage", 0)), int(record.get("best_cast", 0))]
+						),
 						"Muted"
 					),
-					Ui.label("Seed · " + String(record.get("seed", "")), "Faint")
+					Ui.label(FoundryUi.text("Seed · ", "シード · ") + String(record.get("seed", "")), "Faint")
 				],
 				12
 			)
 			var relics := Ui.flow([], 8)
 			for id: String in record.get("relics", []):
 				var art := Ui.picture("shardrun/relic-" + id, Vector2(40, 40), "◇")
-				art.tooltip_text = id.capitalize()
+				art.tooltip_text = Text.t(String(Game.catalog.relics.get(id, {}).get("name", id.capitalize())))
 				relics.add_child(art)
 			detail.add_child(relics)
 			list.add_child(Ui.panel(detail, "Card"))

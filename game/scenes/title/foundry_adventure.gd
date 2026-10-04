@@ -11,9 +11,9 @@ signal continue_requested
 signal trial_requested
 
 const MODES: Array[Dictionary] = [
-	{"id": "program", "name": "Shardrun"},
-	{"id": "spellbook", "name": "Spellforge"},
-	{"id": "deck", "name": "Card Shardrun"},
+	{"id": "program", "name": "Shardrun", "ja": "シャードラン"},
+	{"id": "spellbook", "name": "Spellforge", "ja": "スペルフォージ"},
+	{"id": "deck", "name": "Card Shardrun", "ja": "カードのシャードラン"},
 ]
 
 var _tab := "descent"
@@ -31,7 +31,9 @@ func _build() -> void:
 	var column := Ui.vbox(
 		[
 			FoundryUi.heading(
-				"DEPARTURE / SURFACE STATION", FoundryUi.text("Adventure", "冒険"), func() -> void: closed.emit()
+				FoundryUi.text("DEPARTURE / SURFACE STATION", "出発 / 地上の駅"),
+				FoundryUi.text("Adventure", "冒険"),
+				func() -> void: closed.emit()
 			),
 			FoundryUi.rule()
 		],
@@ -66,19 +68,19 @@ func _descent(column: VBoxContainer) -> void:
 			Game.use(mode.id)
 			Settings.save_file()
 			_rebuild()
-		modes.add_child(Ui.choice(mode.name, Settings.playstyle == mode.id, choose))
+		modes.add_child(Ui.choice(FoundryUi.text(mode.name, mode.ja), Settings.playstyle == mode.id, choose))
 	column.add_child(modes)
 	var character := FoundryUi.action(
-		FoundryUi.text("Artificer", "クラフター"),
+		FoundryUi.text("Artificer", "工匠"),
 		_skin_name() + FoundryUi.text(" · Class & skin", " · クラスとすがた"),
 		func() -> void: character_requested.emit()
 	)
 	column.add_child(character)
 	var session := Game.session
 	if session.saves.problem != "":
-		column.add_child(Ui.tint(Ui.label(session.saves.problem, "Muted", true), UiTheme.WARN))
+		column.add_child(Ui.tint(Ui.label(Text.sentence(session.saves.problem), "Muted", true), UiTheme.WARN))
 	if session.in_progress():
-		var where: String = ShardrunRules.layer_of(session.state, session.catalog).name
+		var where := Text.t(ShardrunRules.layer_of(session.state, session.catalog).name)
 		var summary := (
 			"%s · %s · %d/%d HP"
 			% [
@@ -222,8 +224,16 @@ func _rebuild() -> void:
 	FoundryUi.rebuild(self, _build)
 
 
+## A playstyle's name in the player's language.
+static func mode_name(id: String) -> String:
+	for mode: Dictionary in MODES:
+		if mode.id == id:
+			return FoundryUi.text(mode.name, mode.ja)
+	return id.capitalize()
+
+
 static func _skin_name() -> String:
 	for look: Dictionary in SkinSelectionPanel.looks():
 		if look.id == Settings.character_skin:
-			return look.name
+			return Text.t(look.name)
 	return Settings.character_skin.capitalize()

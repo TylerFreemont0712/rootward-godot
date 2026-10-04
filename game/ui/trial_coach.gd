@@ -59,14 +59,14 @@ func _render() -> void:
 	var mood := String(shown.get("mood", chapter.get("mood", "neutral")))
 	var faces := {"neutral": "◈", "excited": "✦", "worried": "◇", "proud": "★"}
 	var portrait := Ui.picture("sprites/pip/" + mood, Vector2(64, 64), faces.get(mood, "◈"))
-	portrait.tooltip_text = "Pip · " + mood
+	portrait.tooltip_text = Text.f("Pip · %s", [Text.t(mood)])
 	if portrait is Label:
 		Ui.sized(portrait, 36)
 		Ui.tint(portrait, UiTheme.AMBER if mood in ["excited", "proud"] else UiTheme.TEAL)
 	var chapter_title := Ui.label(String(chapter.get("title", "")), "Subheading", true)
 	if _compact:
 		Ui.sized(chapter_title, 30)
-	var title := Ui.vbox([Ui.label("PIP", "Faint"), chapter_title], 3)
+	var title := Ui.vbox([Ui.label(Text.t("PIP"), "Faint"), chapter_title], 3)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var heading := Ui.hbox([portrait, title], 12)
 	var body := Ui.vbox([heading], 8)
@@ -92,28 +92,26 @@ func _render() -> void:
 	if hint != "":
 		if japanese:
 			hint = String(_content.get("loss_hint", hint))
-		var reminder := Ui.label("Pip: " + hint, "Muted", true)
+		var reminder := Ui.label(Text.f("Pip: %s", [hint]), "Muted", true)
 		if _compact:
 			Ui.sized(reminder, 25)
 		body.add_child(Ui.tint(reminder, UiTheme.WARN))
 	var controls := Ui.hbox([], 6)
 	var finished: bool = _state.get("trial", {}).get("done", false)
-	var back := Ui.button("‹ " + ("もどる" if japanese else "Back"), _back)
+	var back := Ui.button("‹ " + Text.t("Back"), _back)
 	back.disabled = index == 0 and _review < 0
 	controls.add_child(back)
-	controls.add_child(Ui.button("↻ " + ("もう一度" if japanese else "Say that again"), _again))
+	controls.add_child(Ui.button("↻ " + Text.t("Say that again"), _again))
 	if finished:
-		controls.add_child(
-			Ui.button("タイトルへ" if japanese else "Return to title", func() -> void: Game.go(Game.TITLE), "PrimaryButton")
-		)
+		controls.add_child(Ui.button(Text.t("Return to title"), func() -> void: Game.go(Game.TITLE), "PrimaryButton"))
 	elif _review >= 0:
-		controls.add_child(Ui.button("› " + ("つづける" if japanese else "Current step"), _again, "PrimaryButton"))
+		controls.add_child(Ui.button("› " + Text.t("Current step"), _again, "PrimaryButton"))
 	elif shown.event == "coach-next":
-		controls.add_child(Ui.button("› " + ("つぎへ" if japanese else "Next"), _next, "PrimaryButton"))
+		controls.add_child(Ui.button("› " + Text.t("Next"), _next, "PrimaryButton"))
 	else:
-		controls.add_child(Ui.tint(Ui.label("やってみよう" if japanese else "Your turn", "Faint"), UiTheme.AMBER))
+		controls.add_child(Ui.tint(Ui.label(Text.t("Your turn"), "Faint"), UiTheme.AMBER))
 	if not finished:
-		controls.add_child(Ui.button("× " + ("スキップ" if japanese else "Skip"), func() -> void: skipped.emit()))
+		controls.add_child(Ui.button("× " + Text.t("Skip"), func() -> void: skipped.emit()))
 	if _compact:
 		for button: Node in controls.get_children():
 			if button is Button:

@@ -9,8 +9,9 @@ func _ready() -> void:
 	ground.color = UiTheme.GROUND
 	ground.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(ground)
-	var label := Ui.label("Lowering a lantern into the Salvage…", "Narration")
+	# The profile, and so its language, is known once Game.boot has run; nothing is drawn before _ready returns.
+	Game.boot()
+	var label := Ui.label(FoundryUi.text("Lowering a lantern into the Salvage…", "サルベージに、ランタンを下ろしているよ…"), "Narration")
 	label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	add_child(label)
-	Game.boot()
 	Game.go(Game.TITLE)

@@ -14,25 +14,33 @@ func _build(session: ShardrunSession, in_fight: bool) -> void:
 	add_theme_constant_override("separation", 12)
 	var state := session.state
 	var deck: Array = state.get("deck", [])
-	var spells := ", ".join(
+	var spells := ("、" if Text.japanese() else ", ").join(
 		PackedStringArray(
 			(state.spells as Array).map(
-				func(s: Dictionary) -> String: return "%s (%d slots)" % [s.name, int(s.capacity)]
+				func(s: Dictionary) -> String: return Text.f("%s (%d slots)", [Text.t(s.name), int(s.capacity)])
 			)
 		)
 	)
 	var hand := ShardrunRules.hand_size(state, session.catalog)
-	add_child(Ui.label("YOUR DECK · %d CARDS" % deck.size(), "Faint"))
-	var text := (
-		"Every fight shuffles the deck and deals %d cards a turn. Play them into %s; " % [hand, spells]
-		+ "the order you play them in is the order they run. Hover a card to read its code."
+	add_child(Ui.label(Text.f("YOUR DECK · %d CARDS", [deck.size()]), "Faint"))
+	var text := RoomPanel.run_on(
+		[
+			Text.f("Every fight shuffles the deck and deals %d cards a turn.", [hand]),
+			Text.f("Play them into %s; the order you play them in is the order they run.", [spells]),
+			Text.t("Hover a card to read its code.")
+		]
 	)
 	add_child(Ui.label(text, "Muted", true))
 	add_child(_grid(deck, session))
 	var battle: Dictionary = state.get("battle", {})
 	if not in_fight or battle.is_empty():
 		return
-	for part: Array in [["DRAW PILE (sorted)", battle.draw], ["DISCARD PILE", battle.discard], ["HELD", battle.held]]:
+	var piles := [
+		[Text.t("DRAW PILE (sorted)"), battle.draw],
+		[Text.t("DISCARD PILE"), battle.discard],
+		[Text.t("HELD"), battle.held]
+	]
+	for part: Array in piles:
 		var cards: Array = part[1]
 		add_child(Ui.label("%s · %d" % [part[0], cards.size()], "Faint"))
 		if not cards.is_empty():

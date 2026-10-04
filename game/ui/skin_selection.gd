@@ -97,9 +97,11 @@ func _build() -> void:
 			_at = i
 	var header := Ui.hbox(
 		[
-			Ui.vbox([Ui.label("FIELD WARDROBE", "Faint"), Ui.label("Choose your battle look", "Heading")], 2),
+			Ui.vbox(
+				[Ui.label(Text.t("FIELD WARDROBE"), "Faint"), Ui.label(Text.t("Choose your battle look"), "Heading")], 2
+			),
 			Ui.spacer(),
-			Ui.button("Close", _close)
+			Ui.button(Text.t("Close"), _close)
 		],
 		12
 	)
@@ -154,7 +156,7 @@ func _card(look: Dictionary, index: int) -> Control:
 	band.anchor_right = 1.0
 	band.anchor_bottom = 1.0
 	band.offset_top = -40
-	var title := Ui.label(String(look.name), "Subheading")
+	var title := Ui.label(Text.t(String(look.name)), "Subheading")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -168,7 +170,7 @@ func _card(look: Dictionary, index: int) -> Control:
 		node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(node)
 	if look.id == Settings.character_skin:
-		var badge := Ui.panel(Ui.tint(Ui.label("EQUIPPED", "Faint"), UiTheme.TEAL), "Chip")
+		var badge := Ui.panel(Ui.tint(Ui.label(Text.t("EQUIPPED"), "Faint"), UiTheme.TEAL), "Chip")
 		badge.position = Vector2(10, 10)
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		card.add_child(badge)
@@ -205,11 +207,11 @@ func _arrange(animate := true) -> void:
 			card.size = size
 			card.modulate = tint
 	var look := _looks[_at]
-	_epithet.text = String(look.epithet).to_upper()
-	_name.text = look.name
-	_note.text = look.note
+	_epithet.text = Text.t(String(look.epithet)).to_upper()
+	_name.text = Text.t(String(look.name))
+	_note.text = Text.t(String(look.note))
 	var worn: bool = look.id == Settings.character_skin
-	_equip.text = "Equipped" if worn else "Equip " + String(look.name)
+	_equip.text = Text.t("Equipped") if worn else Text.f("Equip %s", [Text.t(String(look.name))])
 	_equip.disabled = worn
 	Ui.clear(_dots)
 	for i in count:

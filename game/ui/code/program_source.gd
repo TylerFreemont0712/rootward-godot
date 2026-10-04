@@ -36,9 +36,10 @@ static func lines(
 	var steps := ProgramDeck.steps(card_ids, catalog)
 	var names: Array[String] = []
 	for id: String in steps:
-		names.append((catalog.shards.get(id, {}) as Dictionary).get("name", id))
-	var chain := " → ".join(names) if not names.is_empty() else "nothing yet"
-	_add(out, "%s Program: %s" % [comment, chain], "comment", "head")
+		names.append(Text.t((catalog.shards.get(id, {}) as Dictionary).get("name", id)))
+	# The comments are the game's words, so they follow the player's language; the code itself never does.
+	var chain := " → ".join(names) if not names.is_empty() else Text.t("nothing yet")
+	_add(out, Text.f("%s Program: %s", [comment, chain]), "comment", "head")
 	_add(out, OPENERS.get(language, OPENERS.python), "def", "def")
 	if seed.is_empty():
 		seed = ProgramRules.config_of(catalog).seed
@@ -54,7 +55,7 @@ static func lines(
 		called.append(steps[slot])
 		called.append_array(_hooks(out, hooks, "after", card, slot, language, catalog))
 	if steps.is_empty():
-		_add(out, "%s%s play cards to write the program" % [_indent(language), comment], "comment", "empty")
+		_add(out, Text.f("%s%s play cards to write the program", [_indent(language), comment]), "comment", "empty")
 	_add(out, "    return bolts" if python else "  return bolts;", "return", "return")
 	if not python:
 		_add(out, "}", "close", "close")

@@ -25,16 +25,18 @@ func _build() -> void:
 	main.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	main.size_flags_stretch_ratio = 3.0
 	if choosing:
-		main.add_child(Ui.label("Choose how your program thinks", "Heading"))
-		var line := "A paradigm is a way of solving problems. Its cards are real algorithms; "
-		main.add_child(Ui.label(line + "its speed decides who acts first.", "Muted", true))
+		main.add_child(Ui.label(Text.t("Choose how your program thinks"), "Heading"))
+		var line := Text.t(
+			"A paradigm is a way of solving problems. Its cards are real algorithms; its speed decides who acts first."
+		)
+		main.add_child(Ui.label(line, "Muted", true))
 		var row := Ui.hbox([], 12)
 		for id: String in draft.offers:
 			row.add_child(_paradigm(ProgramDraft.paradigm_of(session.catalog, id)))
 		main.add_child(row)
 	else:
 		var paradigm := ProgramDraft.paradigm_of(session.catalog, state.paradigm)
-		var heading := "Pack %d of %d" % [int(draft.round) + 1, int(draft.rounds)]
+		var heading := Text.f("Pack %d of %d", [int(draft.round) + 1, int(draft.rounds)])
 		(
 			main
 			. add_child(
@@ -44,7 +46,9 @@ func _build() -> void:
 						[
 							Ui.label(heading, "Heading"),
 							Ui.spacer(),
-							Ui.tint(Ui.label(String(paradigm.name).to_upper(), "Subheading"), Color(paradigm.colour)),
+							Ui.tint(
+								Ui.label(Text.t(String(paradigm.name)).to_upper(), "Subheading"), Color(paradigm.colour)
+							),
 						]
 					)
 				)
@@ -52,7 +56,9 @@ func _build() -> void:
 		)
 		main.add_child(
 			Ui.label(
-				"Take one card. Its code is what it does; the order you play cards in is the program.", "Muted", true
+				Text.t("Take one card. Its code is what it does; the order you play cards in is the program."),
+				"Muted",
+				true
 			)
 		)
 		var row := Ui.hbox([], 12)
@@ -72,10 +78,10 @@ func _build() -> void:
 ## A paradigm on offer: its name in its colour, its speed class large, what it is, and its signature cards.
 func _paradigm(paradigm: Dictionary) -> Control:
 	var colour := Color(paradigm.colour)
-	var name := Ui.tint(Ui.sized(Ui.label(String(paradigm.name).to_upper(), "Heading"), 32), colour)
+	var name := Ui.tint(Ui.sized(Ui.label(Text.t(String(paradigm.name)).to_upper(), "Heading"), 32), colour)
 	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 47), colour.lightened(0.2))
 	(tier as Label).add_theme_font_override("font", UiTheme.crt_font())
-	var summary := Ui.sized(Ui.label(paradigm.summary, "Muted", true), 14)
+	var summary := Ui.sized(Ui.label(Text.t(paradigm.summary), "Muted", true), 14)
 	var cards := Ui.hbox([], 8)
 	for card_id: String in paradigm.signature:
 		var face := CardFace.create(
@@ -85,11 +91,13 @@ func _paradigm(paradigm: Dictionary) -> Control:
 		cards.add_child(face)
 	cards.alignment = BoxContainer.ALIGNMENT_CENTER
 	var choose := Ui.button(
-		"Choose %s" % paradigm.name,
+		Text.f("Choose %s", [Text.t(paradigm.name)]),
 		func() -> void: wants.emit({"type": "pick-paradigm", "paradigm_id": paradigm.id}),
 		"PrimaryButton"
 	)
-	var column := Ui.vbox([name, tier, summary, Ui.label("SIGNATURE CARDS", "Faint"), cards, Ui.spacer(), choose], 10)
+	var column := Ui.vbox(
+		[name, tier, summary, Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, Ui.spacer(), choose], 10
+	)
 	column.custom_minimum_size.y = 470
 	var tile := Ui.panel(column, "Card")
 	var look := UiTheme.box(Color("#15101c").lerp(colour, 0.05), colour.darkened(0.3), 2, 12, Vector2(16, 14))
@@ -104,7 +112,7 @@ func _paradigm(paradigm: Dictionary) -> Control:
 func _pick(card_id: String) -> Control:
 	var card: Dictionary = session.catalog.shards.get(card_id, {})
 	var take := Ui.button(
-		"Take %s" % card.get("name", card_id),
+		Text.f("Take %s", [Text.t(card.get("name", card_id))]),
 		func() -> void: wants.emit({"type": "draft-card", "card_id": card_id}),
 		"PrimaryButton"
 	)

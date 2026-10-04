@@ -3,16 +3,12 @@ extends RefCounted
 ## Local player creation, rename and deletion dialogs. The title owns placement and navigation.
 
 
-static func _text(english: String, japanese: String) -> String:
-	return japanese if Game.profile.get("preferred_language", "en") == "ja" else english
-
-
 static func editor(id: String, required: bool, done: Callable, cancel: Callable) -> Control:
 	var current := Game.profiles.get_profile(id) if id != "" else {}
 	var fresh := id == "" or required
-	var heading := _text("New player", "新しいプレイヤー") if fresh else _text("Your player", "プレイヤーの設定")
+	var heading := Text.t("New player") if fresh else Text.t("Your player")
 	var name := LineEdit.new()
-	name.placeholder_text = _text("Your name", "なまえ")
+	name.placeholder_text = Text.t("Your name")
 	name.text = "" if required else String(current.get("name", ""))
 	name.max_length = ProfileRules.MAX_NAME_LENGTH
 	name.custom_minimum_size = Vector2(420, 44)
@@ -21,8 +17,8 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 	language.add_item("日本語")
 	language.selected = 1 if current.get("preferred_language", "en") == "ja" else 0
 	var avatar := OptionButton.new()
-	avatar.add_item("Vesper")
-	avatar.add_item("Emberfox")
+	avatar.add_item(Text.t("Vesper"))
+	avatar.add_item(Text.t("Emberfox"))
 	avatar.selected = 1 if current.get("avatar", "vesper") == "emberfox" else 0
 	var error := Ui.tint(Ui.label("", "Muted", true), UiTheme.FAIL)
 	var save := func() -> void:
@@ -34,7 +30,7 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 		player.preferred_language = "ja" if language.selected == 1 else "en"
 		player.avatar = "emberfox" if avatar.selected == 1 else "vesper"
 		if not Game.profiles.save_profile(player) or not Game.select_profile(String(player.id)):
-			error.text = _text("Could not save this player.", "保存できませんでした。")
+			error.text = Text.t("Could not save this player.")
 			return
 		done.call()
 	var rows := (
@@ -42,18 +38,18 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 		. vbox(
 			[
 				Ui.label(heading, "Heading"),
-				Ui.label(_text("A name, a language and a look. That's all.", "なまえとことば、すがただけで始められるよ。"), "Muted", true),
+				Ui.label(Text.t("A name, a language and a look. That's all."), "Muted", true),
 				name,
-				Ui.hbox([Ui.label(_text("Language", "ことば")), language], 12),
-				Ui.hbox([Ui.label(_text("Avatar", "すがた")), avatar], 12),
+				Ui.hbox([Ui.label(Text.t("Language")), language], 12),
+				Ui.hbox([Ui.label(Text.t("Avatar")), avatar], 12),
 				error,
-				Ui.hbox([Ui.button(_text("Save player", "保存する"), save, "PrimaryButton")]),
+				Ui.hbox([Ui.button(Text.t("Save player"), save, "PrimaryButton")]),
 			],
 			12
 		)
 	)
 	if not required:
-		rows.add_child(Ui.button(_text("Cancel", "やめる"), cancel))
+		rows.add_child(Ui.button(Text.t("Cancel"), cancel))
 	var panel := Ui.panel(rows, "Overlay")
 	panel.custom_minimum_size = Vector2(540, 0)
 	name.call_deferred("grab_focus")
@@ -62,9 +58,8 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 
 static func delete_confirmation(done: Callable, cancel: Callable) -> Control:
 	var player := Game.profile
-	var warning := _text(
-		"Delete %s? Their saved runs, git log, settings and Trial progress will be lost." % player.name,
-		"%sを消しますか？ セーブ、遊んだ記録、設定、トライアルの進みぐあいが消えます。" % player.name
+	var warning := Text.f(
+		"Delete %s? Their saved runs, git log, settings and Trial progress will be lost.", [player.name]
 	)
 	var remove := func() -> void:
 		if not Game.profiles.delete(String(player.id)):
@@ -87,16 +82,14 @@ static func delete_confirmation(done: Callable, cancel: Callable) -> Control:
 				Ui
 				. vbox(
 					[
-						Ui.label(_text("Delete player?", "プレイヤーを消す？"), "Heading"),
+						Ui.label(Text.t("Delete player?"), "Heading"),
 						Ui.label(warning, "", true),
 						(
 							Ui
 							. hbox(
 								[
-									Ui.button(_text("Keep player", "消さない"), cancel, "PrimaryButton"),
-									Ui.button(
-										_text("Delete %s" % player.name, "%sを消す" % player.name), remove, "DangerButton"
-									),
+									Ui.button(Text.t("Keep player"), cancel, "PrimaryButton"),
+									Ui.button(Text.f("Delete %s", [player.name]), remove, "DangerButton"),
 								]
 							)
 						),

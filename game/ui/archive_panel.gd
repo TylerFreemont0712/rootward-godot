@@ -31,13 +31,13 @@ func _build() -> void:
 	custom_minimum_size = Vector2(1240, 820)
 	var heading := Ui.vbox(
 		[
-			Ui.tint(Ui.label("THE ARCHIVES", "Heading"), UiTheme.AMBER),
-			Ui.label("Every function. Every artifact. A place to plan your next combination.", "Muted", true)
+			Ui.tint(Ui.label(Text.t("THE ARCHIVES"), "Heading"), UiTheme.AMBER),
+			Ui.label(Text.t("Every function. Every artifact. A place to plan your next combination."), "Muted", true)
 		],
 		4
 	)
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var close := Ui.button("Close  ×", func() -> void: closed.emit())
+	var close := Ui.button(Text.t("Close  ×"), func() -> void: closed.emit())
 	close.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	var column := Ui.vbox([Ui.hbox([heading, close])], 16)
 	var tabs := Ui.hbox([], 8)
@@ -53,10 +53,12 @@ func _build() -> void:
 			_mode = mode
 			_selected = ""
 			_rebuild()
-		tabs.add_child(Ui.choice("Shardrun" if mode == "program" else "Spellforge", _mode == mode, choose))
+		tabs.add_child(
+			Ui.choice(Text.t("Shardrun") if mode == "program" else Text.t("Spellforge"), _mode == mode, choose)
+		)
 	column.add_child(tabs)
 	_search = LineEdit.new()
-	_search.placeholder_text = "Search names, effects, elements or keywords…"
+	_search.placeholder_text = Text.t("Search names, effects, elements or keywords…")
 	_search.text = _query
 	_search.custom_minimum_size.y = 44
 	_search.text_changed.connect(
@@ -71,7 +73,7 @@ func _build() -> void:
 			var choose := func() -> void:
 				_rarity = rarity
 				_rebuild()
-			rarities.add_child(Ui.choice(rarity.capitalize(), _rarity == rarity, choose))
+			rarities.add_child(Ui.choice(Text.t(rarity.capitalize()), _rarity == rarity, choose))
 		column.add_child(rarities)
 	_count = Ui.label("", "Faint")
 	column.add_child(_count)
@@ -103,14 +105,16 @@ func _entries() -> Dictionary:
 				entries[described.name] = {"id": described.name, "name": described.name, "summary": described.text}
 		entries["weakness"] = {
 			"id": "weakness",
-			"name": "Weakness",
-			"summary": "This foe takes extra damage from bolts of the listed element. Relics can increase the bonus."
-		}
-		entries["resistance"] = {
-			"id": "resistance",
-			"name": "Resistance",
+			"name": Text.t("Weakness"),
 			"summary":
-			"This foe takes less damage from bolts of the listed element. Change the element to avoid its resistance."
+			Text.t("This foe takes extra damage from bolts of the listed element. Relics can increase the bonus.")
+		}
+		var resistance := (
+			"This foe takes less damage from bolts of the listed element. "
+			+ "Change the element to avoid its resistance."
+		)
+		entries["resistance"] = {
+			"id": "resistance", "name": Text.t("Resistance"), "summary": Text.sentences(resistance)
 		}
 		return entries
 	if _mode == "program":
@@ -135,17 +139,17 @@ func _refresh() -> void:
 			continue
 		shown.append(item)
 	shown.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return String(a.name).naturalnocasecmp_to(b.name) < 0)
-	_count.text = "%d %s · select an entry to inspect it" % [shown.size(), _kind_name(_kind).to_lower()]
+	_count.text = Text.f("%d %s · select an entry to inspect it", [shown.size(), _kind_name(_kind).to_lower()])
 	if shown.is_empty():
 		Ui.clear(_details)
-		_details.add_child(Ui.label("No matches. Try another name or clear your filters.", "Muted", true))
+		_details.add_child(Ui.label(Text.t("No matches. Try another name or clear your filters."), "Muted", true))
 		return
 	if not shown.any(func(item: Dictionary) -> bool: return item.id == _selected):
 		_selected = shown[0].id
 		_upgraded = false
 	for item in shown:
 		var row := Ui.button(
-			item.name,
+			Text.t(item.name),
 			func() -> void:
 				_selected = item.id
 				_upgraded = false
@@ -170,20 +174,20 @@ func _show_entry(base: Dictionary) -> void:
 		_details.add_child(Cards.relic(item))
 		return
 	if _kind == "glossary":
-		_details.add_child(Ui.tint(Ui.label(item.name, "Heading"), UiTheme.TEAL))
-		_details.add_child(Ui.label(item.summary, "", true))
+		_details.add_child(Ui.tint(Ui.label(Text.t(item.name), "Heading"), UiTheme.TEAL))
+		_details.add_child(Ui.label(Text.t(item.summary), "", true))
 		return
 	var art := Ui.picture(ShardrunViews.art(item), Vector2(148, 148), "◆")
-	var title := Ui.vbox([Ui.label(item.name, "Heading"), Ui.label(item.summary, "", true)], 12)
+	var title := Ui.vbox([Ui.label(Text.t(item.name), "Heading"), Ui.label(Text.t(item.summary), "", true)], 12)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_details.add_child(Ui.hbox([art, title], 18))
-	var facts := "%s  ·  %s" % [String(item.rarity).capitalize(), ShardrunViews.complexity(item)]
+	var facts := "%s  ·  %s" % [Text.t(String(item.rarity).capitalize()), ShardrunViews.complexity(item)]
 	if item.has("role"):
-		facts += "  ·  %d mana  ·  %s" % [int(item.cost), RoleBadge.describe(item.role)]
+		facts += Text.f("  ·  %d mana  ·  %s", [int(item.cost), RoleBadge.describe(item.role)])
 	_details.add_child(Ui.tint(Ui.label(facts, "Muted", true), UiTheme.TEAL))
 	for keyword: String in item.get("keywords", []):
 		_details.add_child(
-			Ui.label("%s: %s" % [keyword, _catalog.programs.config.keywords.get(keyword, "")], "Muted", true)
+			Ui.label("%s: %s" % [keyword, Text.t(_catalog.programs.config.keywords.get(keyword, ""))], "Muted", true)
 		)
 	var controls := Ui.hbox([], 6)
 	for language: String in SandboxJob.LANGUAGES:
@@ -198,7 +202,7 @@ func _show_entry(base: Dictionary) -> void:
 		var toggle := func() -> void:
 			_upgraded = not _upgraded
 			_show_entry(base)
-		controls.add_child(Ui.choice("Refactored +", _upgraded, toggle))
+		controls.add_child(Ui.choice(Text.t("Refactored +"), _upgraded, toggle))
 	_details.add_child(controls)
 	_details.add_child(Cards.code(item, _language))
 
@@ -210,5 +214,5 @@ func _rebuild() -> void:
 
 func _kind_name(kind: String) -> String:
 	if kind == "cards":
-		return "Shards"
-	return kind.capitalize()
+		return Text.t("Shards")
+	return Text.t(kind.capitalize())

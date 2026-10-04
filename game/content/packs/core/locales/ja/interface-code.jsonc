@@ -1,0 +1,8 @@
+// The game's own words inside the code it writes (ADR-0047): the comments at the top of a program or spell, which
+// follow the player's language while the code itself never does. %s is the comment mark (# or //) or an indent.
+[
+  {"en": "%s Program: %s", "to": "%s プログラム：%s"},
+  {"en": "nothing yet", "to": "まだからっぽ"},
+  {"en": "%s%s play cards to write the program", "to": "%s%s カードを出して、プログラムを書こう"},
+  {"en": "%s %s: this shard is missing", "to": "%s %s：このシャードが見つからないよ"}
+]

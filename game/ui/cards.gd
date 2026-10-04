@@ -9,21 +9,26 @@ extends RefCounted
 static func shard(
 	item: Dictionary, language: String, summary := true, code_lines := 0, action: Control = null, wide := false
 ) -> PanelContainer:
-	var title := Ui.tint(Ui.label(item.get("name", item.get("id", "?")), "Subheading"), UiTheme.rarity(item.rarity))
+	var title := Ui.tint(
+		Ui.label(Text.t(item.get("name", item.get("id", "?"))), "Subheading"), UiTheme.rarity(item.rarity)
+	)
 	var icon := Ui.picture(ShardrunViews.art(item), Vector2(40, 40), "◆")
-	var facts := "%s · %s" % [item.rarity, ShardrunViews.complexity(item)]
+	var facts := "%s · %s" % [Text.t(item.rarity), ShardrunViews.complexity(item)]
 	if item.has("paradigm"):
-		facts += " · %d mana" % int(item.get("cost", 0))
+		facts += Text.f(" · %d mana", [int(item.get("cost", 0))])
 	elif int(item.get("cost", 0)) > 0:
-		facts += " · +%d work" % int(item.cost)
+		facts += Text.f(" · +%d work", [int(item.cost)])
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(facts, "Faint")], 0)], 10)
 	var body := Ui.vbox([head], 8)
 	if summary and item.has("summary"):
-		body.add_child(comment(String(item.summary), language, 34 if wide else 44))
+		body.add_child(comment(Text.t(String(item.summary)), language, 34 if wide else 44))
 	var curse: Dictionary = item.get("curse", {})
 	if not curse.is_empty():
 		body.add_child(
-			Ui.tint(Ui.label("Cursed: each cast burns %d Integrity." % int(curse.integrity), "", true), UiTheme.SHARD)
+			Ui.tint(
+				Ui.label(Text.f("Cursed: each cast burns %d Integrity.", [int(curse.integrity)]), "", true),
+				UiTheme.SHARD
+			)
 		)
 	var listing := code(item, language, code_lines)
 	if not wide:
@@ -31,8 +36,12 @@ static func shard(
 	var forge: Dictionary = item.get("forge", {})
 	if forge.has("into"):
 		var verb := {"repair": "repairs", "optimize": "optimises"}.get(forge.get("verb"), "upgrades") as String
-		var into: Dictionary = (Game.catalog.get("shards", {}) as Dictionary).get(forge.into, {})
-		body.add_child(Ui.label("A forge %s it into %s." % [verb, into.get("name", forge.into)], "Faint", true))
+		# A program card's upgrade is a program card (P2-49), found among them, or the note shows its id.
+		var programs: Dictionary = (Game.catalog.get("programs", {}) as Dictionary).get("cards", {})
+		var pool: Dictionary = programs if item.has("role") else (Game.catalog.get("shards", {}) as Dictionary)
+		var into: Dictionary = pool.get(forge.into, {})
+		var into_name := Text.t(String(into.get("name", forge.into)))
+		body.add_child(Ui.label(Text.f("A forge %s it into %s.", [Text.t(verb), into_name]), "Faint", true))
 	if action != null:
 		body.add_child(action)
 	if not wide:
@@ -52,7 +61,7 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 	for line in shown:
 		painted.append(CodeColors.bbcode(line, language))
 	if max_lines > 0 and lines.size() > max_lines:
-		painted.append("[color=#6f5e46]… %d more lines[/color]" % (lines.size() - max_lines))
+		painted.append("[color=#6f5e46]%s[/color]" % Text.f("… %d more lines", [lines.size() - max_lines]))
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
 	# Code is never translated (Text, ADR-0047).
@@ -71,15 +80,15 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 
 static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
 	var colour := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(rank(item))
-	var title := Ui.tint(Ui.label(item.name, "Subheading"), colour)
+	var title := Ui.tint(Ui.label(Text.t(item.name), "Subheading"), colour)
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(40, 40), "✦")
-	var kind := "cursed relic" if item.get("cursed", false) else "%s relic" % rank(item)
+	var kind := Text.t("cursed relic") if item.get("cursed", false) else Text.f("%s relic", [Text.t(rank(item))])
 	if not item.get("cursed", false) and item.has("tier"):
-		kind += "  ·  tier %d" % ProgramLoot.tier_number(item)
+		kind += Text.f("  ·  tier %d", [ProgramLoot.tier_number(item)])
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(kind, "Faint")], 0)], 10)
-	var body := Ui.vbox([head, Ui.label(item.summary, "", true)], 8)
+	var body := Ui.vbox([head, Ui.label(Text.t(item.summary), "", true)], 8)
 	if item.has("flavor"):
-		body.add_child(Ui.label(item.flavor, "Faint", true))
+		body.add_child(Ui.label(Text.t(item.flavor), "Faint", true))
 	if action != null:
 		body.add_child(action)
 	return Ui.panel(body, "Card")
@@ -89,13 +98,13 @@ static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
 ## a ring of its tier's colour, so a legendary one stands out in a row of commons; a curse's ring is the curse colour.
 static func relic_icon(item: Dictionary) -> Control:
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.get("id", ""))), Vector2(30, 30), "✦")
-	var kind := " (cursed)" if item.get("cursed", false) else ""
+	var kind := Text.t(" (cursed)") if item.get("cursed", false) else ""
 	if kind == "" and item.has("tier"):
-		kind = " (%s, tier %d)" % [item.tier, ProgramLoot.tier_number(item)]
-	var title := "%s%s" % [item.get("name", "?"), kind]
-	var detail := String(item.get("flavor", ""))
+		kind = Text.f(" (%s, tier %d)", [Text.t(item.tier), ProgramLoot.tier_number(item)])
+	var title := "%s%s" % [Text.t(item.get("name", "?")), kind]
+	var detail := Text.t(String(item.get("flavor", "")))
 	if not item.has("tier"):
-		HoverInfo.attach(icon, title, item.get("summary", ""), detail, UiTheme.AMBER)
+		HoverInfo.attach(icon, title, Text.t(item.get("summary", "")), detail, UiTheme.AMBER)
 		return icon
 	var ring := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(String(item.tier))
 	var framed := PanelContainer.new()
@@ -104,7 +113,7 @@ static func relic_icon(item: Dictionary) -> Control:
 		UiTheme.box(Color(ring, 0.16), Color(ring, 0.9), 2 if item.tier == "legendary" else 1, 8, Vector2(2, 2))
 	)
 	framed.add_child(icon)
-	HoverInfo.attach(framed, title, item.get("summary", ""), detail, ring)
+	HoverInfo.attach(framed, title, Text.t(item.get("summary", "")), detail, ring)
 	return framed
 
 

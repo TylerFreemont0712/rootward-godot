@@ -74,7 +74,7 @@ func _saved(error: Error) -> void:
 	unsaved = (
 		""
 		if error == OK
-		else "Your last move could not be saved (%s). The save before it is kept." % [error_string(error)]
+		else Text.f("Your last move could not be saved (%s). The save before it is kept.", [error_string(error)])
 	)
 
 
@@ -124,7 +124,7 @@ func command(request: Dictionary) -> Dictionary:
 		var finished := Time.get_datetime_string_from_system(false, true)
 		var kept := saves.append_history(RunHistory.entry(state, catalog, finished, Settings.character_skin))
 		if kept != OK:
-			unsaved = "This run could not be added to your history (%s)." % error_string(kept)
+			unsaved = Text.f("This run could not be added to your history (%s).", [error_string(kept)])
 	runs.warm(state)
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": replay}

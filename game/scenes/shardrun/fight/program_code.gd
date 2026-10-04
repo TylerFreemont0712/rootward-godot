@@ -129,9 +129,9 @@ func _extra() -> float:
 
 
 func _show_expand() -> void:
-	_expand.text = "Shrink" if expanded else "Expand"
+	_expand.text = Text.t("Shrink") if expanded else Text.t("Expand")
 	_expand.tooltip_text = (
-		"Fold the code back down." if expanded else "Stretch the code upward to read the whole program."
+		Text.t("Fold the code back down.") if expanded else Text.t("Stretch the code upward to read the whole program.")
 	)
 
 
@@ -206,64 +206,91 @@ static func _for(view: Dictionary, cards: Array) -> bool:
 func _summary(view: Dictionary, cards: Array) -> String:
 	if cards.is_empty():
 		var seed := ProgramRules.seed(session.state, session.catalog)
-		var noun := "bolt" if seed.size() == 1 else "bolts"
+		var noun := Text.t("bolt") if seed.size() == 1 else Text.t("bolts")
 		var total := int(_power_of(seed))
-		var empty := (
-			"An empty program still casts its seed: %d %s (%d power) at the front foe. Play cards to write more."
-			% [seed.size(), noun, total]
+		var empty := Text.f(
+			"An empty program still casts its seed: %d %s (%d power) at the front foe. Play cards to write more.",
+			[seed.size(), noun, total]
 		)
 		for note: String in view.get("notes", []):
-			empty += "\n" + note
+			empty += "\n" + Text.sentences(note)
 		return empty
 	if view.is_empty():
-		return "Running it in the sandbox…"
+		return Text.t("Running it in the sandbox…")
 	if view.has("misfire"):
-		return "It crashes: %s" % view.misfire.reason
+		return Text.f("It crashes: %s", [Text.sentence(String(view.misfire.reason))])
 	if view.timeout:
-		return "Time limit: %d ops is over the budget of %d. Nothing would land." % [int(view.work), int(view.budget)]
+		return Text.f(
+			"Time limit: %d ops is over the budget of %d. Nothing would land.", [int(view.work), int(view.budget)]
+		)
 	var parts: Array[String] = []
 	for warning: Dictionary in view.get("lint", []):
-		parts.append("⚠ " + String(warning.message))
+		parts.append("⚠ " + Text.sentences(String(warning.message)))
 	var race: Array = view.get("race", [])
 	var first := race.filter(func(entry: Dictionary) -> bool: return entry.first)
 	if not first.is_empty():
-		parts.append("⚡ %s %s before it lands." % [_names(first), "acts" if first.size() == 1 else "act"])
-	if int(view.get("locked", 0)) > 0:
-		var noun := "bolt" if int(view.locked) == 1 else "bolts"
-		parts.append("⚠ %d %s held by a lock: hit both halves of a deadlock in one program." % [int(view.locked), noun])
-	if int(view.get("fixed", 0)) > 0:
-		var noun := "bolt does" if int(view.fixed) == 1 else "bolts do"
 		parts.append(
-			"⚠ The same program as last time: a Quine recognises it, and %d %s nothing." % [int(view.fixed), noun]
+			(
+				Text.f("⚡ %s acts before it lands.", [_names(first)])
+				if first.size() == 1
+				else Text.f("⚡ %s act before it lands.", [_names(first)])
+			)
+		)
+	if int(view.get("locked", 0)) > 0:
+		var noun := Text.t("bolt") if int(view.locked) == 1 else Text.t("bolts")
+		parts.append(
+			Text.f("⚠ %d %s held by a lock: hit both halves of a deadlock in one program.", [int(view.locked), noun])
+		)
+	if int(view.get("fixed", 0)) > 0:
+		parts.append(
+			(
+				Text.f(
+					"⚠ The same program as last time: a Quine recognises it, and %d bolt does nothing.",
+					[int(view.fixed)]
+				)
+				if int(view.fixed) == 1
+				else Text.f(
+					"⚠ The same program as last time: a Quine recognises it, and %d bolts do nothing.",
+					[int(view.fixed)]
+				)
+			)
 		)
 	for echo: Dictionary in view.get("reprints", []):
 		var hits := int(echo.hits)
-		parts.append("⎘ %s will reprint %d bolts: %d damage." % [echo.name, hits, hits * int(echo.power)])
+		parts.append(
+			Text.f("⎘ %s will reprint %d bolts: %d damage.", [Text.t(echo.name), hits, hits * int(echo.power)])
+		)
 	for note: String in view.get("notes", []):
-		parts.append(note)
+		parts.append(Text.sentences(note))
 	var caught := race.filter(func(entry: Dictionary) -> bool: return not entry.first)
 	var bonus := roundi((ProgramRules.initiative(session.state, session.catalog) - 1.0) * 100.0)
 	if not caught.is_empty() and bonus > 0:
-		var verb := "moves" if caught.size() == 1 else "move"
-		parts.append("» Initiative: it lands before %s %s, +%d%% damage." % [_names(caught), verb, bonus])
+		parts.append(
+			(
+				Text.f("» Initiative: it lands before %s moves, +%d%% damage.", [_names(caught), bonus])
+				if caught.size() == 1
+				else Text.f("» Initiative: it lands before %s move, +%d%% damage.", [_names(caught), bonus])
+			)
+		)
 	if view.has("result"):
 		var result: Dictionary = view.result
-		var noun := "bolt" if int(result.bolts) == 1 else "bolts"
-		var outcome := "→ %d %s · %d damage" % [int(result.bolts), noun, int(result.damage)]
+		var noun := Text.t("bolt") if int(result.bolts) == 1 else Text.t("bolts")
+		var outcome := Text.f("→ %d %s · %d damage", [int(result.bolts), noun, int(result.damage)])
 		if int(result.block) > 0:
-			outcome += " · %d block" % int(result.block)
+			outcome += " · " + Text.f("%d block", [int(result.block)])
 		if int(result.wasted) > 0:
-			outcome += " · %d wasted" % int(result.wasted)
+			outcome += " · " + Text.f("%d wasted", [int(result.wasted)])
 		parts.append(outcome)
 	return "\n".join(parts)
 
 
 ## Race entries' names as a list: "A", "A and B", "A, B and C".
 static func _names(entries: Array) -> String:
-	var names: PackedStringArray = entries.map(func(entry: Dictionary) -> String: return entry.name)
+	var names: PackedStringArray = entries.map(func(entry: Dictionary) -> String: return Text.t(entry.name))
 	if names.size() <= 1:
 		return "".join(names)
-	return "%s and %s" % [", ".join(names.slice(0, names.size() - 1)), names[names.size() - 1]]
+	# The joiner alone is the key: a "%s and %s" format would match any rule sentence with an "and" in it (Text.sentence).
+	return ", ".join(names.slice(0, names.size() - 1)) + Text.t(" and ") + names[names.size() - 1]
 
 
 func _summary_colour(view: Dictionary) -> Color:
@@ -330,7 +357,10 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 			"seed":
 				_focus(index)
 				_code.set_note(
-					index, "%d bolt%s" % [seeds.size(), "" if seeds.size() == 1 else "s"], UiTheme.MUTED, 0.3
+					index,
+					Text.f("%d bolt", [seeds.size()]) if seeds.size() == 1 else Text.f("%d bolts", [seeds.size()]),
+					UiTheme.MUTED,
+					0.3
 				)
 				await _wait(pace)
 			"call":
@@ -348,7 +378,7 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				_active_race = race
 				shard_progress.emit(slot, 0.0)
 				_focus(index)
-				_code.set_note(index, "▶ running…", UiTheme.MUTED)
+				_code.set_note(index, Text.t("▶ running…"), UiTheme.MUTED)
 				# Each step's rune a little higher than the last: the program climbing through its lines.
 				Sound.play("sfx-glyph", 0.35, 0.9 + 0.06 * slot)
 				await _wait(pace * 0.5)
@@ -362,7 +392,7 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				_active_slot = -1
 				_focus(index)
 				ops = mini(ProgramRules.WORK_CAP, ops + int(step.work))
-				var note := "n %d → %d ops · %d bolts" % [int(step.n), int(step.work), int(step.returned)]
+				var note := Text.f("n %d → %d ops · %d bolts", [int(step.n), int(step.work), int(step.returned)])
 				_code.set_note(index, note, _status_colour(ops, budget, race), _strength(int(step.work)))
 				_count_ops(ops, budget, race, true)
 				# The volley so far lands in the meter; if its element changed, the panel takes the new colour.
@@ -384,7 +414,7 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				_focus(index)
 				var final: Dictionary = steps.back() if not steps.is_empty() else {}
 				var power := roundi(float(final.get("power", _power_of(seeds))))
-				var note := "→ %d bolts · %d power" % [int(final.get("returned", seeds.size())), power]
+				var note := Text.f("→ %d bolts · %d power", [int(final.get("returned", seeds.size())), power])
 				_code.set_note(index, note, tint.lightened(0.3), 0.8)
 				Sound.play("sfx-glyph", 0.6, 0.75)
 				await _wait(pace * 1.4)
@@ -416,7 +446,7 @@ func _walk(card: String, step: Dictionary, most_line: float, budget: float) -> v
 			continue
 		_focus(index)
 		if index == first and calls > 1:
-			_code.set_note(index, "↺ %d calls" % calls, colour.lightened(0.3), _strength(calls))
+			_code.set_note(index, Text.f("↺ %d calls", [calls]), colour.lightened(0.3), _strength(calls))
 		var number := str(index - first + 1)
 		if loops.has(number):
 			var end := _body_end(index, last)
@@ -424,7 +454,7 @@ func _walk(card: String, step: Dictionary, most_line: float, budget: float) -> v
 			index = end + 1
 			continue
 		if index == final_return:
-			_code.set_note(index, "→ %d bolts" % int(step.returned), colour.lightened(0.3), 0.35)
+			_code.set_note(index, Text.f("→ %d bolts", [int(step.returned)]), colour.lightened(0.3), 0.35)
 		await _wait(line_time)
 		index += 1
 
@@ -498,12 +528,12 @@ func _loop(header: int, end: int, rounds: int, loops: Dictionary, first: int, li
 			var shown := walked + roundi(float(rounds - walked) * (tick + 1) / ticks)
 			_code.set_note(header, "↻ %d / %d" % [shown, rounds], colour.lightened(0.2))
 			await _wait(line_time * 0.4)
-	var total := "↻ ×%d" % rounds if rounds > 0 else "↻ ×0, skipped"
+	var total := "↻ ×%d" % rounds if rounds > 0 else Text.t("↻ ×0, skipped")
 	_code.set_note(header, total, colour.lightened(0.35), _strength(rounds))
 	for index in range(header + 1, end + 1):
 		var inner := str(index - first + 1)
 		if loops.has(inner):
-			_code.set_note(index, "↻ ×%d in all" % int(loops[inner]), colour.lightened(0.2), 0.2)
+			_code.set_note(index, Text.f("↻ ×%d in all", [int(loops[inner])]), colour.lightened(0.2), 0.2)
 	_code.clear_loop()
 	await _wait(line_time * 2.0)
 
@@ -570,11 +600,13 @@ func _count_ops(ops: int, budget: int, race: Array, emphasis := false) -> void:
 		marks.append(mark)
 		if faster and not _passed.has(entry.uid):
 			_passed[entry.uid] = true
-			passed_now.append("%s (%d)" % [entry.name, int(entry.tempo)])
+			passed_now.append("%s (%d)" % [Text.t(entry.name), int(entry.tempo)])
 	_race.show_race(marks, ops, budget, true)
 	if not passed_now.is_empty():
 		_footer.text = (
-			"⚡ %s %s faster: acting first." % [", ".join(passed_now), "is" if passed_now.size() == 1 else "are"]
+			Text.f("⚡ %s is faster: acting first.", [", ".join(passed_now)])
+			if passed_now.size() == 1
+			else Text.f("⚡ %s are faster: acting first.", [", ".join(passed_now)])
 		)
 		_footer.add_theme_color_override("font_color", UiTheme.WARN)
 		_pop(_footer, 0.6)
@@ -604,7 +636,7 @@ func _running(on: bool, tint := Color.TRANSPARENT) -> void:
 		look.shadow_color = Color(glow, 0.5)
 		look.shadow_size = 20
 		look.bg_color = Color("#110d12").lerp(glow, 0.05)
-		_title.text = "%s  ▶ running" % (session.state.spells as Array)[0].name
+		_title.text = Text.f("%s  ▶ running", [(session.state.spells as Array)[0].name])
 		_title.add_theme_color_override("font_color", glow.lightened(0.35))
 		_code.glow = glow
 	else:
@@ -675,7 +707,13 @@ class RaceBar:
 		var limit := _x(_budget)
 		draw_line(Vector2(limit, y - 10), Vector2(limit, y + 8), UiTheme.FAIL, 2.0)
 		draw_string(
-			font, Vector2(limit - 80, size.y - 1), "time limit", HORIZONTAL_ALIGNMENT_RIGHT, 76, 11, UiTheme.FAIL
+			font,
+			Vector2(limit - 80, size.y - 1),
+			Text.t("time limit"),
+			HORIZONTAL_ALIGNMENT_RIGHT,
+			76,
+			11,
+			UiTheme.FAIL
 		)
 		if _known:
 			var you := _x(_work)
@@ -688,7 +726,7 @@ class RaceBar:
 			draw_colored_polygon(
 				PackedVector2Array([Vector2(x, y - 2), Vector2(x - 5, y - 11), Vector2(x + 5, y - 11)]), tint
 			)
-			var text := "%s %d" % [String(entry.name).get_slice(" ", 0), int(entry.tempo)]
+			var text := "%s %d" % [Text.t(String(entry.name)).get_slice(" ", 0), int(entry.tempo)]
 			draw_string(
 				font, Vector2(x - 60, y - 14 if above else size.y - 1), text, HORIZONTAL_ALIGNMENT_CENTER, 120, 11, tint
 			)
@@ -703,7 +741,7 @@ class RaceBar:
 			draw_string(
 				font,
 				Vector2(you - 60, size.y - 1),
-				"you %d" % _work,
+				Text.f("you %d", [_work]),
 				HORIZONTAL_ALIGNMENT_CENTER,
 				120,
 				11,

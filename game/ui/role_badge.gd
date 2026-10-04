@@ -34,7 +34,7 @@ static func colour_of(role_id: String) -> Color:
 ## The role in words, for a card's details: "SOURCE · makes bolts".
 static func describe(role_id: String) -> String:
 	var known: Dictionary = ROLES.get(role_id, {})
-	return "%s · %s" % [known.word, known.hint] if not known.is_empty() else role_id.to_upper()
+	return "%s · %s" % [Text.t(known.word), Text.t(known.hint)] if not known.is_empty() else role_id.to_upper()
 
 
 func _draw() -> void:
@@ -51,7 +51,7 @@ func _draw() -> void:
 	if not with_word:
 		return
 	var font := UiTheme.ui_font(600)
-	var word: String = ROLES[role].word
+	var word := Text.t(ROLES[role].word)
 	var left := centre.x + side * 0.72
 	var width := size.x - left - size.y * 0.35
 	var font_size := int(size.y * 0.5)

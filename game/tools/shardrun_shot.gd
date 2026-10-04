@@ -10,6 +10,7 @@ extends Control
 ##   ROOTWARD_SHOT_SCROLL holds a map shot's view that many pixels down its layer (0: the entry at the top);
 ##   ROOTWARD_SHOT_DRAWER=closed folds its route drawer, ROOTWARD_SHOT_DECK=1 opens the deck over it, and
 ##   ROOTWARD_SHOT_TURNS ends that many turns of a fight first
+## ROOTWARD_SHOT_LOCALE=ja shoots the run in Japanese.
 ## ROOTWARD_SHOT_PARADIGM picks the paradigm a program run drafts (when it is offered). ROOTWARD_SHOT_CARDS (ids, comma
 ## separated) makes a fight's Program exactly those cards, in a sandbox run with mana to spare; ROOTWARD_SHOT_RELICS
 ## (ids) grants those relics first, in such a run (the header's relics, rung by tier). ROOTWARD_SHOT_FOES (ids) puts
@@ -44,9 +45,11 @@ func _ready() -> void:
 	if shot == "trial":
 		await _show_trial(language)
 		return
-	# The shots' profile is kept between runs; a Japanese trial shot must not leave the next shot greeting in Japanese.
-	Game.profile.preferred_language = "en"
+	# The shots' profile is kept between runs, so its language is set every time: ROOTWARD_SHOT_LOCALE=ja shoots the
+	# run in Japanese (ADR-0047), English otherwise.
+	Game.profile.preferred_language = "ja" if OS.get_environment("ROOTWARD_SHOT_LOCALE") == "ja" else "en"
 	Game.profiles.save_profile(Game.profile)
+	Text.setup(String(Game.profile.preferred_language))
 	# ROOTWARD_SHOT_PLAYSTYLE=spellbook shows Spellforge, =deck the card Shardrun; the program Shardrun otherwise.
 	var playstyle := OS.get_environment("ROOTWARD_SHOT_PLAYSTYLE")
 	Game.use(playstyle if playstyle != "" else "program")

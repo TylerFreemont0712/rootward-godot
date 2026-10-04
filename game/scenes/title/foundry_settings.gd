@@ -21,7 +21,11 @@ static func make() -> FoundrySettingsPanel:
 func _build() -> void:
 	custom_minimum_size = Vector2(1520, 760)
 	var column := Ui.vbox(
-		[FoundryUi.heading("STATION PREFERENCES", FoundryUi.text("Settings", "設定"), _close), FoundryUi.rule()], 12
+		[
+			FoundryUi.heading(FoundryUi.text("STATION PREFERENCES", "駅の設定"), FoundryUi.text("Settings", "設定"), _close),
+			FoundryUi.rule()
+		],
+		12
 	)
 	var sidebar := Ui.vbox([], 10)
 	sidebar.custom_minimum_size.x = 208
@@ -203,7 +207,12 @@ func _font_preview() -> VBoxContainer:
 					"",
 					true
 				),
-				Ui.tint(Ui.label("HP 72 / 100    Mana 3    Layer IV", "", true), UiTheme.TEAL),
+				Ui.tint(
+					Ui.label(
+						FoundryUi.text("HP 72 / 100    Mana 3    Layer IV", "HP 72 / 100    マナ 3    第4階層"), "", true
+					),
+					UiTheme.TEAL
+				),
 				Ui.panel(Ui.label(FoundryUi.text("Continue the journey  ›", "冒険を続ける  ›"), "Subheading"), "Card"),
 				FoundryUi.rule(),
 				Ui.label(FoundryUi.text("Source / unchanged spacing", "コード / 変わらない文字幅"), "Faint"),

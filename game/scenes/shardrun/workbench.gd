@@ -26,9 +26,13 @@ static func create(run_session: ShardrunSession) -> Workbench:
 
 func _build() -> void:
 	add_theme_constant_override("separation", 8)
-	var hint := "Drag shards between spells and spares. "
-	hint += "A spell runs its shards left to right, starting from one plain bolt."
-	add_child(Ui.hbox([Ui.label("Spellbook", "Heading")], 12))
+	var hint := RoomPanel.run_on(
+		[
+			Text.t("Drag shards between spells and spares."),
+			Text.t("A spell runs its shards left to right, starting from one plain bolt.")
+		]
+	)
+	add_child(Ui.hbox([Ui.label(Text.t("Spellbook"), "Heading")], 12))
 	add_child(Ui.label(hint, "Muted", true))
 	_books = Ui.vbox([], 8)
 	# The spells take the height they need (up to most of the panel, then they scroll); the inspector the rest.
@@ -68,12 +72,12 @@ func _fit_books() -> void:
 
 func _spell_row(number: int, spell: Dictionary) -> Control:
 	var shards: Array = spell.shards
-	var filled := "%d/%d slots" % [shards.size(), int(spell.capacity)]
-	var code := Ui.button("</> Code", func() -> void: explore.emit(spell.id))
+	var filled := Text.f("%d/%d slots", [shards.size(), int(spell.capacity)])
+	var code := Ui.button("</> " + Text.t("Code"), func() -> void: explore.emit(spell.id))
 	var header := Ui.hbox(
 		[
 			Ui.panel(Ui.label(str(number), "Faint"), "Chip"),
-			Ui.label(spell.name, "Subheading"),
+			Ui.label(Text.t(spell.name), "Subheading"),
 			Ui.label(filled, "Faint")
 		]
 	)
@@ -95,8 +99,8 @@ func _spares(inventory: Array) -> Control:
 	var flow := Ui.flow([], 6)
 	for i in inventory.size():
 		flow.add_child(_chip(ShardChip.filled({"spell": "", "index": i}, inventory[i], _shard(inventory[i]))))
-	flow.add_child(_chip(ShardChip.empty({"spell": "", "index": inventory.size()}, "put back here")))
-	var title := "Spare shards (%d)" % inventory.size()
+	flow.add_child(_chip(ShardChip.empty({"spell": "", "index": inventory.size()}, Text.t("put back here"))))
+	var title := Text.f("Spare shards (%d)", [inventory.size()])
 	return Ui.panel(Ui.vbox([Ui.label(title, "Subheading"), flow], 8), "Card")
 
 
@@ -119,7 +123,7 @@ func _on_chosen(place: Dictionary) -> void:
 		if chip != null and chip.shard_id != "":
 			_picked = place
 			_inspect(chip.shard_id)
-			notice.emit("Now click where %s should go." % chip.text)
+			notice.emit(Text.f("Now click where %s should go.", [chip.text]))
 		_mark()
 		return
 	var from := _picked
@@ -161,7 +165,7 @@ func _inspect(shard_id: String) -> void:
 	_inspected = shard_id
 	Ui.clear(_inspector)
 	if shard_id == "":
-		_inspector.add_child(Ui.label("Point at a shard to read it.", "Faint"))
+		_inspector.add_child(Ui.label(Text.t("Point at a shard to read it."), "Faint"))
 		return
 	var shard := _shard(shard_id)
 	_inspector.add_child(Cards.shard(shard, session.state.language, session.show_summaries()))

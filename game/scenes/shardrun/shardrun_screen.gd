@@ -117,22 +117,23 @@ func _show(state: Dictionary) -> void:
 
 func _show_header(state: Dictionary) -> void:
 	Ui.clear(_header)
-	var mode := String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge")).to_upper()
+	var mode := Text.t(String(Game.PLAYSTYLES.get(state.get("playstyle", "spellbook"), "Spellforge"))).to_upper()
 	if Game.trial_active:
-		mode = "PIP'S TRIAL"
-	var heading := mode + (" / ARTIFICER" if state.get("playstyle", "") == "deck" else "")
+		mode = Text.t("PIP'S TRIAL")
+	var heading := mode + (" / " + Text.t("ARTIFICER") if state.get("playstyle", "") == "deck" else "")
 	var logo := Ui.tint(Ui.label(heading, "Subheading"), UiTheme.SHARD) as Label
 	# A program run's paradigm, in its own colour: the colour its cards wear.
 	var paradigm := ProgramDraft.paradigm_of(session.catalog, String(state.get("paradigm", "")))
 	var school := Ui.sized(Ui.label("", "Subheading"), 24) as Label
 	if state.get("playstyle", "") == "program" and not paradigm.is_empty():
-		school.text = "/ " + String(paradigm.name).to_upper()
+		school.text = "/ " + Text.t(String(paradigm.name)).to_upper()
 		school.add_theme_color_override("font_color", Color(paradigm.colour))
 	var integrity: Control
 	if state.status == "battle" and state.has("battle"):
 		# In a fight the Maintainer's Integrity stands over them on the stage; up here, the turn.
 		var battle: Dictionary = state.battle
-		integrity = Ui.label("TURN %d  ·  %s" % [int(battle.turn), String(battle.kind).to_upper()], "Subheading")
+		var kind := Text.t(String(battle.kind).to_upper())
+		integrity = Ui.label(Text.f("TURN %d  ·  %s", [int(battle.turn), kind]), "Subheading")
 	else:
 		var bar := ProgressBar.new()
 		bar.show_percentage = false
@@ -141,22 +142,23 @@ func _show_header(state: Dictionary) -> void:
 		bar.value = int(state.integrity)
 		bar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		var numbers := Ui.label("%d/%d" % [int(state.integrity), int(state.integrity_max)])
-		integrity = Ui.hbox([Ui.label("INTEGRITY", "Faint"), bar, numbers], 8)
+		integrity = Ui.hbox([Ui.label(Text.t("INTEGRITY"), "Faint"), bar, numbers], 8)
 	var layer := ShardrunRules.layer_of(state, session.catalog)
 	var layers: Array = session.catalog.config.layers
-	var meta := (
-		"RING %d · %s (%d/%d) · %s · %s"
-		% [
+	var difficulty := Text.t(String(session.difficulty().get("name", "")))
+	var meta := Text.f(
+		"RING %d · %s (%d/%d) · %s · %s",
+		[
 			int(layer.get("ring", layers.size() - int(state.layer) - 1)),
-			String(layer.name).get_slice(" / ", 0),
+			Text.t(String(layer.name)).get_slice(" / ", 0),
 			int(state.layer) + 1,
 			layers.size(),
-			session.difficulty().get("name", ""),
+			difficulty,
 			CodeLanguage.display_name(state.language)
 		]
 	)
 	if Game.trial_active:
-		meta = "4 STOPS · %s · %s" % [session.difficulty().get("name", ""), CodeLanguage.display_name(state.language)]
+		meta = Text.f("4 STOPS · %s · %s", [difficulty, CodeLanguage.display_name(state.language)])
 	var relics := Ui.hbox([], 4)
 	for relic_id: String in state.relics:
 		relics.add_child(Cards.relic_icon(session.catalog.relics.get(relic_id, {"name": relic_id, "summary": ""})))
@@ -165,12 +167,12 @@ func _show_header(state: Dictionary) -> void:
 		. hbox(
 			[
 				(
-					Ui.button("Deck", _open_deck)
+					Ui.button(Text.t("Deck"), _open_deck)
 					if ShardrunRules.is_deck(state) and not state.status in Shardrun.ENDED
 					else Ui.spacer()
 				),
-				Ui.button("Stats", _open_stats),
-				Ui.button("Menu", _open_run_menu, "PrimaryButton"),
+				Ui.button(Text.t("Stats"), _open_stats),
+				Ui.button(Text.t("Menu"), _open_run_menu, "PrimaryButton"),
 			],
 			6
 		)
@@ -235,7 +237,11 @@ func _ending(state: Dictionary) -> Control:
 		Ui
 		. hbox(
 			[
-				Ui.button("Return to title" if Game.trial_active else "A new run", return_home, "PrimaryButton"),
+				Ui.button(
+					Text.t("Return to title") if Game.trial_active else Text.t("A new run"),
+					return_home,
+					"PrimaryButton"
+				),
 			],
 			8
 		)
@@ -247,7 +253,7 @@ func _ending(state: Dictionary) -> Control:
 		var record: Dictionary = history[0]
 		var committed := (
 			"[main %s] %s\n%s"
-			% [RunHistory.short_hash(record), RunHistory.subject(record), RunHistory.diffstat(record)]
+			% [RunHistory.short_hash(record), Text.sentence(RunHistory.subject(record)), RunHistory.diffstat(record)]
 		)
 		column.add_child(Ui.tint(Ui.label(committed, "Muted"), UiTheme.TEAL))
 	column.add_child(buttons)
@@ -259,7 +265,13 @@ func _ending(state: Dictionary) -> Control:
 ## What a command's log says, a volley of bolts folded into a line a foe (LogDigest): a sentence to a line, or run on
 ## as one paragraph where it shares a screen.
 static func _story(entries: Array, state := {}, joiner := "\n") -> String:
-	return LogDigest.story(entries, LogDigest.names_of(state), joiner)
+	var story := LogDigest.story(entries, LogDigest.names_of(state), joiner)
+	if joiner != "\n":
+		return Text.sentences(story)
+	var lines: PackedStringArray = []
+	for line in story.split("\n"):
+		lines.append(Text.sentences(line))
+	return "\n".join(lines)
 
 
 # --- Commands -------------------------------------------------------------------------------------------------------
@@ -274,7 +286,7 @@ func send(command: Dictionary) -> void:
 	if not is_inside_tree():
 		return
 	if not result.ok:
-		toast(result.error.message)
+		toast(Text.sentences(String(result.error.message)))
 		_set_busy(false)
 		return
 	await _present(result, command)
@@ -441,11 +453,17 @@ func _open_run_menu() -> void:
 		Ui
 		. vbox(
 			[
-				Ui.hbox([Ui.label("RUN MENU", "Heading"), Ui.spacer(), Ui.button("Close", _close_overlay)], 12),
+				Ui.hbox(
+					[Ui.label(Text.t("RUN MENU"), "Heading"), Ui.spacer(), Ui.button(Text.t("Close"), _close_overlay)],
+					12
+				),
 				Ui.label(
-					(
-						"%s · Artificer · %s"
-						% [Game.PLAYSTYLES.get(state.playstyle, "Shardrun"), CodeLanguage.display_name(state.language)]
+					Text.f(
+						"%s · Artificer · %s",
+						[
+							Text.t(String(Game.PLAYSTYLES.get(state.playstyle, "Shardrun"))),
+							CodeLanguage.display_name(state.language)
+						]
 					),
 					"Muted"
 				),
@@ -455,9 +473,9 @@ func _open_run_menu() -> void:
 							(
 								Ui.tint(Ui.label(session.unsaved, "Muted", true), UiTheme.WARN)
 								if session.unsaved != ""
-								else Ui.label("The run is saved after every move.", "Muted")
+								else Ui.label(Text.t("The run is saved after every move."), "Muted")
 							),
-							Ui.label("Return to title whenever you want to continue later.", "Faint")
+							Ui.label(Text.t("Return to title whenever you want to continue later."), "Faint")
 						],
 						5
 					),
@@ -468,19 +486,24 @@ func _open_run_menu() -> void:
 		)
 	)
 	var tools_row := Ui.hbox(
-		[Ui.button("Stats", _open_stats), Ui.button("Battle look", _open_skins), Ui.button("Options", _open_options)], 8
+		[
+			Ui.button(Text.t("Stats"), _open_stats),
+			Ui.button(Text.t("Battle look"), _open_skins),
+			Ui.button(Text.t("Options"), _open_options)
+		],
+		8
 	)
 	if ShardrunRules.is_deck(state):
-		tools_row.add_child(Ui.button("Deck", _open_deck))
-	tools_row.add_child(Ui.button("Archives", _open_archive))
+		tools_row.add_child(Ui.button(Text.t("Deck"), _open_deck))
+	tools_row.add_child(Ui.button(Text.t("Archives"), _open_archive))
 	column.add_child(tools_row)
 	var actions := Ui.hbox(
-		[Ui.button("Return to title", func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
+		[Ui.button(Text.t("Return to title"), func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
 	)
 	if Game.trial_active:
-		actions.add_child(Ui.button("Skip Trial", _skip_trial, "DangerButton"))
+		actions.add_child(Ui.button(Text.t("Skip Trial"), _skip_trial, "DangerButton"))
 	elif not state.status in Shardrun.ENDED:
-		actions.add_child(Ui.button("Abandon run", _confirm_abandon, "DangerButton"))
+		actions.add_child(Ui.button(Text.t("Abandon run"), _confirm_abandon, "DangerButton"))
 	column.add_child(actions)
 	var panel := Ui.panel(column, "Overlay")
 	panel.custom_minimum_size.x = 620
@@ -519,7 +542,7 @@ func _open_dev() -> void:
 
 
 func _open_deck() -> void:
-	var close := Ui.button("Close", _close_overlay)
+	var close := Ui.button(Text.t("Close"), _close_overlay)
 	close.size_flags_horizontal = Control.SIZE_SHRINK_END
 	var panel := Ui.panel(Ui.vbox([DeckPanel.create(session, true), close], 12), "Overlay")
 	panel.custom_minimum_size = Vector2(1180, 0)
@@ -533,13 +556,15 @@ func _open_stats() -> void:
 
 
 func _confirm_abandon() -> void:
-	var text := "Climb back out? The run ends here and is scored as it stands; the shards stay behind."
+	var text := Text.t("Climb back out? The run ends here and is scored as it stands; the shards stay behind.")
 	var abandon := func() -> void:
 		_close_overlay()
 		send({"type": "abandon"})
-	var yes := Ui.button("Abandon this run", abandon, "DangerButton")
-	var no := Ui.button("Keep going", _close_overlay, "PrimaryButton")
-	var column := Ui.vbox([Ui.label("Abandon the run?", "Heading"), Ui.label(text, "", true), Ui.hbox([no, yes])], 14)
+	var yes := Ui.button(Text.t("Abandon this run"), abandon, "DangerButton")
+	var no := Ui.button(Text.t("Keep going"), _close_overlay, "PrimaryButton")
+	var column := Ui.vbox(
+		[Ui.label(Text.t("Abandon the run?"), "Heading"), Ui.label(text, "", true), Ui.hbox([no, yes])], 14
+	)
 	var panel := Ui.panel(column, "Overlay")
 	panel.custom_minimum_size = Vector2(560, 0)
 	_open(panel)
@@ -548,7 +573,9 @@ func _confirm_abandon() -> void:
 func _explore(spell_id: String) -> void:
 	var spell := Shardrun.spell_by_id(session.state, spell_id)
 	var base := int(session.catalog.balance.base_bolt_power)
-	var note := {"note": "This is the whole spell as one function. Cast it in a fight to watch it run, line by line."}
+	var note := {
+		"note": Text.t("This is the whole spell as one function. Cast it in a fight to watch it run, line by line.")
+	}
 	var view := CodeView.create(session.state.language, spell, session.catalog.shards, base, note, "explore", "normal")
 	view.custom_minimum_size = Vector2(1040, 820)
 	view.finished.connect(_close_overlay)

@@ -10,6 +10,13 @@ const HOW_TO: Array[String] = [
 	"Some shards expect sorted bolts. Sort before you search.",
 	"Relics change a run. Guardians test what you have built.",
 ]
+const HOW_TO_JA: Array[String] = [
+	"シャードは本物の関数。出したカードが順番につながって、ひとつのプログラムになるよ。",
+	"プログラムを組んで、はかった仕事量を予想で見てから、唱えよう。",
+	"速い敵は、おそいプログラムより先に動く。順番と計算量（けいさんりょう）が大切だよ。",
+	"並んだボルトを必要とするシャードもある。探す前に並べかえよう。",
+	"遺物（いぶつ）は冒険を変える。番人（ばんにん）は、きみが作ったものを試すよ。",
+]
 
 var _canvas: Control
 var _menu: Control
@@ -116,7 +123,9 @@ func _chrome() -> void:
 		if is_instance_valid(old):
 			_canvas.remove_child(old)
 			old.queue_free()
-	var profile := FoundryUi.button(String(Game.profile.get("name", "Player")), _open_profiles, false, true)
+	var profile := FoundryUi.button(
+		String(Game.profile.get("name", _text("Player", "プレイヤー"))), _open_profiles, false, true
+	)
 	profile.custom_minimum_size.x = 220
 	profile.clip_text = true
 	profile.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -185,8 +194,8 @@ func _home() -> void:
 		note = (
 			"%s · %s · %s"
 			% [
-				Game.PLAYSTYLES[Settings.playstyle],
-				ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name,
+				FoundryAdventurePanel.mode_name(Settings.playstyle),
+				Text.t(ShardrunRules.layer_of(Game.session.state, Game.session.catalog).name),
 				CodeLanguage.display_name(String(Game.session.state.language))
 			]
 		)
@@ -309,7 +318,11 @@ func _mount_character() -> void:
 func _open_academy() -> void:
 	var column := Ui.vbox(
 		[
-			FoundryUi.heading("ACADEMY / THE LEARNING WORKSHOP", _text("A place to grow", "学びを育てる場所"), _close_overlay),
+			FoundryUi.heading(
+				_text("ACADEMY / THE LEARNING WORKSHOP", "アカデミー / 学びの工房"),
+				_text("A place to grow", "学びを育てる場所"),
+				_close_overlay
+			),
 			FoundryUi.rule()
 		],
 		8
@@ -356,7 +369,9 @@ func _open_academy() -> void:
 func _open_profiles() -> void:
 	var column := Ui.vbox(
 		[
-			FoundryUi.heading("LOCAL PLAYERS", _text("Who is at the station?", "駅にいるのはだれ？"), _close_overlay),
+			FoundryUi.heading(
+				_text("LOCAL PLAYERS", "この機械のプレイヤー"), _text("Who is at the station?", "駅にいるのはだれ？"), _close_overlay
+			),
 			FoundryUi.rule()
 		],
 		12
@@ -434,7 +449,10 @@ func _open_commit_log(history: Array[Dictionary]) -> void:
 
 func _open_how_to() -> void:
 	var column := Ui.vbox(
-		[FoundryUi.heading("THE FIELD GUIDE", _text("Before you descend", "降りる前に"), _close_overlay), FoundryUi.rule()],
+		[
+			FoundryUi.heading(_text("THE FIELD GUIDE", "遊び方"), _text("Before you descend", "降りる前に"), _close_overlay),
+			FoundryUi.rule()
+		],
 		8
 	)
 	column.add_child(
@@ -451,7 +469,11 @@ func _open_how_to() -> void:
 		)
 	)
 	for i in HOW_TO.size():
-		column.add_child(Ui.hbox([Ui.label("0%d" % (i + 1), "Faint"), Ui.expand(Ui.label(HOW_TO[i], "", true))], 12))
+		column.add_child(
+			Ui.hbox(
+				[Ui.label("0%d" % (i + 1), "Faint"), Ui.expand(Ui.label(_text(HOW_TO[i], HOW_TO_JA[i]), "", true))], 12
+			)
+		)
 	column.add_child(FoundryUi.button(_text("Travel with Pip", "ピップと旅する"), _start_trial, true))
 	_show_overlay(FoundryUi.page(column, Vector2(650, 0)))
 
@@ -598,7 +620,15 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _broken() -> Control:
 	var column := Ui.vbox(
-		[Ui.tint(Ui.label("The content has errors, so a run cannot start.", "Subheading"), UiTheme.FAIL)], 14
+		[
+			Ui.tint(
+				Ui.label(
+					_text("The content has errors, so a run cannot start.", "内容にエラーがあるので、冒険を始められないよ。"), "Subheading"
+				),
+				UiTheme.FAIL
+			)
+		],
+		14
 	)
 	for diagnostic: Dictionary in Game.diagnostics.slice(0, 12):
 		column.add_child(Ui.label(ContentLoader.describe(diagnostic), "Muted", true))
@@ -644,11 +674,19 @@ func _start_trial() -> void:
 
 
 func _confirm_new_run(sandbox: bool) -> void:
-	var text := "Starting anew replaces the run underway."
-	var yes := Ui.button("Start anew", _begin.bind(sandbox), "DangerButton")
-	var no := Ui.button("Keep the run", _close_overlay, "PrimaryButton")
+	var text := _text("Starting anew replaces the run underway.", "新しく始めると、今の冒険は上書きされるよ。")
+	var yes := Ui.button(_text("Start anew", "新しく始める"), _begin.bind(sandbox), "DangerButton")
+	var no := Ui.button(_text("Keep the run", "今の冒険を続ける"), _close_overlay, "PrimaryButton")
 	var panel := Ui.panel(
-		Ui.vbox([Ui.label("Start a new run?", "Heading"), Ui.label(text, "", true), Ui.hbox([no, yes])], 14), "Overlay"
+		Ui.vbox(
+			[
+				Ui.label(_text("Start a new run?", "新しい冒険を始める？"), "Heading"),
+				Ui.label(text, "", true),
+				Ui.hbox([no, yes])
+			],
+			14
+		),
+		"Overlay"
 	)
 	panel.custom_minimum_size = Vector2(520, 0)
 	_show_overlay(panel)

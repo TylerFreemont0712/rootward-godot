@@ -85,26 +85,26 @@ static func display_bolts(raw: Array) -> Array:
 static func intent_text(foe: Dictionary) -> String:
 	var intents: Array = foe.get("intents", [])
 	if intents.is_empty():
-		return "Watching"
+		return Text.t("Watching")
 	var intent: Dictionary = intents[int(foe.intent_index) % intents.size()]
 	# The guardian pool's intents and states (ADR-0026) have words of their own.
 	var special := GuardianViews.intent_text(foe, intent)
 	if special != "":
 		return special
-	var text := "Watching"
+	var text := Text.t("Watching")
 	match intent.kind:
 		"strike":
-			text = "Strike for %d" % (int(intent.power) * (2 if foe.get("stoked", false) else 1))
+			text = Text.f("Strike for %d", [int(intent.power) * (2 if foe.get("stoked", false) else 1)])
 		"multi":
-			text = "Strike %d times for %d" % [int(intent.times), int(intent.power)]
+			text = Text.f("Strike %d times for %d", [int(intent.times), int(intent.power)])
 		"shield":
-			text = "Shield %d" % int(intent.amount)
+			text = Text.f("Shield %d", [int(intent.amount)])
 		"stoke":
-			text = "Stoke: its next strike doubles"
+			text = Text.t("Stoke: its next strike doubles")
 		"heal":
-			text = "Heal %d" % int(intent.amount)
+			text = Text.f("Heal %d", [int(intent.amount)])
 		"reprint":
-			text = "Reprint: %d per bolt of your last program" % int(intent.power)
+			text = Text.f("Reprint: %d per bolt of your last program", [int(intent.power)])
 	return GuardianViews.named(intent, text)
 
 
@@ -120,33 +120,41 @@ static func trait_view(foe: Dictionary) -> Dictionary:
 	var foe_trait: Dictionary = foe.get("trait", {})
 	match foe_trait.get("kind", ""):
 		"nullify-first":
-			return {"name": "Nullify", "text": "The first bolt that hits it each turn does nothing."}
+			return {"name": Text.t("Nullify"), "text": Text.t("The first bolt that hits it each turn does nothing.")}
 		"thick-hide":
-			return {"name": "Thick hide", "text": "Bolts under %d power glance off." % int(foe_trait.threshold)}
+			return {
+				"name": Text.t("Thick hide"),
+				"text": Text.f("Bolts under %d power glance off.", [int(foe_trait.threshold)])
+			}
 		"shifting-weakness":
-			var cycle := ", then ".join(PackedStringArray(foe_trait.cycle))
-			return {"name": "Shifting", "text": "Its weakness moves each turn: %s." % cycle}
+			var cycle := Text.t(", then ").join(
+				PackedStringArray(
+					(foe_trait.cycle as Array).map(func(element: String) -> String: return Text.t(element))
+				)
+			)
+			return {"name": Text.t("Shifting"), "text": Text.f("Its weakness moves each turn: %s.", [cycle])}
 		"pattern-ward":
-			var pattern := ", ".join(PackedStringArray(foe_trait.pattern))
-			return {"name": "Pattern ward", "text": "Only this turn's element in %s hits at full strength." % pattern}
+			var pattern := ", ".join(
+				PackedStringArray(
+					(foe_trait.pattern as Array).map(func(element: String) -> String: return Text.t(element))
+				)
+			)
+			return {
+				"name": Text.t("Pattern ward"),
+				"text": Text.f("Only this turn's element in %s hits at full strength.", [pattern]),
+			}
 		"quine":
-			return {
-				"name": "Quine",
-				"text":
-				(
-					"It reprints the last program that ran: one hit for every bolt it fired, and its wards as shield. "
-					+ "The same cards in the same order as that program cannot hurt it."
-				),
-			}
+			var quine := (
+				"It reprints the last program that ran: one hit for every bolt it fired, and its wards as shield. "
+				+ "The same cards in the same order as that program cannot hurt it."
+			)
+			return {"name": Text.t("Quine"), "text": Text.sentences(quine)}
 		"deadlock":
-			return {
-				"name": "Deadlock",
-				"text":
-				(
-					"It holds a lock its twin needs: damage to it is blocked unless the same program hits both. "
-					+ "Once one breaks, the other is free."
-				),
-			}
+			var deadlock := (
+				"It holds a lock its twin needs: damage to it is blocked unless the same program hits both. "
+				+ "Once one breaks, the other is free."
+			)
+			return {"name": Text.t("Deadlock"), "text": Text.sentences(deadlock)}
 	return GuardianViews.trait_view(foe)
 
 

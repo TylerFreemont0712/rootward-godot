@@ -18,9 +18,9 @@ static func move(state: Dictionary, from: Dictionary, to: Dictionary, onto_shard
 	var source: Array = lists.get(from.spell, [])
 	var from_index := int(from.index)
 	if not lists.has(from.spell) or from_index < 0 or from_index >= source.size():
-		return _no("There is no shard there.")
+		return _no(Text.t("There is no shard there."))
 	if not lists.has(to.spell):
-		return _no("There is no such spell.")
+		return _no(Text.t("There is no such spell."))
 	var target: Array = lists[to.spell]
 	var to_index := clampi(int(to.index), 0, target.size())
 	var same := String(from.spell) == String(to.spell)
@@ -37,7 +37,9 @@ static func move(state: Dictionary, from: Dictionary, to: Dictionary, onto_shard
 		source[from_index] = swapped
 	else:
 		var spell := Shardrun.spell_by_id(state, to.spell)
-		return _no("%s holds at most %d shards. Drop onto a shard to swap them." % [spell.name, spell.capacity])
+		return _no(
+			Text.f("%s holds at most %d shards. Drop onto a shard to swap them.", [Text.t(spell.name), spell.capacity])
+		)
 	return {"ok": true, "command": _command(state, lists)}
 
 

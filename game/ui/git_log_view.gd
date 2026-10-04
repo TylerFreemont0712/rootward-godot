@@ -31,9 +31,9 @@ func _build() -> void:
 	var head := Ui.hbox(
 		[
 			Ui.label("git log", "Heading"),
-			Ui.label("%d runs · %d shipped" % [records.size(), shipped], "Faint"),
+			Ui.label(Text.f("%d runs · %d shipped", [records.size(), shipped]), "Faint"),
 			Ui.spacer(),
-			Ui.button("Close", func() -> void: closed.emit()),
+			Ui.button(Text.t("Close"), func() -> void: closed.emit()),
 		],
 		14
 	)
@@ -55,7 +55,7 @@ func _build() -> void:
 	scroll.custom_minimum_size = Vector2(0, 560)
 	plate.add_child(scroll)
 	var hint := Ui.label(
-		"Click a line for its git show. Every finished Shardrun is a commit; nothing rewrites history.", "Faint"
+		Text.t("Click a line for its git show. Every finished Shardrun is a commit; nothing rewrites history."), "Faint"
 	)
 	add_child(Ui.vbox([head, plate, hint], 12))
 	_render()
@@ -73,9 +73,9 @@ func _toggle(meta: Variant) -> void:
 func _render() -> void:
 	var lines: PackedStringArray = ["[color=%s]$[/color] git log --oneline --decorate" % PROMPT, ""]
 	if records.is_empty():
-		var fatal := "your current branch 'main' does not have any commits yet"
+		var fatal := Text.t("your current branch 'main' does not have any commits yet")
 		lines.append("[color=%s]fatal:[/color] %s" % [TYPE_COLOURS.revert, fatal])
-		var hint := "  (finish a Shardrun, won or lost, and it is committed here)"
+		var hint := "  " + Text.t("(finish a Shardrun, won or lost, and it is committed here)")
 		lines.append("[color=%s]%s[/color]" % [UiTheme.FAINT.to_html(), hint])
 	for index in records.size():
 		var record: Dictionary = records[index]

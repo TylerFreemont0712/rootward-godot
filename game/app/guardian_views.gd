@@ -9,48 +9,50 @@ extends RefCounted
 ## recompiling guardian does nothing, whatever its intent.
 static func intent_text(foe: Dictionary, intent: Dictionary) -> String:
 	if foe.get("stunned", false):
-		return "Stunned"
+		return Text.t("Stunned")
 	if foe.get("recompiling", false):
-		return "Recompiling"
+		return Text.t("Recompiling")
 	var striking: bool = intent.kind in ["strike", "multi", "loop", "count", "throw"]
 	if (foe.get("trait", {}) as Dictionary).get("kind") == ProgramGuardians.PAGED and not foe.get("resident", false):
 		if striking:
-			return "Swapped out"
+			return Text.t("Swapped out")
 	var enrage := float((foe.get("trait", {}) as Dictionary).get("enrage", 1.0)) if foe.get("enraged", false) else 1.0
 	var text := ""
 	match intent.kind:
 		"strike":
 			if enrage != 1.0:
-				text = (
-					"Strike for %d (enraged)"
-					% floori(int(intent.power) * (2 if foe.get("stoked", false) else 1) * enrage)
+				text = Text.f(
+					"Strike for %d (enraged)",
+					[floori(int(intent.power) * (2 if foe.get("stoked", false) else 1) * enrage)]
 				)
 		"multi":
 			if enrage != 1.0:
-				text = "Strike %d times for %d (enraged)" % [int(intent.times), floori(int(intent.power) * enrage)]
+				text = Text.f(
+					"Strike %d times for %d (enraged)", [int(intent.times), floori(int(intent.power) * enrage)]
+				)
 		"loop":
-			text = "Loop %d × %d" % [int(foe.get("loop", intent.start)), int(intent.power)]
+			text = Text.f("Loop %d × %d", [int(foe.get("loop", intent.start)), int(intent.power)])
 		"throw":
-			text = "Throw %d (catch: %d block)" % [throw_power(foe, intent), throw_power(foe, intent)]
+			text = Text.f("Throw %d (catch: %d block)", [throw_power(foe, intent), throw_power(foe, intent)])
 		"summon":
-			text = "Allocate a block"
+			text = Text.t("Allocate a block")
 		"realloc":
-			text = "Heal %d per block" % int(intent.amount)
+			text = Text.f("Heal %d per block", [int(intent.amount)])
 		"mend-swapped":
-			text = "Mend %d (pages out)" % int(intent.amount)
+			text = Text.f("Mend %d (pages out)", [int(intent.amount)])
 		"count":
 			var power := count_power(foe, intent)
-			text = "Strike for %d" % power if power < int(intent.wrap) else "Overflows: nothing"
+			text = Text.f("Strike for %d", [power]) if power < int(intent.wrap) else Text.t("Overflows: nothing")
 		"mutate":
-			text = "Mutate %d cards" % int(intent.count)
+			text = Text.f("Mutate %d cards", [int(intent.count)])
 		"idle":
-			text = "Allocated"
+			text = Text.t("Allocated")
 	return named(intent, text) if text != "" else ""
 
 
 ## Ordinary intents with a name ("Bite") are worded by ShardrunViews and named here.
 static func named(intent: Dictionary, text: String) -> String:
-	var name := String(intent.get("name", ""))
+	var name := Text.t(String(intent.get("name", "")))
 	return "%s · %s" % [name, text] if name != "" else text
 
 
@@ -94,66 +96,100 @@ static func trait_view(foe: Dictionary) -> Dictionary:
 			return {
 				"name": "while True",
 				"text":
-				"Land a volley that meets its guard and the loop breaks: +50%, it is stunned, the count resets.",
+				Text.t(
+					"Land a volley that meets its guard and the loop breaks: +50%, it is stunned, the count resets."
+				),
 			}
 		"stack-trace":
 			return {
 				"name": "raise",
-				"text": "Block at least a throw's power to catch it: it bounces back at 150%. Uncaught, throws grow.",
+				"text":
+				Text.t("Block at least a throw's power to catch it: it bounces back at 150%. Uncaught, throws grow."),
 			}
 		"short-circuit":
 			return {
-				"name": "Short circuit",
+				"name": Text.t("Short circuit"),
 				"text":
-				"The first bolt at it must meet its guard. Below it, the rest never land; at or above, it doubles.",
+				Text.t(
+					"The first bolt at it must meet its guard. Below it, the rest never land; at or above, it doubles."
+				),
 			}
 		"unreachable":
-			return {"name": "Dead code", "text": "Cards at or after its return slot do not run (and still cost mana)."}
+			return {
+				"name": Text.t("Dead code"),
+				"text": Text.t("Cards at or after its return slot do not run (and still cost mana).")
+			}
 		"lru-cache":
-			return {"name": "LRU cache", "text": "A bolt whose power is cached deals nothing. New powers hurt in full."}
+			return {
+				"name": Text.t("LRU cache"),
+				"text": Text.t("A bolt whose power is cached deals nothing. New powers hurt in full.")
+			}
 		"allocator":
 			return {
 				"name": "malloc",
 				"text":
-				"Each block shields her 3 a turn; at 5 blocks, Out of Memory. Breaking a block gives you 3 block.",
+				Text.t(
+					"Each block shields her 3 a turn; at 5 blocks, Out of Memory. Breaking a block gives you 3 block."
+				),
 			}
 		"heap-block":
-			return {"name": "free()", "text": "Break it to free it: 3 block for you."}
+			return {"name": "free()", "text": Text.t("Break it to free it: 3 block for you.")}
 		ProgramGuardians.PAGED:
 			return {
-				"name": "Paged",
+				"name": Text.t("Paged"),
 				"text":
-				"Only the resident page takes hits and strikes. A bolt at another is a page fault and swaps it in.",
+				Text.t(
+					"Only the resident page takes hits and strikes. A bolt at another is a page fault and swaps it in."
+				),
 			}
 		"lazy":
-			return {"name": "Lazy", "text": "Hits pile up as pending. A bolt of 15 or more forces it all at +25%."}
+			return {
+				"name": Text.t("Lazy"),
+				"text": Text.t("Hits pile up as pending. A bolt of 15 or more forces it all at +25%.")
+			}
 		"call-stack":
 			return {
 				"name": "LIFO",
-				"text": "Only the top frame takes damage; the rest of a bolt is lost. Left alone, it pushes a frame.",
+				"text":
+				Text.t("Only the top frame takes damage; the rest of a bolt is lost. Left alone, it pushes a frame."),
 			}
 		"int8":
-			return {"name": "int8", "text": "Damage over 127 wraps around: 128 is -128, and negative damage heals it."}
+			return {
+				"name": "int8",
+				"text": Text.t("Damage over 127 wraps around: 128 is -128, and negative damage heals it.")
+			}
 		"profiler":
-			return {"name": "Profiler", "text": "Damage scales with your program's slowest class: fast code, more."}
+			return {
+				"name": Text.t("Profiler"),
+				"text": Text.t("Damage scales with your program's slowest class: fast code, more.")
+			}
 		"livelock":
-			return {"name": "Livelock", "text": "Every hit swaps the twins. When one falls, the other enrages."}
+			return {
+				"name": Text.t("Livelock"),
+				"text": Text.t("Every hit swaps the twins. When one falls, the other enrages.")
+			}
 		"mutator":
 			return {
-				"name": "Mutation", "text": "It edits your cards. Land 25 in one program to kill the mutants in it."
+				"name": Text.t("Mutation"),
+				"text": Text.t("It edits your cards. Land 25 in one program to kill the mutants in it.")
 			}
 		"certificate":
 			return {
-				"name": "Subset sum",
-				"text": "Bolts that add up to exactly its target deal double and stun it. Without one, all are halved.",
+				"name": Text.t("Subset sum"),
+				"text":
+				Text.t("Bolts that add up to exactly its target deal double and stun it. Without one, all are halved."),
 			}
 		"oracle":
 			return {
-				"name": "Oracle",
-				"text": "If its prediction about your program is right, it takes nothing and half is reflected.",
+				"name": Text.t("Oracle"),
+				"text":
+				Text.t("If its prediction about your program is right, it takes nothing and half is reflected."),
 			}
 		"compiler":
-			return {"name": "Compiler", "text": "Three phases: the guardians you beat, then itself, self-hosting."}
+			return {
+				"name": Text.t("Compiler"),
+				"text": Text.t("Three phases: the guardians you beat, then itself, self-hosting.")
+			}
 	return {}
 
 
@@ -162,38 +198,58 @@ static func chips(foe: Dictionary) -> Array[Dictionary]:
 	var out: Array[Dictionary] = []
 	var foe_trait: Dictionary = foe.get("trait", {})
 	if foe.get("stunned", false):
-		out.append({"text": "stunned", "tone": "teal", "tip": "It loses its next turn."})
+		out.append({"text": Text.t("stunned"), "tone": "teal", "tip": Text.t("It loses its next turn.")})
 	if foe.has("compiler"):
 		var compiler: Dictionary = foe.compiler
 		(
 			out
 			. append(
 				{
-					"text": "phase %d/3" % (int(compiler.phase) + 1),
+					"text": Text.f("phase %d/3", [int(compiler.phase) + 1]),
 					"tone": "shard",
-					"tip": "Compiled as %s." % String(foe.get("compiled", foe.name)),
+					"tip": Text.f("Compiled as %s.", [Text.t(String(foe.get("compiled", foe.name)))]),
 				}
 			)
 		)
 	match foe_trait.get("kind", ""):
 		"loop-guard":
 			var guard: Dictionary = foe.get("guard", {})
-			out.append({"text": GuardianLanding.guard_code(guard), "tone": "warn", "tip": "Meet it to break the loop."})
-			out.append({"text": "loop ×%d" % int(foe.get("loop", 2)), "tone": "fire", "tip": "Hits in its next Loop."})
+			out.append(
+				{"text": GuardianLanding.guard_code(guard), "tone": "warn", "tip": Text.t("Meet it to break the loop.")}
+			)
+			out.append(
+				{
+					"text": Text.f("loop ×%d", [int(foe.get("loop", 2))]),
+					"tone": "fire",
+					"tip": Text.t("Hits in its next Loop.")
+				}
+			)
 		"stack-trace":
 			if int(foe.get("trace", 0)) > 0:
-				out.append({"text": "trace +%d" % int(foe.trace), "tone": "fire", "tip": "Added to every throw."})
+				out.append(
+					{
+						"text": Text.f("trace +%d", [int(foe.trace)]),
+						"tone": "fire",
+						"tip": Text.t("Added to every throw.")
+					}
+				)
 		"short-circuit":
 			var guard := int(foe.get("guard", 0))
-			out.append({"text": "first ≥ %d" % guard, "tone": "warn", "tip": "Lead with a bolt of %d or more." % guard})
+			out.append(
+				{
+					"text": Text.f("first ≥ %d", [guard]),
+					"tone": "warn",
+					"tip": Text.f("Lead with a bolt of %d or more.", [guard])
+				}
+			)
 		"unreachable":
 			(
 				out
 				. append(
 					{
-						"text": "return @ slot %d" % int(foe.get("return_at", 5)),
+						"text": Text.f("return @ slot %d", [int(foe.get("return_at", 5))]),
 						"tone": "warn",
-						"tip": "Cards in this slot and after are dead code this turn.",
+						"tip": Text.t("Cards in this slot and after are dead code this turn."),
 					}
 				)
 			)
@@ -204,26 +260,30 @@ static func chips(foe: Dictionary) -> Array[Dictionary]:
 				out
 				. append(
 					{
-						"text": "cache: %s" % (shown if shown != "" else "empty"),
+						"text": Text.f("cache: %s", [shown if shown != "" else Text.t("empty")]),
 						"tone": "shard",
-						"tip": "Bolts of these powers deal nothing.",
+						"tip": Text.t("Bolts of these powers deal nothing."),
 					}
 				)
 			)
 		ProgramGuardians.PAGED:
 			if foe.get("resident", false):
-				out.append({"text": "resident", "tone": "teal", "tip": "In memory: bolts at this page land."})
+				out.append(
+					{"text": Text.t("resident"), "tone": "teal", "tip": Text.t("In memory: bolts at this page land.")}
+				)
 			else:
-				out.append({"text": "swapped out", "tone": "faint", "tip": "A bolt here is a page fault."})
+				out.append(
+					{"text": Text.t("swapped out"), "tone": "faint", "tip": Text.t("A bolt here is a page fault.")}
+				)
 		"lazy":
 			if int(foe.get("pending", 0)) > 0:
 				(
 					out
 					. append(
 						{
-							"text": "pending %d" % int(foe.pending),
+							"text": Text.f("pending %d", [int(foe.pending)]),
 							"tone": "fire",
-							"tip": "Forced by a bolt of 15+, at +25%. Halves at the end of the turn.",
+							"tip": Text.t("Forced by a bolt of 15+, at +25%. Halves at the end of the turn."),
 						}
 					)
 				)
@@ -234,23 +294,24 @@ static func chips(foe: Dictionary) -> Array[Dictionary]:
 					out
 					. append(
 						{
-							"text": "%d frames · top %d" % [frames.size(), int(frames[-1])],
+							"text": Text.f("%d frames · top %d", [frames.size(), int(frames[-1])]),
 							"tone": "warn",
-							"tip": "Frames, bottom to top: %s." % ", ".join(PackedStringArray(frames.map(str))),
+							"tip":
+							Text.f("Frames, bottom to top: %s.", [", ".join(PackedStringArray(frames.map(str)))]),
 						}
 					)
 				)
 		"livelock":
 			if foe.get("enraged", false):
-				out.append({"text": "enraged", "tone": "fire", "tip": "Its strikes hit 50% harder."})
+				out.append({"text": Text.t("enraged"), "tone": "fire", "tip": Text.t("Its strikes hit 50% harder.")})
 		"certificate":
 			(
 				out
 				. append(
 					{
-						"text": "target %d" % int(foe.get("target", 0)),
+						"text": Text.f("target %d", [int(foe.get("target", 0))]),
 						"tone": "warn",
-						"tip": "Bolts at it that add up to exactly this deal double.",
+						"tip": Text.t("Bolts at it that add up to exactly this deal double."),
 					}
 				)
 			)
@@ -259,9 +320,12 @@ static func chips(foe: Dictionary) -> Array[Dictionary]:
 				out
 				. append(
 					{
-						"text": "predicts: %s" % GuardianLanding.prediction_text(foe.get("prediction", {})),
+						"text":
+						Text.f(
+							"predicts: %s", [Text.sentence(GuardianLanding.prediction_text(foe.get("prediction", {})))]
+						),
 						"tone": "warn",
-						"tip": "Run a program without this property.",
+						"tip": Text.t("Run a program without this property."),
 					}
 				)
 			)

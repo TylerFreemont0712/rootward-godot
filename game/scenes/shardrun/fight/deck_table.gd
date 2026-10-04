@@ -73,7 +73,7 @@ func _build() -> void:
 	_hold = Ui.hbox([], 6)
 	var draw := _pile("Draw", _draw_count)
 	var discard := _pile("Discard", _discard_count)
-	var hold := Ui.vbox([Ui.label("HOLD", "Faint"), _hold], 4)
+	var hold := Ui.vbox([Ui.label(Text.t("HOLD"), "Faint"), _hold], 4)
 	hold.size_flags_vertical = Control.SIZE_SHRINK_END
 	add_child(Ui.hbox([draw, _hand, hold, discard], 12))
 
@@ -93,7 +93,7 @@ func _pile(title: String, count: Label) -> Control:
 		"normal", UiTheme.box(Color("#2c1f3a"), UiTheme.SHARD.darkened(0.3), 2, 10, Vector2(6, 6))
 	)
 	back.add_theme_stylebox_override("hover", UiTheme.box(Color("#46315e"), UiTheme.SHARD, 2, 10, Vector2(6, 6)))
-	back.tooltip_text = "Open %s pile" % title.to_lower()
+	back.tooltip_text = Text.f("Open %s pile", [Text.t(title).to_lower()])
 	back.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	back.pressed.connect(_open_pile.bind(title.to_lower()))
 	_piles[title.to_lower()] = back
@@ -119,7 +119,7 @@ func _pile(title: String, count: Label) -> Control:
 	if art != null:
 		back.add_theme_stylebox_override("normal", StyleBoxEmpty.new())
 		back.add_theme_stylebox_override("hover", UiTheme.box(Color(1, 1, 1, 0.08), UiTheme.SHARD, 2, 10))
-	var column := Ui.vbox([Ui.label(title.to_upper(), "Faint"), back, count], 4)
+	var column := Ui.vbox([Ui.label(Text.t(title).to_upper(), "Faint"), back, count], 4)
 	count.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	column.size_flags_vertical = Control.SIZE_SHRINK_END
 	return column
@@ -131,15 +131,15 @@ func _open_pile(which: String) -> void:
 		return
 	var cards_in_pile: Array = (battle.get(which, []) as Array).duplicate()
 	var popup := PopupPanel.new()
-	popup.title = "%s pile" % which.capitalize()
+	popup.title = Text.f("%s pile", [Text.t(which.capitalize())])
 	popup.popup_hide.connect(popup.queue_free)
 	add_child(popup)
-	var heading := Ui.label("%s pile · %d cards" % [which.capitalize(), cards_in_pile.size()], "Heading")
+	var heading := Ui.label(Text.f("%s pile · %d cards", [Text.t(which.capitalize()), cards_in_pile.size()]), "Heading")
 	var note := Ui.label(
 		(
-			"Card types shown; draw order stays hidden."
+			Text.t("Card types shown; draw order stays hidden.")
 			if which == "draw"
-			else "Played and spent cards return here until the next shuffle."
+			else Text.t("Played and spent cards return here until the next shuffle.")
 		),
 		"Muted",
 		true
@@ -157,11 +157,11 @@ func _open_pile(which: String) -> void:
 		face.draggable = false
 		grid.add_child(face)
 	if cards_in_pile.is_empty():
-		grid.add_child(Ui.label("This pile is empty.", "Muted"))
+		grid.add_child(Ui.label(Text.t("This pile is empty."), "Muted"))
 	var scroll := Ui.scroll(grid)
 	scroll.custom_minimum_size = Vector2(760, 300)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var close := Ui.button("Close", popup.hide)
+	var close := Ui.button(Text.t("Close"), popup.hide)
 	var body := Ui.vbox([heading, note, scroll, close], 10)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := Ui.panel(body, "Overlay")
@@ -197,7 +197,9 @@ func show_table(state: Dictionary) -> void:
 				if _changed(before, at, spell.shards[index]):
 					_arrive(face, HandView._take(origins, spell.shards[index]))
 			else:
-				var empty := CardFace.slot(at, "spent" if spell.spent else "slot %d" % (index + 1), CardFace.Size.SLOT)
+				var empty := CardFace.slot(
+					at, Text.t("spent") if spell.spent else Text.f("slot %d", [index + 1]), CardFace.Size.SLOT
+				)
 				empty.moved = _move
 				row.add_child(empty)
 		(cards[spell.id] as SpellCard).set_targeted(spell.id == target)
@@ -210,18 +212,18 @@ func show_table(state: Dictionary) -> void:
 			if _changed(before, at, _table.held[index]):
 				_arrive(face, HandView._take(origins, _table.held[index]))
 		else:
-			var free := CardFace.slot(at, "hold a card", CardFace.Size.SLOT)
+			var free := CardFace.slot(at, Text.t("hold a card"), CardFace.Size.SLOT)
 			free.moved = _move
 			_hold.add_child(free)
 	var make := func(id: String, index: int) -> CardFace:
 		return _card(id, {"zone": "hand", "index": index}, CardFace.Size.HAND, summaries)
 	_hand.show_hand(_table.hand, make, deal, origins)
-	_draw_count.text = "%d cards" % (battle.draw as Array).size()
-	_discard_count.text = "%d cards" % (battle.discard as Array).size()
+	_draw_count.text = Text.f("%d cards", [(battle.draw as Array).size()])
+	_discard_count.text = Text.f("%d cards", [(battle.discard as Array).size()])
 	# A program run's `once` and `volatile` cards leave for the rest of the fight (ADR-0018).
 	var gone := (battle.get("gone", []) as Array).size()
 	if gone > 0:
-		_discard_count.text += " · %d gone" % gone
+		_discard_count.text += " · " + Text.f("%d gone", [gone])
 	_hint.text = _hint_text()
 
 
@@ -308,20 +310,22 @@ func _hint_text() -> String:
 		# Short: it sits in the file's own column.
 		var file: String = session.state.spells[0].name
 		if (_table.hand as Array).is_empty():
-			return "Hand empty: run %s, or end the turn." % file
+			return Text.f("Hand empty: run %s, or end the turn.", [file])
 		if spell.is_empty():
-			return "%s is full: run it, or end the turn." % file
-		return "Click or drag cards into %s; they run left to right. Right-click holds one." % file
+			return Text.f("%s is full: run it, or end the turn.", [file])
+		return Text.f("Click or drag cards into %s; they run left to right. Right-click holds one.", [file])
 	if (_table.hand as Array).is_empty():
-		return "Your hand is empty. Cast what you built, or end the turn to draw a new hand."
+		return Text.t("Your hand is empty. Cast what you built, or end the turn to draw a new hand.")
 	if spell.is_empty():
-		return "Your spell is full or spent: cast it, or end the turn. Right-click a card to hold it for next turn."
-	return (
-		(
-			"Click a card to play it into %s, or drag it to a slot; cards run left to right. Right-click to hold one. "
-			% spell.name
+		return Text.t(
+			"Your spell is full or spent: cast it, or end the turn. Right-click a card to hold it for next turn."
 		)
-		+ "A blank spell still casts one plain bolt."
+	return (
+		Text.f(
+			"Click a card to play it into %s, or drag it to a slot; cards run left to right. Right-click to hold one. ",
+			[Text.t(spell.name)]
+		)
+		+ Text.t("A blank spell still casts one plain bolt.")
 	)
 
 

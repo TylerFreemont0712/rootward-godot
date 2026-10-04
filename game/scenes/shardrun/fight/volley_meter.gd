@@ -116,13 +116,18 @@ func _draw() -> void:
 		draw_circle(Vector2(at.x + width * 0.5, middle), width * 0.7 + 8.0, Color(colour, 0.22 * swell))
 	draw_string(_big, at, number, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, tint)
 	draw_string(
-		_font, Vector2(size.x - 64.0, middle - 2.0), "power", HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color(colour, 0.8)
+		_font,
+		Vector2(size.x - 64.0, middle - 2.0),
+		Text.t("power"),
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		12,
+		Color(colour, 0.8)
 	)
-	var noun := "bolt" if _bolts == 1 else "bolts"
 	draw_string(
 		_font,
 		Vector2(size.x - 64.0, middle + 13.0),
-		"%d %s" % [_bolts, noun],
+		Text.f("%d bolt", [_bolts]) if _bolts == 1 else Text.f("%d bolts", [_bolts]),
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
 		12,

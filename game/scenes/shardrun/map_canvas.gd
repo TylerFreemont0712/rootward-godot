@@ -194,8 +194,8 @@ func _draw_guardian(node: Dictionary, glow: float) -> void:
 		draw_arc(at, radius * 1.4, 0.0, TAU, 64, Color(hue, 0.4 + 0.6 * glow), 3.0, true)
 	MapMarkers.draw_guardian(self, at, radius, portrait, 1.0, glow)
 	var font := UiTheme.crt_font()
-	var title := guardian_name if guardian_name != "" else "Guardian"
-	var caption := "GUARDIAN OF %s" % String(ShardrunRules.layer_of(state, catalog).name).to_upper()
+	var title := guardian_name if guardian_name != "" else Text.t("Guardian")
+	var caption := Text.f("GUARDIAN OF %s", [Text.t(String(ShardrunRules.layer_of(state, catalog).name)).to_upper()])
 	var line := Vector2(0, at.y + radius * 1.18 + 36.0)
 	var plate_width := maxf(font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 34).x, 200.0) + 40.0
 	var plate := Rect2(at.x - plate_width * 0.5, line.y - 32.0, plate_width, 64.0)

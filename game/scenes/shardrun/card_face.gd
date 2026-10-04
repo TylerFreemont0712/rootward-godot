@@ -81,8 +81,8 @@ func mark_mutant(battle: Dictionary) -> void:
 		return
 	shard = shard.duplicate(true)
 	(shard.code as Dictionary)[language] = ProgramGuardians.code_of(shard, language, battle)
-	_tags.append("MUTANT: %s" % String(mutant.get("name", "edited")))
-	var chip := Ui.panel(Ui.sized(Ui.tint(Ui.label("MUTANT", ""), UiTheme.FAIL), 11), "Chip")
+	_tags.append(Text.f("MUTANT: %s", [Text.t(String(mutant.get("name", "edited")))]))
+	var chip := Ui.panel(Ui.sized(Ui.tint(Ui.label(Text.t("MUTANT"), ""), UiTheme.FAIL), 11), "Chip")
 	chip.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(chip)
 	# Over the art's top right corner, clear of the cost (top left) and the name.
@@ -127,13 +127,13 @@ func _describe(catalog: Dictionary) -> void:
 	if shard.has("paradigm"):
 		var paradigm := ProgramDraft.paradigm_of(catalog, String(shard.paradigm)) if catalog.has("programs") else {}
 		colour = Color(paradigm.get("colour", "#8d8fa0"))
-		_tags.append(String(paradigm.get("name", "Neutral")))
+		_tags.append(Text.t(String(paradigm.get("name", "Neutral"))))
 		if shard.has("needs"):
-			_tags.append("needs %s bolts" % shard.needs)
+			_tags.append(Text.f("needs %s bolts", [Text.t(String(shard.needs))]))
 		if shard.has("makes"):
-			_tags.append("leaves them %s" % shard.makes)
+			_tags.append(Text.f("leaves them %s", [Text.t(String(shard.makes))]))
 	else:
-		_tags.append(String(shard.get("rarity", "common")).capitalize())
+		_tags.append(Text.t(String(shard.get("rarity", "common")).capitalize()))
 
 
 func _build(size_kind: Size) -> void:
@@ -165,7 +165,7 @@ func _build(size_kind: Size) -> void:
 	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"))
 	_cost = _text(UiTheme.ui_font(600), Color.WHITE)
 	_speed = _text(UiTheme.ui_font(600), colour.lightened(0.45))
-	_name.text = shard.get("name", shard_id)
+	_name.text = Text.t(shard.get("name", shard_id))
 	_cost.text = str(int(shard.get("cost", 0)))
 	_speed.text = ShardrunViews.complexity(shard)
 	for child in get_children():

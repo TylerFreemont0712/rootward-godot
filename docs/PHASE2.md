@@ -256,7 +256,7 @@ the finding needs re-testing before it is fixed. *Seen* means it shows in this p
 | P2-21 | Medium | verified | [31] A fast process can exceed the output limit and still pass, silently truncated (`sandbox/sandbox.gd:112-123`: the loop exits on process end before the size check) |
 | P2-22 | Medium | unchanged | [15] [16] The Trial coach doesn't refresh within a step, and the Trial's event check drops each command's first log lines |
 | P2-23 | Medium | unchanged | [18] Changing predictions in Options leaves the open fight stale |
-| P2-24 | Low | seen | [30] Japanese profiles get English run screens (and one Japanese line on the end screen, P2-35) |
+| P2-24 | Low | closed (ADR-0047) | [30] Japanese profiles get English run screens (and one Japanese line on the end screen, P2-35) |
 | P2-25 | Medium | recheck | [26] [27] Summons, catches and INT_MAX healing don't animate; a crashed cast doesn't animate its mana |
 | P2-26 | Medium | unchanged | [29] A partial local skin folder errors instead of falling back |
 | P2-27 | Low | verified | [33] 12 sound voices stolen oldest-first can cut a long cast sound |
@@ -286,6 +286,7 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-44 | Low | Untracked probe files in `game/` (`probe_glb.gd`, `probe_glb.gd.uid`, `probe_head.gd.uid`) Deleted with A1 |
 | P2-45 | Medium | `scripts/menu-navigation.sh` (181 real clicks) had been failing since the Character room's rework: it clicked "Test spell", "Floor guides" and "High contrast", which were renamed or removed, and keyboard focus never scrolled a hidden control into view (`Ui.scroll` lacked `follow_focus`). Fixed with A1 |
 | P2-47 | High | **Spellforge's map was broken**: a spell's shard chips drew their pictures at full size since the art passes made them large (ADR-0033), so one picture filled the spellbook, the map was squeezed to half its width and the room legend sat over its bottom rows. Fixed in track A |
+| P2-49 | Low | A program card's "a forge upgrades it into …" note showed the upgrade's id (CHARGE-PLUS), looked up among Spellforge's shards. Fixed with A4 |
 | P2-48 | Low | The screenshot tool kept a Japanese preference from an earlier Trial shot, so later shots greeted in Japanese. Fixed: each shot resets it |
 | P2-46 | Low | Character → Spells with three practice targets: their name plates and "Watching" tags overlap one another (`shots/phase2/menu-character-spells.png`) |
 

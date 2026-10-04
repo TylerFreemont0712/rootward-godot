@@ -22,6 +22,8 @@ const KEYWORDS := {
 		+ "break continue size_t std Bolt Bolts Battle Foe throw try catch"
 	),
 }
+## Punctuation a Japanese line may not start with.
+const CLOSING := "。、）」』！？・ー"
 const KEYWORD := "#d19bff"
 const STRING := "#9fd07a"
 const NUMBER := "#f2a541"
@@ -118,7 +120,9 @@ static func _words(text: String, room: int) -> PackedStringArray:
 			continue
 		var piece := ""
 		for c in word:
-			if _width(piece + c) > room:
+			# LEARN: Japanese never starts a line with closing punctuation (kinsoku): 。 or 、 stays on the line it
+			# ends, even one column past the edge.
+			if _width(piece + c) > room and not c in CLOSING:
 				out.append(piece)
 				piece = ""
 			piece += c

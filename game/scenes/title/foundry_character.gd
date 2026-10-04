@@ -59,7 +59,13 @@ func _build() -> void:
 		if _looks[i].id == Settings.character_skin:
 			_at = i
 	var column := Ui.vbox(
-		[FoundryUi.heading("WARDROBE / REHEARSAL", FoundryUi.text("Character", "キャラクター"), _close), FoundryUi.rule()], 12
+		[
+			FoundryUi.heading(
+				FoundryUi.text("WARDROBE / REHEARSAL", "衣装室 / 練習"), FoundryUi.text("Character", "キャラクター"), _close
+			),
+			FoundryUi.rule()
+		],
+		12
 	)
 	var classes := Ui.vbox([Ui.label(FoundryUi.text("CLASS", "クラス"), "Faint")], 8)
 	classes.custom_minimum_size.x = 220

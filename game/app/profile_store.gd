@@ -63,10 +63,10 @@ func create(name: String, preferred_language := "en", avatar := "vesper") -> Dic
 		names.append(String(profile.name))
 	var error := ProfileRules.name_error(name, names)
 	if error != "":
-		return {"ok": false, "error": error}
+		return {"ok": false, "error": Text.sentence(error)}
 	var profile := _new_profile(name, preferred_language, avatar)
 	if not save_profile(profile):
-		return {"ok": false, "error": "Could not save this profile."}
+		return {"ok": false, "error": Text.t("Could not save this profile.")}
 	return {"ok": true, "profile": profile}
 
 
@@ -89,18 +89,18 @@ static func _new_profile(name: String, preferred_language: String, avatar: Strin
 func rename(id: String, name: String) -> Dictionary:
 	var profile := get_profile(id)
 	if profile.is_empty():
-		return {"ok": false, "error": "Player not found."}
+		return {"ok": false, "error": Text.t("Player not found.")}
 	var names: Array[String] = []
 	for other in list_profiles():
 		if other.id != id:
 			names.append(String(other.name))
 	var error := ProfileRules.name_error(name, names)
 	if error != "":
-		return {"ok": false, "error": error}
+		return {"ok": false, "error": Text.sentence(error)}
 	profile.name = ProfileRules.clean_name(name)
 	profile.needs_name = false
 	if not save_profile(profile):
-		return {"ok": false, "error": "Could not rename this profile."}
+		return {"ok": false, "error": Text.t("Could not rename this profile.")}
 	return {"ok": true, "profile": profile}
 
 
@@ -125,26 +125,26 @@ func delete(id: String) -> bool:
 ## Copy every legacy file and compare bytes before publishing the profile metadata. The old folder is left intact.
 func migrate_legacy(legacy_root: String, language: String, difficulty: String) -> Dictionary:
 	if not list_profiles().is_empty():
-		return {"ok": false, "error": "Profiles already exist."}
+		return {"ok": false, "error": Text.t("Profiles already exist.")}
 	if not DirAccess.dir_exists_absolute(legacy_root):
-		return {"ok": false, "error": "No legacy saves."}
+		return {"ok": false, "error": Text.t("No legacy saves.")}
 	var files := DirAccess.get_files_at(legacy_root)
 	if files.is_empty():
-		return {"ok": false, "error": "No legacy saves."}
+		return {"ok": false, "error": Text.t("No legacy saves.")}
 	var profile := _new_profile("Player 1", "en", "vesper")
 	var destination := run_root(profile.id)
 	var staged := root.path_join(".migrating-" + String(profile.id))
 	if DirAccess.make_dir_recursive_absolute(staged) != OK:
-		return {"ok": false, "error": "Could not prepare migration."}
+		return {"ok": false, "error": Text.t("Could not prepare migration.")}
 	for file_name in files:
 		var source := legacy_root.path_join(file_name)
 		var target := staged.path_join(file_name)
 		if DirAccess.copy_absolute(source, target) != OK:
 			_remove_tree(staged)
-			return {"ok": false, "error": "Could not copy migrated saves."}
+			return {"ok": false, "error": Text.t("Could not copy migrated saves.")}
 		if FileAccess.get_file_as_bytes(source) != FileAccess.get_file_as_bytes(target):
 			_remove_tree(staged)
-			return {"ok": false, "error": "Could not verify migrated saves."}
+			return {"ok": false, "error": Text.t("Could not verify migrated saves.")}
 	profile.needs_name = true
 	profile.settings = {"language": language, "difficulty": difficulty}
 	profile.migration_root = legacy_root
@@ -152,10 +152,10 @@ func migrate_legacy(legacy_root: String, language: String, difficulty: String) -
 	profile.migration_verified = false
 	if not _write_json(staged.path_join("profile.json"), profile):
 		_remove_tree(staged)
-		return {"ok": false, "error": "Could not save migrated profile."}
+		return {"ok": false, "error": Text.t("Could not save migrated profile.")}
 	if DirAccess.rename_absolute(staged, destination) != OK:
 		_remove_tree(staged)
-		return {"ok": false, "error": "Could not publish migrated profile."}
+		return {"ok": false, "error": Text.t("Could not publish migrated profile.")}
 	activate(profile.id)
 	return {"ok": true, "profile": profile}
 

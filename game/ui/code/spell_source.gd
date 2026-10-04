@@ -35,8 +35,8 @@ static func compose(
 	var comment := CodeLanguage.comment(language)
 	var names: Array[String] = []
 	for id: String in shard_ids:
-		names.append((shards.get(id, {}) as Dictionary).get("name", id))
-	var chain := " → ".join(names) if not names.is_empty() else "one plain bolt"
+		names.append(Text.t((shards.get(id, {}) as Dictionary).get("name", id)))
+	var chain := " → ".join(names) if not names.is_empty() else Text.t("one plain bolt")
 	source._add("%s %s: %s" % [comment, spell_name, chain], "comment")
 	source._add("", "blank")
 
@@ -73,7 +73,7 @@ static func compose(
 		var shard: Dictionary = shards.get(id, {})
 		var code: String = (shard.get("code", {}) as Dictionary).get(language, "")
 		if code == "":
-			source._add("%s %s: this shard is missing" % [comment, id], "comment")
+			source._add(Text.f("%s %s: this shard is missing", [comment, id]), "comment")
 			continue
 		source._add_function(id, code.strip_edges(false, true), SpellHarness.function_name(shard, language), language)
 	return source

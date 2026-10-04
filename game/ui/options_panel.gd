@@ -15,51 +15,62 @@ static func create() -> OptionsPanel:
 
 func _build() -> void:
 	custom_minimum_size = Vector2(800, 560)
-	var column := Ui.vbox([Ui.hbox([Ui.label("OPTIONS", "Heading"), Ui.spacer(), Ui.button("Close  ×", _close)])], 20)
-	column.add_child(Ui.label("Make the Machine feel like home. Changes save automatically.", "Muted", true))
+	var column := Ui.vbox(
+		[Ui.hbox([Ui.label(Text.t("OPTIONS"), "Heading"), Ui.spacer(), Ui.button(Text.t("Close  ×"), _close)])], 20
+	)
+	column.add_child(Ui.label(Text.t("Make the Machine feel like home. Changes save automatically."), "Muted", true))
 	var tabs := Ui.hbox([], 8)
 	for tab: String in ["Battle", "Audio", "Display"]:
 		var choose := func() -> void:
 			_tab = tab
 			_rebuild()
-		tabs.add_child(Ui.choice(tab, _tab == tab, choose))
+		tabs.add_child(Ui.choice(Text.t(tab), _tab == tab, choose))
 	column.add_child(tabs)
 	add_child(column)
 	if _tab == "Audio":
-		column.add_child(_row("Music volume", _slider(Settings.music_volume, _set_music)))
-		column.add_child(_row("Sound effects", _slider(Settings.sound_volume, _set_sound)))
-		column.add_child(Ui.button("Test sound", func() -> void: Sound.play("sfx-card-place", 0.7)))
+		column.add_child(_row(Text.t("Music volume"), _slider(Settings.music_volume, _set_music)))
+		column.add_child(_row(Text.t("Sound effects"), _slider(Settings.sound_volume, _set_sound)))
+		column.add_child(Ui.button(Text.t("Test sound"), func() -> void: Sound.play("sfx-card-place", 0.7)))
 		return
 	if _tab == "Display":
 		var display := func(on: bool) -> void:
 			Settings.fullscreen = on
 			Settings.apply_display()
-		column.add_child(_row("Fullscreen", _on_off(Settings.fullscreen, display)))
+		column.add_child(_row(Text.t("Fullscreen"), _on_off(Settings.fullscreen, display)))
 		column.add_child(
 			_row(
-				"Reduce motion",
+				Text.t("Reduce motion"),
 				_on_off(Settings.reduced_motion, func(on: bool) -> void: Settings.reduced_motion = on),
-				"Calmer transitions and no shard flourishes. Background motion updates when you reopen the title."
+				Text.t(
+					"Calmer transitions and no shard flourishes. Background motion updates when you reopen the title."
+				)
 			)
 		)
-		column.add_child(Ui.label("The arena and its creatures resize with the window.", "Muted", true))
+		column.add_child(Ui.label(Text.t("The arena and its creatures resize with the window."), "Muted", true))
 		return
 	column.add_child(
 		_row(
-			"Code playback speed",
+			Text.t("Code playback speed"),
 			_speeds(),
-			"The code plays on the work surface below the arena before the spell fires."
+			Text.t("The code plays on the work surface below the arena before the spell fires.")
+		)
+	)
+	var predictions := (
+		"Its bolts, damage and block against the foes in front of you. "
+		+ "The Programmer difficulty hides them anyway."
+	)
+	column.add_child(
+		_row(
+			Text.t("Show what a spell will do before you cast it"),
+			_on_off(Settings.predictions, func(on: bool) -> void: Settings.predictions = on),
+			Text.sentences(predictions),
 		)
 	)
 	column.add_child(
 		_row(
-			"Show what a spell will do before you cast it",
-			_on_off(Settings.predictions, func(on: bool) -> void: Settings.predictions = on),
-			"Its bolts, damage and block against the foes in front of you. The Programmer difficulty hides them anyway."
+			Text.t("Shake the stage on heavy hits"),
+			_on_off(Settings.shake, func(on: bool) -> void: Settings.shake = on)
 		)
-	)
-	column.add_child(
-		_row("Shake the stage on heavy hits", _on_off(Settings.shake, func(on: bool) -> void: Settings.shake = on))
 	)
 
 
@@ -71,7 +82,7 @@ func _row(title: String, control: Control, note := "") -> Control:
 
 
 func _speeds() -> Control:
-	var names := {"off": "Off", "slow": "Slow", "normal": "Normal", "fast": "Fast"}
+	var names := {"off": Text.t("Off"), "slow": Text.t("Slow"), "normal": Text.t("Normal"), "fast": Text.t("Fast")}
 	var row := Ui.hbox([], 6)
 	for speed: String in Settings.CODE_SPEEDS:
 		var choose := func() -> void:
@@ -89,7 +100,7 @@ func _on_off(value: bool, apply: Callable) -> Control:
 			apply.call(on)
 			_saved()
 			_rebuild()
-		row.add_child(Ui.choice("On" if on else "Off", value == on, choose))
+		row.add_child(Ui.choice(Text.t("On") if on else Text.t("Off"), value == on, choose))
 	return row
 
 

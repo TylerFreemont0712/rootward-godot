@@ -36,7 +36,7 @@ func _build(index: int, catalog: Dictionary) -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var badge := Ui.panel(Ui.label(str(index), "Faint"), "Chip")
 	_cost = Ui.tint(Ui.label("", "Subheading"), UiTheme.SHARD) as Label
-	var header := Ui.hbox([badge, Ui.label(spell.name, "Subheading"), Ui.spacer(), _cost], 8)
+	var header := Ui.hbox([badge, Ui.label(Text.t(spell.name), "Subheading"), Ui.spacer(), _cost], 8)
 	_header = header
 	var chain := Ui.flow([], 4)
 	chain.add_child(Ui.tint(Ui.label("●", "Muted"), UiTheme.ELEMENTS.none))
@@ -46,20 +46,20 @@ func _build(index: int, catalog: Dictionary) -> void:
 		var chip := Ui.hbox(
 			[
 				Ui.picture(ShardrunViews.art(shard, shard_id), Vector2(20, 20), "◆"),
-				Ui.label(shard.get("name", shard_id))
+				Ui.label(Text.t(shard.get("name", shard_id)))
 			],
 			4
 		)
 		var holder := Ui.panel(chip, "Chip")
-		holder.tooltip_text = "%s · %s" % [shard.get("name", shard_id), ShardrunViews.complexity(shard)]
+		holder.tooltip_text = "%s · %s" % [Text.t(shard.get("name", shard_id)), ShardrunViews.complexity(shard)]
 		holder.mouse_filter = Control.MOUSE_FILTER_PASS
 		chain.add_child(holder)
 	if (spell.shards as Array).is_empty():
-		chain.add_child(Ui.label("one plain bolt", "Faint"))
+		chain.add_child(Ui.label(Text.t("one plain bolt"), "Faint"))
 	_chain = chain
-	_preview = Ui.label("Reading the shards…", "Muted", true)
-	_code = Ui.button("</> Code", func() -> void: code_pressed.emit(spell.id))
-	_cast = Ui.button("Cast  [%d]" % index, func() -> void: cast_pressed.emit(spell.id), "PrimaryButton")
+	_preview = Ui.label(Text.t("Reading the shards…"), "Muted", true)
+	_code = Ui.button(Text.t("</> Code"), func() -> void: code_pressed.emit(spell.id))
+	_cast = Ui.button(Text.f("Cast  [%d]", [index]), func() -> void: cast_pressed.emit(spell.id), "PrimaryButton")
 	_cast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_side = Ui.vbox([_preview, Ui.hbox([_code, _cast], 8)], 8)
 	add_child(Ui.vbox([header, chain, _side], 8))
@@ -122,23 +122,23 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 	_affordable = true
 	if view.is_empty():
 		_cost.text = ""
-		_preview.text = "Reading the shards…"
+		_preview.text = Text.t("Reading the shards…")
 		_preview.remove_theme_color_override("font_color")
-		_cast.text = "Spent this turn" if spent else _ready_text()
+		_cast.text = Text.t("Spent this turn") if spent else _ready_text()
 		_update_cast()
 		return
 	var cost := int(view.cost)
 	_cost.text = "%d ◆" % cost
 	if spent:
-		_cast.text = "Spent this turn"
+		_cast.text = Text.t("Spent this turn")
 	elif cost > mana:
-		_cast.text = "Needs %d◆" % cost
+		_cast.text = Text.f("Needs %d◆", [cost])
 		_affordable = false
 	else:
 		_cast.text = _ready_text()
 	_update_cast()
 	if view.has("misfire"):
-		_preview.text = "Misfire: %s" % view.misfire.reason
+		_preview.text = Text.f("Misfire: %s", [Text.sentence(String(view.misfire.reason))])
 		_preview.add_theme_color_override("font_color", UiTheme.FAIL)
 		return
 	_preview.remove_theme_color_override("font_color")
@@ -146,17 +146,17 @@ func show_preview(view: Dictionary, spent: bool, mana: int) -> void:
 		_show_program(view)
 		return
 	if not view.has("result"):
-		_preview.text = "Predictions hidden: read its code, or cast it and watch."
+		_preview.text = Text.t("Predictions hidden: read its code, or cast it and watch.")
 		return
 	var result: Dictionary = view.result
 	var bolts := int(result.bolts)
-	var parts: Array[String] = ["%d %s" % [bolts, "bolt" if bolts == 1 else "bolts"]]
+	var parts: Array[String] = [Text.f("%d bolt", [bolts]) if bolts == 1 else Text.f("%d bolts", [bolts])]
 	if int(result.damage) > 0 or int(result.block) == 0:
-		parts.append("%d damage" % int(result.damage))
+		parts.append(Text.f("%d damage", [int(result.damage)]))
 	if int(result.block) > 0:
-		parts.append("%d block" % int(result.block))
+		parts.append(Text.f("%d block", [int(result.block)]))
 	if int(result.potential) > int(result.damage):
-		parts.append("worth %d" % int(result.potential))
+		parts.append(Text.f("worth %d", [int(result.potential)]))
 	_preview.text = " · ".join(parts)
 
 
@@ -168,25 +168,33 @@ func hide_code() -> void:
 ## A Program's line: its speed and work, who beats it to the punch, and (if predictions show) what it will do.
 func _show_program(view: Dictionary) -> void:
 	if view.timeout:
-		_preview.text = "Time limit exceeded: %d ops of %d. Nothing would land." % [int(view.work), int(view.budget)]
+		_preview.text = Text.f(
+			"Time limit exceeded: %d ops of %d. Nothing would land.", [int(view.work), int(view.budget)]
+		)
 		_preview.add_theme_color_override("font_color", UiTheme.FAIL)
 		return
 	var parts: Array[String] = ["%s · %d ops" % [view.speed, int(view.work)]]
 	var first := (view.race as Array).filter(func(entry: Dictionary) -> bool: return entry.first)
 	if not first.is_empty():
-		parts.append("⚡ %d %s first" % [first.size(), "foe acts" if first.size() == 1 else "foes act"])
+		parts.append(
+			(
+				Text.f("⚡ %d foe acts first", [first.size()])
+				if first.size() == 1
+				else Text.f("⚡ %d foes act first", [first.size()])
+			)
+		)
 	if view.has("result"):
 		var result: Dictionary = view.result
-		parts.append("%d damage" % int(result.damage))
+		parts.append(Text.f("%d damage", [int(result.damage)]))
 		if int(result.block) > 0:
-			parts.append("%d block" % int(result.block))
+			parts.append(Text.f("%d block", [int(result.block)]))
 	_preview.text = " · ".join(parts)
 	if not first.is_empty():
 		_preview.add_theme_color_override("font_color", UiTheme.WARN)
 
 
 func _ready_text() -> String:
-	return run_label if run_label != "" else "Cast  [%d]" % number
+	return run_label if run_label != "" else Text.f("Cast  [%d]", [number])
 
 
 func set_busy(busy: bool) -> void:

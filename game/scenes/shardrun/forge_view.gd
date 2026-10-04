@@ -21,10 +21,10 @@ static func create(run_session: ShardrunSession, card_ids: Array) -> ForgeView:
 
 func _build(card_ids: Array) -> void:
 	add_theme_constant_override("separation", 8)
-	add_child(Ui.label("Refactor a card", "Subheading"))
+	add_child(Ui.label(Text.t("Refactor a card"), "Subheading"))
 	add_child(
 		Ui.label(
-			"Every card has a better version. Pick one to read its diff: what the refactor removes and adds.",
+			Text.t("Every card has a better version. Pick one to read its diff: what the refactor removes and adds."),
 			"Muted",
 			true
 		)
@@ -35,7 +35,7 @@ func _build(card_ids: Array) -> void:
 	add_child(_diff)
 	for id: String in card_ids:
 		var card: Dictionary = session.catalog.shards.get(id, {})
-		var pick := Ui.button(String(card.get("name", id)), _choose.bind(id, card_ids))
+		var pick := Ui.button(Text.t(String(card.get("name", id))), _choose.bind(id, card_ids))
 		pick.toggle_mode = true
 		pick.set_meta("card", id)
 		_picks.add_child(pick)
@@ -56,29 +56,30 @@ func _choose(id: String, card_ids: Array) -> void:
 		return
 	var language := String(session.state.language)
 	var verb := String(forge.get("verb", "upgrade"))
-	var title := "%s → %s" % [card.get("name", id), into.get("name", forge.into)]
+	var title := "%s → %s" % [Text.t(card.get("name", id)), Text.t(into.get("name", forge.into))]
 	var heading := Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), Ui.label(_changes(card, into), "Faint")], 10)
 	_diff.add_child(heading)
 	if session.show_summaries():
-		_diff.add_child(Ui.label(String(into.get("summary", "")), "Narration", true))
+		_diff.add_child(Ui.label(Text.t(String(into.get("summary", ""))), "Narration", true))
 	var before: String = (card.get("code", {}) as Dictionary).get(language, "")
 	var after: String = (into.get("code", {}) as Dictionary).get(language, "")
 	if String(forge.into) == id + "-plus":
 		# The + renames the function (both can sit in one program); the diff shows the refactor, not the rename.
 		after = after.replace(SpellHarness.function_name(into, language), SpellHarness.function_name(card, language))
 	_diff.add_child(_code(CodeDiff.lines(before, after), language))
-	var label := "%s %s" % ["Optimise" if verb == "optimize" else "Refactor", card.get("name", id)]
+	var name := Text.t(card.get("name", id))
+	var label := Text.f("Optimise %s", [name]) if verb == "optimize" else Text.f("Refactor %s", [name])
 	var go := Ui.button(label, func() -> void: wants.emit({"type": "forge", "shard_id": id}), "PrimaryButton")
 	_diff.add_child(Ui.hbox([go]))
 	if card_ids.size() > 1:
-		_diff.add_child(Ui.label("One refactor per forge.", "Faint"))
+		_diff.add_child(Ui.label(Text.t("One refactor per forge."), "Faint"))
 
 
 ## What changes besides the code: "cost 2 → 1 · + __init__".
 static func _changes(card: Dictionary, into: Dictionary) -> String:
 	var parts: PackedStringArray = []
 	if int(card.get("cost", 0)) != int(into.get("cost", 0)):
-		parts.append("cost %d → %d" % [int(card.get("cost", 0)), int(into.get("cost", 0))])
+		parts.append(Text.f("cost %d → %d", [int(card.get("cost", 0)), int(into.get("cost", 0))]))
 	var had: Array = card.get("keywords", [])
 	var has: Array = into.get("keywords", [])
 	for keyword: String in has:
@@ -97,9 +98,9 @@ static func _code(diff: Array[Dictionary], language: String) -> Control:
 	var painted: PackedStringArray = []
 	var changed := CodeDiff.changes(diff)
 	if changed.removed == 0 and changed.added == 0:
-		var same := (
-			"%s The code is the same: the refactor is in what the card costs or does in the deck."
-			% CodeLanguage.comment(language)
+		var same := Text.f(
+			"%s The code is the same: the refactor is in what the card costs or does in the deck.",
+			[CodeLanguage.comment(language)]
 		)
 		painted.append("[color=%s]%s[/color]" % [CodeColors.COMMENT, same])
 	for line: Dictionary in diff:

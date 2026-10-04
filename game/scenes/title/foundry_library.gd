@@ -2,6 +2,24 @@ class_name FoundryLibraryPanel
 extends ArchivePanel
 ## The Living Archive: shelf navigation, illustrated entries and encounter-aware bestiary in its own room.
 
+## The Japanese of the rarity and role filters, by id.
+const FILTER_NAMES := {
+	"common": "コモン",
+	"uncommon": "アンコモン",
+	"rare": "レア",
+	"epic": "エピック",
+	"legendary": "レジェンド",
+	"boss": "ボス",
+	"source": "ソース",
+	"shape": "シェイプ",
+	"order": "オーダー",
+	"strike": "ストライク",
+	"guard": "ガード",
+	"import": "インポート",
+}
+## The Japanese of the elements a creature is weak to or resists.
+const ELEMENT_NAMES := {"fire": "火", "frost": "氷", "spark": "雷", "none": "なし"}
+
 var _role := "all"
 var _layer := "all"
 var _browse: ScrollContainer
@@ -56,7 +74,7 @@ func _build() -> void:
 	sidebar.add_child(Ui.label(FoundryUi.text("JOURNEY", "冒険モード"), "Faint"))
 	for mode: String in ["program", "spellbook"]:
 		sidebar.add_child(
-			Ui.choice("Shardrun" if mode == "program" else "Spellforge", _mode == mode, _choose_shelf.bind(_kind, mode))
+			Ui.choice(FoundryAdventurePanel.mode_name(mode), _mode == mode, _choose_shelf.bind(_kind, mode))
 		)
 	sidebar.add_child(Ui.expand(Ui.spacer(0, 1), true))
 	sidebar.add_child(
@@ -107,7 +125,7 @@ func _build() -> void:
 		var routes := FoundryBestiary.layers(_catalog, _mode)
 		for i in routes.size():
 			ids.append(routes[i].id)
-			layers.add_item(FoundryUi.text("Layer %d · %s", "第%d層 · %s") % [i + 1, routes[i].name])
+			layers.add_item(FoundryUi.text("Layer %d · %s", "第%d層 · %s") % [i + 1, Text.t(routes[i].name)])
 		layers.selected = maxi(0, ids.find(_layer))
 		layers.item_selected.connect(
 			func(index: int) -> void:
@@ -179,7 +197,9 @@ func _reset_filters() -> void:
 static func _picker(ids: Array[String], current: String, all_label: String, changed: Callable) -> OptionButton:
 	var picker := OptionButton.new()
 	for id in ids:
-		picker.add_item(all_label if id == "all" else id.capitalize())
+		picker.add_item(
+			all_label if id == "all" else FoundryUi.text(id.capitalize(), FILTER_NAMES.get(id, id.capitalize()))
+		)
 	picker.selected = maxi(0, ids.find(current))
 	picker.item_selected.connect(func(index: int) -> void: changed.call(ids[index]))
 	return picker
@@ -334,9 +354,9 @@ func _show_entry(base: Dictionary) -> void:
 	art.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	var identity := Ui.vbox(
 		[
-			Ui.label(base.name, "Heading", true),
+			Ui.label(Text.t(base.name), "Heading", true),
 			Ui.tint(Ui.label(FoundryBestiary.location_text(base), "Muted", true), UiTheme.AMBER),
-			Ui.label(base.get("flavor", ""), "Muted", true)
+			Ui.label(Text.t(String(base.get("flavor", ""))), "Muted", true)
 		],
 		8
 	)
@@ -345,8 +365,8 @@ func _show_entry(base: Dictionary) -> void:
 	_details.add_child(FoundryUi.rule())
 	var traits := ShardrunViews.trait_view(base)
 	if not traits.is_empty():
-		_details.add_child(Ui.label(traits.name, "Subheading", true))
-		_details.add_child(Ui.label(traits.text, "", true))
+		_details.add_child(Ui.label(Text.sentence(traits.name), "Subheading", true))
+		_details.add_child(Ui.label(Text.sentence(traits.text), "", true))
 	_details.add_child(
 		Ui.label(
 			(
@@ -361,17 +381,28 @@ func _show_entry(base: Dictionary) -> void:
 		var elements: Array = base.get(key, [])
 		if not elements.is_empty():
 			var label := FoundryUi.text("Weakness", "弱点") if key == "weak" else FoundryUi.text("Resistance", "耐性")
-			_details.add_child(Ui.label("%s · %s" % [label, ", ".join(elements)], "Muted", true))
+			var names: Array[String] = []
+			for element: String in elements:
+				names.append(FoundryUi.text(element, ELEMENT_NAMES.get(element, element)))
+			_details.add_child(Ui.label("%s · %s" % [label, FoundryUi.text(", ", "、").join(names)], "Muted", true))
 	if base.boss:
 		var companions: Array[String] = []
 		var effective := ProgramRules.catalog_for(_catalog) if _mode == "program" else _catalog
 		for location: Dictionary in base.locations:
 			for id: String in location.group:
-				if id != base.id and effective.foes.has(id) and not String(effective.foes[id].name) in companions:
-					companions.append(effective.foes[id].name)
+				if (
+					id != base.id
+					and effective.foes.has(id)
+					and not Text.t(String(effective.foes[id].name)) in companions
+				):
+					companions.append(Text.t(effective.foes[id].name))
 		if not companions.is_empty():
 			_details.add_child(
-				Ui.label(FoundryUi.text("Encountered with: %s", "一緒に現れる敵: %s") % ", ".join(companions), "Muted", true)
+				Ui.label(
+					FoundryUi.text("Encountered with: %s", "一緒に現れる敵: %s") % FoundryUi.text(", ", "、").join(companions),
+					"Muted",
+					true
+				)
 			)
 		_details.add_child(
 			Ui.label(

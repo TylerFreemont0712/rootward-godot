@@ -134,28 +134,38 @@ func _build(spell: Dictionary) -> void:
 	for step: Dictionary in steps:
 		work += int(step.work)
 	var count := (spell.shards as Array).size()
-	var meta := "%s · %d %s" % [CodeLanguage.display_name(language), count, "shard" if count == 1 else "shards"]
+	var meta := (
+		"%s · %s"
+		% [
+			CodeLanguage.display_name(language),
+			Text.f("%d shard", [count]) if count == 1 else Text.f("%d shards", [count])
+		]
+	)
 	if run.has("cost"):
-		meta += " · %d mana" % int(run.cost)
+		meta += Text.f(" · %d mana", [int(run.cost)])
 	if work > 0:
-		meta += " · %d work" % work
+		meta += Text.f(" · %d work", [work])
 	var actions := Ui.hbox()
 	if mode == "explore" and playable():
-		actions.add_child(Ui.button("Run it", play))
-	actions.add_child(Ui.button("Skip" if mode == "cast" else "Close", skip if mode == "cast" else _finish))
-	var header := Ui.hbox([Ui.label(spell.name, "Subheading"), Ui.label(meta, "Muted"), Ui.spacer(), actions], 12)
+		actions.add_child(Ui.button(Text.t("Run it"), play))
+	actions.add_child(
+		Ui.button(Text.t("Skip") if mode == "cast" else Text.t("Close"), skip if mode == "cast" else _finish)
+	)
+	var header := Ui.hbox(
+		[Ui.label(Text.t(spell.name), "Subheading"), Ui.label(meta, "Muted"), Ui.spacer(), actions], 12
+	)
 	header.alignment = BoxContainer.ALIGNMENT_BEGIN
 	var body := Ui.vbox([header], 8)
 	if playable():
 		body.add_child(_scoreboard())
 	else:
-		var hint := "No predictions on this difficulty: read the code, then cast it to watch it run."
+		var hint := Text.t("No predictions on this difficulty: read the code, then cast it to watch it run.")
 		if run.has("note"):
-			hint = run.note
+			hint = Text.sentence(run.note)
 		elif run.is_empty():
-			hint = "Reading the shards…"
+			hint = Text.t("Reading the shards…")
 		elif not bool(run.get("revealed", true)):
-			hint = "Predictions are hidden: read the code, then cast it to watch it run."
+			hint = Text.t("Predictions are hidden: read the code, then cast it to watch it run.")
 		body.add_child(Ui.label(hint, "Muted", true))
 	_bolts = Ui.flow([], 6)
 	body.add_child(_bolts)
@@ -166,7 +176,7 @@ func _build(spell: Dictionary) -> void:
 	var console := String(run.get("console", ""))
 	if console != "":
 		var printed := Ui.panel(Ui.tint(Ui.label(console, "Code", true), UiTheme.MUTED), "Sunken")
-		body.add_child(Ui.vbox([Ui.label("Printed", "Faint"), printed], 2))
+		body.add_child(Ui.vbox([Ui.label(Text.t("Printed"), "Faint"), printed], 2))
 	add_child(body)
 
 
@@ -178,7 +188,7 @@ func _scoreboard() -> Control:
 		var number := Ui.sized(Ui.tint(Ui.label("0", "Big"), kind[1]), 30) as Label
 		number.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		_scores[kind[0]] = number
-		var caption := Ui.label(String(kind[0]).to_upper(), "Faint")
+		var caption := Ui.label(Text.t(String(kind[0]).to_upper()), "Faint")
 		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		row.add_child(Ui.hbox([caption, number], 8))
 	_worth = Ui.label("", "Muted")
@@ -252,15 +262,16 @@ func _show(index: int) -> void:
 	if mark == "step":
 		var step: Dictionary = (run.steps as Array)[int(frame.step)]
 		var outcome: Dictionary = step.get("outcome", {})
-		var note := "→ %d %s" % [int(outcome.get("bolts", 0)), "bolt" if int(outcome.get("bolts", 0)) == 1 else "bolts"]
+		var bolts := int(outcome.get("bolts", 0))
+		var note := "→ " + (Text.f("%d bolt", [bolts]) if bolts == 1 else Text.f("%d bolts", [bolts]))
 		if int(outcome.get("damage", 0)) > 0:
-			note += " · %d dmg" % int(outcome.damage)
+			note += Text.f(" · %d dmg", [int(outcome.damage)])
 		if int(outcome.get("block", 0)) > 0:
-			note += " · %d block" % int(outcome.block)
-		_notes[line - 1].text = note + " · %d work" % int(step.work)
+			note += Text.f(" · %d block", [int(outcome.block)])
+		_notes[line - 1].text = note + Text.f(" · %d work", [int(step.work)])
 		_resolve_shard(int(frame.step))
 	if mark == "error":
-		_misfire.text = "Misfire: %s" % (run.get("misfire", {}) as Dictionary).get("reason", "")
+		_misfire.text = Text.f("Misfire: %s", [Text.sentence((run.get("misfire", {}) as Dictionary).get("reason", ""))])
 		_misfire.visible = true
 
 
@@ -325,9 +336,9 @@ func _score(outcome: Dictionary) -> void:
 	var potential := int(outcome.get("potential", 0))
 	_worth.text = ""
 	if potential > damage:
-		_worth.text = "worth %d" % potential
+		_worth.text = Text.f("worth %d", [potential])
 		if damage > 0:
-			_worth.text += " · ×%s over" % String.num(float(potential) / damage, 1)
+			_worth.text += Text.f(" · ×%s over", [String.num(float(potential) / damage, 1)])
 
 
 func _show_bolts(bolts: Array) -> void:
@@ -337,7 +348,10 @@ func _show_bolts(bolts: Array) -> void:
 		if float(bolt.mult) != 1.0:
 			text += " ×" + JsMath.text(bolt.mult)
 		var chip := Ui.panel(Ui.tint(Ui.label(text, "Muted"), UiTheme.element(bolt.element)), "Chip")
-		chip.tooltip_text = "%s bolt, aimed %s%s" % [bolt.element, bolt.target, ", pierces" if bolt.pierce else ""]
+		chip.tooltip_text = (
+			Text.f("%s bolt, aimed %s", [Text.t(bolt.element), Text.t(bolt.target)])
+			+ (Text.t(", pierces") if bolt.pierce else "")
+		)
 		_bolts.add_child(chip)
 	if bolts.size() > 24:
-		_bolts.add_child(Ui.label("+%d more" % (bolts.size() - 24), "Faint"))
+		_bolts.add_child(Ui.label(Text.f("+%d more", [bolts.size() - 24]), "Faint"))

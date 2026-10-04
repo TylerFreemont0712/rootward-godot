@@ -45,7 +45,7 @@ static func entries(catalog: Dictionary, mode: String, bosses: bool, layer_id :=
 static func location_text(creature: Dictionary) -> String:
 	var names: Array[String] = []
 	for location: Dictionary in creature.get("locations", []):
-		var name := FoundryUi.text("Layer %d · %s", "第%d層 · %s") % [int(location.number), location.name]
+		var name := FoundryUi.text("Layer %d · %s", "第%d層 · %s") % [int(location.number), Text.t(location.name)]
 		if not name in names:
 			names.append(name)
 	return " / ".join(names)

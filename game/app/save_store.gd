@@ -74,7 +74,7 @@ func load_run(playstyle: String) -> Dictionary:
 		return parsed
 	var aside := path.get_basename() + ".unreadable-%d.json" % int(Time.get_unix_time_from_system())
 	DirAccess.rename_absolute(path, aside)
-	problem = "The saved run could not be continued (%s). It was kept as %s." % [reason, aside.get_file()]
+	problem = Text.f("The saved run could not be continued (%s). It was kept as %s.", [reason, aside.get_file()])
 	return {}
 
 
@@ -87,29 +87,29 @@ func delete_run(playstyle: String) -> void:
 ## Why `value` cannot be played as a run, or "" when it can.
 static func unusable(value: Variant) -> String:
 	if not value is Dictionary:
-		return "it is not a run"
+		return Text.t("it is not a run")
 	var state: Dictionary = value
 	if state.get("version") != Shardrun.VERSION:
-		return "it was saved by version %s of the rules" % JsMath.text(state.get("version"))
+		return Text.f("it was saved by version %s of the rules", [JsMath.text(state.get("version"))])
 	for key: String in SHAPE:
 		if not state.has(key):
-			return "it has no %s" % key
+			return Text.f("it has no %s", [key])
 		var want: int = SHAPE[key]
 		var found := typeof(state[key])
 		var number := want == TYPE_FLOAT and found == TYPE_INT
 		if found != want and not number:
-			return "its %s is not what a run keeps there" % key
+			return Text.f("its %s is not what a run keeps there", [key])
 	if not state.status in STATUSES:
-		return "its status %s is unknown" % state.status
+		return Text.f("its status %s is unknown", [state.status])
 	if not (state.map as Dictionary).get("nodes") is Array:
-		return "its map has no rooms"
+		return Text.t("its map has no rooms")
 	for spell: Variant in state.spells:
 		if not spell is Dictionary or not (spell as Dictionary).get("shards") is Array:
-			return "a spell in it has no shards"
+			return Text.t("a spell in it has no shards")
 	if state.status == "battle":
 		var battle: Variant = state.get("battle")
 		if not battle is Dictionary or not (battle as Dictionary).get("foes") is Array:
-			return "it is in a fight with no foes"
+			return Text.t("it is in a fight with no foes")
 	return ""
 
 

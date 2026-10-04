@@ -503,7 +503,9 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 			):
 				stage.ward_glow()
 				Sound.play("sfx-ward-hex", 0.7)
-			stage.popup(stage.hero.body_point() - Vector2(0, 60), "+%d block" % int(hit.amount), UiTheme.TEAL, 28)
+			stage.popup(
+				stage.hero.body_point() - Vector2(0, 60), Text.f("+%d block", [int(hit.amount)]), UiTheme.TEAL, 28
+			)
 		"hit":
 			var foe: Dictionary = shown.foes.get(hit.foe, {})
 			var view: FoeView = stage.foes.get(hit.foe)
@@ -531,25 +533,27 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 		"absorb":
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
-				stage.popup(view.top_point(), String(hit.get("word", "nullified")), UiTheme.SHARD, 24)
+				stage.popup(view.top_point(), Text.sentence(String(hit.get("word", "nullified"))), UiTheme.SHARD, 24)
 			Sound.play("sfx-gulp", 0.7)
 		"glance":
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
-				stage.popup(view.top_point(), "glance", UiTheme.MUTED, 24)
+				stage.popup(view.top_point(), Text.t("glance"), UiTheme.MUTED, 24)
 			Sound.play("sfx-ricochet", 0.7)
 		"locked":
 			# A deadlock held (ADR-0017): the bolt rings off a lock whose partner this program never touched.
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
-				stage.popup(view.top_point(), "locked", UiTheme.WARN, 26)
+				stage.popup(view.top_point(), Text.t("locked"), UiTheme.WARN, 26)
 				view.recoil(0.5)
 			Sound.play("sfx-lock", 0.8)
 		"wasted":
 			# A program's bolt aimed at a foe that already fell (ADR-0012): it sails through the empty air.
 			var view: FoeView = stage.foes.get(hit.foe)
 			if view != null:
-				stage.popup(view.top_point() + Vector2(0, 30), "wasted %d" % int(hit.amount), UiTheme.FAINT, 20)
+				stage.popup(
+					view.top_point() + Vector2(0, 30), Text.f("wasted %d", [int(hit.amount)]), UiTheme.FAINT, 20
+				)
 			Sound.play("sfx-whiff", 0.5)
 	numbers_changed.emit()
 	_in_flight = maxi(0, _in_flight - 1)
@@ -568,10 +572,10 @@ func _defeat(entry: Dictionary) -> void:
 func _one(entry: Dictionary, overlapping := false) -> void:
 	match entry.kind:
 		"enter":
-			stage.banner(entry.text, UiTheme.AMBER, 900.0)
+			stage.banner(Text.sentences(String(entry.text)), UiTheme.AMBER, 900.0)
 			await stage.wait(700.0)
 		"turn":
-			stage.banner("Turn %d" % int(entry.amount), UiTheme.AMBER, 500.0)
+			stage.banner(Text.f("Turn %d", [int(entry.amount)]), UiTheme.AMBER, 500.0)
 			Sound.play("sfx-turn", 0.6)
 			await stage.wait(650.0)
 		"enemy":
@@ -583,7 +587,7 @@ func _one(entry: Dictionary, overlapping := false) -> void:
 				foe.shield = int(foe.shield) + int(entry.amount)
 			if view != null:
 				view.show_foe(foe)
-				stage.popup(view.top_point(), "+%d shield" % int(entry.amount), UiTheme.TEAL, 26)
+				stage.popup(view.top_point(), Text.f("+%d shield", [int(entry.amount)]), UiTheme.TEAL, 26)
 			Sound.play("sfx-foe-shield", 0.6)
 			await stage.wait(460.0)
 		"stoke":
@@ -593,7 +597,7 @@ func _one(entry: Dictionary, overlapping := false) -> void:
 				foe.stoked = true
 			if view != null:
 				view.show_foe(foe)
-				stage.popup(view.top_point(), "stoked!", UiTheme.ELEMENTS.fire, 26)
+				stage.popup(view.top_point(), Text.t("stoked!"), UiTheme.ELEMENTS.fire, 26)
 			Sound.play("sfx-stoke", 0.7)
 			await stage.wait(460.0)
 		"heal":
@@ -605,13 +609,15 @@ func _one(entry: Dictionary, overlapping := false) -> void:
 			if view != null:
 				view.recoil(0.4)
 				clock = stage.spell("tempo", view.top_point() - Vector2(0, 40), "tempo", 0.8)
-				stage.popup(view.top_point() - Vector2(0, 24), "⚡ faster  %d ops" % int(entry.amount), UiTheme.WARN, 26)
+				stage.popup(
+					view.top_point() - Vector2(0, 24), Text.f("⚡ faster  %d ops", [int(entry.amount)]), UiTheme.WARN, 26
+				)
 			if clock == null:
 				Sound.play("sfx-tempo", 0.6)
 			if not overlapping:
 				await stage.wait(560.0)
 		"timeout":
-			stage.banner("Time limit exceeded", UiTheme.FAIL, 1000.0)
+			stage.banner(Text.t("Time limit exceeded"), UiTheme.FAIL, 1000.0)
 			stage.popup(stage.hero.hand_point(), "%d ops" % int(entry.amount), UiTheme.FAIL, 28)
 			stage.hero.flash(Color(UiTheme.FAIL, 0.3))
 			shown.mana -= int(entry.get("cost", 0))
@@ -619,7 +625,7 @@ func _one(entry: Dictionary, overlapping := false) -> void:
 			Sound.play("sfx-timeout", 0.7)
 			await stage.wait(1100.0)
 		"fizzle":
-			stage.popup(stage.hero.hand_point(), "fizzle", UiTheme.MUTED, 26)
+			stage.popup(stage.hero.hand_point(), Text.t("fizzle"), UiTheme.MUTED, 26)
 			Sound.play("sfx-glitch", 0.6)
 			await stage.wait(420.0)
 		"curse":
@@ -631,21 +637,23 @@ func _one(entry: Dictionary, overlapping := false) -> void:
 			await stage.wait(520.0)
 		"ward":
 			shown.block += int(entry.amount)
-			stage.popup(stage.hero.body_point() - Vector2(0, 60), "+%d block" % int(entry.amount), UiTheme.TEAL, 26)
+			stage.popup(
+				stage.hero.body_point() - Vector2(0, 60), Text.f("+%d block", [int(entry.amount)]), UiTheme.TEAL, 26
+			)
 			numbers_changed.emit()
 			await stage.wait(360.0)
 		"mana":
 			shown.mana += int(entry.amount)
-			stage.popup(stage.hero.hand_point(), "+%d mana" % int(entry.amount), UiTheme.SHARD, 26)
+			stage.popup(stage.hero.hand_point(), Text.f("+%d mana", [int(entry.amount)]), UiTheme.SHARD, 26)
 			numbers_changed.emit()
 			await stage.wait(300.0)
 		"victory":
-			stage.banner("Victory", UiTheme.PASS, 1100.0)
+			stage.banner(Text.t("Victory"), UiTheme.PASS, 1100.0)
 			Sound.cue("cue-victory", 0.8)
 			await stage.wait(1300.0)
 		"loss":
 			stage.hero.play("death")
-			stage.banner("Kernel panic", UiTheme.FAIL, 1400.0)
+			stage.banner(Text.t("Kernel panic"), UiTheme.FAIL, 1400.0)
 			Sound.cue("cue-defeat", 0.8)
 			await stage.wait(1600.0)
 		"defeat":
@@ -674,7 +682,7 @@ func _enemy(entry: Dictionary) -> void:
 	if blocked > 0:
 		if amount == 0:
 			stage.hero.play("guard")
-		stage.popup(at + Vector2(-60, -40), "%d blocked" % blocked, UiTheme.TEAL, 24)
+		stage.popup(at + Vector2(-60, -40), Text.f("%d blocked", [blocked]), UiTheme.TEAL, 24)
 		Sound.play("sfx-clang", 0.6)
 	numbers_changed.emit()
 	if _early_playing and int(shown.integrity) <= 0:

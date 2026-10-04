@@ -52,7 +52,8 @@ func _build(
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	custom_minimum_size.x = WIDTH
 	var name := Ui.tint(
-		Ui.label(card.get("name", id), "Subheading"), UiTheme.rarity(card.get("rarity", "common")).lightened(0.25)
+		Ui.label(Text.t(card.get("name", id)), "Subheading"),
+		UiTheme.rarity(card.get("rarity", "common")).lightened(0.25)
 	)
 	var cost := Ui.tint(Ui.label("%d◆" % int(card.get("cost", 0)), "Subheading"), UiTheme.SHARD.lightened(0.2))
 	var speed := Ui.tint(Ui.label(ShardrunViews.complexity(card), "Subheading"), colour.lightened(0.35))
@@ -69,24 +70,26 @@ func _build(
 	# Each keyword with what it means (ADR-0018), in its colour on the card's face.
 	for keyword: String in card.get("keywords", []):
 		var meaning := String(meanings.get(keyword, ""))
-		var line := Ui.label("%s · %s" % [keyword, meaning] if meaning != "" else keyword, "Faint", true)
+		var line := Ui.label("%s · %s" % [keyword, Text.t(meaning)] if meaning != "" else keyword, "Faint", true)
 		column.add_child(Ui.tint(line, KeywordChips.colour_of(keyword)))
 	if card.get("role", "") == "import":
 		var imported := Ui.label(
-			"Play it into the Program: it becomes a line at the top and holds for the rest of the fight.", "Faint", true
+			Text.t("Play it into the Program: it becomes a line at the top and holds for the rest of the fight."),
+			"Faint",
+			true
 		)
 		column.add_child(Ui.tint(imported, RoleBadge.colour_of("import")))
 	var painted: PackedStringArray = []
 	if summaries and card.has("summary"):
-		for line in CodeColors.comment_lines(String(card.summary), language, COLUMNS):
+		for line in CodeColors.comment_lines(Text.t(String(card.summary)), language, COLUMNS):
 			painted.append("[color=%s]%s[/color]" % [CodeColors.DOC, line.replace("[", "[lb]")])
 	var code: String = (card.get("code", {}) as Dictionary).get(language, "")
 	var lines := CodeColors.fit_code(code, language, COLUMNS)
 	for line in lines.slice(0, CODE_LINES):
 		painted.append(CodeColors.bbcode(line, language))
 	if lines.size() > CODE_LINES:
-		var more := (
-			"%s … %d more lines in the Program panel" % [CodeLanguage.comment(language), lines.size() - CODE_LINES]
+		var more := Text.f(
+			"%s … %d more lines in the Program panel", [CodeLanguage.comment(language), lines.size() - CODE_LINES]
 		)
 		painted.append("[color=%s]%s[/color]" % [CodeColors.COMMENT, more])
 	var text := RichTextLabel.new()
@@ -106,8 +109,12 @@ func _build(
 	column.add_child(box)
 	var forge: Dictionary = card.get("forge", {})
 	if forge_into != "":
-		var verb := {"repair": "repairs", "optimize": "optimises"}.get(forge.get("verb"), "upgrades") as String
-		column.add_child(Ui.label("A forge %s it into %s." % [verb, forge_into], "Faint", true))
+		var forged := Text.f("A forge upgrades it into %s.", [Text.t(forge_into)])
+		if forge.get("verb") == "repair":
+			forged = Text.f("A forge repairs it into %s.", [Text.t(forge_into)])
+		elif forge.get("verb") == "optimize":
+			forged = Text.f("A forge optimises it into %s.", [Text.t(forge_into)])
+		column.add_child(Ui.label(forged, "Faint", true))
 	for child in column.get_children():
 		(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(column)

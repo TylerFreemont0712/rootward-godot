@@ -123,7 +123,7 @@ static func code_lines(state: Dictionary, card_ids: Array, view: Dictionary, cat
 		# After an Unreachable's `return` (ADR-0026) a call is dead code: it does not run.
 		var cut := ProgramGuardians.dead_from(state.get("battle", {}))
 		if cut >= 0 and slot >= cut:
-			line.note = "dead code: after the return at slot %d" % (cut + 1)
+			line.note = Text.f("dead code: after the return at slot %d", [cut + 1])
 			line.note_colour = UiTheme.FAINT
 			line.dead = true
 	return lines

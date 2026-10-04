@@ -64,7 +64,7 @@ static func create(foe_state: Dictionary, catalog: Dictionary) -> FoeView:
 func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	var size_name := String(content.get("size", "medium"))
 	_size_name = size_name
-	var flavor := String(content.get("flavor", ""))
+	var flavor := Text.t(String(content.get("flavor", "")))
 	alignment = BoxContainer.ALIGNMENT_END
 	add_theme_constant_override("separation", 4)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -77,7 +77,7 @@ func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	_holder.custom_minimum_size = Vector2(side, side)
 	_holder.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	sprite = Ui.picture("foes/" + String(foe_state.sprite), Vector2(side, side), foe_state.name)
+	sprite = Ui.picture("foes/" + String(foe_state.sprite), Vector2(side, side), Text.t(foe_state.name))
 	if sprite is TextureRect:
 		# LEARN: transparent margins are part of a texture's size. Crop the displayed region once so a small painted
 		# creature fills the same stage height as its peers and its visible feet meet the floor.
@@ -96,7 +96,7 @@ func _build(foe_state: Dictionary, content: Dictionary) -> void:
 	sprite.tooltip_text = flavor
 	_holder.add_child(sprite)
 	add_child(_holder)
-	_name = Ui.label(foe_state.name, "")
+	_name = Ui.label(Text.t(foe_state.name), "")
 	_bar = ProgressBar.new()
 	_bar.show_percentage = false
 	_bar.custom_minimum_size = Vector2(150, 10)
@@ -130,17 +130,35 @@ func show_foe(foe_state: Dictionary) -> void:
 	(_intent.get_parent() as Control).visible = alive
 	Ui.clear(_tags)
 	for element: String in foe_state.get("weak", []):
-		_tags.add_child(_tag("weak: " + element, UiTheme.element(element), "Takes extra damage from %s." % element))
+		_tags.add_child(
+			_tag(
+				Text.f("weak: %s", [Text.t(element)]),
+				UiTheme.element(element),
+				Text.f("Takes extra damage from %s.", [Text.t(element)])
+			)
+		)
 	for element: String in foe_state.get("resist", []):
-		_tags.add_child(_tag("resists " + element, UiTheme.MUTED, "Takes less damage from %s." % element))
+		_tags.add_child(
+			_tag(
+				Text.f("resists %s", [Text.t(element)]),
+				UiTheme.MUTED,
+				Text.f("Takes less damage from %s.", [Text.t(element)])
+			)
+		)
 	var described := ShardrunViews.trait_view(foe_state)
 	if not described.is_empty():
 		_tags.add_child(_tag(described.name, UiTheme.WARN, described.text))
 	if foe_state.has("pattern"):
 		var element: String = foe_state.pattern
-		_tags.add_child(_tag("now: " + element, UiTheme.element(element), "This turn, %s hits in full." % element))
+		_tags.add_child(
+			_tag(
+				Text.f("now: %s", [Text.t(element)]),
+				UiTheme.element(element),
+				Text.f("This turn, %s hits in full.", [Text.t(element)])
+			)
+		)
 	if foe_state.get("stoked", false):
-		_tags.add_child(_tag("stoked", UiTheme.ELEMENTS.fire, "Its next strike hits twice as hard."))
+		_tags.add_child(_tag(Text.t("stoked"), UiTheme.ELEMENTS.fire, Text.t("Its next strike hits twice as hard.")))
 	for chip: Dictionary in GuardianViews.chips(foe_state):
 		_tags.add_child(_tag(String(chip.text), TONES.get(chip.tone, UiTheme.WARN), String(chip.tip)))
 
@@ -149,7 +167,7 @@ func show_foe(foe_state: Dictionary) -> void:
 func show_tempo(value: int) -> void:
 	tempo = value
 	(_intent.get_parent() as Control).tooltip_text = (
-		"It acts after %d operations: a program doing more work than that lands after it moves." % value
+		Text.f("It acts after %d operations: a program doing more work than that lands after it moves.", [value])
 		if value > 0
 		else ""
 	)
@@ -193,7 +211,7 @@ func take_card() -> Control:
 
 func _tag(text: String, colour: Color, tip: String) -> Control:
 	var tag := Ui.panel(Ui.sized(Ui.tint(Ui.label(text, ""), colour), 12), "Chip")
-	HoverInfo.attach(tag, text.capitalize(), tip, "Enemy property", colour)
+	HoverInfo.attach(tag, text.capitalize(), tip, Text.t("Enemy property"), colour)
 	return tag
 
 

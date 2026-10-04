@@ -16,14 +16,16 @@ static func filled(at: Dictionary, id: String, shard: Dictionary) -> ShardChip:
 	var chip := ShardChip.new()
 	chip.place = at
 	chip.shard_id = id
-	chip.text = shard.get("name", id)
+	chip.text = Text.t(shard.get("name", id))
 	chip.icon = Art.texture(ShardrunViews.art(shard, id))
 	# The shard pictures are drawn large now (ADR-0033): capped, a chip shows its picture at a chip's size. Expanding
 	# it instead would leave the icon no room, since an expanded icon adds nothing to the button's minimum width.
 	chip.expand_icon = false
 	chip.add_theme_constant_override("icon_max_width", 28)
 	chip.theme_type_variation = "ChipButton"
-	chip.tooltip_text = "%s · %s\nDrag it, or click it and then where it goes." % [chip.text, shard.get("rarity", "")]
+	chip.tooltip_text = Text.f(
+		"%s · %s\nDrag it, or click it and then where it goes.", [chip.text, Text.t(shard.get("rarity", ""))]
+	)
 	chip.add_theme_color_override("font_color", UiTheme.rarity(shard.get("rarity", "common")).lightened(0.2))
 	chip.custom_minimum_size = Vector2(0, 38)
 	chip.toggle_mode = true
@@ -35,7 +37,7 @@ static func filled(at: Dictionary, id: String, shard: Dictionary) -> ShardChip:
 static func empty(at: Dictionary, label := "empty") -> ShardChip:
 	var chip := ShardChip.new()
 	chip.place = at
-	chip.text = label
+	chip.text = Text.t(label)
 	chip.theme_type_variation = "ChipButton"
 	chip.custom_minimum_size = Vector2(96, 38)
 	chip.add_theme_color_override("font_color", UiTheme.FAINT)

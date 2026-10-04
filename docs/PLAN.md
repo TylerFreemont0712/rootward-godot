@@ -374,7 +374,8 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
       spells take only the height they need and the shard inspector follows them (P2-47).
 - [ ] More Spellforge passes as its screens are played (the player, 2026-10-04: both modes stay, each for its own
       reason).
-- [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).
+- [x] Everything on screen in Japanese (ADR-0047): `Text` and the overlays; 466 of 466 interface strings, 135 of 137
+      rule sentences (the other two are covered line by line), every screen checked in Japanese (P2-24, P2-35).
 
 ### Phase 2, track C: C++ (ADR-0046)
 

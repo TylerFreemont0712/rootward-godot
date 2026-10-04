@@ -25,29 +25,29 @@ const COLOURS := {
 
 ## An entry's line: its text and, in brackets, what went into its number.
 static func detail(entry: Dictionary) -> String:
-	var text := String(entry.get("text", ""))
+	var text := Text.sentences(String(entry.get("text", "")))
 	var notes: Array[String] = []
 	match String(entry.get("kind", "")):
 		"hit":
 			if entry.get("element", "none") != "none":
-				notes.append(String(entry.element))
+				notes.append(Text.t(String(entry.element)))
 			match entry.get("affinity", ""):
 				"weak":
-					notes.append("weak to it ×1.5")
+					notes.append(Text.t("weak to it ×1.5"))
 				"resist":
-					notes.append("resists it ×0.5")
+					notes.append(Text.t("resists it ×0.5"))
 			# A folded volley (LogDigest) counts the bolts that were weak or resisted instead.
 			if int(entry.get("weak", 0)) > 0:
-				notes.append("%d weak ×1.5" % int(entry.weak))
+				notes.append(Text.f("%d weak ×1.5", [int(entry.weak)]))
 			if int(entry.get("resist", 0)) > 0:
-				notes.append("%d resisted ×0.5" % int(entry.resist))
+				notes.append(Text.f("%d resisted ×0.5", [int(entry.resist)]))
 			if int(entry.get("overkill", 0)) > 0:
-				notes.append("%d past its HP, wasted" % int(entry.overkill))
+				notes.append(Text.f("%d past its HP, wasted", [int(entry.overkill)]))
 		"enemy":
 			if int(entry.get("blocked", 0)) > 0:
-				notes.append("%d taken by your block" % int(entry.blocked))
+				notes.append(Text.f("%d taken by your block", [int(entry.blocked)]))
 		"ward":
-			notes.append("+%d block" % int(entry.get("amount", 0)))
+			notes.append(Text.f("+%d block", [int(entry.get("amount", 0))]))
 	return text + ("  [%s]" % ", ".join(notes) if not notes.is_empty() else "")
 
 
@@ -65,7 +65,7 @@ static func text(raw: Array[Dictionary]) -> String:
 				lines.append(_tally(tally))
 			turn = at
 			tally = {"dealt": 0, "taken": 0, "block": 0, "wasted": 0}
-			lines.append("[color=#6f5e46]── turn %d ──────────────────────────────[/color]" % turn)
+			lines.append("[color=#6f5e46]── %s ──────────────────────────────[/color]" % Text.f("turn %d", [turn]))
 		match String(entry.kind):
 			"hit":
 				tally.dealt += int(entry.get("amount", 0))
@@ -88,15 +88,15 @@ static func text(raw: Array[Dictionary]) -> String:
 	if turn >= 0 and entries.back().kind != "turn":
 		lines.append(_tally(tally))
 	if lines.is_empty():
-		lines.append("[color=#6f5e46]# nothing has happened yet[/color]")
+		lines.append("[color=#6f5e46]# %s[/color]" % Text.t("nothing has happened yet"))
 	return "\n".join(lines)
 
 
 ## A turn's sums, as the comment under it.
 static func _tally(tally: Dictionary) -> String:
-	var parts := "dealt %d · took %d · gained %d block" % [tally.dealt, tally.taken, tally.block]
+	var parts := Text.f("dealt %d · took %d · gained %d block", [tally.dealt, tally.taken, tally.block])
 	if int(tally.wasted) > 0:
-		parts += " · wasted %d" % tally.wasted
+		parts += " · " + Text.f("wasted %d", [tally.wasted])
 	return "[color=%s]   # %s[/color]" % [CodeColors.DOC, parts]
 
 
@@ -113,7 +113,7 @@ static func open(owner: Control, entries: Array[Dictionary]) -> void:
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_theme_font_size_override("normal_font_size", 14)
 	body.text = text(entries)
-	var close := Ui.button("Close", popup.hide)
+	var close := Ui.button(Text.t("Close"), popup.hide)
 	var column := Ui.vbox([heading, Ui.panel(body, "Sunken"), close], 10)
 	(column.get_child(1) as Control).size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := Ui.panel(column, "Overlay")

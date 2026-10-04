@@ -20,7 +20,7 @@ var _pulse := 0.0
 func _init() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	tooltip_text = "Guardians"
+	tooltip_text = Text.t("Guardians")
 
 
 func show_guardians(shown: Array[Dictionary]) -> void:
@@ -48,7 +48,7 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var font := UiTheme.ui_font(600)
-	draw_string(font, Vector2(0, 30), "DESCENT", HORIZONTAL_ALIGNMENT_CENTER, size.x, 12, UiTheme.FAINT)
+	draw_string(font, Vector2(0, 30), Text.t("DESCENT"), HORIZONTAL_ALIGNMENT_CENTER, size.x, 12, UiTheme.FAINT)
 	for index in guardians.size() - 1:
 		var beaten: bool = guardians[index].where == "beaten"
 		var from := centre(index)
@@ -67,7 +67,7 @@ func _draw() -> void:
 		MapMarkers.draw_guardian(self, at, radius, _portraits[index], lit, glow)
 		if guardian.where == "beaten":
 			MapMarkers.draw_tick(self, at + Vector2(radius * 0.72, radius * 0.72), 10.0)
-		var name := String(guardian.layer.name).get_slice(" / ", 0).trim_prefix("The ")
+		var name := Text.t(String(guardian.layer.name)).get_slice(" / ", 0).trim_prefix("The ")
 		var colour := UiTheme.AMBER if current else UiTheme.MUTED if guardian.where == "beaten" else UiTheme.FAINT
 		var below := at + Vector2(0, radius * 1.18 + 17.0)
 		var text_size := mini(13, int(13.0 * (size.x - 8.0) / maxf(1.0, font.get_string_size(name, 0, -1, 13).x)))
@@ -76,7 +76,8 @@ func _draw() -> void:
 		)
 		draw_string(font, below - Vector2(at.x, 0), name, HORIZONTAL_ALIGNMENT_CENTER, size.x, text_size, colour)
 		var ring := int(guardian.layer.get("ring", guardians.size() - index - 1))
-		draw_string(font, below - Vector2(at.x, -18), "RING %d" % ring, HORIZONTAL_ALIGNMENT_CENTER, size.x, 11, colour)
+		var ring_text := Text.f("RING %d", [ring])
+		draw_string(font, below - Vector2(at.x, -18), ring_text, HORIZONTAL_ALIGNMENT_CENTER, size.x, 11, colour)
 
 
 func _index_at(point: Vector2) -> int:
@@ -92,15 +93,15 @@ func _get_tooltip(at_position: Vector2) -> String:
 	if index < 0:
 		return tooltip_text
 	var guardian := guardians[index]
-	var names: Array = (guardian.foes as Array).map(func(foe: Dictionary) -> String: return foe.name)
+	var names: Array = (guardian.foes as Array).map(func(foe: Dictionary) -> String: return Text.t(foe.name))
 	var status := {"beaten": "Beaten", "current": "Waits below this layer", "ahead": "Deeper"}
-	return (
-		"Ring %d · %s\nGuardian: %s\n%s"
-		% [
+	return Text.f(
+		"Ring %d · %s\nGuardian: %s\n%s",
+		[
 			int(guardian.layer.get("ring", guardians.size() - index - 1)),
-			guardian.layer.name,
+			Text.t(guardian.layer.name),
 			", ".join(names) if not names.is_empty() else "?",
-			status[guardian.where]
+			Text.t(status[guardian.where])
 		]
 	)
 
