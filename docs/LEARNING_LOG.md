@@ -832,3 +832,20 @@ only card ids. Two details made it work under wasmtime: exceptions need the new 
 proposal (`-fwasm-exceptions -mllvm -wasm-use-legacy-eh=false`, linked with libunwind), and a precompiled `.cwasm`
 only runs with the settings it was compiled with, so `-W exceptions=y` is given both when it is compiled and when it
 runs. `#line 1 "card.cpp"` keeps `__LINE__` (which the loop counter records) on the card's own numbering.
+
+## Pure data in a state machine: Issues as a list of effects (ADR-0050)
+Thirty events with different shapes (a heal, a card swap, a bet on reading code, a gift that pays two rooms later) share
+one engine because each choice is only a list of small effects. An effect that cannot finish on its own (it needs the
+player to pick a card) returns `true`, which means "I opened a stage and took the rest of the list with me"; the command
+that answers the stage runs that rest. This is a continuation, written as plain data so it survives a save. The same
+trick makes a deferred effect easy: `pending` is just an effect list with a countdown beside it.
+
+## A formatter can change the meaning of code
+`gdformat` rearranged a lambda inside a parenthesised `.filter(...).size()` chain into a layout Godot 4.7 refuses to parse
+("Unindent doesn't match"), and every script that used the class failed with a confusing cascade. When many scripts fail
+to resolve one class name, look for that class's own parse error first, and run `scripts/check.sh` after formatting.
+
+## Two renderers, one GPU
+A screenshot is drawn on the GPU, and so is an SDXL render. With ComfyUI at 100% a screenshot takes minutes or hangs.
+Render the art and take the pictures one after the other, never at once.
+

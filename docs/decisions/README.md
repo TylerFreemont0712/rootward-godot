@@ -66,3 +66,7 @@ The next number is **ADR-0049**.
 - [ADR-0046](ADR-0046-cpp-compiled-ahead-of-time.md): C++ as a third spell language: every card compiled ahead of time with wasi-sdk into one module per mode, a harness twin of the others, counted on its own lines.
 
 - [ADR-0047](ADR-0047-everything-on-screen-in-japanese.md): every screen in Japanese through one Text: overlays registered with the TranslationServer, formats translated before they are filled, the rules' English sentences matched to their formats.
+
+- [ADR-0049](ADR-0049-cycles-the-registry-and-scripts.md): cycles earned per kill by kind, layer and difficulty; the Registry (Semver) with seeded stock, prices and services; sixteen scripts on a belt of three.
+
+- [ADR-0050](ADR-0050-issues.md): Issues, the program run's events as a stage machine over effect lists, with quizzes made from real sandbox runs of the player's own cards.

@@ -1223,3 +1223,128 @@ Gap 1 (the four untested focus rules) is **closed** â€” see the session log in Â
 Notes for the next session:
 - Concurrent probe runs share Godot's sandbox scratch folder unless `XDG_DATA_HOME` is set per run (ADR-0048).
 - `.obsidian/` at the root is the player's; leave it out of commits.
+
+---
+
+# HANDOFF (end of the 2026-10-04 night session): read this first
+
+Everything below the earlier "Current step" and "Session log" sections supersedes them. **Slices 0 to 11 are built, tested
+and committed; slice 12 (art) is half done; slice 13 (balance) is not started.** Commits, oldest first: `1189db2` (baseline),
+`a17b99d` (laws, focuses, memory, body slot), `4695e7c` (focus tests, `dev-spawn`), `dc1863f` (rewards, cycles, map rows,
+65 cards), `f64d743` (scripts, the Registry, Issues, relics, UI, card art), `7fc64dc` (lint, splits, bot), and a final docs
+commit (ADR-0049, ADR-0050, this file). Verified at `7fc64dc`: `scripts/test.sh` **537 cases, 0 failures**; `scripts/lint.sh`
+clean; `scripts/validate.sh` **299 program cards, 1022 worked examples in each of Python, JavaScript and C++, 0 errors**;
+`scripts/locale.sh ja --missing` **1282/1282 content, 515/515 interface, 208/208 rule sentences**; C++ build and mutants
+census current. Spellforge's reference fixtures are unchanged (a program-only battle key briefly broke them; fixed).
+
+## 1. What exists now, by slice
+
+| Slice | State | Where to look |
+|---|---|---|
+| 1 Laws, focuses, picks | done | `program_draft.gd`, `draft_view.gd`, relics `focus-*`, `local-optimum`, `the-index`, ... |
+| 2 Fight memory | done | `program_memory.gd`, `program_landing.gd`, `program_memory_view.gd` |
+| 3 Body slot (Recurse) | done | the three harnesses, `program_body_source.gd` |
+| 4 Rewards | done | `core/programs/program_rewards.gd` (50/30/20, one own card, elite's 4th from another paradigm, rare pity, skip pays) |
+| 5 Cycles | done | `program_cycles.gd`; receipt in `RoomPanel._receipt`; wallet in the header; `cycles_earned/spent` in history |
+| 6 Map | done | `programs.jsonc` `map` (+2 rows per layer, fixed Registry row, Issue weight 18); `ShardrunMap` kinds `shop`, `issue`; legend rows only for program runs |
+| 7 Registry | done | `program_shop.gd`, `registry_view.gd` (Semver) |
+| 8 Scripts | done | `program_scripts.gd` (16 in `packs/core/programs/scripts/`), `script_belt.gd` in the fight's side panel; drops via `take-script` |
+| 9 Issues | done | `program_issues.gd`, `program_quiz.gd`, `issue_view.gd`, `issue_schemas.gd`; 30 files in `packs/core/programs/issues/` |
+| 10 Cards | done: **80 of 80** | 71 + 80 = about 150 base cards (299 records with `+`); pools complete; Global Total and Release moved to Dynamic Programming |
+| 11 Relics | done: 28 (27 + the Technical Debt curse) | `packs/core/programs/relics/`, effect kinds in `effect_schemas.gd` and `ProgramRelics._apply` |
+| 12 Art | **partial** (see section 3) | `pipeline/art/paradigm_update_art.py`, `paradigm_update_art_extra.py`, `paradigm-update-subjects.json` |
+| 13 Balance | **not started** (section 4) | `docs/research/balance-probe/paradigm-update/baseline.md` is the "before" |
+
+## 2. Decisions and deviations from B-part (a reader could question these)
+
+Where the design could not be built as written, this is what was built instead. Say if any should change.
+
+- **Memo Ward** reads `battle.dp` (the best damage any program landed), not past block, which a card cannot see.
+- **Cursor**'s "each +2": a `from_index` bolt must match an indexed bolt exactly, so each taken bolt is followed by a separate
+  2-power bolt (the Search helper's finding). Any later card that changes a `from_index` bolt's power drops it.
+- **Karatsuba** keeps both operands and appends the product; **Halve+** adds +1 to the first and the middle bolt (a card cannot
+  see the split); **Introsort+** has the same code as the base (only its cost differs).
+- **Counting Sort**, **Range Query**, **Break**, the pruned searches and **Bogosort** are billed by measured work
+  (`work_mode: measured`); **Increase Key** is billed linear (finding the weakest is a scan).
+- **B-Tree** also opens the Index (`index-open`), so it works in a run that has no Search law: a deliberate splash payoff.
+  It keeps the strongest 2 (3 for `+`) bolts into the next fight (`state.kept_index`).
+- Scripts: `fork()` became `chmod +x` (the next program costs no mana); `strace` removes the target's trait until the next turn
+  (restored in `ProgramScripts.new_turn`); `kill -9` goes straight to HP and can win the fight.
+- Relics redefined: **Speculative Execution** = your first strike each program does no work; **Stack Frame** = the card after
+  a splitting card does half the work (the design's "Recurse reaches the second card" needed a harness change);
+  **Cold Start** = the first program of the *first turn* of each fight costs 1 less; **Snapshot** = once a run, a lethal blow
+  restores the Integrity you had at the start of that turn (`state.snapshot_ready`); **Polyglot** = +15 points to the
+  other-paradigm share, from the own share.
+- **Stack Overflow Answer**: a buggy answer is not a persistent mutant card (the deck holds ids). Copying a buggy one costs
+  6 Integrity; "read the comments" (15 cycles) shows the diff and lets you walk away.
+- **Will It Halt?** asks whether one of your cards finishes within the layer's budget on N bolts (real run, so it works in C++);
+  **Off-by-One** asks how many bolts a card of yours returns. Neither runs arbitrary code, because C++ is compiled ahead of time.
+- A pending issue effect counts down once as the issue room is left, so it is stored as `rooms + 1`.
+- Technical Debt is a real curse relic (`tech-debt`, every third fight 1 less mana) with a `repay` service at the Registry.
+
+## 3. Art: what is done and the exact commands to finish it
+
+First drafts through ComfyUI (SDXL base, a bronze-and-jewel prompt, background removed, 320 px, one candidate each). They are
+placeholders for the player's later pass: the finished icons were painted 1254 px images (`program-icons-pass-9.json`).
+**Done**: all 80 card icons (`shardrun/card-<id>.png`, every new card's `icon` points at its own), the 28 new relics, the 15
+focus emblems and 5 law relics (`relic-focus-<id>`, `relic-<law id>`, now the relics' `icon`), committed with the cards.
+**Still rendering when this was written (started in the background, may be finished by the time you read this)**: 16
+scripts (`script-<id>`), 30 issue pictures (`issue-<id>`), `registry` (the shop's backdrop, 1344x768), `semver` (the owl),
+`cycles` (the currency icon), `map-prop-shop`, `map-prop-issue`. To check and finish (cached renders are skipped):
+
+```
+python3 pipeline/art/paradigm_update_art.py              # rewrites manifest-paradigm-update.json from the subject files
+scripts/art.sh --manifest pipeline/art/manifest-paradigm-update.json \
+  --only 'shardrun-script-*,shardrun-issue-*,shardrun-registry,shardrun-semver,shardrun-cycles,shardrun-map-prop-*'
+```
+
+ComfyUI was started by hand (`~/personal-project/ComfyUI`, port 8188) and is **still running**; stop it when done
+(`pkill -f "main.py --listen 127.0.0.1"`). Never render and take screenshots at once: with the GPU at 100% a screenshot
+takes minutes or hangs. Untracked art files are still in the working tree: commit them (`git add game/assets/shardrun`)
+after a look; do not commit `.obsidian/`. Not wired yet: nothing reads `shardrun/map-shop` / `map-issue` (the map's own icons
+are drawn shapes; `map-prop-shop/issue` are for the room panels). A look at the drafts is still owed: one contact sheet
+(`scripts/art.sh ... --sheet out.png --no-write`) of the cards and one of the relics.
+
+## 4. What is left, in order
+
+1. **Screenshots (owed, none of these were taken)**, after the art finishes, one at a time:
+   - the Registry (done once, `shots/paradigm-update/registry.png`, before Semver's picture existed), an Issue at each stage
+     (`ROOTWARD_SHOT=issue ROOTWARD_SHOT_ISSUE=<id> ROOTWARD_SHOT_CHOICE=0`), the reward with its receipt and a script drop
+     (`ROOTWARD_SHOT=reward ROOTWARD_SHOT_SCRIPT_DROP=kill-9`), the fight with a full belt (`ROOTWARD_SHOT=fight
+     ROOTWARD_SHOT_SCRIPTS=kill-9,sudo,nice`), the map with a Registry and Issues, the rest with Dead Code Elimination, each in
+     English and once with `ROOTWARD_SHOT_LOCALE=ja` and once in C++. Look for: the Registry's card faces are tall (code blocks
+     open); the issue picture size; the belt's slot art; the wallet's position in the header.
+   - **The quiz in the real game** has not been run end to end: tests use fake sandbox results. Play `rubber-duck`,
+     `oracle-test-suite`, `big-o-quiz` and `will-it-halt` in Python, JavaScript and C++ (`SpellRuns.quiz_runs`).
+2. **Slice 13, balance** (`docs/research/balance-probe/`, read its README and `probe_balance.gd`):
+   - Teach the probe the new rooms. `tools/shardrun_bot.gd` already shops (a relic, then a script, then a card), takes script
+     drops and answers issues by taking the effect-free choice; it does not use scripts in a fight, and the probe has its
+     own policy that was not touched.
+   - Rerun the baseline's seeds (the six paired seeds per paradigm in `baseline.md`, Beginner, JavaScript) and write the
+     paired report next to `baseline.md`. Targets are in B13. The baseline was 40% won overall; Greedy and DP won 1 of 6.
+   - Things to measure first: whether the laws fire (60% of turns), the own-paradigm share of the final deck (target 50%+),
+     cycles at the layer-1 Registry (150 to 250), purchases per Registry, and any single card moving a paradigm's win rate
+     by 20 points. Tune in data only: `programs.jsonc` `rewards`, `cycles`, `registry`, `scripts`, the laws' numbers, card files.
+   - None of the 80 cards, 28 relics or 16 scripts has been balance-tested; expect a few to be too strong (Big Data, Heat
+     Sink, Interest Rate, `sudo` plus a big volley) and some too weak.
+3. **Docs**: ADR-0048's "implementation in progress" status should become "accepted" with the final numbers; `docs/PLAN.md`
+   ticks 12 and 13 when done; `docs/SHARDRUN_DESIGN.md` section 7 (the bank) and `docs/PHASE2.md` do not mention the update
+   yet; the learning log has three new entries (Issues, the formatter, the GPU).
+4. **Known rough edges** (not bugs in the rules): the Registry and reward screens still show shard rows with code, not card
+   faces (P2-37 in `docs/PHASE2.md`); a script that needs a foe opens a small popup menu when several stand; the belt shows
+   art only once `script-<id>.png` exists (a short name stands in); the card comments in C++ and Python are wider than the
+   code panel and wrap (rewrap them in one pass); the Issue screen has no pictures until `issue-<id>.png` exist.
+5. **After this update**: the Sec Ops class (`docs/PARADIGMS_AND_SECOPS.md` part 2; the body slot and the class frame are
+   the groundwork). The player said the Artificer comes first and this update is it.
+
+## 5. Practical notes for the next session
+
+- Run every Godot command with `XDG_DATA_HOME=$(mktemp -d)` when something else may be running (a shared sandbox scratch).
+- `scripts/check.sh` right after `gdformat`: it once turned a lambda chain into code Godot could not parse (see the learning log).
+- Card sources are now the files themselves in `game/content/packs/core/programs/cards/`. The generators the helpers used
+  were kept outside the repo (scratchpad) and are gone; to change a card, edit its `.jsonc`, `.py`, `.js` and `.cpp` together,
+  then `scripts/build-cpp.sh`, `scripts/mutants.sh` and `scripts/validate.sh` (it warns when the census or build is stale).
+- Art for a new card: add its subject to a fragment under `pipeline/art/pass10-fragments/` and rerun the art commands above.
+- The Japanese for a new string goes in a new `locales/ja/*.jsonc` (the loader reads every file; a string translated twice is
+  an error, and `scripts/locale.sh ja --missing` names it).
+- The working tree at the end: only `.obsidian/` (the player's) and art still rendering are untracked.
