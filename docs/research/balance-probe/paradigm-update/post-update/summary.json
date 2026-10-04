@@ -1,0 +1,541 @@
+{
+  "settings": {
+    "language": "javascript",
+    "difficulty": "beginner",
+    "policy": "smart",
+    "seeds_per_paradigm": 6,
+    "focus_rotation": "seeds cycle through the three focuses in catalog order"
+  },
+  "paired_runs": 30,
+  "paired_outcomes": {
+    "baseline_wins": 10,
+    "updated_wins": 12,
+    "lost_to_won": 7,
+    "won_to_lost": 5
+  },
+  "overall": {
+    "runs": 30,
+    "wins": 12,
+    "win_rate": 0.4,
+    "win_rate_wilson_95": [
+      0.24590628116801852,
+      0.5767963974667752
+    ],
+    "focuses": {
+      "bisect": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "deep": {
+        "runs": 3,
+        "wins": 3,
+        "win_rate": 1.0,
+        "win_rate_wilson_95": [
+          0.4385029682449546,
+          1.0
+        ]
+      },
+      "enumerate": {
+        "runs": 2,
+        "wins": 1,
+        "win_rate": 0.5,
+        "win_rate_wilson_95": [
+          0.09453120573423074,
+          0.9054687942657693
+        ]
+      },
+      "exact": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "hash": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "heap": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "heavy": {
+        "runs": 2,
+        "wins": 1,
+        "win_rate": 0.5,
+        "win_rate_wilson_95": [
+          0.09453120573423074,
+          0.9054687942657693
+        ]
+      },
+      "index": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "memo": {
+        "runs": 2,
+        "wins": 2,
+        "win_rate": 1.0,
+        "win_rate_wilson_95": [
+          0.34238022750665303,
+          1.0
+        ]
+      },
+      "merge": {
+        "runs": 3,
+        "wins": 2,
+        "win_rate": 0.6666666666666666,
+        "win_rate_wilson_95": [
+          0.2076596008020477,
+          0.9385080552796037
+        ]
+      },
+      "prune": {
+        "runs": 2,
+        "wins": 1,
+        "win_rate": 0.5,
+        "win_rate_wilson_95": [
+          0.09453120573423074,
+          0.9054687942657693
+        ]
+      },
+      "schedule": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "sprint": {
+        "runs": 2,
+        "wins": 0,
+        "win_rate": 0.0,
+        "win_rate_wilson_95": [
+          0.0,
+          0.6576197724933469
+        ]
+      },
+      "table": {
+        "runs": 2,
+        "wins": 2,
+        "win_rate": 1.0,
+        "win_rate_wilson_95": [
+          0.34238022750665303,
+          1.0
+        ]
+      }
+    },
+    "deck_share": {
+      "own": 0.6829037604557773,
+      "neutral": 0.22300227707487139,
+      "other": 0.09409396246935135
+    },
+    "act1_fight_turns_mean": 1.5594405594405594,
+    "cycles_at_first_registry_mean": 178.1,
+    "runs_reaching_registry": 30,
+    "purchases_per_registry_mean": 2.0,
+    "script_uses_per_fight_mean": 0.5008103727714749,
+    "law_activation_rate_mean": 0.37649063032367974,
+    "issues_per_run_mean": 3.1,
+    "issues_by_layer": {
+      "1": 28,
+      "2": 26,
+      "3": 21,
+      "4": 18
+    },
+    "refusals": 0,
+    "cycles_earned_mean": 1300.2333333333333,
+    "cycles_spent_mean": 1086.1333333333334,
+    "statuses": {
+      "won": 12,
+      "lost": 16,
+      "abandoned": 2
+    }
+  },
+  "by_paradigm": {
+    "brute-force": {
+      "runs": 6,
+      "wins": 3,
+      "win_rate": 0.5,
+      "win_rate_wilson_95": [
+        0.1876163064826506,
+        0.8123836935173494
+      ],
+      "focuses": {
+        "enumerate": {
+          "runs": 2,
+          "wins": 1,
+          "win_rate": 0.5,
+          "win_rate_wilson_95": [
+            0.09453120573423074,
+            0.9054687942657693
+          ]
+        },
+        "heavy": {
+          "runs": 2,
+          "wins": 1,
+          "win_rate": 0.5,
+          "win_rate_wilson_95": [
+            0.09453120573423074,
+            0.9054687942657693
+          ]
+        },
+        "prune": {
+          "runs": 2,
+          "wins": 1,
+          "win_rate": 0.5,
+          "win_rate_wilson_95": [
+            0.09453120573423074,
+            0.9054687942657693
+          ]
+        }
+      },
+      "deck_share": {
+        "own": 0.686109486590812,
+        "neutral": 0.21648760713068566,
+        "other": 0.09740290627850204
+      },
+      "act1_fight_turns_mean": 1.4285714285714286,
+      "cycles_at_first_registry_mean": 200.83333333333334,
+      "runs_reaching_registry": 6,
+      "purchases_per_registry_mean": 1.6538461538461537,
+      "script_uses_per_fight_mean": 0.5797101449275363,
+      "law_activation_rate_mean": 0.2932330827067669,
+      "issues_per_run_mean": 3.3333333333333335,
+      "issues_by_layer": {
+        "1": 4,
+        "2": 5,
+        "3": 5,
+        "4": 6
+      },
+      "refusals": 0,
+      "cycles_earned_mean": 1486.1666666666667,
+      "cycles_spent_mean": 1272.5,
+      "statuses": {
+        "won": 3,
+        "lost": 3
+      }
+    },
+    "divide-conquer": {
+      "runs": 6,
+      "wins": 5,
+      "win_rate": 0.8333333333333334,
+      "win_rate_wilson_95": [
+        0.43649717781352987,
+        0.9699466302516935
+      ],
+      "focuses": {
+        "deep": {
+          "runs": 3,
+          "wins": 3,
+          "win_rate": 1.0,
+          "win_rate_wilson_95": [
+            0.4385029682449546,
+            1.0
+          ]
+        },
+        "merge": {
+          "runs": 3,
+          "wins": 2,
+          "win_rate": 0.6666666666666666,
+          "win_rate_wilson_95": [
+            0.2076596008020477,
+            0.9385080552796037
+          ]
+        }
+      },
+      "deck_share": {
+        "own": 0.680070669201104,
+        "neutral": 0.19560131842740533,
+        "other": 0.12432801237149065
+      },
+      "act1_fight_turns_mean": 1.3448275862068966,
+      "cycles_at_first_registry_mean": 173.33333333333334,
+      "runs_reaching_registry": 6,
+      "purchases_per_registry_mean": 2.111111111111111,
+      "script_uses_per_fight_mean": 0.48936170212765956,
+      "law_activation_rate_mean": 0.6886792452830188,
+      "issues_per_run_mean": 4,
+      "issues_by_layer": {
+        "1": 6,
+        "2": 3,
+        "3": 7,
+        "4": 8
+      },
+      "refusals": 0,
+      "cycles_earned_mean": 1702.3333333333333,
+      "cycles_spent_mean": 1477.6666666666667,
+      "statuses": {
+        "won": 5,
+        "lost": 1
+      }
+    },
+    "dynamic": {
+      "runs": 6,
+      "wins": 4,
+      "win_rate": 0.6666666666666666,
+      "win_rate_wilson_95": [
+        0.299993315138392,
+        0.9032285888942195
+      ],
+      "focuses": {
+        "exact": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "memo": {
+          "runs": 2,
+          "wins": 2,
+          "win_rate": 1.0,
+          "win_rate_wilson_95": [
+            0.34238022750665303,
+            1.0
+          ]
+        },
+        "table": {
+          "runs": 2,
+          "wins": 2,
+          "win_rate": 1.0,
+          "win_rate_wilson_95": [
+            0.34238022750665303,
+            1.0
+          ]
+        }
+      },
+      "deck_share": {
+        "own": 0.654548507048507,
+        "neutral": 0.22267250606536332,
+        "other": 0.12277898688612983
+      },
+      "act1_fight_turns_mean": 1.7096774193548387,
+      "cycles_at_first_registry_mean": 179.0,
+      "runs_reaching_registry": 6,
+      "purchases_per_registry_mean": 2.36,
+      "script_uses_per_fight_mean": 0.4968152866242038,
+      "law_activation_rate_mean": 0.4332688588007737,
+      "issues_per_run_mean": 2.8333333333333335,
+      "issues_by_layer": {
+        "1": 3,
+        "2": 3,
+        "3": 7,
+        "4": 4
+      },
+      "refusals": 0,
+      "cycles_earned_mean": 1799.5,
+      "cycles_spent_mean": 1499.0,
+      "statuses": {
+        "won": 4,
+        "lost": 1,
+        "abandoned": 1
+      }
+    },
+    "greedy": {
+      "runs": 6,
+      "wins": 0,
+      "win_rate": 0.0,
+      "win_rate_wilson_95": [
+        2.7755575615628914e-17,
+        0.3903342879021653
+      ],
+      "focuses": {
+        "heap": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "schedule": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "sprint": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        }
+      },
+      "deck_share": {
+        "own": 0.7072250272250271,
+        "neutral": 0.2344548394548395,
+        "other": 0.05832013332013335
+      },
+      "act1_fight_turns_mean": 1.6,
+      "cycles_at_first_registry_mean": 141.66666666666666,
+      "runs_reaching_registry": 6,
+      "purchases_per_registry_mean": 1.8,
+      "script_uses_per_fight_mean": 0.5060240963855421,
+      "law_activation_rate_mean": 0.25761772853185594,
+      "issues_per_run_mean": 3,
+      "issues_by_layer": {
+        "1": 9,
+        "2": 8,
+        "3": 1
+      },
+      "refusals": 0,
+      "cycles_earned_mean": 722.5,
+      "cycles_spent_mean": 570.6666666666666,
+      "statuses": {
+        "lost": 5,
+        "abandoned": 1
+      }
+    },
+    "search-index": {
+      "runs": 6,
+      "wins": 0,
+      "win_rate": 0.0,
+      "win_rate_wilson_95": [
+        2.7755575615628914e-17,
+        0.3903342879021653
+      ],
+      "focuses": {
+        "bisect": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "hash": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        },
+        "index": {
+          "runs": 2,
+          "wins": 0,
+          "win_rate": 0.0,
+          "win_rate_wilson_95": [
+            0.0,
+            0.6576197724933469
+          ]
+        }
+      },
+      "deck_share": {
+        "own": 0.6865651122134362,
+        "neutral": 0.24579511429606316,
+        "other": 0.06763977349050089
+      },
+      "act1_fight_turns_mean": 1.7,
+      "cycles_at_first_registry_mean": 195.66666666666666,
+      "runs_reaching_registry": 6,
+      "purchases_per_registry_mean": 2.0,
+      "script_uses_per_fight_mean": 0.40816326530612246,
+      "law_activation_rate_mean": 0.16387959866220736,
+      "issues_per_run_mean": 2.3333333333333335,
+      "issues_by_layer": {
+        "1": 6,
+        "2": 7,
+        "3": 1
+      },
+      "refusals": 0,
+      "cycles_earned_mean": 790.6666666666666,
+      "cycles_spent_mean": 610.8333333333334,
+      "statuses": {
+        "lost": 6
+      }
+    }
+  },
+  "targets": {
+    "overall_win_rate_40_to_60_percent": true,
+    "weakest_paradigm_at_least_30_percent": false,
+    "strongest_paradigm_at_most_75_percent": false,
+    "weakest_focus_at_least_25_percent": false,
+    "own_deck_share_at_least_50_percent": true,
+    "other_deck_share_10_to_25_percent": false,
+    "cycles_at_first_registry_150_to_250": true,
+    "purchases_per_registry_1_5_to_2_5": true,
+    "scripts_per_fight_0_3_to_0_8": true,
+    "laws_fire_at_least_60_percent": false,
+    "act1_fights_2_to_4_turns": false,
+    "single_card_ablation": "not measured by this observational probe"
+  },
+  "seed_groups": {
+    "brute-force": [
+      "brute-force-0~2",
+      "brute-force-1~0",
+      "brute-force-2~0",
+      "brute-force-3~1",
+      "brute-force-4~0",
+      "brute-force-5~0"
+    ],
+    "divide-conquer": [
+      "divide-conquer-0~2",
+      "divide-conquer-1~0",
+      "divide-conquer-2~1",
+      "divide-conquer-3~0",
+      "divide-conquer-4~0",
+      "divide-conquer-5~1"
+    ],
+    "dynamic": [
+      "dynamic-0~0",
+      "dynamic-1~2",
+      "dynamic-2~3",
+      "dynamic-3~0",
+      "dynamic-4~0",
+      "dynamic-5~0"
+    ],
+    "greedy": [
+      "greedy-0~0",
+      "greedy-1~3",
+      "greedy-2~0",
+      "greedy-3~0",
+      "greedy-4~0",
+      "greedy-5~1"
+    ],
+    "search-index": [
+      "search-index-0~0",
+      "search-index-1~0",
+      "search-index-2~0",
+      "search-index-3~1",
+      "search-index-4~0",
+      "search-index-5~1"
+    ]
+  }
+}

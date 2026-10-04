@@ -75,13 +75,16 @@ func _draw() -> void:
 		var x := 22.0 if side == 0 else size.x - 22.0
 		draw_line(Vector2(x, 0), Vector2(x, size.y), Color(hue, 0.3), 3.0, true)
 		draw_line(Vector2(x + 7, 0), Vector2(x + 7, size.y), Color(hue, 0.12), 1.0, true)
-	for index in range(1, rows, 2):
+	var notice_rows := PackedInt32Array([1])
+	if rows > 5:
+		notice_rows.append(rows - 2)
+	for index: int in notice_rows:
 		var notices: Array = NOTICES.get(ring, NOTICES[3])
 		var text: String = notices[(_offset + index) % notices.size()]
-		var width := minf(195.0, size.x * 0.17)
+		var width := minf(156.0, size.x * 0.15)
 		var x := 33.0 if index % 4 == 1 else size.x - width - 33.0
 		var y := MapCanvas.FOOT + (index - 0.5) * MapCanvas.ROW_STEP
-		var plate := Rect2(x, y - 24, width, 48)
+		var plate := Rect2(x, y - 19, width, 38)
 		UiTheme.box(Color(dark, 0.83), Color(hue, 0.48), 1, 2).draw(get_canvas_item(), plate)
 		for bolt: Vector2 in [plate.position + Vector2(5, 5), plate.end - Vector2(5, 5)]:
 			draw_circle(bolt, 2.0, Color(hue, 0.7))

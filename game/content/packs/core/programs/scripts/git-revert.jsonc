@@ -2,7 +2,7 @@
   "id": "git-revert",
   "name": "git revert",
   "rarity": "uncommon",
-  "price": 50,
+  "price": 100,
   "summary": "Undo the damage you took last turn, up to 15 Integrity.",
   "target": "none",
   "when": "fight",

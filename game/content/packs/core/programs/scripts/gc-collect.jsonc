@@ -2,7 +2,7 @@
   "id": "gc-collect",
   "name": "gc.collect()",
   "rarity": "uncommon",
-  "price": 50,
+  "price": 100,
   "summary": "Empties the Index into your next program's seed (Search), writes a free row to the Table (Dynamic Programming), or gives 10 block.",
   "target": "none",
   "when": "fight",

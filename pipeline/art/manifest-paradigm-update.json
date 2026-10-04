@@ -25,6 +25,33 @@
     "saturation": 1.08
    }
   },
+  "program-map-icon": {
+   "checkpoint": "sd_xl_base_1.0.safetensors",
+   "prefix": "(exactly one object, solo object:1.4), simple hand-painted fantasy roguelite map icon, close-up of one recognizable fantasy object, sculpted bronze, wood or stone, deep plum shadows, warm amber light, bold readable silhouette, no frame or badge; include at most one tiny computer-reference detail hidden as a square cursor rune, ",
+   "suffix": ", centered isolated object, whole silhouette visible, plain white background, crisp at small size",
+   "negative": "blurry, text, readable letters, numbers, watermark, signature, logo, people, character body, room scene, landscape, modern computer, CRT monitor, keyboard, server rack, motherboard, extra objects, floating objects, scattered crystals, extra gems, extra weapons, surrounding mini-icons, multiple variations, collection, lineup, collage, sprite sheet, grid, medallion, emblem, decorative frame, badge border, cropped, photo, photorealistic, 3d render",
+   "width": 1024,
+   "height": 1024,
+   "steps": 28,
+   "cfg": 6,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": true,
+   "candidates": 1,
+   "post": {
+    "kind": "sprite",
+    "size": [
+     320,
+     320
+    ],
+    "transparent": true,
+    "colors": 160,
+    "saturation": 1.08,
+    "keep_fraction": 0.65,
+    "keep_largest_component": true,
+    "anchor": "center"
+   }
+  },
   "program-backdrop": {
    "checkpoint": "novaAnimeXL_ilV190.safetensors",
    "prefix": "masterpiece, best quality, very aesthetic, detailed fantasy game background illustration, ",
@@ -794,14 +821,6 @@
    "pick": 0
   },
   {
-   "id": "shardrun-relic-focus-table",
-   "out": "shardrun/relic-focus-table",
-   "style": "program-icon",
-   "seed": 301037,
-   "prompt": "(round bronze medallion with a jeweled rim framing a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber.:1.35)",
-   "pick": 0
-  },
-  {
    "id": "shardrun-relic-focus-exact",
    "out": "shardrun/relic-focus-exact",
    "style": "program-icon",
@@ -1071,6 +1090,62 @@
    "style": "program-icon",
    "seed": 293938,
    "prompt": "(a bronze ledger book bound with a red ribbon and a small dark crystal weighing its cover down:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-fight",
+   "out": "shardrun/map-fight",
+   "style": "program-map-icon",
+   "seed": 276609,
+   "prompt": "(a single close-up daemon imp head, mischievous sharp bronze mask, two amber eyes and dark violet smoke hugging the silhouette, one tiny square cursor rune engraved on its brow, no other objects:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-elite",
+   "out": "shardrun/map-elite",
+   "style": "program-map-icon",
+   "seed": 276640,
+   "prompt": "(a single close-up stack-overflow serpent head and upper coil, ember eyes, bronze rune-scales and a crownlike crest, one tiny violet crystal on the brow, no other objects:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-rest",
+   "out": "shardrun/map-rest",
+   "style": "program-map-icon",
+   "seed": 274005,
+   "prompt": "(a single small stone checkpoint lantern with a warm amber flame, a crescent cursor rune engraved on its bronze lid, cozy and quiet, no other objects:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-forge",
+   "out": "shardrun/map-forge",
+   "style": "program-map-icon",
+   "seed": 276640,
+   "prompt": "(one small traditional blacksmith anvil, side view with a clear horn and broad base, dark bronze body, one tiny violet crystal chip set into the top, full anvil visible, isolated by itself:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-treasure",
+   "out": "shardrun/map-treasure",
+   "style": "program-map-icon",
+   "seed": 287304,
+   "prompt": "(one small open oak treasure chest, front three-quarter view, full chest with lid and base completely visible, bronze corners and one bright violet crystal lock, a tiny square status light in the lock, isolated by itself, no duplicate chest:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-shop",
+   "out": "shardrun/map-shop",
+   "style": "program-map-icon",
+   "seed": 273881,
+   "prompt": "(a single wise owl merchant head in a tiny hood, warm amber eyes and one miniature software parcel symbol etched on its bronze clasp, no crate or other objects:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-issue",
+   "out": "shardrun/map-issue",
+   "style": "program-map-icon",
+   "seed": 277322,
+   "prompt": "(a single rolled parchment scroll with one bright magenta exclamation rune on its seal, tiny bracket-shaped etchings in the bronze cap, no other objects:1.35)",
    "pick": 0
   },
   {

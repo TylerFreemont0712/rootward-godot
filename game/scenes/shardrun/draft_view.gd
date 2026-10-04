@@ -96,6 +96,7 @@ func _paradigm(paradigm: Dictionary) -> Control:
 	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 47), colour.lightened(0.2))
 	(tier as Label).add_theme_font_override("font", UiTheme.crt_font())
 	var summary := Ui.sized(Ui.label(Text.t(paradigm.summary), "Muted", true), 14)
+	var law: Dictionary = session.catalog.relics.get(String(paradigm.get("law", "")), {})
 	var cards := Ui.hbox([], 8)
 	for card_id: String in paradigm.signature:
 		var face := CardFace.create(
@@ -109,9 +110,11 @@ func _paradigm(paradigm: Dictionary) -> Control:
 		func() -> void: wants.emit({"type": "pick-paradigm", "paradigm_id": paradigm.id}),
 		"PrimaryButton"
 	)
-	var column := Ui.vbox(
-		[name, tier, summary, Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, Ui.spacer(), choose], 10
-	)
+	var contents: Array[Control] = [name, tier, summary]
+	if not law.is_empty():
+		contents.append(Cards.relic(law, null, Vector2(68, 68)))
+	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, Ui.spacer(), choose])
+	var column := Ui.vbox(contents, 10)
 	column.custom_minimum_size.y = 470
 	var tile := Ui.panel(column, "Card")
 	var look := UiTheme.box(Color("#15101c").lerp(colour, 0.05), colour.darkened(0.3), 2, 12, Vector2(16, 14))
@@ -135,10 +138,10 @@ func _pick(card_id: String) -> Control:
 	return face
 
 
-## A focus's emblem has an optional asset; its coloured tag and signature face remain readable without one.
+## A focus shows its associated relic before its signature card and rule.
 func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 	var colour := Color(paradigm.colour)
-	var emblem := Ui.picture("shardrun/focus-%s" % focus.id, Vector2(72, 72), "✦")
+	var relic: Dictionary = session.catalog.relics.get(String(focus.get("relic", "")), {})
 	var name := Ui.tint(Ui.sized(Ui.label(Text.t(focus.name), "Heading"), 29), colour)
 	var tag := Ui.tint(Ui.label(focus.tag, "Subheading"), colour.lightened(0.2))
 	tag.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
@@ -155,12 +158,12 @@ func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 		name,
 		tag,
 		Ui.label(Text.t(focus.rule), "Muted", true),
+		Cards.relic(relic, null, Vector2(68, 68)) if not relic.is_empty() else Ui.spacer(),
 		face,
 		Ui.label(Text.t(focus.plays_like), "Muted", true),
 		Ui.spacer(),
 		choose
 	]
-	items.push_front(emblem)
 	var column := Ui.vbox(items, 10)
 	column.custom_minimum_size.y = 520
 	var tile := Ui.panel(column, "Card")

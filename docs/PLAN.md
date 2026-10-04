@@ -8,7 +8,7 @@ one replaces it, and is the reference for how the spellbook Shardrun plays.
 
 Each phase ends with tests green, screenshots of anything visible, this file ticked, and a commit.
 
-## The Paradigm Update (2026-10-04)
+## The Paradigm Update (2026-10-05)
 
 Implementation follows [ParadigmUpdate.md](ParadigmUpdate.md), parts A and B, including the player's B14 choices.
 Program runs only; Spellforge and existing card runs keep their catalogs and saved maps.
@@ -25,8 +25,8 @@ Program runs only; Spellforge and existing card runs keep their catalogs and sav
 - [x] 9. Thirty data-driven Issues, deferred effects and code-reading bets graded by real sandbox execution.
 - [x] 10. Eighty new algorithms and their refactors, three languages, worked examples, Japanese and art subjects.
 - [x] 11. Twenty-four new relics plus three script relics, with tested generic effect kinds.
-- [ ] 12. (first-draft ComfyUI icons for cards, relics, emblems made; scripts, issues, Registry pieces rendering; the finished pass-10 originals are still to do) Pass-10 accepted card originals, focus/script/Registry/Issue/map art and reviewed boards.
-- [ ] 13. (not started; see the handoff in ParadigmUpdate.md) Probe updated for the new rooms and focuses, paired final report, data tuning and complete-run screenshots.
+- [x] 12. First-draft card and relic art, focus/script/Registry/Issue/map assets integrated and reviewed; the fantasy map backdrop is restored and the room markers carry only subtle programming details.
+- [ ] 13. Paired updated probe and report complete; economy tuned. Follow-up remains for weak/strong paradigm and law targets, early fight length, other-paradigm deck share, and a controlled single-card ablation; see the balance report.
 
 Every slice must pass tests, lint, executable content validation and locale coverage before its completion box is ticked.
 

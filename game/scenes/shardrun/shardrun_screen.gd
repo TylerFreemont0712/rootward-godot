@@ -213,6 +213,13 @@ func _show_header(state: Dictionary) -> void:
 
 
 func _between(state: Dictionary) -> Control:
+	# A program reward uses the whole work surface so its receipt, script, relic and card offers can sit beside each other.
+	if state.status == "reward" and state.get("playstyle", "") == "program":
+		var loot := RoomPanel.create(session)
+		loot.wants.connect(send)
+		var loot_scroll := Ui.scroll(loot)
+		loot_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		return Ui.expand(Ui.panel(loot_scroll), true)
 	var left := Ui.vbox([], 8)
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_stretch_ratio = 2.7 if ShardrunRules.is_deck(state) else 1.25

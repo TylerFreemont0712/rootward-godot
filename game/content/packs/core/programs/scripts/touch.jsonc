@@ -2,7 +2,7 @@
   "id": "touch",
   "name": "touch",
   "rarity": "common",
-  "price": 30,
+  "price": 60,
   "summary": "Make a 0-cost Literal appear in your hand, free this turn.",
   "target": "none",
   "when": "fight",

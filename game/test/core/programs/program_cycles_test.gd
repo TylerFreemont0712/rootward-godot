@@ -28,36 +28,36 @@ func _total(state: Dictionary) -> int:
 	return int(ProgramCycles.settle(state, state.battle, catalog).total)
 
 
-func test_an_ordinary_foe_pays_six_and_the_layer_and_difficulty_scale_it() -> void:
+func test_an_ordinary_foe_pays_twelve_and_the_layer_and_difficulty_scale_it() -> void:
 	var state := _won(["tally-wisp"])
 	var receipt := ProgramCycles.settle(state, state.battle, catalog)
-	assert_int(int(receipt.lines[0].amount)).is_equal(6)
+	assert_int(int(receipt.lines[0].amount)).is_equal(12)
 	# A clean build on top: nothing hurt the run.
-	assert_int(int(receipt.total)).is_equal(11)
-	assert_int(int(state.cycles)).is_equal(11)
+	assert_int(int(receipt.total)).is_equal(22)
+	assert_int(int(state.cycles)).is_equal(22)
 	var later := _won(["tally-wisp"], "fight", 1, "programmer")
-	assert_int(int(ProgramCycles.settle(later, later.battle, catalog).lines[0].amount)).is_equal(9)
+	assert_int(int(ProgramCycles.settle(later, later.battle, catalog).lines[0].amount)).is_equal(18)
 
 
 func test_an_elite_pays_more_and_a_guardian_shares_its_pay_among_its_bodies() -> void:
 	var elite := _won(["null-wraith"], "elite")
-	assert_int(int(ProgramCycles.settle(elite, elite.battle, catalog).lines[0].amount)).is_equal(16)
+	assert_int(int(ProgramCycles.settle(elite, elite.battle, catalog).lines[0].amount)).is_equal(32)
 	var one := _won(["kiln-warden"], "boss")
-	assert_int(int(ProgramCycles.settle(one, one.battle, catalog).lines[0].amount)).is_equal(45)
+	assert_int(int(ProgramCycles.settle(one, one.battle, catalog).lines[0].amount)).is_equal(90)
 	var three := _won(["page-fault-a", "page-fault-b", "page-fault-c"], "boss", 1)
 	var receipt := ProgramCycles.settle(three, three.battle, catalog)
 	var kills: Array = receipt.lines.filter(func(line: Dictionary) -> bool: return line.kind == "kill")
 	assert_int(kills.size()).is_equal(3)
-	# 45 shared by three bodies, scaled by the Heap: floor(15 x 1.25).
-	assert_int(int(kills[0].amount)).is_equal(18)
+	# 90 shared by three bodies, scaled by the Heap: floor(30 x 1.25).
+	assert_int(int(kills[0].amount)).is_equal(37)
 
 
-func test_a_summoned_foe_pays_one_flat() -> void:
+func test_a_summoned_foe_pays_two_flat() -> void:
 	var state := _won(["tally-wisp", "tally-wisp"], "fight", 2, "programmer")
 	state.battle.foes[1].owner = state.battle.foes[0].uid
 	var receipt := ProgramCycles.settle(state, state.battle, catalog)
-	assert_int(int(receipt.lines[0].amount)).is_equal(11)
-	assert_int(int(receipt.lines[1].amount)).is_equal(1)
+	assert_int(int(receipt.lines[0].amount)).is_equal(22)
+	assert_int(int(receipt.lines[1].amount)).is_equal(2)
 
 
 func test_exact_and_initiative_kills_add_one_each() -> void:
@@ -68,16 +68,16 @@ func test_exact_and_initiative_kills_add_one_each() -> void:
 	var receipt := ProgramCycles.settle(state, state.battle, catalog)
 	var bonuses: Array = receipt.lines.filter(func(line: Dictionary) -> bool: return line.kind == "bonus")
 	assert_array(bonuses.map(func(line: Dictionary) -> String: return line.label)).contains(["exact", "Initiative"])
-	assert_int(int(receipt.total)).is_equal(6 + 1 + 1 + 5)
+	assert_int(int(receipt.total)).is_equal(12 + 2 + 2 + 10)
 
 
 func test_a_clean_build_needs_no_damage_and_a_one_liner_needs_one_program() -> void:
 	var hurt := _won(["tally-wisp"])
 	hurt.integrity -= 3
-	assert_int(_total(hurt)).is_equal(6)
+	assert_int(_total(hurt)).is_equal(12)
 	var quick := _won(["tally-wisp"])
 	quick.battle.casts = 1
-	assert_int(_total(quick)).is_equal(6 + 5 + 3)
+	assert_int(_total(quick)).is_equal(12 + 10 + 6)
 
 
 func test_cycles_are_spent_only_when_the_run_can_afford_them() -> void:
@@ -117,4 +117,4 @@ func test_skipping_the_cards_pays_by_the_layer_and_a_treasure_pays_cycles() -> v
 	assert_int(int(result.state.cycles)).is_equal(20)
 	var chest := _won(["tally-wisp"])
 	chest.layer = 2
-	assert_int(ProgramCycles.treasure(chest, catalog)).is_equal(60)
+	assert_int(ProgramCycles.treasure(chest, catalog)).is_equal(120)

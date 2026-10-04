@@ -6,7 +6,11 @@ from pathlib import Path
 subjects = json.loads((Path(HERE) / "paradigm-update-subjects.json").read_text())
 ASSETS = []
 for relic_id, subject in {**subjects["emblems"], **subjects["laws"], **subjects["relics"]}.items():
-    ASSETS.append(asset(f"shardrun-relic-{relic_id}", f"shardrun/relic-{relic_id}", subject))
+    # ComfyUI repeatedly returned a multi-emblem sheet for this one; it is implemented as a source SVG instead.
+    if relic_id != "focus-table":
+        ASSETS.append(asset(f"shardrun-relic-{relic_id}", f"shardrun/relic-{relic_id}", subject))
+for icon_id, subject in subjects["map_rooms"].items():
+    ASSETS.append(asset(f"shardrun-{icon_id}", f"shardrun/{icon_id}", subject, style="program-map-icon"))
 for script_id, subject in subjects["scripts"].items():
     ASSETS.append(asset(f"shardrun-script-{script_id}", f"shardrun/script-{script_id}", subject))
 for issue_id, subject in subjects["issues"].items():

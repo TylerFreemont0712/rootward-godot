@@ -73,6 +73,7 @@ var _wall: DungeonBackdrop
 var _scenery: MapScenery
 var _fade: Control
 var _bar: VScrollBar
+var _side_scroll: ScrollContainer
 var _side: VBoxContainer
 ## The legend along the map's foot, when the window is too narrow for the side panel.
 var _strip: PanelContainer
@@ -130,8 +131,14 @@ func _init() -> void:
 	_rail = GuardianRail.new()
 	_rail.guardian_pressed.connect(func() -> void: scroll_to(max_scroll()))
 	add_child(_rail)
+	_side_scroll = ScrollContainer.new()
+	_side_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_side_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	add_child(_side_scroll)
 	_side = Ui.vbox([], 10)
-	add_child(_side)
+	_side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_side.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_side_scroll.add_child(_side)
 	_title = Ui.label("", "Subheading", true)
 	_subtitle = Ui.tint(Ui.label("", "Faint"), UiTheme.AMBER_DIM) as Label
 	_flavor = Ui.sized(Ui.label("", "Muted", true), 14) as Label
@@ -240,15 +247,26 @@ func _next_room(node: Dictionary) -> Button:
 	var what := _names(foes)
 	if what == "":
 		what = Text.t(String(WHAT.get(node.kind, "")))
-	var button := Ui.button(
-		"%s  ·  %s" % [Text.t(String(NAMES.get(node.kind, node.kind))), what], func() -> void: travel_to(node.id)
-	)
-	button.icon = _canvas.icons.get(node.kind)
-	button.expand_icon = false
-	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	button.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	button.add_theme_font_size_override("font_size", 14)
-	button.add_theme_color_override("icon_normal_color", UiTheme.room(node.kind))
+	if what.length() > 28:
+		what = what.substr(0, 27).strip_edges() + "…"
+	var button := Ui.button("", func() -> void: travel_to(node.id))
+	button.custom_minimum_size = Vector2(0, 58)
+	button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var title := Ui.tint(Ui.label(Text.t(String(NAMES.get(node.kind, node.kind)))), UiTheme.room(node.kind))
+	title.add_theme_font_size_override("font_size", 14)
+	var detail := Ui.label(what, "Faint")
+	detail.add_theme_font_size_override("font_size", 12)
+	var text_column := Ui.vbox([title, detail], 1)
+	text_column.alignment = BoxContainer.ALIGNMENT_CENTER
+	var text := Ui.expand(text_column)
+	var content := Ui.hbox([Ui.picture("shardrun/map-" + String(node.kind), Vector2(34, 34), "◇"), text], 8)
+	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	content.offset_left = 9
+	content.offset_top = 3
+	content.offset_right = -9
+	content.offset_bottom = -3
+	button.add_child(content)
 	button.mouse_entered.connect(func() -> void: focus_room(node.id))
 	button.mouse_exited.connect(func() -> void: focus_room(""))
 	return button
@@ -553,15 +571,15 @@ func _notification(what: int) -> void:
 func _layout() -> void:
 	var wide := size.x > 900.0
 	var side := SIDE_WIDTH if wide and drawer_open else 0.0
-	_side.visible = side > 0.0
-	_strip.visible = not _side.visible
+	_side_scroll.visible = side > 0.0
+	_strip.visible = not _side_scroll.visible
 	_toggle.visible = wide
 	_toggle.text = Text.t("Route  »") if drawer_open else Text.t("«  Route")
 	_toggle.size = _toggle.get_combined_minimum_size()
 	_rail.position = Vector2.ZERO
 	_rail.size = Vector2(RAIL_WIDTH, size.y)
-	_side.position = Vector2(size.x - side + 16.0, 52.0)
-	_side.size = Vector2(maxf(0.0, side - 30.0), maxf(0.0, size.y - 66.0))
+	_side_scroll.position = Vector2(size.x - side + 12.0, 52.0)
+	_side_scroll.size = Vector2(maxf(0.0, side - 24.0), maxf(0.0, size.y - 66.0))
 	_view.position = Vector2(RAIL_WIDTH, 0)
 	_view.size = Vector2(maxf(0.0, size.x - RAIL_WIDTH - side), size.y)
 	_toggle.position = Vector2(size.x - _toggle.size.x - 12.0, 12.0)
@@ -603,7 +621,7 @@ func _layout() -> void:
 func _draw() -> void:
 	draw_rect(Rect2(0, 0, RAIL_WIDTH, size.y), Color(UiTheme.GROUND, 0.92))
 	draw_line(Vector2(RAIL_WIDTH, 0), Vector2(RAIL_WIDTH, size.y), UiTheme.LINE, 1.0)
-	if _side.visible:
+	if _side_scroll.visible:
 		var x := size.x - SIDE_WIDTH
 		draw_rect(Rect2(x, 0, SIDE_WIDTH, size.y), Color(UiTheme.GROUND, 0.92))
 		draw_line(Vector2(x, 0), Vector2(x, size.y), UiTheme.LINE, 1.0)

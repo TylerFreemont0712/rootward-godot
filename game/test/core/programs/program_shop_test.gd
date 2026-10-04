@@ -21,6 +21,10 @@ func _shop(seed := "registry", cycles := 1000) -> Dictionary:
 	return state
 
 
+func test_legendary_relic_price_remains_the_players_450_cycle_choice() -> void:
+	assert_int(int(catalog.programs.config.registry.relic_price.legendary)).is_equal(450)
+
+
 func _step(state: Dictionary, command: Dictionary) -> Dictionary:
 	var result := Shardrun.step(state, command, catalog)
 	assert_bool(result.ok).override_failure_message("%s: %s" % [command, result.get("error", "")]).is_true()
@@ -89,11 +93,11 @@ func test_a_bought_relic_joins_the_run_and_a_script_goes_on_the_belt() -> void:
 
 func test_uninstall_costs_more_each_time_and_never_thins_the_deck_past_its_minimum() -> void:
 	var state := _shop()
-	assert_int(ProgramShop.service_price(state, "uninstall", catalog)).is_equal(75)
+	assert_int(ProgramShop.service_price(state, "uninstall", catalog)).is_equal(150)
 	state = _step(state, {"type": "shop-service", "kind": "uninstall", "card_id": "kindle"})
-	assert_int(ProgramShop.service_price(state, "uninstall", catalog)).is_equal(100)
+	assert_int(ProgramShop.service_price(state, "uninstall", catalog)).is_equal(200)
 	assert_array(state.deck).not_contains(["kindle"])
-	assert_int(int(state.cycles)).is_equal(1000 - 75)
+	assert_int(int(state.cycles)).is_equal(1000 - 150)
 	state.deck = ["salvo", "salvo", "ward", "amplify", "fork"]
 	var result := Shardrun.step(state, {"type": "shop-service", "kind": "uninstall", "card_id": "fork"}, catalog)
 	assert_bool(result.ok).is_false()
@@ -102,7 +106,7 @@ func test_uninstall_costs_more_each_time_and_never_thins_the_deck_past_its_minim
 func test_refactor_forges_a_card_into_its_plus() -> void:
 	var state := _step(_shop(), {"type": "shop-service", "kind": "refactor", "card_id": "salvo"})
 	assert_array(state.deck).contains(["salvo-plus"])
-	assert_int(int(state.cycles)).is_equal(1000 - 90)
+	assert_int(int(state.cycles)).is_equal(1000 - 180)
 
 
 func test_pip_install_offers_three_cards_of_the_paradigm_you_name_and_you_take_one() -> void:
@@ -115,7 +119,7 @@ func test_pip_install_offers_three_cards_of_the_paradigm_you_name_and_you_take_o
 	state = _step(state, {"type": "pip-take", "card_id": take})
 	assert_array(state.deck).contains([take])
 	assert_bool(state.shop.has("pip")).is_false()
-	assert_int(int(state.cycles)).is_equal(1000 - 60)
+	assert_int(int(state.cycles)).is_equal(1000 - 120)
 
 
 func test_leaving_the_registry_returns_to_the_map() -> void:

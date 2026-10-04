@@ -2,7 +2,7 @@
   "id": "pip-install",
   "name": "pip install",
   "rarity": "uncommon",
-  "price": 45,
+  "price": 90,
   "summary": "A random card of your paradigm joins your hand, and costs 0 this turn.",
   "target": "none",
   "when": "fight",

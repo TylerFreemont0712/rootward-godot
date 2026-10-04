@@ -13,7 +13,7 @@
   "focus-prune": "round bronze medallion with a jeweled rim framing a bronze branching tree whose limbs end in crystals; two limbs are snapped off with clean cuts and fade to grey, one limb glows amber to its tip.",
   "focus-heavy": "round bronze medallion with a jeweled rim framing two bronze rings, one inside the other, both spinning, with crystals flying out from where they cross.",
   "focus-memo": "round bronze medallion with a jeweled rim framing a bronze card-index drawer pulled open, one tab marked by a glowing amber crystal, a cyan bolt leaping out of it.",
-  "focus-table": "round bronze medallion with a jeweled rim framing a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber.",
+  "focus-table": "a single round bronze medallion stamped with a nine-cell memory table, one amber entry lit and the other cells dark, three short engraved data lines below",
   "focus-exact": "round bronze medallion with a jeweled rim framing three bronze coins of different sizes stacked in a precise tower that exactly reaches a gold notch on a measuring rod beside them."
  },
  "laws": {
@@ -102,6 +102,15 @@
   "shell-history": "a bronze scroll curling back on itself with a looping arrow and a cyan crystal at the fold",
   "alias": "a small bronze key tag shaped like a short scroll with a tiny glowing arrow",
   "tech-debt": "a bronze ledger book bound with a red ribbon and a small dark crystal weighing its cover down"
+ },
+ "map_rooms": {
+    "map-fight": "a single close-up daemon imp head, mischievous sharp bronze mask, two amber eyes and dark violet smoke hugging the silhouette, one tiny square cursor rune engraved on its brow, no other objects",
+    "map-elite": "a single close-up stack-overflow serpent head and upper coil, ember eyes, bronze rune-scales and a crownlike crest, one tiny violet crystal on the brow, no other objects",
+    "map-rest": "a single small stone checkpoint lantern with a warm amber flame, a crescent cursor rune engraved on its bronze lid, cozy and quiet, no other objects",
+    "map-forge": "one small traditional blacksmith anvil, side view with a clear horn and broad base, dark bronze body, one tiny violet crystal chip set into the top, full anvil visible, isolated by itself",
+    "map-treasure": "one small open oak treasure chest, front three-quarter view, full chest with lid and base completely visible, bronze corners and one bright violet crystal lock, a tiny square status light in the lock, isolated by itself, no duplicate chest",
+    "map-shop": "a single wise owl merchant head in a tiny hood, warm amber eyes and one miniature software parcel symbol etched on its bronze clasp, no crate or other objects",
+    "map-issue": "a single rolled parchment scroll with one bright magenta exclamation rune on its seal, tiny bracket-shaped etchings in the bronze cap, no other objects"
  },
  "misc": {
   "registry": "a tall cabinet of small brass drawers with tiny engraved tags, a velvet counter in front, warm lamplight, empty space above for a keeper",

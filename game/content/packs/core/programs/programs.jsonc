@@ -43,13 +43,13 @@
     "relics": 3,
     "scripts": 3,
     "card_rarity": { "common": 55, "uncommon": 35, "rare": 10 },
-    "card_price": { "common": 50, "uncommon": 75, "rare": 150 },
+    "card_price": { "common": 100, "uncommon": 150, "rare": 300 },
     "sale": 0.5,
     "relic_tiers": { "common": 40, "uncommon": 34, "rare": 20, "epic": 5, "legendary": 1 },
-    "relic_price": { "common": 110, "uncommon": 160, "rare": 230, "epic": 320, "legendary": 450 },
-    "uninstall": { "price": 75, "step": 25 },
-    "refactor": 90,
-    "pip_install": { "price": 60, "choices": 3 },
+    "relic_price": { "common": 220, "uncommon": 320, "rare": 460, "epic": 640, "legendary": 450 },
+    "uninstall": { "price": 150, "step": 50 },
+    "refactor": 180,
+    "pip_install": { "price": 120, "choices": 3 },
     "jitter": 0.1
   },
   // Scripts, the one-use commands on the belt (ProgramScripts, Paradigm Update B12): the belt's size, the chance a won
@@ -76,14 +76,14 @@
   // shared by its bodies; a summoned foe pays `summoned`, never scaled), +exact, +initiative, +clean (no damage taken),
   // +one_liner (won with one program); a treasure pays `treasure` x the layer's number.
   "cycles": {
-    "base": { "fight": 6, "elite": 16, "boss": 45, "summoned": 1 },
+    "base": { "fight": 12, "elite": 32, "boss": 90, "summoned": 2 },
     "layer": [1.0, 1.25, 1.5, 1.75],
     "difficulty": { "beginner": 1.0, "programmer": 1.25 },
-    "exact": 1,
-    "initiative": 1,
-    "clean": 5,
-    "one_liner": 3,
-    "treasure": 20
+    "exact": 2,
+    "initiative": 2,
+    "clean": 10,
+    "one_liner": 6,
+    "treasure": 40
   },
   // Initiative: a foe your program lands before (its tempo is not below the program's work) takes 25% more from it.
   "initiative": 0.25,

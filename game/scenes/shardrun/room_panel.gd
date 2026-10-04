@@ -38,6 +38,135 @@ func _reward() -> void:
 	var state := session.state
 	var catalog := session.catalog
 	var reward: Dictionary = state.get("reward", {})
+	if state.get("playstyle", "") != "program":
+		_legacy_reward(state, catalog, reward)
+		return
+	var title := Text.t("An opened cache")
+	if reward.has("shards"):
+		title = Text.t("Shards in the rubble")
+	elif reward.has("chest"):
+		title = Text.t("A sealed cache")
+	elif reward.has("cursed_relic"):
+		title = Text.t("A curse has bound itself")
+	add_child(Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), _wallet(int(state.get("cycles", 0)))], 12))
+	var choices := Ui.vbox([], 10)
+	var payout: VBoxContainer
+	if reward.has("receipt") or reward.has("script"):
+		payout = Ui.vbox([], 10)
+	if reward.has("receipt"):
+		payout.add_child(_receipt(reward.receipt, int(state.get("cycles", 0))))
+	if reward.has("script"):
+		payout.add_child(_script_reward(String(reward.script)))
+	if reward.has("chest"):
+		var chance := roundi(float(reward.chest.curse_chance) * 100.0)
+		var warning := run_on(
+			[
+				Text.f(
+					"Curse chance: %d%%. Opening may bind a cursed relic instead of offering helpful relics.", [chance]
+				),
+				Text.t("Leaving it unopened is safe.")
+			]
+		)
+		var chest_copy := Ui.vbox(
+			[
+				Ui.label(warning, "Narration", true),
+				Ui.label(Text.t("At a rest, you can cleanse one cursed relic instead of healing."), "Muted", true)
+			],
+			4
+		)
+		var open := Ui.button(Text.t("Open the cache"), _ask({"type": "open-chest"}), "PrimaryButton")
+		choices.add_child(
+			Ui.panel(
+				Ui.hbox(
+					[Ui.picture("shardrun/map-prop-treasure", Vector2(72, 72), "◇"), Ui.expand(chest_copy), open], 12
+				)
+			)
+		)
+	if reward.has("cursed_relic"):
+		choices.add_child(
+			Ui.label(Text.t("The curse is already bound to you. Leaving does not remove it."), "Narration", true)
+		)
+		var curse: Dictionary = catalog.relics.get(
+			reward.cursed_relic, {"id": reward.cursed_relic, "name": "?", "summary": "", "rarity": ""}
+		)
+		choices.add_child(Cards.relic(curse, null, Vector2(64, 64)))
+	if reward.has("spell"):
+		var offered: Dictionary = reward.spell
+		var text := Text.f(
+			"The guardian's core holds a spell of its own: %s, with %d empty slots.",
+			[Text.t(offered.name), int(offered.capacity)]
+		)
+		choices.add_child(
+			Ui.panel(
+				Ui.hbox(
+					[
+						Ui.picture("shardrun/map-boss", Vector2(72, 72), "✦"),
+						Ui.expand(Ui.label(text, "Narration", true)),
+						Ui.button(
+							Text.f("Claim %s", [Text.t(offered.name)]), _ask({"type": "claim-spell"}), "PrimaryButton"
+						)
+					],
+					12
+				)
+			)
+		)
+	if reward.has("relics"):
+		var relics: Array = reward.relics
+		choices.add_child(Ui.label(Text.t("A relic") if relics.size() == 1 else Text.t("Choose a relic"), "Subheading"))
+		var row := Ui.flow([], 8)
+		for relic_id: String in relics:
+			var relic: Dictionary = catalog.relics.get(relic_id, {})
+			var claim := Ui.button(
+				Text.t("Claim"), _ask({"type": "claim-relic", "relic_id": relic_id}), "PrimaryButton"
+			)
+			var face := Cards.relic(relic, claim, Vector2(64, 64))
+			face.custom_minimum_size.x = 310
+			row.add_child(face)
+		choices.add_child(row)
+	if reward.has("shards"):
+		var deck := ShardrunRules.is_deck(state)
+		choices.add_child(
+			Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading")
+		)
+		var joins := (
+			Text.t("It is shuffled into your deck for every fight from now on.")
+			if deck
+			else Text.t("It joins your spare shards; slot it into a spell before the next fight.")
+		)
+		choices.add_child(Ui.label(joins, "Muted", true))
+		var cards := Ui.flow([], 8)
+		for shard_id: String in reward.shards:
+			var shard: Dictionary = catalog.shards.get(shard_id, {})
+			var name := Text.t(shard.get("name", shard_id))
+			var verb := Text.f("Add %s to the deck", [name]) if deck else Text.f("Take %s", [name])
+			var take := Ui.button(verb, _ask({"type": "take", "shard_id": shard_id}))
+			take.theme_type_variation = "PrimaryButton"
+			var face := CardFace.create(shard_id, catalog, state.language, session.show_summaries(), CardFace.Size.DECK)
+			face.draggable = false
+			var option := Ui.vbox([face, Ui.label(Text.t(String(shard.get("summary", ""))), "Muted", true), take], 6)
+			option.custom_minimum_size.x = 204
+			cards.add_child(Ui.panel(option, "Card"))
+		choices.add_child(cards)
+		var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
+		if ProgramRewards.applies(state):
+			skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
+		choices.add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
+	var body := Ui.hbox([], 14)
+	choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	choices.size_flags_stretch_ratio = 2.4
+	body.add_child(choices)
+	if payout != null:
+		payout.custom_minimum_size.x = 350
+		payout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		payout.size_flags_stretch_ratio = 1.0
+		body.add_child(payout)
+	add_child(Ui.expand(body, true))
+	var leave := Text.t("Leave it unopened") if reward.has("chest") else Text.t("Leave the rest and move on")
+	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}), "PrimaryButton")]))
+
+
+## Spellforge and the card run keep their original reward layout; the compact ledger belongs to program runs.
+func _legacy_reward(state: Dictionary, catalog: Dictionary, reward: Dictionary) -> void:
 	var title := Text.t("An opened cache")
 	if reward.has("shards"):
 		title = Text.t("Shards in the rubble")
@@ -46,10 +175,8 @@ func _reward() -> void:
 	elif reward.has("cursed_relic"):
 		title = Text.t("A curse has bound itself")
 	add_child(Ui.label(title, "Heading"))
-	if reward.has("receipt"):
-		add_child(_receipt(reward.receipt, int(state.get("cycles", 0))))
 	if reward.has("script"):
-		_script_reward(String(reward.script))
+		add_child(_script_reward(String(reward.script)))
 	if reward.has("chest"):
 		var chance := roundi(float(reward.chest.curse_chance) * 100.0)
 		var warning := run_on(
@@ -98,7 +225,6 @@ func _reward() -> void:
 			else Text.t("It joins your spare shards; slot it into a spell before the next fight.")
 		)
 		add_child(Ui.label(joins, "Muted", true))
-		# One shard to a row, its code beside it at full width: the code is what the choice is about.
 		var column := Ui.vbox([], 10)
 		for shard_id: String in reward.shards:
 			var shard: Dictionary = catalog.shards.get(shard_id, {})
@@ -109,74 +235,80 @@ func _reward() -> void:
 			column.add_child(Cards.shard(shard, state.language, session.show_summaries(), 12, take, true))
 		add_child(column)
 		var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
-		if ProgramRewards.applies(state):
-			skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
 		add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
 	var leave := Text.t("Leave it unopened") if reward.has("chest") else Text.t("Leave the rest and move on")
 	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}))]))
 
 
-## What a fight paid, in the look of a profiler's `time` output.
+func _wallet(cycles: int) -> Control:
+	var wallet := Ui.hbox(
+		[Ui.picture("shardrun/cycles", Vector2(34, 34), "⟳"), Ui.label("%d" % cycles, "Subheading")], 6
+	)
+	wallet.tooltip_text = Text.t("Cycles: what you earn for kills, and spend at the Registry.")
+	return wallet
+
+
+## A compact payout panel keeps the individual kill math visible without pushing the card choices down the room.
 func _receipt(receipt: Dictionary, wallet: int) -> Control:
-	var lines: Array[String] = ["$ time ./main"]
+	var lines := Ui.flow([], 6)
 	for line: Dictionary in receipt.lines:
 		var label := Text.t(String(line.label))
-		var pad := " ".repeat(maxi(1, 26 - label.length()))
-		lines.append("%s%s%s%d" % [label, pad, "+ " if line.kind == "bonus" else "  ", int(line.amount)])
-	lines.append("─".repeat(34))
-	lines.append(Text.f("cycles %d   (total %d)", [int(receipt.total), wallet]))
-	var label := Label.new()
-	label.text = "\n".join(lines)
-	label.add_theme_font_override("font", UiTheme.code_font())
-	label.add_theme_font_size_override("font_size", 15)
-	label.add_theme_color_override("font_color", UiTheme.TEXT)
-	return Ui.hbox([Ui.picture("shardrun/cycles", Vector2(48, 48), "⟳"), Ui.panel(label, "Sunken")], 12)
+		var amount := "+%d" % int(line.amount) if line.kind == "bonus" else "%d" % int(line.amount)
+		var chip := Ui.hbox([Ui.label(label, "Faint"), Ui.tint(Ui.label(amount, "Subheading"), UiTheme.TEAL)], 8)
+		lines.add_child(Ui.panel(chip, "Sunken"))
+	var summary := Ui.label(Text.f("cycles %d   (total %d)", [int(receipt.total), wallet]), "Subheading")
+	var body := Ui.vbox(
+		[
+			Ui.hbox(
+				[
+					Ui.picture("shardrun/cycles", Vector2(34, 34), "⟳"),
+					Ui.label("$ time ./main", "Faint"),
+					Ui.spacer(),
+					summary
+				],
+				8
+			),
+			lines
+		],
+		6
+	)
+	return Ui.panel(body, "Card")
 
 
 ## A script a fight left behind: take it, dropping one of the belt's when it is full.
-func _script_reward(id: String) -> void:
+func _script_reward(id: String) -> Control:
 	var state := session.state
 	var script: Dictionary = session.catalog.programs.scripts.get(id, {})
 	if script.is_empty():
-		return
-	add_child(Ui.label(Text.t("A script"), "Subheading"))
+		return Ui.spacer()
 	var full := (state.get("belt", []) as Array).size() >= ProgramScripts.belt_size(state, session.catalog)
-	var head := (
-		Ui
-		. hbox(
-			[
-				Ui.picture("shardrun/script-" + id, Vector2(48, 48), "📜"),
-				Ui.vbox(
-					[
-						Ui.tint(Ui.label(Text.t(script.name), "Subheading"), UiTheme.rarity(String(script.rarity))),
-						Ui.label(Text.t(script.summary), "", true)
-					],
-					2
-				),
-			],
-			12
-		)
+	var text := Ui.vbox(
+		[
+			Ui.label(Text.t("A script"), "Faint"),
+			Ui.tint(Ui.label(Text.t(script.name), "Subheading"), UiTheme.rarity(String(script.rarity))),
+			Ui.label(Text.t(script.summary), "Muted", true)
+		],
+		2
 	)
-	add_child(head)
+	var actions := Ui.flow([], 6)
 	if not full:
-		add_child(
-			Ui.hbox(
-				[Ui.button(Text.f("Take %s", [Text.t(script.name)]), _ask({"type": "take-script"}), "PrimaryButton")]
-			)
+		actions.add_child(
+			Ui.button(Text.f("Take %s", [Text.t(script.name)]), _ask({"type": "take-script"}), "PrimaryButton")
 		)
-		return
-	add_child(Ui.label(Text.t("Your belt is full. Drop one script to take it."), "Muted", true))
-	var belt: Array = state.belt
-	var row := Ui.flow([], 8)
-	for index in belt.size():
-		var held: Dictionary = session.catalog.programs.scripts.get(belt[index], {})
-		row.add_child(
-			Ui.button(
-				Text.f("Drop %s", [Text.t(String(held.get("name", belt[index])))]),
-				_ask({"type": "take-script", "drop_index": index})
+	else:
+		text.add_child(Ui.label(Text.t("Your belt is full. Drop one script to take it."), "Muted", true))
+		var belt: Array = state.belt
+		for index in belt.size():
+			var held: Dictionary = session.catalog.programs.scripts.get(belt[index], {})
+			actions.add_child(
+				Ui.button(
+					Text.f("Drop %s", [Text.t(String(held.get("name", belt[index])))]),
+					_ask({"type": "take-script", "drop_index": index})
+				)
 			)
-		)
-	add_child(row)
+	return Ui.panel(
+		Ui.hbox([Ui.picture("shardrun/script-" + id, Vector2(72, 72), "📜"), Ui.expand(text), actions], 10), "Card"
+	)
 
 
 func _rest() -> void:

@@ -417,7 +417,7 @@ def outline(rgba_u8: np.ndarray, color: str) -> np.ndarray:
     return out
 
 
-def drop_fragments(rgba: np.ndarray, keep_fraction: float) -> np.ndarray:
+def drop_fragments(rgba: np.ndarray, keep_fraction: float, keep_largest_only: bool = False) -> np.ndarray:
     """Remove specks background removal left floating around the subject: any connected blob smaller than
     `keep_fraction` of the largest one. Labeled on a 256px copy of the mask, which is plenty to tell blobs apart."""
     height, width = rgba.shape[:2]
@@ -441,7 +441,11 @@ def drop_fragments(rgba: np.ndarray, keep_fraction: float) -> np.ndarray:
                     stack.append((ny, nx))
         sizes.append(count)
     largest = max(sizes)
-    keep = np.isin(labels, [i for i, size in enumerate(sizes) if i and size >= largest * keep_fraction])
+    if keep_largest_only:
+        keep_labels = [int(np.argmax(sizes[1:])) + 1] if largest else []
+    else:
+        keep_labels = [i for i, size in enumerate(sizes) if i and size >= largest * keep_fraction]
+    keep = np.isin(labels, keep_labels)
     keep_full = np.asarray(Image.fromarray(keep.astype(np.uint8) * 255).resize((width, height), Image.Resampling.NEAREST)) > 0
     out = rgba.copy()
     out[..., 3] = np.where(keep_full, rgba[..., 3], 0)
@@ -457,7 +461,9 @@ def post_sprite(rgba: np.ndarray, post: dict) -> Image.Image:
         # channel is above `key_light` goes, so only subjects without white parts should ask for it.
         rgba = rgba.copy()
         rgba[..., 3] = np.where(rgba[..., :3].min(axis=2) > post["key_light"], 0, rgba[..., 3])
-    rgba = drop_fragments(rgba, post.get("keep_fraction", 0.08))
+    rgba = drop_fragments(
+        rgba, post.get("keep_fraction", 0.08), post.get("keep_largest_component", False)
+    )
     solid = rgba[..., 3] > 0.5
     ys, xs = np.nonzero(solid)
     if len(xs) == 0:
@@ -922,8 +928,9 @@ def contact_sheet(entries: list[tuple[str, Image.Image]], path: Path, cell: int 
     sheet = Image.new("RGBA", (columns * cell, rows * (cell + 14)), (38, 40, 34, 255))
     draw = ImageDraw.Draw(sheet)
     for index, (label, image) in enumerate(entries):
-        factor = max(1, min((cell - 8) // image.width, (cell - 8) // image.height))
-        scaled = image.convert("RGBA").resize((image.width * factor, image.height * factor), Image.Resampling.NEAREST)
+        factor = min(1.0, (cell - 8) / image.width, (cell - 8) / image.height)
+        size = (max(1, round(image.width * factor)), max(1, round(image.height * factor)))
+        scaled = image.convert("RGBA").resize(size, Image.Resampling.LANCZOS)
         col, row = index % columns, index // columns
         x = col * cell + (cell - scaled.width) // 2
         y = row * (cell + 14) + (cell - scaled.height) // 2

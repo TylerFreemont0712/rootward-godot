@@ -1075,9 +1075,17 @@ files.
    is free.
 8. **Legendary relics in the Registry**: at 1% (B7.1), priced 450.
 
+## B15. Map art direction (answered 2026-10-04; clarified 2026-10-05)
+
+The shared Shardrun/Spellforge room markers are open to replacement, with fantasy art remaining the main visual language.
+Programmer humour and hardware references belong in a few small background easter eggs and subtle marks on the room icons.
+Keep the existing `map-machine-shaft` layer backdrop. Use a daemon for ordinary fights and a distinct fantasy-programming
+creature such as a stack-overflow serpent for elites; give the other room kinds clear fantasy silhouettes. Enlarge the
+non-guardian nodes enough to read their art.
+
 ---
 
-# Current step (2026-10-04, evening)
+# Historical recovery note (2026-10-04, evening; superseded below)
 
 **Where the work stopped.** The implementing session ran out of credits while it was integrating slices 1 to 3. Its
 work was recovered, checked and committed in one commit after slice 0's. The checklist lives in `docs/PLAN.md`
@@ -1348,3 +1356,69 @@ are drawn shapes; `map-prop-shop/issue` are for the room panels). A look at the 
 - The Japanese for a new string goes in a new `locales/ja/*.jsonc` (the loader reads every file; a string translated twice is
   an error, and `scripts/locale.sh ja --missing` names it).
 - The working tree at the end: only `.obsidian/` (the player's) and art still rendering are untracked.
+
+---
+
+# Completion handoff (2026-10-05; supersedes the recovered in-progress note above)
+
+## Delivered
+
+- **Paradigm/focus picks:** the law and focus relic pictures now appear on their respective draft screens. The restored
+  focus-table relic uses its source SVG; the other portraits are loaded through `Art` at a 68 px display size. See
+  [`strategies-en.png`](research/balance-probe/paradigm-update/screenshots/strategies-en.png) and
+  [`focus-en.png`](research/balance-probe/paradigm-update/screenshots/focus-en.png).
+- **Program loot:** rewards now use a dedicated, scrollable two-column layout. Card faces stay together on the left;
+  the receipt, cycle payout and script/relic additions have their own ledger on the right. Spellforge and the card run
+  keep their previous reward flow. See [`loot-en.png`](research/balance-probe/paradigm-update/screenshots/loot-en.png).
+- **Shardrun/Spellforge map:** all layer backdrops use the original `map-machine-shaft` image. New room markers keep
+  fantasy as the main language: a daemon for ordinary fights, a stack-overflow serpent for elites, and distinct
+  fantasy silhouettes for rest, forge, treasure, shop and issue. Two small 404-style plaques carry the programming
+  jokes. Ordinary nodes have a 42 px radius and larger icon scale. The Next Rooms drawer now scrolls and uses fixed-height
+  icon rows. See [`map-fantasy.png`](research/balance-probe/paradigm-update/screenshots/map-fantasy.png) and the
+  [`marker contact sheet`](research/balance-probe/paradigm-update/art-review/map-markers.png).
+- **Art integration:** the relic and marker contact sheets are reviewed at
+  [`relics.png`](research/balance-probe/paradigm-update/art-review/relics.png) and
+  [`map-markers.png`](research/balance-probe/paradigm-update/art-review/map-markers.png). Generated issue, script,
+  cycle, registry, focus and room art is present in `game/assets/shardrun/` and consumed by the relevant views.
+- **Hand-card concepts:** [`Concept/v0.2/cards/index.html`](../Concept/v0.2/cards/index.html) presents four footprints
+  and layouts (164×232, 184×258, 152×216 and 224×184), each using the same real `import copy` example. The fixed
+  `object-fit: contain` art windows keep edge-filling icons in frame. This is a concept page; no production hand-card
+  layout was changed.
+- **Locale and room captures:** the complete Registry, Issue, reward, fight, map and rest capture set is in
+  the [`final-handoff capture index`](research/balance-probe/paradigm-update/screenshots/final-handoff/README.md),
+  with English, Japanese and C++ variants. The Issue captures cover the choice screen, an ordinary settled result and a
+  Will It Halt quiz.
+
+## Balance and follow-up
+
+The valid controlled sample is documented in the [paired balance report](research/balance-probe/paradigm-update/report.md).
+It compares 30 matched runs at commit `fb72306` and 30 updated runs with the same bounded 128-candidate sampler. The
+matched result is 10/30 wins (33.3%) before and 12/30 (40.0%) after, with seven loss-to-win and five win-to-loss seeds.
+The intervals overlap widely, so this sample does not establish a reliable win-rate increase. The earlier 12/30
+exhaustive baseline is retained as historical context, not treated as a controlled comparison.
+
+The economy targets are met: first-Registry cycles average 178.1, purchases 2.00, and scripts used per fight 0.50.
+Own-paradigm deck share is 68.3%; other-paradigm share is 9.4%, 0.6 points below its target. Observed misses remain:
+Greedy and Search & Index each won 0/6; Divide & Conquer won 5/6; only Divide & Conquer's law cleared 60% activation;
+Act 1 ordinary fights averaged 1.56 turns; Issues averaged 3.10 visits per run. No controlled one-card ablation was
+run. These are follow-up balance work, and slice 13 remains open in [`PLAN.md`](PLAN.md).
+
+## Validation
+
+- `scripts/lint.sh`: clean.
+- `scripts/validate.sh`: 77 shards, 299 program cards, 47 relics and 15 foes; 1,022 worked examples per language,
+  with zero errors or warnings.
+- `scripts/locale.sh ja --missing`: 1,282/1,282 content strings, 515/515 interface strings and 208/208 rule strings
+  translated.
+- `scripts/build-cpp.sh`: program and Spellforge runtimes rebuilt; 1,172 program and 77 Spellforge functions, with
+  zero mutants left out of the build.
+- Mutation census completed. End-to-end Issue quiz smoke passed all four quiz kinds in Python, JavaScript and C++.
+- `scripts/test.sh`: 542/542 test cases across 76 suites, zero errors, failures or orphan nodes; exit code 0. Godot
+  still prints a shutdown warning that four `ObjectDB` instances and two resources remain in use.
+- `scripts/test.sh -a res://test/scenes/shardrun_screen_test.gd`: 9/9, zero orphans, exit code 0. This check caught
+  and fixed two unattached empty loot payout columns: the layout now creates that column only when a receipt or script
+  is present.
+- Screenshots were taken sequentially after art generation. Temporary test diagnostics were removed.
+
+The older “Current step (2026-10-04, evening)” section above records where work was recovered. Its remaining-work list
+is historical; this handoff and the linked report describe the current state. Keep `.obsidian/` out of any commit.

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rootward · v0.2 Card Faces</title>
+  <link rel="stylesheet" href="cards.css">
+</head>
+<body>
+  <header class="page-head">
+    <p class="eyebrow">ROOTWARD / CONCEPT / V0.2</p>
+    <h1>Four card faces.<br><span>One honest example.</span></h1>
+    <p class="lede">A first pass at hand cards that keep the art inside its frame and make the useful labels readable at a glance.</p>
+    <div class="legend"><span class="legend-role">ROLE · what it does</span><span class="legend-cost">COST · mana</span><span class="legend-speed">COMPLEXITY · work</span></div>
+  </header>
+
+  <main>
+    <section class="gallery" aria-label="Card face concepts">
+      <article class="concept">
+        <div class="concept-head"><span>A / Console</span><span>164 × 232</span></div>
+        <div class="card card-console" aria-label="Console card concept: import copy">
+          <div class="console-top"><span class="cost">1<span>◆</span></span><span class="paradigm">DIVIDE &amp; CONQUER</span></div>
+          <h2>import copy</h2>
+          <div class="art art-console"><img src="../../../game/assets/shardrun/card-import-copy.png" alt="Amethyst copy crystal" /></div>
+          <div class="role-line"><span class="role">IMPORT</span><span class="hook">BEFORE STRIKE</span></div>
+          <div class="speed"><b>O(1)</b><span>CONSTANT</span></div>
+          <div class="keyword">↳ COPY LAST ATTACK · HALF POWER</div>
+        </div>
+        <p class="note">Closest to today’s portrait card. The type band is enlarged and split from the role, so “constant” can’t be mistaken for “strike.”</p>
+      </article>
+
+      <article class="concept">
+        <div class="concept-head"><span>B / Big-O first</span><span>184 × 258</span></div>
+        <div class="card card-big-o" aria-label="Big-O-first card concept: import copy">
+          <div class="big-o-top"><span class="cost">1<span>◆</span></span><span class="role">IMPORT</span></div>
+          <h2>import copy</h2>
+          <div class="art art-big-o"><img src="../../../game/assets/shardrun/card-import-copy.png" alt="Amethyst copy crystal" /></div>
+          <div class="complexity"><strong>O(1)</strong><span>CONSTANT WORK</span></div>
+          <div class="hook-row"><span>HOOK</span><b>BEFORE STRIKE</b></div>
+          <p>Copies the last attack bolt at half power.</p>
+          <div class="paradigm">D&amp;C <i>·</i> MERGER</div>
+        </div>
+        <p class="note">A larger, slower read. The complexity headline gets the strongest contrast; art has a fixed window with generous inset.</p>
+      </article>
+
+      <article class="concept">
+        <div class="concept-head"><span>C / Terminal tile</span><span>152 × 216</span></div>
+        <div class="card card-terminal" aria-label="Terminal tile card concept: import copy">
+          <div class="terminal-bar"><span>▰ PROGRAM</span><span class="cost">1◆</span></div>
+          <div class="terminal-name">import<br><b>copy</b></div>
+          <div class="terminal-main">
+            <div class="art art-terminal"><img src="../../../game/assets/shardrun/card-import-copy.png" alt="Amethyst copy crystal" /></div>
+            <div class="terminal-meta"><span class="role">IMPORT</span><b>O(1)</b><small>CONSTANT</small></div>
+          </div>
+          <div class="terminal-hook"><span>HOOK</span> BEFORE STRIKE</div>
+          <div class="terminal-footer">COPY LAST BOLT ↗</div>
+        </div>
+        <p class="note">Compact and deliberately typographic. The illustration stays secondary so cost, role and speed survive a smaller hand slot.</p>
+      </article>
+
+      <article class="concept">
+        <div class="concept-head"><span>D / Wide cartridge</span><span>224 × 184</span></div>
+        <div class="card card-wide" aria-label="Wide cartridge card concept: import copy">
+          <div class="wide-art"><div class="art art-wide"><img src="../../../game/assets/shardrun/card-import-copy.png" alt="Amethyst copy crystal" /></div><span class="cost">1◆</span></div>
+          <div class="wide-info">
+            <div class="paradigm">MERGER / D&amp;C</div>
+            <h2>import<br>copy</h2>
+            <div class="wide-role"><span class="role">IMPORT</span><span class="hook">↳ BEFORE STRIKE</span></div>
+            <div class="wide-speed"><b>O(1)</b><span>CONSTANT</span></div>
+            <p>Copies the last attack at half power.</p>
+          </div>
+        </div>
+        <p class="note">Horizontal, like a small program cartridge. It gives the image room without letting it push the labels outside the card.</p>
+      </article>
+    </section>
+
+    <section class="principles">
+      <h2>What these concepts protect</h2>
+      <div class="principle-grid">
+        <p><b>Image safe area</b><br>Keep the whole source illustration visible with contain-fit inside a fixed viewport. Clip only the viewport; never crop the asset to make it fit.</p>
+        <p><b>Different labels stay different</b><br>Role (IMPORT / STRIKE / WARD) gets one chip. Complexity (O(1) / O(n)) gets a separate high-contrast block.</p>
+        <p><b>Hold-card hierarchy</b><br>Name and cost first, then art, then role and work. Summary text can stay in hover details when a compact footprint needs the room.</p>
+        <p><b>Scale changes the layout</b><br>Compact hides supporting copy; larger cards can show one sentence. It never shrinks every label until it is unreadable.</p>
+      </div>
+      <p class="source">Shared example: <b>import copy</b> (cost 1, role Import, O(1), before-Strike hook). Existing generated icon used as-is from <code>game/assets/shardrun/card-import-copy.png</code>.</p>
+    </section>
+  </main>
+  <footer>CONCEPT ONLY · NO LIVE CARD UI CHANGED · ROOTWARD V0.2</footer>
+</body>
+</html>

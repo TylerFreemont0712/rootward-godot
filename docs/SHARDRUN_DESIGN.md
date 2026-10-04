@@ -328,8 +328,14 @@ import `Linter` (bugs are removed as they are drawn), the script `gc.collect()`.
 
 ## 7. The Artificer's card and combo bank
 
-Each is a real algorithm that fits the `f(bolts, battle) -> bolts` contract unless marked (state, hook). Twenty-three
-cards exist; about forty-five is the target.
+The table below preserves the original bank snapshot. The completed Paradigm Update expands it substantially; see
+[ParadigmUpdate.md](ParadigmUpdate.md) for the current laws, focuses, card bank, economy, Registry, Issues and scripts.
+The delivered catalog now has five laws, fifteen focuses and 80 new algorithms with `+` refactors and Python,
+JavaScript, C++ and Japanese support. New offers retain the selected paradigm while leaving routes to neutral and other
+paradigm cards. The program map also has Issues, a fixed Registry row and new room art; Spellforge keeps its own rules.
+
+Each original card below is a real algorithm that fits the `f(bolts, battle) -> bolts` contract unless marked
+(state, hook). The original bank had twenty-three cards; the expanded bank supersedes that count.
 
 | Card | Paradigm | Role | Class | The algorithm, and what it is for |
 |---|---|---|---|---|

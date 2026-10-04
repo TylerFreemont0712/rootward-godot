@@ -849,3 +849,10 @@ to resolve one class name, look for that class's own parse error first, and run 
 A screenshot is drawn on the GPU, and so is an SDXL render. With ComfyUI at 100% a screenshot takes minutes or hangs.
 Render the art and take the pictures one after the other, never at once.
 
+## 2026-10-04 — Issue quizzes need the sandbox trace, not its work total
+
+The Will It Halt Issue reads the executed card's trace to decide whether its program finished inside the budget.
+`SpellRuns` keeps the numeric total in `work` and the ordered steps in `trace`; treating `work` as an array silently
+made this path fail. Read `trace`, convert it through `ProgramRules.stages`, and keep the shared work total numeric.
+End-to-end Issue flows now pass for Rubber Duck, Oracle Test Suite, Big-O Quiz and Will It Halt in Python, JavaScript
+and C++.

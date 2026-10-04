@@ -2,7 +2,7 @@
   "id": "ulimit",
   "name": "ulimit",
   "rarity": "common",
-  "price": 40,
+  "price": 80,
   "summary": "A foe's next attack deals half.",
   "target": "foe",
   "when": "fight",

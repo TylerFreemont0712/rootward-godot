@@ -2,7 +2,7 @@
   "id": "git-stash",
   "name": "git stash",
   "rarity": "uncommon",
-  "price": 45,
+  "price": 90,
   "summary": "Put your whole hand aside: it returns next turn, on top of the new draw.",
   "target": "none",
   "when": "fight",

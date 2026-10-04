@@ -75,7 +75,14 @@ func _drive(state: Dictionary, choice: int) -> Dictionary:
 				if not issue.quiz.ready:
 					var runs: Array = []
 					for version: Dictionary in issue.quiz.plan.get("versions", []):
-						runs.append({"ok": true, "bolts": [{"power": 3 + runs.size(), "element": "none"}], "work": []})
+						runs.append(
+							{
+								"ok": true,
+								"bolts": [{"power": 3 + runs.size(), "element": "none"}],
+								"work": 0,
+								"trace": []
+							}
+						)
 					var question := ProgramQuiz.build(issue.quiz.plan, runs, state, catalog)
 					state = _send(state, {"type": "issue-quiz-ready", "question": question})
 				else:
@@ -195,6 +202,17 @@ func test_a_big_o_question_has_one_right_answer() -> void:
 	var built := ProgramQuiz.build(plan, [], state, catalog)
 	assert_int((built.options as Array).size()).is_equal(3)
 	assert_int(int(built.answer)).is_between(0, 2)
+
+
+func test_will_it_halt_uses_the_trace_instead_of_the_numeric_work_total() -> void:
+	var state := _run_state()
+	var plan := ProgramQuiz.plan(state, "halt", catalog)
+	var built := ProgramQuiz.build(
+		plan, [{"ok": true, "bolts": [], "work": ProgramRules.budget(state, catalog) + 1, "trace": []}], state, catalog
+	)
+	assert_str(String(built.explanation)).contains(
+		"It did 0 operations against a budget of %d." % ProgramRules.budget(state, catalog)
+	)
 
 
 func test_the_rubber_duck_relic_waives_a_wrong_answers_stake() -> void:

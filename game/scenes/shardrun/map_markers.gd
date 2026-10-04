@@ -45,7 +45,7 @@ static func draw_room(
 	if icon == null:
 		canvas.draw_circle(at, radius * 0.3, hue)
 		return
-	var side := radius * 1.3
+	var side := radius * 1.45
 	var tint := Color.WHITE.lerp(DIMMED, 1.0 - lit)
 	canvas.draw_texture_rect(icon, Rect2(at - Vector2(side, side) * 0.5, Vector2(side, side)), false, tint)
 

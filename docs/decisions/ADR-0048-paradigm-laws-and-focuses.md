@@ -1,7 +1,7 @@
 # ADR-0048: paradigm laws, focuses and program memory
 
-- Status: implementation in progress
-- Date: 2026-10-04
+- Status: accepted (balance follow-up open)
+- Date: 2026-10-05
 - Related: ADR-0012, ADR-0016, ADR-0017, ADR-0018, ADR-0026, ADR-0046, ADR-0047;
   [ParadigmUpdate.md](../ParadigmUpdate.md), parts A and B.
 
@@ -50,4 +50,7 @@ The [baseline report](../research/balance-probe/paradigm-update/baseline.md) rec
 27.7% own-paradigm cards, 45.4% neutral and 26.8% other. Greedy and DP won 1/6 each; Brute Force
 and Divide & Conquer 3/6 each; Search 4/6. These small samples have wide uncertainty.
 
-Implementation gates and screenshots are recorded after integration. Balance conclusions wait for the paired report.
+Implementation gates, screenshots and the paired report are recorded in the [Paradigm Update handoff](../ParadigmUpdate.md)
+and [balance report](../research/balance-probe/paradigm-update/report.md). The 30-seed comparison meets the overall win-rate
+target and the economy targets after the payout/price adjustment; weak/strong paradigm rates, law activation, early
+fight length, the other-paradigm deck share and single-card ablation remain follow-up work.

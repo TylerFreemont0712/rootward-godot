@@ -133,6 +133,66 @@ func test_a_program_run_is_drafted_and_fought_through_the_screen() -> void:
 	await _settle()
 
 
+func test_paradigm_and_focus_picks_show_their_relic_art() -> void:
+	Game.use("program")
+	Game.session.saves.delete_run("program")
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-relic-picks")
+	var session := Game.session
+	var paradigm_id := String(session.state.draft.offers[0])
+	var paradigm := ProgramDraft.paradigm_of(session.catalog, paradigm_id)
+	var law_id := String(paradigm.law)
+	var law_view := DraftView.create(session)
+	add_child(law_view)
+	assert_bool(_shows_relic(law_view, law_id)).override_failure_message("law " + law_id).is_true()
+	law_view.free()
+
+	var picked: Dictionary = await session.command({"type": "pick-paradigm", "paradigm_id": paradigm_id})
+	assert_bool(picked.ok).is_true()
+	var focus_id := String(session.state.draft.focus_offers[0])
+	var focus := ProgramDraft.focus_of(session.catalog, paradigm_id, focus_id)
+	var focus_view := DraftView.create(session)
+	add_child(focus_view)
+	assert_bool(_shows_relic(focus_view, String(focus.relic))).override_failure_message("focus " + focus_id).is_true()
+	focus_view.free()
+	await _settle()
+
+
+func test_program_loot_shows_card_faces_beside_its_payout_ledger() -> void:
+	Game.use("program")
+	Game.session.saves.delete_run("program")
+	Game.session.start(SandboxJob.JAVASCRIPT, "beginner", "screen-loot-ledger")
+	var session := Game.session
+	session.state.status = "reward"
+	session.state.cycles = 36
+	session.state.reward = {
+		"shards": ["salvo", "fork", "ward"],
+		"receipt": {"lines": [{"label": "tally-wisp", "kind": "kill", "amount": 12}], "total": 12},
+		"script": "kill-9"
+	}
+	var loot := RoomPanel.create(session)
+	add_child(loot)
+	var body := loot.get_child(1) as HBoxContainer
+	assert_int(body.get_child_count()).is_equal(2)
+	assert_int(loot.find_children("*", "CardFace", true, false).size()).is_equal(3)
+	var script_icon := loot.find_children("*", "TextureRect", true, false).filter(
+		func(node: Node) -> bool:
+			var picture := node as TextureRect
+			return picture.texture != null and picture.texture.resource_path.ends_with("/script-kill-9.png")
+	)
+	assert_int(script_icon.size()).is_equal(1)
+	loot.queue_free()
+	await _settle()
+
+
+func _shows_relic(root: Node, relic_id: String) -> bool:
+	var expected := "res://assets/shardrun/relic-%s" % relic_id
+	for node: Node in root.find_children("*", "TextureRect", true, false):
+		var picture := node as TextureRect
+		if picture.texture != null and picture.texture.resource_path.get_basename() == expected:
+			return true
+	return false
+
+
 ## Lets the frames pass that free what the screen let go (Ui.clear queues it), so gdUnit does not count those nodes
 ## as orphans: after two frames there are none.
 func _settle() -> void:

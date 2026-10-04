@@ -2,7 +2,7 @@
   "id": "strace",
   "name": "strace",
   "rarity": "uncommon",
-  "price": 60,
+  "price": 120,
   "summary": "One foe's trait is off until your next turn.",
   "target": "foe",
   "when": "fight",

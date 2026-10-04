@@ -29,6 +29,30 @@ BACKDROP_STYLE = {
     "rmbg": False, "candidates": 2,
     "post": {"kind": "picture", "size": [1344, 768], "colors": 128},
 }
+MAP_ICON_STYLE = {
+    "checkpoint": "sd_xl_base_1.0.safetensors",
+    "prefix": "(exactly one object, solo object:1.4), simple hand-painted fantasy roguelite map icon, close-up of one recognizable fantasy object, sculpted bronze, wood or stone, deep plum shadows, warm amber light, bold readable silhouette, no frame or badge; include at most one tiny computer-reference detail hidden as a square cursor rune, ",
+    "suffix": ", centered isolated object, whole silhouette visible, plain white background, crisp at small size",
+    "negative": "blurry, text, readable letters, numbers, watermark, signature, logo, people, character body, room scene, landscape, modern computer, CRT monitor, keyboard, server rack, motherboard, extra objects, floating objects, scattered crystals, extra gems, extra weapons, surrounding mini-icons, multiple variations, collection, lineup, collage, sprite sheet, grid, medallion, emblem, decorative frame, badge border, cropped, photo, photorealistic, 3d render",
+    "width": 1024,
+    "height": 1024,
+    "steps": 28,
+    "cfg": 6,
+    "sampler": "euler_ancestral",
+    "scheduler": "normal",
+    "rmbg": True,
+    "candidates": 1,
+    "post": {
+        "kind": "sprite",
+        "size": [320, 320],
+        "transparent": True,
+        "colors": 160,
+        "saturation": 1.08,
+        "keep_fraction": 0.65,
+        "keep_largest_component": True,
+        "anchor": "center",
+    },
+}
 
 ENGINE_CARDS = {
     "prefetch": "a bronze hand reaching into a card-shaped slot ahead of a moving crystal, two card backs peeking out",
@@ -43,7 +67,8 @@ def seed_of(name: str) -> int:
 
 
 def asset(asset_id: str, out: str, subject: str, style: str = "program-icon", **extra) -> dict:
-    return {"id": asset_id, "out": out, "style": style, "seed": seed_of(asset_id), "prompt": f"({subject}:1.35)", "pick": 0, **extra}
+    seed = extra.pop("seed", seed_of(asset_id))
+    return {"id": asset_id, "out": out, "style": style, "seed": seed, "prompt": f"({subject}:1.35)", "pick": 0, **extra}
 
 
 def card_subjects() -> dict[str, str]:
@@ -73,7 +98,15 @@ def extras() -> list[dict]:
 def main() -> None:
     assets = [asset(f"shardrun-card-{cid}", f"shardrun/card-{cid}", subject) for cid, subject in sorted(card_subjects().items())]
     assets += extras()
-    manifest = {"comfy_url": "http://127.0.0.1:8188", "styles": {"program-icon": STYLE, "program-backdrop": BACKDROP_STYLE}, "assets": assets}
+    manifest = {
+        "comfy_url": "http://127.0.0.1:8188",
+        "styles": {
+            "program-icon": STYLE,
+            "program-map-icon": MAP_ICON_STYLE,
+            "program-backdrop": BACKDROP_STYLE,
+        },
+        "assets": assets,
+    }
     (HERE / "manifest-paradigm-update.json").write_text(json.dumps(manifest, indent=1) + "\n")
     print(f"{len(assets)} assets")
 

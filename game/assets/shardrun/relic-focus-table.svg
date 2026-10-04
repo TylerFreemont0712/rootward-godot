@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <defs>
+    <radialGradient id="bronze" cx="36%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#f4d28a"/>
+      <stop offset=".45" stop-color="#a86e3e"/>
+      <stop offset="1" stop-color="#3a2431"/>
+    </radialGradient>
+    <radialGradient id="well" cx="40%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#282235"/>
+      <stop offset="1" stop-color="#100f19"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0b5"/>
+      <stop offset=".5" stop-color="#d79a4e"/>
+      <stop offset="1" stop-color="#76503b"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <circle cx="160" cy="160" r="145" fill="#160f19" stroke="#352332" stroke-width="8"/>
+  <circle cx="160" cy="160" r="137" fill="url(#bronze)" stroke="#f1cf89" stroke-width="4"/>
+  <circle cx="160" cy="160" r="119" fill="#4c2e34" stroke="#261c28" stroke-width="8"/>
+  <circle cx="160" cy="160" r="108" fill="url(#well)" stroke="url(#gold)" stroke-width="5"/>
+  <circle cx="160" cy="160" r="98" fill="none" stroke="#8b5838" stroke-width="2"/>
+  <path d="M160 45 170 58 160 68 150 58ZM275 160l-13 10-10-10 10-10ZM160 275l-10-13 10-10 10 10ZM45 160l13-10 10 10-10 10Z" fill="url(#gold)" stroke="#3a2431" stroke-width="3"/>
+  <g fill="#b68352" stroke="#352332" stroke-width="3">
+    <path d="M92 92h26v26H92zM137 92h26v26h-26zM182 92h26v26h-26z"/>
+    <path d="M92 137h26v26H92zM182 137h26v26h-26z"/>
+    <path d="M92 182h26v26H92zM137 182h26v26h-26zM182 182h26v26h-26z"/>
+  </g>
+  <g fill="#241d29" stroke="#e4bc79" stroke-width="3">
+    <path d="M99 99h12v12H99zM144 99h12v12h-12zM189 99h12v12h-12z"/>
+    <path d="M99 144h12v12H99zM189 144h12v12h-12z"/>
+    <path d="M99 189h12v12H99zM144 189h12v12h-12zM189 189h12v12h-12z"/>
+  </g>
+  <path d="M144 137h32l-4 33-12 17-12-17z" fill="#ffbd44" opacity=".3" filter="url(#glow)"/>
+  <path d="M144 137h32l-4 33-12 17-12-17z" fill="#f3a52f" stroke="#fff0b5" stroke-width="4" stroke-linejoin="round"/>
+  <path d="m160 143 10 17-10 19-10-19z" fill="#fff0b5" opacity=".9"/>
+  <path d="M109 225h102" stroke="#e2ba77" stroke-width="4" stroke-linecap="round"/>
+  <path d="M128 237h64" stroke="#9d6d48" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="160" cy="30" r="5" fill="#fff0b5"/>
+  <circle cx="160" cy="290" r="5" fill="#fff0b5"/>
+</svg>

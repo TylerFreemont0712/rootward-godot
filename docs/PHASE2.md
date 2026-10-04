@@ -28,7 +28,16 @@ number is **ADR-0045**; `docs/decisions/README.md` still says 0041, see P2-43).
 
 Screenshots from this pass are in `shots/phase2/` (ignored by git): the title, Adventure, Academy, Character, Library,
 the Verifier, a Spellforge fight, and a program run's map, fight, cast, volley, next turn, reward, cache, rest, forge,
-code window and end.
+code window and end. This is the Phase 2 audit snapshot from before the later Paradigm Update.
+
+### Follow-up delivered 2026-10-04: the Paradigm Update
+
+The Artificer's program run now has five combat laws, fifteen focuses, 80 new algorithms with refactors, cross-paradigm
+rewards, cycles, the Registry, 30 Issues and consumable scripts. Its room icons and layer backdrops now use the game's
+bronze-and-crystal language with retro-computer details. Paradigm and focus picks show the relic art they grant, and
+program loot has a dedicated scrollable layout for its receipt, script, relic and card choices. Spellforge and Card
+Shardrun retain their existing reward and rules flow. Implementation history, screenshots, exact tests and the final
+paired balance data are in [PLAN.md](PLAN.md) and [ParadigmUpdate.md](ParadigmUpdate.md).
 
 ## 2. The recommendation in one screen
 

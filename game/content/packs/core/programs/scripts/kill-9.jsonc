@@ -2,7 +2,7 @@
   "id": "kill-9",
   "name": "kill -9",
   "rarity": "uncommon",
-  "price": 60,
+  "price": 120,
   "summary": "25 damage to one foe, straight through its shield.",
   "target": "foe",
   "when": "fight",

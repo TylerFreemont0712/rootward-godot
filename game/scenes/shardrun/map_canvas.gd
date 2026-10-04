@@ -5,7 +5,7 @@ extends Control
 
 ## The map's measures, in design pixels.
 const ROW_STEP := 196.0
-const RADIUS := 30.0
+const RADIUS := 42.0
 const BOSS_RADIUS := 70.0
 ## Extra room for the guardian's medallion and name plate below the final row.
 const HEAD := 372.0

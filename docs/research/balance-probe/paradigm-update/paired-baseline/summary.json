@@ -1,0 +1,273 @@
+{
+  "baseline_commit": "fb72306",
+  "probe_sha256": "098defb0930cc38c8ee49a41e993797e75bb8d83e3ecb2b028e13b4380491931",
+  "settings": {
+    "language": "javascript",
+    "difficulty": "beginner",
+    "policy": "smart",
+    "picks": "plain",
+    "seeds": 6,
+    "offset": 0,
+    "variants": []
+  },
+  "seeds": {
+    "brute-force": [
+      "brute-force-0~2",
+      "brute-force-1~0",
+      "brute-force-2~0",
+      "brute-force-3~1",
+      "brute-force-4~0",
+      "brute-force-5~0"
+    ],
+    "divide-conquer": [
+      "divide-conquer-0~2",
+      "divide-conquer-1~0",
+      "divide-conquer-2~1",
+      "divide-conquer-3~0",
+      "divide-conquer-4~0",
+      "divide-conquer-5~1"
+    ],
+    "dynamic": [
+      "dynamic-0~0",
+      "dynamic-1~2",
+      "dynamic-2~3",
+      "dynamic-3~0",
+      "dynamic-4~0",
+      "dynamic-5~0"
+    ],
+    "greedy": [
+      "greedy-0~0",
+      "greedy-1~3",
+      "greedy-2~0",
+      "greedy-3~0",
+      "greedy-4~0",
+      "greedy-5~1"
+    ],
+    "search-index": [
+      "search-index-0~0",
+      "search-index-1~0",
+      "search-index-2~0",
+      "search-index-3~1",
+      "search-index-4~0",
+      "search-index-5~1"
+    ]
+  },
+  "overall": {
+    "runs": 30,
+    "wins": 10,
+    "win_rate": 0.3333333333333333,
+    "win_rate_wilson_95": [
+      0.19230498083676134,
+      0.5121994835545616
+    ],
+    "final_deck_mean_shares": {
+      "own": 0.2794743301112816,
+      "neutral": 0.4512435140151817,
+      "other": 0.26928215587353677
+    },
+    "final_deck_mean_size": 35.233333333333334,
+    "act1_fights": 135,
+    "act1_fight_turns_mean": 1.4592592592592593,
+    "act1_fight_hp_lost_mean": 1.6222222222222222,
+    "act1_boss_turns_mean": 3.933333333333333,
+    "act1_boss_hp_lost_mean": 9.3,
+    "turns": 1852,
+    "empty_program_turn_rate": 0.06479481641468683,
+    "foe_first_turn_rate": 0.17332613390928725,
+    "reordering_improvement_turn_rate": 0.5550755939524838,
+    "chosen_timeouts": 0,
+    "refusals": 0,
+    "statuses": {
+      "lost": 20,
+      "won": 10
+    },
+    "boss_clear_rates": {
+      "1": 1,
+      "2": 0.8666666666666667,
+      "3": 0.5333333333333333,
+      "4": 0.3333333333333333
+    }
+  },
+  "by_paradigm": {
+    "brute-force": {
+      "runs": 6,
+      "wins": 2,
+      "win_rate": 0.3333333333333333,
+      "win_rate_wilson_95": [
+        0.09677141110578041,
+        0.700006684861608
+      ],
+      "final_deck_mean_shares": {
+        "own": 0.22097188393224562,
+        "neutral": 0.4625547164728373,
+        "other": 0.31647339959491705
+      },
+      "final_deck_mean_size": 34.833333333333336,
+      "act1_fights": 27,
+      "act1_fight_turns_mean": 1.5555555555555556,
+      "act1_fight_hp_lost_mean": 1.5555555555555556,
+      "act1_boss_turns_mean": 4.5,
+      "act1_boss_hp_lost_mean": 12.333333333333334,
+      "turns": 361,
+      "empty_program_turn_rate": 0.06371191135734072,
+      "foe_first_turn_rate": 0.23545706371191136,
+      "reordering_improvement_turn_rate": 0.556786703601108,
+      "chosen_timeouts": 0,
+      "refusals": 0,
+      "statuses": {
+        "lost": 4,
+        "won": 2
+      },
+      "boss_clear_rates": {
+        "1": 1,
+        "2": 0.8333333333333334,
+        "3": 0.5,
+        "4": 0.3333333333333333
+      }
+    },
+    "divide-conquer": {
+      "runs": 6,
+      "wins": 2,
+      "win_rate": 0.3333333333333333,
+      "win_rate_wilson_95": [
+        0.09677141110578041,
+        0.700006684861608
+      ],
+      "final_deck_mean_shares": {
+        "own": 0.2910403986832729,
+        "neutral": 0.484263261624572,
+        "other": 0.22469633969215508
+      },
+      "final_deck_mean_size": 35.5,
+      "act1_fights": 26,
+      "act1_fight_turns_mean": 1.3846153846153846,
+      "act1_fight_hp_lost_mean": 2.0384615384615383,
+      "act1_boss_turns_mean": 2.3333333333333335,
+      "act1_boss_hp_lost_mean": 6.666666666666667,
+      "turns": 334,
+      "empty_program_turn_rate": 0.038922155688622756,
+      "foe_first_turn_rate": 0.16467065868263472,
+      "reordering_improvement_turn_rate": 0.5329341317365269,
+      "chosen_timeouts": 0,
+      "refusals": 0,
+      "statuses": {
+        "lost": 4,
+        "won": 2
+      },
+      "boss_clear_rates": {
+        "1": 1,
+        "2": 0.8333333333333334,
+        "3": 0.5,
+        "4": 0.3333333333333333
+      }
+    },
+    "dynamic": {
+      "runs": 6,
+      "wins": 3,
+      "win_rate": 0.5,
+      "win_rate_wilson_95": [
+        0.1876163064826506,
+        0.8123836935173494
+      ],
+      "final_deck_mean_shares": {
+        "own": 0.2366443229805006,
+        "neutral": 0.4986522471797712,
+        "other": 0.2647034298397283
+      },
+      "final_deck_mean_size": 36.666666666666664,
+      "act1_fights": 28,
+      "act1_fight_turns_mean": 1.3928571428571428,
+      "act1_fight_hp_lost_mean": 2,
+      "act1_boss_turns_mean": 3.3333333333333335,
+      "act1_boss_hp_lost_mean": 5.5,
+      "turns": 368,
+      "empty_program_turn_rate": 0.04076086956521739,
+      "foe_first_turn_rate": 0.16304347826086957,
+      "reordering_improvement_turn_rate": 0.595108695652174,
+      "chosen_timeouts": 0,
+      "refusals": 0,
+      "statuses": {
+        "won": 3,
+        "lost": 3
+      },
+      "boss_clear_rates": {
+        "1": 1,
+        "2": 1,
+        "3": 0.6666666666666666,
+        "4": 0.5
+      }
+    },
+    "greedy": {
+      "runs": 6,
+      "wins": 2,
+      "win_rate": 0.3333333333333333,
+      "win_rate_wilson_95": [
+        0.09677141110578041,
+        0.700006684861608
+      ],
+      "final_deck_mean_shares": {
+        "own": 0.31414534476568856,
+        "neutral": 0.41770107050245364,
+        "other": 0.26815358473185785
+      },
+      "final_deck_mean_size": 33.833333333333336,
+      "act1_fights": 24,
+      "act1_fight_turns_mean": 1.5833333333333333,
+      "act1_fight_hp_lost_mean": 1.4583333333333333,
+      "act1_boss_turns_mean": 6.5,
+      "act1_boss_hp_lost_mean": 16.333333333333332,
+      "turns": 471,
+      "empty_program_turn_rate": 0.10828025477707007,
+      "foe_first_turn_rate": 0.1464968152866242,
+      "reordering_improvement_turn_rate": 0.5074309978768577,
+      "chosen_timeouts": 0,
+      "refusals": 0,
+      "statuses": {
+        "lost": 4,
+        "won": 2
+      },
+      "boss_clear_rates": {
+        "1": 1,
+        "2": 0.6666666666666666,
+        "3": 0.5,
+        "4": 0.3333333333333333
+      }
+    },
+    "search-index": {
+      "runs": 6,
+      "wins": 1,
+      "win_rate": 0.16666666666666666,
+      "win_rate_wilson_95": [
+        0.030053369748306635,
+        0.5635028221864702
+      ],
+      "final_deck_mean_shares": {
+        "own": 0.3345697001947002,
+        "neutral": 0.3930462742962743,
+        "other": 0.2723840255090255
+      },
+      "final_deck_mean_size": 35.333333333333336,
+      "act1_fights": 30,
+      "act1_fight_turns_mean": 1.4,
+      "act1_fight_hp_lost_mean": 1.1,
+      "act1_boss_turns_mean": 3,
+      "act1_boss_hp_lost_mean": 5.666666666666667,
+      "turns": 318,
+      "empty_program_turn_rate": 0.05660377358490566,
+      "foe_first_turn_rate": 0.16352201257861634,
+      "reordering_improvement_turn_rate": 0.60062893081761,
+      "chosen_timeouts": 0,
+      "refusals": 0,
+      "statuses": {
+        "lost": 5,
+        "won": 1
+      },
+      "boss_clear_rates": {
+        "1": 1,
+        "2": 1,
+        "3": 0.5,
+        "4": 0.16666666666666666
+      }
+    }
+  }
+}

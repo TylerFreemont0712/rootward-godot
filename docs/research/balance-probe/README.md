@@ -9,12 +9,13 @@ game: nothing loads it, and the lint and tests do not cover it. Stage 0 of the r
 `probe_balance.gd` plays whole program runs (ADR-0012) through `Shardrun.step` and the real sandbox, with no screen
 and no saves:
 
-- **The smart bot** takes every ordered choice of cards from the hand that the mana and the Program's slots allow (up
-  to about 2,000 a turn), runs them all in **one** sandbox job, simulates each cast and the foes' answer with the
-  real rules, and plays the one that removes the most foe HP for the least Integrity (a lost fight is worth nothing, a
-  won one a lot). It holds its most valuable leftover card. It drafts toward its paradigm (rarer is better, paradigm
-  cards and strikers preferred, fewer copies of what it has), walks into fights and elites while healthy and rests
-  when not, optimises or widens at a forge, and takes the first relic offered.
+- **The smart bot** enumerates affordable ordered programs and evaluates at most 128 candidates per turn. When there
+  are more, its deterministic spread sample keeps empty/single-card choices and the longest dealt-order program, then
+  samples across the remaining list. It evaluates them in one sandbox job, simulates the cast and the foes' answer
+  with the real rules, and plays the candidate that removes the most foe HP for the least Integrity. It holds its most
+  valuable leftover card, drafts toward its paradigm, visits fights and elites while healthy, rests when needed,
+  optimises or widens at a forge, takes a script drop and answers Issues with the effect-free choice. At the Registry
+  it buys the first affordable relic, script or card in that priority order.
 - **The dealt-order bot** (`policy=dealt`) plays every card it can afford, in the order dealt.
 - **What-ifs** (`variant=`) change the content in memory before the run starts; the repository is never touched:
   `sources4` (two more Salvos in the starting deck: four in ten cards instead of two in eight), `salvo-pool` (Salvo
@@ -36,19 +37,23 @@ python3 docs/research/balance-probe/compare.py /tmp/probe                       
 ```
 
 Options: `paradigms=a,b`, `seeds=N`, `offset=N`, `difficulty=beginner|programmer`, `policy=smart|dealt`,
-`picks=plain|sources`, `variant=a,b`, `foe_hp=a,b,c`, `hp_weight=2.5` (Integrity against foe HP in the bot's
-judgement). A run takes
-20 to 80 seconds; one process per paradigm in parallel is the quick way (the sandbox runs out of process, so they do
-not contend much). `compare.py` expects the baseline as `runs_beginner_<paradigm>.jsonl` and each what-if as
-`exp_<name>.jsonl`.
+`picks=plain|sources`, `focus=first|cycle|<focus-id>`, `variant=a,b`, `foe_hp=a,b,c`, and `hp_weight=2.5` (Integrity
+against foe HP in the bot's judgement). `focus=cycle` rotates through a paradigm's catalog focus order. The probe's
+hypothetical candidate batch has a 120-second CPU, 300-second wall-clock and 1 GiB memory budget; this is distinct
+from the game's two-second limit on a single submitted program. With 128 candidates per turn, run durations vary by
+seed and paradigm. One process per paradigm can run in parallel if each receives its own `XDG_DATA_HOME`, so Godot's
+sandbox scratch files do not collide. `compare.py` expects the baseline as `runs_beginner_<paradigm>.jsonl` and each
+what-if as `exp_<name>.jsonl`.
 
 ## What the bots cannot tell you
 
-- They are a floor and a ceiling for a person, not a person. The smart bot looks one turn ahead, sees every outcome
-  exactly (as the Beginner preview does), and never plans a deck; the dealt-order bot never thinks at all.
+- They are a floor and a ceiling for a person, not a person. The smart bot looks one turn ahead and sees each sampled
+  candidate's outcome exactly (as the Beginner preview does), but does not evaluate every possible ordering once the
+  candidate list exceeds 128 and never plans a deck; the dealt-order bot never thinks at all.
 - Drafting is a simple scoring rule, so a what-if that depends on drafting well (Salvo in the pools) needs
   `picks=sources` to show its effect.
-- JavaScript and Beginner only so far; there is no shop, event or upgrade to model because none exist yet.
+- The paired Paradigm Update probe covers JavaScript and Beginner only. Its simplified Registry purchase policy and
+  effect-free Issue choice do not measure player decisions or the full range of room outcomes.
 - Fun, clarity and pace are not measured. The player's own runs are the other half (the roadmap's run history).
 
 ## Results on 2026-09-28

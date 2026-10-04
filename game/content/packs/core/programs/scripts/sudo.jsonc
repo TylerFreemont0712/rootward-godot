@@ -2,7 +2,7 @@
   "id": "sudo",
   "name": "sudo",
   "rarity": "rare",
-  "price": 70,
+  "price": 140,
   "summary": "Your next program deals double damage.",
   "target": "none",
   "when": "fight",

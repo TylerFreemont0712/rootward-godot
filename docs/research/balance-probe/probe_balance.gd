@@ -1,13 +1,18 @@
 extends SceneTree
 ## Balance probe (a research script, not part of the game; see README.md): plays program runs with a one-turn-lookahead
-## bot. Every turn it runs every affordable, ordered program the hand can make in one sandbox job, simulates each cast
-## and the foes' answer with the real rules, and plays the best. Writes one JSON line per run.
+## bot. Every turn it enumerates affordable ordered programs, deterministically samples at most 128 candidates, runs
+## them in one sandbox job, simulates each cast and the foes' answer with the real rules, and plays the best. Writes
+## one JSON line per run.
 ##   godot --headless --path game -s "$PWD/docs/research/balance-probe/probe_balance.gd" -- paradigms=greedy seeds=4 \
 ##       out=/tmp/runs.jsonl < /dev/null
 
 const LANGUAGE := "javascript"
 const STALEMATE := 40
 const RARITY := {"common": 1.0, "uncommon": 2.0, "rare": 3.0}
+const MAX_SEQUENCE_EVALUATIONS := 128
+const PROBE_CPU_MS := 120000
+const PROBE_WALL_MS := 300000
+const PROBE_MEMORY_MB := 1024
 
 var catalog: Dictionary
 var limits: SandboxJob
@@ -16,6 +21,7 @@ var hp_weight := 2.5
 var variants: PackedStringArray = []
 var policy := "smart"
 var picks := "plain"
+var focus_choice := "first"
 ## A program run's foe HP by layer, in place of programs.jsonc's (`foe_hp=2.8,4.2,4.8`).
 var foe_hp: Array = []
 
@@ -28,16 +34,19 @@ func _initialize() -> void:
 			policy = arg.substr(7)
 		elif arg.begins_with("picks="):
 			picks = arg.substr(6)
+		elif arg.begins_with("focus="):
+			focus_choice = arg.substr(6)
 		elif arg.begins_with("foe_hp="):
 			foe_hp = Array(arg.substr(7).split(",")).map(func(text: String) -> float: return float(text))
 	var raw: Dictionary = ContentLoader.load_shardrun().catalog
 	_apply_variants(raw)
 	catalog = ProgramRules.catalog_for(raw)
 	limits = SandboxJob.new()
-	limits.time_ms = 120000
-	limits.wall_ms = 300000
-	limits.memory_mb = 1024
-	limits.output_kb = 262144
+	# Smart policy evaluates a batch of hypothetical programs, not the one program the game executes. Keep its research
+	# batch budget fixed and bounded; the 2-second in-game CPU limit applies only to a single submitted program.
+	limits.time_ms = PROBE_CPU_MS
+	limits.wall_ms = PROBE_WALL_MS
+	limits.memory_mb = PROBE_MEMORY_MB
 	var paradigms: PackedStringArray = ["divide-conquer", "search-index", "greedy", "brute-force", "dynamic"]
 	var seeds := 3
 	var offset := 0
@@ -58,7 +67,11 @@ func _initialize() -> void:
 	for paradigm: String in paradigms:
 		for i in seeds:
 			var started := Time.get_ticks_msec()
-			var report := play_run(paradigm, "%s-%d" % [paradigm, i + offset])
+			var selected_focus := focus_choice
+			if focus_choice == "cycle":
+				var focus_list: Array = ProgramDraft.paradigm_of(catalog, paradigm).get("focuses", [])
+				selected_focus = String(focus_list[i % focus_list.size()].id) if not focus_list.is_empty() else "first"
+			var report := play_run(paradigm, "%s-%d" % [paradigm, i + offset], selected_focus)
 			report.seconds = (Time.get_ticks_msec() - started) / 1000.0
 			var line := JSON.stringify(report)
 			print(
@@ -71,6 +84,12 @@ func _initialize() -> void:
 				var file := FileAccess.open(out_path, FileAccess.READ_WRITE)
 				if file == null:
 					file = FileAccess.open(out_path, FileAccess.WRITE)
+				if file == null:
+					push_error(
+						"Could not open probe output: %s (%s)" % [out_path, error_string(FileAccess.get_open_error())]
+					)
+					quit(1)
+					return
 				file.seek_end()
 				file.store_line(line)
 				file.close()
@@ -118,7 +137,7 @@ func seed_for(paradigm: String, base: String) -> String:
 	return base
 
 
-func play_run(paradigm: String, base: String) -> Dictionary:
+func play_run(paradigm: String, base: String, selected_focus := "first") -> Dictionary:
 	var seed := seed_for(paradigm, base)
 	var options := {
 		"seed": seed, "language": LANGUAGE, "difficulty": difficulty, "playstyle": "program", "sandbox": false
@@ -127,10 +146,13 @@ func play_run(paradigm: String, base: String) -> Dictionary:
 	var report := {
 		"paradigm": paradigm,
 		"seed": seed,
+		"focus": "",
 		"fights": [],
 		"refusals": [],
 		"rooms": [],
+		"issue_rooms": [],
 		"picks": [],
+		"registries": [],
 	}
 	var fight: Dictionary = {}
 	var steps := 0
@@ -143,6 +165,17 @@ func play_run(paradigm: String, base: String) -> Dictionary:
 				(fight.notes as Array).append("stalemate")
 				state = _apply(state, {"type": "abandon"}, report)
 				continue
+			var script_command := _script_command(state, fight)
+			if not script_command.is_empty():
+				var script_id: String = (state.belt as Array)[int(script_command.index)]
+				state = _apply(state, script_command, report)
+				(fight.script_uses as Array).append(script_id)
+				if state.status != "battle":
+					fight.won = state.status != "lost"
+					fight.integrity_after = int(state.integrity)
+					(report.fights as Array).append(fight)
+					fight = {}
+				continue
 			var turn := _best_turn(state)
 			(fight.turns as Array).append(turn.record)
 			state = turn.state
@@ -152,23 +185,75 @@ func play_run(paradigm: String, base: String) -> Dictionary:
 				(report.fights as Array).append(fight)
 				fight = {}
 			continue
-		var command := _next_command(state, paradigm, report)
+		if state.status == "shop":
+			_track_registry(state, report)
+		var command := _next_command(state, paradigm, report, selected_focus)
 		if command.is_empty():
 			break
 		state = _apply(state, command, report)
+	if not fight.is_empty():
+		fight.won = false
+		fight.integrity_after = int(state.integrity)
+		if "incomplete" not in fight.notes:
+			(fight.notes as Array).append("incomplete")
+		(report.fights as Array).append(fight)
 	report.status = state.status
 	report.layer = int(state.layer) + 1
 	report.integrity = int(state.integrity)
 	report.integrity_max = int(state.integrity_max)
 	report.deck = state.deck
 	report.relics = state.relics
+	report.focus = String(state.get("focus", ""))
 	report.capacity = int(state.spells[0].capacity)
 	report.fights_won = (report.fights as Array).filter(func(f: Dictionary) -> bool: return f.won).size()
 	report.stats = state.stats
+	report.cycles_earned = int(state.get("cycles_earned", 0))
+	report.cycles_spent = int(state.get("cycles_spent", 0))
+	report.cycles = int(state.get("cycles", 0))
+	report.script_uses = (report.fights as Array).reduce(
+		func(total: int, item: Dictionary) -> int: return total + (item.script_uses as Array).size(), 0
+	)
+	report.script_uses_per_fight = float(report.script_uses) / maxf(1.0, (report.fights as Array).size())
+	report.law_active_turns = (report.fights as Array).reduce(
+		func(total: int, item: Dictionary) -> int:
+			return total + (item.turns as Array).filter(func(turn: Dictionary) -> bool: return turn.law_active).size(),
+		0
+	)
+	var turns := 0
+	for item: Dictionary in report.fights:
+		turns += (item.turns as Array).size()
+	report.law_activation_rate = float(report.law_active_turns) / maxf(1.0, turns)
+	report.registry_purchases = (report.registries as Array).reduce(
+		func(total: int, item: Dictionary) -> int: return total + int(item.purchases), 0
+	)
+	report.purchases_per_registry = float(report.registry_purchases) / maxf(1.0, (report.registries as Array).size())
+	var layer_issue_counts := {}
+	for issue_layer: int in report.issue_rooms:
+		layer_issue_counts[issue_layer] = int(layer_issue_counts.get(issue_layer, 0)) + 1
+	report.issues_by_layer = layer_issue_counts
+	var own_pool: Array = ProgramDraft.paradigm_of(catalog, paradigm).get("pool", [])
+	var neutral_pool: Array = ProgramRules.config_of(catalog).get("neutral", [])
+	var own_count := 0
+	var neutral_count := 0
+	var other_count := 0
+	for id: String in state.deck:
+		if id in own_pool:
+			own_count += 1
+		elif id in neutral_pool:
+			neutral_count += 1
+		else:
+			other_count += 1
+	var deck_size := maxf(1.0, state.deck.size())
+	report.deck_share = {
+		"own": own_count / deck_size,
+		"neutral": neutral_count / deck_size,
+		"other": other_count / deck_size,
+	}
 	return report
 
 
 func _apply(state: Dictionary, command: Dictionary, report: Dictionary) -> Dictionary:
+	var shop_room := String((state.get("shop", {}) as Dictionary).get("room", "")) if state.status == "shop" else ""
 	var result := Shardrun.step(state, command, catalog)
 	if not result.ok:
 		(report.refusals as Array).append({"command": command, "error": result.error})
@@ -176,6 +261,12 @@ func _apply(state: Dictionary, command: Dictionary, report: Dictionary) -> Dicti
 			return state
 		var fallback := Shardrun.step(state, {"type": "abandon"}, catalog)
 		return fallback.state if fallback.ok else state
+	if command.type == "buy" and shop_room != "":
+		for visit: Dictionary in report.registries:
+			if visit.room == shop_room:
+				visit.purchases = int(visit.purchases) + 1
+				visit.cycles_spent += int(state.get("cycles", 0)) - int(result.state.get("cycles", 0))
+				break
 	return result.state
 
 
@@ -189,6 +280,7 @@ func _open_fight(state: Dictionary) -> Dictionary:
 		"integrity_before": int(state.integrity),
 		"deck_size": (state.deck as Array).size(),
 		"turns": [],
+		"script_uses": [],
 		"notes": [],
 		"won": false,
 	}
@@ -202,6 +294,8 @@ func _best_turn(state: Dictionary) -> Dictionary:
 	var spell: Dictionary = state.spells[0]
 	var pool: Array = (battle.hand as Array).duplicate()
 	var sequences := _sequences(pool, int(spell.capacity), int(battle.mana))
+	if policy == "smart":
+		sequences = _sample_sequences(sequences)
 	var outcomes := _run_all(state, pool, sequences)
 	var best: Dictionary = {}
 	var best_value := -INF
@@ -269,6 +363,7 @@ func _best_turn(state: Dictionary) -> Dictionary:
 		"max_damage": max_damage,
 		"lint": ProgramRules.lint(ids, catalog).size(),
 		"order_gain": best_value - dealt_order_value if dealt_order_value > -INF else 0.0,
+		"law_active": _law_activated(state, ids, best.outcome, final),
 	}
 	return {"state": final.state, "record": record}
 
@@ -279,6 +374,38 @@ func _is_dealt_order(seq: Array) -> bool:
 		if int(seq[k]) < int(seq[k - 1]):
 			return false
 	return true
+
+
+## Keep a deterministic, spread-out candidate set so larger hands do not turn every probe seed into an unbounded search.
+## Empty, single-card and longest dealt-order programs are always represented.
+func _sample_sequences(sequences: Array) -> Array:
+	if sequences.size() <= MAX_SEQUENCE_EVALUATIONS:
+		return sequences
+	var sampled: Array = []
+	var seen := {}
+	for seq: Array in sequences:
+		if seq.size() <= 1:
+			sampled.append(seq)
+			seen[",".join(seq.map(func(i: int) -> String: return str(i)))] = true
+	var dealt_order: Array = []
+	for seq: Array in sequences:
+		if seq.size() > dealt_order.size() and _is_dealt_order(seq):
+			dealt_order = seq
+	if not dealt_order.is_empty():
+		var dealt_key := ",".join(dealt_order.map(func(i: int) -> String: return str(i)))
+		if not seen.has(dealt_key):
+			sampled.append(dealt_order)
+			seen[dealt_key] = true
+	for sample_index in MAX_SEQUENCE_EVALUATIONS:
+		if sampled.size() >= MAX_SEQUENCE_EVALUATIONS:
+			break
+		var index := roundi(float(sample_index) * float(sequences.size() - 1) / float(MAX_SEQUENCE_EVALUATIONS - 1))
+		var seq: Array = sequences[index]
+		var key := ",".join(seq.map(func(i: int) -> String: return str(i)))
+		if not seen.has(key):
+			sampled.append(seq)
+			seen[key] = true
+	return sampled
 
 
 func _sequences(pool: Array, capacity: int, mana: int) -> Array:
@@ -308,20 +435,34 @@ func _extend(prefix: Array, pool: Array, capacity: int, mana: int, out: Array, s
 
 
 func _run_all(state: Dictionary, pool: Array, sequences: Array) -> Dictionary:
-	var config := ProgramRules.config_of(catalog)
-	var input := {
-		"bolts": (config.seed as Array).duplicate(true),
-		"battle": ShardrunRules.shard_battle(state, state.battle),
-		"limit": int(config.max_bolts),
-		"trace_limit": 1,
-	}
+	var spell_runs := SpellRuns.new(catalog)
+	var input: Dictionary
+	if state.has("focus"):
+		input = spell_runs.input_for(state)
+	else:
+		# The immutable pre-update baseline predates stateful program execution and focuses. Preserve its original input
+		# contract so the same sampled policy can be paired against both content revisions.
+		var config := ProgramRules.config_of(catalog)
+		input = {
+			"bolts": (config.seed as Array).duplicate(true),
+			"battle": ShardrunRules.shard_battle(state, state.battle),
+			"limit": int(config.max_bolts),
+			"trace_limit": 1,
+		}
+	var job_input := input.duplicate(true)
+	var hooks: Array = []
+	for hook: Dictionary in input.get("hooks", []):
+		var hooked := hook.duplicate(true)
+		hooked.card = catalog.shards.get(hook.card, {})
+		hooks.append(hooked)
+	job_input.hooks = hooks
 	var programs: Array[Dictionary] = []
 	var outcomes := {}
 	for seq: Array in sequences:
 		var ids: Array = seq.map(func(i: int) -> String: return pool[i])
 		var key := ",".join(ids)
 		if ids.is_empty():
-			outcomes[key] = {"ok": true, "bolts": (config.seed as Array).duplicate(true), "work": []}
+			outcomes[key] = {"ok": true, "bolts": (input.bolts as Array).duplicate(true), "work": []}
 			continue
 		var shards: Array[Dictionary] = []
 		for id: String in ids:
@@ -329,7 +470,7 @@ func _run_all(state: Dictionary, pool: Array, sequences: Array) -> Dictionary:
 		programs.append({"id": key, "shards": shards})
 	if programs.is_empty():
 		return outcomes
-	var runs := SpellHarness.run(LANGUAGE, programs, input, limits)
+	var runs := SpellHarness.run(LANGUAGE, programs, job_input, limits)
 	for key: String in runs:
 		outcomes[key] = SpellRuns.to_outcome(runs[key])
 	return outcomes
@@ -436,12 +577,17 @@ func _pick_score(id: String, paradigm: String, deck: Array) -> float:
 	return score
 
 
-func _next_command(state: Dictionary, paradigm: String, report: Dictionary) -> Dictionary:
+func _next_command(state: Dictionary, paradigm: String, report: Dictionary, selected_focus := "first") -> Dictionary:
 	match state.status:
 		"draft":
 			var draft: Dictionary = state.draft
 			if String(state.get("paradigm", "")) == "":
 				return {"type": "pick-paradigm", "paradigm_id": paradigm}
+			if not (draft.get("focus_offers", []) as Array).is_empty():
+				var focus_id := (
+					selected_focus if selected_focus in draft.focus_offers else String(draft.focus_offers[0])
+				)
+				return {"type": "pick-focus", "focus_id": focus_id}
 			var pack: Array = draft.pack
 			var best := _best_pick(pack, paradigm, state.deck)
 			(report.picks as Array).append({"offered": pack, "took": best})
@@ -458,6 +604,9 @@ func _next_command(state: Dictionary, paradigm: String, report: Dictionary) -> D
 				var best := _best_pick(reward.shards, paradigm, state.deck)
 				(report.picks as Array).append({"offered": reward.shards, "took": best})
 				return {"type": "take", "shard_id": best}
+			if reward.has("script"):
+				var full: bool = (state.get("belt", []) as Array).size() >= _script_belt_size(state)
+				return {"type": "take-script", "drop_index": 0} if full else {"type": "take-script"}
 			return {"type": "leave"}
 		"rest":
 			var cursed := ShardrunViews.cursed_relics(state, catalog)
@@ -471,7 +620,206 @@ func _next_command(state: Dictionary, paradigm: String, report: Dictionary) -> D
 			if not (options.spells as Array).is_empty():
 				return {"type": "widen", "spell_id": options.spells[0]}
 			return {"type": "forge", "shard_id": null}
+		"shop":
+			return _shop_command(state)
+		"issue":
+			return _issue_command(state)
 	return {}
+
+
+func _script_command(state: Dictionary, fight: Dictionary) -> Dictionary:
+	if int(state.battle.turn) > 1 or not (fight.script_uses as Array).is_empty():
+		return {}
+	var belt: Array = state.get("belt", [])
+	if belt.is_empty():
+		return {}
+	var target := ""
+	var living: Array = (state.battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
+	if not living.is_empty():
+		living.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.hp) < int(b.hp))
+		target = String(living[0].uid)
+	var best_index := -1
+	var best_score := -INF
+	for i in belt.size():
+		var item: Dictionary = catalog.programs.scripts.get(String(belt[i]), {})
+		if item.is_empty():
+			continue
+		var effect: Dictionary = item.effect
+		var score := _script_score(effect, state, living)
+		if score > best_score:
+			best_score = score
+			best_index = i
+	if best_index < 0:
+		return {}
+	var selected: Dictionary = catalog.programs.scripts[String(belt[best_index])]
+	return {"type": "use-script", "index": best_index, "foe": target if selected.target == "foe" else ""}
+
+
+func _script_score(effect: Dictionary, state: Dictionary, living: Array) -> float:
+	match String(effect.kind):
+		"foe-damage":
+			return 100.0 + float(effect.amount) if not living.is_empty() else -INF
+		"double-next":
+			return 90.0
+		"free-program":
+			return 80.0
+		"work-divide":
+			return 70.0
+		"nice":
+			return 60.0
+		"free-card":
+			return 50.0
+		"draw":
+			return 45.0
+		"gc":
+			return 40.0
+		"foe-half", "trait-off":
+			return 35.0 if not living.is_empty() else -INF
+		"revert":
+			return 30.0 if int(state.battle.get("hurt_last", 0)) > 0 else -INF
+		"heal":
+			return 20.0 if int(state.integrity) < int(state.integrity_max) else -INF
+		"stash-hand", "reveal-intents":
+			return -INF
+	return 0.0
+
+
+func _shop_command(state: Dictionary) -> Dictionary:
+	for shelf: String in ["relics", "scripts", "cards"]:
+		var items: Array = state.shop.get(shelf, [])
+		for index in items.size():
+			var item: Dictionary = items[index]
+			if item.get("sold", false):
+				continue
+			if _shop_price(state, shelf, item) > int(state.get("cycles", 0)):
+				continue
+			if (
+				shelf == "scripts"
+				and (state.get("belt", []) as Array).size() >= _script_belt_size(state)
+			):
+				continue
+			return {"type": "buy", "shelf": shelf, "index": index}
+	return {"type": "leave-shop"}
+
+
+func _script_belt_size(state: Dictionary) -> int:
+	return int(_script_call("program_scripts.gd", "belt_size", [state, catalog], 0))
+
+
+func _shop_price(state: Dictionary, shelf: String, item: Dictionary) -> int:
+	return int(_script_call("program_shop.gd", "price_of", [state, shelf, item, catalog], 0))
+
+
+func _issue_definition(state: Dictionary) -> Dictionary:
+	return _script_call("program_issues.gd", "definition", [state, catalog], {})
+
+
+func _issue_can_choose(state: Dictionary, choice: Dictionary) -> bool:
+	return bool(_script_call("program_issues.gd", "can_choose", [state, choice], false))
+
+
+## New probe helpers are loaded by path so the immutable pre-update checkout can run the same probe without those classes.
+func _script_call(file: String, method: String, arguments: Array, fallback: Variant) -> Variant:
+	var resource := load("res://core/programs/" + file) as Script
+	return fallback if resource == null else resource.callv(method, arguments)
+
+
+func _issue_command(state: Dictionary) -> Dictionary:
+	var issue: Dictionary = state.issue
+	match String(issue.stage):
+		"choose":
+			var choices: Array = _issue_definition(state).get("choices", [])
+			for index in choices.size():
+				if (choices[index].effects as Array).is_empty():
+					return {"type": "issue-choose", "index": index}
+			for index in choices.size():
+				if _issue_can_choose(state, choices[index]):
+					return {"type": "issue-choose", "index": index}
+			return {"type": "issue-choose", "index": 0}
+		"pick":
+			var count := (
+				1 if issue.pick.purpose == "keep" else mini(int(issue.pick.count), (issue.pick.options as Array).size())
+			)
+			return {"type": "issue-pick", "card_ids": (issue.pick.options as Array).slice(0, count)}
+		"paradigm":
+			return {"type": "issue-paradigm", "paradigm_id": issue.paradigms[0]}
+		"offer":
+			return {"type": "issue-take", "card_id": issue.offer.cards[0]}
+		"focus":
+			return {"type": "issue-focus", "focus_id": issue.focuses[0]}
+		"result":
+			return {"type": "issue-leave"}
+	return {"type": "issue-leave"}
+
+
+func _track_registry(state: Dictionary, report: Dictionary) -> void:
+	var room := String(state.shop.room)
+	for visit: Dictionary in report.registries:
+		if visit.room == room:
+			return
+	var visit := {
+		"room": room,
+		"layer": int(state.layer) + 1,
+		"cycles_at_entry": int(state.get("cycles", 0)),
+		"purchases": 0,
+		"cycles_spent": 0,
+	}
+	(report.registries as Array).append(visit)
+	if report.registries.size() == 1:
+		report.cycles_at_first_registry = int(state.get("cycles", 0))
+
+
+func _law_activated(before: Dictionary, ids: Array, outcome: Dictionary, simulated: Dictionary) -> bool:
+	var laws: Array = (before.get("relics", []) as Array).filter(
+		func(id: String) -> bool:
+			return String((catalog.relics.get(id, {}) as Dictionary).get("tier", "")) == "paradigm"
+	)
+	if laws.is_empty():
+		return false
+	var law := String(laws[0])
+	var battle: Dictionary = before.battle
+	match law:
+		"the-table":
+			return int(battle.turn) >= 3 and (battle.get("dp", []) as Array).size() >= 2
+		"the-index":
+			return ProgramRules.seed(before, catalog).size() > (ProgramRules.config_of(catalog).seed as Array).size()
+		"local-optimum":
+			var previous_kills: Dictionary = battle.get("kills", {})
+			var next_battle: Dictionary = simulated.state.get("battle", {})
+			if not next_battle.is_empty():
+				var next_kills: Dictionary = next_battle.get("kills", {})
+				for foe_id: String in next_kills:
+					if (
+						(next_kills[foe_id] as Dictionary).get("initiative", false)
+						and not (previous_kills.get(foe_id, {}) as Dictionary).get("initiative", false)
+					):
+						return true
+				return false
+			var receipt: Dictionary = simulated.state.get("reward", {}).get("receipt", {})
+			var receipt_lines: Array = receipt.get("lines", [])
+			var new_bonuses: int = receipt_lines.filter(
+				func(line: Dictionary) -> bool: return line.get("label", "") == "Initiative"
+			).size()
+			var prior_kills: Array = previous_kills.values()
+			var previous_bonuses: int = prior_kills.filter(
+				func(kill: Dictionary) -> bool: return kill.get("initiative", false)
+			).size()
+			return new_bonuses > previous_bonuses
+		"throw-hardware-at-it":
+			return (
+				int(simulated.work) >= 256
+				and (outcome.get("bolts", []) as Array).any(
+					func(bolt: Dictionary) -> bool: return not bolt.get("block", false) and not bolt.get("stash", false)
+				)
+			)
+		"recurse":
+			for index in ids.size():
+				if (
+					(catalog.shards.get(ids[index], {}) as Dictionary).get("splits", false)
+					and index < ids.size() - 1
+				):
+					return true
+	return false
 
 
 func _best_pick(offered: Array, paradigm: String, deck: Array) -> String:
@@ -491,10 +839,12 @@ func _pick_room(state: Dictionary, report: Dictionary) -> Dictionary:
 		return {}
 	var healthy := int(state.integrity) * 10 >= int(state.integrity_max) * 6
 	var order: Array = (
-		["fight", "treasure", "elite", "forge", "rest", "boss"]
+		["fight", "treasure", "shop", "issue", "elite", "forge", "rest", "boss"]
 		if healthy
-		else ["rest", "treasure", "forge", "fight", "elite", "boss"]
+		else ["rest", "treasure", "shop", "issue", "forge", "fight", "elite", "boss"]
 	)
 	rooms.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return order.find(a.kind) < order.find(b.kind))
 	(report.rooms as Array).append("%d:%s" % [int(state.layer) + 1, rooms[0].kind])
+	if rooms[0].kind == "issue":
+		(report.issue_rooms as Array).append(int(state.layer) + 1)
 	return {"type": "enter", "node_id": rooms[0].id}

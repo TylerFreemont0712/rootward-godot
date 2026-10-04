@@ -51,6 +51,11 @@ static var _loops: Dictionary = {}
 
 ## A picture by id. A WebP (the painted, high-resolution backgrounds) wins over a PNG of the same name.
 static func texture(id: String) -> Texture2D:
+	# The generated focus-table candidate repeatedly came back as a multi-icon sheet. Keep this one crisp, native vector.
+	if id == "shardrun/relic-focus-table":
+		var vector_path := ROOT + id + ".svg"
+		if ResourceLoader.exists(vector_path):
+			return load(vector_path) as Texture2D
 	for extension: String in [".webp", ".png", ".svg"]:
 		var path := ROOT + id + extension
 		if ResourceLoader.exists(path):

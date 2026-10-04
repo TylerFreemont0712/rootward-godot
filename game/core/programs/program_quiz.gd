@@ -233,7 +233,7 @@ static func _halt(plan: Dictionary, runs: Array, state: Dictionary, catalog: Dic
 	var n := int(plan.n)
 	var work := _work(card_id, n, catalog)
 	if not runs.is_empty() and runs[0].get("ok", false):
-		var steps: Array = runs[0].get("work", [])
+		var steps: Array = runs[0].get("trace", [])
 		work = ProgramRules.total_work(ProgramRules.stages(state, steps, catalog))
 	var budget := ProgramRules.budget(state, catalog)
 	var finishes := work <= budget

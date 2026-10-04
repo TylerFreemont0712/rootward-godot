@@ -2,7 +2,7 @@
   "id": "cache-warm",
   "name": "cache warm",
   "rarity": "common",
-  "price": 45,
+  "price": 90,
   "summary": "Draw 3 cards.",
   "target": "none",
   "when": "fight",

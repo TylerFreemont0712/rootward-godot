@@ -58,6 +58,18 @@ func test_only_the_rooms_you_can_walk_into_are_enabled() -> void:
 		assert_bool((rooms[id] as Button).disabled).override_failure_message(id).is_equal(not open.has(id))
 
 
+func test_every_non_guardian_room_and_layer_uses_its_map_art() -> void:
+	_open(_start("map-art"))
+	var canvas: MapCanvas = map.get("_canvas")
+	for kind: String in MapView.LEGEND + MapView.PROGRAM_LEGEND:
+		assert_bool(canvas.icons.get(kind) != null).override_failure_message("missing map-" + kind).is_true()
+	for layer: Dictionary in catalog.config.layers:
+		assert_str(String(layer.get("map_backdrop", ""))).is_equal("map-machine-shaft")
+		var backdrop := "backgrounds/" + String(layer.get("map_backdrop", ""))
+		assert_bool(Art.texture(backdrop) != null).override_failure_message("missing " + backdrop).is_true()
+		assert_float(MapCanvas.RADIUS).is_greater_equal(42.0)
+
+
 func test_the_map_is_taller_than_its_window_and_the_wheel_glides_up() -> void:
 	_open(_step_in(_start("map-wheel")))
 	assert_float(map.max_scroll()).is_greater(0.0)
@@ -132,11 +144,11 @@ func test_the_route_drawer_folds_away_and_gives_the_map_its_room() -> void:
 	MapView.drawer_open = true
 	_open(_step_in(_start("map-drawer")))
 	var view: Control = map.get("_view")
-	var side: Control = map.get("_side")
+	var side_scroll: ScrollContainer = map.get("_side_scroll")
 	var narrow := view.size.x
-	assert_bool(side.visible).is_true()
+	assert_bool(side_scroll.visible).is_true()
 	map.call("_flip_drawer")
-	assert_bool(side.visible).is_false()
+	assert_bool(side_scroll.visible).is_false()
 	assert_float(view.size.x).is_greater(narrow)
 	map.call("_flip_drawer")
 	assert_bool(MapView.drawer_open).is_true()
@@ -147,6 +159,13 @@ func test_the_drawer_lists_every_room_you_can_enter_next() -> void:
 	_open(state)
 	var listed: VBoxContainer = map.get("_next")
 	assert_int(listed.get_child_count()).is_equal(ShardrunMap.next_rooms(state.map, state.position).size())
+	assert_bool((map.get("_side_scroll") as ScrollContainer).visible).is_true()
+	for choice: Button in listed.get_children():
+		assert_float(choice.custom_minimum_size.y).is_equal_approx(58.0, 0.01)
+		var content := choice.get_child(0) as HBoxContainer
+		assert_bool(content != null).is_true()
+		assert_float(content.get_child(0).custom_minimum_size.x).is_equal(34.0)
+		assert_int(content.get_child(1).get_child_count()).is_equal(2)
 
 
 func test_a_deck_run_lays_its_deck_face_down_on_the_map() -> void:

@@ -78,10 +78,10 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 	return Ui.panel(scroll, "Sunken")
 
 
-static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
+static func relic(item: Dictionary, action: Control = null, icon_size := Vector2(40, 40)) -> PanelContainer:
 	var colour := UiTheme.SHARD if item.get("cursed", false) else UiTheme.rarity(rank(item))
 	var title := Ui.tint(Ui.label(Text.t(item.name), "Subheading"), colour)
-	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(40, 40), "✦")
+	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), icon_size, "✦")
 	var kind := Text.t("cursed relic") if item.get("cursed", false) else Text.f("%s relic", [Text.t(rank(item))])
 	if not item.get("cursed", false) and item.has("tier") and not item.tier in ProgramSchemas.RULE_TIERS:
 		kind += Text.f("  ·  tier %d", [ProgramLoot.tier_number(item)])
