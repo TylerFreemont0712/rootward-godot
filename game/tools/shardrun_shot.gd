@@ -44,6 +44,9 @@ func _ready() -> void:
 	if shot == "trial":
 		await _show_trial(language)
 		return
+	# The shots' profile is kept between runs; a Japanese trial shot must not leave the next shot greeting in Japanese.
+	Game.profile.preferred_language = "en"
+	Game.profiles.save_profile(Game.profile)
 	# ROOTWARD_SHOT_PLAYSTYLE=spellbook shows Spellforge, =deck the card Shardrun; the program Shardrun otherwise.
 	var playstyle := OS.get_environment("ROOTWARD_SHOT_PLAYSTYLE")
 	Game.use(playstyle if playstyle != "" else "program")

@@ -12,6 +12,7 @@ var session: ShardrunSession
 var _picked: Dictionary = {}
 var _chips: Array[ShardChip] = []
 var _books: VBoxContainer
+var _books_scroll: ScrollContainer
 var _inspector: VBoxContainer
 var _inspected := ""
 
@@ -30,10 +31,12 @@ func _build() -> void:
 	add_child(Ui.hbox([Ui.label("Spellbook", "Heading")], 12))
 	add_child(Ui.label(hint, "Muted", true))
 	_books = Ui.vbox([], 8)
-	var scroll := Ui.scroll(_books)
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.size_flags_stretch_ratio = 1.2
-	add_child(scroll)
+	# The spells take the height they need (up to most of the panel, then they scroll); the inspector the rest.
+	_books_scroll = Ui.scroll(_books)
+	_books_scroll.size_flags_vertical = Control.SIZE_FILL
+	add_child(_books_scroll)
+	resized.connect(_fit_books)
+	_books.minimum_size_changed.connect(_fit_books)
 	_inspector = Ui.vbox([], 6)
 	var inspector := Ui.scroll(_inspector)
 	inspector.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -53,6 +56,14 @@ func show_run(state: Dictionary) -> void:
 	if first == "" or not _owned(state, first):
 		first = spells[0].shards[0] if not (spells[0].shards as Array).is_empty() else ""
 	_inspect(first)
+	_fit_books.call_deferred()
+
+
+func _fit_books() -> void:
+	if not is_instance_valid(_books_scroll):
+		return
+	var room := size.y * 0.6 if size.y > 0.0 else 520.0
+	_books_scroll.custom_minimum_size.y = minf(_books.get_combined_minimum_size().y, room)
 
 
 func _spell_row(number: int, spell: Dictionary) -> Control:

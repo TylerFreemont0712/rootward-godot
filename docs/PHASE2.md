@@ -285,6 +285,8 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-43 | Low | Docs drift: `docs/decisions/README.md` says the next ADR is 0041 (0044 exists). `docs/PLAN.md` has two "Phase 9" headings. ROADMAP's per-stage ADR numbers (0018 to 0022) collide with ADRs already written |
 | P2-44 | Low | Untracked probe files in `game/` (`probe_glb.gd`, `probe_glb.gd.uid`, `probe_head.gd.uid`) Deleted with A1 |
 | P2-45 | Medium | `scripts/menu-navigation.sh` (181 real clicks) had been failing since the Character room's rework: it clicked "Test spell", "Floor guides" and "High contrast", which were renamed or removed, and keyboard focus never scrolled a hidden control into view (`Ui.scroll` lacked `follow_focus`). Fixed with A1 |
+| P2-47 | High | **Spellforge's map was broken**: a spell's shard chips drew their pictures at full size since the art passes made them large (ADR-0033), so one picture filled the spellbook, the map was squeezed to half its width and the room legend sat over its bottom rows. Fixed in track A |
+| P2-48 | Low | The screenshot tool kept a Japanese preference from an earlier Trial shot, so later shots greeted in Japanese. Fixed: each shot resets it |
 | P2-46 | Low | Character → Spells with three practice targets: their name plates and "Watching" tags overlap one another (`shots/phase2/menu-character-spells.png`) |
 
 ## 7. Decisions that are yours

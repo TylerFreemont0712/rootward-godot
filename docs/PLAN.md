@@ -367,6 +367,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [x] The fight's and the map's keys wait while a menu or panel covers them (P2-11).
 - [ ] The other high-priority bugs, each with a failing test first: saves (P2-12, P2-13, P2-15), the sandbox output
       limit (P2-21).
-- [ ] Spellforge's obvious bugs, its map's interface first (the player, 2026-10-04: both modes stay, each for its
-      own reason).
+- [x] Spellforge's map: a spell's shard chips drew their (now large) pictures at full size, filling the spellbook and
+      squeezing the map to half its width with the room legend over it; chips cap their pictures at chip size, the
+      spells take only the height they need and the shard inspector follows them (P2-47).
+- [ ] More Spellforge passes as its screens are played (the player, 2026-10-04: both modes stay, each for its own
+      reason).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).
