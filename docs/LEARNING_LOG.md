@@ -817,3 +817,18 @@ The sandbox polls a running program: drain its pipes, then stop if it has exited
 clock. A program that printed 6 KB against a 1 KB cap and exited within one poll left through "it has exited" before
 the cap was checked, and came back as a success with its output cut. The order of checks in a polling loop is part
 of its meaning: every check that must hold for the final state goes before the exit.
+
+## A sentence translated by its format (`game/app/text.gd`, `Text.sentence`)
+The rules write English sentences from formats ("%s takes %d.") and keep them that way, because they are saved and
+compared with reference results. To show one in Japanese, the format itself is the key: turned into a regular
+expression (`%s` becomes `(.+?)`, `%d` becomes `(-?\d+)`), it matches the finished sentence and hands back the values,
+which then fill the Japanese format. Formats are tried longest first, so "%s takes %d from %d bolts." wins over "%s
+takes %d.". Japanese often wants the values in another order, so a translation can number its slots, `{2}に{1}`.
+
+## C++ in WebAssembly, compiled before the game runs (`scripts/build-cpp.sh`, ADR-0046)
+Python and JavaScript are interpreters, so a job can send them source. C++ has to be compiled, and a compiler in the
+turn loop would make every preview wait, so every card is compiled ahead of time into one module and the job sends
+only card ids. Two details made it work under wasmtime: exceptions need the new encoding of Wasm's exception-handling
+proposal (`-fwasm-exceptions -mllvm -wasm-use-legacy-eh=false`, linked with libunwind), and a precompiled `.cwasm`
+only runs with the settings it was compiled with, so `-W exceptions=y` is given both when it is compiled and when it
+runs. `#line 1 "card.cpp"` keeps `__LINE__` (which the loop counter records) on the card's own numbering.
