@@ -15,6 +15,9 @@ document. Part 1 is the Artificer and part 2 is Sec Ops.
 
 # Part 1: the Artificer
 
+> Superseded for planning by `docs/ParadigmUpdate.md` (strategies, 80 cards, cycles, the Registry, events), which
+> builds on this diagnosis.
+
 ## 1. What a paradigm is today (read from the code and content)
 
 | Where | What the paradigm does |
