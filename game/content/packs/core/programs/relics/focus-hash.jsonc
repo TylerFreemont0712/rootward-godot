@@ -2,7 +2,7 @@
   "id": "focus-hash",
   "name": "Hasher",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-hash",
   "summary": "A bolt that lands on a foe's weakness gains 2 power.",
   "flavor": "Element maps and O(1) lookups.",
   "effects": [

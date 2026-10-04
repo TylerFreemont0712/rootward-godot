@@ -2,7 +2,7 @@
   "id": "focus-deep",
   "name": "Deep Recursion",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-deep",
   "summary": "Recurse goes one level deeper: the card after a split runs on each quarter.",
   "flavor": "Towers of small cards on small pieces.",
   "effects": [

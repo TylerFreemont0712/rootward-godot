@@ -29,7 +29,7 @@ func _build() -> void:
 	var issue: Dictionary = state.issue
 	var def := ProgramIssues.definition(state, session.catalog)
 	add_child(_tracker_bar(issue, def))
-	add_child(_body(def, issue))
+	add_child(_body(def))
 	match String(issue.stage):
 		"choose":
 			_choices(state, def)
@@ -61,7 +61,7 @@ func _tracker_bar(issue: Dictionary, def: Dictionary) -> Control:
 	return Ui.vbox([Ui.hbox([state_chip, number], 10), title, chips], 4)
 
 
-func _body(def: Dictionary, issue: Dictionary) -> Control:
+func _body(def: Dictionary) -> Control:
 	var picture := Ui.picture("shardrun/" + String(def.get("picture", "")), Vector2(168, 168), "!")
 	var words := Ui.vbox(
 		[

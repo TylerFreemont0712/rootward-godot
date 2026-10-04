@@ -2,7 +2,7 @@
   "id": "focus-memo",
   "name": "Memoiser",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-memo",
   "summary": "functools.cache is in force from the first turn: a card that already ran this fight does no work.",
   "flavor": "Repeating programs that grow cheaper.",
   "effects": [

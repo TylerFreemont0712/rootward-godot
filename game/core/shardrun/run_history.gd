@@ -38,6 +38,9 @@ static func entry(state: Dictionary, catalog: Dictionary, finished_at: String, a
 		"deck": (state.get("deck", []) as Array).duplicate(),
 		"relics": (state.relics as Array).duplicate(),
 	}
+	if state.get("playstyle", "") == "program":
+		record.cycles_earned = int(state.get("cycles_earned", 0))
+		record.cycles_spent = int(state.get("cycles_spent", 0))
 	var focus := String(state.get("focus", ""))
 	if focus != "":
 		record.focus = focus

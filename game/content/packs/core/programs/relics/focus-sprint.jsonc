@@ -2,7 +2,7 @@
   "id": "focus-sprint",
   "name": "Sprint",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-sprint",
   "summary": "A program of three cards or fewer counts 25% less work.",
   "flavor": "Tiny cheap programs every turn; kill chains for mana.",
   "effects": [

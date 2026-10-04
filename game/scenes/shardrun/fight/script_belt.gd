@@ -1,7 +1,7 @@
 class_name ScriptBelt
 extends HBoxContainer
-## The belt of scripts (ProgramScripts) in a fight's side panel: a slot for each place on the belt, a script's picture in
-## a slot it fills. Clicking a script uses it; hovering says what it does.
+## The belt of scripts (ProgramScripts) in a fight's side panel: a slot for each place on the belt, and a script's
+## picture in the slot it fills. Clicking a script uses it; hovering says what it does.
 
 signal use_pressed(index: int)
 

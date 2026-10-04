@@ -54,15 +54,15 @@ static var _left_at: Dictionary = {}
 static var drawer_open := true
 
 ## Show the deck's face-down pile (a deck run); set before show_map.
-## The legend rows of the kinds only a program run has, and whether this run shows them.
-var _program_rows: Array[Control] = []
-var _program_legend := false
 var show_deck := false
 ## True while something covers the map (a menu, the deck): its keys wait.
 var covered := func() -> bool: return false
 
 var state: Dictionary = {}
 var catalog: Dictionary = {}
+## The legend rows of the kinds only a program run has, and whether this run shows them.
+var _program_rows: Array[Control] = []
+var _program_legend := false
 var _rooms: Dictionary = {}
 var _states: Dictionary = {}
 var _reachable: Dictionary = {}

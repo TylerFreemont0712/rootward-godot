@@ -2,7 +2,7 @@
   "id": "focus-pivot",
   "name": "Partitioner",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-pivot",
   "summary": "A pivot card marks its pivot bolt, which lands doubled on the toughest foe.",
   "flavor": "Partitions, selection, quick sort.",
   "effects": [

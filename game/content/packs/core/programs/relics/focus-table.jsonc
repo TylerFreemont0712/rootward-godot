@@ -2,7 +2,7 @@
   "id": "focus-table",
   "name": "Tabulator",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-table",
   "summary": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
   "flavor": "Slow first turns, overwhelming late turns.",
   "effects": [

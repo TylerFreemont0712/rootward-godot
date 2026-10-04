@@ -2,7 +2,7 @@
   "id": "focus-heavy",
   "name": "Overclocker",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-heavy",
   "summary": "The budget is 50% larger; a timeout costs 5 Integrity.",
   "flavor": "The slowest, heaviest programs, all risk.",
   "effects": [

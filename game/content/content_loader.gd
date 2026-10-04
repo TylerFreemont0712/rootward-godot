@@ -49,8 +49,10 @@ static func load_shardrun(root := ROOT) -> Dictionary:
 			_load_kind(programs_dir.path_join("cards"), ProgramSchemas.card(), cards, "card", diagnostics)
 			var relics: Dictionary = catalog.programs.relics
 			_load_kind(programs_dir.path_join("relics"), ProgramSchemas.relic(), relics, "relic", diagnostics)
-			_load_kind(programs_dir.path_join("scripts"), ProgramSchemas.script(), catalog.programs.scripts, "script", diagnostics)
-			_load_kind(programs_dir.path_join("issues"), ProgramSchemas.issue(), catalog.programs.issues, "issue", diagnostics)
+			var scripts: Dictionary = catalog.programs.scripts
+			_load_kind(programs_dir.path_join("scripts"), IssueSchemas.script(), scripts, "script", diagnostics)
+			var issues: Dictionary = catalog.programs.issues
+			_load_kind(programs_dir.path_join("issues"), IssueSchemas.issue(), issues, "issue", diagnostics)
 			# The program run's own foes (ADR-0017), beside the Shardrun's: the old engine's catalog stays as it was.
 			var foes: Dictionary = catalog.programs.foes
 			_load_kind(programs_dir.path_join("foes"), ProgramSchemas.foe(), foes, "foe", diagnostics)

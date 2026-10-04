@@ -172,7 +172,9 @@ static func _apply(m: Dictionary, effect: Dictionary, source := "") -> void:
 		"kill-cycles", "registry-toll", "belt-extra", "first-program-discount", "index-seed-power":
 			var key2: String = String(effect.kind).replace("-", "_")
 			m[key2 if effect.kind != "belt-extra" else "belt_extra"] += int(effect.get("amount", effect.get("add", 0)))
-		"free-refactor", "sale-free", "lockfile", "snapshot", "waive-stakes", "table-monotone", "timeout-refund", "rest-purge", "script-refund":
+		"free-refactor", "sale-free", "lockfile", "snapshot", "waive-stakes":
+			m[String(effect.kind).replace("-", "_")] = true
+		"table-monotone", "timeout-refund", "rest-purge", "script-refund":
 			m[String(effect.kind).replace("-", "_")] = true
 		"interest":
 			m.interest = float(effect.fraction)

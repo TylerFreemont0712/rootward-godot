@@ -83,7 +83,7 @@ static func can_choose(state: Dictionary, choice: Dictionary) -> bool:
 	return int(state.get("cycles", 0)) >= int(needs.get("cycles", 0))
 
 
-# --- Choosing and running effects ---------------------------------------------------------------------------------------
+# --- Choosing and running effects ----------------------------------------------------------------------------------
 
 
 static func _choose(next: Dictionary, index: int, catalog: Dictionary) -> Dictionary:
@@ -231,7 +231,7 @@ static func _name(card_id: String, catalog: Dictionary) -> String:
 	return String((catalog.shards.get(card_id, {}) as Dictionary).get("name", card_id))
 
 
-# --- Cards: random ones and picked ones --------------------------------------------------------------------------------
+# --- Cards: random ones and picked ones ----------------------------------------------------------------------------
 
 
 static func _gain_relic(state: Dictionary, effect: Dictionary, rng: Rng, catalog: Dictionary) -> void:
@@ -346,7 +346,7 @@ static func _transform_commons(state: Dictionary, lose_each: int, rng: Rng, cata
 	_say(state, "%d cards are rewritten. Your maximum Integrity becomes %d." % [changed, int(state.integrity_max)])
 
 
-# --- Picking cards from the deck --------------------------------------------------------------------------------------
+# --- Picking cards from the deck -----------------------------------------------------------------------------------
 
 
 static func _open_pick(state: Dictionary, effect: Dictionary, rest: Array, catalog: Dictionary) -> bool:
@@ -439,7 +439,7 @@ static func _pick(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 	return {}
 
 
-# --- Offers: three cards, take one ------------------------------------------------------------------------------------
+# --- Offers: three cards, take one ---------------------------------------------------------------------------------
 
 
 static func _open_offer(state: Dictionary, effect: Dictionary, rest: Array, catalog: Dictionary) -> bool:
@@ -508,7 +508,7 @@ static func _take(next: Dictionary, card_id: Variant, catalog: Dictionary) -> Di
 	return {}
 
 
-# --- A different focus ------------------------------------------------------------------------------------------------
+# --- A different focus ---------------------------------------------------------------------------------------------
 
 
 static func _open_focus(state: Dictionary, rest: Array, catalog: Dictionary) -> bool:
@@ -544,7 +544,7 @@ static func _focus(next: Dictionary, focus_id: String, catalog: Dictionary) -> D
 	return {}
 
 
-# --- Fights an issue starts ---------------------------------------------------------------------------------------------
+# --- Fights an issue starts ----------------------------------------------------------------------------------------
 
 
 static func _start_fight(state: Dictionary, catalog: Dictionary) -> void:
@@ -556,7 +556,7 @@ static func _start_fight(state: Dictionary, catalog: Dictionary) -> void:
 	Shardrun.record(state, {"kind": "note", "text": "You take the elite on: %s." % ", ".join(foes)})
 
 
-# --- Quizzes: a bet on reading code -----------------------------------------------------------------------------------
+# --- Quizzes: a bet on reading code --------------------------------------------------------------------------------
 
 
 static func _open_quiz(state: Dictionary, effect: Dictionary, rest: Array, catalog: Dictionary) -> bool:
@@ -614,7 +614,7 @@ static func _answer(next: Dictionary, index: int, catalog: Dictionary) -> Dictio
 	return {}
 
 
-# --- Time passing: pending effects, boons, bounties ----------------------------------------------------------------------
+# --- Time passing: pending effects, boons, bounties ----------------------------------------------------------------
 
 
 ## A room is done: what was set to happen "in N rooms" counts down, and pays out when it reaches 0.

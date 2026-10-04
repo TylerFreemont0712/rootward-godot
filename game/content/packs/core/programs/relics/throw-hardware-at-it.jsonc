@@ -2,7 +2,7 @@
   "id": "throw-hardware-at-it",
   "name": "Throw Hardware At It",
   "tier": "paradigm",
-  "icon": "unix-philosophy",
+  "icon": "throw-hardware-at-it",
   "summary": "Every full 256 operations of the program's work adds 1 power to each attack bolt as it lands. A timeout lands nothing.",
   "flavor": "The law of your paradigm.",
   "effects": [

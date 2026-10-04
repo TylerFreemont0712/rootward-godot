@@ -12,6 +12,8 @@ extends RefCounted
 
 
 static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
+	if String(command.type).begins_with("issue-"):
+		return ProgramIssues.apply(next, command, catalog)
 	match command.type:
 		"enter":
 			return _enter(next, command, catalog)
@@ -29,8 +31,6 @@ static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return _open_chest(next, catalog)
 		"buy", "shop-service", "pip-take", "leave-shop":
 			return ProgramShop.apply(next, command, catalog)
-		"issue-choose", "issue-pick", "issue-paradigm", "issue-take", "issue-focus", "issue-quiz-ready", "issue-answer", "issue-leave":
-			return ProgramIssues.apply(next, command, catalog)
 		"take-script":
 			return _take_script(next, command, catalog)
 		"use-script":

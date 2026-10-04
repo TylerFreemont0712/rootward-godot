@@ -259,7 +259,7 @@ static func _no(code: String, message: String) -> Dictionary:
 	return {"code": code, "message": message}
 
 
-# --- The battle's side of a script (called from the rules that read these flags) ---------------------------------------
+# --- The battle's side of a script (called from the rules that read these flags) -----------------------------------
 
 
 ## A new turn: this turn's scripts wear off, traits come back, a stashed hand returns on top of the new one.

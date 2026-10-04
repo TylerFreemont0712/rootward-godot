@@ -2,7 +2,7 @@
   "id": "recurse",
   "name": "Recurse",
   "tier": "paradigm",
-  "icon": "unix-philosophy",
+  "icon": "recurse",
   "summary": "The card right after a split runs once on each half, then the halves rejoin.",
   "flavor": "The law of your paradigm.",
   "effects": [

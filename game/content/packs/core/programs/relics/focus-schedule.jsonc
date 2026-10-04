@@ -2,7 +2,7 @@
   "id": "focus-schedule",
   "name": "Scheduler",
   "tier": "focus",
-  "icon": "big-o-compass",
+  "icon": "focus-schedule",
   "summary": "A program that hits every living foe gives each bolt +1.",
   "flavor": "Spread bolts over crowds exactly.",
   "effects": [
