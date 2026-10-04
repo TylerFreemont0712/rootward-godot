@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-dedupe",
+  "icon": "shardrun/card-bloom-filter",
   "id": "bloom-filter",
   "name": "Bloom Filter",
   "summary": "One pass marks the elements the foes might be weak to; every bolt that might match gains 2. One false positive, picked by the turn, gains it wrongly; a real match is never missed.",

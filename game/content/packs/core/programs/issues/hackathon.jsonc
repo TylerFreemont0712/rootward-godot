@@ -1,0 +1,26 @@
+{
+  "id": "hackathon",
+  "name": "Hackathon",
+  "title": "48 hours, one prize",
+  "labels": [
+    "event"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A banner, a leaderboard, and a very serious elite team that has not slept. The prize is a rare relic. So is the risk.",
+  "choices": [
+    {
+      "label": "Enter: fight an elite now",
+      "effects": [
+        {
+          "kind": "fight"
+        }
+      ]
+    },
+    {
+      "label": "Watch from the sofa",
+      "effects": []
+    }
+  ],
+  "picture": "issue-hackathon"
+}

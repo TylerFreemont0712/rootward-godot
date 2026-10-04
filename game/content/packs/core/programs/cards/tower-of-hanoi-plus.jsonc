@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "source",
-  "icon": "shardrun/card-fib-surge",
+  "icon": "shardrun/card-tower-of-hanoi",
   "complexity": "exponential",
   "big_o": "O(2ⁿ), n = 5",
   "cap_n": 5,

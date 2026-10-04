@@ -1,6 +1,6 @@
 {
   "id": "rod-cutting",
-  "icon": "shardrun/card-kadane",
+  "icon": "shardrun/card-rod-cutting",
   "name": "Rod Cutting",
   "rarity": "uncommon",
   "cost": 1,

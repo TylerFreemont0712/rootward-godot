@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "logarithmic",
   "big_o": "O(log n)",
-  "icon": "shardrun/card-kadane",
+  "icon": "shardrun/card-ternary-search",
   "id": "ternary-search-plus",
   "name": "Ternary Search+",
   "summary": "On a volley that rises then falls, finds the peak by cutting it in thirds, doubles that bolt and gives its neighbours +2.",

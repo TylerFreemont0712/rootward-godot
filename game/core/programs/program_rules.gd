@@ -115,6 +115,8 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 	var out: Array[Dictionary] = []
 	# A tail call (waives_next) lets the cards after it run without a frame of their own: no work.
 	var waived := 0
+	var free_roles: Array = (m.first_role_free as Array).map(func(rule: Dictionary) -> String: return rule.role)
+	var previous_splits := false
 	for index in trace.size():
 		var step: Dictionary = trace[index]
 		var card: Dictionary = catalog.shards.get(step.shard, {})
@@ -135,9 +137,19 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 			work = 0
 			waived -= 1
 		waived += int(card.get("waives_next", 0))
+		if card.get("role", "") in free_roles:
+			free_roles.erase(card.role)
+			work = 0
+		if previous_splits and float(m.split_next_work) < 1.0:
+			work = floori(work * float(m.split_next_work))
+		previous_splits = bool(card.get("splits", false))
 		if (int(step.get("slot", index)) == 0 and m.free_first_work) or (m.jit and step.shard in ran):
 			work = 0
 		work = floori(work * float(m.work_factor))
+		if (state.get("battle", {}) as Dictionary).get("nice", false):
+			work = 0
+		elif int((state.get("battle", {}) as Dictionary).get("jobs", 0)) > 1:
+			work = work / int(state.battle.jobs)
 		out.append(
 			{
 				"card": step.shard,
@@ -336,12 +348,15 @@ static func play(
 		battle.acted = []
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
 	var work := total_work(stage_list)
+	battle.max_work = maxi(int(battle.get("max_work", 0)), work)
 	var relics := ProgramRelics.modifiers(state, catalog)
 	ProgramMemory.begin(state, battle, catalog)
 	var context := landing_context(state, battle, spell, stage_list, work, catalog)
 	# What ran is what the cards spent afterwards may do (ProgramDeck.spend), so it is kept with the battle.
 	battle.last_ran = context.ran
 	battle.mana -= cost
+	for spent: String in ["free_program", "free_cards"]:
+		battle.erase(spent)
 	(battle.cast as Array).append(spell.id)
 	battle.casts += 1
 	state.stats.casts += 1
@@ -373,6 +388,9 @@ static func play(
 		remember(battle, spell.shards, [])
 		ProgramMemory.row(battle, 0, 0, relics)
 		state.integrity = maxi(0, int(state.integrity) - int(relics.timeout_integrity))
+		if relics.timeout_refund:
+			battle.mana += cost
+			battle.block += maxi(0, work - limit) / 64
 		if int(state.integrity) <= 0:
 			played.lethal = true
 			if not rehearsal:
@@ -388,6 +406,8 @@ static func play(
 		state.integrity = maxi(0, int(state.integrity) - curse)
 		Shardrun.record(state, {"kind": "curse", "amount": curse, "text": "The cast burns %d Integrity." % curse})
 	var landed := resolve(state, battle, bolts, catalog, context)
+	for spent: String in ["double_next", "gc_seed"]:
+		battle.erase(spent)
 	var landed_block := int(battle.block)
 	remember(battle, spell.shards, bolts)
 	battle.last_work = work

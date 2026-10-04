@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "exponential",
   "big_o": "O(2ⁿ) bounded, cap 10",
-  "icon": "shardrun/card-exhaustive-ward",
+  "icon": "shardrun/card-branch-and-bound",
   "id": "branch-and-bound",
   "name": "Branch and Bound",
   "summary": "Finds the subset of the first ten bolts that blocks the damage the foes intend with the least to spare, cutting any branch that cannot reach it or beat the best. Exhaustive Ward, pruned.",

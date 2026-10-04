@@ -67,7 +67,10 @@ static func hit(battle: Dictionary, foe: Dictionary, bolt: Dictionary, damage: i
 
 static func row(battle: Dictionary, damage: int, exact_damage: int, m: Dictionary) -> void:
 	var rows: Array = battle.get("dp", [])
-	rows.append(damage + exact_damage * (int(m.exact_kill_factor) - 1))
+	var written := damage + exact_damage * (int(m.exact_kill_factor) - 1)
+	if m.table_monotone and not rows.is_empty():
+		written = maxi(written, int(rows.back()))
+	rows.append(written)
 	battle.dp = rows
 
 

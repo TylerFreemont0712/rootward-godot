@@ -1,0 +1,45 @@
+{
+  "id": "code-review",
+  "name": "Code Review",
+  "title": "Your pull request has comments",
+  "labels": [
+    "review"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A reviewer left a long comment thread on your deck. They are polite about it, which is somehow worse.",
+  "choices": [
+    {
+      "label": "Take the advice: remove a card",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "remove",
+          "count": 1,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Take the advice: refactor a card",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "upgrade",
+          "count": 1,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Argue, lose, and collect the consolation (+50 cycles)",
+      "effects": [
+        {
+          "kind": "gain-cycles",
+          "amount": 50
+        }
+      ]
+    }
+  ],
+  "picture": "issue-code-review"
+}

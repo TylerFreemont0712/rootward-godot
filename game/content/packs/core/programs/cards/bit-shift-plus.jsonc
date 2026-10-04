@@ -5,7 +5,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-import-operator",
+  "icon": "shardrun/card-bit-shift",
   "id": "bit-shift-plus",
   "name": "Bit Shift+",
   "summary": "Every bolt doubles (bolt << 1), but a result past 63 wraps around (& 63).",

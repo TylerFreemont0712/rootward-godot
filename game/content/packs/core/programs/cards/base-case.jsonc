@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-divide",
+  "icon": "shardrun/card-base-case",
   "id": "base-case",
   "name": "Base Case",
   "summary": "Doubles every bolt when the volley has at most 2 bolts. Recurse makes small halves reach this base case.",

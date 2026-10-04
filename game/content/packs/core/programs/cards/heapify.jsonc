@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-import-heapq",
+  "icon": "shardrun/card-heapify",
   "id": "heapify",
   "name": "Heapify",
   "summary": "Builds a heap bottom-up in O(n): the strongest bolt comes first and the rest are in heap order, not sorted.",

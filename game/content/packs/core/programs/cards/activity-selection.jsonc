@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/card-round-robin",
+  "icon": "shardrun/card-activity-selection",
   "id": "activity-selection",
   "name": "Activity Selection",
   "summary": "Sorts foes by intent tempo and sends the strongest bolts until each falls. Quick attackers come first.",

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "quadratic",
   "big_o": "O(n·m)",
-  "icon": "shardrun/card-make-change",
+  "icon": "shardrun/card-first-fit-decreasing",
   "id": "first-fit-decreasing-plus",
   "name": "First-Fit Decreasing+",
   "summary": "Strongest bolts first: packs each into the first foe it overkills by at most 1. Leftovers aim at the front.",

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/shard-alternating-current",
+  "icon": "shardrun/card-task-scheduler",
   "id": "task-scheduler-plus",
   "name": "Task Scheduler+",
   "summary": "Reorders the volley so no two bolts of one element are neighbours. Where that is impossible, a 2-power idle bolt goes between them.",

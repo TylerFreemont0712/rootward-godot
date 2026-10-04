@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(k)",
-  "icon": "shardrun/shard-sieve",
+  "icon": "shardrun/card-slice-bolts",
   "id": "slice-bolts-plus",
   "name": "Slice+",
   "summary": "Keeps the first four bolts (bolts[:4]), each gaining 3.",

@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "logarithmic",
   "big_o": "O(log k)",
-  "icon": "shardrun/card-binary-execute",
+  "icon": "shardrun/card-lookup",
   "id": "lookup",
   "name": "Lookup",
   "summary": "Binary-searches the index for the smallest bolt that kills the front foe; otherwise takes its strongest.",

@@ -1,0 +1,44 @@
+{
+  "id": "open-source-maintainer",
+  "name": "The Open-Source Maintainer",
+  "title": "Funding request",
+  "labels": [
+    "sponsorship"
+  ],
+  "layers": [
+    0,
+    1
+  ],
+  "weight": 1.0,
+  "text": "A tired maintainer asks for a little support. They promise to remember you, and you believe them.",
+  "choices": [
+    {
+      "label": "Donate 50 cycles (a rare relic waits two rooms on)",
+      "needs": {
+        "cycles": 50
+      },
+      "effects": [
+        {
+          "kind": "lose-cycles",
+          "amount": 50
+        },
+        {
+          "kind": "pending",
+          "rooms": 2,
+          "effects": [
+            {
+              "kind": "gain-relic",
+              "tier": "rare",
+              "curse_chance": 0.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Say thanks and go",
+      "effects": []
+    }
+  ],
+  "picture": "issue-open-source-maintainer"
+}

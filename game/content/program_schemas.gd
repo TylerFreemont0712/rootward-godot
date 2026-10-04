@@ -9,6 +9,7 @@ extends RefCounted
 const COMPLEXITIES := ["constant", "logarithmic", "linear", "linearithmic", "quadratic", "exponential", "pseudo"]
 ## What a card does, shown on its face: makes bolts, changes them, arranges them, aims them, or guards with them. An
 ## import is not a step of the program but a line at the top of it, holding for the rest of the fight (ADR-0018).
+const SCRIPT_RARITIES := ["common", "uncommon", "rare"]
 const ROLES := ["source", "shape", "order", "strike", "guard", "import", "utility"]
 ## Programming words for what a card does in the deck (ADR-0018), their meanings in programs.jsonc `keywords`:
 ## `once` runs once a fight, `volatile` leaves the hand at the end of the turn, `const` stays in it, `__init__` is in
@@ -271,6 +272,151 @@ static func relic() -> Dictionary:
 	)
 
 
+## An Issue: an event with a tracker's look and a few choices, each a list of effects (ProgramIssues).
+static func issue() -> Dictionary:
+	return (
+		Schema
+		. object(
+			{
+				"id": Schema.ID,
+				"name": Schema.TEXT,
+				"title": Schema.TEXT,
+				"labels": Schema.with_default(Schema.list_of(Schema.TEXT), []),
+				"layers": Schema.with_default(Schema.list_of(Schema.int_range(0, 3)), []),
+				"weight": Schema.with_default({"type": "number", "positive": true}, 1.0),
+				"picture": Schema.optional(Schema.ID),
+				"text": Schema.TEXT,
+				"choices":
+				(
+					Schema
+					. list_of(
+						(
+							Schema
+							. object(
+								{
+									"label": Schema.TEXT,
+									"needs":
+									Schema.with_default(
+										Schema.object({"cycles": Schema.with_default(Schema.int_min(0), 0)}),
+										{"cycles": 0}
+									),
+									"effects": Schema.with_default(Schema.list_of(issue_effect()), []),
+								}
+							)
+						),
+						null,
+						1
+					)
+				),
+			}
+		)
+	)
+
+
+## What an issue's choice does. `then`, `effects`, `right` and `wrong` hold effects of their own (checked in `check`).
+static func issue_effect() -> Dictionary:
+	var positive := ShardrunSchemas.POSITIVE
+	var nested := Schema.with_default({"type": "any"}, [])
+	return (
+		Schema
+		. union(
+			{
+				"gain-cycles": {"amount": positive},
+				"lose-cycles": {"amount": positive},
+				"lose-integrity": {"amount": positive},
+				"heal": {"amount": positive},
+				"heal-fraction": {"fraction": Schema.RATIO},
+				"max-integrity": {"amount": Schema.INT},
+				"gain-script":
+				{
+					"rarity": Schema.with_default(Schema.one_of(SCRIPT_RARITIES), "common"),
+					"count": Schema.with_default(positive, 1)
+				},
+				"gain-relic":
+				{
+					"tier": Schema.with_default(Schema.one_of(TIERS + ["any", "rare-plus"]), "any"),
+					"curse_chance": Schema.with_default(Schema.RATIO, 0.0)
+				},
+				"gain-relic-id": {"relic": Schema.ID},
+				"gain-curse": {},
+				"add-random-card":
+				{
+					"scope": Schema.one_of(["own", "neutral", "other", "any"]),
+					"rarity": Schema.with_default(Schema.one_of(["any", "rare"]), "any"),
+					"refactored": Schema.with_default(Schema.BOOL, false)
+				},
+				"upgrade-random": {"count": positive},
+				"transform-random": {"count": positive},
+				"transform-commons": {"lose_max": Schema.with_default(Schema.int_min(0), 0)},
+				"pick":
+				{
+					"purpose":
+					Schema.one_of(["remove", "upgrade", "transform", "duplicate", "trade", "remove-basic", "keep"]),
+					"count": Schema.with_default(positive, 1),
+					"then": nested,
+				},
+				"offer":
+				{
+					"scope": Schema.one_of(["own", "neutral", "other", "any", "chosen"]),
+					"count": Schema.with_default(positive, 3),
+					"refactored": Schema.with_default(Schema.BOOL, false)
+				},
+				"swap-focus": {},
+				"copy-quiz-card": {},
+				"pending": {"rooms": positive, "effects": nested},
+				"boon": {"boon": Schema.one_of(["mana", "draw", "block", "intern"]), "fights": positive},
+				"bounty": {"bounty": Schema.one_of(["one-program", "fast"]), "reward": positive},
+				"fight": {},
+				"quiz": {"quiz": Schema.one_of(ProgramQuiz.KINDS), "right": nested, "wrong": nested},
+			}
+		)
+	)
+
+
+## A script: a one-use command on the belt (ProgramScripts).
+static func script() -> Dictionary:
+	var positive := ShardrunSchemas.POSITIVE
+	return (
+		Schema
+		. object(
+			{
+				"id": Schema.ID,
+				"name": Schema.TEXT,
+				"rarity": Schema.one_of(SCRIPT_RARITIES),
+				"price": positive,
+				"summary": Schema.TEXT,
+				"icon": Schema.optional(Schema.ID),
+				"target": Schema.with_default(Schema.one_of(["none", "foe"]), "none"),
+				"when": Schema.with_default(Schema.one_of(["fight", "anywhere"]), "fight"),
+				"effect":
+				(
+					Schema
+					. union(
+						{
+							"heal": {"amount": positive},
+							"hand-card": {"card": Schema.ID},
+							"reveal-intents": {},
+							"foe-half": {},
+							"draw": {"count": positive},
+							"free-card": {},
+							"revert": {"max": positive},
+							"nice": {},
+							"foe-damage": {"amount": positive},
+							"trait-off": {},
+							"double-next": {},
+							"free-program": {},
+							"gc": {},
+							"stash-hand": {},
+							"work-divide": {"divisor": Schema.int_range(2, 16)},
+							"shed-curses": {},
+						}
+					)
+				),
+			}
+		)
+	)
+
+
 ## What a relic does for a run, or an import for a fight (ProgramRelics).
 static func effect() -> Dictionary:
 	var positive := ShardrunSchemas.POSITIVE
@@ -295,6 +441,33 @@ static func effect() -> Dictionary:
 				"index": {"size": Schema.with_default(positive, 8), "seed": Schema.with_default(positive, 1)},
 				"index-size": {"size": positive},
 				"index-seed": {"count": positive},
+				"shop-discount": {"fraction": Schema.RATIO},
+				"shop-stock": {"cards": Schema.int_min(0), "relics": Schema.int_min(0)},
+				"kill-cycles": {"amount": positive},
+				"pickup-cycles": {"amount": positive},
+				"registry-toll": {"amount": positive},
+				"free-refactor": {},
+				"sale-free": {},
+				"lockfile": {},
+				"interest": {"fraction": Schema.RATIO, "max": positive},
+				"deck-mana": {"min_cards": positive, "amount": positive},
+				"deck-draw": {"max_cards": positive, "amount": positive},
+				"snapshot": {},
+				"waive-stakes": {},
+				"reward-share-shift": {"to_other": Schema.RATIO},
+				"reward-focus": {"weight": {"type": "number", "min": 1.0}},
+				"table-monotone": {},
+				"index-seed-power": {"add": positive},
+				"timeout-refund": {},
+				"first-role-free": {"role": Schema.one_of(ROLES)},
+				"split-next-work": {"factor": {"type": "number", "positive": true, "max": 1.0}},
+				"volley-bonus": {"min_bolts": positive, "factor": {"type": "number", "positive": true, "max": 10.0}},
+				"first-program-discount": {"amount": positive},
+				"rest-purge": {},
+				"belt-extra": {"amount": positive},
+				"script-refund": {},
+				"script-discount": {"fraction": Schema.RATIO},
+				"debt-mana": {"every": positive, "amount": positive},
 				"weak-flat-bonus": {"add": positive},
 				"sorted-strike-power": {"add": positive},
 				"recurse-depth": {"depth": Schema.int_range(1, 4)},
@@ -591,6 +764,82 @@ static func config() -> Dictionary:
 						}
 					)
 				),
+				# The Registry (ProgramShop): what a shop stocks, what it costs and how much a price may wander.
+				"registry":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. object(
+								{
+									"cards": Schema.int_range(1, 8),
+									"relics": Schema.int_range(0, 6),
+									"scripts": Schema.int_range(0, 6),
+									"card_rarity":
+									Schema.record({"type": "number", "min": 0.0}, ShardrunSchemas.SHARD_RARITIES),
+									"card_price":
+									Schema.record(ShardrunSchemas.POSITIVE, ShardrunSchemas.SHARD_RARITIES),
+									"sale": Schema.RATIO,
+									"relic_tiers":
+									Schema.record({"type": "number", "min": 0.0}, [], "^(%s)$" % "|".join(TIERS)),
+									"relic_price":
+									Schema.record(ShardrunSchemas.POSITIVE, [], "^(%s)$" % "|".join(TIERS)),
+									"uninstall":
+									Schema.object({"price": ShardrunSchemas.POSITIVE, "step": Schema.int_min(0)}),
+									"refactor": ShardrunSchemas.POSITIVE,
+									"pip_install":
+									Schema.object(
+										{"price": ShardrunSchemas.POSITIVE, "choices": Schema.int_range(1, 6)}
+									),
+									"jitter": Schema.RATIO,
+								}
+							)
+						),
+						{
+							"cards": 5,
+							"relics": 3,
+							"scripts": 3,
+							"card_rarity": {"common": 55, "uncommon": 35, "rare": 10},
+							"card_price": {"common": 50, "uncommon": 75, "rare": 150},
+							"sale": 0.5,
+							"relic_tiers": {"common": 40, "uncommon": 34, "rare": 20, "epic": 5, "legendary": 1},
+							"relic_price": {"common": 110, "uncommon": 160, "rare": 230, "epic": 320, "legendary": 450},
+							"uninstall": {"price": 75, "step": 25},
+							"refactor": 90,
+							"pip_install": {"price": 60, "choices": 3},
+							"jitter": 0.1
+						}
+					)
+				),
+				# The belt and the drops (ProgramScripts): how many scripts it holds, the chance a won fight leaves one (a
+				# fight's rises by `step` for every fight without one), and the rarity odds of any script drawn.
+				"scripts":
+				(
+					Schema
+					. with_default(
+						(
+							Schema
+							. object(
+								{
+									"belt": Schema.int_range(1, 8),
+									"drop":
+									Schema.record(
+										{"type": "number", "min": 0.0, "max": 1.0}, ["fight", "elite", "boss"]
+									),
+									"step": Schema.with_default(Schema.RATIO, 0.1),
+									"rarity": Schema.record({"type": "number", "min": 0.0}, SCRIPT_RARITIES),
+								}
+							)
+						),
+						{
+							"belt": 3,
+							"drop": {"fight": 0.3, "elite": 0.6, "boss": 1.0},
+							"step": 0.1,
+							"rarity": {"common": 60, "uncommon": 30, "rare": 10}
+						}
+					)
+				),
 				# Initiative: how much more a foe takes from a program that lands before it moves (0.25 is 25% more).
 				"initiative": Schema.with_default({"type": "number", "min": 0.0}, 0.0),
 			}
@@ -598,9 +847,38 @@ static func config() -> Dictionary:
 	)
 
 
+## An issue's nested effects are real effects, and the cards and relics they name exist.
+static func _check_issues(catalog: Dictionary, file: String, diagnostics: Array[Dictionary]) -> void:
+	for issue: Dictionary in (catalog.programs.get("issues", {}) as Dictionary).values():
+		for choice: Dictionary in issue.choices:
+			_check_effects(choice.effects, "issue %s" % issue.id, catalog, file, diagnostics, 0)
+	for script: Dictionary in (catalog.programs.get("scripts", {}) as Dictionary).values():
+		var effect: Dictionary = script.effect
+		if effect.kind == "hand-card" and not catalog.programs.cards.has(effect.card):
+			_error(diagnostics, 'script "%s" names an unknown card "%s"' % [script.id, effect.card], file)
+
+
+static func _check_effects(
+	effects: Array, where: String, catalog: Dictionary, file: String, diagnostics: Array[Dictionary], depth: int
+) -> void:
+	for effect: Variant in effects:
+		var result := Schema.check(issue_effect(), effect)
+		for message: String in result.errors:
+			_error(diagnostics, "%s: %s" % [where, message], file)
+		if not result.errors.is_empty() or depth > 2:
+			continue
+		var checked: Dictionary = result.value
+		if checked.kind == "gain-relic-id" and not catalog.programs.relics.has(checked.relic):
+			_error(diagnostics, '%s: unknown relic "%s"' % [where, checked.relic], file)
+		for nested: String in ["then", "effects", "right", "wrong"]:
+			if checked.has(nested):
+				_check_effects(checked[nested], where, catalog, file, diagnostics, depth + 1)
+
+
 ## Cross-references: every card a config names exists (and is draftable where it is drafted), every paradigm a card
 ## names exists, forges lead to cards, tempos name foes, relics exist. `file` is the config's, for the diagnostics.
 static func check(catalog: Dictionary, file: String, diagnostics: Array[Dictionary]) -> void:
+	_check_issues(catalog, file, diagnostics)
 	var programs: Dictionary = catalog.programs
 	var config: Dictionary = programs.config
 	var cards: Dictionary = programs.cards

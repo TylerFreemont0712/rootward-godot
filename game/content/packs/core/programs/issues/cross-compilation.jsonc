@@ -1,0 +1,41 @@
+{
+  "id": "cross-compilation",
+  "name": "Cross-Compilation",
+  "title": "Target: another paradigm",
+  "labels": [
+    "enhancement"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "A compiler will take one of your cards and give you two of another school in return. It is a fair rate, as long as you do not ask what it does with the original.",
+  "choices": [
+    {
+      "label": "Trade a card for two from another paradigm",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "trade",
+          "count": 1,
+          "then": [
+            {
+              "kind": "add-random-card",
+              "scope": "other"
+            },
+            {
+              "kind": "add-random-card",
+              "scope": "other"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-cross-compilation"
+}

@@ -5,7 +5,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-dedupe",
+  "icon": "shardrun/card-reservoir-sampling",
   "id": "reservoir-sampling-plus",
   "name": "Reservoir Sampling+",
   "summary": "One pass keeps four bolts chosen at random (seeded), each doubled; the rest fade.",

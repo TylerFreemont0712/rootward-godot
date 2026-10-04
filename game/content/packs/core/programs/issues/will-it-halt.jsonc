@@ -1,0 +1,42 @@
+{
+  "id": "will-it-halt",
+  "name": "Will It Halt?",
+  "title": "Does this ever finish?",
+  "labels": [
+    "quiz"
+  ],
+  "layers": [
+    3
+  ],
+  "weight": 1.0,
+  "text": "A looping bronze track with a finish flag. The Root loves this question, and has never answered it kindly.",
+  "choices": [
+    {
+      "label": "Say whether it finishes in time (right: an epic relic; wrong: lose 6 Integrity)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "halt",
+          "right": [
+            {
+              "kind": "gain-relic",
+              "tier": "epic",
+              "curse_chance": 0.0
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-integrity",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-will-it-halt"
+}

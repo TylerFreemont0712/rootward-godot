@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-prism",
+  "icon": "shardrun/card-fractional-knapsack",
   "id": "fractional-knapsack",
   "name": "Fractional Knapsack",
   "summary": "Cuts the strongest bolt into exactly the front foe's HP plus a remainder, then the next strongest for the next foe.",

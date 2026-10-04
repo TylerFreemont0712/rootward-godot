@@ -1,0 +1,48 @@
+{
+  "id": "oracle-test-suite",
+  "name": "The Oracle's Test Suite",
+  "title": "Which version passes?",
+  "labels": [
+    "quiz"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "The Oracle sets three versions of one of your cards before you, and a test. Only one passes. The Oracle is patient.",
+  "choices": [
+    {
+      "label": "Find the passing version (right: 60 cycles and a refactor; wrong: 20 cycles)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "oracle",
+          "right": [
+            {
+              "kind": "gain-cycles",
+              "amount": 60
+            },
+            {
+              "kind": "pick",
+              "purpose": "upgrade",
+              "count": 1,
+              "then": []
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-cycles",
+              "amount": 20
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-oracle-test-suite"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "speculative-execution",
+  "name": "Speculative Execution",
+  "tier": "rare",
+  "summary": "Your first strike each program does no work.",
+  "flavor": "It already ran, just in case.",
+  "effects": [
+    {
+      "kind": "first-role-free",
+      "role": "strike"
+    }
+  ]
+}

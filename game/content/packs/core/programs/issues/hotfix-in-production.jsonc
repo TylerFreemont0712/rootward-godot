@@ -1,0 +1,34 @@
+{
+  "id": "hotfix-in-production",
+  "name": "Hotfix in Production",
+  "title": "It is on fire (again)",
+  "labels": [
+    "urgent"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "The alert says 500s everywhere. A quick patch would help, and the quick patch is the sort that leaves a mark.",
+  "choices": [
+    {
+      "label": "Hotfix: refactor a card now, lose 6 Integrity",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "upgrade",
+          "count": 1,
+          "then": [
+            {
+              "kind": "lose-integrity",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Let it burn",
+      "effects": []
+    }
+  ],
+  "picture": "issue-hotfix-in-production"
+}

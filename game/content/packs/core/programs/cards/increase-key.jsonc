@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/shard-priority-queue",
+  "icon": "shardrun/card-increase-key",
   "id": "increase-key",
   "name": "Increase Key",
   "summary": "Raises the weakest bolt to one less than the strongest, then sifts it up into place.",

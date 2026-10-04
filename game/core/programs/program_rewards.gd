@@ -26,11 +26,24 @@ static func draft_cards(state: Dictionary, kind: String, catalog: Dictionary) ->
 	)
 	var rng := Rng.create(state.seed, "reward:%d:%d" % [state.layer, (state.visited as Array).size()])
 	var shares: Dictionary = (rules.shares as Dictionary).duplicate()
+	var held := ProgramRelics.modifiers(state, catalog)
+	if float(held.reward_shift) > 0.0:
+		# Polyglot: more of what you are offered is another paradigm's, less your own.
+		shares[OTHER] = float(shares[OTHER]) + float(held.reward_shift)
+		shares[OWN] = maxf(0.0, float(shares[OWN]) - float(held.reward_shift))
+	if float(held.reward_focus) > 0.0:
+		rules = rules.duplicate()
+		rules.focus_weight = float(held.reward_focus)
 	if kind == "boss":
 		shares[OTHER] = 0.0
 	var weights := _rarity_weights(base, float(state.get("rare_pity", 0.0)))
 	var chosen: Array = []
 	var wanted := int(catalog.balance.reward_choices)
+	# The Intern (an Issue) puts a fourth card in the next few rewards.
+	for boon: Dictionary in state.get("boons", []):
+		if boon.kind == "intern":
+			wanted += 1
+			break
 	var attempt := 0
 	while chosen.size() < wanted and attempt < 80:
 		attempt += 1

@@ -1,0 +1,12 @@
+{
+  "id": "lockfile",
+  "name": "Lockfile",
+  "tier": "uncommon",
+  "summary": "The first relic you buy in each layer costs half.",
+  "flavor": "Everything pinned, nothing surprising.",
+  "effects": [
+    {
+      "kind": "lockfile"
+    }
+  ]
+}

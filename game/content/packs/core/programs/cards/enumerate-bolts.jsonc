@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-generator",
+  "icon": "shardrun/card-enumerate-bolts",
   "id": "enumerate-bolts",
   "name": "Enumerate",
   "summary": "Each bolt gains its index (0, 1, 2 ...), so later bolts gain more.",

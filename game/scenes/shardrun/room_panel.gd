@@ -19,6 +19,14 @@ static func create(run_session: ShardrunSession) -> RoomPanel:
 			panel._rest()
 		"forge":
 			panel._forge()
+		"shop":
+			var registry := RegistryView.create(run_session)
+			registry.wants.connect(func(command: Dictionary) -> void: panel.wants.emit(command))
+			panel.add_child(registry)
+		"issue":
+			var issue := IssueView.create(run_session)
+			issue.wants.connect(func(command: Dictionary) -> void: panel.wants.emit(command))
+			panel.add_child(issue)
 	return panel
 
 
@@ -38,6 +46,10 @@ func _reward() -> void:
 	elif reward.has("cursed_relic"):
 		title = Text.t("A curse has bound itself")
 	add_child(Ui.label(title, "Heading"))
+	if reward.has("receipt"):
+		add_child(_receipt(reward.receipt, int(state.get("cycles", 0))))
+	if reward.has("script"):
+		_script_reward(String(reward.script))
 	if reward.has("chest"):
 		var chance := roundi(float(reward.chest.curse_chance) * 100.0)
 		var warning := run_on(
@@ -97,9 +109,74 @@ func _reward() -> void:
 			column.add_child(Cards.shard(shard, state.language, session.show_summaries(), 12, take, true))
 		add_child(column)
 		var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
+		if ProgramRewards.applies(state):
+			skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
 		add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
 	var leave := Text.t("Leave it unopened") if reward.has("chest") else Text.t("Leave the rest and move on")
 	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}))]))
+
+
+## What a fight paid, in the look of a profiler's `time` output.
+func _receipt(receipt: Dictionary, wallet: int) -> Control:
+	var lines: Array[String] = ["$ time ./main"]
+	for line: Dictionary in receipt.lines:
+		var label := Text.t(String(line.label))
+		var pad := " ".repeat(maxi(1, 26 - label.length()))
+		lines.append("%s%s%s%d" % [label, pad, "+ " if line.kind == "bonus" else "  ", int(line.amount)])
+	lines.append("─".repeat(34))
+	lines.append(Text.f("cycles %d   (total %d)", [int(receipt.total), wallet]))
+	var label := Label.new()
+	label.text = "\n".join(lines)
+	label.add_theme_font_override("font", UiTheme.code_font())
+	label.add_theme_font_size_override("font_size", 15)
+	label.add_theme_color_override("font_color", UiTheme.TEXT)
+	return Ui.hbox([Ui.picture("shardrun/cycles", Vector2(48, 48), "⟳"), Ui.panel(label, "Sunken")], 12)
+
+
+## A script a fight left behind: take it, dropping one of the belt's when it is full.
+func _script_reward(id: String) -> void:
+	var state := session.state
+	var script: Dictionary = session.catalog.programs.scripts.get(id, {})
+	if script.is_empty():
+		return
+	add_child(Ui.label(Text.t("A script"), "Subheading"))
+	var full := (state.get("belt", []) as Array).size() >= ProgramScripts.belt_size(state, session.catalog)
+	var head := (
+		Ui
+		. hbox(
+			[
+				Ui.picture("shardrun/script-" + id, Vector2(48, 48), "📜"),
+				Ui.vbox(
+					[
+						Ui.tint(Ui.label(Text.t(script.name), "Subheading"), UiTheme.rarity(String(script.rarity))),
+						Ui.label(Text.t(script.summary), "", true)
+					],
+					2
+				),
+			],
+			12
+		)
+	)
+	add_child(head)
+	if not full:
+		add_child(
+			Ui.hbox(
+				[Ui.button(Text.f("Take %s", [Text.t(script.name)]), _ask({"type": "take-script"}), "PrimaryButton")]
+			)
+		)
+		return
+	add_child(Ui.label(Text.t("Your belt is full. Drop one script to take it."), "Muted", true))
+	var belt: Array = state.belt
+	var row := Ui.flow([], 8)
+	for index in belt.size():
+		var held: Dictionary = session.catalog.programs.scripts.get(belt[index], {})
+		row.add_child(
+			Ui.button(
+				Text.f("Drop %s", [Text.t(String(held.get("name", belt[index])))]),
+				_ask({"type": "take-script", "drop_index": index})
+			)
+		)
+	add_child(row)
 
 
 func _rest() -> void:
@@ -112,6 +189,18 @@ func _rest() -> void:
 			_ask({"type": "cleanse-relic", "relic_id": relic.id})
 		)
 		add_child(Ui.hbox([cleanse]))
+	# Dead Code Elimination: a rest may also remove a card.
+	if ProgramRelics.modifiers(state, session.catalog).rest_purge and not state.get("rest_purged", false):
+		add_child(Ui.label(Text.t("Dead Code Elimination: remove a card before you rest."), "Subheading"))
+		var seen := {}
+		var row := Ui.flow([], 8)
+		for id: String in state.deck:
+			if seen.has(id):
+				continue
+			seen[id] = true
+			var name := Text.t(String((session.catalog.shards.get(id, {}) as Dictionary).get("name", id)))
+			row.add_child(Ui.button(name, _ask({"type": "purge", "shard_id": id})))
+		add_child(row)
 
 
 func _rest_text(heal: int) -> Control:

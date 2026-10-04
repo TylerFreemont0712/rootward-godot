@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(log n + k)",
-  "icon": "shardrun/card-sliding-window",
+  "icon": "shardrun/card-range-query",
   "id": "range-query-plus",
   "name": "Range Query+",
   "summary": "Two binary searches find, for each foe, the bolts with power from a third of its HP up to its HP; they fly at it. Needs a sorted volley. The rest are stashed in the index.",

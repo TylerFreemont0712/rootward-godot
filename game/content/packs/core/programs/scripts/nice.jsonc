@@ -1,0 +1,12 @@
+{
+  "id": "nice",
+  "name": "nice -n -20",
+  "rarity": "uncommon",
+  "price": 50,
+  "summary": "This turn your program counts as no work: it lands first, with Initiative.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "nice"
+  }
+}

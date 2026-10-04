@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-bisect-insert",
+  "icon": "shardrun/card-b-tree",
   "id": "b-tree",
   "name": "from sortedcontainers import SortedList",
   "summary": "For the rest of the fight, you have an Index of 8 more bolts, and the 2 strongest it holds at the end of the fight start the next one.",

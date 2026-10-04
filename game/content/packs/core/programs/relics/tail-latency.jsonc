@@ -1,0 +1,13 @@
+{
+  "id": "tail-latency",
+  "name": "Tail Latency",
+  "tier": "common",
+  "summary": "Foes wait 12 more operations before they act.",
+  "flavor": "The slowest one decides everything.",
+  "effects": [
+    {
+      "kind": "tempo",
+      "add": 12
+    }
+  ]
+}

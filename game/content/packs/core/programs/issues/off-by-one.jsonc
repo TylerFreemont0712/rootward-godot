@@ -1,0 +1,39 @@
+{
+  "id": "off-by-one",
+  "name": "Off-by-One",
+  "title": "How many times does it run?",
+  "labels": [
+    "quiz"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A short loop over a short volley. The classic mistake is one more or one fewer than you think.",
+  "choices": [
+    {
+      "label": "Count the bolts it returns (right: +4 max Integrity; wrong: lose 3 Integrity)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "off-by-one",
+          "right": [
+            {
+              "kind": "max-integrity",
+              "amount": 4
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-integrity",
+              "amount": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-off-by-one"
+}

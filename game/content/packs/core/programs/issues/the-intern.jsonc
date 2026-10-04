@@ -1,0 +1,31 @@
+{
+  "id": "the-intern",
+  "name": "The Intern",
+  "title": "A new hire",
+  "labels": [
+    "staffing"
+  ],
+  "layers": [
+    0,
+    1
+  ],
+  "weight": 1.0,
+  "text": "An intern with an enormous mug asks if there is anything they can help with. There is always something.",
+  "choices": [
+    {
+      "label": "Take them on (a fourth card in the next three card rewards)",
+      "effects": [
+        {
+          "kind": "boon",
+          "boon": "intern",
+          "fights": 3
+        }
+      ]
+    },
+    {
+      "label": "Say you are fine",
+      "effects": []
+    }
+  ],
+  "picture": "issue-the-intern"
+}

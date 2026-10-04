@@ -11,7 +11,14 @@ signal enter_pressed(node_id: String)
 signal deck_pressed
 
 const NAMES := {
-	"fight": "Fight", "elite": "Elite", "boss": "Guardian", "rest": "Rest", "forge": "Forge", "treasure": "Cache"
+	"fight": "Fight",
+	"elite": "Elite",
+	"boss": "Guardian",
+	"rest": "Rest",
+	"forge": "Forge",
+	"treasure": "Cache",
+	"shop": "Registry",
+	"issue": "Issue",
 }
 const WHAT := {
 	"fight": "Foes bar the way.",
@@ -20,8 +27,12 @@ const WHAT := {
 	"rest": "Recover Integrity, or cleanse a curse.",
 	"forge": "Rework a shard, widen a spell, or bind a new one.",
 	"treasure": "A sealed cache: a relic, or a curse.",
+	"shop": "The Registry: cards, relics and scripts for cycles, and Semver the owl.",
+	"issue": "An open issue: a problem with a few ways to answer it.",
 }
 const LEGEND: Array[String] = ["fight", "elite", "rest", "forge", "treasure", "boss"]
+## Kinds only a program run has: their legend rows are shown for such a run alone.
+const PROGRAM_LEGEND: Array[String] = ["shop", "issue"]
 const HINT := "Hover a room to see what waits there."
 const RAIL_WIDTH := 128.0
 const SIDE_WIDTH := 290.0
@@ -43,6 +54,9 @@ static var _left_at: Dictionary = {}
 static var drawer_open := true
 
 ## Show the deck's face-down pile (a deck run); set before show_map.
+## The legend rows of the kinds only a program run has, and whether this run shows them.
+var _program_rows: Array[Control] = []
+var _program_legend := false
 var show_deck := false
 ## True while something covers the map (a menu, the deck): its keys wait.
 var covered := func() -> bool: return false
@@ -91,7 +105,7 @@ func _init() -> void:
 	_view.gui_input.connect(_on_view_input)
 	add_child(_view)
 	_canvas = MapCanvas.new()
-	for kind: String in LEGEND:
+	for kind: String in LEGEND + PROGRAM_LEGEND:
 		_canvas.icons[kind] = Art.texture("shardrun/map-" + kind)
 	_wall = DungeonBackdrop.new()
 	_wall.stretch_mode = TextureRect.STRETCH_SCALE
@@ -134,6 +148,11 @@ func _init() -> void:
 	_side.add_child(Ui.label(Text.t("ROOMS"), "Faint"))
 	for kind: String in LEGEND:
 		_side.add_child(_legend_row(kind))
+	for kind: String in PROGRAM_LEGEND:
+		var extra := _legend_row(kind)
+		extra.visible = false
+		_program_rows.append(extra)
+		_side.add_child(extra)
 	_side.add_child(Ui.sized(Ui.label(Text.t("Wheel or drag to look ahead."), "Faint", true), 12))
 	_toggle = Ui.button("", _flip_drawer, "ChipButton")
 	_toggle.tooltip_text = Text.t("Show or hide the route: the layer, the rooms you can enter next, the legend.")
@@ -142,9 +161,12 @@ func _init() -> void:
 	_view.add_child(_deck)
 	_chips = GridContainer.new()
 	var chips := _chips
-	for kind: String in LEGEND:
+	for kind: String in LEGEND + PROGRAM_LEGEND:
 		var chip := _legend_row(kind)
 		chip.custom_minimum_size.x = 118
+		chip.visible = not kind in PROGRAM_LEGEND
+		if kind in PROGRAM_LEGEND:
+			_program_rows.append(chip)
 		chips.add_child(chip)
 	_strip = Ui.panel(chips)
 	_strip.add_theme_stylebox_override(
@@ -154,6 +176,9 @@ func _init() -> void:
 
 
 func show_map(run_state: Dictionary, run_catalog: Dictionary) -> void:
+	_program_legend = run_state.get("playstyle", "") == "program"
+	for row: Control in _program_rows:
+		row.visible = _program_legend
 	state = run_state
 	catalog = run_catalog
 	var layer := ShardrunRules.layer_of(state, catalog)
@@ -548,7 +573,7 @@ func _layout() -> void:
 	# Known sizes, not the container's own: a legend laid out before its first frame would not know its height yet.
 	var room_for := _view.size.x - strip_x - 30.0
 	_chips.columns = 6 if room_for >= 740.0 else 3
-	var chip_rows := ceili(float(LEGEND.size()) / _chips.columns)
+	var chip_rows := ceili(float(LEGEND.size() + (PROGRAM_LEGEND.size() if _program_legend else 0)) / _chips.columns)
 	_strip.size = Vector2(_chips.columns * 122.0 + 16.0, chip_rows * 38.0 + 8.0)
 	_strip.position = Vector2(strip_x, _view.size.y - _strip.size.y - 10.0)
 	var covered := _view.size.y - _strip.position.y if _strip.visible else 0.0

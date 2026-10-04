@@ -1,0 +1,12 @@
+{
+  "id": "snapshot",
+  "name": "Snapshot",
+  "tier": "rare",
+  "summary": "Once a run, a blow that would end it restores you to the start of that turn.",
+  "flavor": "Take a picture before you try it.",
+  "effects": [
+    {
+      "kind": "snapshot"
+    }
+  ]
+}

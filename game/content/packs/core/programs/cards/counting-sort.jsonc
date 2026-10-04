@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n + k)",
-  "icon": "shardrun/card-merge-sort",
+  "icon": "shardrun/card-counting-sort",
   "id": "counting-sort",
   "name": "Counting Sort",
   "summary": "Sorts weakest first by counting how many bolts have each power, never comparing two. Costs n plus the strongest bolt's power.",

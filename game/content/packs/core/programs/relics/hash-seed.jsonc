@@ -1,0 +1,13 @@
+{
+  "id": "hash-seed",
+  "name": "Hash Seed",
+  "tier": "uncommon",
+  "summary": "Bolts that hit a weakness deal 1 more.",
+  "flavor": "Collisions are only a matter of time.",
+  "effects": [
+    {
+      "kind": "weak-flat-bonus",
+      "add": 1
+    }
+  ]
+}

@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/shard-siphon",
+  "icon": "shardrun/card-pop-bolt",
   "id": "pop-bolt",
   "name": "Pop",
   "summary": "Removes the last bolt and adds its power to the first.",

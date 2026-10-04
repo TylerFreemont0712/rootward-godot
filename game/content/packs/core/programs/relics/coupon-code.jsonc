@@ -1,0 +1,12 @@
+{
+  "id": "coupon-code",
+  "name": "Coupon Code",
+  "tier": "common",
+  "summary": "The Registry's sale card is free.",
+  "flavor": "SAVE100, valid in no other store.",
+  "effects": [
+    {
+      "kind": "sale-free"
+    }
+  ]
+}

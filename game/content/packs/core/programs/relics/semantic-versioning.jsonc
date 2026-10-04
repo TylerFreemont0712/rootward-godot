@@ -1,0 +1,12 @@
+{
+  "id": "semantic-versioning",
+  "name": "Semantic Versioning",
+  "tier": "uncommon",
+  "summary": "Refactoring a card at the Registry is free once each layer.",
+  "flavor": "Major, minor, patch, and a bow.",
+  "effects": [
+    {
+      "kind": "free-refactor"
+    }
+  ]
+}

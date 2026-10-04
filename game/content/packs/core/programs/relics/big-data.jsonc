@@ -1,0 +1,14 @@
+{
+  "id": "big-data",
+  "name": "Big Data",
+  "tier": "epic",
+  "summary": "A volley of 64 bolts or more deals 25% more.",
+  "flavor": "Anything is a pattern if you have enough of it.",
+  "effects": [
+    {
+      "kind": "volley-bonus",
+      "min_bolts": 64,
+      "factor": 1.25
+    }
+  ]
+}

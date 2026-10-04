@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "merge",
   "role": "shape",
-  "icon": "shardrun/card-two-pointers",
+  "icon": "shardrun/card-closest-pair",
   "splits": true,
   "complexity": "linearithmic",
   "big_o": "O(n log n)",

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-triage",
+  "icon": "shardrun/card-job-sequencing",
   "id": "job-sequencing",
   "name": "Job Sequencing",
   "summary": "Each foe is a job: its deadline is its intent's tempo, its profit the damage it intends. Bolts go first to the foe that would hurt you most among those you can still beat to the punch.",

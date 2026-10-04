@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-dedupe",
+  "icon": "shardrun/card-bloom-filter",
   "id": "bloom-filter-plus",
   "name": "Bloom Filter+",
   "summary": "An exact set of the foes' weak elements replaces the filter: every bolt that matches gains 2, with no false positive.",

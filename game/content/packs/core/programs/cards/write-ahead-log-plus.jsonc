@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-tabulate",
+  "icon": "shardrun/card-write-ahead-log",
   "id": "write-ahead-log-plus",
   "name": "Write-Ahead Log+",
   "summary": "Every bolt under 5 power is stashed into the index instead of flying: nothing weak is wasted.",

@@ -5,7 +5,7 @@
   "rarity": "uncommon",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-generator",
+  "icon": "shardrun/card-prefetch",
   "id": "prefetch-plus",
   "name": "Prefetch+",
   "summary": "Draw 2 more cards next turn, for no mana. It makes no bolts, and runs once.",

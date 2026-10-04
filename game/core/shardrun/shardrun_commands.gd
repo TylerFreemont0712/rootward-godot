@@ -27,6 +27,16 @@ static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return _take(next, command, catalog)
 		"open-chest":
 			return _open_chest(next, catalog)
+		"buy", "shop-service", "pip-take", "leave-shop":
+			return ProgramShop.apply(next, command, catalog)
+		"issue-choose", "issue-pick", "issue-paradigm", "issue-take", "issue-focus", "issue-quiz-ready", "issue-answer", "issue-leave":
+			return ProgramIssues.apply(next, command, catalog)
+		"take-script":
+			return _take_script(next, command, catalog)
+		"use-script":
+			return ProgramScripts.use(next, int(command.index), String(command.get("foe", "")), catalog)
+		"drop-script":
+			return {} if ProgramScripts.drop_at(next, int(command.index)) else _no("no-script", "No such script.")
 		"claim-relic":
 			return _claim_relic(next, command, catalog)
 		"claim-spell":
@@ -253,6 +263,24 @@ static func _take(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 	return {}
 
 
+## take-script {drop_index?}: the script a fight left behind goes on the belt, dropping the one at `drop_index` first
+## when the belt is full.
+static func _take_script(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
+	var reward: Dictionary = next.get("reward", {})
+	if next.status != "reward" or not reward.has("script"):
+		return _no("no-script", "There is no script here.")
+	var belt: Array = next.get("belt", [])
+	if belt.size() >= ProgramScripts.belt_size(next, catalog):
+		var drop := int(command.get("drop_index", -1))
+		if drop < 0 or drop >= belt.size():
+			return _no("belt-full", "Your belt is full: drop a script to make room.")
+		belt.remove_at(drop)
+	ProgramScripts.give(next, String(reward.script), catalog)
+	reward.erase("script")
+	Shardrun.settle_reward(next, catalog)
+	return {}
+
+
 static func _open_chest(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	var reward: Dictionary = next.get("reward", {})
 	if next.status != "reward" or not reward.has("chest"):
@@ -387,7 +415,13 @@ static func _bind(next: Dictionary, catalog: Dictionary) -> Dictionary:
 
 
 static func _purge(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
-	if next.status != "forge":
+	# Dead Code Elimination lets a rest site also remove a card (once), without ending the rest.
+	var resting: bool = (
+		next.status == "rest"
+		and ProgramRelics.modifiers(next, catalog).rest_purge
+		and not next.get("rest_purged", false)
+	)
+	if next.status != "forge" and not resting:
 		return _no("no-forge", "There is no forge here.")
 	if not ShardrunRules.is_deck(next):
 		return _no("not-a-deck-run", "Only a deck run has cards to melt down.")
@@ -401,5 +435,8 @@ static func _purge(next: Dictionary, command: Dictionary, catalog: Dictionary) -
 	var name: String = (catalog.shards.get(command.shard_id, {}) as Dictionary).get("name", command.shard_id)
 	var text := "You melt %s down. %d cards remain." % [name, (next.deck as Array).size()]
 	Shardrun.record(next, {"kind": "forge", "text": text})
+	if resting:
+		next.rest_purged = true
+		return {}
 	Shardrun.after_room(next, catalog)
 	return {}

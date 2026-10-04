@@ -1,0 +1,12 @@
+{
+  "id": "rubber-duck",
+  "name": "Rubber Duck",
+  "tier": "common",
+  "summary": "A wrong answer in an Issue that reads code costs you nothing.",
+  "flavor": "It listens. That is the whole trick.",
+  "effects": [
+    {
+      "kind": "waive-stakes"
+    }
+  ]
+}

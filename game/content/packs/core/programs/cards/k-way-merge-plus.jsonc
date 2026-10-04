@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log k)",
-  "icon": "shardrun/card-merge-sort",
+  "icon": "shardrun/card-k-way-merge",
   "id": "k-way-merge-plus",
   "name": "K-Way Merge+",
   "summary": "Finds rising runs and heap-merges them. Every bolt gains 1 per run; the code chooses strongest first.",

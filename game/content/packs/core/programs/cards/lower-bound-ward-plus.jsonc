@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "logarithmic",
   "big_o": "O(log k)",
-  "icon": "shardrun/card-exhaustive-ward",
+  "icon": "shardrun/card-lower-bound-ward",
   "id": "lower-bound-ward-plus",
   "name": "Lower-Bound Ward+",
   "summary": "Binary-searches the index for the smallest bolt that covers the biggest incoming attack and takes it as block. Also gives 2 block.",

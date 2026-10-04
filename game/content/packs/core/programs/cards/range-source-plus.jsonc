@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(k)",
-  "icon": "shardrun/card-literal",
+  "icon": "shardrun/card-range-source",
   "id": "range-source-plus",
   "name": "Range+",
   "summary": "range(3, 15, 3): four more bolts, 3, 6, 9 and 12, rising by the step.",

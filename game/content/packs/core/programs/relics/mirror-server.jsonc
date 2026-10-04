@@ -1,0 +1,14 @@
+{
+  "id": "mirror-server",
+  "name": "Mirror Server",
+  "tier": "uncommon",
+  "summary": "The Registry stocks one more card and one more relic.",
+  "flavor": "The same shelves, twice.",
+  "effects": [
+    {
+      "kind": "shop-stock",
+      "cards": 1,
+      "relics": 1
+    }
+  ]
+}

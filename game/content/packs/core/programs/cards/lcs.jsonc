@@ -1,6 +1,6 @@
 {
   "id": "lcs",
-  "icon": "shardrun/card-tabulate",
+  "icon": "shardrun/card-lcs",
   "name": "Longest Common Subsequence",
   "rarity": "uncommon",
   "cost": 1,

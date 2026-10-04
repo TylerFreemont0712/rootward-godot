@@ -12,7 +12,9 @@ extends RefCounted
 
 const ROOT := "user://shardrun"
 ## Where a run can be (docs/shardrun-state.md).
-const STATUSES: Array[String] = ["draft", "map", "battle", "reward", "rest", "forge", "won", "lost", "abandoned"]
+const STATUSES: Array[String] = [
+	"draft", "map", "battle", "reward", "rest", "forge", "shop", "issue", "won", "lost", "abandoned"
+]
 ## Every saved run's fields and their JSON types; a number may come back as a float.
 const SHAPE := {
 	"seed": TYPE_STRING,

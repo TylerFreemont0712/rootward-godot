@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-divide",
+  "icon": "shardrun/card-tail-call",
   "id": "tail-call",
   "name": "Tail Call",
   "summary": "The next card does no work: a call in tail position reuses the frame it is in. It makes no change to the bolts.",

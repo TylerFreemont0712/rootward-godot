@@ -20,6 +20,9 @@ var _block: Label
 var _mana: Label
 var _incoming: Label
 var _end_turn: Button
+var _belt: ScriptBelt
+## The foe chooser a script that needs a target opens.
+var _pick_menu: PopupMenu
 ## Everything the rules logged in this fight, each with the turn it happened on, for the ".log" window.
 var _entries: Array[Dictionary] = []
 ## The names of the foes seen so far, by uid, which the log's folded lines say.
@@ -120,6 +123,12 @@ func _hero_panel() -> Control:
 	log_button.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	var column := Ui.vbox([_avatar(), _end_turn, Ui.spacer(), log_button], 8)
 	(column.get_child(2) as Control).size_flags_vertical = Control.SIZE_EXPAND_FILL
+	if session.state.get("playstyle", "") == "program":
+		# The belt of scripts, above the log button.
+		_belt = ScriptBelt.new()
+		_belt.use_pressed.connect(_use_script)
+		column.add_child(_belt)
+		column.move_child(_belt, column.get_child_count() - 2)
 	var panel := Ui.panel(column, "")
 	panel.custom_minimum_size.x = 214
 	stage.set_status(_status())
@@ -210,6 +219,8 @@ func _spellbook(state: Dictionary) -> Control:
 ## Draws a state's numbers: Integrity, block, mana, the foes, and which spells are spent.
 func show_state(state: Dictionary) -> void:
 	_state = state
+	if _belt != null:
+		_belt.show_belt(state, session.catalog)
 	var battle: Dictionary = state.get("battle", {})
 	if battle.is_empty():
 		return
@@ -367,6 +378,32 @@ func write_entries(entries: Array) -> void:
 	var typed: Array[Dictionary] = []
 	typed.assign(entries)
 	_write_log(typed)
+
+
+## Uses the script at `index` on the belt, asking which foe first when it needs one and more than one stands.
+func _use_script(index: int) -> void:
+	var state := session.state
+	var belt: Array = state.get("belt", [])
+	if busy or index >= belt.size():
+		return
+	var script: Dictionary = session.catalog.programs.scripts.get(belt[index], {})
+	if String(script.get("target", "none")) != "foe":
+		_ask({"type": "use-script", "index": index})
+		return
+	var living: Array = (state.battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
+	if living.size() == 1:
+		_ask({"type": "use-script", "index": index, "foe": living[0].uid})
+		return
+	if _pick_menu != null and is_instance_valid(_pick_menu):
+		_pick_menu.queue_free()
+	_pick_menu = PopupMenu.new()
+	for position in living.size():
+		_pick_menu.add_item(Text.t(String(living[position].name)), position)
+	_pick_menu.id_pressed.connect(
+		func(position: int) -> void: _ask({"type": "use-script", "index": index, "foe": living[position].uid})
+	)
+	add_child(_pick_menu)
+	_pick_menu.popup(Rect2i(Vector2i(get_global_mouse_position()), Vector2i(220, 0)))
 
 
 func set_busy(value: bool) -> void:

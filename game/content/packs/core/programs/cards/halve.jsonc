@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "order",
-  "icon": "shardrun/card-divide",
+  "icon": "shardrun/card-halve",
   "splits": true,
   "complexity": "constant",
   "big_o": "O(1)",

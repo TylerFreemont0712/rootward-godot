@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/card-merge-sort",
+  "icon": "shardrun/card-sort-by-key",
   "id": "sort-by-key-plus",
   "name": "Sort by Key+",
   "summary": "A stable sort by element, then by power: the elements are grouped, and equal bolts keep their order. Costs 0 mana.",

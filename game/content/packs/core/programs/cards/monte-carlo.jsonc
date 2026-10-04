@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(k)",
-  "icon": "shardrun/shard-spectrum-wheel",
+  "icon": "shardrun/card-monte-carlo",
   "id": "monte-carlo",
   "name": "Monte Carlo",
   "summary": "Eight bolts of power 1 to 6, rolled from a seed taken from the battle, so the preview is the cast.",

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "exponential",
   "big_o": "O(n!) pruned, n = 8",
-  "icon": "shardrun/card-pascal-row",
+  "icon": "shardrun/card-n-queens",
   "id": "n-queens-plus",
   "name": "N-Queens+",
   "summary": "Places eight queens on an 8×8 board by backtracking, a row at a time. Each of the 92 solutions adds a 2-power bolt after your volley: a flood, and slow.",

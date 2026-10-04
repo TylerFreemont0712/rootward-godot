@@ -1,0 +1,13 @@
+{
+  "id": "alias",
+  "name": "Alias",
+  "tier": "common",
+  "summary": "Scripts cost 25% less at the Registry.",
+  "flavor": "Four letters instead of forty.",
+  "effects": [
+    {
+      "kind": "script-discount",
+      "fraction": 0.25
+    }
+  ]
+}

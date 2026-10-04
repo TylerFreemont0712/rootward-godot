@@ -1,0 +1,12 @@
+{
+  "id": "ulimit",
+  "name": "ulimit",
+  "rarity": "common",
+  "price": 40,
+  "summary": "A foe's next attack deals half.",
+  "target": "foe",
+  "when": "fight",
+  "effect": {
+    "kind": "foe-half"
+  }
+}

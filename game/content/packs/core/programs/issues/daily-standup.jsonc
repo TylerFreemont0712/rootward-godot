@@ -1,0 +1,54 @@
+{
+  "id": "daily-standup",
+  "name": "Daily Standup",
+  "title": "Standup in five minutes",
+  "labels": [
+    "process"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "Everyone stands in a circle and says what they did yesterday. You are allowed to say something useful today.",
+  "choices": [
+    {
+      "label": "Plan the day: +1 mana on the first turn, for three fights",
+      "effects": [
+        {
+          "kind": "boon",
+          "boon": "mana",
+          "fights": 3
+        }
+      ]
+    },
+    {
+      "label": "Review the board: draw 1 more on the first turn, for three fights",
+      "effects": [
+        {
+          "kind": "boon",
+          "boon": "draw",
+          "fights": 3
+        }
+      ]
+    },
+    {
+      "label": "Block your calendar: start with 5 block, for three fights",
+      "effects": [
+        {
+          "kind": "boon",
+          "boon": "block",
+          "fights": 3
+        }
+      ]
+    },
+    {
+      "label": "Skip it and take the donuts (an uncommon script)",
+      "effects": [
+        {
+          "kind": "gain-script",
+          "rarity": "uncommon",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "picture": "issue-daily-standup"
+}

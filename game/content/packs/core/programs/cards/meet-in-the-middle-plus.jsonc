@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "exponential",
   "big_o": "O(2^(n/2)), cap 16",
-  "icon": "shardrun/card-two-pointers",
+  "icon": "shardrun/card-meet-in-the-middle",
   "id": "meet-in-the-middle-plus",
   "name": "Meet in the Middle+",
   "summary": "Exhaustive Kill's question for the first 16 bolts, answered from both ends: list the sums of each half, sort one, binary-search it for the other. The same kill, with the square root of the work.",

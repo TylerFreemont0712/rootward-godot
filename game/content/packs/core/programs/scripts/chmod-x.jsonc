@@ -1,0 +1,12 @@
+{
+  "id": "chmod-x",
+  "name": "chmod +x",
+  "rarity": "rare",
+  "price": 80,
+  "summary": "Your next program costs no mana.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "free-program"
+  }
+}

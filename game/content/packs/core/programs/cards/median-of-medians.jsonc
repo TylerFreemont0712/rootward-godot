@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "pivot",
   "role": "strike",
-  "icon": "shardrun/card-quick-sort",
+  "icon": "shardrun/card-median-of-medians",
   "splits": true,
   "complexity": "linear",
   "big_o": "O(n) worst",

@@ -1,0 +1,14 @@
+{
+  "id": "interest-rate",
+  "name": "Interest Rate",
+  "tier": "rare",
+  "summary": "At every Registry, first gain 10% of your cycles (at most 30).",
+  "flavor": "Your money works while you walk.",
+  "effects": [
+    {
+      "kind": "interest",
+      "fraction": 0.1,
+      "max": 30
+    }
+  ]
+}

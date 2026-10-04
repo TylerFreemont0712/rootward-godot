@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/shard-rewind",
+  "icon": "shardrun/card-rotate-bolts",
   "id": "rotate-bolts",
   "name": "Rotate",
   "summary": "The volley rotates by one: the last bolt comes first.",

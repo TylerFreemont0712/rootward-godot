@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/card-merge-sort",
+  "icon": "shardrun/card-heap-sort",
   "id": "heap-sort",
   "name": "Heap Sort",
   "summary": "Sorts weakest first, in place, in O(n log n) on every volley: it never meets quick sort's worst case.",

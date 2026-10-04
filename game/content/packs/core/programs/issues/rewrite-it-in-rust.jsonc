@@ -1,0 +1,30 @@
+{
+  "id": "rewrite-it-in-rust",
+  "name": "Rewrite It in Rust",
+  "title": "Have you considered rewriting it in Rust?",
+  "labels": [
+    "enhancement"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "A small brass crab in a hard hat insists that everything common in your deck would be better, and safer, and faster, if only you rewrote it. It is not entirely wrong.",
+  "choices": [
+    {
+      "label": "Rewrite every common card (each costs 2 max Integrity)",
+      "effects": [
+        {
+          "kind": "transform-commons",
+          "lose_max": 2
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-rewrite-it-in-rust"
+}

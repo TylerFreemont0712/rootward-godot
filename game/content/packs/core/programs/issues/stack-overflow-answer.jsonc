@@ -1,0 +1,68 @@
+{
+  "id": "stack-overflow-answer",
+  "name": "Stack Overflow Answer",
+  "title": "Accepted answer (3 upvotes)",
+  "labels": [
+    "copy-paste"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "Someone on the forum has posted an answer for one of your cards. It has three upvotes. Half the time, the answer is subtly wrong.",
+  "choices": [
+    {
+      "label": "Copy it without reading (a copy of the card; if the answer was buggy, lose 6 Integrity)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "stack-overflow-blind",
+          "right": [
+            {
+              "kind": "pick",
+              "purpose": "duplicate",
+              "count": 1,
+              "then": []
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-integrity",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Read the comments first (15 cycles): see the answer's code, then decide",
+      "needs": {
+        "cycles": 15
+      },
+      "effects": [
+        {
+          "kind": "lose-cycles",
+          "amount": 15
+        },
+        {
+          "kind": "quiz",
+          "quiz": "stack-overflow",
+          "right": [
+            {
+              "kind": "copy-quiz-card"
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-integrity",
+              "amount": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-stack-overflow-answer"
+}

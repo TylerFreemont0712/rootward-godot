@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "quadratic",
   "big_o": "O(n·m)",
-  "icon": "shardrun/shard-seeker",
+  "icon": "shardrun/card-nearest-neighbour",
   "id": "nearest-neighbour-plus",
   "name": "Nearest Neighbour+",
   "summary": "Each bolt flies at the foe whose HP is closest to its power, preferring a foe it would kill.",

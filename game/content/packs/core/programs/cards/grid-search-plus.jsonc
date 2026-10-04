@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "quadratic",
   "big_o": "O(k²), k = 5",
-  "icon": "shardrun/card-tabulate",
+  "icon": "shardrun/card-grid-search",
   "id": "grid-search-plus",
   "name": "Grid Search+",
   "summary": "Every cell (i, j) of a 5×5 grid becomes a bolt of power i·j // 2 + 1: twenty-five bolts after your volley. A lot of work, as when tuning a model.",

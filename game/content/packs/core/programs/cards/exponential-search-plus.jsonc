@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "logarithmic",
   "big_o": "O(log i)",
-  "icon": "shardrun/card-binary-execute",
+  "icon": "shardrun/card-exponential-search",
   "id": "exponential-search-plus",
   "name": "Exponential Search+",
   "summary": "On a sorted volley, gallops 1, 2, 4, 8 ... until a bolt kills each foe, weakest first, then binary-searches the last gap.",

@@ -1,0 +1,13 @@
+{
+  "id": "cold-start",
+  "name": "Cold Start",
+  "tier": "common",
+  "summary": "Your first program of each fight costs 1 less mana.",
+  "flavor": "The first request is always the slow one.",
+  "effects": [
+    {
+      "kind": "first-program-discount",
+      "amount": 1
+    }
+  ]
+}

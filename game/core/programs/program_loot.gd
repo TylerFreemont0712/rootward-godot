@@ -11,10 +11,15 @@ extends RefCounted
 ## that place offers have run dry.
 static func draft_relics(state: Dictionary, where: String, count: int, catalog: Dictionary) -> Array:
 	var table: Dictionary = (ProgramRules.config_of(catalog).relic_tiers as Dictionary).get(where, {})
+	var rng := Rng.create(state.seed, "relic:%s:%d:%d" % [where, state.layer, (state.visited as Array).size()])
+	return draw(state, table, count, rng, catalog)
+
+
+## `count` distinct relics the run does not hold, by tier weights in `table`, from `rng` (the Registry draws its own).
+static func draw(state: Dictionary, table: Dictionary, count: int, rng: Rng, catalog: Dictionary) -> Array:
 	var pool := ShardrunCatalog.sorted_values(catalog.relics).filter(
 		func(relic: Dictionary) -> bool: return not relic.get("cursed", false) and not relic.id in state.relics
 	)
-	var rng := Rng.create(state.seed, "relic:%s:%d:%d" % [where, state.layer, (state.visited as Array).size()])
 	var choices: Array = []
 	while choices.size() < count:
 		var tiers: Array[String] = []

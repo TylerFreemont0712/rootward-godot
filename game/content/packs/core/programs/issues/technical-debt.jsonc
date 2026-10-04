@@ -1,0 +1,31 @@
+{
+  "id": "technical-debt",
+  "name": "Technical Debt",
+  "title": "Borrow against the future",
+  "labels": [
+    "debt"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A ledger with a red ribbon. Borrow cycles now; the interest is paid in attention, every third fight, until you settle at a Registry.",
+  "choices": [
+    {
+      "label": "Borrow 120 cycles (a curse until repaid for 150 at a Registry)",
+      "effects": [
+        {
+          "kind": "gain-cycles",
+          "amount": 120
+        },
+        {
+          "kind": "gain-relic-id",
+          "relic": "tech-debt"
+        }
+      ]
+    },
+    {
+      "label": "Decline",
+      "effects": []
+    }
+  ],
+  "picture": "issue-technical-debt"
+}

@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "quadratic",
   "big_o": "O(n·m)",
-  "icon": "shardrun/shard-fork",
+  "icon": "shardrun/card-cartesian-product",
   "id": "cartesian-product-plus",
   "name": "Cartesian Product+",
   "summary": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe. Costs 1 mana.",

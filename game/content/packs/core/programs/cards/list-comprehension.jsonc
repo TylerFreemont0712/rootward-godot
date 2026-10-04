@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-higher-order",
+  "icon": "shardrun/card-list-comprehension",
   "id": "list-comprehension",
   "name": "List Comprehension",
   "summary": "[b + 2 for b in bolts if b >= 3]: bolts under 3 are dropped, the rest gain 2.",

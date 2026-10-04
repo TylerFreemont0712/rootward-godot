@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "linearithmic",
   "big_o": "O(n log m)",
-  "icon": "shardrun/card-hash-aim",
+  "icon": "shardrun/card-consistent-hashing",
   "id": "consistent-hashing",
   "name": "Consistent Hashing",
   "summary": "Foes sit on a ring and each bolt hashes to a point, flying at the next foe clockwise. When a foe falls, only its bolts move on to the next; none are wasted.",

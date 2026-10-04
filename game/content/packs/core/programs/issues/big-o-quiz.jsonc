@@ -1,0 +1,45 @@
+{
+  "id": "big-o-quiz",
+  "name": "Big-O Quiz",
+  "title": "Which is faster?",
+  "labels": [
+    "quiz"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A chalkboard with two of your cards and a number. Which does less work? The chalk is already in your hand.",
+  "choices": [
+    {
+      "label": "Take the quiz (right: 40 cycles and a refactor; wrong: 15 cycles)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "big-o",
+          "right": [
+            {
+              "kind": "gain-cycles",
+              "amount": 40
+            },
+            {
+              "kind": "pick",
+              "purpose": "upgrade",
+              "count": 1,
+              "then": []
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-cycles",
+              "amount": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-big-o-quiz"
+}

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-fib-surge",
+  "icon": "shardrun/card-recurrence",
   "id": "recurrence",
   "name": "Recurrence",
   "summary": "From turn 2, appends a bolt of half the sum of the last two DP rows. Missing rows count as zero.",

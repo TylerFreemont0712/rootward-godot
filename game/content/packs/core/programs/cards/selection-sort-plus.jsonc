@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "quadratic",
   "big_o": "O(n²)",
-  "icon": "shardrun/card-bubble-sort",
+  "icon": "shardrun/card-selection-sort",
   "id": "selection-sort-plus",
   "name": "Selection Sort+",
   "summary": "Finds the strongest bolt of the rest and swaps it to the front, again and again: always n² comparisons, even on a sorted volley. Strongest first.",

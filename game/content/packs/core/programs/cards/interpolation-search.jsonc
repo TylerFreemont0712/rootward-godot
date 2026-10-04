@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "logarithmic",
   "big_o": "O(log log n), worst O(n)",
-  "icon": "shardrun/card-binary-execute",
+  "icon": "shardrun/card-interpolation-search",
   "id": "interpolation-search",
   "name": "Interpolation Search",
   "summary": "On a sorted volley, estimates where each foe's killing bolt lies from its power. Uses the strongest if none kills.",

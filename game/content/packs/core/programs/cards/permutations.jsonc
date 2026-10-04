@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "exponential",
   "big_o": "O(n!), cap 6",
-  "icon": "shardrun/card-exhaustive-kill",
+  "icon": "shardrun/card-permutations",
   "id": "permutations",
   "name": "Permutations",
   "summary": "Tries every order of up to six bolts, dealt round robin over the foes, and keeps the order that kills the most foes (6! = 720 orders).",

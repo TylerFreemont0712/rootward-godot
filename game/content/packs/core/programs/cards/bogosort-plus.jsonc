@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "exponential",
   "big_o": "O(n·n!) expected, first 7",
-  "icon": "shardrun/shard-scatter",
+  "icon": "shardrun/card-bogosort",
   "id": "bogosort-plus",
   "name": "Bogosort+",
   "summary": "Shuffles the first seven bolts, seeded by the turn and the bolts, until they are in order or 120 shuffles have passed, then keeps the best try. Absurd work. volatile: gone if not played.",

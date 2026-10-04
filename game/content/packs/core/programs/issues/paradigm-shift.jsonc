@@ -1,0 +1,34 @@
+{
+  "id": "paradigm-shift",
+  "name": "Paradigm Shift",
+  "title": "Switch to a different approach?",
+  "labels": [
+    "rare"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 0.5,
+  "text": "A thin book on the floor describes the same problems from a second angle. You could take up another focus within your paradigm.",
+  "choices": [
+    {
+      "label": "Take up another focus (the signature card you hold stays)",
+      "effects": [
+        {
+          "kind": "swap-focus"
+        }
+      ]
+    },
+    {
+      "label": "Keep to your path (+40 cycles)",
+      "effects": [
+        {
+          "kind": "gain-cycles",
+          "amount": 40
+        }
+      ]
+    }
+  ],
+  "picture": "issue-paradigm-shift"
+}

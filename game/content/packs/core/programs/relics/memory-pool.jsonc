@@ -1,0 +1,17 @@
+{
+  "id": "memory-pool",
+  "name": "Memory Pool",
+  "tier": "uncommon",
+  "summary": "The Index holds 4 more bolts, and the bolt it adds to your seed gains 2.",
+  "flavor": "Allocate once, reuse forever.",
+  "effects": [
+    {
+      "kind": "index-size-add",
+      "size": 4
+    },
+    {
+      "kind": "index-seed-power",
+      "add": 2
+    }
+  ]
+}

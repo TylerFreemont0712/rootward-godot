@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "quadratic",
   "big_o": "O(n·m)",
-  "icon": "shardrun/shard-fork",
+  "icon": "shardrun/card-nested-strike",
   "id": "nested-strike-plus",
   "name": "Nested Strike+",
   "summary": "For each foe, fires the whole volley at full power until that foe falls. Costs 1 mana.",

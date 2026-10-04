@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "shape",
-  "icon": "shardrun/card-import-math",
+  "icon": "shardrun/card-fast-power",
   "complexity": "logarithmic",
   "big_o": "O(log k)",
   "summary": "Raises 2 to the third power by repeated squaring and multiplies the strongest bolt by it: doubled three times, ×8. Once a fight.",

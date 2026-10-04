@@ -1,0 +1,13 @@
+{
+  "id": "polyglot",
+  "name": "Polyglot",
+  "tier": "uncommon",
+  "summary": "Fight rewards offer another paradigm's cards 15 points more often.",
+  "flavor": "Hello, bonjour, 你好, namaste.",
+  "effects": [
+    {
+      "kind": "reward-share-shift",
+      "to_other": 0.15
+    }
+  ]
+}

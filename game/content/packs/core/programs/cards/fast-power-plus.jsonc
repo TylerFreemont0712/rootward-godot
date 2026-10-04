@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "shape",
-  "icon": "shardrun/card-import-math",
+  "icon": "shardrun/card-fast-power",
   "complexity": "logarithmic",
   "big_o": "O(log k)",
   "summary": "Raises 2 to the fourth power by repeated squaring: the strongest bolt is doubled four times, ×16.",

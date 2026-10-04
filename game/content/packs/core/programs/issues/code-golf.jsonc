@@ -1,0 +1,34 @@
+{
+  "id": "code-golf",
+  "name": "Code Golf",
+  "title": "Can you do it in fewer strokes?",
+  "labels": [
+    "challenge"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A challenger scribbles two cards of yours off the page and says you will not miss them. You will, a little.",
+  "choices": [
+    {
+      "label": "Cut two cards (-6 max Integrity in all)",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "remove",
+          "count": 2,
+          "then": [
+            {
+              "kind": "max-integrity",
+              "amount": -6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-code-golf"
+}

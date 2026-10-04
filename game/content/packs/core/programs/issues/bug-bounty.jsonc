@@ -1,0 +1,32 @@
+{
+  "id": "bug-bounty",
+  "name": "Bug Bounty",
+  "title": "A bounty on the next bug",
+  "labels": [
+    "bounty"
+  ],
+  "layers": [
+    0,
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "A coin with a beetle on it. Whoever fixes the next bug in a single program collects. Fix it in one go and the reward is yours.",
+  "choices": [
+    {
+      "label": "Take the bounty: kill the next fight's foes in one program for 100 cycles",
+      "effects": [
+        {
+          "kind": "bounty",
+          "bounty": "one-program",
+          "reward": 100
+        }
+      ]
+    },
+    {
+      "label": "Pass",
+      "effects": []
+    }
+  ],
+  "picture": "issue-bug-bounty"
+}

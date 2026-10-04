@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-two-pointers",
+  "icon": "shardrun/card-swap-ends",
   "id": "swap-ends",
   "name": "Swap",
   "summary": "The first and last bolts change places.",

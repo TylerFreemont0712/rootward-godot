@@ -5,7 +5,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(m)",
-  "icon": "shardrun/shard-census",
+  "icon": "shardrun/card-read-input",
   "id": "read-input-plus",
   "name": "Read Input+",
   "summary": "One bolt per foe, its power that foe's intended damage plus 2 (at least 3): the battle is your input.",

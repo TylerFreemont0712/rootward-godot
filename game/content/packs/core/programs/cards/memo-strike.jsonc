@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-import-cache",
+  "icon": "shardrun/card-memo-strike",
   "id": "memo-strike",
   "name": "Memo Strike",
   "summary": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 4.",

@@ -113,6 +113,18 @@ func _show(state: Dictionary) -> void:
 		Sound.music(layer.get("rest_music", "music-rest") if resting else layer.get("music", "music-salvage"))
 	view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_body.add_child(view)
+	_run_quiz_if_needed(state)
+
+
+## An Issue that asks about your own code needs the card run first: the sandbox does it, then the question is made.
+func _run_quiz_if_needed(state: Dictionary) -> void:
+	if state.status != "issue" or String(state.issue.stage) != "quiz" or bool(state.issue.quiz.ready):
+		return
+	var revision: int = state.revision
+	var question: Dictionary = await session.quiz_question()
+	if not is_inside_tree() or session.state.revision != revision:
+		return
+	send({"type": "issue-quiz-ready", "question": question})
 
 
 func _show_header(state: Dictionary) -> void:
@@ -185,6 +197,18 @@ func _show_header(state: Dictionary) -> void:
 		logo.text += " · DEV"
 	var title := Ui.hbox([logo, school], 8)
 	var row := Ui.hbox([title, integrity, Ui.label(meta, "Muted"), relics, Ui.spacer(), buttons], 18)
+	if state.get("playstyle", "") == "program":
+		# The run's money, beside its Integrity (ProgramCycles).
+		var wallet := Ui.hbox(
+			[
+				Ui.picture("shardrun/cycles", Vector2(24, 24), "⟳"),
+				Ui.label("%d" % int(state.get("cycles", 0)), "Subheading")
+			],
+			4
+		)
+		wallet.tooltip_text = Text.t("Cycles: what you earn for kills, and spend at the Registry.")
+		row.add_child(wallet)
+		row.move_child(wallet, 2)
 	_header.add_child(row)
 
 
@@ -192,7 +216,7 @@ func _between(state: Dictionary) -> Control:
 	var left := Ui.vbox([], 8)
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_stretch_ratio = 2.7 if ShardrunRules.is_deck(state) else 1.25
-	var on_map: bool = not state.status in ["reward", "rest", "forge"]
+	var on_map: bool = not state.status in ["reward", "rest", "forge", "shop", "issue"]
 	if not on_map:
 		var room := RoomPanel.create(session)
 		_trial_targets["relic"] = room
@@ -359,8 +383,12 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 				Sound.play("cue-treasure", 0.6)
 		"rest":
 			Sound.play("sfx-heal", 0.8)
-		"forge", "widen", "bind", "pick-paradigm", "pick-focus":
+		"forge", "widen", "bind", "pick-paradigm", "pick-focus", "shop-service", "issue-focus":
 			Sound.play("sfx-forge", 0.8)
+		"buy", "pip-take", "take-script":
+			Sound.play("sfx-coins", 0.8)
+		"issue-choose", "issue-pick", "issue-take", "issue-answer":
+			Sound.play("sfx-card-place", 0.6)
 		"claim-relic", "claim-spell":
 			Sound.play("sfx-relic", 0.8)
 		"take":

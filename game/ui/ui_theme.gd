@@ -51,6 +51,8 @@ const ROOMS := {
 	"rest": Color("#7fd06f"),
 	"forge": Color("#b48cff"),
 	"treasure": Color("#f5cb4a"),
+	"shop": Color("#4fd1c5"),
+	"issue": Color("#f58ad0"),
 }
 
 ## Sizes are in the design canvas, 1920x1080 (project.godot); the window scales them all together.

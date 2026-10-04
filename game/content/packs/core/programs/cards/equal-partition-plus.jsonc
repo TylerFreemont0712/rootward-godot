@@ -1,6 +1,6 @@
 {
   "id": "equal-partition-plus",
-  "icon": "shardrun/card-make-change",
+  "icon": "shardrun/card-equal-partition",
   "name": "Equal Partition+",
   "rarity": "rare",
   "cost": 1,

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-pierce",
+  "icon": "shardrun/card-minimum-arrows",
   "id": "minimum-arrows",
   "name": "Minimum Arrows",
   "summary": "Each bolt, strongest first, pierces: what it does not spend on one foe flies on into the next, until it runs out.",

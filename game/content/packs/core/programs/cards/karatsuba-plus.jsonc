@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "shape",
-  "icon": "shardrun/card-power-set",
+  "icon": "shardrun/card-karatsuba",
   "splits": true,
   "complexity": "linearithmic",
   "big_o": "O(n^1.58)",

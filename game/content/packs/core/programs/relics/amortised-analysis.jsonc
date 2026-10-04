@@ -1,0 +1,12 @@
+{
+  "id": "amortised-analysis",
+  "name": "Amortised Analysis",
+  "tier": "rare",
+  "summary": "The Table's rows never go down: a weak turn is written as the best of the turns before it.",
+  "flavor": "On average, everything is fine.",
+  "effects": [
+    {
+      "kind": "table-monotone"
+    }
+  ]
+}

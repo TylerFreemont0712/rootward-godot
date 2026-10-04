@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-hash-merge",
+  "icon": "shardrun/card-two-sum",
   "id": "two-sum",
   "name": "Two Sum",
   "summary": "A hash map finds two bolts summing to the front foe's HP; they fuse. Otherwise its two strongest aim there.",

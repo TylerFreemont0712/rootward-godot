@@ -309,6 +309,7 @@ static func enemy_turn(state: Dictionary, battle: Dictionary, catalog := {}) -> 
 		if int(foe.hp) == 0 or foe.uid in acted:
 			continue
 		foe_act(state, battle, foe, catalog)
+		foe.erase("ulimit")
 		if int(state.integrity) <= 0:
 			return
 
@@ -369,10 +370,20 @@ static func _reprint(state: Dictionary, battle: Dictionary, foe: Dictionary, int
 
 
 static func hit_maintainer(state: Dictionary, battle: Dictionary, foe: Dictionary, power: int) -> void:
+	if foe.get("ulimit", false):
+		power = power / 2
 	var blocked := mini(int(battle.block), power)
 	battle.block -= blocked
 	var damage := power - blocked
+	var before_blow := int(state.integrity)
 	state.integrity = maxi(0, int(state.integrity) - damage)
+	# Snapshot (a relic, set when it is claimed): once a run, a blow that would end it restores the turn's start.
+	if int(state.integrity) <= 0 and state.get("snapshot_ready", false):
+		state.snapshot_ready = false
+		state.integrity = maxi(1, int(battle.get("turn_start_integrity", before_blow)))
+		Shardrun.record(state, {"kind": "note", "text": "Snapshot: the turn is restored."})
+	if state.get("playstyle", "") == "program":
+		battle.hurt_turn = int(battle.get("hurt_turn", 0)) + damage
 	var entry := {"kind": "enemy", "foe": foe.uid, "amount": damage}
 	if blocked > 0:
 		entry.blocked = blocked
@@ -390,9 +401,14 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 	battle.turn += 1
 	# Mana a program earned last turn for the next (ProgramRelics); no other playstyle ever sets it.
 	battle.mana = ShardrunRules.mana_per_turn(state, catalog) + int(battle.get("bonus_mana", 0))
+	if state.get("playstyle", "") == "program":
+		battle.mana += ProgramRelics.deck_mana(state, ProgramRelics.modifiers(state, catalog))
+		battle.turn_start_integrity = int(state.integrity)
 	battle.erase("bonus_mana")
 	battle.block = floori(int(battle.block) * float(m.retain_block)) + int(m.turn_block)
 	battle.cast = []
+	if state.get("playstyle", "") == "program":
+		ProgramScripts.new_turn(battle)
 	if battle.has("acted"):
 		battle.acted = []
 	var burn := int(m.turn_burn)
@@ -418,8 +434,12 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 			battle.held = []
 			clear_spells(state)
 		# Cards a program set aside for this turn (Prefetch) are drawn on top of the hand.
-		draw(state, battle, ShardrunRules.hand_size(state, catalog) + int(battle.get("bonus_draw", 0)), catalog)
+		var extra_draw := (
+			int(battle.get("bonus_draw", 0)) + ProgramRelics.deck_draw(state, ProgramRelics.modifiers(state, catalog))
+		)
+		draw(state, battle, ShardrunRules.hand_size(state, catalog) + extra_draw, catalog)
 		battle.erase("bonus_draw")
+		ProgramScripts.restore_hand(battle)
 	for foe: Dictionary in battle.foes:
 		foe.intent_index = (int(foe.intent_index) + 1) % (foe.intents as Array).size()
 	begin_turn(battle)
@@ -462,6 +482,8 @@ static func deal(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> 
 	var opening := (
 		int(catalog.balance.deck.opening_draw) + int(ShardrunRules.relic_modifiers(state, catalog).opening_draw)
 	)
+	opening += int(battle.get("bonus_draw_now", 0))
+	battle.erase("bonus_draw_now")
 	draw(state, battle, ShardrunRules.hand_size(state, catalog) + opening, catalog)
 
 
@@ -496,6 +518,8 @@ static func clear_spells(state: Dictionary) -> void:
 static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
 	if state.get("playstyle", "") == "program":
 		ProgramMemory.carry_over(state, battle, catalog)
+		if battle.has("refund"):
+			ProgramScripts.give(state, String(battle.refund), catalog)
 	state.erase("battle")
 	clear_spells(state)
 	var balance: Dictionary = catalog.balance
@@ -523,6 +547,10 @@ static func win(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> v
 	if not shards.is_empty():
 		reward.shards = shards
 	if state.get("playstyle", "") == "program":
+		ProgramIssues.on_win(state)
+		var script := ProgramScripts.fight_drop(state, String(battle.kind), catalog)
+		if script != "":
+			reward.script = script
 		var receipt := ProgramCycles.settle(state, battle, catalog)
 		if int(receipt.total) > 0:
 			reward.receipt = receipt

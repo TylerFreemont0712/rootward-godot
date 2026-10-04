@@ -131,6 +131,7 @@ static func enter_room(state: Dictionary, node: Dictionary, catalog: Dictionary)
 	match node.kind:
 		"rest":
 			state.status = "rest"
+			state.erase("rest_purged")
 			record(state, {"kind": "enter", "text": "A quiet alcove. The hum of the Machine is almost soothing."})
 		"forge":
 			state.status = "forge"
@@ -151,6 +152,10 @@ static func enter_room(state: Dictionary, node: Dictionary, catalog: Dictionary)
 				ProgramCycles.earn(state, pay)
 				record(state, {"kind": "note", "amount": pay, "text": "The cache holds %d cycles." % pay})
 			state.status = "reward"
+		"shop":
+			ProgramShop.enter(state, node, catalog)
+		"issue":
+			ProgramIssues.enter(state, node, catalog)
 		"fight", "elite", "boss":
 			ShardrunBattle.start(state, node, node.kind, catalog)
 
@@ -165,7 +170,7 @@ static func curses_left(state: Dictionary, catalog: Dictionary) -> Array:
 
 static func settle_reward(state: Dictionary, catalog: Dictionary) -> void:
 	var reward: Dictionary = state.get("reward", {})
-	for key: String in ["shards", "relics", "spell", "chest", "cursed_relic"]:
+	for key: String in ["shards", "relics", "spell", "chest", "cursed_relic", "script"]:
 		if reward.has(key):
 			return
 	state.erase("reward")
@@ -173,6 +178,8 @@ static func settle_reward(state: Dictionary, catalog: Dictionary) -> void:
 
 
 static func after_room(state: Dictionary, catalog: Dictionary) -> void:
+	if state.get("playstyle", "") == "program":
+		ProgramIssues.tick(state, catalog)
 	var node := {}
 	for candidate: Dictionary in state.map.nodes:
 		if candidate.id == state.position:
@@ -228,6 +235,10 @@ static func gain_relic(state: Dictionary, relic: Dictionary, catalog: Dictionary
 	var balance: Dictionary = catalog.balance
 	for effect: Dictionary in relic.effects:
 		match effect.kind:
+			"snapshot":
+				state.snapshot_ready = true
+			"pickup-cycles":
+				ProgramCycles.earn(state, int(effect.amount))
 			"spell-capacity":
 				for spell: Dictionary in state.spells:
 					spell.capacity = mini(int(balance.max_spell_capacity), int(spell.capacity) + int(effect.add))

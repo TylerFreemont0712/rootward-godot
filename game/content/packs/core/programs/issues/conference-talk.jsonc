@@ -1,0 +1,45 @@
+{
+  "id": "conference-talk",
+  "name": "Conference Talk",
+  "title": "A talk on another paradigm",
+  "labels": [
+    "learning"
+  ],
+  "layers": [
+    0,
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "An owl-shaped lectern on a small stage. Today's talk is about how other people solve your problems, differently.",
+  "choices": [
+    {
+      "label": "Buy the workshop ticket (75 cycles): one of three cards from another paradigm, already refactored",
+      "needs": {
+        "cycles": 75
+      },
+      "effects": [
+        {
+          "kind": "lose-cycles",
+          "amount": 75
+        },
+        {
+          "kind": "offer",
+          "scope": "other",
+          "count": 3,
+          "refactored": true
+        }
+      ]
+    },
+    {
+      "label": "Stay for the free swag (a neutral card)",
+      "effects": [
+        {
+          "kind": "add-random-card",
+          "scope": "neutral"
+        }
+      ]
+    }
+  ],
+  "picture": "issue-conference-talk"
+}

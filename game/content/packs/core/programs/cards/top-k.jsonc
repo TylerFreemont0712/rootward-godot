@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log k)",
-  "icon": "shardrun/shard-priority-queue",
+  "icon": "shardrun/card-top-k",
   "id": "top-k",
   "name": "Top-K",
   "summary": "A bounded min-heap keeps the four strongest bolts; discarded power fuses into the weakest survivor.",

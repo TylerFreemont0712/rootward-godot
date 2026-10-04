@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/shard-census",
+  "icon": "shardrun/card-boyer-moore",
   "id": "boyer-moore-plus",
   "name": "Boyer-Moore Vote+",
   "summary": "One pass and one counter find the volley's majority element. If there is one, every bolt becomes that element, 2 stronger.",

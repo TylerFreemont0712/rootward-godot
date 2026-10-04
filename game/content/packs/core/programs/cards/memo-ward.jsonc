@@ -1,6 +1,6 @@
 {
   "id": "memo-ward",
-  "icon": "shardrun/card-exhaustive-ward",
+  "icon": "shardrun/card-memo-ward",
   "name": "Memo Ward",
   "rarity": "common",
   "cost": 1,

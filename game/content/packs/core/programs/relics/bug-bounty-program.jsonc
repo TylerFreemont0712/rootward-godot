@@ -1,0 +1,13 @@
+{
+  "id": "bug-bounty-program",
+  "name": "Bug Bounty Program",
+  "tier": "common",
+  "summary": "Every foe you kill pays 2 more cycles.",
+  "flavor": "Someone is always paying for bugs.",
+  "effects": [
+    {
+      "kind": "kill-cycles",
+      "amount": 2
+    }
+  ]
+}

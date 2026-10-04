@@ -1,0 +1,43 @@
+{
+  "id": "version-bump",
+  "name": "Version Bump",
+  "title": "Release 2.0.0?",
+  "labels": [
+    "release"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "Semver would like a word with you. Major, minor or patch: the owl has opinions about all three.",
+  "choices": [
+    {
+      "label": "Major: three of your paradigm's cards are rewritten",
+      "effects": [
+        {
+          "kind": "transform-random",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "label": "Minor: refactor one card",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "upgrade",
+          "count": 1,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Patch: heal 12",
+      "effects": [
+        {
+          "kind": "heal",
+          "amount": 12
+        }
+      ]
+    }
+  ],
+  "picture": "issue-version-bump"
+}

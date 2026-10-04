@@ -1,0 +1,12 @@
+{
+  "id": "rm-rf-build",
+  "name": "rm -rf build/",
+  "rarity": "rare",
+  "price": 90,
+  "summary": "Every curse stops working until the fight ends.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "shed-curses"
+  }
+}

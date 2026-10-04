@@ -688,6 +688,978 @@
    "seed": 308477,
    "prompt": "(A rolled bronze scroll with small crystals slotted along its edge like beads, one large crystal waiting beside it.:1.35)",
    "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-deep",
+   "out": "shardrun/relic-focus-deep",
+   "style": "program-icon",
+   "seed": 297751,
+   "prompt": "(round bronze medallion with a jeweled rim framing the bottom of a bronze recursive ladder, its last rung holding two bright doubled crystals, the rungs above fading upward.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-merge",
+   "out": "shardrun/relic-focus-merge",
+   "style": "program-icon",
+   "seed": 301285,
+   "prompt": "(round bronze medallion with a jeweled rim framing three bronze chutes converging into one, crystals from each chute merging into a single ordered line.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-pivot",
+   "out": "shardrun/relic-focus-pivot",
+   "style": "program-icon",
+   "seed": 302339,
+   "prompt": "(round bronze medallion with a jeweled rim framing three vertical bands of crystals in a bronze frame, amber, ivory and cyan, the middle band a single bright crystal.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-index",
+   "out": "shardrun/relic-focus-index",
+   "style": "program-icon",
+   "seed": 301533,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze drawer cabinet with one small drawer sliding open on its own, an amber crystal resting inside.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-hash",
+   "out": "shardrun/relic-focus-hash",
+   "style": "program-icon",
+   "seed": 297937,
+   "prompt": "(round bronze medallion with a jeweled rim framing two crystals, one amber and one cyan, sliding together into a single bronze ring that glows where they meet.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-bisect",
+   "out": "shardrun/relic-focus-bisect",
+   "style": "program-icon",
+   "seed": 304571,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze measuring tape stretched along a row of evenly growing crystals, a gold pin stuck precisely at one.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-sprint",
+   "out": "shardrun/relic-focus-sprint",
+   "style": "program-icon",
+   "seed": 305749,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze hourglass on its side with three crystal bolts racing out of its narrow neck in a row, the first one bright amber, the others cyan; a short golden arrow ahead of them.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-heap",
+   "out": "shardrun/relic-focus-heap",
+   "style": "program-icon",
+   "seed": 297751,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze pyramid stand with four cut crystals on its tiers, the top one largest, a stream of tiny cyan shards being poured into the lowest crystal.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-schedule",
+   "out": "shardrun/relic-focus-schedule",
+   "style": "program-icon",
+   "seed": 311112,
+   "prompt": "(round bronze medallion with a jeweled rim framing three bronze bins of different heights side by side, each filled almost to the brim with stacked crystals, one amber crystal dropping into the fullest one.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-enumerate",
+   "out": "shardrun/relic-focus-enumerate",
+   "style": "program-icon",
+   "seed": 314863,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze grid frame of three by three sockets, a crystal glowing in every socket, rows tinted amber and columns tinted cyan where they cross.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-prune",
+   "out": "shardrun/relic-focus-prune",
+   "style": "program-icon",
+   "seed": 302091,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze branching tree whose limbs end in crystals; two limbs are snapped off with clean cuts and fade to grey, one limb glows amber to its tip.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-heavy",
+   "out": "shardrun/relic-focus-heavy",
+   "style": "program-icon",
+   "seed": 301688,
+   "prompt": "(round bronze medallion with a jeweled rim framing two bronze rings, one inside the other, both spinning, with crystals flying out from where they cross.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-memo",
+   "out": "shardrun/relic-focus-memo",
+   "style": "program-icon",
+   "seed": 298247,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze card-index drawer pulled open, one tab marked by a glowing amber crystal, a cyan bolt leaping out of it.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-table",
+   "out": "shardrun/relic-focus-table",
+   "style": "program-icon",
+   "seed": 301037,
+   "prompt": "(round bronze medallion with a jeweled rim framing a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-focus-exact",
+   "out": "shardrun/relic-focus-exact",
+   "style": "program-icon",
+   "seed": 301440,
+   "prompt": "(round bronze medallion with a jeweled rim framing three bronze coins of different sizes stacked in a precise tower that exactly reaches a gold notch on a measuring rod beside them.:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-local-optimum",
+   "out": "shardrun/relic-local-optimum",
+   "style": "program-icon",
+   "seed": 308415,
+   "prompt": "(a bronze hourglass whose sand falls into a single bright coin, a small arrow ahead of it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-throw-hardware-at-it",
+   "out": "shardrun/relic-throw-hardware-at-it",
+   "style": "program-icon",
+   "seed": 328007,
+   "prompt": "(a bronze anvil stacked with many glowing crystal server blocks:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-the-table",
+   "out": "shardrun/relic-the-table",
+   "style": "program-icon",
+   "seed": 294124,
+   "prompt": "(a bronze tablet engraved with a grid, its newest row glowing amber:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-the-index",
+   "out": "shardrun/relic-the-index",
+   "style": "program-icon",
+   "seed": 294620,
+   "prompt": "(a bronze shelf of ordered crystals with a bookmark ribbon:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-recurse",
+   "out": "shardrun/relic-recurse",
+   "style": "program-icon",
+   "seed": 290249,
+   "prompt": "(a bronze mirror reflecting a smaller mirror reflecting a smaller mirror, each holding a crystal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-package-lock",
+   "out": "shardrun/relic-package-lock",
+   "style": "program-icon",
+   "seed": 303424,
+   "prompt": "(a bronze padlock fused onto a small brass drawer with a glowing crystal keyhole:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-mirror-server",
+   "out": "shardrun/relic-mirror-server",
+   "style": "program-icon",
+   "seed": 309283,
+   "prompt": "(two identical bronze cabinets facing each other with a crystal reflected between them:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-bug-bounty-program",
+   "out": "shardrun/relic-bug-bounty-program",
+   "style": "program-icon",
+   "seed": 323729,
+   "prompt": "(a gold coin with a small beetle stamped on it resting on a bronze plate:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-venture-capital",
+   "out": "shardrun/relic-venture-capital",
+   "style": "program-icon",
+   "seed": 314894,
+   "prompt": "(a heavy bronze money bag spilling faceted gold-coloured crystals, a thin red ribbon tied around it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-semantic-versioning",
+   "out": "shardrun/relic-semantic-versioning",
+   "style": "program-icon",
+   "seed": 328317,
+   "prompt": "(a small bronze owl stamp with three numbered dials, glowing cyan at the minor dial:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-coupon-code",
+   "out": "shardrun/relic-coupon-code",
+   "style": "program-icon",
+   "seed": 301254,
+   "prompt": "(a bronze ticket with a notched edge and a bright amber crystal star in its middle:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-lockfile",
+   "out": "shardrun/relic-lockfile",
+   "style": "program-icon",
+   "seed": 292729,
+   "prompt": "(a bronze scroll fastened with a heavy lock and a small chain, a cyan crystal seal on it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-interest-rate",
+   "out": "shardrun/relic-interest-rate",
+   "style": "program-icon",
+   "seed": 308539,
+   "prompt": "(a bronze coin standing on edge with a small crystal sprout growing from its top:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-monorepo",
+   "out": "shardrun/relic-monorepo",
+   "style": "program-icon",
+   "seed": 293907,
+   "prompt": "(one huge faceted crystal held by a thick bronze frame with many small crystals nested inside it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-microservices",
+   "out": "shardrun/relic-microservices",
+   "style": "program-icon",
+   "seed": 310244,
+   "prompt": "(a ring of five small bronze cogs each holding a tiny cyan crystal, linked by thin gold threads:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-snapshot",
+   "out": "shardrun/relic-snapshot",
+   "style": "program-icon",
+   "seed": 293938,
+   "prompt": "(a bronze camera lens with a faceted crystal as the glass and a frozen flash of white light:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-rubber-duck",
+   "out": "shardrun/relic-rubber-duck",
+   "style": "program-icon",
+   "seed": 301068,
+   "prompt": "(a small rubber duck in tiny bronze armour with a crystal in its beak:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-polyglot",
+   "out": "shardrun/relic-polyglot",
+   "style": "program-icon",
+   "seed": 294248,
+   "prompt": "(a bronze speech bubble made of three overlapping pieces each holding a different coloured crystal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-specialist",
+   "out": "shardrun/relic-specialist",
+   "style": "program-icon",
+   "seed": 299921,
+   "prompt": "(a single bronze magnifying lens focusing a beam of light into one bright amber crystal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-amortised-analysis",
+   "out": "shardrun/relic-amortised-analysis",
+   "style": "program-icon",
+   "seed": 324969,
+   "prompt": "(a bronze staircase of tiles that only ever rises, each step holding a larger crystal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-memory-pool",
+   "out": "shardrun/relic-memory-pool",
+   "style": "program-icon",
+   "seed": 302370,
+   "prompt": "(a round bronze basin filled with ordered faceted crystals shining from within:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-heat-sink",
+   "out": "shardrun/relic-heat-sink",
+   "style": "program-icon",
+   "seed": 294558,
+   "prompt": "(a finned bronze heat sink block with glowing orange crystal embers cooling between its fins:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-speculative-execution",
+   "out": "shardrun/relic-speculative-execution",
+   "style": "program-icon",
+   "seed": 335292,
+   "prompt": "(a bronze arrow drawn twice, once solid and once as a faint ghost image ahead of it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-stack-frame",
+   "out": "shardrun/relic-stack-frame",
+   "style": "program-icon",
+   "seed": 300820,
+   "prompt": "(a tall bronze stack of three nested frames, each smaller, each holding a crystal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-big-data",
+   "out": "shardrun/relic-big-data",
+   "style": "program-icon",
+   "seed": 290249,
+   "prompt": "(a vast bronze vault door ajar with an enormous flood of tiny crystals pouring out:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-tail-latency",
+   "out": "shardrun/relic-tail-latency",
+   "style": "program-icon",
+   "seed": 304571,
+   "prompt": "(a bronze snail shell holding a calm cyan crystal, a thin tail of light trailing behind it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-hash-seed",
+   "out": "shardrun/relic-hash-seed",
+   "style": "program-icon",
+   "seed": 294000,
+   "prompt": "(a bronze sprout of three crystal seeds with small hash marks glowing on their sides:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-cold-start",
+   "out": "shardrun/relic-cold-start",
+   "style": "program-icon",
+   "seed": 298309,
+   "prompt": "(a bronze snowflake with a small glowing amber crystal at its heart, thawing at the edge:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-dead-code-elimination",
+   "out": "shardrun/relic-dead-code-elimination",
+   "style": "program-icon",
+   "seed": 331014,
+   "prompt": "(a bronze pair of shears cutting a hanging grey unlit crystal off a glowing branch:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-dotfiles",
+   "out": "shardrun/relic-dotfiles",
+   "style": "program-icon",
+   "seed": 293256,
+   "prompt": "(a bronze leather belt with an extra slot, a small crystal dot glowing on its buckle:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-shell-history",
+   "out": "shardrun/relic-shell-history",
+   "style": "program-icon",
+   "seed": 309035,
+   "prompt": "(a bronze scroll curling back on itself with a looping arrow and a cyan crystal at the fold:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-alias",
+   "out": "shardrun/relic-alias",
+   "style": "program-icon",
+   "seed": 282840,
+   "prompt": "(a small bronze key tag shaped like a short scroll with a tiny glowing arrow:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-relic-tech-debt",
+   "out": "shardrun/relic-tech-debt",
+   "style": "program-icon",
+   "seed": 293938,
+   "prompt": "(a bronze ledger book bound with a red ribbon and a small dark crystal weighing its cover down:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-hotfix-sh",
+   "out": "shardrun/script-hotfix-sh",
+   "style": "program-icon",
+   "seed": 299394,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, hotfix.sh: a small bronze scroll with a cyan crystal seal shaped like a plus:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-touch",
+   "out": "shardrun/script-touch",
+   "style": "program-icon",
+   "seed": 287769,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a rolled scroll with a single ivory crystal resting on it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-print",
+   "out": "shardrun/script-print",
+   "style": "program-icon",
+   "seed": 288079,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll unrolled into a short bronze speaking-trumpet:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-ulimit",
+   "out": "shardrun/script-ulimit",
+   "style": "program-icon",
+   "seed": 291272,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll bound by a tight bronze band with a lock:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-cache-warm",
+   "out": "shardrun/script-cache-warm",
+   "style": "program-icon",
+   "seed": 301316,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with three small card backs fanned from its end, glowing warm amber:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-pip-install",
+   "out": "shardrun/script-pip-install",
+   "style": "program-icon",
+   "seed": 305935,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a small owl-stamped crate sliding out of it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-git-revert",
+   "out": "shardrun/script-git-revert",
+   "style": "program-icon",
+   "seed": 302835,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a curved bronze arrow looping back on itself:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-nice",
+   "out": "shardrun/script-nice",
+   "style": "program-icon",
+   "seed": 283677,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a winged bronze stopwatch on it:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-kill-9",
+   "out": "shardrun/script-kill-9",
+   "style": "program-icon",
+   "seed": 287242,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll pierced by a short bronze dagger with an amber crystal pommel:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-strace",
+   "out": "shardrun/script-strace",
+   "style": "program-icon",
+   "seed": 290714,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a magnifying lens following a thin gold thread:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-sudo",
+   "out": "shardrun/script-sudo",
+   "style": "program-icon",
+   "seed": 284545,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a small bronze crown on its seal:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-chmod-x",
+   "out": "shardrun/script-chmod-x",
+   "style": "program-icon",
+   "seed": 292140,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a bronze padlock standing open:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-gc-collect",
+   "out": "shardrun/script-gc-collect",
+   "style": "program-icon",
+   "seed": 301471,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a small bronze broom sweeping crystals into a pile:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-git-stash",
+   "out": "shardrun/script-git-stash",
+   "style": "program-icon",
+   "seed": 299208,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll folded into a little bronze drawer:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-make-j8",
+   "out": "shardrun/script-make-j8",
+   "style": "program-icon",
+   "seed": 290063,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with eight tiny bronze gears turning in a row:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-script-rm-rf-build",
+   "out": "shardrun/script-rm-rf-build",
+   "style": "program-icon",
+   "seed": 303579,
+   "prompt": "(a small rolled bronze scroll with a crystal seal, a scroll with a bronze dustpan holding broken grey crystals:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-issue-coffee-machine",
+   "out": "shardrun/issue-coffee-machine",
+   "style": "program-icon",
+   "seed": 310430,
+   "prompt": "(a bronze coffee machine with a crystal carafe glowing warm amber:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-code-review",
+   "out": "shardrun/issue-code-review",
+   "style": "program-icon",
+   "seed": 301998,
+   "prompt": "(a bronze magnifying glass over a scroll with small crystal speech bubbles:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-legacy-codebase",
+   "out": "shardrun/issue-legacy-codebase",
+   "style": "program-icon",
+   "seed": 313840,
+   "prompt": "(a dusty stack of ancient bronze scrolls tied with cobwebs and one faint glowing crystal:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-dependency-hell",
+   "out": "shardrun/issue-dependency-hell",
+   "style": "program-icon",
+   "seed": 314615,
+   "prompt": "(a tangle of bronze pipes with several crystal valves knotted together:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-deprecated-api",
+   "out": "shardrun/issue-deprecated-api",
+   "style": "program-icon",
+   "seed": 310864,
+   "prompt": "(a bronze signpost with a crossed-out arrow and a faded crystal on top:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-merge-conflict",
+   "out": "shardrun/issue-merge-conflict",
+   "style": "program-icon",
+   "seed": 311577,
+   "prompt": "(two bronze arrows colliding head on with sparks and a crystal between them:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-rewrite-it-in-rust",
+   "out": "shardrun/issue-rewrite-it-in-rust",
+   "style": "program-icon",
+   "seed": 323357,
+   "prompt": "(a tiny brass crab wearing a hard hat holding a hammer standing on rusty gears:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-mark-and-sweep",
+   "out": "shardrun/issue-mark-and-sweep",
+   "style": "program-icon",
+   "seed": 309996,
+   "prompt": "(a bronze broom sweeping small grey crystals into a bronze dustpan:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-abandoned-repository",
+   "out": "shardrun/issue-abandoned-repository",
+   "style": "program-icon",
+   "seed": 332223,
+   "prompt": "(an old bronze chest wrapped in vines with a padlock and a glowing crystal keyhole:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-fork-the-repo",
+   "out": "shardrun/issue-fork-the-repo",
+   "style": "program-icon",
+   "seed": 307237,
+   "prompt": "(a bronze fork shape splitting a glowing crystal into two:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-code-golf",
+   "out": "shardrun/issue-code-golf",
+   "style": "program-icon",
+   "seed": 294744,
+   "prompt": "(a bronze golf club hitting a crystal ball toward a small flag:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-version-bump",
+   "out": "shardrun/issue-version-bump",
+   "style": "program-icon",
+   "seed": 306369,
+   "prompt": "(a bronze owl stamping a numbered tag on a small crate:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-pair-programming",
+   "out": "shardrun/issue-pair-programming",
+   "style": "program-icon",
+   "seed": 318924,
+   "prompt": "(two bronze chairs at one small desk with a single glowing crystal lamp:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-conference-talk",
+   "out": "shardrun/issue-conference-talk",
+   "style": "program-icon",
+   "seed": 314615,
+   "prompt": "(an owl-shaped bronze lectern on a small stage with a crystal microphone:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-cross-compilation",
+   "out": "shardrun/issue-cross-compilation",
+   "style": "program-icon",
+   "seed": 322706,
+   "prompt": "(a bronze gear machine taking one crystal in and giving two different crystals out:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-paradigm-shift",
+   "out": "shardrun/issue-paradigm-shift",
+   "style": "program-icon",
+   "seed": 311608,
+   "prompt": "(a bronze compass whose needle points toward a new glowing direction:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-open-source-maintainer",
+   "out": "shardrun/issue-open-source-maintainer",
+   "style": "program-icon",
+   "seed": 337059,
+   "prompt": "(a tired small bronze lantern with a heart-shaped crystal glowing inside:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-technical-debt",
+   "out": "shardrun/issue-technical-debt",
+   "style": "program-icon",
+   "seed": 310833,
+   "prompt": "(a bronze ledger book with a red ribbon and a heavy dark crystal on it:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-the-intern",
+   "out": "shardrun/issue-the-intern",
+   "style": "program-icon",
+   "seed": 299146,
+   "prompt": "(a small bronze robot with an enormous mug and a tiny crystal badge:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-daily-standup",
+   "out": "shardrun/issue-daily-standup",
+   "style": "program-icon",
+   "seed": 309097,
+   "prompt": "(a ring of five small bronze stools around a glowing crystal flame:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-hackathon",
+   "out": "shardrun/issue-hackathon",
+   "style": "program-icon",
+   "seed": 296759,
+   "prompt": "(a bronze trophy cup with banner ribbons and crystals around it:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-bug-bounty",
+   "out": "shardrun/issue-bug-bounty",
+   "style": "program-icon",
+   "seed": 299580,
+   "prompt": "(a gold coin with a beetle stamped on it and a small crystal sparkle:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-benchmark",
+   "out": "shardrun/issue-benchmark",
+   "style": "program-icon",
+   "seed": 296573,
+   "prompt": "(a bronze stopwatch on a podium with a glowing needle:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-hotfix-in-production",
+   "out": "shardrun/issue-hotfix-in-production",
+   "style": "program-icon",
+   "seed": 331262,
+   "prompt": "(a bronze fire extinguisher with a small crystal patch on it spraying light:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-rubber-duck",
+   "out": "shardrun/issue-rubber-duck",
+   "style": "program-icon",
+   "seed": 301874,
+   "prompt": "(a rubber duck in tiny bronze armour holding a crystal:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-oracle-test-suite",
+   "out": "shardrun/issue-oracle-test-suite",
+   "style": "program-icon",
+   "seed": 320846,
+   "prompt": "(a bronze eye-shaped altar with three scrolls and a glowing check mark crystal:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-stack-overflow-answer",
+   "out": "shardrun/issue-stack-overflow-answer",
+   "style": "program-icon",
+   "seed": 334548,
+   "prompt": "(a bronze stack of three speech plates with one small upvote arrow crystal:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-big-o-quiz",
+   "out": "shardrun/issue-big-o-quiz",
+   "style": "program-icon",
+   "seed": 297348,
+   "prompt": "(a bronze chalkboard with two curves and a glowing crystal piece of chalk:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-will-it-halt",
+   "out": "shardrun/issue-will-it-halt",
+   "style": "program-icon",
+   "seed": 303920,
+   "prompt": "(a looping bronze track with an ending flag and a crystal clock:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-issue-off-by-one",
+   "out": "shardrun/issue-off-by-one",
+   "style": "program-icon",
+   "seed": 296790,
+   "prompt": "(a bronze ruler with a single notch one step off and a crystal marker:1.35)",
+   "pick": 0,
+   "post": {
+    "size": [
+     384,
+     384
+    ]
+   }
+  },
+  {
+   "id": "shardrun-registry",
+   "out": "shardrun/registry",
+   "style": "program-backdrop",
+   "seed": 276485,
+   "prompt": "(a tall cabinet of small brass drawers with tiny engraved tags, a velvet counter in front, warm lamplight, empty space above for a keeper:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-semver",
+   "out": "shardrun/semver",
+   "style": "program-icon",
+   "seed": 269324,
+   "prompt": "(a small round brass owl with big amber lens eyes wearing a monocle and holding a rubber stamp in one wing:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-cycles",
+   "out": "shardrun/cycles",
+   "style": "program-icon",
+   "seed": 268859,
+   "prompt": "(a tiny bronze clock gear with a cyan crystal at its hub:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-prop-shop",
+   "out": "shardrun/map-prop-shop",
+   "style": "program-icon",
+   "seed": 289195,
+   "prompt": "(a small wooden crate stamped with an owl, bronze corners:1.35)",
+   "pick": 0
+  },
+  {
+   "id": "shardrun-map-prop-issue",
+   "out": "shardrun/map-prop-issue",
+   "style": "program-icon",
+   "seed": 292636,
+   "prompt": "(a bronze ring around an exclamation mark made of a crystal shard:1.35)",
+   "pick": 0
   }
  ]
 }

@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-triage",
+  "icon": "shardrun/card-job-sequencing",
   "id": "job-sequencing-plus",
   "name": "Job Sequencing+",
   "summary": "Each foe is a job. Foes are ranked by profit per HP, the damage they intend for each point of HP they have, then by profit.",

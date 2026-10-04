@@ -1,0 +1,13 @@
+{
+  "id": "cache-warm",
+  "name": "cache warm",
+  "rarity": "common",
+  "price": 45,
+  "summary": "Draw 3 cards.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "draw",
+    "count": 3
+  }
+}

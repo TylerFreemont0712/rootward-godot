@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-pierce",
+  "icon": "shardrun/card-minimum-arrows",
   "id": "minimum-arrows-plus",
   "name": "Minimum Arrows+",
   "summary": "Each bolt, strongest first, pierces with 1 more power at each foe: what it does not spend flies on into the next.",

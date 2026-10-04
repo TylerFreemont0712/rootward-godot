@@ -1,0 +1,43 @@
+{
+  "id": "abandoned-repository",
+  "name": "Abandoned Repository",
+  "title": "Last commit: a very long time ago",
+  "labels": [
+    "good first issue"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A repository wrapped in vines. The README promises great things. The bin folder is padlocked, but loosely.",
+  "choices": [
+    {
+      "label": "Open the chest (a relic, 30% cursed)",
+      "effects": [
+        {
+          "kind": "gain-relic",
+          "tier": "any",
+          "curse_chance": 0.3
+        }
+      ]
+    },
+    {
+      "label": "Read the README (a random card)",
+      "effects": [
+        {
+          "kind": "add-random-card",
+          "scope": "any"
+        }
+      ]
+    },
+    {
+      "label": "Check the bin folder (two scripts)",
+      "effects": [
+        {
+          "kind": "gain-script",
+          "rarity": "common",
+          "count": 2
+        }
+      ]
+    }
+  ],
+  "picture": "issue-abandoned-repository"
+}

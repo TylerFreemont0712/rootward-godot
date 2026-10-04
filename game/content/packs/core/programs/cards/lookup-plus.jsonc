@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "logarithmic",
   "big_o": "O(log k)",
-  "icon": "shardrun/card-binary-execute",
+  "icon": "shardrun/card-lookup",
   "id": "lookup-plus",
   "name": "Lookup+",
   "summary": "Binary-searches the index twice for bolts that kill the front foe; otherwise takes the strongest remaining.",

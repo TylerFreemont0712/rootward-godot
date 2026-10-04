@@ -170,6 +170,26 @@ func _ready() -> void:
 			await bot.play_until("battle")
 			await bot.send({"type": "dev-spawn", "kind": "boss", "foes": ["kiln-warden"]})
 			await bot.send({"type": "dev-end-battle", "outcome": "win"})
+		"registry":
+			# A Registry in a sandbox run, with cycles to spend (ROOTWARD_SHOT_CYCLES, 400 by default).
+			await _into_sandbox_room(session, bot, language)
+			session.state.cycles = (
+				int(OS.get_environment("ROOTWARD_SHOT_CYCLES")) if OS.has_environment("ROOTWARD_SHOT_CYCLES") else 400
+			)
+			ProgramShop.enter(session.state, {"id": "l0-r7-c1"}, session.catalog)
+		"issue":
+			# An Issue (ROOTWARD_SHOT_ISSUE, a coffee machine by default), after ROOTWARD_SHOT_CHOICE choices of it.
+			await _into_sandbox_room(session, bot, language)
+			session.state.cycles = 300
+			var issue_id := (
+				OS.get_environment("ROOTWARD_SHOT_ISSUE")
+				if OS.has_environment("ROOTWARD_SHOT_ISSUE")
+				else "coffee-machine"
+			)
+			session.state.status = "issue"
+			session.state.issue = {"id": issue_id, "stage": "choose", "lines": [], "number": 342}
+			if OS.has_environment("ROOTWARD_SHOT_CHOICE"):
+				await bot.send({"type": "issue-choose", "index": int(OS.get_environment("ROOTWARD_SHOT_CHOICE"))})
 		"gitlog":
 			_show_git_log(session)
 			return
@@ -188,6 +208,12 @@ func _ready() -> void:
 			await bot.play_until("reward")
 			await bot.send(bot._reward_move(session.state))
 			await bot.play_until("map", 10)
+	if OS.has_environment("ROOTWARD_SHOT_SCRIPTS"):
+		var belt: Array = []
+		belt.assign(OS.get_environment("ROOTWARD_SHOT_SCRIPTS").split(",", false))
+		session.state.belt = belt
+	if OS.has_environment("ROOTWARD_SHOT_SCRIPT_DROP") and (session.state.get("reward", {}) as Dictionary).size() > 0:
+		session.state.reward.script = OS.get_environment("ROOTWARD_SHOT_SCRIPT_DROP")
 	if session.state.get("sandbox", false):
 		for relic_id in OS.get_environment("ROOTWARD_SHOT_RELICS").split(",", false):
 			await bot.send({"type": "dev-grant-relic", "relic_id": relic_id})
@@ -393,3 +419,14 @@ func _act(shot: String, screen: Control) -> void:
 				if desired.to_lower() in tip.title.to_lower():
 					tip.show_now()
 					break
+
+
+## A sandbox run past its first fight, standing on the map, ready to be put into a room by the shot.
+func _into_sandbox_room(session: ShardrunSession, bot: ShardrunBot, language: String) -> void:
+	session.start(language if language != "" else "python", "beginner", "screenshot", true)
+	await bot.play_until("battle")
+	await bot.send({"type": "dev-end-battle", "outcome": "win"})
+	if (session.state.get("reward", {}) as Dictionary).has("shards"):
+		await bot.send({"type": "take", "shard_id": null})
+	if session.state.status == "reward":
+		await bot.send({"type": "leave"})

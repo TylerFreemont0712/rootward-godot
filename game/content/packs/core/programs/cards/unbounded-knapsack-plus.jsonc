@@ -1,6 +1,6 @@
 {
   "id": "unbounded-knapsack-plus",
-  "icon": "shardrun/card-make-change",
+  "icon": "shardrun/card-unbounded-knapsack",
   "name": "Unbounded Knapsack+",
   "rarity": "uncommon",
   "cost": 1,

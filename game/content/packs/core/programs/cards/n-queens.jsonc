@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "exponential",
   "big_o": "O(n!) pruned, n = 6",
-  "icon": "shardrun/card-pascal-row",
+  "icon": "shardrun/card-n-queens",
   "id": "n-queens",
   "name": "N-Queens",
   "summary": "Places six queens on a 6×6 board by backtracking, a row at a time. Each of the 4 solutions adds a 7-power bolt after your volley.",

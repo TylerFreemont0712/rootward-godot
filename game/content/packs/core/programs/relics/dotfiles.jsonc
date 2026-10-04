@@ -1,0 +1,13 @@
+{
+  "id": "dotfiles",
+  "name": "Dotfiles",
+  "tier": "uncommon",
+  "summary": "Your belt holds one more script.",
+  "flavor": "Years of small adjustments, in a hidden folder.",
+  "effects": [
+    {
+      "kind": "belt-extra",
+      "amount": 1
+    }
+  ]
+}

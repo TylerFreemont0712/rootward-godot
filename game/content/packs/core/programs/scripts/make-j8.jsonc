@@ -1,0 +1,13 @@
+{
+  "id": "make-j8",
+  "name": "make -j8",
+  "rarity": "rare",
+  "price": 70,
+  "summary": "This turn, your program's work is divided by 4.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "work-divide",
+    "divisor": 4
+  }
+}

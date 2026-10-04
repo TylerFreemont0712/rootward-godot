@@ -66,7 +66,7 @@ def extras() -> list[dict]:
     if not path.exists():
         return []
     scope: dict = {}
-    exec(path.read_text(), {"asset": asset}, scope)
+    exec(path.read_text(), {"asset": asset, "HERE": str(HERE)}, scope)
     return scope["ASSETS"]
 
 

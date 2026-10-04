@@ -1,0 +1,15 @@
+{
+  "id": "tech-debt",
+  "name": "Technical Debt",
+  "tier": "common",
+  "cursed": true,
+  "summary": "Every third fight, you start with 1 less mana. Repay 150 cycles at a Registry to clear it.",
+  "flavor": "The interest is paid in attention.",
+  "effects": [
+    {
+      "kind": "debt-mana",
+      "every": 3,
+      "amount": 1
+    }
+  ]
+}

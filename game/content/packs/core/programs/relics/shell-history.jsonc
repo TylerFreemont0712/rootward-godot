@@ -1,0 +1,12 @@
+{
+  "id": "shell-history",
+  "name": "Shell History",
+  "tier": "rare",
+  "summary": "The first script you use in each fight comes back after it.",
+  "flavor": "Press up, and it is there again.",
+  "effects": [
+    {
+      "kind": "script-refund"
+    }
+  ]
+}

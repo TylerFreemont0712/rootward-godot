@@ -1,0 +1,34 @@
+{
+  "id": "pair-programming",
+  "name": "Pair Programming",
+  "title": "Looking for a pairing partner",
+  "labels": [
+    "collaboration"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A stranger at the next desk offers to pair for an hour. They will show you how another school of thought does it.",
+  "choices": [
+    {
+      "label": "Pair up: choose a paradigm, then one of three of its cards",
+      "effects": [
+        {
+          "kind": "offer",
+          "scope": "chosen",
+          "count": 3,
+          "refactored": false
+        }
+      ]
+    },
+    {
+      "label": "Decline politely (+10 cycles for the coffee)",
+      "effects": [
+        {
+          "kind": "gain-cycles",
+          "amount": 10
+        }
+      ]
+    }
+  ],
+  "picture": "issue-pair-programming"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "stack-frame",
+  "name": "Stack Frame",
+  "tier": "rare",
+  "summary": "The card after a splitting card does half the work.",
+  "flavor": "Each call pushes a little less.",
+  "effects": [
+    {
+      "kind": "split-next-work",
+      "factor": 0.5
+    }
+  ]
+}

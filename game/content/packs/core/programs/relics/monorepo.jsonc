@@ -1,0 +1,14 @@
+{
+  "id": "monorepo",
+  "name": "Monorepo",
+  "tier": "uncommon",
+  "summary": "You have 1 more mana each turn while your deck holds 25 cards or more.",
+  "flavor": "Everything in one place, including the problems.",
+  "effects": [
+    {
+      "kind": "deck-mana",
+      "min_cards": 25,
+      "amount": 1
+    }
+  ]
+}

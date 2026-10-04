@@ -1,0 +1,12 @@
+{
+  "id": "print",
+  "name": "print()",
+  "rarity": "common",
+  "price": 30,
+  "summary": "See every foe's next two moves, written in the log.",
+  "target": "none",
+  "when": "fight",
+  "effect": {
+    "kind": "reveal-intents"
+  }
+}

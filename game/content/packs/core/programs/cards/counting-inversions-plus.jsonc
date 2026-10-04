@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "merge",
   "role": "shape",
-  "icon": "shardrun/card-bubble-sort",
+  "icon": "shardrun/card-counting-inversions",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
   "summary": "Each bolt gains the number of stronger bolts before it and the number of weaker bolts after it.",

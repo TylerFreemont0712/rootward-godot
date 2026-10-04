@@ -1,0 +1,29 @@
+{
+  "id": "deprecated-api",
+  "name": "Deprecated API",
+  "title": "This card is deprecated",
+  "labels": [
+    "deprecation"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A warning scrolls past: one of your cards uses an old call and will stop working next release. There is a migration guide, mostly in a comment.",
+  "choices": [
+    {
+      "label": "Migrate a card to something like it",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "transform",
+          "count": 1,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-deprecated-api"
+}

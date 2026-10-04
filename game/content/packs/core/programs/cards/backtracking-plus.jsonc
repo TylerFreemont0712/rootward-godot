@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "exponential",
   "big_o": "O(mⁿ) pruned, cap 12",
-  "icon": "shardrun/card-exhaustive-kill",
+  "icon": "shardrun/card-backtracking",
   "id": "backtracking-plus",
   "name": "Backtracking+",
   "summary": "Backtracks over assignments to all foes for the most kills, then least overkill. Also prunes already beaten foes; up to 12 bolts.",

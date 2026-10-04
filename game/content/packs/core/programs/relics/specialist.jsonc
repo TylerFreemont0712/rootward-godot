@@ -1,0 +1,13 @@
+{
+  "id": "specialist",
+  "name": "Specialist",
+  "tier": "uncommon",
+  "summary": "Your focus's cards are three times as likely in your rewards.",
+  "flavor": "Ten thousand hours, give or take.",
+  "effects": [
+    {
+      "kind": "reward-focus",
+      "weight": 3.0
+    }
+  ]
+}

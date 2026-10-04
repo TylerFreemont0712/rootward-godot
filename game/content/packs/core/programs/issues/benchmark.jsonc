@@ -1,0 +1,31 @@
+{
+  "id": "benchmark",
+  "name": "Benchmark",
+  "title": "Keep it under half a thousand",
+  "labels": [
+    "performance"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "A stopwatch on a podium. The next fight is a benchmark: every program of it must stay light.",
+  "choices": [
+    {
+      "label": "Take the benchmark: keep every program under 512 operations in the next fight for 80 cycles",
+      "effects": [
+        {
+          "kind": "bounty",
+          "bounty": "fast",
+          "reward": 80
+        }
+      ]
+    },
+    {
+      "label": "Pass",
+      "effects": []
+    }
+  ],
+  "picture": "issue-benchmark"
+}

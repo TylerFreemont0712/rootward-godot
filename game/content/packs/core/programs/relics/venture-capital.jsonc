@@ -1,0 +1,17 @@
+{
+  "id": "venture-capital",
+  "name": "Venture Capital",
+  "tier": "rare",
+  "summary": "Gain 150 cycles now. Every Registry you enter takes 1 maximum Integrity.",
+  "flavor": "Growth at all costs. Mostly yours.",
+  "effects": [
+    {
+      "kind": "pickup-cycles",
+      "amount": 150
+    },
+    {
+      "kind": "registry-toll",
+      "amount": 1
+    }
+  ]
+}

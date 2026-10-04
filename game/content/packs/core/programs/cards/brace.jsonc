@@ -6,7 +6,7 @@
   "rarity": "common",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "icon": "shardrun/shard-bulwark",
+  "icon": "shardrun/card-brace",
   "id": "brace",
   "name": "Brace",
   "summary": "Turns the weakest bolts into block, one by one, until the block covers the biggest incoming intent. The rest still fly.",

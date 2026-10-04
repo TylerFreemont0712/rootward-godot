@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "exponential",
   "big_o": "O(C(n, 3)), cap 7",
-  "icon": "shardrun/card-power-set",
+  "icon": "shardrun/card-combinations",
   "id": "combinations-plus",
   "name": "Combinations+",
   "summary": "Every 3-bolt combination of the first seven bolts becomes one bolt of half their sum plus 1 (35 from seven). Fewer than three bolts pass through.",

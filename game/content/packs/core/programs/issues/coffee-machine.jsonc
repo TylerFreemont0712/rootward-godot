@@ -1,0 +1,51 @@
+{
+  "id": "coffee-machine",
+  "name": "The Coffee Machine",
+  "title": "Coffee machine is out of beans",
+  "labels": [
+    "good first issue"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "The break-room machine hums sadly. A sticky note says: out of beans, back in five. Somebody has left a thermos behind.",
+  "choices": [
+    {
+      "label": "Make a pot of what is left (heal 25%)",
+      "effects": [
+        {
+          "kind": "heal-fraction",
+          "fraction": 0.25
+        }
+      ]
+    },
+    {
+      "label": "Stay up all night (+5 max Integrity)",
+      "effects": [
+        {
+          "kind": "max-integrity",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "label": "Sell the spare mugs (+30 cycles)",
+      "effects": [
+        {
+          "kind": "gain-cycles",
+          "amount": 30
+        }
+      ]
+    },
+    {
+      "label": "Take the thermos (a script)",
+      "effects": [
+        {
+          "kind": "gain-script",
+          "rarity": "common",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "picture": "issue-coffee-machine"
+}

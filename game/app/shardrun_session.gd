@@ -132,6 +132,14 @@ func command(request: Dictionary) -> Dictionary:
 
 ## Every spell's run view against the current battle, waiting for any still running: {revision, spells: {id: view}}.
 ## `predictions` is the player's option; the difficulty can still hide them.
+## The question an open Issue asks, from its plan run for real in the sandbox (ProgramQuiz).
+func quiz_question() -> Dictionary:
+	var at := state.duplicate(true)
+	var plan: Dictionary = (at.issue.quiz as Dictionary).plan
+	var results: Array = await runs.quiz_runs(at, plan)
+	return ProgramQuiz.build(plan, results, at, catalog)
+
+
 func previews(predictions := true) -> Dictionary:
 	var at := state
 	if not at.has("battle"):

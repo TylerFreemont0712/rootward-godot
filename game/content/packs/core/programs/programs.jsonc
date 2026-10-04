@@ -35,6 +35,31 @@
       "weights": { "fight": 40, "elite": 18, "issue": 18, "rest": 10, "forge": 10, "shop": 4, "treasure": 0 }
     }
   },
+  // The Registry, a program run's shop (ProgramShop, Paradigm Update B7): five cards (two of your paradigm, a neutral, one
+  // of another paradigm, any), three relics (legendary one time in a hundred), the scripts and three services. Prices
+  // wander by `jitter` from the seed; `uninstall` costs `step` more each time you use it in a run.
+  "registry": {
+    "cards": 5,
+    "relics": 3,
+    "scripts": 3,
+    "card_rarity": { "common": 55, "uncommon": 35, "rare": 10 },
+    "card_price": { "common": 50, "uncommon": 75, "rare": 150 },
+    "sale": 0.5,
+    "relic_tiers": { "common": 40, "uncommon": 34, "rare": 20, "epic": 5, "legendary": 1 },
+    "relic_price": { "common": 110, "uncommon": 160, "rare": 230, "epic": 320, "legendary": 450 },
+    "uninstall": { "price": 75, "step": 25 },
+    "refactor": 90,
+    "pip_install": { "price": 60, "choices": 3 },
+    "jitter": 0.1
+  },
+  // Scripts, the one-use commands on the belt (ProgramScripts, Paradigm Update B12): the belt's size, the chance a won
+  // fight leaves one (fights add `step` for each fight without one), and the rarity odds of any script.
+  "scripts": {
+    "belt": 3,
+    "drop": { "fight": 0.3, "elite": 0.6, "boss": 1.0 },
+    "step": 0.1,
+    "rarity": { "common": 60, "uncommon": 30, "rare": 10 }
+  },
   // What a fight offers as cards (ProgramRewards, Paradigm Update B4). Each of the three cards comes from your own
   // paradigm (50%), neutral (30%) or another paradigm (20%), and at least one is always your own; a guardian never
   // offers another paradigm's. The focus's cards weigh double inside the own share. An elite adds a fourth card from

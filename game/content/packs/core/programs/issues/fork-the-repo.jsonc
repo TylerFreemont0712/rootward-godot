@@ -1,0 +1,37 @@
+{
+  "id": "fork-the-repo",
+  "name": "Fork the Repo",
+  "title": "Fork requested",
+  "labels": [
+    "enhancement"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "Copying is faster than writing. It also leaves two copies to keep in sync, and the sync always costs something.",
+  "choices": [
+    {
+      "label": "Fork a card (copy it, lose 8 Integrity)",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "duplicate",
+          "count": 1,
+          "then": [
+            {
+              "kind": "lose-integrity",
+              "amount": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-fork-the-repo"
+}

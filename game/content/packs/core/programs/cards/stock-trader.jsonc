@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-kadane",
+  "icon": "shardrun/card-stock-trader",
   "id": "stock-trader",
   "name": "Stock Trader",
   "summary": "Adds up every rise from one bolt to the next into a new bolt at the end. A rising volley pays well.",

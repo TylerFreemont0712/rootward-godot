@@ -1,6 +1,6 @@
 {
   "id": "edit-distance-plus",
-  "icon": "shardrun/card-lis-strike",
+  "icon": "shardrun/card-edit-distance",
   "name": "Edit Distance Aim+",
   "rarity": "uncommon",
   "cost": 1,

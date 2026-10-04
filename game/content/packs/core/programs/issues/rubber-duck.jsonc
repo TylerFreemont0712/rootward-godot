@@ -1,0 +1,40 @@
+{
+  "id": "rubber-duck",
+  "name": "The Rubber Duck",
+  "title": "Explain it to the duck",
+  "labels": [
+    "quiz"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A rubber duck in tiny bronze armour. Explain what one of your cards returns, out loud, and the duck will nod. If you are wrong, it will not say so, but it will know.",
+  "choices": [
+    {
+      "label": "Explain a card of yours (right: a rare card of your paradigm; wrong: 15 cycles)",
+      "effects": [
+        {
+          "kind": "quiz",
+          "quiz": "rubber-duck",
+          "right": [
+            {
+              "kind": "add-random-card",
+              "scope": "own",
+              "rarity": "rare"
+            }
+          ],
+          "wrong": [
+            {
+              "kind": "lose-cycles",
+              "amount": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-rubber-duck"
+}

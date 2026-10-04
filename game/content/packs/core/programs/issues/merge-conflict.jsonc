@@ -1,0 +1,37 @@
+{
+  "id": "merge-conflict",
+  "name": "Merge Conflict",
+  "title": "CONFLICT in deck.json",
+  "labels": [
+    "conflict"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "Two of your cards both changed the same line. Git has left its arrows all over the file.",
+  "choices": [
+    {
+      "label": "Resolve it: keep one of the two",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "keep",
+          "count": 1,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Pay 40 cycles to keep both",
+      "needs": {
+        "cycles": 40
+      },
+      "effects": [
+        {
+          "kind": "lose-cycles",
+          "amount": 40
+        }
+      ]
+    }
+  ],
+  "picture": "issue-merge-conflict"
+}

@@ -42,6 +42,72 @@ func _init(run_catalog: Dictionary) -> void:
 		limits.output_kb = int(defaults.output_kb)
 
 
+## The runs an Issue's question asks for (ProgramQuiz): each version of a card on the plan's volley, in the sandbox,
+## in the order of the plan's versions. A mutated version runs as the Mutator's edit makes it, as in a fight.
+func quiz_runs(state: Dictionary, plan: Dictionary) -> Array:
+	var language := String(state.language)
+	var programs: Array[Dictionary] = []
+	var versions: Array = plan.get("versions", [])
+	for index in versions.size():
+		var version: Dictionary = versions[index]
+		var shard: Dictionary = (catalog.shards[version.card] as Dictionary).duplicate(true)
+		if int(version.op) >= 0:
+			shard.code[language] = ProgramGuardians.code_of(
+				shard, language, {"mutants": {version.card: {"op": int(version.op)}}}
+			)
+			shard.mutant = int(version.op)
+		programs.append({"id": "version-%d" % index, "shards": [shard]})
+	if programs.is_empty():
+		return []
+	var results: Array = []
+	for index in programs.size():
+		var count := int((versions[index] as Dictionary).get("n", (plan.volley as Array).size()))
+		var bolts: Array = []
+		for slot in count:
+			bolts.append(
+				{
+					"power":
+					(
+						int(plan.volley[slot % (plan.volley as Array).size()])
+						if count == (plan.volley as Array).size()
+						else 3
+					),
+					"element": "none"
+				}
+			)
+		var input := {
+			"bolts": bolts,
+			"battle": _quiz_battle(),
+			"limit": int(ProgramRules.config_of(catalog).max_bolts),
+			"trace_limit": int(catalog.balance.trace_bolts),
+			"count": true,
+			"hooks": [],
+			"module": "program",
+		}
+		var one: Array[Dictionary] = [programs[index]]
+		var ran: Dictionary = await Background.run(
+			func() -> Dictionary: return SpellHarness.run(language, one, input, limits)
+		)
+		results.append(ran.get(programs[index].id, NO_RESULT))
+	return results
+
+
+## The battle a quiz's card sees: one sturdy foe, nothing remembered.
+func _quiz_battle() -> Dictionary:
+	var foe := {"name": "Tally Wisp", "hp": 12, "max": 12, "shield": 0, "weak": [], "resist": [], "hits": 0}
+	foe.intent = {"kind": "attack", "damage": 3, "hits": 1, "tempo": 40}
+	return {
+		"turn": 1,
+		"me": {"hp": 30, "max": 30, "block": 0, "mana": 3},
+		"foes": [foe],
+		"imports": [],
+		"globals": {},
+		"index": [],
+		"dp": [],
+		"last_volley": [],
+	}
+
+
 ## Starts every spell of the battle in the background without waiting.
 func warm(state: Dictionary) -> void:
 	if state.has("battle"):

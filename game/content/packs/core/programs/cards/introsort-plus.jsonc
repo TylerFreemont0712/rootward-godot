@@ -6,7 +6,7 @@
   "paradigm": "divide-conquer",
   "focus": "pivot",
   "role": "order",
-  "icon": "shardrun/card-quick-sort",
+  "icon": "shardrun/card-introsort",
   "complexity": "linearithmic",
   "big_o": "O(n log n) worst",
   "makes": "sorted",

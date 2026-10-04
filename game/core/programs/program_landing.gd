@@ -15,6 +15,11 @@ static func resolve(
 			accepted.append(bolt)
 	var landing := ProgramRelics.landing(accepted, relics)
 	var program_factor := ProgramRelics.program_factor(landing, context, relics)
+	for rule: Dictionary in relics.volley_bonus:
+		if landing.size() >= int(rule.min_bolts):
+			program_factor *= float(rule.factor)
+	if battle.get("double_next", false):
+		program_factor *= 2.0
 	var hottest := ProgramRelics.strongest(landing) if float(relics.strongest_mult) != 1.0 else -1
 	var out_sped: Array = context.get("out_sped", [])
 	var first := ProgramRules.initiative(state, catalog)

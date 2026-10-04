@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "constant",
   "big_o": "O(1)",
-  "icon": "shardrun/card-tabulate",
+  "icon": "shardrun/card-bottom-up",
   "id": "bottom-up",
   "name": "from itertools import accumulate",
   "summary": "For the rest of the fight, every program's seed gains a bolt of the Table's best row divided by 5. Build the answer from the smallest case up.",

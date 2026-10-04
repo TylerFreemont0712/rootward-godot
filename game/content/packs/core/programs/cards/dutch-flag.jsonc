@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
-  "icon": "shardrun/card-quick-sort",
+  "icon": "shardrun/card-dutch-flag",
   "id": "dutch-flag",
   "name": "Dutch Flag",
   "summary": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact bolts are pivots.",

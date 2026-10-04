@@ -6,7 +6,7 @@
   "rarity": "uncommon",
   "complexity": "quadratic",
   "big_o": "O(n²)",
-  "icon": "shardrun/shard-cross-product",
+  "icon": "shardrun/card-all-pairs-rank",
   "id": "all-pairs-rank",
   "name": "All-Pairs Rank",
   "summary": "Compares every bolt with every other: each gains 1 power for every bolt weaker than it. The same ranking can be had in O(n log n).",

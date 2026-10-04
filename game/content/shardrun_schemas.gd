@@ -396,13 +396,17 @@ static func program_state_defaults(state: Dictionary) -> void:
 		"focus": "",
 		"cycles": 0,
 		"belt": [],
-		"pending": {},
+		"pending": [],
 		"boons": [],
 		"imports_enabled": [],
 		"rare_pity": 0.0,
 		"cycles_earned": 0,
 		"cycles_spent": 0,
-		"kept_index": []
+		"kept_index": [],
+		"uninstalls": 0,
+		"script_pity": 0.0,
+		"lockfile_layers": [],
+		"free_refactor_layers": [],
 	}
 	for field: String in defaults:
 		if not state.has(field):

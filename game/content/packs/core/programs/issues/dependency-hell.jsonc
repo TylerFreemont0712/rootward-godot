@@ -1,0 +1,34 @@
+{
+  "id": "dependency-hell",
+  "name": "Dependency Hell",
+  "title": "Cannot resolve dependencies",
+  "labels": [
+    "bug"
+  ],
+  "layers": [
+    1,
+    2
+  ],
+  "weight": 1.0,
+  "text": "The installer wants version 3 and version 4 of the same package. A glowing relic sits at the bottom of the conflict. So does something else.",
+  "choices": [
+    {
+      "label": "Install it all (an epic relic, and a curse)",
+      "effects": [
+        {
+          "kind": "gain-relic",
+          "tier": "epic",
+          "curse_chance": 0.0
+        },
+        {
+          "kind": "gain-curse"
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-dependency-hell"
+}

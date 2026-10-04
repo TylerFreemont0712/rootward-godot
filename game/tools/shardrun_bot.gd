@@ -7,7 +7,7 @@ extends RefCounted
 ##   var bot := ShardrunBot.new(session)
 ##   var report: Dictionary = await bot.play(400)    # {steps, refusals: [..], status}
 
-const ROOM_ORDER: Array[String] = ["fight", "rest", "forge", "treasure", "elite", "boss"]
+const ROOM_ORDER: Array[String] = ["fight", "rest", "forge", "treasure", "shop", "issue", "elite", "boss"]
 ## A fight still going after this many turns is one the bot cannot win (a thick hide its bolts glance off, a ward that
 ## blocks everything): it abandons the run, as a player would.
 const STALEMATE_TURNS := 50
@@ -78,6 +78,10 @@ func next_command() -> Dictionary:
 			if not cursed.is_empty() and int(state.integrity) * 2 > int(state.integrity_max):
 				return {"type": "cleanse-relic", "relic_id": cursed[0].id}
 			return {"type": "rest"}
+		"shop":
+			return _shop_move(state)
+		"issue":
+			return _issue_move(state)
 		"forge":
 			var options := ShardrunViews.forge_options(state, catalog)
 			if not (options.shards as Array).is_empty():
@@ -129,7 +133,66 @@ func _reward_move(state: Dictionary) -> Dictionary:
 		return {"type": "claim-relic", "relic_id": reward.relics[0]}
 	if reward.has("shards") and not (reward.shards as Array).is_empty():
 		return {"type": "take", "shard_id": reward.shards[0]}
+	if reward.has("script"):
+		var full: bool = (state.get("belt", []) as Array).size() >= ProgramScripts.belt_size(state, session.catalog)
+		return {"type": "take-script", "drop_index": 0} if full else {"type": "take-script"}
 	return {"type": "leave"}
+
+
+## The Registry: a relic first, then a script, then a card, whatever the cycles allow; then leave.
+func _shop_move(state: Dictionary) -> Dictionary:
+	var shop: Dictionary = state.shop
+	for shelf: String in ["relics", "scripts", "cards"]:
+		var items: Array = shop[shelf]
+		for index in items.size():
+			var item: Dictionary = items[index]
+			if (
+				item.get("sold", false)
+				or ProgramShop.price_of(state, shelf, item, session.catalog) > int(state.get("cycles", 0))
+			):
+				continue
+			if (
+				shelf == "scripts"
+				and (state.get("belt", []) as Array).size() >= ProgramScripts.belt_size(state, session.catalog)
+			):
+				continue
+			return {"type": "buy", "shelf": shelf, "index": index}
+	return {"type": "leave-shop"}
+
+
+## An Issue: the choice that costs nothing and changes nothing when there is one, else the first; every stage after it
+## takes the first option on offer.
+func _issue_move(state: Dictionary) -> Dictionary:
+	var issue: Dictionary = state.issue
+	match String(issue.stage):
+		"choose":
+			var choices: Array = ProgramIssues.definition(state, session.catalog).choices
+			for index in choices.size():
+				if (choices[index].effects as Array).is_empty():
+					return {"type": "issue-choose", "index": index}
+			return {"type": "issue-choose", "index": 0}
+		"pick":
+			var count := (
+				1 if issue.pick.purpose == "keep" else mini(int(issue.pick.count), (issue.pick.options as Array).size())
+			)
+			return {"type": "issue-pick", "card_ids": (issue.pick.options as Array).slice(0, count)}
+		"paradigm":
+			return {"type": "issue-paradigm", "paradigm_id": issue.paradigms[0]}
+		"offer":
+			return {"type": "issue-take", "card_id": issue.offer.cards[0]}
+		"focus":
+			return {"type": "issue-focus", "focus_id": issue.focuses[0]}
+		"quiz":
+			if not issue.quiz.ready:
+				var runs: Array = []
+				for version: Dictionary in issue.quiz.plan.get("versions", []):
+					runs.append({"ok": true, "bolts": [{"power": 3, "element": "none"}], "work": []})
+				return {
+					"type": "issue-quiz-ready",
+					"question": ProgramQuiz.build(issue.quiz.plan, runs, state, session.catalog)
+				}
+			return {"type": "issue-answer", "index": 0}
+	return {"type": "issue-leave"}
 
 
 ## A Shardrun hand played into every spell with room, in the order it was dealt, as a `compose` command; {} when every

@@ -69,9 +69,41 @@ static func modifiers(state: Dictionary, catalog: Dictionary) -> Dictionary:
 		"pivot_factor": 1.0,
 		"table_best_divisor": 0,
 		"index_keep": 0,
+		"belt_extra": 0,
+		"script_refund": false,
+		"shop_discount": 0.0,
+		"shop_cards": 0,
+		"shop_relics": 0,
+		"script_discount": 0.0,
+		"kill_cycles": 0,
+		"registry_toll": 0,
+		"free_refactor": false,
+		"sale_free": false,
+		"lockfile": false,
+		"interest": 0.0,
+		"interest_max": 0,
+		"deck_mana": [],
+		"deck_draw": [],
+		"snapshot": false,
+		"waive_stakes": false,
+		"reward_shift": 0.0,
+		"reward_focus": 0.0,
+		"table_monotone": false,
+		"index_seed_power": 0,
+		"timeout_refund": false,
+		"first_role_free": [],
+		"split_next_work": 1.0,
+		"volley_bonus": [],
+		"first_program_discount": 0,
+		"rest_purge": false,
+		"debt_mana": [],
 	}
+	var shed: bool = (state.get("battle", {}) as Dictionary).get("no_curses", false)
 	for relic_id: String in state.get("relics", []):
-		for effect: Dictionary in (catalog.relics.get(relic_id, {}) as Dictionary).get("effects", []):
+		var relic: Dictionary = catalog.relics.get(relic_id, {})
+		if shed and relic.get("cursed", false):
+			continue
+		for effect: Dictionary in relic.get("effects", []):
 			_apply(m, effect)
 	for card_id: String in ProgramDeck.imports(state, catalog):
 		for effect: Dictionary in (catalog.shards.get(card_id, {}) as Dictionary).get("effects", []):
@@ -129,6 +161,28 @@ static func _apply(m: Dictionary, effect: Dictionary, source := "") -> void:
 			m.index_size += int(effect.size)
 		"index-keep":
 			m.index_keep = maxi(int(m.index_keep), int(effect.count))
+		"shop-discount", "script-discount", "reward-share-shift":
+			var key: String = String(effect.kind).replace("-", "_")
+			m[key if effect.kind != "reward-share-shift" else "reward_shift"] += float(
+				effect.get("fraction", effect.get("to_other", 0.0))
+			)
+		"shop-stock":
+			m.shop_cards += int(effect.cards)
+			m.shop_relics += int(effect.relics)
+		"kill-cycles", "registry-toll", "belt-extra", "first-program-discount", "index-seed-power":
+			var key2: String = String(effect.kind).replace("-", "_")
+			m[key2 if effect.kind != "belt-extra" else "belt_extra"] += int(effect.get("amount", effect.get("add", 0)))
+		"free-refactor", "sale-free", "lockfile", "snapshot", "waive-stakes", "table-monotone", "timeout-refund", "rest-purge", "script-refund":
+			m[String(effect.kind).replace("-", "_")] = true
+		"interest":
+			m.interest = float(effect.fraction)
+			m.interest_max = int(effect.max)
+		"deck-mana", "deck-draw", "first-role-free", "volley-bonus", "debt-mana":
+			(m[String(effect.kind).replace("-", "_")] as Array).append(effect)
+		"reward-focus":
+			m.reward_focus = maxf(float(m.reward_focus), float(effect.weight))
+		"split-next-work":
+			m.split_next_work *= float(effect.factor)
 		"seed-bolts":
 			(m.seed_bolts as Array).append({"count": int(effect.count), "power": int(effect.power)})
 		"seed-power", "first-turn-mana", "element-power", "sorted-landing", "block-per-card", "kill-heal":
@@ -185,6 +239,8 @@ static func seed(base: Array, state: Dictionary, catalog: Dictionary) -> Array:
 		var previous := int(rows.back())
 		var before := int(rows[-2]) if rows.size() >= 2 else 0
 		bolts.append({"power": (previous + before) / int(m.table_divisor), "element": "none"})
+	for kept: Dictionary in battle.get("gc_seed", []):
+		bolts.append({"power": int(kept.power), "element": kept.element})
 	if int(m.table_best_divisor) > 0 and not rows.is_empty():
 		var best := 0
 		for row: int in rows:
@@ -194,8 +250,27 @@ static func seed(base: Array, state: Dictionary, catalog: Dictionary) -> Array:
 	if m.index:
 		var bank: Array = battle.get("index", [])
 		for i in mini(int(m.index_seed), bank.size()):
-			bolts.append((bank[bank.size() - 1 - i] as Dictionary).duplicate())
+			var kept_bolt: Dictionary = (bank[bank.size() - 1 - i] as Dictionary).duplicate()
+			kept_bolt.power = int(kept_bolt.power) + int(m.index_seed_power)
+			bolts.append(kept_bolt)
 	return bolts
+
+
+## Mana and cards a big or a small deck brings (Monorepo, Microservices), by the deck's size now.
+static func deck_mana(state: Dictionary, m: Dictionary) -> int:
+	var total := 0
+	for rule: Dictionary in m.deck_mana:
+		if (state.get("deck", []) as Array).size() >= int(rule.min_cards):
+			total += int(rule.amount)
+	return total
+
+
+static func deck_draw(state: Dictionary, m: Dictionary) -> int:
+	var total := 0
+	for rule: Dictionary in m.deck_draw:
+		if (state.get("deck", []) as Array).size() <= int(rule.max_cards):
+			total += int(rule.amount)
+	return total
 
 
 ## What a card costs in this program: its own cost, a role's price set by a relic, a second copy made free, or nothing
@@ -205,6 +280,10 @@ static func cost(state: Dictionary, card_ids: Array, catalog: Dictionary) -> int
 	var turn := int((state.get("battle", {}) as Dictionary).get("turn", 1))
 	if int(m.cron) > 0 and turn % int(m.cron) == 0:
 		return 0
+	var battle: Dictionary = state.get("battle", {})
+	if battle.get("free_program", false):
+		return 0
+	var free: Array = (battle.get("free_cards", []) as Array).duplicate()
 	var total := 0
 	var seen := {}
 	for id: String in card_ids:
@@ -214,8 +293,17 @@ static func cost(state: Dictionary, card_ids: Array, catalog: Dictionary) -> int
 			price = mini(price, int(m.role_cost[card.role]))
 		if m.duplicate_free and seen.has(id):
 			price = 0
+		if id in free:
+			free.erase(id)
+			price = 0
 		seen[id] = true
 		total += price
+	if (
+		int(m.first_program_discount) > 0
+		and int(battle.get("turn", 1)) == 1
+		and (battle.get("cast", []) as Array).is_empty()
+	):
+		total = maxi(0, total - int(m.first_program_discount))
 	return total
 
 
@@ -313,6 +401,14 @@ static func after_cast(state: Dictionary, battle: Dictionary, card_ids: Array, k
 ## A fight begins: a relic's extra mana on the first turn.
 static func on_battle_start(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
 	ProgramCycles.on_battle_start(state, battle)
+	ProgramIssues.on_battle_start(state, battle)
+	var held := modifiers(state, catalog)
+	battle.mana += deck_mana(state, held)
+	battle.bonus_draw_now = int(battle.get("bonus_draw_now", 0)) + deck_draw(state, held)
+	for debt: Dictionary in held.debt_mana:
+		if (int(state.stats.fights) + 1) % int(debt.every) == 0:
+			battle.mana = maxi(0, int(battle.mana) - int(debt.amount))
+	battle.turn_start_integrity = int(state.integrity)
 	# What a B-Tree kept of the last fight's Index starts this one's (ProgramMemory.carry_over).
 	var kept: Array = state.get("kept_index", [])
 	if not kept.is_empty():

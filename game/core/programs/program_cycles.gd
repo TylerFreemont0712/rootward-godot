@@ -51,6 +51,22 @@ static func settle(state: Dictionary, battle: Dictionary, catalog: Dictionary) -
 		lines.append({"label": "clean build", "kind": "bonus", "amount": int(rules.clean)})
 	if int(battle.get("casts", 0)) == 1 and kind != "boss":
 		lines.append({"label": "one-liner", "kind": "bonus", "amount": int(rules.one_liner)})
+	var kill_pay := int(ProgramRelics.modifiers(state, catalog).kill_cycles)
+	if kill_pay > 0:
+		var killed := (
+			foes
+			. filter(func(foe: Dictionary) -> bool: return int(foe.hp) <= 0 and String(foe.get("owner", "")) == "")
+			. size()
+		)
+		if killed > 0:
+			lines.append({"label": "Bug Bounty Program", "kind": "bonus", "amount": kill_pay * killed})
+	var bounty: Dictionary = battle.get("bounty", {})
+	if not bounty.is_empty():
+		var met: bool = (
+			int(battle.get("casts", 0)) == 1 if bounty.kind == "one-program" else int(battle.get("max_work", 0)) < 512
+		)
+		if met:
+			lines.append({"label": "bounty", "kind": "bonus", "amount": int(bounty.reward)})
 	var total := 0
 	for line in lines:
 		total += int(line.amount)

@@ -1,0 +1,29 @@
+{
+  "id": "mark-and-sweep",
+  "name": "Mark and Sweep",
+  "title": "Garbage collection is overdue",
+  "labels": [
+    "maintenance"
+  ],
+  "layers": [],
+  "weight": 1.0,
+  "text": "A collector with a very long broom offers to sweep the basics out of your deck. It does not take payment. It takes a promise to travel lighter.",
+  "choices": [
+    {
+      "label": "Sweep away up to two basic cards",
+      "effects": [
+        {
+          "kind": "pick",
+          "purpose": "remove-basic",
+          "count": 2,
+          "then": []
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-mark-and-sweep"
+}

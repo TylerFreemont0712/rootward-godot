@@ -1,0 +1,34 @@
+{
+  "id": "legacy-codebase",
+  "name": "Legacy Codebase",
+  "title": "Nobody knows what this does",
+  "labels": [
+    "legacy"
+  ],
+  "layers": [
+    0,
+    1
+  ],
+  "weight": 1.0,
+  "text": "A forgotten module, thousands of lines, no tests. Two of your cards could be rewritten here, if you can stand reading it.",
+  "choices": [
+    {
+      "label": "Refactor two cards, lose 8 Integrity",
+      "effects": [
+        {
+          "kind": "upgrade-random",
+          "count": 2
+        },
+        {
+          "kind": "lose-integrity",
+          "amount": 8
+        }
+      ]
+    },
+    {
+      "label": "Walk away",
+      "effects": []
+    }
+  ],
+  "picture": "issue-legacy-codebase"
+}

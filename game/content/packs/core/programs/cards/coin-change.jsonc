@@ -6,7 +6,7 @@
   "rarity": "rare",
   "complexity": "pseudo",
   "big_o": "O(n·H)",
-  "icon": "shardrun/card-exhaustive-kill",
+  "icon": "shardrun/card-coin-change",
   "id": "coin-change",
   "name": "Coin Change (DP)",
   "summary": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe.",
