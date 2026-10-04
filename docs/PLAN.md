@@ -358,7 +358,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [ ] Card Shardrun retired (waiting for the player's yes).
 - [x] The preview is the cast: both call `ProgramRules.play`, the preview on a copy; faster foes act and relics add
       their block in the preview too, and it warns when a faster foe ends the run first (P2-01, P2-02).
-- [ ] The other high-priority bugs, each with a failing test first: the Mutator's bonus in the totals (P2-07),
-      overflow and the guardians (P2-03 to P2-05), dead cards and summons (P2-06, P2-08), keys under menus (P2-11),
+- [x] Landing totals: a forced Thunk's shield counts once (P2-03); overflow passes over any foe with landing rules of
+      its own, to the next plain foe or wasted (P2-04); overflow a shield absorbs is not damage (P2-05); a restored
+      mutant's hit counts as dealt (P2-07).
+- [ ] The other high-priority bugs, each with a failing test first: dead cards and summons (P2-06, P2-08), keys under menus (P2-11),
       saves (P2-12, P2-13, P2-15), the sandbox output limit (P2-21).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).

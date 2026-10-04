@@ -304,3 +304,23 @@ func test_the_preview_counts_the_block_relics_add_after_the_cast() -> void:
 			gathered += int(entry.amount)
 	assert_int(gathered).is_equal(4)
 	assert_int(int(preview.block)).is_equal(4)
+
+
+## P2-05: overflow a shield absorbs is not damage dealt.
+func test_overflow_into_a_shield_is_not_counted_as_damage() -> void:
+	var flows := _with([{"kind": "overkill-flows"}])
+	var state := _fight(flows)
+	state.battle.foes[1].shield = 10
+	var cast := _cast(state, ["salvo"], [{"power": 26, "element": "none", "foe": 0}], _work("salvo"), flows)
+	assert_array(_hp(cast)).is_equal([0, 30])
+	assert_int(int(cast.stats.damage)).is_equal(20)
+
+
+## P2-04: overflow never reaches a foe with landing rules of its own; it passes on to a plain foe, or is wasted.
+func test_overflow_passes_over_a_foe_with_its_own_landing_rules() -> void:
+	var flows := _with([{"kind": "overkill-flows"}])
+	var state := _fight(flows)
+	state.battle.foes[1].trait = {"kind": "thick-hide", "threshold": 50}
+	var cast := _cast(state, ["salvo"], [{"power": 26, "element": "none", "foe": 0}], _work("salvo"), flows)
+	assert_array(_hp(cast)).is_equal([0, 30])
+	assert_int(int(cast.stats.damage)).is_equal(20)

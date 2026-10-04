@@ -382,3 +382,24 @@ func test_the_mutator_only_draws_mutants_the_census_found_to_run() -> void:
 	_act(state, _foe(state), 1)
 	for id: String in state.battle.mutants:
 		assert_array(ProgramGuardians.safe_mutants(id, "python", catalog)).contains([state.battle.mutants[id].op])
+
+
+## P2-03: a shield takes its share of a forced Thunk's damage once, before the bonus.
+func test_a_forced_thunk_loses_its_shield_once() -> void:
+	var state := _against(["thunk"])
+	var thunk := _foe(state)
+	thunk.shield = 5
+	var landed := _land(state, _bolts([20]))
+	assert_int(int(landed.dealt)).override_failure_message("(20 - 5) x 1.25").is_equal(18)
+	assert_int(int(thunk.shield)).is_equal(0)
+
+
+## P2-07: the hit a restored mutant deals is damage the program dealt.
+func test_the_hit_a_restored_mutant_deals_counts_as_dealt() -> void:
+	var state := _against(["mutator"])
+	var mutator := _foe(state)
+	_act(state, mutator, 1)
+	var mutant: String = (state.battle.mutants as Dictionary).keys()[0]
+	var hp := int(mutator.hp)
+	var landed := _land(state, _bolts([30]), {"cards": [mutant], "speed": "linear"})
+	assert_int(int(landed.dealt)).is_equal(hp - int(mutator.hp))

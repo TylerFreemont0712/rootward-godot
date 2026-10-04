@@ -203,7 +203,11 @@ static func body(
 				return {"dealt": 0, "wasted": 0}
 			var total := floori((int(foe.get("pending", 0)) + through) * float(foe_trait.bonus))
 			foe.pending = 0
-			return _land(state, foe, total, blocked, element, shape, "Forced! Everything pending lands at once: ")
+			# The shield already took its share (`through`), so `_land` is handed it back to take away once more:
+			# the hit still notes what the shield stopped, and nothing is subtracted twice (docs/PHASE2.md P2-03).
+			return _land(
+				state, foe, total + blocked, blocked, element, shape, "Forced! Everything pending lands at once: "
+			)
 		"call-stack":
 			var blocked := _shield(foe, damage)
 			var frames: Array = foe.frames
@@ -334,9 +338,11 @@ static func on_defeat(state: Dictionary, battle: Dictionary, foe: Dictionary) ->
 
 
 ## After the last bolt: a broken loop resets and stuns, a certificate stuns, a right prediction reflects, the Mutator's
-## tests kill the mutants that ran, and the Root Compiler changes phase.
-static func finish(state: Dictionary, battle: Dictionary, plan_of: Dictionary, context: Dictionary) -> void:
+## tests kill the mutants that ran, and the Root Compiler changes phase. Returns the damage dealt here (the mutants'
+## hits), which is the program's too.
+static func finish(state: Dictionary, battle: Dictionary, plan_of: Dictionary, context: Dictionary) -> int:
 	var reflected: Dictionary = plan_of.reflected
+	var dealt := 0
 	for foe: Dictionary in battle.foes:
 		var entry: Dictionary = (plan_of.foes as Dictionary).get(foe.uid, {})
 		var foe_trait: Dictionary = foe.get("trait", {})
@@ -361,25 +367,29 @@ static func finish(state: Dictionary, battle: Dictionary, plan_of: Dictionary, c
 					ShardrunBattle.hit_maintainer(state, battle, foe, power)
 			"mutator":
 				if int((plan_of.dealt as Dictionary).get(foe.uid, 0)) >= int(foe_trait.kill_at):
-					_kill_mutants(state, battle, foe, foe_trait, context.get("cards", []))
+					dealt += _kill_mutants(state, battle, foe, foe_trait, context.get("cards", []))
 		if foe.has("compiler"):
 			RootCompiler.check(state, battle, foe)
+	return dealt
 
 
 static func _kill_mutants(
 	state: Dictionary, battle: Dictionary, foe: Dictionary, foe_trait: Dictionary, cards: Array
-) -> void:
+) -> int:
 	var mutants: Dictionary = battle.get("mutants", {})
+	var dealt := 0
 	for id: String in cards:
 		if not mutants.has(id) or int(foe.hp) <= 0:
 			continue
 		mutants.erase(id)
 		var damage := mini(int(foe.hp), int(foe_trait.kill_damage))
 		foe.hp = int(foe.hp) - damage
+		dealt += damage
 		var text := "Your tests catch the mutant %s: it is restored, and %s takes %d." % [id, foe.name, damage]
 		Shardrun.record(state, {"kind": "hit", "foe": foe.uid, "amount": damage, "element": "none", "text": text})
 		if int(foe.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
+	return dealt
 
 
 # --- Judging a volley -------------------------------------------------------------------------------------------------

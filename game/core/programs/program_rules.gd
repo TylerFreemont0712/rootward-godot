@@ -535,8 +535,9 @@ static func resolve(
 		GuardianLanding.after_hit(battle, alive, foe)
 		var spill := damage - landed
 		if relics.overkill_flows:
-			spill = _flow(state, alive, foe, spill, bolt.element, shape)
-			dealt += (damage - landed) - spill
+			var flowed := _flow(state, alive, foe, spill, bolt.element, shape)
+			spill = int(flowed.spill)
+			dealt += int(flowed.dealt)
 		wasted += spill
 	if float(relics.wasted_to_block) > 0.0 and wasted > 0:
 		var kept := floori(wasted * float(relics.wasted_to_block))
@@ -545,7 +546,7 @@ static func resolve(
 			gathered += kept
 			var text := "The unused %d power is kept as block." % kept
 			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
-	GuardianLanding.finish(state, battle, plan, context)
+	dealt += GuardianLanding.finish(state, battle, plan, context)
 	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
 	return {
 		"dealt": dealt,
@@ -630,13 +631,14 @@ static func reprints(before: Dictionary, after: Dictionary, faster: Array) -> Ar
 ## shield, and so on. Returns what is still left once no foe stands.
 static func _flow(
 	state: Dictionary, alive: Array, from: Dictionary, spill: int, element: String, shape: Dictionary
-) -> int:
+) -> Dictionary:
 	var start := alive.find(from)
 	var step := 1
+	var dealt := 0
 	while spill > 0 and step < alive.size():
 		var next: Dictionary = alive[(start + step) % alive.size()]
 		step += 1
-		if int(next.hp) == 0:
+		if int(next.hp) == 0 or not flows_into(next):
 			continue
 		var blocked := mini(int(next.shield), spill)
 		next.shield -= blocked
@@ -644,6 +646,7 @@ static func _flow(
 		var taken := mini(spill, int(next.hp))
 		next.hp -= taken
 		spill -= taken
+		dealt += taken
 		var hit := {"kind": "hit", "foe": next.uid, "amount": taken, "element": element, "flowed": true}
 		hit.merge(shape)
 		hit.text = "The overflow runs on: %s takes %d." % [next.name, taken]
@@ -651,7 +654,15 @@ static func _flow(
 		if int(next.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": next.uid, "text": "%s breaks apart." % next.name})
 			GuardianLanding.on_defeat(state, state.battle, next)
-	return spill
+	return {"spill": spill, "dealt": dealt}
+
+
+## Whether overflow can run on into a foe: only a plain one. A foe whose trait changes how damage lands (a guardian, its
+## parts, a thick hide, a pattern ward) is passed over, so overflow never slips past its rules (docs/PHASE2.md P2-04).
+## A shifting weakness only changes elements, which overflow does not carry.
+static func flows_into(foe: Dictionary) -> bool:
+	var kind: String = (foe.get("trait", {}) as Dictionary).get("kind", "")
+	return kind in ["", "shifting-weakness"]
 
 
 ## What casting would do, worked out on a copy of the state: {cost, affordable, work, budget, timeout, speed,
