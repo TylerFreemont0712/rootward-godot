@@ -3,6 +3,8 @@
 #   bin/wasmtime            the Wasm engine the game runs player code under (ADR-0002)
 #   python/python.cwasm     CPython 3.14 for WASI, precompiled; python/lib/ its standard library, made read-only
 #   js/qjs.cwasm            QuickJS-ng for WASI, precompiled
+#   cpp/*.cwasm             every card's C++, compiled ahead of time with wasi-sdk (scripts/build-cpp.sh, ADR-0046);
+#                           wasi-sdk itself (~640 MB) stays in the cache, outside the game
 # Every download is pinned by version and SHA-256. Safe to re-run; it only redoes what is missing or stale.
 set -euo pipefail
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -16,6 +18,8 @@ QJS_VERSION="v0.17.0"
 QJS_SHA="42a732a676ec2d93488c19411e0fad283bf72658fdad746f089914b523c783b1"
 PYTHON_VERSION="3.14.7"
 PYTHON_SHA="2e064d3fb8172471d39d741348efa722349c40b96301f69968dff714999c584b"
+WASI_SDK_VERSION="34"
+WASI_SDK_SHA="b761e3a0721dbae9c09a0059e5fdb2bf917d1b4a8a7b430fb3b5aafb0984b2c4"
 
 fetch() { # url sha file
 	local url="$1" sha="$2" file="$cache/$3"
@@ -33,10 +37,17 @@ fetch "https://github.com/quickjs-ng/quickjs/releases/download/$QJS_VERSION/qjs-
 fetch "https://github.com/brettcannon/cpython-wasi-build/releases/download/v$PYTHON_VERSION/python-$PYTHON_VERSION-wasi_sdk-24.zip" \
 	"$PYTHON_SHA" "python-$PYTHON_VERSION.zip"
 
+fetch "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-$WASI_SDK_VERSION/wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux.tar.gz" \
+	"$WASI_SDK_SHA" "wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux.tar.gz"
+if [ ! -x "$cache/wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux/bin/clang++" ]; then
+	tar -xzf "$cache/wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux.tar.gz" -C "$cache"
+fi
+
 stamp="$runtime/VERSIONS"
 want="wasmtime $WASMTIME_VERSION, quickjs-ng $QJS_VERSION, cpython $PYTHON_VERSION"
 if [ -f "$stamp" ] && [ "$(cat "$stamp")" = "$want" ]; then
 	echo "sandbox runtime up to date ($want)"
+	WASI_SDK="$cache/wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux" "$root/scripts/build-cpp.sh"
 	exit 0
 fi
 
@@ -63,3 +74,4 @@ rm "$runtime/python/python.wasm"
 chmod -R a-w "$runtime/python/lib"
 echo "$want" > "$stamp"
 echo "installed $want into $runtime"
+WASI_SDK="$cache/wasi-sdk-$WASI_SDK_VERSION.0-x86_64-linux" "$root/scripts/build-cpp.sh"

@@ -11,7 +11,7 @@ extends RefCounted
 ## A diagnostic is {severity: "error" | "warning", code, message, file}. Errors make `ok` false; warnings do not.
 
 const ROOT := "res://content"
-const CODE_EXTENSIONS := {"python": "py", "javascript": "js"}
+const CODE_EXTENSIONS := {"python": "py", "javascript": "js", "cpp": "cpp"}
 
 
 static func load_shardrun(root := ROOT) -> Dictionary:

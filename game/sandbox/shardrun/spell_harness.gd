@@ -17,10 +17,10 @@ const HARNESSES := {
 const ENTRIES := {SandboxJob.PYTHON: "spell.py", SandboxJob.JAVASCRIPT: "spell.js"}
 
 
-## The name a shard's function has in `language`: snake_case in Python, camelCase in JavaScript.
+## The name a shard's function has in `language`: snake_case in Python and C++, camelCase in JavaScript.
 static func function_name(shard: Dictionary, language: String) -> String:
 	var snake: String = shard.function
-	if language == SandboxJob.PYTHON:
+	if language != SandboxJob.JAVASCRIPT:
 		return snake
 	var parts := snake.split("_")
 	var name := parts[0]
@@ -103,9 +103,16 @@ static func build_job(
 	# A program run counts its cards' loops and calls (ADR-0012); other runs never ask, so their jobs are as they were.
 	if input.get("count", false):
 		data.count = true
-	var entry: String = ENTRIES[language]
-	var files: Dictionary[String, String] = {entry: FileAccess.get_file_as_string(HARNESSES[language])}
-	var job := SandboxJob.of(language, files, entry)
+	var job: SandboxJob
+	if language == SandboxJob.CPP:
+		# C++ runs a module built ahead of time (ADR-0046): program cards and Spellforge's shards are built apart,
+		# each against its own bolts, and the input says which (`module`).
+		var files: Dictionary[String, String] = {}
+		job = SandboxJob.of(language, files, String(input.get("module", "spellforge")))
+	else:
+		var entry: String = ENTRIES[language]
+		var files: Dictionary[String, String] = {entry: FileAccess.get_file_as_string(HARNESSES[language])}
+		job = SandboxJob.of(language, files, entry)
 	if limits != null:
 		job.time_ms = limits.time_ms
 		job.wall_ms = limits.wall_ms
@@ -116,9 +123,15 @@ static func build_job(
 	return job
 
 
-## A shard as the harness takes it: its id, function name and source, and a program card's role (for hooks).
+## A shard as the harness takes it: its id, function name and source, and a program card's role (for hooks). C++ has
+## no source to send: its harness finds the built function by id, and a Mutator's mutant by its operator (`mutant`).
 static func _entry(shard: Dictionary, language: String) -> Dictionary:
-	var entry := {"id": shard.id, "name": function_name(shard, language), "source": shard.code[language]}
+	var entry := {"id": shard.id, "name": function_name(shard, language)}
+	if language == SandboxJob.CPP:
+		if shard.has("mutant"):
+			entry.mutant = int(shard.mutant)
+	else:
+		entry.source = shard.code[language]
 	if shard.has("role"):
 		entry.role = shard.role
 	return entry

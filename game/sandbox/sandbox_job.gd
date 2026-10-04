@@ -4,7 +4,13 @@ extends RefCounted
 
 const PYTHON := "python"
 const JAVASCRIPT := "javascript"
-const LANGUAGES: Array[String] = [PYTHON, JAVASCRIPT]
+## C++ is compiled ahead of time (ADR-0046): a job names the built module to run (`entry`) instead of sending source.
+const CPP := "cpp"
+const LANGUAGES: Array[String] = [PYTHON, JAVASCRIPT, CPP]
+## The languages a job sends as source; C++ runs a module built ahead of time instead.
+const SOURCE_LANGUAGES: Array[String] = [PYTHON, JAVASCRIPT]
+## How each language is named to the player.
+const NAMES := {PYTHON: "Python", JAVASCRIPT: "JavaScript", CPP: "C++"}
 
 var language: String
 ## Relative path -> contents. The program sees them under /work and nothing else of the machine.

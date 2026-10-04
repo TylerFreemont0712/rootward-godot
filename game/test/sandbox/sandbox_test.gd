@@ -68,7 +68,7 @@ func test_exit_codes() -> void:
 
 
 func test_endless_loops_time_out() -> void:
-	for language: String in SandboxJob.LANGUAGES:
+	for language: String in SandboxJob.SOURCE_LANGUAGES:
 		var source := "while True:\n    pass\n" if language == SandboxJob.PYTHON else "for (;;) {}"
 		var result := _run(language, source, "", 300)
 		assert_str(result.status).override_failure_message(str(result)).is_equal(SandboxResult.TIMEOUT)
@@ -91,7 +91,7 @@ func test_output_is_capped() -> void:
 
 ## P2-21: a program that prints past the cap and ends before the next check still fails, never passes truncated.
 func test_a_quick_program_that_prints_too_much_fails() -> void:
-	for language: String in SandboxJob.LANGUAGES:
+	for language: String in SandboxJob.SOURCE_LANGUAGES:
 		var entry := "main.py" if language == SandboxJob.PYTHON else "main.js"
 		var source := "print('x' * 6000)\n" if language == SandboxJob.PYTHON else "console.log('x'.repeat(6000));\n"
 		var job := SandboxJob.of(language, {entry: source}, entry)

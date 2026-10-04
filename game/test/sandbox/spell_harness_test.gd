@@ -150,3 +150,35 @@ func test_a_counted_run_measures_loops_and_recursion() -> void:
 		for line: String in step.loops:
 			loops[line] = int(step.loops[line])
 		assert_dict(loops).override_failure_message(language).is_equal(expected[language])
+
+
+## ADR-0046: a C++ program, built ahead of time, lands exactly the bolts the other languages land, and counts the same
+## recursion.
+func test_cpp_runs_a_program_as_python_and_javascript_do() -> void:
+	assert_bool(Sandbox.is_available(SandboxJob.CPP)).override_failure_message("run scripts/build-cpp.sh").is_true()
+	var cards: Dictionary = ContentLoader.load_shardrun().catalog.programs.cards
+	var spells: Array[Dictionary] = [{"id": "p", "shards": [cards.amplify, cards.divide, cards["knapsack-strike"]]}]
+	var foe := {"name": "A", "hp": 12, "max": 12, "shield": 0, "weak": [], "resist": []}
+	var input := {
+		"bolts": [{"power": 3, "element": "none"}, {"power": 4, "element": "fire"}, {"power": 9, "element": "none"}],
+		"battle": {"turn": 1, "me": {"hp": 30, "max": 30, "block": 0, "mana": 5}, "foes": [foe], "imports": ["math"]},
+		"limit": 64,
+		"trace_limit": 8,
+		"count": true,
+		"module": "program",
+	}
+	var expected: Dictionary = SpellHarness.run(SandboxJob.JAVASCRIPT, spells, input).p
+	for language: String in [SandboxJob.PYTHON, SandboxJob.CPP]:
+		var run: Dictionary = SpellHarness.run(language, spells, input).p
+		assert_bool(run.ok).override_failure_message("%s: %s" % [language, run.get("reason")]).is_true()
+		assert_str(JsJson.stringify(run.bolts)).is_equal(JsJson.stringify(expected.bolts))
+		assert_int(int(run.trace[1].calls)).is_equal(int(expected.trace[1].calls))
+
+
+func test_a_cpp_card_that_was_never_built_says_so() -> void:
+	var made_up := {"id": "not-a-card", "function": "not_a_card", "code": {"cpp": "Bolts not_a_card();"}}
+	var spells: Array[Dictionary] = [{"id": "x", "shards": [made_up]}]
+	var input := {"bolts": [], "battle": {"turn": 1, "foes": []}, "limit": 8, "trace_limit": 1, "module": "program"}
+	var run: Dictionary = SpellHarness.run(SandboxJob.CPP, spells, input).x
+	assert_bool(run.ok).is_false()
+	assert_str(String(run.reason)).contains("scripts/build-cpp.sh")

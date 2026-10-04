@@ -1,6 +1,6 @@
 class_name Sandbox
 extends RefCounted
-## Runs player code (Python or JavaScript) as WebAssembly under wasmtime, in a process of its own (ADR-0002).
+## Runs player code (Python, JavaScript or C++) as WebAssembly under wasmtime, in a process of its own (ADR-0002).
 ##
 ## A job's files go to a fresh folder that the program sees as /work, beside a launcher (sandbox/launch/) and its
 ## standard input. The program sees nothing else: no other files, no network (WASI preview 1 cannot open sockets),
@@ -43,7 +43,14 @@ static func is_available(language: String) -> bool:
 			return FileAccess.file_exists(runtime_dir().path_join("python/python.cwasm"))
 		SandboxJob.JAVASCRIPT:
 			return FileAccess.file_exists(runtime_dir().path_join("js/qjs.cwasm"))
+		SandboxJob.CPP:
+			return FileAccess.file_exists(cpp_module("program")) and FileAccess.file_exists(cpp_module("spellforge"))
 	return false
+
+
+## A C++ module the build made (scripts/build-cpp.sh): "program" for program cards, "spellforge" for shards.
+static func cpp_module(module: String) -> String:
+	return runtime_dir().path_join("cpp/%s.cwasm" % module)
 
 
 static func run(job: SandboxJob) -> SandboxResult:
@@ -97,6 +104,10 @@ static func _arguments(job: SandboxJob, dir: String) -> PackedStringArray:
 			args.append_array([runtime.path_join("js/qjs.cwasm"), "--std", "--script"])
 			args.append_array(["--memory-limit", str(memory_kb), "--stack-size", str(JS_STACK_KB)])
 			args.append_array(["/work/.rootward/launch.js", job.entry])
+		SandboxJob.CPP:
+			# LEARN: a precompiled module only runs under the settings it was compiled with, so the build compiles it
+			# with exceptions on too (C++ `throw` is Wasm's exception-handling proposal).
+			args.append_array(["-W", "exceptions=y", cpp_module(job.entry)])
 	return args
 
 
@@ -243,14 +254,17 @@ static func _write_job(job: SandboxJob, dir: String) -> String:
 		DirAccess.make_dir_recursive_absolute(full.get_base_dir())
 		if not _write_text(full, job.files[path]):
 			return "could not write %s" % path
+	if not _write_text(dir.path_join(".rootward/stdin"), job.stdin):
+		return "could not write standard input"
+	if job.language == SandboxJob.CPP:
+		# A built module, not a file of the job: it reads its standard input from .rootward/stdin itself.
+		return ""
 	if not job.files.has(job.entry):
 		return "the entry file %s is not among the job's files" % job.entry
 	var launcher := FileAccess.get_file_as_string(LAUNCHERS[job.language])
 	var launcher_name: String = (LAUNCHERS[job.language] as String).get_file()
 	if launcher == "" or not _write_text(dir.path_join(".rootward").path_join(launcher_name), launcher):
 		return "could not write the launcher"
-	if not _write_text(dir.path_join(".rootward/stdin"), job.stdin):
-		return "could not write standard input"
 	return ""
 
 

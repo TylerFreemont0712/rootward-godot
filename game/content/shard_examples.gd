@@ -53,6 +53,8 @@ static func _run(language: String, noun: String, shards: Array, same: Callable, 
 			)
 			owners[id] = [shard, example]
 	var input := {"bolts": [], "battle": DEFAULT_BATTLE, "limit": EXAMPLE_BOLT_LIMIT, "trace_limit": 1, "count": count}
+	# C++ runs the module built for these (ADR-0046): program cards are counted, Spellforge's shards never are.
+	input.module = "program" if count else "spellforge"
 	var limits := SandboxJob.new()
 	limits.time_ms = 20000
 	limits.wall_ms = 60000
@@ -110,6 +112,7 @@ static func mutant_census(catalog: Dictionary, language: String) -> Dictionary:
 static func _mutant_spells(card: Dictionary, language: String, code: String, op: int) -> Array[Dictionary]:
 	var changed := card.duplicate(true)
 	changed.code[language] = code
+	changed.mutant = op
 	var spells: Array[Dictionary] = []
 	for i in (card.examples as Array).size():
 		var example: Dictionary = card.examples[i]
@@ -130,7 +133,14 @@ static func _mutant_spells(card: Dictionary, language: String, code: String, op:
 ## A job with a short leash: a mutant that loops forever times out quickly (the harness then runs each spell alone, so
 ## the timeout lands on that mutant) instead of holding the census up.
 static func _run_quick(language: String, spells: Array[Dictionary]) -> Dictionary:
-	var input := {"bolts": [], "battle": DEFAULT_BATTLE, "limit": EXAMPLE_BOLT_LIMIT, "trace_limit": 1, "count": true}
+	var input := {
+		"bolts": [],
+		"battle": DEFAULT_BATTLE,
+		"limit": EXAMPLE_BOLT_LIMIT,
+		"trace_limit": 1,
+		"count": true,
+		"module": "program"
+	}
 	var limits := SandboxJob.new()
 	limits.time_ms = 1500
 	limits.wall_ms = 4000

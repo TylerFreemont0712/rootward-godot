@@ -104,6 +104,8 @@ func _run_batch(language: String, spells: Array[Dictionary], input: Dictionary, 
 					# The Mutator's edit (ADR-0026): the card runs as changed, so its preview is the mutant's truth.
 					shard = shard.duplicate(true)
 					shard.code[language] = ProgramGuardians.code_of(shard, language, {"mutants": mutants})
+					# C++ runs the mutant built ahead of time for this operator (ADR-0046); `op` is the one applied.
+					shard.mutant = int((mutants[shard_id] as Dictionary).get("op", 0))
 				shards.append(shard)
 		if shards.size() != steps.size():
 			runs[spell.id] = _failure("one of its shards no longer exists")
@@ -166,6 +168,7 @@ func input_for(state: Dictionary) -> Dictionary:
 			"trace_limit": int(balance.trace_bolts),
 			"count": true,
 			"hooks": ProgramRelics.modifiers(state, catalog).hooks,
+			"module": "program",
 		}
 		# The guardians' edits to what runs (ADR-0026), in the input so they are part of the run's key: the step an
 		# Unreachable's `return` cuts at, and the Mutator's mutants.
