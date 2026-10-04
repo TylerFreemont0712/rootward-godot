@@ -87,13 +87,13 @@ Care points:
 
 What changes for the player: the Academy shows only its "in preparation" panel until track D. Nothing else changes.
 
-### A2. Retire what nobody plays (proposed, needs the player's yes)
+### A2. Keep both modes, and fix Spellforge
 
-- **Card Shardrun** (the deck playstyle) can only be continued, never started. The ROADMAP recommended retiring it
-  once no run of it is underway (decision 9). Retiring it removes `"deck"` from `Game.PLAYSTYLES`, its session, its
-  screen branches and the "Card Shardrun" choice, and keeps its fixtures in git history.
-- **Spellforge** stays: it is tested against reference results and was something the player loved (AGENT.md).
-- The untracked probes `game/probe_glb.gd`, `.uid` and `game/probe_head.gd.uid` get deleted.
+The player, 2026-10-04: *"Let's also not get rid of either Spellforge or Shardrun, they are two different modes for
+two different reasons … just fix any obvious bugs from spellforge. Currently it hasn't been worked on in a while, so
+fixing the UI for the map would be pretty important."* So nothing is retired (the Card Shardrun stays too), AGENT.md
+no longer calls either mode the main one, and track A gains a Spellforge pass: its obvious bugs, the map's interface
+first. The untracked probe files were deleted with A1.
 
 ### A3. Fix the high-priority bugs (section 6)
 
@@ -294,7 +294,7 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
    button until D replaces it.
 2. **The old Verifier save** (`verifier-course.json`, your stars). Recommended: leave the file on disk and stop
    reading it. Or delete it as part of the removal.
-3. **Retire the Card Shardrun?** Recommended: yes (A2).
+3. ~~Retire the Card Shardrun?~~ Answered 2026-10-04: no mode is removed (A2).
 4. **The order**: A, B with C's spike, then D (recommended), or A then D first?
 5. **Kurogane's name and look.** You called him "sec ops". Keep "Kurogane, the Ward Duelist" with security in the
    cards (the brief's default), or rename the class toward the theme ("Sentinel", "Warden", "SecOps")?

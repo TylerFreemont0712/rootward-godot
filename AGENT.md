@@ -27,12 +27,14 @@ Then say in one short message what you are picking up, ask any blocking question
   state and send commands; they never decide outcomes.
 - **Sandbox invariants.** Player code never runs outside the sandbox, which has no filesystem beyond what a job is
   given, no network, a time limit and a memory cap. No telemetry.
-- **Protect what the player loves.** The Shardrun is the main mode, now as programs (ADR-0012): a paradigm drafted,
-  cards that are real algorithms played in order into one Program, its measured work racing the foes' tempo. Its rules
-  are new and have their own tests. Spellforge (the spellbook) and the card run it grew from are tested against
-  reference results (`game/test/fixtures/`) that are the game's own: a rule changed on purpose re-records them from
-  this engine (`ROOTWARD_GOLDEN=update`) and the diff is reviewed with the change. Experiments go behind an option or
-  their own playstyle.
+- **Protect what the player loves.** Two modes, each kept for its own reason, and neither is the "main" one:
+  the **Shardrun** (programs, ADR-0012: a paradigm drafted, cards that are real algorithms played in order into one
+  Program, its measured work racing the foes' tempo) and **Spellforge** (the spellbook: spells built from shards and
+  cast as you choose). The card run the Shardrun grew from stays playable for a run underway. The Shardrun's rules
+  have their own tests; Spellforge and the card run are tested against reference results (`game/test/fixtures/`) that
+  are the game's own: a rule changed on purpose re-records them from this engine (`ROOTWARD_GOLDEN=update`) and the
+  diff is reviewed with the change. Fix and polish both; remove neither without the player's word. Experiments go
+  behind an option or their own playstyle.
 - **Small slices.** Every step leaves tests green and the game launchable. Commit after each meaningful step with a
   conventional message. Never push unless asked.
 - **Strict quality.** Typed GDScript (untyped declarations are errors), small files, clear names, tests first for

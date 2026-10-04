@@ -355,7 +355,7 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 
 - [x] The Verifier course removed from the game; the Academy starts fresh (ADR-0045). Old settings on the Verifier
       open the Shardrun; a player's old course save is left on disk, unread. The leftover probe scripts deleted.
-- [ ] Card Shardrun retired (waiting for the player's yes).
+- [x] Card Shardrun kept: no mode is removed (the player, 2026-10-04).
 - [x] The preview is the cast: both call `ProgramRules.play`, the preview on a copy; faster foes act and relics add
       their block in the preview too, and it warns when a faster foe ends the run first (P2-01, P2-02).
 - [x] Landing totals: a forced Thunk's shield counts once (P2-03); overflow passes over any foe with landing rules of
@@ -364,6 +364,9 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [x] Dead code after the Unreachable's `return` makes no cards, spends no global, earns no block per card and runs
       no Mutator tests (`ProgramRules.ran_cards`, P2-06); bolts keep their aim when a faster foe summons or swaps
       before the program lands (`ProgramRules.reaim`, P2-08).
-- [ ] The other high-priority bugs, each with a failing test first: keys under menus (P2-11),
-      saves (P2-12, P2-13, P2-15), the sandbox output limit (P2-21).
+- [x] The fight's and the map's keys wait while a menu or panel covers them (P2-11).
+- [ ] The other high-priority bugs, each with a failing test first: saves (P2-12, P2-13, P2-15), the sandbox output
+      limit (P2-21).
+- [ ] Spellforge's obvious bugs, its map's interface first (the player, 2026-10-04: both modes stay, each for its
+      own reason).
 - [ ] The interface through a translation catalogue; a Japanese profile plays a run in Japanese (P2-24).
