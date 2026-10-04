@@ -89,6 +89,20 @@ func test_output_is_capped() -> void:
 	assert_int(result.stdout.length()).is_less_equal(256 * 1024)
 
 
+## P2-21: a program that prints past the cap and ends before the next check still fails, never passes truncated.
+func test_a_quick_program_that_prints_too_much_fails() -> void:
+	for language: String in SandboxJob.LANGUAGES:
+		var entry := "main.py" if language == SandboxJob.PYTHON else "main.js"
+		var source := "print('x' * 6000)\n" if language == SandboxJob.PYTHON else "console.log('x'.repeat(6000));\n"
+		var job := SandboxJob.of(language, {entry: source}, entry)
+		job.output_kb = 1
+		var result := Sandbox.run(job)
+		assert_str(result.status).override_failure_message("%s: %s" % [language, result]).is_equal(
+			SandboxResult.RUNTIME_ERROR
+		)
+		assert_str(result.message).contains("printed more than")
+
+
 func test_no_files_outside_the_job() -> void:
 	var py := _run(SandboxJob.PYTHON, "open('/etc/passwd').read()\n")
 	assert_str(py.status).is_equal(SandboxResult.RUNTIME_ERROR)

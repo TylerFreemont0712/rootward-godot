@@ -811,3 +811,9 @@ cast never landed (docs/PHASE2.md P2-01, P2-02). Now both call `play`, the previ
 `rehearsal` set (no win or loss is declared on the copy). A rule added to `play` reaches both at once. The same
 lesson as "don't repeat yourself", but with a sharper reason: here two copies of a rule are a bug waiting to happen,
 because the game promises they agree.
+
+## Check a limit before you leave the loop (`game/sandbox/sandbox.gd`, `run`)
+The sandbox polls a running program: drain its pipes, then stop if it has exited, else check the output cap and the
+clock. A program that printed 6 KB against a 1 KB cap and exited within one poll left through "it has exited" before
+the cap was checked, and came back as a success with its output cut. The order of checks in a polling loop is part
+of its meaning: every check that must hold for the final state goes before the exit.

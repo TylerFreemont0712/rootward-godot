@@ -115,11 +115,14 @@ static func _collect(process: Dictionary, job: SandboxJob, result: SandboxResult
 		# reading only stdout until the end could deadlock on a program that writes a lot to stderr.
 		out.append_array(_drain(out_pipe))
 		err.append_array(_drain(err_pipe))
-		if not running:
-			break
+		# LEARN: the cap is checked before the exit: a quick program can print past it and end between two polls, and
+		# leaving first would hand back its output cut short as a success (docs/PHASE2.md P2-21).
 		if out.size() > cap or err.size() > cap:
 			killed_for = "output"
-			OS.kill(pid)
+			if running:
+				OS.kill(pid)
+			break
+		if not running:
 			break
 		if Time.get_ticks_msec() - started > job.wall_ms:
 			killed_for = "wall"
