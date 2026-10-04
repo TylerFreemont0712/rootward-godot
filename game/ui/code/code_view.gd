@@ -203,6 +203,8 @@ func _code() -> Control:
 		gutter.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		var text := RichTextLabel.new()
 		text.bbcode_enabled = true
+		# Code is never translated (Text, ADR-0047).
+		text.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 		text.add_theme_font_override("normal_font", UiTheme.code_font())
 		text.fit_content = true
 		text.scroll_active = false

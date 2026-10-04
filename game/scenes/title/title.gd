@@ -391,7 +391,7 @@ func _open_profiles() -> void:
 func _set_locale(locale: String) -> void:
 	Game.profile.preferred_language = locale
 	Game.profiles.save_profile(Game.profile)
-	TranslationServer.set_locale(locale)
+	Text.setup(locale)
 	_build(true)
 
 

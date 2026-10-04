@@ -97,8 +97,8 @@ static func comment_lines(text: String, language: String, columns: int) -> Packe
 	var mark := CodeLanguage.comment(language) + " "
 	var lines: PackedStringArray = []
 	var line := ""
-	for word in text.split(" ", false):
-		if line != "" and mark.length() + line.length() + 1 + word.length() > columns:
+	for word in _words(text, columns - mark.length()):
+		if line != "" and mark.length() + _width(line) + 1 + _width(word) > columns:
 			lines.append(mark + line)
 			line = word
 		else:
@@ -106,6 +106,33 @@ static func comment_lines(text: String, language: String, columns: int) -> Packe
 	if line != "":
 		lines.append(mark + line)
 	return lines
+
+
+## The pieces a comment wraps at: words, and a run with no spaces (Japanese) cut into pieces that fit `room` columns,
+## a full-width character taking two.
+static func _words(text: String, room: int) -> PackedStringArray:
+	var out: PackedStringArray = []
+	for word in text.split(" ", false):
+		if _width(word) <= room:
+			out.append(word)
+			continue
+		var piece := ""
+		for c in word:
+			if _width(piece + c) > room:
+				out.append(piece)
+				piece = ""
+			piece += c
+		if piece != "":
+			out.append(piece)
+	return out
+
+
+## Columns a string takes in a monospaced font: two for a full-width (CJK) character, one for any other.
+static func _width(text: String) -> int:
+	var columns := 0
+	for c in text:
+		columns += 2 if c.unicode_at(0) >= 0x2E80 else 1
+	return columns
 
 
 ## A card's code for a narrow box: comment lines longer than `columns` rewrapped under their own indentation and mark,

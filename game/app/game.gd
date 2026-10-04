@@ -79,7 +79,7 @@ static func select_profile(id: String, remember := true) -> bool:
 	var overrides: Dictionary = profile.get("settings", {})
 	Settings.language = String(overrides.get("language", SandboxJob.PYTHON))
 	Settings.difficulty = String(overrides.get("difficulty", "beginner"))
-	TranslationServer.set_locale(String(profile.get("preferred_language", "en")))
+	Text.setup(String(profile.get("preferred_language", "en")))
 	_load_sessions(
 		diagnostics.all(func(d: Dictionary) -> bool: return d.severity != "error"), SaveStore.new(profiles.run_root(id))
 	)

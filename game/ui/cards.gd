@@ -55,6 +55,8 @@ static func code(item: Dictionary, language: String, max_lines := 0) -> Control:
 		painted.append("[color=#6f5e46]… %d more lines[/color]" % (lines.size() - max_lines))
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
+	# Code is never translated (Text, ADR-0047).
+	rich.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	rich.add_theme_font_override("normal_font", UiTheme.code_font())
 	rich.fit_content = true
 	rich.scroll_active = false
@@ -119,6 +121,8 @@ static func comment(text: String, language: String, columns: int) -> RichTextLab
 		lines.append(line.replace("[", "[lb]"))
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
+	# Code is never translated (Text, ADR-0047).
+	rich.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	rich.add_theme_font_override("normal_font", UiTheme.code_font())
 	rich.fit_content = true
 	rich.scroll_active = false

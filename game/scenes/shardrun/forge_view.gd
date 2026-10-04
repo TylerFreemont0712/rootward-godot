@@ -113,6 +113,8 @@ static func _code(diff: Array[Dictionary], language: String) -> Control:
 				painted.append("  " + CodeColors.bbcode(String(line.text), language))
 	var rich := RichTextLabel.new()
 	rich.bbcode_enabled = true
+	# Code is never translated (Text, ADR-0047).
+	rich.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	rich.add_theme_font_override("normal_font", UiTheme.code_font())
 	rich.fit_content = true
 	rich.scroll_active = false

@@ -1,0 +1,9 @@
+// The fight's own sentences (ADR-0047): what the rules write into a run's log, and the refusals they give, keyed by
+// the English format exactly as the rules write it (%s a name or word, %d a whole number). Text.sentence matches a
+// logged line against these and fills the Japanese with the same values, the names in it translated too. When the
+// Japanese needs the values in another order, number them: {1} is the first %s or %d of the English, {2} the second.
+[
+  {"en": "%s takes %d.", "to": "%sに%dダメージ。"},
+  {"en": "%s breaks apart.", "to": "%sはくだけ散った。"},
+  {"en": "%s moves first: %d ops is faster than your %d.", "to": "{1}が先に動いた！ {2} opsは、きみの{3}より速い。"}
+]
