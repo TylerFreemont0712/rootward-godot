@@ -44,6 +44,29 @@ static func modifiers(state: Dictionary, catalog: Dictionary) -> Dictionary:
 		"card_cost": {},
 		"hooks": [],
 		"globals": [],
+		"kill_initiative_mana": 0,
+		"kill_initiative_max": 0,
+		"small_program_work": [],
+		"fight_imports": [],
+		"full_spread_power": 0,
+		"work_power": [],
+		"source_power": [],
+		"max_bolts": 0,
+		"prune_not_timeout": false,
+		"timeout_integrity": 0,
+		"table": false,
+		"table_from": 3,
+		"table_divisor": 4,
+		"exact_kill_factor": 1,
+		"exact_kill_block": 0,
+		"index": false,
+		"index_size": 8,
+		"index_seed": 1,
+		"weak_flat_bonus": 0,
+		"sorted_strike_power": 0,
+		"recurse_depth": 0,
+		"rejoin_power": 0,
+		"pivot_factor": 1.0,
 	}
 	for relic_id: String in state.get("relics", []):
 		for effect: Dictionary in (catalog.relics.get(relic_id, {}) as Dictionary).get("effects", []):
@@ -56,6 +79,46 @@ static func modifiers(state: Dictionary, catalog: Dictionary) -> Dictionary:
 
 static func _apply(m: Dictionary, effect: Dictionary, source := "") -> void:
 	match effect.kind:
+		"kill-initiative-mana":
+			m.kill_initiative_mana += int(effect.amount)
+			m.kill_initiative_max += int(effect.max)
+		"small-program-work":
+			(m.small_program_work as Array).append(effect)
+		"fight-import":
+			(m.fight_imports as Array).append(effect.module)
+		"full-spread-power", "weak-flat-bonus", "sorted-strike-power", "rejoin-power":
+			m[String(effect.kind).replace("-", "_")] += int(effect.add)
+		"work-power", "source-power":
+			(m[String(effect.kind).replace("-", "_")] as Array).append(effect)
+		"max-bolts":
+			m.max_bolts = maxi(int(m.max_bolts), int(effect.count))
+		"prune-not-timeout":
+			m.prune_not_timeout = true
+		"timeout-integrity":
+			m.timeout_integrity += int(effect.amount)
+		"table":
+			m.table = true
+			m.table_from = int(effect.from)
+			m.table_divisor = int(effect.divisor)
+		"table-from":
+			m.table_from = int(effect.turn)
+		"table-divisor":
+			m.table_divisor = int(effect.divisor)
+		"exact-kill-table":
+			m.exact_kill_factor = int(effect.factor)
+			m.exact_kill_block += int(effect.block)
+		"index":
+			m.index = true
+			m.index_size = int(effect.size)
+			m.index_seed = int(effect.seed)
+		"index-size":
+			m.index_size = int(effect.size)
+		"index-seed":
+			m.index_seed = int(effect.count)
+		"recurse-depth":
+			m.recurse_depth = maxi(int(m.recurse_depth), int(effect.depth))
+		"pivot-mark":
+			m.pivot_factor *= float(effect.factor)
 		"seed-bolts":
 			(m.seed_bolts as Array).append({"count": int(effect.count), "power": int(effect.power)})
 		"seed-power", "first-turn-mana", "element-power", "sorted-landing", "block-per-card", "kill-heal":
@@ -106,6 +169,16 @@ static func seed(base: Array, state: Dictionary, catalog: Dictionary) -> Array:
 	for extra: Dictionary in m.seed_bolts:
 		for i in int(extra.count):
 			bolts.append({"power": int(extra.power) + int(m.seed_power), "element": "none"})
+	var battle: Dictionary = state.get("battle", {})
+	var rows: Array = battle.get("dp", [])
+	if m.table and int(battle.get("turn", 1)) >= int(m.table_from) and not rows.is_empty():
+		var previous := int(rows.back())
+		var before := int(rows[-2]) if rows.size() >= 2 else 0
+		bolts.append({"power": (previous + before) / int(m.table_divisor), "element": "none"})
+	if m.index:
+		var bank: Array = battle.get("index", [])
+		for i in mini(int(m.index_seed), bank.size()):
+			bolts.append((bank[bank.size() - 1 - i] as Dictionary).duplicate())
 	return bolts
 
 
@@ -223,9 +296,15 @@ static func after_cast(state: Dictionary, battle: Dictionary, card_ids: Array, k
 
 ## A fight begins: a relic's extra mana on the first turn.
 static func on_battle_start(state: Dictionary, battle: Dictionary, catalog: Dictionary) -> void:
-	var extra := int(modifiers(state, catalog).first_turn_mana)
+	var m := modifiers(state, catalog)
+	var extra := int(m.first_turn_mana)
 	if extra > 0:
 		battle.mana += extra
+	for module: String in m.fight_imports:
+		for card: Dictionary in catalog.shards.values():
+			if card.get("role") == "import" and card.get("module") == module:
+				(battle.imports as Array).append(card.id)
+				break
 
 
 static func dict_with(item: Dictionary, key: String, value: Variant) -> Dictionary:

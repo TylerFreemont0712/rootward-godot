@@ -42,6 +42,7 @@ var _ops: Label
 var _race: RaceBar
 var _meter: VolleyMeter
 var _footer: Label
+var _memory: ProgramMemoryView
 var _lines: Array[Dictionary] = []
 var _hurry := false
 var _drawn := false
@@ -98,7 +99,8 @@ func _build() -> void:
 	_expand.add_theme_font_size_override("font_size", 13)
 	_show_expand()
 	var header := Ui.hbox([_title, school, Ui.spacer(), _speed, _ops, _expand], 10)
-	add_child(Ui.vbox([header, _meter, _race, _scroll, _footer], 6))
+	_memory = ProgramMemoryView.new()
+	add_child(Ui.vbox([header, _meter, _memory, _race, _scroll, _footer], 6))
 
 
 ## Stretches the panel upward over the stage, or sets it back. It needs to be a full-rectangle child of a plain Control
@@ -137,6 +139,7 @@ func _show_expand() -> void:
 
 ## Draws the Program as it stands: its code (new lines written in), the race, and the preview when it has one.
 func show_program(state: Dictionary, view: Dictionary) -> void:
+	_memory.show_memory(state, session.catalog)
 	var spell: Dictionary = (state.spells as Array)[0]
 	var cards: Array = spell.shards
 	var fresh := view if _for(view, cards) else {}
@@ -194,6 +197,8 @@ static func _for(view: Dictionary, cards: Array) -> bool:
 		return false
 	if view.has("misfire"):
 		return true
+	if view.has("card_ids"):
+		return view.card_ids == cards
 	var steps: Array = view.get("steps", [])
 	if steps.size() != cards.size():
 		return false
@@ -383,7 +388,7 @@ func play_cast(view: Dictionary, speed: String, construction := false) -> void:
 				Sound.play("sfx-glyph", 0.35, 0.9 + 0.06 * slot)
 				await _wait(pace * 0.5)
 				# Each invocation does measured work, including a duplicate card calling this function again.
-				if not _hurry and not _aborted:
+				if not _hurry and not _aborted and not step.get("pruned", false):
 					await _walk(String(line.card), step, line_time, float(BUDGET[speed]))
 				await _wait(maxf(0.0, _active_duration - _active_elapsed))
 				if _aborted:

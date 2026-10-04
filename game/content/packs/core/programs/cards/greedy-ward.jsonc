@@ -5,6 +5,7 @@
   "rarity": "common",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "heap",
   "role": "guard",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",

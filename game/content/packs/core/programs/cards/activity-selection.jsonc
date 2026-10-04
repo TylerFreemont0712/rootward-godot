@@ -1,0 +1,173 @@
+{
+  "paradigm": "greedy",
+  "focus": "sprint",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n)",
+  "icon": "shardrun/card-round-robin",
+  "id": "activity-selection",
+  "name": "Activity Selection",
+  "summary": "Sorts foes by intent tempo and sends the strongest bolts until each falls. Quick attackers come first.",
+  "function": "activity_selection",
+  "keywords": [],
+  "forge": {
+    "into": "activity-selection-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "earliest intent first",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 9,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 10
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 8,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "damage breaks tempo ties",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 2,
+              "hits": 1,
+              "tempo": 10
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 8,
+              "hits": 1,
+              "tempo": 10
+            }
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

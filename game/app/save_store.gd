@@ -71,6 +71,7 @@ func load_run(playstyle: String) -> Dictionary:
 	var parsed: Variant = JsJson.parse(FileAccess.get_file_as_string(path))
 	var reason := unusable(parsed)
 	if reason == "":
+		ShardrunSchemas.program_state_defaults(parsed)
 		return parsed
 	var aside := path.get_basename() + ".unreadable-%d.json" % int(Time.get_unix_time_from_system())
 	DirAccess.rename_absolute(path, aside)

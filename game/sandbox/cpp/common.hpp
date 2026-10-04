@@ -26,6 +26,18 @@ void call(const char* name);
 #define ROOTWARD_LOOP() ::rootward::loop(__LINE__)
 #define ROOTWARD_CALL(name) ::rootward::call(name)
 
+struct Intent {
+	std::string kind;
+	int damage = 0;
+	int hits = 1;
+	int tempo = 0;
+};
+
+struct IndexBolt {
+	int power = 0;
+	std::string element = "none";
+};
+
 // A foe as a program sees it: what it has left and what it is weak to.
 struct Foe {
 	std::string name;
@@ -34,6 +46,8 @@ struct Foe {
 	int shield = 0;
 	std::vector<std::string> weak;
 	std::vector<std::string> resist;
+	Intent intent;
+	int hits = 0;
 };
 
 // You, the Maintainer.
@@ -50,4 +64,7 @@ struct Battle {
 	std::vector<Foe> foes;                 // the living foes, front first
 	std::vector<std::string> imports;      // a program run's imports in force (`import math` is "math")
 	std::map<std::string, int> globals;    // a program run's globals (`global total`)
+	std::vector<IndexBolt> index;
+	std::vector<int> dp;
+	std::vector<int> last_volley;
 };

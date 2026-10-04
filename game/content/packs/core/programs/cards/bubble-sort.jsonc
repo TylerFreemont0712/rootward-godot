@@ -4,6 +4,7 @@
   "rarity": "common",
   "cost": 0,
   "paradigm": "brute-force",
+  "focus": "heavy",
   "role": "order",
   "complexity": "quadratic",
   "makes": "sorted",

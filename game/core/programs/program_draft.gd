@@ -25,8 +25,10 @@ static func open(state: Dictionary, catalog: Dictionary) -> void:
 	state.status = "draft"
 	for spell: Dictionary in state.spells:
 		spell.name = "%s.%s" % [spell.name, EXTENSIONS.get(state.language, "py")]
+	ShardrunSchemas.program_state_defaults(state)
 	state.paradigm = ""
-	state.draft = {"offers": offers, "round": 0, "rounds": int(draft.rounds), "pack": []}
+	state.focus = ""
+	state.draft = {"offers": offers, "round": 0, "rounds": int(draft.rounds), "pack": [], "focus_offers": []}
 	var text := "Before the descent, choose how your program thinks."
 	Shardrun.record(state, {"kind": "note", "text": text})
 
@@ -54,6 +56,51 @@ static func pick_paradigm(next: Dictionary, command: Dictionary, catalog: Dictio
 	)
 	var text := "%s: %s join your deck." % [paradigm.name, " and ".join(names)]
 	Shardrun.record(next, {"kind": "reward", "text": text})
+	if not draft.has("focus_offers"):
+		_next_pack(next, catalog)
+		return {}
+	if paradigm.has("swap"):
+		var swap: Dictionary = paradigm.swap
+		var at := (next.deck as Array).find(swap.out)
+		if at >= 0:
+			next.deck[at] = swap["in"]
+	if paradigm.has("law"):
+		Shardrun.gain_relic(next, catalog.relics[paradigm.law], catalog)
+	var focuses: Array = paradigm.get("focuses", [])
+	if focuses.is_empty():
+		_next_pack(next, catalog)
+	else:
+		draft.focus_offers = focuses.map(func(focus: Dictionary) -> String: return focus.id)
+	return {}
+
+
+static func focus_of(catalog: Dictionary, paradigm_id: String, focus_id: String) -> Dictionary:
+	for focus: Dictionary in paradigm_of(catalog, paradigm_id).get("focuses", []):
+		if focus.id == focus_id:
+			return focus
+	return {}
+
+
+## The second choice is explicit: all the paradigm's focuses, before any draft pack opens.
+static func pick_focus(next: Dictionary, command: Dictionary, catalog: Dictionary) -> Dictionary:
+	var draft: Dictionary = next.get("draft", {})
+	if (
+		next.status != "draft"
+		or String(next.get("paradigm", "")) == ""
+		or not (draft.get("pack", []) as Array).is_empty()
+		or String(next.get("focus", "")) != ""
+	):
+		return {"code": "not-choosing-focus", "message": "There is no focus to choose now."}
+	var id := String(command.get("focus_id", ""))
+	if not id in draft.get("focus_offers", []):
+		return {"code": "not-offered", "message": "That focus was not offered."}
+	var focus := focus_of(catalog, next.paradigm, id)
+	next.focus = id
+	(next.deck as Array).append(focus.signature)
+	Shardrun.gain_relic(next, catalog.relics[focus.relic], catalog)
+	draft.focus_offers = []
+	var name := String((catalog.shards.get(focus.signature, {}) as Dictionary).get("name", focus.signature))
+	Shardrun.record(next, {"kind": "reward", "text": "%s: %s joins your deck." % [focus.name, name]})
 	_next_pack(next, catalog)
 	return {}
 
@@ -99,7 +146,10 @@ static func pack(state: Dictionary, round: int, catalog: Dictionary) -> Array:
 	for id in candidates:
 		var card: Dictionary = catalog.shards[id]
 		var weight := float(RARITY_WEIGHTS.get(card.rarity, 1.0))
-		weights.append(weight * (PARADIGM_WEIGHT if id in own else 1.0))
+		weight *= float(config.draft.get("paradigm_weight", PARADIGM_WEIGHT)) if id in own else 1.0
+		if String(state.get("focus", "")) != "" and String(card.get("focus", "")) == String(state.focus):
+			weight *= float(config.draft.get("focus_weight", 3.0))
+		weights.append(weight)
 	var rng := Rng.create(state.seed, "draft:%d" % round)
 	var chosen: Array = []
 	while chosen.size() < int(config.draft.pack_size) and chosen.size() < candidates.size():

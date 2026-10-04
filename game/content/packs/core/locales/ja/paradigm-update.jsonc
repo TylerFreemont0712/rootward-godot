@@ -1,0 +1,330 @@
+[
+  {
+    "en": "Sprint",
+    "to": "スプリント"
+  },
+  {
+    "en": "A program of three cards or fewer counts 25% less work.",
+    "to": "カードが3枚以下のプログラムは、仕事量が25%少なくなる。"
+  },
+  {
+    "en": "Tiny cheap programs every turn; kill chains for mana.",
+    "to": "短く安いプログラムで先手を取り、連続で倒してマナを得よう。"
+  },
+  {
+    "en": "Short-circuiting, break, streaming.",
+    "to": "短絡評価、break、ストリーミング。"
+  },
+  {
+    "en": "import heapq is in force from the first turn of every fight, free.",
+    "to": "戦闘の最初から、無料で import heapq が使える。"
+  },
+  {
+    "en": "A few huge bolts, strongest first.",
+    "to": "強いボルトを少数作り、大きい順に使おう。"
+  },
+  {
+    "en": "Heaps, priority queues, heapify in O(n).",
+    "to": "ヒープ、優先キュー、O(n) のヒープ構築。"
+  },
+  {
+    "en": "Scheduler",
+    "to": "スケジューラー"
+  },
+  {
+    "en": "A program that hits every living foe gives each bolt +1.",
+    "to": "生きている敵すべてに当たるプログラムは、各ボルトの威力が1上がる。"
+  },
+  {
+    "en": "Spread bolts over crowds exactly.",
+    "to": "敵の群れにボルトを正確に配ろう。"
+  },
+  {
+    "en": "Scheduling, bin packing, interval problems.",
+    "to": "スケジュール、箱詰め、区間の問題。"
+  },
+  {
+    "en": "Enumerator",
+    "to": "列挙（れっきょ）"
+  },
+  {
+    "en": "Brute-force sources make bolts with +1 power; a volley may hold 192 bolts.",
+    "to": "総当たりの生成カードは、ボルトの威力が1上がる。一斉射は192本まで持てる。"
+  },
+  {
+    "en": "Floods of hundreds of bolts.",
+    "to": "何百本ものボルトで押し切ろう。"
+  },
+  {
+    "en": "Combinatorics and growing search spaces.",
+    "to": "組み合わせと、探索する空間の広がり。"
+  },
+  {
+    "en": "Pruner",
+    "to": "枝刈り"
+  },
+  {
+    "en": "A program never times out: the card that would cross the budget is skipped instead, and later cards still run.",
+    "to": "制限時間を超えそうなカードだけ飛ばし、次のカードを実行する。時間切れにならない。"
+  },
+  {
+    "en": "Exhaustive cards safely near the budget.",
+    "to": "制限時間ぎりぎりまで、安全に総当たりしよう。"
+  },
+  {
+    "en": "Pruning, branch and bound, graceful degradation.",
+    "to": "枝刈り、分枝限定、無理なく続ける工夫。"
+  },
+  {
+    "en": "Overclocker",
+    "to": "オーバークロッカー"
+  },
+  {
+    "en": "The budget is 50% larger; a timeout costs 5 Integrity.",
+    "to": "制限時間が50%増える。時間切れになるとHPを5失う。"
+  },
+  {
+    "en": "The slowest, heaviest programs, all risk.",
+    "to": "遅くて重いプログラムに、リスクをかけよう。"
+  },
+  {
+    "en": "Quadratic code and the limits of more hardware.",
+    "to": "二乗で増える仕事量と、計算機を増やす限界。"
+  },
+  {
+    "en": "Memoiser",
+    "to": "メモ化"
+  },
+  {
+    "en": "functools.cache is in force from the first turn: a card that already ran this fight does no work.",
+    "to": "最初から functools.cache が使える。この戦闘で実行済みのカードは仕事量が0になる。"
+  },
+  {
+    "en": "Repeating programs that grow cheaper.",
+    "to": "同じプログラムを繰り返し、だんだん軽くしよう。"
+  },
+  {
+    "en": "Top-down DP and memoisation.",
+    "to": "上から考える動的計画法とメモ化。"
+  },
+  {
+    "en": "Tabulator",
+    "to": "表づくり"
+  },
+  {
+    "en": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
+    "to": "テーブルのボルトは2ターン目から。(dp[t-1] + dp[t-2]) // 3 の威力になる。"
+  },
+  {
+    "en": "Slow first turns, overwhelming late turns.",
+    "to": "最初はゆっくり、後半は大きな力に。"
+  },
+  {
+    "en": "Bottom-up DP and recurrences.",
+    "to": "下から作る動的計画法と漸化式（ぜんかしき）。"
+  },
+  {
+    "en": "Optimiser",
+    "to": "最適化"
+  },
+  {
+    "en": "A kill with no overkill writes double into the Table and gives 2 block.",
+    "to": "ぴったり倒すと、テーブルに2倍のダメージを書き、ブロックを2得る。"
+  },
+  {
+    "en": "Exact kills, never a point wasted.",
+    "to": "1点もむだにせず、ぴったり倒そう。"
+  },
+  {
+    "en": "Optimal substructure, knapsack and coin problems.",
+    "to": "最適な小問題、ナップサックとコインの問題。"
+  },
+  {
+    "en": "Indexer",
+    "to": "索引（さくいん）"
+  },
+  {
+    "en": "The index holds 16, and the seed takes its two strongest bolts.",
+    "to": "インデックスは16本まで持てる。種に最も強い2本を取り出す。"
+  },
+  {
+    "en": "Bank overkill, then spend it precisely.",
+    "to": "余った威力をため、正確に使おう。"
+  },
+  {
+    "en": "Indexes and sorted containers.",
+    "to": "インデックスと、並んだデータの入れ物。"
+  },
+  {
+    "en": "Hasher",
+    "to": "ハッシュ"
+  },
+  {
+    "en": "A bolt that lands on a foe's weakness gains 2 power.",
+    "to": "弱点に当たるボルトの威力が2上がる。"
+  },
+  {
+    "en": "Element maps and O(1) lookups.",
+    "to": "属性の表で、O(1) の検索をしよう。"
+  },
+  {
+    "en": "Hash maps, sets, Bloom filters.",
+    "to": "ハッシュマップ、集合、ブルームフィルター。"
+  },
+  {
+    "en": "Bisector",
+    "to": "二分探索"
+  },
+  {
+    "en": "A volley sorted when a strike reads it gives each of that strike's bolts +1.",
+    "to": "攻撃カードが読む一斉射が順番どおりなら、そのカードの各ボルトの威力が1上がる。"
+  },
+  {
+    "en": "Sort once, search many times.",
+    "to": "一度並べて、何度も探そう。"
+  },
+  {
+    "en": "Binary search and its relatives.",
+    "to": "二分探索と、その仲間。"
+  },
+  {
+    "en": "Deep Recursion",
+    "to": "深い再帰"
+  },
+  {
+    "en": "Recurse goes one level deeper: the card after a split runs on each quarter.",
+    "to": "分割の次のカードは、半分ではなく4分の1ずつ実行する。"
+  },
+  {
+    "en": "Towers of small cards on small pieces.",
+    "to": "小さなカードを、小さな問題に積み重ねよう。"
+  },
+  {
+    "en": "Recursion depth and base cases.",
+    "to": "再帰の深さと、終わりの条件。"
+  },
+  {
+    "en": "Merger",
+    "to": "マージ"
+  },
+  {
+    "en": "When halves rejoin, every bolt gains 1.",
+    "to": "半分ずつの結果を合わせると、すべてのボルトの威力が1上がる。"
+  },
+  {
+    "en": "Splits and merges in a loop.",
+    "to": "分割とマージを繰り返そう。"
+  },
+  {
+    "en": "The combine step of merge sort.",
+    "to": "マージソートの、合わせる手順。"
+  },
+  {
+    "en": "Partitioner",
+    "to": "分割"
+  },
+  {
+    "en": "A pivot card marks its pivot bolt, which lands doubled on the toughest foe.",
+    "to": "ピボットのカードは目印のボルトを作る。そのボルトは最もタフな敵に2倍の威力で当たる。"
+  },
+  {
+    "en": "Partitions, selection, quick sort.",
+    "to": "分割、選択、クイックソートを使おう。"
+  },
+  {
+    "en": "Partitioning, pivots, linear-time selection.",
+    "to": "分割、ピボット、線形時間の選択。"
+  },
+  {
+    "en": "Local Optimum",
+    "to": "局所最適（きょくしょさいてき）"
+  },
+  {
+    "en": "A foe your program kills with Initiative pays 1 mana next turn, at most 2.",
+    "to": "先手で敵を倒すと、次のターンのマナを1得る。最大2。"
+  },
+  {
+    "en": "Throw Hardware At It",
+    "to": "計算機にまかせよう"
+  },
+  {
+    "en": "Every full 256 operations of the program's work adds 1 power to each attack bolt as it lands. A timeout lands nothing.",
+    "to": "仕事量が256増えるごとに、当たる攻撃ボルトの威力が1上がる。時間切れでは何も当たらない。"
+  },
+  {
+    "en": "The Table",
+    "to": "テーブル"
+  },
+  {
+    "en": "Each program's landed damage is written to dp[t]. From turn 3, the seed gains a bolt of (dp[t-1] + dp[t-2]) // 4.",
+    "to": "当たったダメージを dp[t] に書く。3ターン目から、(dp[t-1] + dp[t-2]) // 4 のボルトが種に加わる。"
+  },
+  {
+    "en": "The Index",
+    "to": "インデックス"
+  },
+  {
+    "en": "Wasted power is kept in a sorted index of at most 8 bolts. Each program takes its strongest bolt.",
+    "to": "むだになった威力を、8本までの並んだインデックスにためる。各プログラムは最も強い1本を取り出す。"
+  },
+  {
+    "en": "Recurse",
+    "to": "再帰（さいき）"
+  },
+  {
+    "en": "The card right after a split runs once on each half, then the halves rejoin.",
+    "to": "分割の次のカードを半分ずつ実行して、結果を合わせる。"
+  },
+  {
+    "en": "Choose your focus",
+    "to": "集中する方針を選ぼう"
+  },
+  {
+    "en": "Your focus adds a rule and a signature card. All three are yours to choose from.",
+    "to": "方針にはルールと専用カードがついてくる。3つの中から選ぼう。"
+  },
+  {
+    "en": "The law of your paradigm.",
+    "to": "パラダイムの基本ルール。"
+  },
+  {
+    "en": "There is no focus to choose now.",
+    "to": "今は方針を選べないよ。"
+  },
+  {
+    "en": "That focus was not offered.",
+    "to": "その方針は選べないよ。"
+  },
+  {
+    "en": "%s: %s joins your deck.",
+    "to": "%s：%sがデッキに加わる。"
+  },
+  {
+    "en": "paradigm",
+    "to": "パラダイム"
+  },
+  {
+    "en": "focus",
+    "to": "方針"
+  },
+  {
+    "en": "Index",
+    "to": "索引（さくいん）"
+  },
+  {
+    "en": "Sorted Index: %d / %d bolts. The seed takes the strongest.",
+    "to": "整列した索引：%d / %dボルト。最も強いボルトが入力になる。"
+  },
+  {
+    "en": "The Table remembers each program's landed damage.",
+    "to": "テーブルは、各プログラムが与えたダメージを覚える。"
+  },
+  {
+    "en": "pruned",
+    "to": "枝刈り"
+  },
+  {
+    "en": "Initiative: %s takes %d%s.",
+    "to": "先手（せんて）！{1}に{2}{3}ダメージ。"
+  }
+]

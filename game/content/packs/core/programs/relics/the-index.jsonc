@@ -1,0 +1,15 @@
+{
+  "id": "the-index",
+  "name": "The Index",
+  "tier": "paradigm",
+  "icon": "unix-philosophy",
+  "summary": "Wasted power is kept in a sorted index of at most 8 bolts. Each program takes its strongest bolt.",
+  "flavor": "The law of your paradigm.",
+  "effects": [
+    {
+      "kind": "index",
+      "size": 8,
+      "seed": 1
+    }
+  ]
+}

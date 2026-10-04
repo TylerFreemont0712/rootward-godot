@@ -1,0 +1,147 @@
+{
+  "paradigm": "greedy",
+  "focus": "schedule",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "quadratic",
+  "big_o": "O(n·m)",
+  "icon": "shardrun/card-make-change",
+  "id": "first-fit-decreasing-plus",
+  "name": "First-Fit Decreasing+",
+  "summary": "Strongest bolts first: packs each into the first foe it overkills by at most 1. Leftovers aim at the front.",
+  "function": "first_fit_decreasing_plus",
+  "keywords": [],
+  "art": "first-fit-decreasing",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "fill the first fitting foe",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 8,
+            "max": 8,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "one less overkill",
+      "bolts": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

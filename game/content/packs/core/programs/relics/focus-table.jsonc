@@ -1,0 +1,18 @@
+{
+  "id": "focus-table",
+  "name": "Tabulator",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
+  "flavor": "Slow first turns, overwhelming late turns.",
+  "effects": [
+    {
+      "kind": "table-from",
+      "turn": 2
+    },
+    {
+      "kind": "table-divisor",
+      "divisor": 3
+    }
+  ]
+}

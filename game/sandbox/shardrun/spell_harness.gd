@@ -103,6 +103,9 @@ static func build_job(
 	# A program run counts its cards' loops and calls (ADR-0012); other runs never ask, so their jobs are as they were.
 	if input.get("count", false):
 		data.count = true
+	# Program-only execution rules travel with the source and therefore with its preview cache key.
+	if input.has("execution"):
+		data.execution = input.execution
 	var job: SandboxJob
 	if language == SandboxJob.CPP:
 		# C++ runs a module built ahead of time (ADR-0046): program cards and Spellforge's shards are built apart,
@@ -134,6 +137,9 @@ static func _entry(shard: Dictionary, language: String) -> Dictionary:
 		entry.source = shard.code[language]
 	if shard.has("role"):
 		entry.role = shard.role
+	for key: String in ["paradigm", "complexity", "cap_n", "height", "worst_case", "work_mode", "makes", "splits"]:
+		if shard.has(key):
+			entry[key] = shard[key]
 	return entry
 
 

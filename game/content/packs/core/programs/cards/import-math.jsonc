@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "divide-conquer",
+  "focus": "deep",
   "role": "import",
   "complexity": "constant",
   "summary": "For the rest of the fight, recursion reaches further: Divide adds 2 a level instead of 1, Merge Strike's merges add 40% instead of 20%, and Recursion Tree grows a level deeper.",

@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "search-index",
+  "focus": "bisect",
   "role": "import",
   "complexity": "constant",
   "makes": "sorted",

@@ -19,6 +19,7 @@ const ORDERS := ["sorted", "unsorted"]
 ## A relic's tier, weakest first: tier 1 is a small nudge, tier 5 changes how a run is played. Loot tables weigh them
 ## (programs.jsonc `relic_tiers`), so an elite can offer only rare or better.
 const TIERS := ["common", "uncommon", "rare", "epic", "legendary"]
+const RULE_TIERS := ["paradigm", "focus"]
 
 
 static func bolt() -> Dictionary:
@@ -30,6 +31,9 @@ static func bolt() -> Dictionary:
 				"element": Schema.one_of(ShardrunSchemas.ELEMENTS),
 				"foe": Schema.optional(Schema.int_min(0)),
 				"block": Schema.optional(Schema.BOOL),
+				"stash": Schema.optional(Schema.BOOL),
+				"from_index": Schema.optional(Schema.BOOL),
+				"pivot": Schema.optional(Schema.BOOL),
 			}
 		)
 	)
@@ -41,6 +45,27 @@ static func battle() -> Dictionary:
 	var seen: Dictionary = ShardrunSchemas.shard_battle().duplicate(true)
 	seen.fields.imports = Schema.optional(Schema.list_of(Schema.TEXT))
 	seen.fields.globals = Schema.optional(Schema.record(Schema.INT))
+	seen.fields.index = Schema.optional(Schema.list_of(bolt()))
+	seen.fields.dp = Schema.optional(Schema.list_of(Schema.INT))
+	seen.fields.last_volley = Schema.optional(Schema.list_of(Schema.INT))
+	var foe: Dictionary = seen.fields.foes.item
+	foe.fields.hits = Schema.optional(Schema.int_min(0))
+	foe.fields.intent = (
+		Schema
+		. optional(
+			(
+				Schema
+				. object(
+					{
+						"kind": Schema.TEXT,
+						"damage": Schema.INT,
+						"hits": Schema.int_min(0),
+						"tempo": Schema.INT,
+					}
+				)
+			)
+		)
+	)
 	return seen
 
 
@@ -84,6 +109,9 @@ static func card() -> Dictionary:
 				),
 				"cost": Schema.int_range(0, 9),
 				"paradigm": Schema.ID,
+				"focus": Schema.optional(Schema.ID),
+				"splits": Schema.with_default(Schema.BOOL, false),
+				"work_mode": Schema.optional(Schema.one_of(["measured"])),
 				"role": Schema.one_of(ROLES),
 				"complexity": Schema.one_of(COMPLEXITIES),
 				"big_o": Schema.optional(Schema.TEXT),
@@ -227,7 +255,7 @@ static func relic() -> Dictionary:
 			{
 				"id": Schema.ID,
 				"name": Schema.TEXT,
-				"tier": Schema.one_of(TIERS),
+				"tier": Schema.one_of(TIERS + RULE_TIERS),
 				# The picture's id (shardrun/relic-<icon>); a relic borrowed from Spellforge keeps its old one.
 				"icon": Schema.optional(Schema.ID),
 				"summary": Schema.TEXT,
@@ -248,6 +276,27 @@ static func effect() -> Dictionary:
 		Schema
 		. union(
 			{
+				"kill-initiative-mana": {"amount": positive, "max": positive},
+				"small-program-work": {"max_cards": positive, "factor": factor},
+				"fight-import": {"module": Schema.TEXT},
+				"full-spread-power": {"add": positive},
+				"work-power": {"every": positive, "add": positive},
+				"source-power": {"paradigm": Schema.ID, "add": positive},
+				"max-bolts": {"count": positive},
+				"prune-not-timeout": {},
+				"timeout-integrity": {"amount": positive},
+				"table": {"from": Schema.with_default(positive, 3), "divisor": Schema.with_default(positive, 4)},
+				"table-from": {"turn": positive},
+				"table-divisor": {"divisor": positive},
+				"exact-kill-table": {"factor": factor, "block": positive},
+				"index": {"size": Schema.with_default(positive, 8), "seed": Schema.with_default(positive, 1)},
+				"index-size": {"size": positive},
+				"index-seed": {"count": positive},
+				"weak-flat-bonus": {"add": positive},
+				"sorted-strike-power": {"add": positive},
+				"recurse-depth": {"depth": Schema.int_range(1, 4)},
+				"rejoin-power": {"add": positive},
+				"pivot-mark": {"factor": factor},
 				"turn-block": {"amount": positive},
 				"heal-after-fight": {"amount": positive},
 				"max-integrity": {"add": positive},
@@ -303,6 +352,21 @@ static func effect() -> Dictionary:
 
 
 static func config() -> Dictionary:
+	var focus := (
+		Schema
+		. object(
+			{
+				"id": Schema.ID,
+				"name": Schema.TEXT,
+				"tag": Schema.ID,
+				"rule": Schema.TEXT,
+				"signature": Schema.ID,
+				"relic": Schema.ID,
+				"plays_like": Schema.TEXT,
+				"teaches": Schema.TEXT,
+			}
+		)
+	)
 	var paradigm := (
 		Schema
 		. object(
@@ -314,6 +378,9 @@ static func config() -> Dictionary:
 				"summary": Schema.TEXT,
 				"signature": Schema.list_of(Schema.ID, null, 1),
 				"pool": Schema.list_of(Schema.ID, null, 1),
+				"law": Schema.optional(Schema.ID),
+				"swap": Schema.optional(Schema.object({"out": Schema.ID, "in": Schema.ID})),
+				"focuses": Schema.list_of(focus, []),
 			}
 		)
 	)
@@ -336,6 +403,8 @@ static func config() -> Dictionary:
 							"paradigms_offered": Schema.int_range(1, 6),
 							"rounds": Schema.int_range(0, 12),
 							"pack_size": Schema.int_range(1, 6),
+							"paradigm_weight": Schema.with_default(Schema.NUMBER, 2.0),
+							"focus_weight": Schema.with_default(Schema.NUMBER, 3.0),
 						}
 					)
 				),
@@ -417,12 +486,39 @@ static func check(catalog: Dictionary, file: String, diagnostics: Array[Dictiona
 				_error(diagnostics, 'card "%s" in %s is not draftable' % [id, where], file)
 	named.call(config.basics, "basics", false)
 	named.call(config.neutral, "neutral", true)
+	for id: String in config.neutral:
+		if cards.has(id) and cards[id].paradigm != "neutral":
+			_error(diagnostics, 'card "%s" in neutral belongs to another paradigm' % id, file)
+	var focuses_of := {}
 	for paradigm: Dictionary in config.paradigms:
+		focuses_of[paradigm.id] = (paradigm.get("focuses", []) as Array).map(func(f: Dictionary) -> String: return f.id)
 		named.call(paradigm.signature, "%s's signature" % paradigm.id, false)
 		named.call(paradigm.pool, "%s's pool" % paradigm.id, true)
+		for id: String in paradigm.pool:
+			if cards.has(id) and cards[id].paradigm != paradigm.id:
+				_error(diagnostics, 'card "%s" in pool %s belongs to another paradigm' % [id, paradigm.id], file)
+		var relics: Dictionary = programs.get("relics", {})
+		if paradigm.has("law") and (not relics.has(paradigm.law) or relics[paradigm.law].tier != "paradigm"):
+			_error(diagnostics, 'paradigm "%s" needs a paradigm-tier law' % paradigm.id, file)
+		if paradigm.has("swap"):
+			named.call([paradigm.swap.out, paradigm.swap["in"]], "%s's swap" % paradigm.id, false)
+			if not paradigm.swap.out in config.basics:
+				_error(diagnostics, 'paradigm "%s" swaps a card outside the basics' % paradigm.id, file)
+		var focus_ids: Array[String] = []
+		for focus: Dictionary in paradigm.get("focuses", []):
+			named.call([focus.signature], "%s's focus" % focus.id, false)
+			if focus.id in focus_ids:
+				_error(diagnostics, 'duplicate focus "%s"' % focus.id, file)
+			focus_ids.append(focus.id)
+			if not relics.has(focus.relic) or relics[focus.relic].tier != "focus":
+				_error(diagnostics, 'focus "%s" needs a focus-tier relic' % focus.id, file)
 	for card: Dictionary in cards.values():
 		if card.paradigm != "neutral" and not card.paradigm in paradigm_ids:
 			_error(diagnostics, 'card "%s" names an unknown paradigm "%s"' % [card.id, card.paradigm], file)
+		# A card's focus is "" (none) or one of its own paradigm's focuses; a neutral card has none.
+		var focus := String(card.get("focus", ""))
+		if focus != "" and not focus in focuses_of.get(card.paradigm, []):
+			_error(diagnostics, 'card "%s" names focus "%s", not one of %s\'s' % [card.id, focus, card.paradigm], file)
 		var forge: Dictionary = card.get("forge", {})
 		if forge.has("into") and not cards.has(forge.into):
 			_error(diagnostics, 'card "%s" forges into an unknown card "%s"' % [card.id, forge.into], file)

@@ -5,6 +5,7 @@
   "rarity": "rare",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "exact",
   "role": "strike",
   "complexity": "pseudo",
   "big_o": "O(n·H)",

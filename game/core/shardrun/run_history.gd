@@ -38,6 +38,10 @@ static func entry(state: Dictionary, catalog: Dictionary, finished_at: String, a
 		"deck": (state.get("deck", []) as Array).duplicate(),
 		"relics": (state.relics as Array).duplicate(),
 	}
+	var focus := String(state.get("focus", ""))
+	if focus != "":
+		record.focus = focus
+		record.branch = "%s/%s" % [record.branch, focus]
 	# Who ended it: the foes still standing in the fight the run was lost in.
 	var battle: Dictionary = state.get("battle", {})
 	if state.status == "lost" and not battle.is_empty():

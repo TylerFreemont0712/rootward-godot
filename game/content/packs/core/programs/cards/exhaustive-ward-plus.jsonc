@@ -5,6 +5,7 @@
   "art": "exhaustive-ward",
   "cost": 1,
   "paradigm": "brute-force",
+  "focus": "prune",
   "role": "guard",
   "complexity": "exponential",
   "big_o": "O(2ⁿ)",

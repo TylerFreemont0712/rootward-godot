@@ -5,6 +5,7 @@
   "rarity": "rare",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "memo",
   "role": "shape",
   "complexity": "linear",
   "summary": "The same Fibonacci surge, remembered instead of recomputed: each fib(i) is the sum of the two before it. O(n) where the naive one was O(2ⁿ).",

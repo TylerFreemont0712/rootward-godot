@@ -1,0 +1,260 @@
+{
+  "paradigm": "search-index",
+  "focus": "bisect",
+  "role": "strike",
+  "cost": 1,
+  "rarity": "uncommon",
+  "complexity": "logarithmic",
+  "big_o": "O(log log n), worst O(n)",
+  "icon": "shardrun/card-binary-execute",
+  "id": "interpolation-search",
+  "name": "Interpolation Search",
+  "summary": "On a sorted volley, estimates where each foe's killing bolt lies from its power. Uses the strongest if none kills.",
+  "function": "interpolation_search",
+  "keywords": [],
+  "needs": "sorted",
+  "worst_case": {
+    "input": "unsorted",
+    "complexity": "linear"
+  },
+  "work_mode": "measured",
+  "forge": {
+    "into": "interpolation-search-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "evenly distributed sorted powers",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 4,
+            "max": 4,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 2,
+            "max": 2,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "lopsided powers need careful guesses",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 100,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 4,
+            "max": 4,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "equal powers avoid division by zero",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "nothing reaches the target",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

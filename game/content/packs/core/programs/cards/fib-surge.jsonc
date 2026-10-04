@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "memo",
   "role": "shape",
   "complexity": "exponential",
   "cap_n": 16,

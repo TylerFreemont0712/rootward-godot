@@ -1,0 +1,15 @@
+{
+  "id": "focus-exact",
+  "name": "Optimiser",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "A kill with no overkill writes double into the Table and gives 2 block.",
+  "flavor": "Exact kills, never a point wasted.",
+  "effects": [
+    {
+      "kind": "exact-kill-table",
+      "factor": 2,
+      "block": 2
+    }
+  ]
+}

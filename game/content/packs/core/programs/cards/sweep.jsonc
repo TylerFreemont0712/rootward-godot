@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "schedule",
   "role": "strike",
   "complexity": "linear",
   "big_o": "O(n·m)",

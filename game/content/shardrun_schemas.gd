@@ -384,3 +384,23 @@ static func sandbox_defaults() -> Dictionary:
 			}
 		)
 	)
+
+
+## Defaults belong here before rules consume them. Only program snapshots receive these fields.
+static func program_state_defaults(state: Dictionary) -> void:
+	if state.get("playstyle", "") != "program":
+		return
+	var defaults := {"focus": "", "cycles": 0, "belt": [], "pending": {}, "boons": [], "imports_enabled": []}
+	for field: String in defaults:
+		if not state.has(field):
+			state[field] = (
+				defaults[field].duplicate(true)
+				if defaults[field] is Array or defaults[field] is Dictionary
+				else defaults[field]
+			)
+	if state.has("battle"):
+		var battle: Dictionary = state.battle
+		var fight_defaults := {"index": [], "dp": [], "hits": {}, "last_volley": []}
+		for field: String in fight_defaults:
+			if not battle.has(field):
+				battle[field] = fight_defaults[field].duplicate(true)

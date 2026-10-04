@@ -1,0 +1,189 @@
+{
+  "paradigm": "search-index",
+  "focus": "index",
+  "role": "source",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "logarithmic",
+  "big_o": "O(log k)",
+  "icon": "shardrun/card-binary-execute",
+  "id": "lookup-plus",
+  "name": "Lookup+",
+  "summary": "Binary-searches the index twice for bolts that kill the front foe; otherwise takes the strongest remaining.",
+  "function": "lookup_plus",
+  "keywords": [],
+  "art": "lookup",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "take the smallest killing index bolt",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": [
+          {
+            "power": 3,
+            "element": "none"
+          },
+          {
+            "power": 6,
+            "element": "none"
+          },
+          {
+            "power": 10,
+            "element": "none"
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "from_index": true
+        },
+        {
+          "power": 10,
+          "element": "none",
+          "from_index": true
+        }
+      ]
+    },
+    {
+      "name": "otherwise take the strongest once",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": [
+          {
+            "power": 3,
+            "element": "none"
+          },
+          {
+            "power": 6,
+            "element": "none"
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none",
+          "from_index": true
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "from_index": true
+        }
+      ]
+    },
+    {
+      "name": "empty index passes through",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ],
+        "index": []
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

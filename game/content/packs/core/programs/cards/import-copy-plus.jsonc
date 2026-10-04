@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "divide-conquer",
+  "focus": "merge",
   "role": "import",
   "complexity": "constant",
   "art": "import-copy",

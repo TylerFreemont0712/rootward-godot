@@ -157,18 +157,42 @@ func input_for(state: Dictionary) -> Dictionary:
 		# A program starts from its seed volley, and may grow up to the program limit (ADR-0012). Its cards see the
 		# modules imported and the fight's globals, and its imports' hooks run around the cards of their role
 		# (ADR-0018).
-		var config := ProgramRules.config_of(catalog)
+		var modifiers := ProgramRelics.modifiers(state, catalog)
 		var seen := ShardrunRules.shard_battle(state, battle)
 		seen.imports = ProgramDeck.modules(state, catalog)
 		seen.globals = (battle.get("globals", {}) as Dictionary).duplicate()
+		seen.index = ProgramMemory.remaining_index(state, catalog)
+		seen.dp = (battle.get("dp", []) as Array).duplicate()
+		seen.last_volley = (battle.get("last_volley", []) as Array).duplicate()
+		var living := (battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
+		for i in living.size():
+			var foe: Dictionary = living[i]
+			seen.foes[i].intent = ProgramIntents.describe(foe, state, catalog)
+			seen.foes[i].hits = int((battle.get("hits", {}) as Dictionary).get(foe.uid, 0))
 		var input := {
 			"bolts": ProgramRules.seed(state, catalog),
 			"battle": seen,
-			"limit": int(config.max_bolts),
+			"limit": ProgramRules.bolt_limit(state, catalog),
 			"trace_limit": int(balance.trace_bolts),
 			"count": true,
 			"hooks": ProgramRelics.modifiers(state, catalog).hooks,
 			"module": "program",
+			"execution":
+			{
+				"body": {"kind": "split", "depth": int(modifiers.recurse_depth)},
+				"rejoin_power": int(modifiers.rejoin_power),
+				"source_power": modifiers.source_power,
+				"sorted_strike_power": int(modifiers.sorted_strike_power),
+				"prune": bool(modifiers.prune_not_timeout),
+				"budget": ProgramRules.budget(state, catalog),
+				"work_factor": float(modifiers.work_factor),
+				"small_program_work": modifiers.small_program_work,
+				"free_first_work": bool(modifiers.free_first_work),
+				"jit": bool(modifiers.jit),
+				"ran": battle.get("ran", []),
+				"role_complexity": modifiers.role_complexity,
+				"height": ProgramRules.front_need(state),
+			},
 		}
 		# The guardians' edits to what runs (ADR-0026), in the input so they are part of the run's key: the step an
 		# Unreachable's `return` cuts at, and the Mutator's mutants.
@@ -209,7 +233,16 @@ static func to_outcome(run: Dictionary) -> Dictionary:
 		return {"ok": false, "reason": run.reason}
 	var work: Array = []
 	for step: Dictionary in run.trace:
-		work.append({"shard": step.shard, "given": step.given, "returned": step.get("returned", step.given)})
+		var measured := int(step.get("calls", 0))
+		for rounds: Variant in (step.get("loops", {}) as Dictionary).values():
+			measured += int(rounds)
+		var stage := {
+			"shard": step.shard, "given": step.given, "returned": step.get("returned", step.given), "measured": measured
+		}
+		for key: String in ["pruned", "input_sorted", "body", "part", "slot"]:
+			if step.has(key):
+				stage[key] = step[key]
+		work.append(stage)
 	return {"ok": true, "bolts": run.bolts, "work": work}
 
 

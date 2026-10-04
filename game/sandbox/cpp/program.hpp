@@ -16,6 +16,9 @@ struct Bolt {
 	std::string element = "none";
 	std::optional<int> foe;
 	bool block = false;
+	bool stash = false;
+	bool from_index = false;
+	bool pivot = false;
 };
 
 using Bolts = std::vector<Bolt>;

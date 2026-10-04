@@ -5,6 +5,7 @@
   "art": "binary-execute",
   "cost": 2,
   "paradigm": "search-index",
+  "focus": "bisect",
   "role": "strike",
   "complexity": "logarithmic",
   "big_o": "O(m log n)",

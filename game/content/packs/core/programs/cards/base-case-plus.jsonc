@@ -1,0 +1,208 @@
+{
+  "paradigm": "divide-conquer",
+  "focus": "deep",
+  "role": "shape",
+  "cost": 0,
+  "rarity": "common",
+  "complexity": "constant",
+  "big_o": "O(1)",
+  "icon": "shardrun/card-divide",
+  "id": "base-case-plus",
+  "name": "Base Case+",
+  "summary": "Doubles every bolt when the volley has at most 3 bolts. Recurse makes small halves reach this base case.",
+  "function": "base_case_plus",
+  "keywords": [],
+  "art": "base-case",
+  "draftable": false,
+  "examples": [
+    {
+      "name": "two bolts reach the base case",
+      "bolts": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 10,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "three bolts need the refactor",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 6,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "whole volleys pass through",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 6,
+            "max": 6,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

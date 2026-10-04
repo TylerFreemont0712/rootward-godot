@@ -1,0 +1,13 @@
+{
+  "id": "focus-prune",
+  "name": "Pruner",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "A program never times out: the card that would cross the budget is skipped instead, and later cards still run.",
+  "flavor": "Exhaustive cards safely near the budget.",
+  "effects": [
+    {
+      "kind": "prune-not-timeout"
+    }
+  ]
+}

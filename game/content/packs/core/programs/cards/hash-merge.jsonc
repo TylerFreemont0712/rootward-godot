@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "search-index",
+  "focus": "hash",
   "role": "shape",
   "complexity": "linear",
   "makes": "unsorted",

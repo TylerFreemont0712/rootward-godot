@@ -13,6 +13,10 @@ static func on_battle_start(battle: Dictionary) -> void:
 	battle.imports = []
 	battle.gone = []
 	battle.globals = {}
+	battle.index = []
+	battle.dp = []
+	battle.hits = {}
+	battle.last_volley = []
 
 
 static func is_import(card_id: String, catalog: Dictionary) -> bool:

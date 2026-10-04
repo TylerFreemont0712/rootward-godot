@@ -30,6 +30,9 @@ func _fight(catalog: Dictionary) -> Dictionary:
 		catalog, {"seed": "relic-test", "language": "python", "difficulty": "beginner", "playstyle": "program"}
 	)
 	state = _step(state, {"type": "pick-paradigm", "paradigm_id": state.draft.offers[0]}, catalog)
+	if not (state.draft.get("focus_offers", []) as Array).is_empty():
+		state = _step(state, {"type": "pick-focus", "focus_id": state.draft.focus_offers[0]}, catalog)
+	state.relics = []
 	while state.status == "draft":
 		state = _step(state, {"type": "draft-card", "card_id": state.draft.pack[0]}, catalog)
 	var fights := ShardrunMap.next_rooms(state.map, state.position).filter(
@@ -85,6 +88,9 @@ func test_the_first_turn_of_a_fight_can_start_with_more_mana() -> void:
 		catalog, {"seed": "relic-test", "language": "python", "difficulty": "beginner", "playstyle": "program"}
 	)
 	state = _step(state, {"type": "pick-paradigm", "paradigm_id": state.draft.offers[0]}, catalog)
+	if not (state.draft.get("focus_offers", []) as Array).is_empty():
+		state = _step(state, {"type": "pick-focus", "focus_id": state.draft.focus_offers[0]}, catalog)
+	state.relics = []
 	while state.status == "draft":
 		state = _step(state, {"type": "draft-card", "card_id": state.draft.pack[0]}, catalog)
 	state.relics = ["test"]

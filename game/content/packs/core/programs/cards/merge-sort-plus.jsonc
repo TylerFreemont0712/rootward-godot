@@ -6,6 +6,7 @@
   "cost": 0,
   "paradigm": "neutral",
   "role": "order",
+  "splits": true,
   "complexity": "linearithmic",
   "makes": "sorted",
   "summary": "Sorts the volley weakest first: split it in half, sort each half, merge them back. It costs nothing.",

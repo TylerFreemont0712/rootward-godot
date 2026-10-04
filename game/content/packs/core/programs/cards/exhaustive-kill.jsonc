@@ -4,6 +4,7 @@
   "rarity": "rare",
   "cost": 2,
   "paradigm": "brute-force",
+  "focus": "prune",
   "role": "strike",
   "complexity": "exponential",
   "cap_n": 12,

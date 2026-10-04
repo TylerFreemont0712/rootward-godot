@@ -5,6 +5,7 @@
   "art": "import-cache",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "memo",
   "role": "import",
   "complexity": "constant",
   "summary": "For the rest of the fight, a card that already ran does no work: its answers are remembered. Memoisation, as one line.",

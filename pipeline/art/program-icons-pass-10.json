@@ -1,0 +1,542 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-10-04",
+  "intent": "New paradigm focus signature cards, queued with existing matching art as a fallback.",
+  "shared_prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: ",
+  "cards": {
+    "activity-selection": {
+      "icon": "shardrun/card-round-robin",
+      "status": "shared-existing",
+      "summary": "Sorts foes by intent tempo and sends the strongest bolts until each falls. Quick attackers come first."
+    },
+    "activity-selection-plus": {
+      "icon": "shardrun/card-round-robin",
+      "status": "shared-existing",
+      "summary": "Sorts foes by intent tempo; ties favour the greater intended damage. Sends the strongest bolts until each falls."
+    },
+    "first-fit-decreasing": {
+      "icon": "shardrun/card-make-change",
+      "status": "shared-existing",
+      "summary": "Strongest bolts first: packs each into the first foe it overkills by at most 2. Leftovers aim at the front."
+    },
+    "first-fit-decreasing-plus": {
+      "icon": "shardrun/card-make-change",
+      "status": "shared-existing",
+      "summary": "Strongest bolts first: packs each into the first foe it overkills by at most 1. Leftovers aim at the front."
+    },
+    "cartesian-product": {
+      "icon": "shardrun/shard-fork",
+      "status": "shared-existing",
+      "summary": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe."
+    },
+    "cartesian-product-plus": {
+      "icon": "shardrun/shard-fork",
+      "status": "shared-existing",
+      "summary": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe. Costs 1 mana."
+    },
+    "nested-strike": {
+      "icon": "shardrun/shard-fork",
+      "status": "shared-existing",
+      "summary": "For each foe, fires the whole volley at full power until that foe falls. Bolts can strike each foe."
+    },
+    "nested-strike-plus": {
+      "icon": "shardrun/shard-fork",
+      "status": "shared-existing",
+      "summary": "For each foe, fires the whole volley at full power until that foe falls. Costs 1 mana."
+    },
+    "memo-strike": {
+      "icon": "shardrun/card-import-cache",
+      "status": "shared-existing",
+      "summary": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 4."
+    },
+    "memo-strike-plus": {
+      "icon": "shardrun/card-import-cache",
+      "status": "shared-existing",
+      "summary": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 6."
+    },
+    "recurrence": {
+      "icon": "shardrun/card-fib-surge",
+      "status": "shared-existing",
+      "summary": "From turn 2, appends a bolt of half the sum of the last two DP rows. Missing rows count as zero."
+    },
+    "recurrence-plus": {
+      "icon": "shardrun/card-fib-surge",
+      "status": "shared-existing",
+      "summary": "From turn 2, appends a bolt of the sum of the last two DP rows plus one third. Missing rows count as zero."
+    },
+    "base-case": {
+      "icon": "shardrun/card-divide",
+      "status": "shared-existing",
+      "summary": "Doubles every bolt when the volley has at most 2 bolts. Recurse makes small halves reach this base case."
+    },
+    "base-case-plus": {
+      "icon": "shardrun/card-divide",
+      "status": "shared-existing",
+      "summary": "Doubles every bolt when the volley has at most 3 bolts. Recurse makes small halves reach this base case."
+    },
+    "top-k": {
+      "icon": "shardrun/shard-priority-queue",
+      "status": "shared-existing",
+      "summary": "A bounded min-heap keeps the four strongest bolts; discarded power fuses into the weakest survivor."
+    },
+    "top-k-plus": {
+      "icon": "shardrun/shard-priority-queue",
+      "status": "shared-existing",
+      "summary": "A bounded min-heap keeps the five strongest bolts; discarded power fuses into the weakest survivor."
+    },
+    "lookup": {
+      "icon": "shardrun/card-binary-execute",
+      "status": "shared-existing",
+      "summary": "Binary-searches the index for the smallest bolt that kills the front foe; otherwise takes its strongest."
+    },
+    "lookup-plus": {
+      "icon": "shardrun/card-binary-execute",
+      "status": "shared-existing",
+      "summary": "Binary-searches the index twice for bolts that kill the front foe; otherwise takes the strongest remaining."
+    },
+    "two-sum": {
+      "icon": "shardrun/card-hash-merge",
+      "status": "shared-existing",
+      "summary": "A hash map finds two bolts summing to the front foe's HP; they fuse. Otherwise its two strongest aim there."
+    },
+    "two-sum-plus": {
+      "icon": "shardrun/card-hash-merge",
+      "status": "shared-existing",
+      "summary": "A hash map finds two bolts summing to each of the first two foes' HP; exact pairs fuse. Otherwise the two strongest aim there."
+    },
+    "coin-change": {
+      "icon": "shardrun/card-exhaustive-kill",
+      "status": "shared-existing",
+      "summary": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe."
+    },
+    "coin-change-plus": {
+      "icon": "shardrun/card-exhaustive-kill",
+      "status": "shared-existing",
+      "summary": "A 0/1 DP table finds the fewest bolts summing exactly to the first two foes' HP in turn. Bolts are used only once."
+    },
+    "backtracking": {
+      "icon": "shardrun/card-exhaustive-kill",
+      "status": "shared-existing",
+      "summary": "Backtracks over assignments to all foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, m choices per bolt."
+    },
+    "backtracking-plus": {
+      "icon": "shardrun/card-exhaustive-kill",
+      "status": "shared-existing",
+      "summary": "Backtracks over assignments to all foes for the most kills, then least overkill. Also prunes already beaten foes; up to 12 bolts."
+    },
+    "interpolation-search": {
+      "icon": "shardrun/card-binary-execute",
+      "status": "shared-existing",
+      "summary": "On a sorted volley, estimates where each foe's killing bolt lies from its power. Uses the strongest if none kills."
+    },
+    "interpolation-search-plus": {
+      "icon": "shardrun/card-binary-execute",
+      "status": "shared-existing",
+      "summary": "On a sorted volley, estimates each killing bolt's position; falls back to binary search after a poor guess."
+    },
+    "k-way-merge": {
+      "icon": "shardrun/card-merge-sort",
+      "status": "shared-existing",
+      "summary": "Finds rising runs and heap-merges them weakest first. Every bolt gains 1 per run."
+    },
+    "k-way-merge-plus": {
+      "icon": "shardrun/card-merge-sort",
+      "status": "shared-existing",
+      "summary": "Finds rising runs and heap-merges them. Every bolt gains 1 per run; the code chooses strongest first."
+    },
+    "dutch-flag": {
+      "icon": "shardrun/card-quick-sort",
+      "status": "shared-existing",
+      "summary": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact bolts are pivots."
+    },
+    "dutch-flag-plus": {
+      "icon": "shardrun/card-quick-sort",
+      "status": "shared-existing",
+      "summary": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact pivots gain 1."
+    }
+  },
+  "assets": {
+    "shardrun/card-activity-selection": {
+      "out": "game/assets/shardrun/card-activity-selection.png",
+      "status": "queued",
+      "cards": [
+        "activity-selection",
+        "activity-selection-plus"
+      ],
+      "subject": "a bronze hourglass on its side with three crystal bolts racing out of its narrow neck in a row, the first one bright amber, the others cyan; a short golden arrow ahead of them.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze hourglass on its side with three crystal bolts racing out of its narrow neck in a row, the first one bright amber, the others cyan; a short golden arrow ahead of them."
+    },
+    "shardrun/card-first-fit-decreasing": {
+      "out": "game/assets/shardrun/card-first-fit-decreasing.png",
+      "status": "queued",
+      "cards": [
+        "first-fit-decreasing",
+        "first-fit-decreasing-plus"
+      ],
+      "subject": "three bronze bins of different heights side by side, each filled almost to the brim with stacked crystals, one amber crystal dropping into the fullest one.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: three bronze bins of different heights side by side, each filled almost to the brim with stacked crystals, one amber crystal dropping into the fullest one."
+    },
+    "shardrun/card-cartesian-product": {
+      "out": "game/assets/shardrun/card-cartesian-product.png",
+      "status": "queued",
+      "cards": [
+        "cartesian-product",
+        "cartesian-product-plus"
+      ],
+      "subject": "a bronze grid frame of three by three sockets, a crystal glowing in every socket, rows tinted amber and columns tinted cyan where they cross.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze grid frame of three by three sockets, a crystal glowing in every socket, rows tinted amber and columns tinted cyan where they cross."
+    },
+    "shardrun/card-nested-strike": {
+      "out": "game/assets/shardrun/card-nested-strike.png",
+      "status": "queued",
+      "cards": [
+        "nested-strike",
+        "nested-strike-plus"
+      ],
+      "subject": "two bronze rings, one inside the other, both spinning, with crystals flying out from where they cross.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: two bronze rings, one inside the other, both spinning, with crystals flying out from where they cross."
+    },
+    "shardrun/card-memo-strike": {
+      "out": "game/assets/shardrun/card-memo-strike.png",
+      "status": "queued",
+      "cards": [
+        "memo-strike",
+        "memo-strike-plus"
+      ],
+      "subject": "a bronze card-index drawer pulled open, one tab marked by a glowing amber crystal, a cyan bolt leaping out of it.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze card-index drawer pulled open, one tab marked by a glowing amber crystal, a cyan bolt leaping out of it."
+    },
+    "shardrun/card-recurrence": {
+      "out": "game/assets/shardrun/card-recurrence.png",
+      "status": "queued",
+      "cards": [
+        "recurrence",
+        "recurrence-plus"
+      ],
+      "subject": "a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze spiral like a nautilus shell, small crystals in its inner chambers growing to a large amber crystal at the outer chamber."
+    },
+    "shardrun/card-base-case": {
+      "out": "game/assets/shardrun/card-base-case.png",
+      "status": "queued",
+      "cards": [
+        "base-case",
+        "base-case-plus"
+      ],
+      "subject": "the bottom of a bronze recursive ladder, its last rung holding two bright doubled crystals, the rungs above fading upward.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: the bottom of a bronze recursive ladder, its last rung holding two bright doubled crystals, the rungs above fading upward."
+    },
+    "shardrun/card-top-k": {
+      "out": "game/assets/shardrun/card-top-k.png",
+      "status": "queued",
+      "cards": [
+        "top-k",
+        "top-k-plus"
+      ],
+      "subject": "a bronze pyramid stand with four cut crystals on its tiers, the top one largest, a stream of tiny cyan shards being poured into the lowest crystal.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze pyramid stand with four cut crystals on its tiers, the top one largest, a stream of tiny cyan shards being poured into the lowest crystal."
+    },
+    "shardrun/card-lookup": {
+      "out": "game/assets/shardrun/card-lookup.png",
+      "status": "queued",
+      "cards": [
+        "lookup",
+        "lookup-plus"
+      ],
+      "subject": "a bronze drawer cabinet with one small drawer sliding open on its own, an amber crystal resting inside.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze drawer cabinet with one small drawer sliding open on its own, an amber crystal resting inside."
+    },
+    "shardrun/card-two-sum": {
+      "out": "game/assets/shardrun/card-two-sum.png",
+      "status": "queued",
+      "cards": [
+        "two-sum",
+        "two-sum-plus"
+      ],
+      "subject": "two crystals, one amber and one cyan, sliding together into a single bronze ring that glows where they meet.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: two crystals, one amber and one cyan, sliding together into a single bronze ring that glows where they meet."
+    },
+    "shardrun/card-coin-change": {
+      "out": "game/assets/shardrun/card-coin-change.png",
+      "status": "queued",
+      "cards": [
+        "coin-change",
+        "coin-change-plus"
+      ],
+      "subject": "three bronze coins of different sizes stacked in a precise tower that exactly reaches a gold notch on a measuring rod beside them.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: three bronze coins of different sizes stacked in a precise tower that exactly reaches a gold notch on a measuring rod beside them."
+    },
+    "shardrun/card-backtracking": {
+      "out": "game/assets/shardrun/card-backtracking.png",
+      "status": "queued",
+      "cards": [
+        "backtracking",
+        "backtracking-plus"
+      ],
+      "subject": "a bronze branching tree whose limbs end in crystals; two limbs are snapped off with clean cuts and fade to grey, one limb glows amber to its tip.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze branching tree whose limbs end in crystals; two limbs are snapped off with clean cuts and fade to grey, one limb glows amber to its tip."
+    },
+    "shardrun/card-interpolation-search": {
+      "out": "game/assets/shardrun/card-interpolation-search.png",
+      "status": "queued",
+      "cards": [
+        "interpolation-search",
+        "interpolation-search-plus"
+      ],
+      "subject": "a bronze measuring tape stretched along a row of evenly growing crystals, a gold pin stuck precisely at one.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: a bronze measuring tape stretched along a row of evenly growing crystals, a gold pin stuck precisely at one."
+    },
+    "shardrun/card-k-way-merge": {
+      "out": "game/assets/shardrun/card-k-way-merge.png",
+      "status": "queued",
+      "cards": [
+        "k-way-merge",
+        "k-way-merge-plus"
+      ],
+      "subject": "three bronze chutes converging into one, crystals from each chute merging into a single ordered line.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: three bronze chutes converging into one, crystals from each chute merging into a single ordered line."
+    },
+    "shardrun/card-dutch-flag": {
+      "out": "game/assets/shardrun/card-dutch-flag.png",
+      "status": "queued",
+      "cards": [
+        "dutch-flag",
+        "dutch-flag-plus"
+      ],
+      "subject": "three vertical bands of crystals in a bronze frame, amber, ivory and cyan, the middle band a single bright crystal.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: three vertical bands of crystals in a bronze frame, amber, ivory and cyan, the middle band a single bright crystal."
+    },
+    "shardrun/card-round-robin": {
+      "out": "game/assets/shardrun/card-round-robin.png",
+      "status": "existing",
+      "cards": [
+        "activity-selection",
+        "activity-selection-plus"
+      ],
+      "subject": "Exactly three pale lavender target discs at the vertices of a compact triangle, linked by THREE stout bronze clockwise arrows. One bright golden pointer marks the next target. Taking turns around the foes, a clear cyclic silhouette, no letters or numerals.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: Exactly three pale lavender target discs at the vertices of a compact triangle, linked by THREE stout bronze clockwise arrows. One bright golden pointer marks the next target. Taking turns around the foes, a clear cyclic silhouette, no letters or numerals.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-882d4022-8d7f-4d28-979e-8ac00b64428a.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b84e9f2222b7cf7e912954685c7999bff50f814cb59aef7dae22c80632433474",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-make-change": {
+      "out": "game/assets/shardrun/card-make-change.png",
+      "status": "existing",
+      "cards": [
+        "first-fit-decreasing",
+        "first-fit-decreasing-plus"
+      ],
+      "subject": "One large bronze coin splitting into three smaller golden coins along a wide curved gold arrow. Blank faceted coin faces, no numerals or currency letters. Greedy change-making; a compact open fan silhouette with few large coins.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: One large bronze coin splitting into three smaller golden coins along a wide curved gold arrow. Blank faceted coin faces, no numerals or currency letters. Greedy change-making; a compact open fan silhouette with few large coins.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-5fbed962-79b5-4e11-aa52-543b611b4301.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "9e771f424fd5836501566dea6dc6d3c4089cdc1a0bc552e7ef071964c38e7e82",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/shard-fork": {
+      "out": "game/assets/shardrun/shard-fork.png",
+      "status": "existing",
+      "cards": [
+        "cartesian-product",
+        "cartesian-product-plus",
+        "nested-strike",
+        "nested-strike-plus"
+      ]
+    },
+    "shardrun/card-import-cache": {
+      "out": "game/assets/shardrun/card-import-cache.png",
+      "status": "existing",
+      "cards": [
+        "memo-strike",
+        "memo-strike-plus"
+      ],
+      "subject": "One squat transparent cyan crystal jar capped by a broad brass lid, storing a single bright warm amber spark in its center. A large bronze latch seals it. Remembered results in a reusable cache; a simple bold jar silhouette.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: One squat transparent cyan crystal jar capped by a broad brass lid, storing a single bright warm amber spark in its center. A large bronze latch seals it. Remembered results in a reusable cache; a simple bold jar silhouette.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-ee44c546-c8c7-4c41-82ed-d65a5d93ab0b.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "7657d14e2386d5bca0cbedb128582ce976634b77d7d111ce775d02990506a3e3",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-fib-surge": {
+      "out": "game/assets/shardrun/card-fib-surge.png",
+      "status": "existing",
+      "cards": [
+        "recurrence",
+        "recurrence-plus"
+      ],
+      "subject": "One large golden spiral seashell, its chambers widening in a clearly visible Fibonacci curl, with three large amber crystal facets along the outside. Simple bold open spiral silhouette, warm ivory highlights and dark bronze depth. The same Fibonacci result whether computed naively or remembered.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: One large golden spiral seashell, its chambers widening in a clearly visible Fibonacci curl, with three large amber crystal facets along the outside. Simple bold open spiral silhouette, warm ivory highlights and dark bronze depth. The same Fibonacci result whether computed naively or remembered.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-9287beb1-7cfe-49d7-a82b-64d6f3d91b61.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "e742a07e4765afa0ce0e90905334fafa3a2af550d229f11f516fa96458be0427",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-divide": {
+      "out": "game/assets/shardrun/card-divide.png",
+      "status": "existing",
+      "cards": [
+        "base-case",
+        "base-case-plus"
+      ],
+      "subject": "A compact brass branching tree holding one large blue diamond at its root above two medium cyan diamonds, each above a pair of smaller pale-blue diamonds. Exactly three levels, strong Y-shaped branches, seven clearly separated gems. Recursive division and the same tree of recursive source calls.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: A compact brass branching tree holding one large blue diamond at its root above two medium cyan diamonds, each above a pair of smaller pale-blue diamonds. Exactly three levels, strong Y-shaped branches, seven clearly separated gems. Recursive division and the same tree of recursive source calls.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-53f9339f-3f26-4c37-87a5-154361e26080.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "089131e80a7918ca4cd8fb22d7b94fdf571a98612cb0ad3618c167d463040b2d",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/shard-priority-queue": {
+      "out": "game/assets/shardrun/shard-priority-queue.png",
+      "cards": [
+        "top-k",
+        "top-k-plus"
+      ],
+      "status": "existing"
+    },
+    "shardrun/card-binary-execute": {
+      "out": "game/assets/shardrun/card-binary-execute.png",
+      "status": "existing",
+      "cards": [
+        "lookup",
+        "lookup-plus",
+        "interpolation-search",
+        "interpolation-search-plus"
+      ],
+      "subject": "A large bronze magnifying glass over a compact row of three faceted blue projectile crystals; its lens isolates one bright amber crystal. A broad golden pointer under the lens marks the selected crystal. Search for a bolt that exactly fits; one bold glass silhouette, no thin tiny crystal rows.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: A large bronze magnifying glass over a compact row of three faceted blue projectile crystals; its lens isolates one bright amber crystal. A broad golden pointer under the lens marks the selected crystal. Search for a bolt that exactly fits; one bold glass silhouette, no thin tiny crystal rows.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-f9905f7a-78f1-423d-a7fc-ca60a5a3b2ca.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "a2688f6df7f1a1076dc852d44dcfc04ccf237afec12f25c2cea8ac17e53d68d8",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-hash-merge": {
+      "out": "game/assets/shardrun/card-hash-merge.png",
+      "status": "existing",
+      "cards": [
+        "two-sum",
+        "two-sum-plus"
+      ],
+      "subject": "A squat bronze sorting tray with two broad compartments: two small orange crystals merge into one large orange crystal in the left slot, two cyan crystals into one large cyan crystal in the right slot. A stout central bronze divider. Group by element and combine; no extra objects.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: A squat bronze sorting tray with two broad compartments: two small orange crystals merge into one large orange crystal in the left slot, two cyan crystals into one large cyan crystal in the right slot. A stout central bronze divider. Group by element and combine; no extra objects.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-5781aa9c-c8c0-469b-8a09-65ff3f465c87.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "0e492d9ca92439c5dc10a843ca28241f02914d84ac51f6a2c72c58b6c518b98a",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-exhaustive-kill": {
+      "out": "game/assets/shardrun/card-exhaustive-kill.png",
+      "status": "existing",
+      "cards": [
+        "coin-change",
+        "coin-change-plus",
+        "backtracking",
+        "backtracking-plus"
+      ],
+      "subject": "A small squat brown leather knapsack open at the top holding exactly three large cyan and amber crystal gems. One broad orange attack arrow emerges diagonally from the gems. Selecting a subset to reach lethal power. The bag and arrow are the two dominant forms.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: A small squat brown leather knapsack open at the top holding exactly three large cyan and amber crystal gems. One broad orange attack arrow emerges diagonally from the gems. Selecting a subset to reach lethal power. The bag and arrow are the two dominant forms.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-a7c0802b-18c1-404a-9071-03e534fabef7.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "4fc46d29e763e8d30741db125c1acd53c5f78b1b7cd7bb8bd692b44da90704a5",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-merge-sort": {
+      "out": "game/assets/shardrun/card-merge-sort.png",
+      "status": "existing",
+      "cards": [
+        "k-way-merge",
+        "k-way-merge-plus"
+      ],
+      "subject": "Two short rows of three blue crystals flow down two broad bronze branches into ONE neatly ascending row of four cyan diamonds at the bottom. A compact golden Y-shaped sorting chute, weak gems on left and strongest on right. No labels, long thin lines or tiny beads.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: Two short rows of three blue crystals flow down two broad bronze branches into ONE neatly ascending row of four cyan diamonds at the bottom. A compact golden Y-shaped sorting chute, weak gems on left and strongest on right. No labels, long thin lines or tiny beads.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-0dcfd4e1-e48f-43ee-9547-f78670b1fefc.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "23b0aaedd8f169f2db1eb781319bca458a8ebb035b641519a67bd8b327cd0217",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-quick-sort": {
+      "out": "game/assets/shardrun/card-quick-sort.png",
+      "status": "existing",
+      "cards": [
+        "dutch-flag",
+        "dutch-flag-plus"
+      ],
+      "subject": "One large golden pivot crystal held upright in a thick bronze divider; three smaller pale cyan crystals gathered on its left, two larger violet crystals on its right. The centre pivot separates two groups. Strong balanced three-part silhouette, no tiny rack or labels.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art, matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan/amber/violet crystal planes, restrained ivory highlights, crisp stepped edges and large readable clusters. Design with roughly 128-pixel detail density, NOT an enlarged crude 32-pixel placeholder. Compact SQUARE composition, the single icon centred and filling 82 percent of both width and height, with transparent margins. Genuinely transparent alpha background. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires or particles. Subject: One large golden pivot crystal held upright in a thick bronze divider; three smaller pale cyan crystals gathered on its left, two larger violet crystals on its right. The centre pivot separates two groups. Strong balanced three-part silhouette, no tiny rack or labels.",
+      "source": "/home/joejin/.codex/generated_images/01a0f7e4-651c-7b32-a5ec-542b05039d3e/exec-7e4e92d1-56d2-40a3-92c7-6cc7f67b9715.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b2d9b1ff92daa6d69aa262c9e120a4ddad250aa2b2ed9ea331004cbd2f20cc58",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    }
+  }
+}

@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "table",
   "role": "shape",
   "complexity": "linear",
   "art": "sliding-window",

@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "heap",
   "role": "shape",
   "complexity": "linear",
   "makes": "sorted",

@@ -5,6 +5,7 @@
   "art": "lis-strike",
   "cost": 2,
   "paradigm": "dynamic",
+  "focus": "exact",
   "role": "strike",
   "complexity": "quadratic",
   "big_o": "O(n²)",

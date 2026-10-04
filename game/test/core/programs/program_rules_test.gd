@@ -24,6 +24,9 @@ func _start(seed := "program-test") -> Dictionary:
 
 func _drafted(seed := "program-test") -> Dictionary:
 	var state := _step(_start(seed), {"type": "pick-paradigm", "paradigm_id": _start(seed).draft.offers[0]})
+	if not (state.draft.get("focus_offers", []) as Array).is_empty():
+		state = _step(state, {"type": "pick-focus", "focus_id": state.draft.focus_offers[0]})
+	state.relics = []
 	while state.status == "draft":
 		state = _step(state, {"type": "draft-card", "card_id": state.draft.pack[0]})
 	return state
@@ -123,11 +126,13 @@ func test_the_draft_offers_paradigms_then_packs_from_the_seed() -> void:
 	var signature: Array = ProgramDraft.paradigm_of(catalog, paradigm_id).signature
 	for card_id: String in signature:
 		assert_array(state.deck).contains([card_id])
+	assert_int((state.draft.focus_offers as Array).size()).is_equal(3)
+	state = _step(state, {"type": "pick-focus", "focus_id": state.draft.focus_offers[0]})
 	assert_int((state.draft.pack as Array).size()).is_equal(3)
 	var drafted := _drafted()
 	assert_str(drafted.status).is_equal("map")
 	assert_bool(drafted.has("draft")).is_false()
-	assert_int((drafted.deck as Array).size()).is_equal(8 + signature.size() + 5)
+	assert_int((drafted.deck as Array).size()).is_equal(8 + signature.size() + 1 + 5)
 
 
 func test_a_slow_program_lets_faster_foes_act_first_and_only_once() -> void:

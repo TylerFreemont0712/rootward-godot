@@ -1,0 +1,163 @@
+{
+  "paradigm": "divide-conquer",
+  "focus": "pivot",
+  "role": "order",
+  "cost": 0,
+  "rarity": "uncommon",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "icon": "shardrun/card-quick-sort",
+  "id": "dutch-flag",
+  "name": "Dutch Flag",
+  "summary": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact bolts are pivots.",
+  "function": "dutch_flag",
+  "keywords": [],
+  "splits": true,
+  "forge": {
+    "into": "dutch-flag-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "exact stronger weaker regions",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "pivot": true
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "pivot": true
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 8,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "no exact pivot exists",
+      "bolts": [
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 7,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

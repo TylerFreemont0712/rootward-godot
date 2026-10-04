@@ -5,6 +5,7 @@
   "art": "power-set",
   "cost": 2,
   "paradigm": "brute-force",
+  "focus": "enumerate",
   "role": "source",
   "complexity": "exponential",
   "big_o": "O(2ⁿ)",

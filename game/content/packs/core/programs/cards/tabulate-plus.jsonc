@@ -5,6 +5,7 @@
   "art": "tabulate",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "table",
   "role": "shape",
   "complexity": "linear",
   "makes": "sorted",

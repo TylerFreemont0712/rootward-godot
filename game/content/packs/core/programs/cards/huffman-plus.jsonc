@@ -5,6 +5,7 @@
   "art": "huffman",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "heap",
   "role": "shape",
   "complexity": "linearithmic",
   "big_o": "O(n log n)",

@@ -1,0 +1,19 @@
+{
+  "id": "focus-enumerate",
+  "name": "Enumerator",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "Brute-force sources make bolts with +1 power; a volley may hold 192 bolts.",
+  "flavor": "Floods of hundreds of bolts.",
+  "effects": [
+    {
+      "kind": "source-power",
+      "paradigm": "brute-force",
+      "add": 1
+    },
+    {
+      "kind": "max-bolts",
+      "count": 192
+    }
+  ]
+}

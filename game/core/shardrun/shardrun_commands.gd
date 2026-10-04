@@ -60,6 +60,8 @@ static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return _purge(next, command, catalog)
 		"pick-paradigm":
 			return ProgramDraft.pick_paradigm(next, command, catalog)
+		"pick-focus":
+			return ProgramDraft.pick_focus(next, command, catalog)
 		"draft-card":
 			return ProgramDraft.pick_card(next, command, catalog)
 		"abandon":

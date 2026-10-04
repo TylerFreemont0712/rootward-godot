@@ -4,6 +4,7 @@
   "rarity": "common",
   "cost": 0,
   "paradigm": "search-index",
+  "focus": "hash",
   "role": "shape",
   "complexity": "linear",
   "summary": "A set remembers every power seen: a bolt whose power was seen before is dropped, and every bolt that stays gains 2.",

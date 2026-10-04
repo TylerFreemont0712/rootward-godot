@@ -5,6 +5,7 @@
   "art": "two-pointers",
   "cost": 1,
   "paradigm": "search-index",
+  "focus": "bisect",
   "role": "shape",
   "complexity": "linear",
   "needs": "sorted",

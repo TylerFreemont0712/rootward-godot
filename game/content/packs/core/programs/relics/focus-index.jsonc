@@ -1,0 +1,18 @@
+{
+  "id": "focus-index",
+  "name": "Indexer",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "The index holds 16, and the seed takes its two strongest bolts.",
+  "flavor": "Bank overkill, then spend it precisely.",
+  "effects": [
+    {
+      "kind": "index-size",
+      "size": 16
+    },
+    {
+      "kind": "index-seed",
+      "count": 2
+    }
+  ]
+}

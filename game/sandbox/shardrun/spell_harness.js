@@ -91,32 +91,107 @@ function hooked(when, role, bolts, battleJson) {
   return bolts;
 }
 
-function runSpell(spell, battleJson, trace) {
-  // A spell can bring its own starting bolts and battle (content validation runs every worked example in one job).
-  let bolts = JSON.parse(JSON.stringify(spell.bolts !== undefined ? spell.bolts : DATA.bolts));
-  for (const index of spell.shards) {
-    const shard = SHARDS[index];
+function workUnits(complexity, size, cap = 0, height = 1) {
+  if (cap > 0) size = Math.min(size, cap);
+  const maximum = 2 ** 30;
+  switch (complexity) {
+    case "constant": return 1;
+    case "logarithmic": return Math.ceil(Math.log2(size + 1));
+    case "linearithmic": return Math.ceil(size * Math.log2(size + 1));
+    case "quadratic": return Math.min(maximum, size * size);
+    case "exponential": return size >= 30 ? maximum : Math.min(maximum, 2 ** size);
+    case "pseudo": return Math.min(maximum, size * Math.max(1, height));
+    default: return size;
+  }
+}
+
+function isSorted(bolts) {
+  if (bolts.some(bolt => !bolt || typeof bolt !== "object" || typeof bolt.power !== "number")) return false;
+  return bolts.every((bolt, i) => i === 0 || (bolts[i - 1].power || 0) <= (bolt.power || 0));
+}
+
+// A body is an interpreter operation: cards continue to be plain algorithms which know nothing about their owner.
+class Execution {
+  constructor(spell, battleJson, trace) {
+    this.indexes = spell.shards;
+    this.battleJson = battleJson;
+    this.trace = trace;
+    this.options = DATA.execution || {};
+    this.extended = DATA.execution !== undefined;
+    this.order = "sorted";
+    this.work = 0;
+    this.discount = 1;
+    for (const rule of this.options.small_program_work || []) {
+      if (this.indexes.length && this.indexes.length <= rule.max_cards) this.discount *= rule.factor;
+    }
+  }
+
+  hooks(when, shard, bolts) {
+    bolts = hooked(when, shard.role, bolts, this.battleJson);
+    for (const hook of HOOKS) {
+      if (hook.when === when && hook.role === shard.role) this.order = SHARDS[hook.shard].makes || this.order;
+    }
+    return bolts;
+  }
+
+  bill(shard, slot, given, returned, measured, sortedInput) {
+    let complexity = shard.complexity || "linear";
+    if (shard.worst_case && shard.worst_case.input === (sortedInput ? "sorted" : "unsorted")) complexity = shard.worst_case.complexity;
+    complexity = (this.options.role_complexity || {})[shard.role] || complexity;
+    const height = shard.height === undefined ? (this.options.height || 1) : shard.height;
+    let work = workUnits(complexity, Math.max(given, returned), shard.cap_n || 0, height);
+    if (shard.work_mode === "measured" && measured) {
+      work = Math.max(1, measured.calls + Object.values(measured.loops).reduce((a, b) => a + b, 0));
+    }
+    if ((slot === 0 && this.options.free_first_work) || (this.options.jit && (this.options.ran || []).includes(shard.id))) work = 0;
+    return Math.floor(work * (this.options.work_factor === undefined ? 1 : this.options.work_factor));
+  }
+
+  call(slot, bolts, body, part) {
+    const shard = SHARDS[this.indexes[slot]];
+    const original = JSON.parse(JSON.stringify(bolts));
+    const originalOrder = this.order;
+    bolts = this.hooks("before", shard, bolts);
+    const given = bolts.length;
+    const sortedInput = isSorted(bolts);
     let snapshot;
-    let given;
     let returned;
-    bolts = hooked("before", shard.role, bolts, battleJson);
+    let measured;
     try {
       const fn = load(shard);
-      given = bolts.length;
       counts = { loops: {}, calls: {} };
-      const result = fn(bolts, JSON.parse(battleJson));
+      const result = fn(bolts, JSON.parse(this.battleJson));
       if (!Array.isArray(result)) throw new TypeError(shard.name + " must return an array of bolts, not " + typeof result);
       returned = result.length;
       snapshot = JSON.stringify(result.slice(0, DATA.limit));
+      if (COUNT) measured = { loops: counts.loops, calls: counts.calls[shard.name] || 0 };
     } catch (error) {
       throw { shard, error };
     }
-    bolts = hooked("after", shard.role, JSON.parse(snapshot), battleJson);
+    const work = this.bill(shard, slot, given, returned, measured, sortedInput);
+    const projected = Math.min(2 ** 30, Math.floor((this.work + work) * this.discount));
+    const pruned = Boolean(this.options.prune) && projected > (this.options.budget === undefined ? 2 ** 30 : this.options.budget);
+    if (pruned) {
+      bolts = original;
+      this.order = originalOrder;
+    } else {
+      this.work += work;
+      bolts = JSON.parse(snapshot);
+      let extra = 0;
+      if (shard.role === "source") {
+        for (const rule of this.options.source_power || []) {
+          if (!rule.paradigm || rule.paradigm === shard.paradigm) extra += rule.add;
+        }
+      }
+      if (shard.role === "strike" && sortedInput) extra += this.options.sorted_strike_power || 0;
+      if (extra) bolts = bolts.map(bolt => bolt && typeof bolt.power === "number" && (shard.role === "source" || !bolt.block)
+        ? { ...bolt, power: bolt.power + extra } : bolt);
+      this.order = shard.makes || this.order;
+      bolts = this.hooks("after", shard, bolts);
+    }
     const step = { shard: shard.id, given, returned, bolts: JSON.parse(JSON.stringify(bolts)).slice(0, DATA.traceLimit) };
-    if (COUNT) {
-      step.loops = counts.loops;
-      step.calls = counts.calls[shard.name] || 0;
-      // The whole volley the stage returned, summed (the trace keeps only its first bolts).
+    if (measured) {
+      Object.assign(step, measured);
       step.power = 0;
       step.elements = {};
       for (const bolt of bolts) {
@@ -124,9 +199,74 @@ function runSpell(spell, battleJson, trace) {
         if (bolt && typeof bolt.element === "string") step.elements[bolt.element] = (step.elements[bolt.element] || 0) + 1;
       }
     }
-    trace.push(step);
+    if (this.extended) {
+      step.slot = slot;
+      step.input_sorted = sortedInput;
+      if (body !== undefined) Object.assign(step, { body, part });
+      if (pruned) step.pruned = true;
+    }
+    this.trace.push(step);
+    return { bolts, accepted: !pruned };
   }
-  return bolts;
+
+  body(owner, slot, bolts, depth) {
+    const shard = SHARDS[this.indexes[slot]];
+    const nested = depth > 1 && shard.splits && slot + 1 < this.indexes.length;
+    let pieces = [bolts];
+    for (let level = 0; level < (nested ? 1 : depth); level++) {
+      pieces = pieces.flatMap(piece => {
+        const half = Math.ceil(piece.length / 2);
+        return [piece.slice(0, half), piece.slice(half)];
+      });
+    }
+    let out = [];
+    let consumed = slot + 1;
+    for (let part = 0; part < pieces.length; part++) {
+      let result = this.call(slot, pieces[part], owner, part);
+      if (nested && result.accepted) {
+        const child = this.body(slot, slot + 1, result.bolts, depth - 1);
+        result.bolts = child.bolts;
+        consumed = child.consumed;
+      }
+      out = out.concat(result.bolts);
+    }
+    const extra = this.options.rejoin_power || 0;
+    if (extra) out = out.map(bolt => ({ ...bolt, power: bolt.power + extra }));
+    out = out.slice(0, DATA.limit);
+    const elements = {};
+    let power = 0;
+    for (const bolt of out) {
+      if (bolt && typeof bolt.power === "number") power += bolt.power;
+      if (bolt && typeof bolt.element === "string") elements[bolt.element] = (elements[bolt.element] || 0) + 1;
+    }
+    Object.assign(this.trace[this.trace.length - 1], {
+      joined: JSON.parse(JSON.stringify(out)).slice(0, DATA.traceLimit), joined_returned: out.length,
+      joined_power: power, joined_elements: elements,
+    });
+    return { bolts: out, consumed };
+  }
+
+  run(bolts) {
+    let slot = 0;
+    const bodyRule = this.options.body || {};
+    const depth = bodyRule.kind === "split" ? Math.max(0, Math.min(2, bodyRule.depth || 0)) : 0;
+    while (slot < this.indexes.length) {
+      const result = this.call(slot, bolts);
+      bolts = result.bolts;
+      const shard = SHARDS[this.indexes[slot]];
+      if (depth && result.accepted && shard.splits && slot + 1 < this.indexes.length) {
+        const child = this.body(slot, slot + 1, bolts, depth);
+        bolts = child.bolts;
+        slot = child.consumed;
+      } else slot++;
+    }
+    return bolts;
+  }
+}
+
+function runSpell(spell, battleJson, trace) {
+  const bolts = JSON.parse(JSON.stringify(spell.bolts !== undefined ? spell.bolts : DATA.bolts));
+  return new Execution(spell, battleJson, trace).run(bolts);
 }
 
 const defaultBattle = JSON.stringify(DATA.battle);

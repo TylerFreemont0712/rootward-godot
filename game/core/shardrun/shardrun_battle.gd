@@ -427,6 +427,8 @@ static func new_turn(state: Dictionary, battle: Dictionary, catalog: Dictionary)
 
 ## Per-turn traits: a shifting weakness moves on, a pattern ward changes its element, nullify is ready again.
 static func begin_turn(battle: Dictionary) -> void:
+	if battle.has("initiative_mana"):
+		battle.initiative_mana = 0
 	for foe: Dictionary in battle.foes:
 		foe.nullified = false
 		var foe_trait: Dictionary = foe.get("trait", {})

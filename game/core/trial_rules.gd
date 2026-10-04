@@ -3,12 +3,21 @@ extends RefCounted
 ## A tiny scripted route around the real program rules. Progress is data in the run snapshot, never scene state.
 
 
-static func begin(state: Dictionary, content: Dictionary) -> Dictionary:
+static func begin(state: Dictionary, content: Dictionary, catalog: Dictionary = {}) -> Dictionary:
 	var next := state.duplicate(true)
 	var setup: Dictionary = content.setup
 	next.status = "map"
 	next.erase("draft")
 	next.paradigm = setup.paradigm
+	next.focus = String(setup.get("focus", "table"))
+	ShardrunSchemas.program_state_defaults(next)
+	if not catalog.is_empty():
+		var paradigm := ProgramDraft.paradigm_of(catalog, next.paradigm)
+		var focus := ProgramDraft.focus_of(catalog, next.paradigm, next.focus)
+		if paradigm.has("law"):
+			Shardrun.gain_relic(next, catalog.relics[paradigm.law], catalog)
+		if not focus.is_empty():
+			Shardrun.gain_relic(next, catalog.relics[focus.relic], catalog)
 	next.deck = (setup.deck as Array).duplicate()
 	next.map = (setup.map as Dictionary).duplicate(true)
 	var rows := 0

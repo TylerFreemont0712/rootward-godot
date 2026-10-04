@@ -4,6 +4,7 @@
   "rarity": "rare",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "table",
   "role": "source",
   "complexity": "constant",
   "big_o": "O(k²)",

@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "heap",
   "role": "import",
   "complexity": "constant",
   "makes": "unsorted",

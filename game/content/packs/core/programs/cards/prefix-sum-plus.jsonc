@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 0,
   "paradigm": "search-index",
+  "focus": "bisect",
   "role": "shape",
   "complexity": "linear",
   "makes": "sorted",

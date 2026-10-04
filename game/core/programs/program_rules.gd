@@ -115,20 +115,55 @@ static func stages(state: Dictionary, trace: Array, catalog: Dictionary) -> Arra
 	for index in trace.size():
 		var step: Dictionary = trace[index]
 		var card: Dictionary = catalog.shards.get(step.shard, {})
+		var before_order := order
 		order = hooked(order, m.hooks, "before", card, catalog).order
 		# LEARN: n is the larger of the volley in and the volley out. A card that turns 7 bolts into 21 pairs did 21
 		# pieces of work even though it was handed 7; counting only its input would make growing cards free.
 		var n := maxi(int(step.given), int(step.get("returned", step.given)))
-		var complexity := ProgramRelics.complexity(card, order, m)
+		var input_order := ("sorted" if step.input_sorted else "unsorted") if step.has("input_sorted") else order
+		var complexity := ProgramRelics.complexity(card, input_order, m)
 		var height := int(card.get("height", front_need(state)))
 		var work := work_units(complexity, n, int(card.get("cap_n", 0)), height)
-		if (index == 0 and m.free_first_work) or (m.jit and step.shard in ran):
+		if card.get("work_mode", "") == "measured":
+			work = maxi(1, int(step.get("measured", work)))
+		if step.get("pruned", false):
+			work = 0
+		if (int(step.get("slot", index)) == 0 and m.free_first_work) or (m.jit and step.shard in ran):
 			work = 0
 		work = floori(work * float(m.work_factor))
-		out.append({"card": step.shard, "n": n, "given": int(step.given), "work": work, "complexity": complexity})
+		out.append(
+			{
+				"card": step.shard,
+				"n": n,
+				"given": int(step.given),
+				"work": work,
+				"complexity": complexity,
+				"pruned": bool(step.get("pruned", false))
+			}
+		)
+		if step.has("slot"):
+			out.back().slot = int(step.slot)
+		if step.get("pruned", false):
+			order = before_order
+			continue
 		if card.has("makes"):
 			order = card.makes
 		order = hooked(order, m.hooks, "after", card, catalog).order
+	var slots := {}
+	for i in trace.size():
+		slots[int(trace[i].get("slot", i))] = true
+	var factor := 1.0
+	for rule: Dictionary in m.small_program_work:
+		if not slots.is_empty() and slots.size() <= int(rule.max_cards):
+			factor *= float(rule.factor)
+	# Allocate rounding across stages so the discounted total is floor(total * factor).
+	var before_work := 0
+	var after_work := 0
+	for stage in out:
+		before_work += int(stage.work)
+		var next_work := floori(before_work * factor)
+		stage.work = next_work - after_work
+		after_work = next_work
 	return out
 
 
@@ -294,6 +329,8 @@ static func play(
 		battle.acted = []
 	var stage_list := stages(state, outcome.get("work", []), catalog) if outcome.ok else ([] as Array[Dictionary])
 	var work := total_work(stage_list)
+	var relics := ProgramRelics.modifiers(state, catalog)
+	ProgramMemory.begin(state, battle, catalog)
 	var context := landing_context(state, battle, spell, stage_list, work, catalog)
 	# What ran is what the cards spent afterwards may do (ProgramDeck.spend), so it is kept with the battle.
 	battle.last_ran = context.ran
@@ -320,14 +357,21 @@ static func play(
 		var crashed := "%s crashes: %s" % [spell.name, outcome.reason]
 		Shardrun.record(state, {"kind": "fizzle", "spell": spell.id, "amount": cost, "text": crashed})
 		remember(battle, spell.shards, [])
+		ProgramMemory.row(battle, 0, 0, relics)
 		return played
 	var limit := budget(state, catalog)
 	if work > limit:
 		var text := "%s runs out of time: %d ops against a budget of %d." % [spell.name, work, limit]
 		Shardrun.record(state, {"kind": "timeout", "spell": spell.id, "amount": work, "cost": cost, "text": text})
 		remember(battle, spell.shards, [])
+		ProgramMemory.row(battle, 0, 0, relics)
+		state.integrity = maxi(0, int(state.integrity) - int(relics.timeout_integrity))
+		if int(state.integrity) <= 0:
+			played.lethal = true
+			if not rehearsal:
+				ShardrunBattle.lose(state)
 		return played
-	var bolts := reaim(normalize(outcome.bolts, catalog), aimed_at, battle)
+	var bolts := reaim(normalize(outcome.bolts, catalog, bolt_limit(state, catalog)), aimed_at, battle)
 	state.stats.bolts += bolts.size()
 	var noun := "bolt" if bolts.size() == 1 else "bolts"
 	var cast_text := "%s: %d %s, %d ops, %d mana." % [spell.name, bolts.size(), noun, work, cost]
@@ -378,8 +422,31 @@ static func landing_context(
 		"capacity": int(spell.capacity),
 		"speed": slowest_class(stage_list),
 		"out_sped": out_sped,
-		"ran": ran_cards(battle, spell.shards, catalog),
+		"ran": executed_cards(battle, spell.shards, stage_list, catalog),
+		"work": work,
 	}
+
+
+## A pruned step is attempted in the sandbox but its output and side effects are discarded.
+static func executed_cards(battle: Dictionary, ids: Array, stage_list: Array[Dictionary], catalog: Dictionary) -> Array:
+	var candidates := ran_cards(battle, ids, catalog)
+	if stage_list.is_empty() or not stage_list.any(func(stage: Dictionary) -> bool: return stage.has("slot")):
+		return candidates
+	var accepted := {}
+	for stage in stage_list:
+		if not stage.get("pruned", false):
+			accepted[int(stage.slot)] = true
+	var out: Array = []
+	var slot := 0
+	for id: String in ids:
+		if ProgramDeck.is_import(id, catalog):
+			if id in candidates:
+				out.append(id)
+			continue
+		if accepted.has(slot) and id in candidates:
+			out.append(id)
+		slot += 1
+	return out
 
 
 ## The cards of a program that actually run: its imports, and its steps up to a living Unreachable's `return`. Dead
@@ -402,10 +469,14 @@ static func ran_cards(battle: Dictionary, card_ids: Array, catalog: Dictionary) 
 
 
 ## Program output as bolts the rules accept: {power (whole, 0..max_power), element, foe?, block?}, at most max_bolts.
-static func normalize(raw: Array, catalog: Dictionary) -> Array[Dictionary]:
+static func bolt_limit(state: Dictionary, catalog: Dictionary) -> int:
+	return maxi(int(config_of(catalog).max_bolts), int(ProgramRelics.modifiers(state, catalog).max_bolts))
+
+
+static func normalize(raw: Array, catalog: Dictionary, limit := -1) -> Array[Dictionary]:
 	var config := config_of(catalog)
 	var out: Array[Dictionary] = []
-	for candidate: Variant in raw.slice(0, int(config.max_bolts)):
+	for candidate: Variant in raw.slice(0, int(config.max_bolts) if limit < 0 else limit):
 		if not candidate is Dictionary:
 			continue
 		var bolt: Dictionary = candidate
@@ -418,8 +489,9 @@ static func normalize(raw: Array, catalog: Dictionary) -> Array[Dictionary]:
 		var foe: Variant = bolt.get("foe")
 		if (foe is int or foe is float) and int(foe) >= 0:
 			clean.foe = int(foe)
-		if bolt.get("block", false) == true:
-			clean.block = true
+		for flag: String in ["block", "stash", "from_index", "pivot"]:
+			if bolt.get(flag, false) == true:
+				clean[flag] = true
 		out.append(clean)
 	return out
 
@@ -458,155 +530,7 @@ static func reaim(bolts: Array[Dictionary], aimed_at: Array, battle: Dictionary)
 static func resolve(
 	state: Dictionary, battle: Dictionary, bolts: Array[Dictionary], catalog: Dictionary, context := {}
 ) -> Dictionary:
-	var balance: Dictionary = catalog.balance
-	var m := ShardrunRules.relic_modifiers(state, catalog)
-	var relics := ProgramRelics.modifiers(state, catalog)
-	var landing := ProgramRelics.landing(bolts, relics)
-	var program_factor := ProgramRelics.program_factor(landing, context, relics)
-	var hottest := ProgramRelics.strongest(landing) if float(relics.strongest_mult) != 1.0 else -1
-	var out_sped: Array = context.get("out_sped", [])
-	var first := initiative(state, catalog)
-	var alive := (battle.foes as Array).filter(func(foe: Dictionary) -> bool: return int(foe.hp) > 0)
-	var targeted := targets(landing, alive)
-	# The guardian pool judges the whole volley before a bolt flies (ADR-0026).
-	var plan := GuardianLanding.plan(landing, alive, context, int(m.bolt_power))
-	var dealt := 0
-	var wasted := 0
-	var gathered := 0
-	var locked := 0
-	var fixed := 0
-	for index in landing.size():
-		var bolt: Dictionary = landing[index]
-		var power := int(bolt.power) + int(m.bolt_power)
-		var shape := {"bolt": index, "target": "front"}
-		if bolt.get("block", false):
-			battle.block += power
-			gathered += power
-			var ward := {
-				"kind": "ward", "amount": power, "element": bolt.element, "text": "A ward gathers %d block." % power
-			}
-			ward.merge(shape)
-			Shardrun.record(state, ward)
-			continue
-		if alive.is_empty():
-			break
-		var at := int(bolt.get("foe", 0))
-		var foe: Dictionary = alive[at] if at < alive.size() else alive[0]
-		if int(foe.hp) == 0:
-			wasted += power
-			var gone := {"kind": "wasted", "foe": foe.uid, "amount": power, "element": bolt.element}
-			gone.merge(shape)
-			gone.text = "%d power flies at %s, already down." % [power, foe.name]
-			Shardrun.record(state, gone)
-			continue
-		var foe_trait: Dictionary = foe.get("trait", {})
-		if foe_trait.get("kind") == "nullify-first" and not foe.nullified:
-			foe.nullified = true
-			var absorb := {"kind": "absorb", "foe": foe.uid, "element": bolt.element}
-			absorb.merge(shape)
-			absorb.text = "%s swallows the first bolt whole." % foe.name
-			Shardrun.record(state, absorb)
-			continue
-		if fixed_point(foe, context):
-			fixed += 1
-			var same := {"kind": "absorb", "foe": foe.uid, "element": bolt.element, "word": "fixed point"}
-			same.merge(shape)
-			same.text = "%s recognises its own source: the same program cannot hurt it." % foe.name
-			Shardrun.record(state, same)
-			continue
-		if foe_trait.get("kind") == "thick-hide" and power < int(foe_trait.threshold):
-			var glance := {"kind": "glance", "foe": foe.uid, "element": bolt.element}
-			glance.merge(shape)
-			glance.text = "A %d-power bolt glances off %s." % [power, foe.name]
-			Shardrun.record(state, glance)
-			continue
-		var holder := lock_holder(foe, alive, targeted)
-		if not holder.is_empty():
-			locked += 1
-			var held := {"kind": "locked", "foe": foe.uid, "amount": power, "element": bolt.element}
-			held.merge(shape)
-			held.text = "%s holds its lock: this program never touches %s." % [foe.name, holder.name]
-			Shardrun.record(state, held)
-			continue
-		var verdict := GuardianLanding.bolt(state, battle, foe, bolt, index, power, plan, shape)
-		if verdict.skip:
-			continue
-		var multiplier: float = m.damage_multiplier * program_factor * float(verdict.factor)
-		if index == hottest:
-			multiplier *= float(relics.strongest_mult)
-		var first_strike: bool = foe.uid in out_sped
-		if first_strike:
-			multiplier *= first
-		if foe_trait.get("kind") == "pattern-ward" and bolt.element != foe.get("pattern"):
-			multiplier *= float(config_of(catalog).get("pattern_off", balance.pattern_off_multiplier))
-		# A relic can make every bolt the element a foe is weak to (and then nothing resists it).
-		var weak: bool = bolt.element in foe.weak or (relics.all_elements and not (foe.weak as Array).is_empty())
-		var resisted: bool = not weak and bolt.element in foe.resist
-		if weak:
-			multiplier *= float(balance.weak_multiplier) + m.weak_bonus
-		elif resisted:
-			multiplier *= float(balance.resist_multiplier)
-		var damage := floori(power * multiplier)
-		var own := GuardianLanding.body(state, foe, damage, power, bolt.element, shape)
-		if not own.is_empty():
-			dealt += int(own.dealt)
-			wasted += int(own.wasted)
-			GuardianLanding.count(plan, foe, int(own.dealt))
-			GuardianLanding.after_hit(battle, alive, foe)
-			if int(foe.hp) == 0:
-				GuardianLanding.on_defeat(state, battle, foe)
-			continue
-		var blocked := mini(int(foe.shield), damage)
-		foe.shield -= blocked
-		damage -= blocked
-		var landed := mini(damage, int(foe.hp))
-		foe.hp -= landed
-		dealt += landed
-		var hit := {"kind": "hit", "foe": foe.uid, "amount": landed, "element": bolt.element}
-		hit.merge(shape)
-		if first_strike and first != 1.0:
-			hit.initiative = true
-		if weak:
-			hit.affinity = "weak"
-		elif resisted:
-			hit.affinity = "resist"
-		if blocked > 0:
-			hit.blocked = blocked
-		if damage > landed:
-			hit.overkill = damage - landed
-		var shield_note := " (%d into its shield)" % blocked if blocked > 0 else ""
-		var lead := "Initiative: " if hit.has("initiative") else ""
-		hit.text = "%s%s takes %d%s." % [lead, foe.name, landed, shield_note]
-		Shardrun.record(state, hit)
-		GuardianLanding.count(plan, foe, landed)
-		if int(foe.hp) == 0:
-			Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})
-			GuardianLanding.on_defeat(state, battle, foe)
-		GuardianLanding.after_hit(battle, alive, foe)
-		var spill := damage - landed
-		if relics.overkill_flows:
-			var flowed := _flow(state, alive, foe, spill, bolt.element, shape)
-			spill = int(flowed.spill)
-			dealt += int(flowed.dealt)
-		wasted += spill
-	if float(relics.wasted_to_block) > 0.0 and wasted > 0:
-		var kept := floori(wasted * float(relics.wasted_to_block))
-		if kept > 0:
-			battle.block += kept
-			gathered += kept
-			var text := "The unused %d power is kept as block." % kept
-			Shardrun.record(state, {"kind": "ward", "amount": kept, "element": "none", "text": text})
-	dealt += GuardianLanding.finish(state, battle, plan, context)
-	var kills := alive.filter(func(foe: Dictionary) -> bool: return int(foe.hp) == 0).size()
-	return {
-		"dealt": dealt,
-		"wasted": wasted,
-		"block": gathered,
-		"kills": kills,
-		"locked": locked,
-		"fixed": fixed,
-		"notes": plan.notes,
-	}
+	return ProgramLanding.resolve(state, battle, bolts, catalog, context)
 
 
 ## The uids of the foes a volley's attacking bolts are aimed at (a bolt without an aim, or aimed past the last, flies
@@ -614,7 +538,7 @@ static func resolve(
 static func targets(bolts: Array[Dictionary], alive: Array) -> Dictionary:
 	var aimed := {}
 	for bolt in bolts:
-		if bolt.get("block", false) or alive.is_empty():
+		if bolt.get("block", false) or bolt.get("stash", false) or alive.is_empty():
 			continue
 		var at := int(bolt.get("foe", 0))
 		aimed[(alive[at] if at < alive.size() else alive[0]).uid] = true
@@ -685,6 +609,8 @@ static func _flow(
 	var start := alive.find(from)
 	var step := 1
 	var dealt := 0
+	var exact: Array = []
+	var damage_by := {}
 	while spill > 0 and step < alive.size():
 		var next: Dictionary = alive[(start + step) % alive.size()]
 		step += 1
@@ -697,6 +623,10 @@ static func _flow(
 		next.hp -= taken
 		spill -= taken
 		dealt += taken
+		damage_by[next.uid] = taken
+		ProgramMemory.hit(state.battle, next, {"power": taken, "element": element}, taken)
+		if int(next.hp) == 0 and spill == 0:
+			exact.append(next.uid)
 		var hit := {"kind": "hit", "foe": next.uid, "amount": taken, "element": element, "flowed": true}
 		hit.merge(shape)
 		hit.text = "The overflow runs on: %s takes %d." % [next.name, taken]
@@ -704,7 +634,7 @@ static func _flow(
 		if int(next.hp) == 0:
 			Shardrun.record(state, {"kind": "defeat", "foe": next.uid, "text": "%s breaks apart." % next.name})
 			GuardianLanding.on_defeat(state, state.battle, next)
-	return {"spill": spill, "dealt": dealt}
+	return {"spill": spill, "dealt": dealt, "exact": exact, "damage": damage_by}
 
 
 ## Whether overflow can run on into a foe: only a plain one. A foe whose trait changes how damage lands (a guardian, its
@@ -769,7 +699,7 @@ static func preview(state: Dictionary, spell_id: String, outcome: Dictionary, ca
 	notes.append_array(landed.notes)
 	notes.append_array(GuardianLanding.telegraph(battle, shadow, spell.shards, stage_list, catalog))
 	view.notes = notes
-	view.bolts = normalize(outcome.bolts, catalog).size()
+	view.bolts = normalize(outcome.bolts, catalog, bolt_limit(state, catalog)).size()
 	view.damage = landed.dealt
 	view.wasted = landed.wasted
 	view.block = played.gained

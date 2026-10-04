@@ -5,6 +5,7 @@
   "rarity": "rare",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "memo",
   "role": "shape",
   "complexity": "linear",
   "summary": "The Fibonacci surge from a table built once: each bolt gains fib(i) for its place i, up to fib(20), in O(n).",

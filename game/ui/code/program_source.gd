@@ -20,7 +20,13 @@ const OPENERS := {
 ## `key` names a line for as long as it means the same thing, so the panel can tell which lines are new: a call is keyed
 ## by its slot and card, a card's function by the card and the line within it.
 static func lines(
-	language: String, card_ids: Array, catalog: Dictionary, seed: Array = [], imports: Array = [], hooks: Array = []
+	language: String,
+	card_ids: Array,
+	catalog: Dictionary,
+	seed: Array = [],
+	imports: Array = [],
+	hooks: Array = [],
+	body := {}
 ) -> Array[Dictionary]:
 	var python := language == SandboxJob.PYTHON
 	var comment := CodeLanguage.comment(language)
@@ -45,7 +51,8 @@ static func lines(
 		seed = ProgramRules.config_of(catalog).seed
 	_add(out, _seed_line(seed, language), "seed", "seed")
 	var called: Array = []
-	for slot in steps.size():
+	var slot := 0
+	while slot < steps.size():
 		var card: Dictionary = catalog.shards.get(steps[slot], {})
 		called.append_array(_hooks(out, hooks, "before", card, slot, language, catalog))
 		var call := _call(card, String(steps[slot]), language)
@@ -54,6 +61,11 @@ static func lines(
 		line.slot = slot
 		called.append(steps[slot])
 		called.append_array(_hooks(out, hooks, "after", card, slot, language, catalog))
+		slot += 1
+		if card.get("splits", false) and int(body.get("depth", 0)) > 0 and slot < steps.size():
+			var listing := ProgramBodySource.append(out, steps, slot, language, catalog, hooks, body)
+			slot = int(listing.next)
+			called.append_array(listing.called)
 	if steps.is_empty():
 		_add(out, Text.f("%s%s play cards to write the program", [_indent(language), comment]), "comment", "empty")
 	_add(out, "    return bolts" if python else "  return bolts;", "return", "return")

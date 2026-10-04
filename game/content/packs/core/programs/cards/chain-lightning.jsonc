@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "sprint",
   "role": "strike",
   "complexity": "linear",
   "art": "chain-lightning",

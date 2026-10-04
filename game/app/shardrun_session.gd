@@ -63,7 +63,7 @@ func start(language: String, difficulty: String, seed := "", sandbox := false) -
 	var before := state
 	state = Shardrun.start(catalog, options)
 	if save_key == "trial" and not trial_content.is_empty():
-		state = TrialRules.begin(state, trial_content)
+		state = TrialRules.begin(state, trial_content, catalog)
 	_saved(saves.save_run(save_key, state))
 	changed.emit()
 	return {"ok": true, "before": before, "state": state, "replay": {}}

@@ -37,7 +37,7 @@ func test_the_cast_lands_what_its_preview_said() -> void:
 	var previews: Dictionary = await session.previews()
 	var view: Dictionary = previews.spells["spell-1"]
 	assert_bool(view.program).is_true()
-	assert_int((view.steps as Array).size()).is_equal((session.state.spells[0].shards as Array).size())
+	assert_int((view.steps as Array).size()).is_equal(ProgramDeck.steps(session.state.spells[0].shards, catalog).size())
 	var cast: Dictionary = await session.command({"type": "cast", "spell_id": "spell-1"})
 	assert_bool(cast.ok).is_true()
 	assert_int(cast.replay.run.work).is_equal(int(view.work))

@@ -24,7 +24,9 @@
   "draft": {
     "paradigms_offered": 3,
     "rounds": 5,
-    "pack_size": 3
+    "pack_size": 3,
+    "paradigm_weight": 2.0,
+    "focus_weight": 3.0
   },
   // Every deck starts with these, whatever the paradigm.
   "basics": ["salvo", "salvo", "fork", "amplify", "ward", "ward", "round-robin", "kindle"],
@@ -35,9 +37,48 @@
       "tier": "O(n log n)",
       "colour": "#b48cff",
       "summary": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
-      "signature": ["divide", "merge-strike"],
-      "pool": ["merge-sort", "divide", "merge-strike", "fork", "amplify", "quick-sort", "quickselect",
-        "recursion-tree", "split", "import-math", "import-copy", "recursive-mirror"]
+      "signature": [
+        "divide",
+        "merge-strike"
+      ],
+      "pool": ["divide", "merge-strike", "quick-sort", "quickselect", "recursion-tree", "split", "import-math", "import-copy", "recursive-mirror", "base-case", "k-way-merge", "dutch-flag"],
+      "law": "recurse",
+      "swap": {
+        "out": "fork",
+        "in": "split"
+      },
+      "focuses": [
+        {
+          "id": "deep",
+          "name": "Deep Recursion",
+          "tag": "deep",
+          "rule": "Recurse goes one level deeper: the card after a split runs on each quarter.",
+          "signature": "base-case",
+          "relic": "focus-deep",
+          "plays_like": "Towers of small cards on small pieces.",
+          "teaches": "Recursion depth and base cases."
+        },
+        {
+          "id": "merge",
+          "name": "Merger",
+          "tag": "merge",
+          "rule": "When halves rejoin, every bolt gains 1.",
+          "signature": "k-way-merge",
+          "relic": "focus-merge",
+          "plays_like": "Splits and merges in a loop.",
+          "teaches": "The combine step of merge sort."
+        },
+        {
+          "id": "pivot",
+          "name": "Partitioner",
+          "tag": "pivot",
+          "rule": "A pivot card marks its pivot bolt, which lands doubled on the toughest foe.",
+          "signature": "dutch-flag",
+          "relic": "focus-pivot",
+          "plays_like": "Partitions, selection, quick sort.",
+          "teaches": "Partitioning, pivots, linear-time selection."
+        }
+      ]
     },
     {
       "id": "search-index",
@@ -45,9 +86,48 @@
       "tier": "O(log n)",
       "colour": "#5cc8b8",
       "summary": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
-      "signature": ["prefix-sum", "binary-execute"],
-      "pool": ["merge-sort", "prefix-sum", "binary-execute", "hash-merge", "chill", "bisect-insert", "dedupe",
-        "two-pointers", "hash-aim", "import-bisect", "import-collections", "run-length"]
+      "signature": [
+        "prefix-sum",
+        "binary-execute"
+      ],
+      "pool": ["prefix-sum", "binary-execute", "hash-merge", "bisect-insert", "dedupe", "two-pointers", "hash-aim", "import-bisect", "import-collections", "run-length", "lookup", "two-sum", "interpolation-search"],
+      "law": "the-index",
+      "swap": {
+        "out": "kindle",
+        "in": "merge-sort"
+      },
+      "focuses": [
+        {
+          "id": "index",
+          "name": "Indexer",
+          "tag": "index",
+          "rule": "The index holds 16, and the seed takes its two strongest bolts.",
+          "signature": "lookup",
+          "relic": "focus-index",
+          "plays_like": "Bank overkill, then spend it precisely.",
+          "teaches": "Indexes and sorted containers."
+        },
+        {
+          "id": "hash",
+          "name": "Hasher",
+          "tag": "hash",
+          "rule": "A bolt that lands on a foe's weakness gains 2 power.",
+          "signature": "two-sum",
+          "relic": "focus-hash",
+          "plays_like": "Element maps and O(1) lookups.",
+          "teaches": "Hash maps, sets, Bloom filters."
+        },
+        {
+          "id": "bisect",
+          "name": "Bisector",
+          "tag": "bisect",
+          "rule": "A volley sorted when a strike reads it gives each of that strike's bolts +1.",
+          "signature": "interpolation-search",
+          "relic": "focus-bisect",
+          "plays_like": "Sort once, search many times.",
+          "teaches": "Binary search and its relatives."
+        }
+      ]
     },
     {
       "id": "greedy",
@@ -55,35 +135,150 @@
       "tier": "O(n)",
       "colour": "#f2a541",
       "summary": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
-      "signature": ["greedy-assign", "take-max"],
-      "pool": ["greedy-assign", "take-max", "sweep", "amplify", "charge", "make-change", "huffman",
-        "load-balance", "greedy-ward", "import-heapq", "stable-partition", "chain-lightning"]
+      "signature": [
+        "greedy-assign",
+        "take-max"
+      ],
+      "pool": ["greedy-assign", "take-max", "sweep", "make-change", "huffman", "load-balance", "greedy-ward", "import-heapq", "stable-partition", "chain-lightning", "activity-selection", "top-k", "first-fit-decreasing"],
+      "law": "local-optimum",
+      "swap": {
+        "out": "round-robin",
+        "in": "sweep"
+      },
+      "focuses": [
+        {
+          "id": "sprint",
+          "name": "Sprint",
+          "tag": "sprint",
+          "rule": "A program of three cards or fewer counts 25% less work.",
+          "signature": "activity-selection",
+          "relic": "focus-sprint",
+          "plays_like": "Tiny cheap programs every turn; kill chains for mana.",
+          "teaches": "Short-circuiting, break, streaming."
+        },
+        {
+          "id": "heap",
+          "name": "Priority Queue",
+          "tag": "heap",
+          "rule": "import heapq is in force from the first turn of every fight, free.",
+          "signature": "top-k",
+          "relic": "focus-heap",
+          "plays_like": "A few huge bolts, strongest first.",
+          "teaches": "Heaps, priority queues, heapify in O(n)."
+        },
+        {
+          "id": "schedule",
+          "name": "Scheduler",
+          "tag": "schedule",
+          "rule": "A program that hits every living foe gives each bolt +1.",
+          "signature": "first-fit-decreasing",
+          "relic": "focus-schedule",
+          "plays_like": "Spread bolts over crowds exactly.",
+          "teaches": "Scheduling, bin packing, interval problems."
+        }
+      ]
     },
     {
       "id": "brute-force",
       "name": "Brute Force",
-      "tier": "O(n²)",
+      "tier": "O(n\u00b2)",
       "colour": "#e2584f",
       "summary": "Try every pair, every subset. Enormous damage and perfect answers, but slow: foes act first, and a big volley times out.",
-      "signature": ["pairwise", "exhaustive-kill"],
-      "pool": ["pairwise", "exhaustive-kill", "kindle", "fork", "take-max", "bubble-sort", "power-set",
-        "linear-search", "exhaustive-ward", "import-itertools"]
+      "signature": [
+        "pairwise",
+        "exhaustive-kill"
+      ],
+      "pool": ["pairwise", "exhaustive-kill", "bubble-sort", "power-set", "linear-search", "exhaustive-ward", "import-itertools", "cartesian-product", "backtracking", "nested-strike"],
+      "law": "throw-hardware-at-it",
+      "swap": {
+        "out": "amplify",
+        "in": "bubble-sort"
+      },
+      "focuses": [
+        {
+          "id": "enumerate",
+          "name": "Enumerator",
+          "tag": "enumerate",
+          "rule": "Brute-force sources make bolts with +1 power; a volley may hold 192 bolts.",
+          "signature": "cartesian-product",
+          "relic": "focus-enumerate",
+          "plays_like": "Floods of hundreds of bolts.",
+          "teaches": "Combinatorics and growing search spaces."
+        },
+        {
+          "id": "prune",
+          "name": "Pruner",
+          "tag": "prune",
+          "rule": "A program never times out: the card that would cross the budget is skipped instead, and later cards still run.",
+          "signature": "backtracking",
+          "relic": "focus-prune",
+          "plays_like": "Exhaustive cards safely near the budget.",
+          "teaches": "Pruning, branch and bound, graceful degradation."
+        },
+        {
+          "id": "heavy",
+          "name": "Overclocker",
+          "tag": "heavy",
+          "rule": "The budget is 50% larger; a timeout costs 5 Integrity.",
+          "signature": "nested-strike",
+          "relic": "focus-heavy",
+          "plays_like": "The slowest, heaviest programs, all risk.",
+          "teaches": "Quadratic code and the limits of more hardware."
+        }
+      ]
     },
     {
       "id": "dynamic",
       "name": "Dynamic Programming",
-      "tier": "O(n·H)",
+      "tier": "O(n\u00b7H)",
       "colour": "#82d8ff",
       "summary": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
-      "signature": ["tabulate", "knapsack-strike"],
-      "pool": ["tabulate", "knapsack-strike", "fib-surge", "hash-merge", "chill", "kadane", "lis-strike",
-        "pascal-row", "knapsack-ward", "import-cache", "sliding-window"]
+      "signature": [
+        "tabulate",
+        "knapsack-strike"
+      ],
+      "pool": ["tabulate", "knapsack-strike", "fib-surge", "kadane", "lis-strike", "pascal-row", "knapsack-ward", "import-cache", "sliding-window", "memo-strike", "recurrence", "coin-change", "global-total", "release"],
+      "law": "the-table",
+      "swap": {
+        "out": "ward",
+        "in": "knapsack-ward"
+      },
+      "focuses": [
+        {
+          "id": "memo",
+          "name": "Memoiser",
+          "tag": "memo",
+          "rule": "functools.cache is in force from the first turn: a card that already ran this fight does no work.",
+          "signature": "memo-strike",
+          "relic": "focus-memo",
+          "plays_like": "Repeating programs that grow cheaper.",
+          "teaches": "Top-down DP and memoisation."
+        },
+        {
+          "id": "table",
+          "name": "Tabulator",
+          "tag": "table",
+          "rule": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
+          "signature": "recurrence",
+          "relic": "focus-table",
+          "plays_like": "Slow first turns, overwhelming late turns.",
+          "teaches": "Bottom-up DP and recurrences."
+        },
+        {
+          "id": "exact",
+          "name": "Optimiser",
+          "tag": "exact",
+          "rule": "A kill with no overkill writes double into the Table and gives 2 block.",
+          "signature": "coin-change",
+          "relic": "focus-exact",
+          "plays_like": "Exact kills, never a point wasted.",
+          "teaches": "Optimal substructure, knapsack and coin problems."
+        }
+      ]
     }
   ],
   // Cards any pack can offer beside the paradigm's own.
-  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "sweep", "round-robin", "ward", "hash-merge",
-    "take-max", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "global-total",
-    "generator", "release", "higher-order", "import-operator", "fire-constant", "frost-constant", "spark-constant", "zip-ward"],
+  "neutral": ["fork", "amplify", "kindle", "chill", "charge", "merge-sort", "round-robin", "ward", "salvo", "literal", "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "generator", "higher-order", "import-operator", "fire-constant", "frost-constant", "spark-constant", "zip-ward"],
   // Programming words for what a card does in the deck (ADR-0018), shown on the card with these meanings.
   "keywords": {
     "once": "Runs once a fight: after its program it leaves the deck until the next fight.",

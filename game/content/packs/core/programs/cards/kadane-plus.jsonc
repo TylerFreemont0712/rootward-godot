@@ -5,6 +5,7 @@
   "art": "kadane",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "table",
   "role": "shape",
   "complexity": "linear",
   "summary": "Kadane's algorithm scores each bolt as its power minus 3 and keeps a running best: the strongest run of neighbours fuses into one bolt, 2 stronger for every bolt in it.",

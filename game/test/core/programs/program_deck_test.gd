@@ -20,6 +20,9 @@ func _fight(deck: Array) -> Dictionary:
 	var options := {"seed": "deck-test", "language": "python", "difficulty": "beginner", "playstyle": "program"}
 	var state := Shardrun.start(catalog, options)
 	state = _step(state, {"type": "pick-paradigm", "paradigm_id": state.draft.offers[0]})
+	if not (state.draft.get("focus_offers", []) as Array).is_empty():
+		state = _step(state, {"type": "pick-focus", "focus_id": state.draft.focus_offers[0]})
+	state.relics = []
 	while state.status == "draft":
 		state = _step(state, {"type": "draft-card", "card_id": state.draft.pack[0]})
 	state.deck = deck.duplicate()

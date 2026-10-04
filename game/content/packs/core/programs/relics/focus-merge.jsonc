@@ -1,0 +1,14 @@
+{
+  "id": "focus-merge",
+  "name": "Merger",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "When halves rejoin, every bolt gains 1.",
+  "flavor": "Splits and merges in a loop.",
+  "effects": [
+    {
+      "kind": "rejoin-power",
+      "add": 1
+    }
+  ]
+}

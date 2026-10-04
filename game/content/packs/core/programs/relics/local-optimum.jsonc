@@ -1,0 +1,15 @@
+{
+  "id": "local-optimum",
+  "name": "Local Optimum",
+  "tier": "paradigm",
+  "icon": "unix-philosophy",
+  "summary": "A foe your program kills with Initiative pays 1 mana next turn, at most 2.",
+  "flavor": "The law of your paradigm.",
+  "effects": [
+    {
+      "kind": "kill-initiative-mana",
+      "amount": 1,
+      "max": 2
+    }
+  ]
+}

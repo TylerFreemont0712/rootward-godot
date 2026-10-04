@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "sprint",
   "role": "order",
   "complexity": "linear",
   "art": "stable-partition",

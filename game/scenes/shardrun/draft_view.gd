@@ -34,6 +34,20 @@ func _build() -> void:
 		for id: String in draft.offers:
 			row.add_child(_paradigm(ProgramDraft.paradigm_of(session.catalog, id)))
 		main.add_child(row)
+	elif not (draft.get("focus_offers", []) as Array).is_empty():
+		var paradigm := ProgramDraft.paradigm_of(session.catalog, state.paradigm)
+		main.add_child(Ui.label(Text.t("Choose your focus"), "Heading"))
+		main.add_child(
+			Ui.label(
+				Text.t("Your focus adds a rule and a signature card. All three are yours to choose from."),
+				"Muted",
+				true
+			)
+		)
+		var row := Ui.hbox([], 12)
+		for id: String in draft.focus_offers:
+			row.add_child(_focus(paradigm, ProgramDraft.focus_of(session.catalog, paradigm.id, id)))
+		main.add_child(row)
 	else:
 		var paradigm := ProgramDraft.paradigm_of(session.catalog, state.paradigm)
 		var heading := Text.f("Pack %d of %d", [int(draft.round) + 1, int(draft.rounds)])
@@ -119,3 +133,39 @@ func _pick(card_id: String) -> Control:
 	var face := Cards.shard(card, session.state.language, session.show_summaries(), 0, take)
 	face.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	return face
+
+
+## A focus's emblem has an optional asset; its coloured tag and signature face remain readable without one.
+func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
+	var colour := Color(paradigm.colour)
+	var emblem := Ui.picture("shardrun/focus-%s" % focus.id, Vector2(72, 72), "✦")
+	var name := Ui.tint(Ui.sized(Ui.label(Text.t(focus.name), "Heading"), 29), colour)
+	var tag := Ui.tint(Ui.label(focus.tag, "Subheading"), colour.lightened(0.2))
+	tag.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	var face := CardFace.create(
+		focus.signature, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.DECK
+	)
+	face.draggable = false
+	var choose := Ui.button(
+		Text.f("Choose %s", [Text.t(focus.name)]),
+		func() -> void: wants.emit({"type": "pick-focus", "focus_id": focus.id}),
+		"PrimaryButton"
+	)
+	var items: Array[Control] = [
+		name,
+		tag,
+		Ui.label(Text.t(focus.rule), "Muted", true),
+		face,
+		Ui.label(Text.t(focus.plays_like), "Muted", true),
+		Ui.spacer(),
+		choose
+	]
+	items.push_front(emblem)
+	var column := Ui.vbox(items, 10)
+	column.custom_minimum_size.y = 520
+	var tile := Ui.panel(column, "Card")
+	tile.add_theme_stylebox_override(
+		"panel", UiTheme.box(Color("#15101c").lerp(colour, 0.05), colour.darkened(0.3), 2, 12, Vector2(16, 14))
+	)
+	tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	return tile

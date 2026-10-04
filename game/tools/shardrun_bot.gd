@@ -61,6 +61,8 @@ func next_command() -> Dictionary:
 			if String(state.get("paradigm", "")) == "":
 				var offers: Array = draft.offers
 				return {"type": "pick-paradigm", "paradigm_id": paradigm if paradigm in offers else offers[0]}
+			if not (draft.get("focus_offers", []) as Array).is_empty():
+				return {"type": "pick-focus", "focus_id": draft.focus_offers[0]}
 			return {"type": "draft-card", "card_id": draft.pack[0]}
 		"map":
 			var better := _arrangement(state)

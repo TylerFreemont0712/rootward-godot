@@ -5,6 +5,7 @@
   "rarity": "rare",
   "cost": 2,
   "paradigm": "divide-conquer",
+  "focus": "merge",
   "role": "strike",
   "complexity": "linear",
   "summary": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20%. It flies at the toughest foe.",

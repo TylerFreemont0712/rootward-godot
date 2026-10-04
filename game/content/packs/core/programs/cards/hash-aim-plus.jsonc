@@ -5,6 +5,7 @@
   "art": "hash-aim",
   "cost": 1,
   "paradigm": "search-index",
+  "focus": "hash",
   "role": "strike",
   "complexity": "linear",
   "big_o": "O(n + m)",

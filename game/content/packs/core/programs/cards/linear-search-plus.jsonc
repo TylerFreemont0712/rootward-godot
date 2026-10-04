@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "brute-force",
+  "focus": "heavy",
   "role": "strike",
   "complexity": "linear",
   "big_o": "O(n·m)",

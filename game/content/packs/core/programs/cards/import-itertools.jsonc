@@ -4,6 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "brute-force",
+  "focus": "enumerate",
   "role": "import",
   "complexity": "constant",
   "summary": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you.",

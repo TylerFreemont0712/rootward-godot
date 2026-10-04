@@ -127,6 +127,9 @@ func _show_header(state: Dictionary) -> void:
 	var school := Ui.sized(Ui.label("", "Subheading"), 24) as Label
 	if state.get("playstyle", "") == "program" and not paradigm.is_empty():
 		school.text = "/ " + Text.t(String(paradigm.name)).to_upper()
+		var focus := ProgramDraft.focus_of(session.catalog, paradigm.id, String(state.get("focus", "")))
+		if not focus.is_empty():
+			school.text += " / " + Text.t(String(focus.name)).to_upper()
 		school.add_theme_color_override("font_color", Color(paradigm.colour))
 	var integrity: Control
 	if state.status == "battle" and state.has("battle"):
@@ -247,6 +250,16 @@ func _ending(state: Dictionary) -> Control:
 		)
 	)
 	var column := Ui.vbox([RunSummary.ending(state), Ui.label(_story(state.log, state), "Narration", true)], 16)
+	var focus := ProgramDraft.focus_of(
+		session.catalog, String(state.get("paradigm", "")), String(state.get("focus", ""))
+	)
+	if not focus.is_empty():
+		var paradigm := ProgramDraft.paradigm_of(session.catalog, state.paradigm)
+		column.add_child(
+			Ui.tint(
+				Ui.label("%s / %s" % [Text.t(paradigm.name), Text.t(focus.name)], "Subheading"), Color(paradigm.colour)
+			)
+		)
 	var history := [] if Game.trial_active else session.saves.load_history()
 	if not history.is_empty() and String(history[0].get("seed", "")) == String(state.seed):
 		# What git prints after a commit: the run is in the history now (the title's git log shows them all).
@@ -346,7 +359,7 @@ static func _cue(command: Dictionary, after: Dictionary) -> void:
 				Sound.play("cue-treasure", 0.6)
 		"rest":
 			Sound.play("sfx-heal", 0.8)
-		"forge", "widen", "bind", "pick-paradigm":
+		"forge", "widen", "bind", "pick-paradigm", "pick-focus":
 			Sound.play("sfx-forge", 0.8)
 		"claim-relic", "claim-spell":
 			Sound.play("sfx-relic", 0.8)

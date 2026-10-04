@@ -273,7 +273,7 @@ static func _land(
 		hit.blocked = blocked
 	if through > landed:
 		hit.overkill = through - landed
-	hit.text = "%s%s takes %d." % [lead, foe.name, landed]
+	hit.text = lead + ("%s takes %d." % [foe.name, landed])
 	Shardrun.record(state, hit)
 	if int(foe.hp) == 0:
 		Shardrun.record(state, {"kind": "defeat", "foe": foe.uid, "text": "%s breaks apart." % foe.name})

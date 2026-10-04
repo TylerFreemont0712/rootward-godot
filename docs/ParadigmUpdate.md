@@ -1074,3 +1074,66 @@ files.
 7. **Reading-code events are bets**: a wrong answer costs a small stake, stated before answering (B9.4); walking away
    is free.
 8. **Legendary relics in the Registry**: at 1% (B7.1), priced 450.
+
+---
+
+# Current step (2026-10-04, evening)
+
+**Where the work stopped.** The implementing session ran out of credits while it was integrating slices 1 to 3. Its
+work was recovered, checked and committed in one commit after slice 0's. The checklist lives in `docs/PLAN.md`
+("The Paradigm Update"), and the decisions in ADR-0048.
+
+## Done
+
+| Slice | State | Where |
+|---|---|---|
+| 0. Baseline | done, committed (`1189db2`) | `docs/research/balance-probe/paradigm-update/` (30 runs, 40% won; reuse its seeds for the final report) |
+| 1. Focuses and the pick | done but for four tests (below) | `program_draft.gd` (`pick-focus`, `focus_offers`), `draft_view.gd`, `programs.jsonc` (`law`, `swap`, `focuses`), 5 law and 15 focus relics (tiers `paradigm`, `focus`), `run_history.gd` (`greedy/sprint`), `trial_rules.gd` (Pip's Trial defaults to Tabulator), `ShardrunSchemas` defaults for old saves |
+| 2. Fight memory | done but for one test (below) | `program_memory.gd` (Index, Table, hits, last volley), `program_landing.gd` (landing shared by preview and cast), `program_intents.gd` (the foes' intents the code sees), `spell_runs.gd` program branch, `program_memory_view.gd` (the Index and Table under the code) |
+| 3. The body slot | done | the three harnesses (`spell_harness.py`, `.js`, `harness.cpp`), `program_body_source.gd` (the halves written as code), Pruner, Sprint and Merger billed per original card |
+| 10. Cards (part) | 15 of 80 | the 15 focus signatures and their `+` versions, in Python, JavaScript and C++, with examples and Japanese (`locales/ja/paradigm-update.jsonc`) |
+| 12. Art (part) | queued | `pipeline/art/program-icons-pass-10.json`: the 15 signatures queued and showing existing art for now |
+
+Fixed during recovery:
+- `program_landing.gd` didn't parse. gdformat had laid out a lambda inside a parenthesised `.filter(...).size()` chain
+  in a form Godot 4.7 rejects ("Unindent doesn't match"), and every script that loads the rules failed with it. It's
+  a plain loop now. **Watch for this**: gdformat can turn a working lambda chain into one Godot won't parse; run
+  `scripts/check.sh` after formatting.
+- A card's `focus` was a required id defaulting to `""`, so re-checking a loaded neutral card failed. It's optional
+  now, and a new cross-check makes sure a card's focus belongs to its own paradigm.
+
+## Verified (after recovery)
+
+- `scripts/test.sh`: 472 test cases, 0 failures.
+- `scripts/lint.sh`: clean.
+- `scripts/validate.sh`: 169 program cards, 482 worked examples in each of Python, JavaScript and C++, 0 errors,
+  0 warnings (the C++ build and the mutants census are current).
+- `scripts/locale.sh ja --missing`: 938/938 content, 472/472 interface, 139/139 rule sentences.
+- Screenshots in `shots/paradigm-update/`: `focus-en.png`, `focus-ja-cpp.png`, `pack-focus-en.png`,
+  `index-fight.png`, `recurse-cpp.png`.
+
+## Gaps before ticking slices 1 to 3 in PLAN.md
+
+1. Four focus rules have code but no test of their own:
+   - Hasher's +2 on a weakness (`weak-flat-bonus`)
+   - Enumerator's 192-bolt cap (`max-bolts`; its `source-power` is tested)
+   - Partitioner's pivot (`pivot-mark`: doubled and aimed at the toughest foe)
+   - Tabulator's earlier, larger Table bolt (`table-from`, `table-divisor`)
+
+   Each needs a test that the preview equals the cast, like the others in `paradigm_laws_test.gd`.
+2. Cosmetic: the focus cards on the pick screen have an empty emblem space (the emblems are slice 12's art), and in
+   C++ a long line of the Deep Recursion listing runs past the code panel's right edge (`recurse-cpp.png`, line 12).
+   Wrap it, or write each call on its own line.
+
+## Next step, exactly
+
+1. Write the four tests above, fix the C++ listing's long line, then tick slices 1, 2 and 3 in `docs/PLAN.md` and
+   commit.
+2. Slice 4, **Rewards** (B4): the 50 / 30 / 20 shares with focus-tagged cards ×2, one own card guaranteed, the
+   elite's fourth card from another paradigm, rare pity, and cycles for a skip (wait for slice 5 for the cycles, or
+   land skip pay with it). Test the shares over many seeds.
+3. Then slices 5 to 13 in order. The remaining 65 cards of B8 come in slice 10, a paradigm at a time.
+
+Notes for the next session:
+- Concurrent probe runs share Godot's sandbox scratch folder unless `XDG_DATA_HOME` is set per run (ADR-0048).
+- `.obsidian/` at the root is the player's; leave it out of commits.

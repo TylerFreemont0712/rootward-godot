@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "divide-conquer",
+  "focus": "merge",
   "role": "source",
   "complexity": "linear",
   "summary": "Append a reversed copy of the volley at half power, rounded up. Recursion visits each bolt once; elements, targets and guards are copied.",

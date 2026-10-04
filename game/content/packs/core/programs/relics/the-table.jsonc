@@ -1,0 +1,15 @@
+{
+  "id": "the-table",
+  "name": "The Table",
+  "tier": "paradigm",
+  "icon": "unix-philosophy",
+  "summary": "Each program's landed damage is written to dp[t]. From turn 3, the seed gains a bolt of (dp[t-1] + dp[t-2]) // 4.",
+  "flavor": "The law of your paradigm.",
+  "effects": [
+    {
+      "kind": "table",
+      "from": 3,
+      "divisor": 4
+    }
+  ]
+}

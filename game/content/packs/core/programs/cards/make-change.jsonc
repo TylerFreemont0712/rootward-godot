@@ -4,6 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "schedule",
   "role": "source",
   "complexity": "linear",
   "summary": "Greedy change-making: the strongest bolt is paid out in coins of 5 and 1, the biggest coin that fits first, and every coin is minted 1 stronger. More bolts, and more power.",

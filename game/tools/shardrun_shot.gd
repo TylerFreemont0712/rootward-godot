@@ -2,7 +2,8 @@ extends Control
 ## A run set up for a screenshot, then the run screen over it. ROOTWARD_SHOT picks the moment:
 ##   map (default), fight, table (a Shardrun hand half played), cast, volley (the bolts, without the code), storm (a
 ##   heavy spark spell on two foes: lightning called down), turn, reward, treasure, rest, forge, end, code,
-##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms), pack (a draft
+##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms),
+##   focus (all three focuses), pack (a draft
 ##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
 ##   than the Program acts first), hover (a hand card pointed at, with its details), log (the ".log" window), relics
 ##   (a guardian's tiered relics offered), gitlog (the run history as `git log`, from sample finished runs), layer (a
@@ -60,14 +61,29 @@ func _ready() -> void:
 	var staged := chosen != "" or OS.get_environment("ROOTWARD_SHOT_FOES") != ""
 	staged = staged or OS.get_environment("ROOTWARD_SHOT_HAND") != ""
 	staged = staged or OS.get_environment("ROOTWARD_SHOT_RELICS") != ""
-	session.start(language if language != "" else "python", "beginner", "screenshot", shot == "dev" or staged)
+	var shot_seed := "screenshot"
+	var requested := OS.get_environment("ROOTWARD_SHOT_PARADIGM")
+	if playstyle != "spellbook" and playstyle != "deck" and requested != "":
+		for suffix in 100:
+			var candidate := "screenshot-%d" % suffix
+			var config := ProgramRules.config_of(session.catalog)
+			var ids: Array = config.paradigms.map(func(p: Dictionary) -> String: return p.id)
+			var offers := Rng.create(candidate, "paradigms").shuffled(ids).slice(0, int(config.draft.paradigms_offered))
+			if requested in offers:
+				shot_seed = candidate
+				break
+	session.start(language if language != "" else "python", "beginner", shot_seed, shot == "dev" or staged)
 	var bot := ShardrunBot.new(session)
 	bot.paradigm = OS.get_environment("ROOTWARD_SHOT_PARADIGM")
 	match shot:
 		"draft":
 			pass
+		"focus":
+			await bot.send(await bot.next_command())
 		"pack":
 			await bot.send(await bot.next_command())
+			if not (session.state.draft.get("focus_offers", []) as Array).is_empty():
+				await bot.send(await bot.next_command())
 		"write":
 			# Two cards already in the Program; the shot plays a third and catches its code being written.
 			await bot.play_until("battle")
@@ -175,6 +191,13 @@ func _ready() -> void:
 	if session.state.get("sandbox", false):
 		for relic_id in OS.get_environment("ROOTWARD_SHOT_RELICS").split(",", false):
 			await bot.send({"type": "dev-grant-relic", "relic_id": relic_id})
+	# Explicit memory snapshots keep the shot reproducible without touching the player's save.
+	if session.state.status == "battle":
+		if OS.has_environment("ROOTWARD_SHOT_INDEX"):
+			session.state.battle.index = JSON.parse_string(OS.get_environment("ROOTWARD_SHOT_INDEX"))
+		if OS.has_environment("ROOTWARD_SHOT_DP"):
+			session.state.battle.dp = JSON.parse_string(OS.get_environment("ROOTWARD_SHOT_DP"))
+			session.state.battle.turn = 3
 	var skin := OS.get_environment("ROOTWARD_SHOT_SKIN")
 	if skin in Settings.all_skins():
 		Settings.character_skin = skin

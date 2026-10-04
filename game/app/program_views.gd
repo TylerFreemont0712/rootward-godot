@@ -37,32 +37,9 @@ static func run_view(
 		if run.has("line"):
 			misfire.line = int(run.line)
 		view.misfire = misfire
-	var steps: Array = []
-	var trace: Array = run.get("trace", [])
-	for index in trace.size():
-		var step: Dictionary = trace[index]
-		var stage: Dictionary = stages[index] if index < stages.size() else {}
-		(
-			steps
-			. append(
-				{
-					"shard": step.shard,
-					"given": int(step.given),
-					"returned": int(step.get("returned", step.given)),
-					"n": int(stage.get("n", step.given)),
-					"work": int(stage.get("work", 0)),
-					"bolts": ProgramRules.normalize(step.get("bolts", []), catalog),
-					# Measured in the sandbox: each loop's rounds by its line in the card's code, and how often the
-					# card's function was entered (more than once: it is recursive).
-					"loops": step.get("loops", {}),
-					"calls": int(step.get("calls", 1)),
-					# The whole volley after the stage, as measured: its total power and how many bolts of each element.
-					"power": float(step.get("power", 0.0)),
-					"elements": step.get("elements", {}),
-				}
-			)
-		)
-	view.steps = steps
+	view.card_ids = (spell.shards as Array).duplicate()
+	view.steps = slot_steps(run.get("trace", []), stages, catalog)
+
 	if reveal and run.ok and not view.timeout and not preview.is_empty():
 		view.result = {
 			"bolts": preview.bolts,
@@ -79,6 +56,37 @@ static func run_view(
 	# So are the guardians' (ADR-0026): a loop's guard, a riddle, a prediction, dead code, a throw to catch.
 	view.notes = preview.get("notes", [])
 	return view
+
+
+## Parts are separate measurements but one original slot on the table. The joined snapshot is presentation only;
+## damage still comes exclusively from the run's final output and the shared resolver.
+static func slot_steps(trace: Array, stages: Array, catalog: Dictionary) -> Array:
+	var steps: Array = []
+	for index in trace.size():
+		var step: Dictionary = trace[index]
+		var stage: Dictionary = stages[index] if index < stages.size() else {}
+		var slot := int(step.get("slot", index))
+		while steps.size() <= slot:
+			steps.append(
+				{"shard": "", "given": 0, "returned": 0, "n": 0, "work": 0, "calls": 0, "loops": {}, "parts": 0}
+			)
+		var joined: Dictionary = steps[slot]
+		joined.shard = step.shard
+		joined.given += int(step.given)
+		joined.returned += int(step.get("returned", step.given))
+		joined.n += int(stage.get("n", step.given))
+		joined.work += int(stage.get("work", 0))
+		joined.calls += int(step.get("calls", 1))
+		joined.parts += 1
+		joined.pruned = bool(joined.get("pruned", true)) and bool(step.get("pruned", false))
+		for number: String in step.get("loops", {}):
+			joined.loops[number] = int(joined.loops.get(number, 0)) + int(step.loops[number])
+		joined.bolts = ProgramRules.normalize(step.get("joined", step.get("bolts", [])), catalog)
+		joined.power = float(step.get("joined_power", step.get("power", 0.0)))
+		joined.elements = step.get("joined_elements", step.get("elements", {}))
+		if step.has("joined_returned"):
+			joined.returned = int(step.joined_returned)
+	return steps
 
 
 ## Every living foe's tempo against the program's work, quickest first: [{name, uid, tempo, first}], `first` when it
@@ -102,7 +110,9 @@ static func code_lines(state: Dictionary, card_ids: Array, view: Dictionary, cat
 	var hooks: Array = ProgramRelics.modifiers(state, catalog).hooks
 	var seed: Array = (view.get("base", {}) as Dictionary).get("bolts", [])
 	var imports := ProgramDeck.imports(state, catalog)
-	var lines := ProgramSource.lines(String(state.language), card_ids, catalog, seed, imports, hooks)
+	var modifiers := ProgramRelics.modifiers(state, catalog)
+	var body := {"depth": int(modifiers.recurse_depth), "rejoin_power": int(modifiers.rejoin_power)}
+	var lines := ProgramSource.lines(String(state.language), card_ids, catalog, seed, imports, hooks, body)
 	var steps: Array = view.get("steps", [])
 	var flagged := {}
 	for warning: Dictionary in view.get("lint", ProgramRules.lint(card_ids, catalog, hooks)):
@@ -115,6 +125,8 @@ static func code_lines(state: Dictionary, card_ids: Array, view: Dictionary, cat
 		var note := ShardrunViews.complexity(card)
 		if slot < steps.size() and steps[slot].shard == line.card:
 			note += "   n %d · %d ops" % [int(steps[slot].n), int(steps[slot].work)]
+		if slot < steps.size() and steps[slot].get("pruned", false):
+			note += "   " + Text.t("pruned")
 		line.note = note
 		line.note_colour = UiTheme.FAINT
 		if flagged.has(slot):

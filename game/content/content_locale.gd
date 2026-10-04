@@ -18,6 +18,10 @@ const FIELDS := {
 	[
 		"paradigms.*.name",
 		"paradigms.*.summary",
+		"paradigms.*.focuses.*.name",
+		"paradigms.*.focuses.*.rule",
+		"paradigms.*.focuses.*.plays_like",
+		"paradigms.*.focuses.*.teaches",
 		"keywords.*",
 		"layers.*.name",
 		"layers.*.flavor",

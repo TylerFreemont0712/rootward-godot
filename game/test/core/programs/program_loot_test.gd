@@ -19,7 +19,7 @@ func _tiers(ids: Array) -> Array:
 
 func test_every_program_relic_has_a_tier_and_spellforge_keeps_its_rarities() -> void:
 	for relic: Dictionary in catalog.relics.values():
-		assert_array(ProgramSchemas.TIERS).contains([relic.tier])
+		assert_array(ProgramSchemas.TIERS + ProgramSchemas.RULE_TIERS).contains([relic.tier])
 		assert_bool(relic.has("rarity")).is_false()
 	# The Spellforge catalog is untouched: its firewall is still a common relic by rarity.
 	var shared: Dictionary = ContentLoader.load_shardrun().catalog.relics

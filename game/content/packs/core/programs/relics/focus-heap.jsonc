@@ -1,0 +1,14 @@
+{
+  "id": "focus-heap",
+  "name": "Priority Queue",
+  "tier": "focus",
+  "icon": "big-o-compass",
+  "summary": "import heapq is in force from the first turn of every fight, free.",
+  "flavor": "A few huge bolts, strongest first.",
+  "effects": [
+    {
+      "kind": "fight-import",
+      "module": "heapq"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "schedule",
   "role": "strike",
   "complexity": "linearithmic",
   "summary": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would die. The rest go at the toughest.",

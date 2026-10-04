@@ -5,6 +5,7 @@
   "art": "make-change",
   "cost": 1,
   "paradigm": "greedy",
+  "focus": "schedule",
   "role": "source",
   "complexity": "linear",
   "summary": "Greedy change-making: the strongest bolt is paid out in coins of 5 and 1, the biggest coin first, each coin a bolt 2 stronger than its value.",

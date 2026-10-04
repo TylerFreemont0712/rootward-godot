@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "search-index",
+  "focus": "index",
   "role": "shape",
   "complexity": "linear",
   "summary": "Combine adjacent bolts with the same element, target and guard status. Add their powers plus 2 per merge.",

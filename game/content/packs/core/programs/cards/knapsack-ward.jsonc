@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "dynamic",
+  "focus": "exact",
   "role": "guard",
   "complexity": "pseudo",
   "big_o": "O(n·H)",

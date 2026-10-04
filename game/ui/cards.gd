@@ -83,7 +83,7 @@ static func relic(item: Dictionary, action: Control = null) -> PanelContainer:
 	var title := Ui.tint(Ui.label(Text.t(item.name), "Subheading"), colour)
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.id)), Vector2(40, 40), "✦")
 	var kind := Text.t("cursed relic") if item.get("cursed", false) else Text.f("%s relic", [Text.t(rank(item))])
-	if not item.get("cursed", false) and item.has("tier"):
+	if not item.get("cursed", false) and item.has("tier") and not item.tier in ProgramSchemas.RULE_TIERS:
 		kind += Text.f("  ·  tier %d", [ProgramLoot.tier_number(item)])
 	var head := Ui.hbox([icon, Ui.vbox([title, Ui.label(kind, "Faint")], 0)], 10)
 	var body := Ui.vbox([head, Ui.label(Text.t(item.summary), "", true)], 8)
@@ -100,7 +100,11 @@ static func relic_icon(item: Dictionary) -> Control:
 	var icon := Ui.picture("shardrun/relic-" + String(item.get("icon", item.get("id", ""))), Vector2(30, 30), "✦")
 	var kind := Text.t(" (cursed)") if item.get("cursed", false) else ""
 	if kind == "" and item.has("tier"):
-		kind = Text.f(" (%s, tier %d)", [Text.t(item.tier), ProgramLoot.tier_number(item)])
+		kind = (
+			" (%s)" % Text.t(item.tier)
+			if item.tier in ProgramSchemas.RULE_TIERS
+			else Text.f(" (%s, tier %d)", [Text.t(item.tier), ProgramLoot.tier_number(item)])
+		)
 	var title := "%s%s" % [Text.t(item.get("name", "?")), kind]
 	var detail := Text.t(String(item.get("flavor", "")))
 	if not item.has("tier"):

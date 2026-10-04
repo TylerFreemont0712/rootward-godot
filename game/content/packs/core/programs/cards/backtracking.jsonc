@@ -1,0 +1,311 @@
+{
+  "paradigm": "brute-force",
+  "focus": "prune",
+  "role": "strike",
+  "cost": 2,
+  "rarity": "rare",
+  "complexity": "exponential",
+  "big_o": "O(mⁿ) pruned, cap 12",
+  "icon": "shardrun/card-exhaustive-kill",
+  "id": "backtracking",
+  "name": "Backtracking",
+  "summary": "Backtracks over assignments to all foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, m choices per bolt.",
+  "function": "backtracking",
+  "keywords": [],
+  "cap_n": 12,
+  "work_mode": "measured",
+  "forge": {
+    "into": "backtracking-plus",
+    "verb": "upgrade"
+  },
+  "examples": [
+    {
+      "name": "assign all foes for the most kills",
+      "bolts": [
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 4,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 3,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "prune already beaten foes",
+      "bolts": [
+        {
+          "power": 5,
+          "element": "none"
+        },
+        {
+          "power": 2,
+          "element": "none"
+        },
+        {
+          "power": 5,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 2,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 5,
+          "element": "none",
+          "foe": 1
+        }
+      ]
+    },
+    {
+      "name": "only first twelve are searched",
+      "bolts": [
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        },
+        {
+          "power": 1,
+          "element": "none"
+        }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 7,
+            "max": 7,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 5,
+            "max": 5,
+            "shield": 0,
+            "weak": [],
+            "resist": []
+          }
+        ]
+      },
+      "expect": [
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 1
+        },
+        {
+          "power": 1,
+          "element": "none",
+          "foe": 0
+        }
+      ]
+    },
+    {
+      "name": "empty volley",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": {
+          "hp": 30,
+          "max": 30,
+          "block": 0,
+          "mana": 5
+        },
+        "foes": []
+      },
+      "expect": []
+    }
+  ]
+}

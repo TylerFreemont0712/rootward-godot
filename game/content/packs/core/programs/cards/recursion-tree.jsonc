@@ -5,6 +5,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "paradigm": "divide-conquer",
+  "focus": "deep",
   "role": "source",
   "complexity": "linear",
   "makes": "unsorted",
