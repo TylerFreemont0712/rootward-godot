@@ -45,7 +45,7 @@ var cast_steps: Dictionary = {}
 ## Procedural circles follow source execution order; legacy cast cards keep their original slot order.
 var construction_cards: Dictionary = {}
 var replay_element := "none"
-## The cast being played is a heavy one (many bolts, or a big total): its first blow on each foe falls from above.
+## The cast being played used three or more shards: its first blow on each foe falls from above.
 var _heavy := false
 ## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
 var _crashed: Dictionary = {}
@@ -169,19 +169,20 @@ func uses_construction(entries: Array) -> bool:
 	return _failed_spell != "" and _constructs(false)
 
 
-## Cosmetic weight comes from the actual volley, so a strong program selects its heavy option before code walks.
+## Three or more executed shards make a heavy cast; one or two make a light cast, regardless of volley size.
 func heavy_cast(entries: Array) -> bool:
-	for index in entries.size():
-		if entries[index].kind != "cast":
+	for entry: Dictionary in entries:
+		if entry.kind != "cast":
 			continue
-		var bolts: Array = []
-		var next := index + 1
-		while next < entries.size() and entries[next].kind in CAST_PARTS:
-			if entries[next].kind in BOLT_KINDS:
-				bolts.append(entries[next])
-			next += 1
-		return bolts.size() >= 4 or _total(bolts) >= 30
+		return _cast_shard_count(String(entry.get("spell", ""))) >= 3
 	return false
+
+
+func _cast_shard_count(spell_id: String) -> int:
+	if cast_steps.has(spell_id):
+		var imports: Array = _import_sources.get(spell_id, [])
+		return int(cast_steps[spell_id]) + imports.size()
+	return (cast_cards.get(spell_id, []) as Array).size()
 
 
 ## The trace counts executable calls, while held imports run at the top of the source. Keep that distinction local
@@ -319,7 +320,7 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var element: String = bolts[0].get("element", "none") if not bolts.is_empty() else "none"
 	shown.mana -= int(entry.get("amount", 0))
 	numbers_changed.emit()
-	var heavy := bolts.size() >= 4 or _total(bolts) >= 30
+	var heavy := _cast_shard_count(String(entry.get("spell", ""))) >= 3
 	_heavy = heavy
 	_crashed = {}
 	var construction := _constructs(heavy)
@@ -329,8 +330,8 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	# The program runs. A heavy cast's circle writes itself in the air in front of the Maintainer while she gathers the
 	# power, and her strike lands on it as it completes; a light cast is a snap of her fingers, and the circle appears
 	# on the snap. Either way the circle follows the spell's shards (ADR-0039): its tier from how many there are, one
-	# layer for each, set in the order they were played; it stays while the volley flies, and every bolt leaves it. How
-	# much the volley deals decides only how she casts (heavy or light), never how elaborate the circle is.
+	# layer for each, set in the order they were played; it stays while the volley flies, and every bolt leaves it.
+	# One or two executed shards use a light cast; three or more use a heavy cast. Damage never changes the gesture.
 	var cards: Array = cast_cards.get(entry.get("spell", ""), [])
 	var tier := CircleLayers.tier_for(cards.size())
 	if construction:
@@ -742,10 +743,3 @@ static func _hit_colour(hit: Dictionary) -> Color:
 	if hit.get("initiative", false):
 		return UiTheme.AMBER
 	return UiTheme.element(hit.get("element", "none")).lightened(0.1)
-
-
-static func _total(bolts: Array) -> int:
-	var total := 0
-	for bolt: Dictionary in bolts:
-		total += int(bolt.get("amount", 0))
-	return total
