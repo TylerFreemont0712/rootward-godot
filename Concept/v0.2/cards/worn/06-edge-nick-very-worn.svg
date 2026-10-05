@@ -13,8 +13,8 @@
   <circle cx="21" cy="21" r="14" fill="#203331" stroke="url(#metal)" stroke-width="2"/>
   <circle cx="21" cy="21" r="9" fill="#54745f" stroke="#f0dda2"/>
   <text x="21" y="25.5" fill="#fff0c3" text-anchor="middle" font-family="CardCinzel" font-size="12" font-weight="700">1</text>
-  <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.3" font-weight="700">import copy</text>
-  <g transform="translate(-1.5 1.5)">
+  <text x="39" y="26.5" fill="#fff0d8" font-family="CardCinzel" font-size="12.3" font-weight="700">import copy</text>
+  <g transform="translate(-2.5 2.5)">
     <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
     <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
     <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
@@ -28,10 +28,12 @@
   <rect x="10" y="146" width="160" height="89" rx="12" fill="url(#paper)" stroke="url(#metal)" stroke-width="1.8"/>
   <path d="M16 152h148v77H16z" fill="none" stroke="#526a5985"/>
   <rect x="24" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
-  <text x="52.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+  <text x="52.5" y="170" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
   <text x="160" y="171" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
   <path d="M18 185h144" stroke="#65786480"/>
   <text x="25" y="207" fill="#2e6a53" font-family="CardCinzel" font-size="9.3" font-weight="700" letter-spacing=".4">CONSTANT</text>
   <text x="159" y="207" fill="#344036" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
-  <path d="M177.5 59l2-.7 .3 2.6-2 .7z" fill="#1d2c30"/><path d="M177.8 59l.65-.25" fill="none" stroke="#e5d9b5" stroke-opacity=".7" stroke-width=".55" stroke-linecap="round"/><path d="M149.2 56.6l2.2-2" fill="none" stroke="#283936" stroke-width="3.1" stroke-linecap="butt"/><path d="M149.1 56.5l.55-.5" fill="none" stroke="#e6d7aa" stroke-opacity=".72" stroke-width=".65" stroke-linecap="round"/><path d="M1.5 191l1.7-.6 .35 2.4-1.8.7zM176.4 216.2l2.5-.7 .3 3.4-2.5.7zM134.5 249l2-.25 .8 2-2.2.2zM176 43.4l2.3-.65 .3 3-2.3.7z" fill="#20202d"/><path d="M2 191.2l.55-.2m175.2 25.25.7-.25m-40.2 33.2.6-.1m38.3-205.7.55-.2" fill="none" stroke="#d9c996" stroke-opacity=".48" stroke-width=".55" stroke-linecap="round"/>
+  <path d="M180 53L172 59.2L180 65Z M0 187L7.2 191.2L0 198Z M180 212L172.8 216.5L180 223Z M129.5 252L135.4 245L141.2 252Z" fill="#20202d"/>
+  <path d="M173.7 59.8L178.2 56.1M0.7 188.5L5.6 191.5M173.8 217.2L178.1 214.4M131.2 251.2L135.4 247.2" fill="none" stroke="#e1d2aa" stroke-opacity=".55" stroke-width=".8" stroke-linecap="round"/>
+  <path d="M149 57.3L151.5 54.8L152.7 56.3L150.2 58.8Z" fill="#26343a"/>
 </svg>

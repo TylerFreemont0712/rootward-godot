@@ -1,6 +1,6 @@
 # Hand-card concepts · v0.2
 
-The four pristine cards use one shared Rootglass layout: Cinzel lettering, the moved-in branching crest, the smooth halo, a centered rules plaque, and the same shard viewport. Halo ornament and palette are comparison axes; each card keeps the same hierarchy and sizing.
+The four pristine cards use one shared Rootglass layout: Cinzel lettering, the slightly lower-left branching crest, the smooth halo, a centered rules plaque, and the same shard viewport. Halo ornament and palette are comparison axes; each card keeps the same hierarchy and sizing.
 
 | Halo concept | Palette | SVG | Preview |
 |---|---|---|---|
@@ -13,9 +13,11 @@ The four pristine cards use one shared Rootglass layout: Cinzel lettering, the m
 
 Compare all four together in the [halo and palette study](palette-halo-study-preview.png) ([source SVG](palette-halo-study.svg)).
 
+The [long-name example](05-long-name-example-preview.png) ([SVG source](05-long-name-example.svg)) uses the catalog's longest real shard name, `from sortedcontainers import SortedList+`, and its existing B-tree art. Its title wraps to two short lines between the cost gem and paradigm crest while keeping the same Rootglass frame.
+
 ## Wear studies
 
-Each tier uses the same pristine Rootglass base. The nick series focuses on the card's outer edge, with a small halo nick added only at higher wear. The scorch series grows from the existing faint mark. The tier sheets compare low, medium, and very worn side by side:
+Each tier uses the same pristine Rootglass base. The nick series focuses on small triangular tears in the card's outer edge, with a matching geometric halo chip added only at higher wear. The scorch series grows from the existing faint mark. The tier sheets compare low, medium, and very worn side by side:
 
 | Treatment | Comparison sheet | Low | Medium | Very worn |
 |---|---|---|---|---|

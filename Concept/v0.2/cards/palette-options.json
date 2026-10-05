@@ -128,6 +128,11 @@
     "04-rootglass-halo.svg": {
       "halo": "rootglass",
       "palette": "verdant"
+    },
+    "05-long-name-example.svg": {
+      "halo": "rootglass",
+      "palette": "verdant",
+      "example_card": "b-tree-plus"
     }
   },
   "note": "Concept token catalog for a future reusable card-art builder. Current SVGs are curated previews, not runtime-rendered from this file."
