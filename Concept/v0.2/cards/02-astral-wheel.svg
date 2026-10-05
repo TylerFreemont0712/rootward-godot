@@ -14,11 +14,11 @@
   <path d="M21 13l7 8-7 8-7-8z" fill="#4e7288" stroke="#e8deb4"/>
   <text x="21" y="24.5" fill="#fff2c9" text-anchor="middle" font-family="CardCinzel" font-size="8.5" font-weight="700">1</text>
   <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.1" font-weight="700">import copy</text>
-  <path d="M90 35a80 87 0 0 1 80 87M170 122a80 87 0 0 1-80 87M90 209a80 87 0 0 1-80-87M10 122a80 87 0 0 1 80-87" fill="none" stroke="url(#silver)" stroke-width="4"/>
-  <ellipse cx="90" cy="122" rx="72" ry="79" fill="url(#well)" stroke="#8097a0" stroke-width="1"/>
-  <ellipse cx="90" cy="122" rx="74" ry="48" fill="none" stroke="#d3c1857c" stroke-width="1" transform="rotate(-25 90 122)"/>
-  <ellipse cx="90" cy="122" rx="77" ry="84" fill="none" stroke="#9cb6c96b" stroke-dasharray="1 5"/>
-  <circle cx="28" cy="78" r="2.4" fill="#e5cc87"/><circle cx="152" cy="78" r="2.4" fill="#e5cc87"/>
+  <path d="M90 35a83 87 0 0 1 83 87M173 122a83 87 0 0 1-83 87M90 209a83 87 0 0 1-83-87M7 122a83 87 0 0 1 83-87" fill="none" stroke="url(#silver)" stroke-width="4"/>
+  <ellipse cx="90" cy="122" rx="75" ry="79" fill="url(#well)" stroke="#8097a0" stroke-width="1"/>
+  <ellipse cx="90" cy="122" rx="78" ry="48" fill="none" stroke="#d3c1857c" stroke-width="1" transform="rotate(-25 90 122)"/>
+  <ellipse cx="90" cy="122" rx="80" ry="84" fill="none" stroke="#9cb6c96b" stroke-dasharray="1 5"/>
+  <circle cx="25" cy="78" r="2.4" fill="#e5cc87"/><circle cx="155" cy="78" r="2.4" fill="#e5cc87"/>
   <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="57" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
   <rect x="10" y="146" width="158" height="89" rx="8" fill="url(#paper)" stroke="url(#silver)" stroke-width="1.7"/>
   <path d="M15 152h148v78H15z" fill="none" stroke="#4b536080"/>
@@ -26,6 +26,6 @@
   <text x="47" y="170.5" fill="#eff3e7" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
   <text x="158" y="170.5" fill="#303846" text-anchor="end" font-family="CardCinzel" font-size="7.4" font-weight="700">BEFORE STRIKE</text>
   <path d="M18 183h142" stroke="#5c647166"/>
-  <text x="25" y="209" fill="#315e6a" font-family="CardCinzel" font-size="19" font-weight="700">O(1)</text>
-  <text x="156" y="205" fill="#303a40" text-anchor="end" font-family="CardCinzel" font-size="8.1" font-weight="700" letter-spacing=".45">CONSTANT</text>
+  <text x="25" y="207" fill="#315e6a" font-family="CardCinzel" font-size="9.2" font-weight="700" letter-spacing=".4">CONSTANT</text>
+  <text x="156" y="207" fill="#303846" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
 </svg>

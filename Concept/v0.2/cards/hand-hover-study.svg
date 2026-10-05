@@ -16,16 +16,16 @@
       <circle cx="21" cy="21" r="14" fill="#38233b" stroke="url(#card-gold)" stroke-width="2"/>
       <text x="21" y="25.5" fill="#fff1c4" text-anchor="middle" font-family="CardCinzel" font-size="13" font-weight="700">1</text>
       <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.4" font-weight="700">import copy</text>
-      <ellipse cx="90" cy="122" rx="80" ry="87" fill="url(#card-well)" stroke="url(#card-gold)" stroke-width="2"/>
-      <ellipse cx="90" cy="122" rx="72" ry="79" fill="none" stroke="url(#card-gold)" stroke-width="3"/>
+      <ellipse cx="90" cy="122" rx="83" ry="87" fill="url(#card-well)" stroke="url(#card-gold)" stroke-width="2"/>
+      <ellipse cx="90" cy="122" rx="75" ry="79" fill="none" stroke="url(#card-gold)" stroke-width="3"/>
       <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
       <rect x="11" y="146" width="158" height="95" rx="9" fill="url(#card-paper)" stroke="url(#card-gold)" stroke-width="1.7"/>
       <rect x="19" y="161" width="57" height="21" rx="9" fill="#4a3455" stroke="#a67abd"/>
       <text x="47.5" y="176" fill="#fbecff" text-anchor="middle" font-family="CardCinzel" font-size="8.4" font-weight="700">IMPORT</text>
       <text x="158" y="176" fill="#382d37" text-anchor="end" font-family="CardCinzel" font-size="7.7" font-weight="700">BEFORE STRIKE</text>
       <path d="M19 189h142" stroke="#77634e80"/>
-      <text x="25" y="216" fill="#3b684f" font-family="CardCinzel" font-size="20" font-weight="700">O(1)</text>
-      <text x="156" y="212" fill="#3b2d38" text-anchor="end" font-family="CardCinzel" font-size="8.4" font-weight="700">CONSTANT</text>
+      <text x="25" y="212" fill="#3b684f" font-family="CardCinzel" font-size="9.4" font-weight="700" letter-spacing=".4">CONSTANT</text>
+      <text x="156" y="212" fill="#3b2d38" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
     </g>
   </defs>
   <rect width="1080" height="430" rx="20" fill="url(#background)"/>
