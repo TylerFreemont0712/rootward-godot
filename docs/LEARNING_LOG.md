@@ -882,3 +882,9 @@ copy was unstable while the window was behind another. Drawing on the chip that 
 Mesa) was steady. Measure with a screenshot loop and a count of the odd pixels, unfocused, on each GPU: it showed the
 difference where reading the code could not. And `ceili(NaN)` is the smallest integer, not zero: a refresh rate that
 the platform cannot report may be 0, -1 or NaN, so test `value > 0.0` rather than `value <= 0.0`.
+
+## 2026-10-05 — Stable cosmetic variation (`game/ui/card_wear.gd`, ADR-0013)
+
+Card edge nicks are decoration, so their seed comes from the immutable shard id and stays inside the UI renderer. A
+card moving or being hovered cannot advance the run's random stream; the same card keeps the same finish, while
+different shard ids get their own quality and irregular chip pattern.

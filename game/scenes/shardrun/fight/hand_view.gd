@@ -13,6 +13,7 @@ extends Control
 const GROW := 1.2
 const FAN := 3.2
 const SIDE := 30.0
+const RESTING_CLIP := 18.0
 const MOVE := 0.14
 ## Seconds between one dealt card and the next, and how long a card takes to fly to its place.
 const DEAL_GAP := 0.08
@@ -163,7 +164,9 @@ func _arrange(animate: bool) -> void:
 	var room := maxf(0.0, size.x - card_size.x - SIDE * 2.0)
 	var spacing := minf(card_size.x * 0.84, room / maxf(1.0, count - 1.0))
 	var x0 := (size.x - card_size.x - spacing * (count - 1)) * 0.5
-	var top := size.y - card_size.y - 12.0
+	var top := size.y - card_size.y + RESTING_CLIP
+	var hand_bottom := (get_global_transform() * Vector2(0, size.y)).y
+	var hovered_lift := maxf(0.0, hand_bottom + RESTING_CLIP - get_viewport().get_visible_rect().end.y)
 	for index in count:
 		var card := cards[index]
 		if not card.visible:
@@ -173,7 +176,7 @@ func _arrange(animate: bool) -> void:
 		var angle := _rest_angle(index)
 		var grow := 1.0
 		if hovered >= 0 and index == hovered:
-			target.y = top - 8.0
+			target.y = top - hovered_lift
 			angle = 0.0
 			grow = GROW
 		elif hovered >= 0:

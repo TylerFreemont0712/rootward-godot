@@ -17,13 +17,15 @@ const ROLES := {
 }
 
 var role := ""
+var text_only := false
 ## Below this height the word does not fit, and the glyph stands alone.
 var word_from := 18.0
 
 
-static func create(role_id: String) -> RoleBadge:
+static func create(role_id: String, label_only := false) -> RoleBadge:
 	var badge := RoleBadge.new()
 	badge.role = role_id
+	badge.text_only = label_only
 	badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return badge
 
@@ -45,6 +47,28 @@ func _draw() -> void:
 	draw_style_box(
 		UiTheme.box(Color(0.05, 0.04, 0.07, 0.92), Color(tint, 0.8), 1, int(size.y * 0.5)), Rect2(Vector2.ZERO, size)
 	)
+	if text_only:
+		var label_font := UiTheme.ui_font(600)
+		var label := Text.t(ROLES[role].word)
+		var label_size := int(size.y * 0.43)
+		while (
+			label_size > 6
+			and label_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, label_size).x > size.x * 0.86
+		):
+			label_size -= 1
+		var label_baseline := (
+			size.y * 0.5 + (label_font.get_ascent(label_size) - label_font.get_descent(label_size)) * 0.5
+		)
+		draw_string(
+			label_font,
+			Vector2(0, label_baseline),
+			label,
+			HORIZONTAL_ALIGNMENT_CENTER,
+			size.x,
+			label_size,
+			tint.lightened(0.2)
+		)
+		return
 	var with_word := size.y >= word_from
 	var side := size.y * 0.6
 	var centre := Vector2(size.y * 0.62 if with_word else size.x * 0.5, size.y * 0.5)

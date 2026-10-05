@@ -1,8 +1,8 @@
 class_name CardFace
 extends Control
-## A card as a card: a painted frame in its paradigm's colour (cards/frame, tinted by ui/card_tint.gdshader), its cost
-## in the mana orb, its name on the banner, its picture in the window, and its speed on the plate. Only that: what it
-## does is shown beside it while it is pointed at (CardDetail). A missing frame falls back to one drawn in code.
+## A program card uses Rootglass, a paradigm crest, a colour-coded role and a seeded, cosmetic edge finish. Older
+## Spellforge cards keep the painted frame. The picture and cost sit on the face; the code and full explanation appear
+## beside it while pointed at (CardDetail). A missing frame falls back to one drawn in code.
 ##
 ## It can be dragged (Godot's own drag and drop) and dropped onto: its table decides what a move means, through the
 ## `moved` and `pressed` Callables it is given. `spot` is where the card sits ({zone, index, spell?}).
@@ -10,7 +10,7 @@ extends Control
 enum Size { HAND, SLOT, DECK }
 
 ## The frame's own proportions (480 x 664), at three sizes in the design canvas.
-const SIZES := {Size.HAND: Vector2(164, 227), Size.SLOT: Vector2(122, 169), Size.DECK: Vector2(140, 194)}
+const SIZES := {Size.HAND: Vector2(190, 266), Size.SLOT: Vector2(122, 171), Size.DECK: Vector2(140, 196)}
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
 ## of the width]). The pipeline writes the same numbers beside the frame (layouts.CARD); these are its fallback.
 const GEOMETRY := {
@@ -23,9 +23,29 @@ const GEOMETRY := {
 }
 ## The colour of the element a shard gives its bolts, for an old shard's frame; a program card takes its paradigm's.
 const ELEMENT_FRAME := {"fire": "#ff9147", "frost": "#82d8ff", "spark": "#ffe066"}
+const COMPLEXITY_COLOURS := {
+	"constant": "#2e6a53",
+	"logarithmic": "#387f82",
+	"linear": "#937126",
+	"linearithmic": "#497a5b",
+	"quadratic": "#765493",
+	"exponential": "#a64949",
+	"pseudo": "#496d8c",
+}
+const ROOTGLASS_FRAME := "cards/rootglass"
 const TINT := preload("res://ui/card_tint.gdshader")
 const FRAME := "cards/frame"
 const DETAIL_DELAY := 0.08
+const ROOTGLASS_GEOMETRY := {
+	"art": [0.075, 0.108, 0.925, 0.635],
+	"title": [0.217, 0.0275, 0.797, 0.1275],
+	"orb": [0.1167, 0.0833, 0.0778],
+	"role": [0.1333, 0.619, 0.45, 0.702],
+	"feature": [0.48, 0.619, 0.9, 0.702],
+	"complexity": [0.14, 0.765, 0.55, 0.86],
+	"speed": [0.55, 0.765, 0.89, 0.86],
+	"radius": [0.07],
+}
 
 static var _geometry: Dictionary = {}
 
@@ -43,6 +63,7 @@ var draggable := true
 var details := true
 var _summaries := true
 var _catalog: Dictionary = {}
+var _rootglass := false
 var _tags: Array[String] = []
 var _label := ""
 var _armed := false
@@ -52,7 +73,11 @@ var _hover_time := -1.0
 var _art: Control
 var _frame: TextureRect
 var _role: RoleBadge
+var _crest: CardCrest
 var _keywords: KeywordChips
+var _feature: Label
+var _complexity: Label
+var _wear: CardWear
 var _name: Label
 var _cost: Label
 var _speed: Label
@@ -87,7 +112,7 @@ func mark_mutant(battle: Dictionary) -> void:
 	add_child(chip)
 	# Over the art's top right corner, clear of the cost (top left) and the name.
 	chip.size = chip.get_combined_minimum_size()
-	var window := box("art", custom_minimum_size)
+	var window := _box("art", custom_minimum_size)
 	chip.position = Vector2(window.end.x - chip.size.x - 2.0, window.position.y + 2.0)
 
 
@@ -122,6 +147,7 @@ static func box(name: String, card_size: Vector2) -> Rect2:
 
 ## The card's colour and what kind of card it is, in words: a program card's role and paradigm, a shard's rarity.
 func _describe(catalog: Dictionary) -> void:
+	_rootglass = shard.has("role")
 	var rarity := UiTheme.rarity(shard.get("rarity", "common"))
 	colour = Color(ELEMENT_FRAME.get(element_of(shard), rarity.to_html()))
 	if shard.has("paradigm"):
@@ -143,31 +169,47 @@ func _build(size_kind: Size) -> void:
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	_art = Ui.picture(ShardrunViews.art(shard, shard_id), Vector2(64, 64), "◆")
 	add_child(_art)
-	var texture := Art.texture(FRAME)
+	var frame_id := ROOTGLASS_FRAME if _rootglass else FRAME
+	var texture := Art.texture(frame_id)
 	if texture != null:
 		_frame = TextureRect.new()
 		_frame.texture = texture
 		_frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		_frame.stretch_mode = TextureRect.STRETCH_SCALE
 		_frame.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-		var tint := ShaderMaterial.new()
-		tint.shader = TINT
-		tint.set_shader_parameter("tint", colour)
-		_frame.material = tint
+		if not _rootglass:
+			var tint := ShaderMaterial.new()
+			tint.shader = TINT
+			tint.set_shader_parameter("tint", colour)
+			_frame.material = tint
 		add_child(_frame)
+	if _rootglass:
+		var paradigm_id := String(shard.get("paradigm", "neutral"))
+		var crest_colour := colour if shard.has("paradigm") else Color("#d9c796")
+		_crest = CardCrest.create(paradigm_id, crest_colour)
+		add_child(_crest)
 	if RoleBadge.ROLES.has(String(shard.get("role", ""))):
-		# Over the frame's lower panel, so it is drawn after (above) the frame.
-		_role = RoleBadge.create(String(shard.role))
+		# The role pill is the first label in Rootglass's shared rules plaque.
+		_role = RoleBadge.create(String(shard.role), _rootglass)
 		add_child(_role)
-	if not (shard.get("keywords", []) as Array).is_empty():
+	if not _rootglass and not (shard.get("keywords", []) as Array).is_empty():
 		_keywords = KeywordChips.create(shard.keywords)
 		add_child(_keywords)
-	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"))
-	_cost = _text(UiTheme.ui_font(600), Color.WHITE)
-	_speed = _text(UiTheme.ui_font(600), colour.lightened(0.45))
+	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"), 3 if _rootglass else 5)
+	_cost = _text(UiTheme.ui_font(600), Color("#fff0c3") if _rootglass else Color.WHITE, 0 if _rootglass else 5)
+	_speed = _text(
+		UiTheme.ui_font(600), Color("#344036") if _rootglass else colour.lightened(0.45), 0 if _rootglass else 5
+	)
 	_name.text = Text.t(shard.get("name", shard_id))
 	_cost.text = str(int(shard.get("cost", 0)))
 	_speed.text = ShardrunViews.complexity(shard)
+	if _rootglass:
+		_feature = _text(UiTheme.ui_font(600), _feature_colour(), 0)
+		_feature.text = _feature_text()
+		_complexity = _text(UiTheme.ui_font(600), _complexity_colour(), 0)
+		_complexity.text = String(shard.get("complexity", "linear")).to_upper()
+		_wear = CardWear.create(shard_id, colour if shard.has("paradigm") else UiTheme.AMBER)
+		add_child(_wear)
 	for child in get_children():
 		(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
 	resized.connect(_layout)
@@ -176,12 +218,12 @@ func _build(size_kind: Size) -> void:
 	_layout()
 
 
-func _text(font: Font, tint: Color) -> Label:
+func _text(font: Font, tint: Color, outline := 5) -> Label:
 	var label := Label.new()
 	label.add_theme_font_override("font", font)
 	label.add_theme_color_override("font_color", tint)
 	label.add_theme_color_override("font_outline_color", Color(0.04, 0.03, 0.05, 0.95))
-	label.add_theme_constant_override("outline_size", 5)
+	label.add_theme_constant_override("outline_size", outline)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.clip_text = true
@@ -199,17 +241,27 @@ func _layout() -> void:
 	if _frame != null:
 		_frame.position = Vector2.ZERO
 		_frame.size = card_size
-	var window := box("art", card_size)
+	var window := _box("art", card_size)
 	# The picture sits a little above the window's middle, well clear of the speed plate under the window.
-	var side := minf(window.size.x, window.size.y) * 0.64
+	var side := minf(window.size.x, window.size.y) * (0.58 if _rootglass else 0.64)
 	_art.custom_minimum_size = Vector2(side, side)
 	_art.size = Vector2(side, side)
-	_art.position = window.get_center() - Vector2(side, side) * 0.5 - Vector2(0, window.size.y * 0.05)
-	# The name may stand a little taller than the banner: its outline keeps it readable over the frame.
-	var banner := box("banner", card_size).grow_individual(0, card_size.y * 0.012, 0, card_size.y * 0.012)
-	_place(_name, Rect2(banner.position + Vector2(banner.size.x * 0.07, 0), banner.size * Vector2(0.9, 1.0)))
-	_fit(_name, banner.size.y * 0.78, banner.size.x * 0.84)
-	var shares: Array = geometry().orb
+	var art_shift := Vector2(0, window.size.y * (0.05 if _rootglass else -0.05))
+	_art.position = window.get_center() - Vector2(side, side) * 0.5 + art_shift
+	var title_box := (
+		_box("title", card_size)
+		if _rootglass
+		else box("banner", card_size).grow_individual(0, card_size.y * 0.012, 0, card_size.y * 0.012)
+	)
+	if _rootglass:
+		_place(_name, title_box)
+		_fit_rootglass_title(_name, title_box)
+	else:
+		_place(
+			_name, Rect2(title_box.position + Vector2(title_box.size.x * 0.07, 0), title_box.size * Vector2(0.9, 1.0))
+		)
+		_fit(_name, title_box.size.y * 0.78, title_box.size.x * 0.84)
+	var shares: Array = _layout_shares("orb")
 	var radius := float(shares[2]) * card_size.x
 	var orb := Rect2(
 		Vector2(float(shares[0]) * card_size.x, float(shares[1]) * card_size.y) - Vector2.ONE * radius,
@@ -217,25 +269,45 @@ func _layout() -> void:
 	)
 	# The digit sits on a dark disc inside the crystal: on the bright facets alone a 1 read as a T.
 	_place(_cost, orb.grow(-radius * 0.22))
-	_cost.add_theme_font_size_override("font_size", int(radius * 1.3))
-	var disc := UiTheme.box(Color(0.1, 0.04, 0.2, 0.82), Color(1, 1, 1, 0.35), 1, int(radius), Vector2.ZERO)
-	_cost.add_theme_stylebox_override("normal", disc)
-	var plate := box("plate", card_size)
-	_place(_speed, plate)
-	_fit(_speed, plate.size.y * 1.2, plate.size.x * 0.92)
-	if _role != null:
-		# A pill in the middle of the lower panel, over its filigree, leaving the ornament's ends to either side.
-		var lower := box("lower", card_size)
-		var pill := Vector2(lower.size.x * 0.78, lower.size.y * 0.5)
-		_role.position = lower.get_center() - pill * 0.5
-		_role.size = pill
+	_cost.add_theme_font_size_override("font_size", int(radius * (0.9 if _rootglass else 1.3)))
+	if not _rootglass:
+		var disc := UiTheme.box(Color(0.1, 0.04, 0.2, 0.82), Color(1, 1, 1, 0.35), 1, int(radius), Vector2.ZERO)
+		_cost.add_theme_stylebox_override("normal", disc)
+	if _rootglass:
+		_crest.position = Vector2(card_size.x * 0.79, card_size.y * 0.045)
+		_crest.size = Vector2(card_size.x * 0.14, card_size.y * 0.105)
+		var role_rect := _box("role", card_size)
+		_role.position = role_rect.position
+		_role.size = role_rect.size
 		_role.queue_redraw()
+		_place(_feature, _box("feature", card_size))
+		_fit(_feature, _feature.size.y * 0.52, _feature.size.x * 0.94, 6)
+		_place(_complexity, _box("complexity", card_size))
+		_fit(_complexity, _complexity.size.y * 0.56, _complexity.size.x * 0.94, 6)
+		_place(_speed, _box("speed", card_size))
+		_fit(_speed, _speed.size.y * 0.76, _speed.size.x * 0.94, 7)
+		_wear.size = card_size
+	else:
+		var plate := box("plate", card_size)
+		_place(_speed, plate)
+		_fit(_speed, plate.size.y * 1.2, plate.size.x * 0.92)
+	if _role != null:
+		if not _rootglass:
+			# A pill in the middle of the lower panel, over its filigree, leaving the ornament's ends to either side.
+			var lower := box("lower", card_size)
+			var pill := Vector2(lower.size.x * 0.78, lower.size.y * 0.5)
+			_role.position = lower.get_center() - pill * 0.5
+			_role.size = pill
+			_role.queue_redraw()
 	if _keywords != null:
 		# Along the bottom of the picture's window, under the picture.
 		var chips := Vector2(window.size.x * 0.96, maxf(13.0, window.size.y * 0.14))
 		_keywords.position = Vector2(window.get_center().x - chips.x * 0.5, window.end.y - chips.y * 1.15)
 		_keywords.size = chips
 		_keywords.queue_redraw()
+	if _wear != null:
+		_wear.position = Vector2.ZERO
+		_wear.queue_redraw()
 	queue_redraw()
 
 
@@ -245,12 +317,103 @@ static func _place(label: Label, rect: Rect2) -> void:
 
 
 ## The largest font size up to `most` at which the label's text fits `width`.
-static func _fit(label: Label, most: float, width: float) -> void:
+static func _fit(label: Label, most: float, width: float, minimum := 8) -> void:
 	var font := label.get_theme_font("font")
 	var font_size := int(most)
-	while font_size > 8 and font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > width:
+	while font_size > minimum and font.get_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x > width:
 		font_size -= 1
 	label.add_theme_font_size_override("font_size", font_size)
+
+
+func _fit_rootglass_title(label: Label, title_box: Rect2) -> void:
+	var title := label.text
+	var font := label.get_theme_font("font")
+	var max_single := int(title_box.size.y * 0.64)
+	var single_size := 0
+	for font_size in range(max_single, 5, -1):
+		if font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x <= title_box.size.x:
+			single_size = font_size
+			break
+	# Keep familiar names on one line, but wrap longer ones before they collapse into tiny engraved text.
+	if single_size >= 12:
+		label.text = title
+		label.add_theme_font_size_override("font_size", single_size)
+		return
+	var max_double := int(title_box.size.y * 0.4)
+	for font_size in range(max_double, 5, -1):
+		var lines := _best_title_break(title, font, font_size, title_box.size.x)
+		if not lines.is_empty():
+			label.text = "\n".join(lines)
+			label.add_theme_font_size_override("font_size", font_size)
+			return
+	label.text = title
+	label.add_theme_font_size_override("font_size", maxi(6, single_size))
+
+
+static func _best_title_break(title: String, font: Font, font_size: int, width: float) -> PackedStringArray:
+	var words := title.split(" ", false)
+	if words.size() < 2:
+		words = PackedStringArray()
+		for character: String in title:
+			words.append(character)
+	var best := PackedStringArray()
+	var best_width := INF
+	for split_at in range(1, words.size()):
+		var first := " ".join(words.slice(0, split_at))
+		var second := " ".join(words.slice(split_at))
+		var first_width := font.get_string_size(first, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var second_width := font.get_string_size(second, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x
+		var widest := maxf(first_width, second_width)
+		if widest <= width and widest < best_width:
+			best = PackedStringArray([first, second])
+			best_width = widest
+	return best
+
+
+func _feature_text() -> String:
+	for effect: Dictionary in shard.get("effects", []):
+		if effect.get("kind", "") == "hook-before":
+			return Text.t("BEFORE %s" % String(effect.get("role", "")).to_upper())
+		if effect.get("kind", "") == "hook-after":
+			return Text.t("AFTER %s" % String(effect.get("role", "")).to_upper())
+		if effect.get("kind", "") == "index-size-add":
+			return Text.f("INDEX +%d", [int(effect.get("size", 0))])
+	if shard.has("needs"):
+		return Text.t("NEEDS %s" % String(shard.needs).to_upper())
+	if shard.has("makes"):
+		return Text.t("MAKES %s" % String(shard.makes).to_upper())
+	var keywords: Array = shard.get("keywords", [])
+	if not keywords.is_empty():
+		return String(keywords[0]).to_upper()
+	return Text.t(String(shard.get("rarity", "common")).to_upper())
+
+
+func _feature_colour() -> Color:
+	for effect: Dictionary in shard.get("effects", []):
+		if effect.get("kind", "") in ["hook-before", "hook-after"]:
+			return RoleBadge.colour_of("import")
+		if effect.get("kind", "") == "index-size-add":
+			return UiTheme.TEAL
+	if shard.has("needs") or shard.has("makes"):
+		return UiTheme.TEAL
+	var keywords: Array = shard.get("keywords", [])
+	if not keywords.is_empty():
+		return KeywordChips.colour_of(String(keywords[0]))
+	return UiTheme.rarity(String(shard.get("rarity", "common"))).darkened(0.12)
+
+
+func _complexity_colour() -> Color:
+	return Color(COMPLEXITY_COLOURS.get(String(shard.get("complexity", "linear")), "#4a6b5b"))
+
+
+func _layout_shares(name: String) -> Array:
+	return (ROOTGLASS_GEOMETRY if _rootglass else geometry())[name]
+
+
+func _box(name: String, card_size: Vector2) -> Rect2:
+	var shares: Array = _layout_shares(name)
+	var from := Vector2(float(shares[0]) * card_size.x, float(shares[1]) * card_size.y)
+	return Rect2(from, Vector2(float(shares[2]) * card_size.x, float(shares[3]) * card_size.y) - from)
 
 
 func _draw() -> void:
@@ -265,13 +428,22 @@ func _draw() -> void:
 		return
 	var radius := float(geometry().radius[0]) * card_size.x
 	# Behind the frame's window: a dark glow in the card's colour, for its picture to stand in.
-	var window := box("art", card_size)
+	var window := _box("art", card_size)
 	draw_style_box(UiTheme.box(Color("#0c0b12"), Color.TRANSPARENT, 0, int(radius * 0.4)), window)
 	var centre := window.get_center()
 	for ring in 6:
 		var reach := window.size.x * (0.5 - ring * 0.07)
 		draw_circle(centre, reach, Color(colour, 0.05 + ring * 0.018))
 	if _frame != null:
+		return
+	if _rootglass:
+		var card_body := Rect2(Vector2.ZERO, card_size)
+		draw_style_box(UiTheme.box(Color("#25332f"), Color("#cfbd8b"), 2, int(card_size.x * 0.11)), card_body)
+		var halo := window.grow(card_size.x * 0.03)
+		draw_arc(halo.get_center(), halo.size.x * 0.5, PI, TAU, 64, Color("#98b9a0"), 2.0, true)
+		draw_arc(halo.get_center(), halo.size.x * 0.45, 0, TAU, 64, colour, 1.2, true)
+		var plaque := Rect2(card_size.x * 0.055, card_size.y * 0.579, card_size.x * 0.89, card_size.y * 0.354)
+		draw_style_box(UiTheme.box(Color("#c5cbb0"), Color("#cfbd8b"), 1, int(card_size.x * 0.06)), plaque)
 		return
 	# No painted frame: a plain one in code, so a missing asset never breaks the table.
 	var body := UiTheme.box(Color("#262833").lerp(colour, 0.18), colour.darkened(0.1), 3, int(radius))
