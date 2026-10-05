@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="178" height="250" viewBox="0 0 178 250" role="img" aria-labelledby="t d">
+  <title id="t">The Velarium — import copy</title>
+  <desc id="d">A 178 by 250 portrait card with a large shard illustration inside a gilded, violet-lit reliquary.</desc>
+  <defs>
+    <linearGradient id="body" x2=".92" y2="1"><stop stop-color="#362741"/><stop offset=".44" stop-color="#171923"/><stop offset="1" stop-color="#111d28"/></linearGradient>
+    <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#fff0c2"/><stop offset=".24" stop-color="#d6a658"/><stop offset=".54" stop-color="#795135"/><stop offset=".78" stop-color="#f2cc82"/><stop offset="1" stop-color="#6b442f"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#57346f"/><stop offset=".67" stop-color="#251d34"/><stop offset="1" stop-color="#151722"/></radialGradient>
+    <linearGradient id="plaque" x2="1" y2="1"><stop stop-color="#583b61"/><stop offset="1" stop-color="#292235"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="176" height="248" rx="17" fill="url(#body)" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="5" y="5" width="168" height="240" rx="14" fill="none" stroke="#f7dc9d55"/>
+  <path d="M12 34h154" stroke="#d9b77b55"/>
+  <path d="M11 18q0-6 7-6h14M167 18q0-6-7-6h-14M11 232q0 6 7 6h14M167 232q0 6-7 6h-14" fill="none" stroke="url(#gold)" stroke-width="1.4"/>
+  <circle cx="22" cy="21" r="13" fill="#241b24" stroke="url(#gold)" stroke-width="2"/>
+  <circle cx="22" cy="21" r="9" fill="#42264f" stroke="#f7d78766"/>
+  <text x="22" y="25.5" fill="#fff0b8" text-anchor="middle" font-family="Noto Sans" font-size="13" font-weight="800">1</text>
+  <text x="166" y="27" fill="#dac5eb" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="6.8" letter-spacing=".7">ARCANE OBJECT</text>
+  <text x="89" y="46" fill="#fff1dc" text-anchor="middle" font-family="Noto Sans" font-size="15" font-weight="800" letter-spacing=".15">import copy</text>
+  <rect x="9" y="52" width="160" height="124" rx="10" fill="url(#well)" stroke="url(#gold)" stroke-width="1.6"/>
+  <rect x="13" y="56" width="152" height="116" rx="8" fill="none" stroke="#dcb7714d"/>
+  <path d="M17 78q0-17 17-17m110 0q17 0 17 17M17 151q0 17 17 17m110 0q17 0 17-17" fill="none" stroke="#c69af977" stroke-width="1.2"/>
+  <circle cx="18" cy="76" r="2" fill="#f8dc92"/><circle cx="160" cy="76" r="2" fill="#f8dc92"/>
+  <image href="import-copy-art.png" x="23" y="49" width="132" height="132" preserveAspectRatio="xMidYMid meet"/>
+  <path d="M14 187h66M98 187h66" stroke="#ac81c0" stroke-opacity=".65"/>
+  <rect x="12" y="180" width="63" height="20" rx="9" fill="url(#plaque)" stroke="#c796d4"/>
+  <text x="43.5" y="193.8" fill="#ffe6ff" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8.7" font-weight="700" letter-spacing=".35">IMPORT</text>
+  <rect x="82" y="180" width="84" height="20" rx="9" fill="#25212e" stroke="#796582"/>
+  <text x="124" y="188.2" fill="#ac9db4" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="5.5" letter-spacing=".45">HOOK</text>
+  <text x="124" y="196" fill="#f4e4f8" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="7" font-weight="700" letter-spacing=".1">BEFORE STRIKE</text>
+  <rect x="12" y="205" width="154" height="29" rx="5" fill="#122a2a" stroke="#68b39f"/>
+  <path d="M17 210v19" stroke="#9ce8d5" stroke-width="2"/>
+  <text x="28" y="227" fill="#a1f0dc" font-family="Noto Sans" font-size="21" font-weight="800">O(1)</text>
+  <text x="157" y="223" fill="#d5f5e8" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="8.5" font-weight="700" letter-spacing=".5">CONSTANT</text>
+  <text x="89" y="241" fill="#dccde0" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="6.6" letter-spacing=".22">COPY LAST STRIKE · HALF POWER</text>
+</svg>

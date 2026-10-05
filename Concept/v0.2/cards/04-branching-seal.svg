@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="176" height="250" viewBox="0 0 176 250" role="img" aria-labelledby="t d">
+  <title id="t">The Branching Seal — import copy</title>
+  <desc id="d">A 176 by 250 portrait card with a luminous, oversized relic framed by branching spell paths.</desc>
+  <defs>
+    <linearGradient id="body" x2="1" y2="1"><stop stop-color="#253d3b"/><stop offset=".42" stop-color="#18272c"/><stop offset="1" stop-color="#222034"/></linearGradient>
+    <linearGradient id="silver" x2=".9" y2="1"><stop stop-color="#f3dfab"/><stop offset=".25" stop-color="#87bbab"/><stop offset=".58" stop-color="#5e7777"/><stop offset=".82" stop-color="#d0aa69"/><stop offset="1" stop-color="#687d78"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#60417b"/><stop offset=".58" stop-color="#26333a"/><stop offset="1" stop-color="#132529"/></radialGradient>
+    <linearGradient id="plate" x2="1" y2="1"><stop stop-color="#263345"/><stop offset="1" stop-color="#39273c"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="174" height="248" rx="20" fill="url(#body)" stroke="url(#silver)" stroke-width="2"/>
+  <rect x="6" y="6" width="164" height="238" rx="16" fill="none" stroke="#b4d6bf55"/>
+  <path d="M12 39h152" stroke="#b9d98c4d"/>
+  <circle cx="20" cy="21" r="12" fill="#20252c" stroke="url(#silver)" stroke-width="1.8"/>
+  <text x="20" y="25.5" fill="#f7e6b6" text-anchor="middle" font-family="Noto Sans" font-size="13" font-weight="800">1</text>
+  <text x="162" y="19" fill="#abd8c4" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="6.4" letter-spacing=".6">RECURSIVE RELIC</text>
+  <text x="88" y="51" fill="#fff0d5" text-anchor="middle" font-family="Noto Sans" font-size="15" font-weight="800">import copy</text>
+  <rect x="9" y="57" width="158" height="122" rx="15" fill="url(#well)" stroke="url(#silver)" stroke-width="1.5"/>
+  <path d="M16 70h11m-11 0v11m144-11h-11m11 0v11M16 166h11m-11 0v-11m144 11h-11m11 0v-11" fill="none" stroke="#d5c37f" stroke-width="1.4"/>
+  <path d="M16 91h9v10m126-10h-9v10M16 145h9v-10m126 10h-9v-10" fill="none" stroke="#8cd5bc" stroke-opacity=".6"/>
+  <circle cx="88" cy="117" r="54" fill="none" stroke="#d5c37f42" stroke-dasharray="1 4"/>
+  <image href="import-copy-art.png" x="20" y="53" width="136" height="136" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="12" y="185" width="59" height="19" rx="9" fill="#493755" stroke="#c19bd0"/>
+  <text x="41.5" y="198" fill="#fae6ff" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8.5" font-weight="700" letter-spacing=".35">IMPORT</text>
+  <rect x="77" y="185" width="87" height="19" rx="9" fill="#293533" stroke="#829b82"/>
+  <text x="120.5" y="192.5" fill="#acc8a9" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="5.2" letter-spacing=".45">HOOK</text>
+  <text x="120.5" y="200.5" fill="#f4e8c5" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="6.6" font-weight="700">BEFORE STRIKE</text>
+  <rect x="12" y="208" width="152" height="26" rx="5" fill="url(#plate)" stroke="#7aafa0"/>
+  <text x="24" y="226" fill="#9ef0d9" font-family="Noto Sans" font-size="19" font-weight="800">O(1)</text>
+  <text x="154" y="224" fill="#d9e6cb" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700" letter-spacing=".35">CONSTANT</text>
+  <text x="88" y="243" fill="#cbc8d7" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="6.1" letter-spacing=".15">COPY LAST STRIKE · HALF POWER</text>
+</svg>
