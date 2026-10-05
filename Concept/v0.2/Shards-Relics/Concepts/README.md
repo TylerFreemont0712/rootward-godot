@@ -3,6 +3,8 @@
 **Status:** concept work only. These proposals are not in the live card pool. Prototype card functions are in
 [`prototype_cards.py`](prototype_cards.py); they use the current `bolts, battle -> bolts` contract where possible.
 
+The card-by-card repairs for the C-rated v0.2 balance findings are in [Balance-Fix-Cards.md](Balance-Fix-Cards.md).
+
 ## Starting point
 
 The current 149 draftable Program cards break down by role as follows. Counts exclude the 150 non-draftable refactors.
