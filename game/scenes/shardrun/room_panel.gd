@@ -85,7 +85,7 @@ func _choice_stage(contents: Control) -> void:
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stage.add_theme_stylebox_override(
-		"panel", UiTheme.box(Color("#090710", 0.86), Color(UiTheme.AMBER, 0.52), 1, 12, Vector2(20, 18))
+		"panel", UiTheme.box(Color("#090710", 0.32), Color(0, 0, 0, 0), 0, 12, Vector2(20, 18))
 	)
 	add_child(stage)
 
@@ -96,9 +96,11 @@ func _add_relic_choices(reward: Dictionary, catalog: Dictionary) -> void:
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	for relic_id: String in relics:
 		var relic: Dictionary = catalog.relics.get(relic_id, {})
-		var claim := Ui.button(Text.t("Claim"), _ask({"type": "claim-relic", "relic_id": relic_id}), "PrimaryButton")
-		var face := Cards.relic(relic, claim, Vector2(92, 92))
+		var face := Cards.relic(relic, null, Vector2(92, 92))
 		face.custom_minimum_size = Vector2(320, 190)
+		face.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		face.gui_input.connect(_on_relic_choice_input.bind(face, _ask({"type": "claim-relic", "relic_id": relic_id})))
+		_pass_child_input(face)
 		row.add_child(face)
 	var actions := (
 		Ui
@@ -111,7 +113,13 @@ func _add_relic_choices(reward: Dictionary, catalog: Dictionary) -> void:
 	)
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
 	var column := Ui.vbox(
-		[Ui.label(Text.t("Choose a relic") if relics.size() > 1 else Text.t("A relic"), "Subheading"), row, actions], 20
+		[
+			Ui.label(Text.t("Choose a relic") if relics.size() > 1 else Text.t("A relic"), "Subheading"),
+			Ui.label(Text.t("Click a relic to choose it."), "Muted", true),
+			row,
+			actions
+		],
+		20
 	)
 	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_choice_stage(column)
@@ -152,9 +160,9 @@ func _add_card_choices(state: Dictionary, reward: Dictionary, catalog: Dictionar
 	for shard_id: String in reward.shards:
 		var face := CardFace.create(shard_id, catalog, state.language, session.show_summaries(), CardFace.Size.REWARD)
 		face.draggable = false
+		face.pressed = _select_reward_card.bind({"type": "take", "shard_id": shard_id})
 		_lift_reward_card(face)
-		var take := Ui.button(Text.t("Claim"), _ask({"type": "take", "shard_id": shard_id}), "PrimaryButton")
-		var option := Ui.vbox([face, take], 8)
+		var option := Ui.vbox([face], 8)
 		option.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		row.add_child(option)
 	var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
@@ -165,7 +173,7 @@ func _add_card_choices(state: Dictionary, reward: Dictionary, catalog: Dictionar
 	var column := Ui.vbox(
 		[
 			Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading"),
-			Ui.label(Text.t("Hover a card to read its code."), "Muted", true),
+			Ui.label(Text.t("Hover to read a card's code; click it to choose."), "Muted", true),
 			row,
 			actions
 		],
@@ -173,6 +181,28 @@ func _add_card_choices(state: Dictionary, reward: Dictionary, catalog: Dictionar
 	)
 	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_choice_stage(column)
+
+
+func _select_reward_card(_spot: Dictionary, button: int, command: Dictionary) -> void:
+	if button == MOUSE_BUTTON_LEFT:
+		wants.emit(command)
+
+
+func _pass_child_input(control: Control) -> void:
+	for child: Node in control.get_children():
+		if child is Control:
+			if child.mouse_filter != Control.MOUSE_FILTER_IGNORE:
+				child.mouse_filter = Control.MOUSE_FILTER_PASS
+				child.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+			_pass_child_input(child)
+
+
+func _on_relic_choice_input(event: InputEvent, face: Control, command: Callable) -> void:
+	var click := event as InputEventMouseButton
+	if click == null or click.button_index != MOUSE_BUTTON_LEFT or not click.pressed:
+		return
+	face.accept_event()
+	command.call()
 
 
 func _lift_reward_card(face: CardFace) -> void:

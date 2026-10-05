@@ -14,8 +14,8 @@ const SIZES := {
 	Size.HAND: Vector2(194, 274),
 	Size.SLOT: Vector2(122, 171),
 	Size.DECK: Vector2(140, 196),
-	Size.DRAFT: Vector2(170, 238),
-	Size.REWARD: Vector2(226, 320)
+	Size.DRAFT: Vector2(194, 274),
+	Size.REWARD: Vector2(233, 329)
 }
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
 ## of the width]). The pipeline writes the same numbers beside the frame (layouts.CARD); these are its fallback.

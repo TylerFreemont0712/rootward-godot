@@ -895,3 +895,9 @@ Program rewards can contain several independent fields. The loot view shows reli
 clears only the selected reward field; the next stage is then built from the remaining state. A forced cursed relic is
 already applied by the rules, so its “keep going” command only dismisses the presentation. This keeps UI sequencing
 from quietly changing reward rules.
+
+## 2026-10-05 — Keep card hover details when making the face clickable (`game/scenes/shardrun/room_panel.gd`)
+
+`CardFace` already routes a click through its `pressed` callback and keeps its child art pass-through, so a reward can
+select on the face without an invisible button stealing the hover that opens the code detail. A composed relic panel
+needs its child controls to pass pointer input up to the panel before it can select the whole surface.

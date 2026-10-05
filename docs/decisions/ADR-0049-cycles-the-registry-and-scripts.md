@@ -30,10 +30,10 @@ same update.
 - The program run's own map rows (`programs.jsonc` `map`) are two longer than the Shardrun's; Spellforge's maps, relics
   and fixtures are unchanged (`ShardrunMap.ROOM_KINDS` gained `shop` and `issue`, which a layer with no weight for them
   never draws; program-only battle keys are only written in a program run).
-- Program loot presents a relic choice before its card choice, one focused stage at a time; the cycle receipt and an
-  optional script stay in a compact header, and an optional spell follows the card stage. Skipping clears only that
-  reward field, so later rewards remain available; acknowledging a forced cursed relic advances the presentation
-  without undoing the curse already applied by the rules.
+- Program loot presents clickable relic choices before clickable card choices, one focused stage at a time; card faces
+  are 20% larger than hand cards. The cycle receipt and optional script stay in a compact header, and an optional spell
+  follows the card stage. Skipping clears only that reward field, so later rewards remain available; acknowledging a
+  forced cursed relic advances the presentation without undoing the curse already applied by the rules.
 
 ## Consequences
 

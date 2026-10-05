@@ -220,7 +220,7 @@ func _between(state: Dictionary) -> Control:
 		loot.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		var loot_panel := Ui.panel(loot)
 		loot_panel.add_theme_stylebox_override(
-			"panel", UiTheme.box(Color("#090710", 0.66), Color(UiTheme.LINE, 0.72), 1, 8, Vector2(12, 10))
+			"panel", UiTheme.box(Color("#090710", 0.24), Color(0, 0, 0, 0), 0, 8, Vector2(12, 10))
 		)
 		loot_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		return Ui.expand(loot_panel, true)
