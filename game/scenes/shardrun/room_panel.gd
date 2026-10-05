@@ -170,15 +170,14 @@ func _add_card_choices(state: Dictionary, reward: Dictionary, catalog: Dictionar
 		skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
 	var actions := Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))])
 	actions.alignment = BoxContainer.ALIGNMENT_CENTER
-	var column := Ui.vbox(
-		[
-			Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading"),
-			Ui.label(Text.t("Hover to read a card's code; click it to choose."), "Muted", true),
-			row,
-			actions
-		],
-		16
-	)
+	var heading := Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading")
+	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var instruction := Ui.label(Text.t("Hover to read a card's code; click it to choose."), "Muted", true)
+	instruction.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var intro := Ui.vbox([heading, instruction], 6)
+	var card_gap := Control.new()
+	card_gap.custom_minimum_size.y = 24
+	var column := Ui.vbox([intro, card_gap, row, actions], 12)
 	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_choice_stage(column)
 

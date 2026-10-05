@@ -118,10 +118,12 @@ func _paradigm(paradigm: Dictionary) -> Control:
 		func() -> void: wants.emit({"type": "pick-paradigm", "paradigm_id": paradigm.id}),
 		"PrimaryButton"
 	)
-	var contents: Array[Control] = [name, tier, _relic_slot(law, Vector2(54, 54), 142)]
-	var push_button := Ui.spacer()
-	push_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, push_button, choose])
+	var push_cards_down := Ui.spacer()
+	push_cards_down.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var button_buffer := Control.new()
+	button_buffer.custom_minimum_size.y = 36
+	var contents: Array[Control] = [name, tier, _relic_slot(law, Vector2(54, 54), 142), push_cards_down]
+	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, button_buffer, choose])
 	var column := Ui.vbox(contents, 10)
 	column.custom_minimum_size.y = 570
 	column.size_flags_vertical = Control.SIZE_EXPAND_FILL

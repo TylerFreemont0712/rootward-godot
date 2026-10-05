@@ -35,11 +35,10 @@ code window and end. This is the Phase 2 audit snapshot from before the later Pa
 The Artificer's program run now has five combat laws, fifteen focuses, 80 new algorithms with refactors, cross-paradigm
 rewards, cycles, the Registry, 30 Issues and consumable scripts. Its room icons and layer backdrops now use the game's
 bronze-and-crystal language with retro-computer details. Paradigm and focus picks show the relic art they grant, and
-program rewards present relics and 20%-larger, directly clickable card faces one focused choice at a time, with compact
-cycle/script receipts above their translucent, borderless stage. Spellforge and Card Shardrun retain their existing
-reward and rules flow. Implementation history, screenshots, exact tests and the final paired balance data are in
-[PLAN.md](PLAN.md) and
-[ParadigmUpdate.md](ParadigmUpdate.md).
+program rewards present relics and directly clickable card faces 50% larger than hand cards, one focused choice at a
+time, with compact cycle/script receipts above their translucent, borderless stage. Spellforge and Card Shardrun
+retain their existing reward and rules flow. Implementation history, screenshots, exact tests and the final paired
+balance data are in [PLAN.md](PLAN.md) and [ParadigmUpdate.md](ParadigmUpdate.md).
 
 ## 2. The recommendation in one screen
 

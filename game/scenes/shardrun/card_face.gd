@@ -15,7 +15,7 @@ const SIZES := {
 	Size.SLOT: Vector2(122, 171),
 	Size.DECK: Vector2(140, 196),
 	Size.DRAFT: Vector2(194, 274),
-	Size.REWARD: Vector2(233, 329)
+	Size.REWARD: Vector2(291, 411)
 }
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
 ## of the width]). The pipeline writes the same numbers beside the frame (layouts.CARD); these are its fallback.
@@ -243,6 +243,8 @@ func _text(font: Font, tint: Color, outline := 5) -> Label:
 func _layout() -> void:
 	if _name == null:
 		return
+	# In a spell's compressed queue, the title jitters and cannot be read; hand and held-card names remain visible.
+	_name.visible = String(spot.get("zone", "")) != "spell"
 	var card_size := custom_minimum_size
 	if _frame != null:
 		_frame.position = Vector2.ZERO

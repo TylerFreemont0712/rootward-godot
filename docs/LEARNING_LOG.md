@@ -901,3 +901,9 @@ from quietly changing reward rules.
 `CardFace` already routes a click through its `pressed` callback and keeps its child art pass-through, so a reward can
 select on the face without an invisible button stealing the hover that opens the code detail. A composed relic panel
 needs its child controls to pass pointer input up to the panel before it can select the whole surface.
+
+## 2026-10-05 — Only hide titles in the compressed spell row (`game/scenes/shardrun/card_face.gd`)
+
+The same small card size is used for both the active spell and the held-card row, but only the spell slot compresses
+names into jittery, unreadable text. `CardFace.spot.zone` distinguishes them, so hide only the name for `spell` and
+leave names visible in `hold` and in the hand.
