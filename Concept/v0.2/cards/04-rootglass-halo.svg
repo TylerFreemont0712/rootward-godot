@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" role="img" aria-labelledby="t d">
   <title id="t">Rootglass Halo — import copy</title>
-  <desc id="d">A verdigris and gold collectible frame with an open circular halo around the shard and subtly engraved branching marks.</desc>
+  <desc id="d">A verdigris and gold collectible frame with a tall oval halo around the shard, a branching crest, and quiet engravings.</desc>
   <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
   <defs>
     <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#2a403d"/><stop offset=".42" stop-color="#1d2c30"/><stop offset="1" stop-color="#20202d"/></linearGradient>
@@ -10,7 +10,6 @@
   </defs>
   <rect x="1" y="1" width="178" height="250" rx="20" fill="url(#body)" stroke="url(#metal)" stroke-width="2"/>
   <rect x="6" y="6" width="168" height="240" rx="16" fill="none" stroke="#b7d9a14e"/>
-  <path d="M11 40q0-5 6-5h146q6 0 6 5" fill="none" stroke="#b3ca9b80"/>
   <circle cx="21" cy="21" r="14" fill="#203331" stroke="url(#metal)" stroke-width="2"/>
   <circle cx="21" cy="21" r="9" fill="#54745f" stroke="#f0dda2"/>
   <text x="21" y="25.5" fill="#fff0c3" text-anchor="middle" font-family="CardCinzel" font-size="12" font-weight="700">1</text>
@@ -18,18 +17,18 @@
   <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
   <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
   <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
-  <path d="M90 52a46 46 0 0 1 46 46M136 98a46 46 0 0 1-46 46M90 144a46 46 0 0 1-46-46M44 98a46 46 0 0 1 46-46" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
-  <circle cx="90" cy="98" r="41" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
-  <circle cx="90" cy="98" r="46" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
-  <path d="M90 52v8m0 76v8M44 98h8m76 0h8" stroke="#e0cc8b" stroke-width="1.4"/>
-  <path d="M19 74h14l7 8m-21 31h14l7-8m112-31h-14l-7 8m21 31h-14l-7-8" fill="none" stroke="#82b49560" stroke-width="1.1"/>
+  <path d="M90 35a80 87 0 0 1 80 87M170 122a80 87 0 0 1-80 87M90 209a80 87 0 0 1-80-87M10 122a80 87 0 0 1 80-87" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
+  <ellipse cx="90" cy="122" rx="72" ry="79" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
+  <ellipse cx="90" cy="122" rx="77" ry="84" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
+  <path d="M90 35v9m0 156v9M10 122h9m142 0h9" stroke="#e0cc8b" stroke-width="1.4"/>
+  <path d="M8 84h14l12 12m-26 32h14l12-12m120-32h14m-14 32h14" fill="none" stroke="#82b49560" stroke-width="1.1"/>
   <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
-  <rect x="10" y="145" width="160" height="90" rx="12" fill="url(#paper)" stroke="url(#metal)" stroke-width="1.8"/>
-  <path d="M16 151h148v78H16z" fill="none" stroke="#526a5985"/>
-  <rect x="19" y="161" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
-  <text x="47.5" y="176" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
-  <text x="160" y="176" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
-  <path d="M18 190h144" stroke="#65786480"/>
-  <text x="25" y="215" fill="#2e6a53" font-family="CardCinzel" font-size="20" font-weight="700">O(1)</text>
-  <text x="159" y="211" fill="#344036" text-anchor="end" font-family="CardCinzel" font-size="8.3" font-weight="700" letter-spacing=".45">CONSTANT</text>
+  <rect x="10" y="146" width="160" height="89" rx="12" fill="url(#paper)" stroke="url(#metal)" stroke-width="1.8"/>
+  <path d="M16 152h148v77H16z" fill="none" stroke="#526a5985"/>
+  <rect x="19" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
+  <text x="47.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+  <text x="160" y="171" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
+  <path d="M18 185h144" stroke="#65786480"/>
+  <text x="25" y="211" fill="#2e6a53" font-family="CardCinzel" font-size="20" font-weight="700">O(1)</text>
+  <text x="159" y="207" fill="#344036" text-anchor="end" font-family="CardCinzel" font-size="8.3" font-weight="700" letter-spacing=".45">CONSTANT</text>
 </svg>
