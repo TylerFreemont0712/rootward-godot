@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="178" height="250" viewBox="0 0 178 250" role="img" aria-labelledby="t d">
+  <title id="t">Ivy Crest — import copy</title>
+  <desc id="d">A verdigris and gold fantasy card with root-like filigree, cost gem, short rules panel and a contained shard illustration.</desc>
+  <defs>
+    <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#294039"/><stop offset=".43" stop-color="#1d2b2c"/><stop offset="1" stop-color="#20202e"/></linearGradient>
+    <linearGradient id="gold" x2="0" y2="1"><stop stop-color="#f5e1a9"/><stop offset=".34" stop-color="#bd945c"/><stop offset=".7" stop-color="#627b67"/><stop offset="1" stop-color="#d6ba79"/></linearGradient>
+    <linearGradient id="banner" x2="0" y2="1"><stop stop-color="#425c50"/><stop offset="1" stop-color="#293b38"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#57406d"/><stop offset="1" stop-color="#1a292d"/></radialGradient>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#d5d0a4"/><stop offset="1" stop-color="#9db099"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="176" height="248" rx="20" fill="url(#body)" stroke="url(#gold)" stroke-width="2"/>
+  <rect x="6" y="6" width="166" height="238" rx="15" fill="none" stroke="#b4d9a34d"/>
+  <path d="M11 19q8 0 10 8t9 8m137-16q-8 0-10 8t-9 8M11 231q8 0 10-8t9-8m137 16q-8 0-10-8t-9-8" fill="none" stroke="url(#gold)" stroke-width="1.4"/>
+  <circle cx="23" cy="22" r="12.5" fill="#1e2e30" stroke="url(#gold)" stroke-width="2"/>
+  <circle cx="23" cy="22" r="7.5" fill="#526c5b" stroke="#e7d290"/>
+  <text x="23" y="26" fill="#fff0c2" text-anchor="middle" font-family="Noto Sans" font-size="11.5" font-weight="900">1</text>
+  <path d="M10 38q7 4 14 0h130q7 4 14 0v17q-7-4-14 0H24q-7-4-14 0z" fill="url(#banner)" stroke="url(#gold)" stroke-width="1.5"/>
+  <text x="89" y="50" fill="#fff0d5" text-anchor="middle" font-family="Noto Sans" font-size="14.5" font-weight="800">import copy</text>
+  <rect x="10" y="62" width="158" height="88" rx="13" fill="url(#well)" stroke="url(#gold)" stroke-width="1.6"/>
+  <path d="M17 72q10 0 10 8t10 8m114-16q-10 0-10 8t-10 8M17 140q10 0 10-8t10-8m114 16q-10 0-10-8t-10-8" fill="none" stroke="#9fc298" stroke-opacity=".8" stroke-width="1.2"/>
+  <path d="M23 107h10l5-7 6 14 6-7h9m80 0h-9l-5-7-6 14-6-7h-9" fill="none" stroke="#75ad94" stroke-opacity=".35"/>
+  <image href="../../../game/assets/shardrun/card-import-copy.png" x="45" y="62" width="88" height="88" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="10" y="155" width="158" height="80" rx="11" fill="url(#panel)" stroke="url(#gold)" stroke-width="1.7"/>
+  <path d="M16 161h146v68H16z" fill="none" stroke="#53634f88"/>
+  <rect x="17" y="163" width="57" height="19" rx="9" fill="#33493f" stroke="#75967d"/>
+  <text x="45.5" y="176" fill="#e7f4dc" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8.2" font-weight="700" letter-spacing=".35">IMPORT</text>
+  <text x="160" y="175" fill="#293731" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="7.8" font-weight="700">BEFORE STRIKE</text>
+  <path d="M17 190h144" stroke="#66796188"/>
+  <text x="22" y="214" fill="#28634e" font-family="Noto Sans" font-size="20" font-weight="900">O(1)</text>
+  <text x="157" y="210" fill="#303e34" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="8.5" font-weight="800" letter-spacing=".5">CONSTANT</text>
+  <text x="89" y="229" fill="#3b4b3d" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8" font-weight="700" letter-spacing=".1">COPY LAST · HALF POWER</text>
+</svg>

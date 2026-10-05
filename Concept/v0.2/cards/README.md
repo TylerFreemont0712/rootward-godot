@@ -1,14 +1,14 @@
 # Hand-card concepts · v0.2
 
-Four portrait directions revisit the earlier hand-card mockups. Each stays close to the live hand-card proportions (164 × 227) but is slightly larger, roughly 176–184 × 250–260, and devotes much more of its face to the featured shard. All four use the same `import copy` example so the frames and hierarchy can be compared directly.
+Four Hearthstone-led portrait frames for the same example card. The current hand card is 164 × 227; these concepts are about 178–182 × 250–256, keeping the familiar card shape while making room for a little more detail.
 
-| Design | Footprint | Direction |
+| Design | Size | Direction |
 |---|---:|---|
-| [Velarium](01-velarium.svg) · [preview](01-velarium-preview.png) | 178 × 250 | Gilded reliquary, dark velvet, generous hero art |
-| [Prism Loom](02-prism-loom.svg) · [preview](02-prism-loom-preview.png) | 180 × 254 | Spellglass lens with a luminous radial setting |
-| [Illuminated Folio](03-illuminated-folio.svg) · [preview](03-illuminated-folio-preview.png) | 184 × 260 | Warm vellum and an illustrated manuscript window |
-| [Branching Seal](04-branching-seal.svg) · [preview](04-branching-seal-preview.png) | 176 × 250 | Warded metal with subtle branching path engravings |
+| [Arcane Hearth](01-arcane-hearth.svg) · [preview](01-arcane-hearth-preview.png) | 180 × 252 | Gilded frame, violet title ribbon, warm rules panel |
+| [Skyfire Manifest](02-skyfire-manifest.svg) · [preview](02-skyfire-manifest-preview.png) | 178 × 250 | Blue-silver frame with a spellglass relic setting |
+| [Ember Grimoire](03-ember-grimoire.svg) · [preview](03-ember-grimoire-preview.png) | 182 × 256 | Worn leather, brass corners and a parchment-like rules plaque |
+| [Ivy Crest](04-ivy-crest.svg) · [preview](04-ivy-crest-preview.png) | 178 × 250 | Verdigris frame, root-like details and subtle branching marks |
 
-The featured image, `import-copy-art.png`, is a new high-detail fantasy rendering of the existing copy-crystal relic. Cost, role, complexity and hook are typeset as vector text for sharp, readable labels. Programming cues stay in the thin etched paths and vocabulary; the cards remain fantasy objects.
+All use the existing pixel-art shard at `game/assets/shardrun/card-import-copy.png`. Its complete square image sits inside a roughly 35%-of-card-height window. Each face shows cost, name, role, `BEFORE STRIKE`, and `O(1) / CONSTANT`, with the compact effect cue `COPY LAST · HALF POWER`.
 
-Concept only. These files do not change the live card UI or production art.
+Concepts only; the live card UI and production assets are unchanged.

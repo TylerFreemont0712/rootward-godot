@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="182" height="256" viewBox="0 0 182 256" role="img" aria-labelledby="t d">
+  <title id="t">Ember Grimoire — import copy</title>
+  <desc id="d">A warm, worn fantasy card with a framed relic illustration and a compact, easy-to-scan lower panel.</desc>
+  <defs>
+    <linearGradient id="leather" x2=".9" y2="1"><stop stop-color="#604146"/><stop offset=".4" stop-color="#352732"/><stop offset="1" stop-color="#201d29"/></linearGradient>
+    <linearGradient id="brass" x2="0" y2="1"><stop stop-color="#ffe3a4"/><stop offset=".35" stop-color="#bb8248"/><stop offset=".7" stop-color="#714637"/><stop offset="1" stop-color="#dab66e"/></linearGradient>
+    <linearGradient id="title" x2="0" y2="1"><stop stop-color="#764d55"/><stop offset="1" stop-color="#452d3a"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#593565"/><stop offset="1" stop-color="#261f2c"/></radialGradient>
+    <linearGradient id="vellum" x2=".2" y2="1"><stop stop-color="#ecd7aa"/><stop offset="1" stop-color="#bea17b"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="180" height="254" rx="16" fill="url(#leather)" stroke="url(#brass)" stroke-width="2"/>
+  <rect x="5" y="5" width="172" height="246" rx="12" fill="none" stroke="#e9c78655"/>
+  <path d="M9 24q0-10 10-10h16M173 24q0-10-10-10h-16M9 232q0 10 10 10h16m138-10q0 10-10 10h-16" fill="none" stroke="url(#brass)" stroke-width="1.5"/>
+  <circle cx="24" cy="23" r="13" fill="#492c39" stroke="url(#brass)" stroke-width="2"/>
+  <path d="M24 15l6 8-6 8-6-8z" fill="#8d5593" stroke="#f1cf8a"/>
+  <text x="24" y="26" fill="#fff0cb" text-anchor="middle" font-family="Noto Sans" font-size="8.5" font-weight="900">1</text>
+  <path d="M11 39l8-5h144l8 5v15l-8 5H19l-8-5z" fill="url(#title)" stroke="url(#brass)" stroke-width="1.4"/>
+  <text x="91" y="50" fill="#fff0dc" text-anchor="middle" font-family="Noto Sans" font-size="14.5" font-weight="800">import copy</text>
+  <rect x="10" y="63" width="162" height="88" rx="10" fill="url(#well)" stroke="url(#brass)" stroke-width="1.8"/>
+  <path d="M17 69l7 7-7 7m148-14l-7 7 7 7M17 145l7-7-7-7m148 14l-7-7 7-7" fill="none" stroke="#d9bb7b" stroke-width="1.2"/>
+  <path d="M28 68v78m126-78v78" stroke="#e6ce9750"/>
+  <image href="../../../game/assets/shardrun/card-import-copy.png" x="47" y="63" width="88" height="88" preserveAspectRatio="xMidYMid meet"/>
+  <path d="M10 158q0-5 6-5h150q6 0 6 5v74q0 5-6 5H16q-6 0-6-5z" fill="url(#vellum)" stroke="url(#brass)" stroke-width="1.6"/>
+  <path d="M16 159h150v68H16z" fill="none" stroke="#75564088"/>
+  <rect x="18" y="162" width="58" height="19" rx="8" fill="#593b58" stroke="#9e739c"/>
+  <text x="47" y="175" fill="#ffebf7" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8.4" font-weight="700" letter-spacing=".35">IMPORT</text>
+  <text x="162" y="174" fill="#392d36" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="7.9" font-weight="700">BEFORE STRIKE</text>
+  <path d="M18 190h144" stroke="#82695688"/>
+  <text x="24" y="216" fill="#327660" font-family="Noto Sans" font-size="20" font-weight="900">O(1)</text>
+  <text x="159" y="212" fill="#43313a" text-anchor="end" font-family="DejaVu Sans Mono, monospace" font-size="8.5" font-weight="800" letter-spacing=".5">CONSTANT</text>
+  <text x="91" y="231" fill="#594339" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="8" font-weight="700" letter-spacing=".1">COPY LAST · HALF POWER</text>
+</svg>
