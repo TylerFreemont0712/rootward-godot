@@ -917,6 +917,8 @@ Abandoning a run changes the current Shardrun state and shows its score; it does
 ## 2026-10-05 — Let Rootglass's frame crop the card art (`game/scenes/shardrun/card_face.gd`)
 
 The Rootglass SVG already has an opaque body with a transparent oval opening, so draw the card picture beneath that
-frame and size it to the opening instead of adding a second rectangular window. `TextureRect.STRETCH_KEEP_ASPECT_COVERED`
-fills the oval's bounds; a small inset protects wide or tall icon subjects from harsh clipping, and the parchment plaque
-in the frame naturally covers the lower part of the picture. Older frames keep their original inset art.
+frame instead of adding a second rectangular window. `TextureRect.STRETCH_KEEP_ASPECT_COVERED` fills the oval's bounds;
+after review, scale the art to 58% of the opening and lift it by 4% of the opening's height. This leaves more breathing
+room around each relic while the parchment plaque naturally covers the lower picture. Older frames keep their original
+inset art. Reviewed reward and hand captures: `/tmp/rootward-pack-oval-art-final.png` and
+`/tmp/rootward-hand-oval-art-final.png`.
