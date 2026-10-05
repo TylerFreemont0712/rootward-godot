@@ -17,16 +17,16 @@
   <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
   <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
   <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
-  <path d="M90 35C121 35 145 49 151.5 57.5C158 64.5 168 98 168 122C168 146 158 179.5 151.5 186.5C145 193.5 121 209 90 209C59 209 35 193.5 28.5 186.5C22 179.5 12 146 12 122C12 98 22 64.5 28.5 57.5C35 49 59 35 90 35Z" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
-  <path d="M90 43C114 43 134 55 143 66C149 72 160 99 160 122C160 145 149 172 143 178C134 189 114 201 90 201C66 201 46 189 37 178C31 172 20 145 20 122C20 99 31 72 37 66C46 55 66 43 90 43Z" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
-  <path d="M90 38C117 38 140 51 148.5 60.5C154.5 67 165 98 165 122C165 146 154.5 177 148.5 183.5C140 193 117 206 90 206C63 206 40 193 31.5 183.5C25.5 177 15 146 15 122C15 98 25.5 67 31.5 60.5C40 51 63 38 90 38Z" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
+  <path d="M90 35C112 35 143 50.5 151.5 57.5C160 64.5 168 98 168 122C168 146 160 179.5 151.5 186.5C143 193.5 112 209 90 209C68 209 37 193.5 28.5 186.5C20 179.5 12 146 12 122C12 98 20 64.5 28.5 57.5C37 50.5 68 35 90 35Z" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
+  <path d="M90 43C110 43 134 57 143 66C152 75 160 99 160 122C160 145 152 169 143 178C134 187 110 201 90 201C70 201 46 187 37 178C28 169 20 145 20 122C20 99 28 75 37 66C46 57 70 43 90 43Z" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
+  <path d="M90 38C112 38 139 52 148.5 60.5C158 69 165 99 165 122C165 146 158 175 148.5 183.5C139 192 112 206 90 206C68 206 41 192 31.5 183.5C22 175 15 146 15 122C15 99 22 69 31.5 60.5C41 52 68 38 90 38Z" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
   <path d="M90 35v9m0 156v9M12 122h9m138 0h9" stroke="#e0cc8b" stroke-width="1.4"/>
   <path d="M8 84h14l12 12m-26 32h14l12-12m138-32h-14l-12 12m26 32h-14l-12-12" fill="none" stroke="#82b49560" stroke-width="1.1"/>
   <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
   <rect x="10" y="146" width="160" height="89" rx="12" fill="url(#paper)" stroke="url(#metal)" stroke-width="1.8"/>
   <path d="M16 152h148v77H16z" fill="none" stroke="#526a5985"/>
-  <rect x="19" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
-  <text x="47.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+  <rect x="24" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
+  <text x="52.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
   <text x="160" y="171" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
   <path d="M18 185h144" stroke="#65786480"/>
   <text x="25" y="207" fill="#2e6a53" font-family="CardCinzel" font-size="9.3" font-weight="700" letter-spacing=".4">CONSTANT</text>
