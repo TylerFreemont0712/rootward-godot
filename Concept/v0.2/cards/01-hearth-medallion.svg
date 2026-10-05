@@ -1,35 +1,37 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" data-frame="rootglass" data-halo="bezel" data-palette="ember-bronze" data-wear="pristine" role="img" aria-labelledby="t d">
   <title id="t">Rootglass Bezel — pristine import copy</title>
   <desc id="d">Pristine Rootglass card with a few tiny warm-metal studs at the halo shoulders.</desc>
   <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
   <defs>
-    <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#2a403d"/><stop offset=".42" stop-color="#1d2c30"/><stop offset="1" stop-color="#20202d"/></linearGradient>
-    <linearGradient id="metal" x2="0" y2="1"><stop stop-color="#f3e4b4"/><stop offset=".3" stop-color="#98b9a0"/><stop offset=".6" stop-color="#637d75"/><stop offset=".82" stop-color="#d9b978"/><stop offset="1" stop-color="#637970"/></linearGradient>
-    <radialGradient id="well"><stop stop-color="#4b4652"/><stop offset=".77" stop-color="#26343a"/><stop offset="1" stop-color="#192529"/></radialGradient>
-    <linearGradient id="paper" x2=".2" y2="1"><stop stop-color="#dde0bd"/><stop offset="1" stop-color="#a9baa0"/></linearGradient>
+    <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#40382f"/><stop offset=".42" stop-color="#302927"/><stop offset="1" stop-color="#211f24"/></linearGradient>
+    <linearGradient id="metal" x2="0" y2="1"><stop stop-color="#f1e2be"/><stop offset=".3" stop-color="#c29c74"/><stop offset=".6" stop-color="#766147"/><stop offset=".82" stop-color="#e0bd80"/><stop offset="1" stop-color="#705841"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#5b4b42"/><stop offset=".77" stop-color="#332c2a"/><stop offset="1" stop-color="#1f1d22"/></radialGradient>
+    <linearGradient id="paper" x2=".2" y2="1"><stop stop-color="#e5dbc3"/><stop offset="1" stop-color="#b8a58a"/></linearGradient>
   </defs>
   <rect x="1" y="1" width="178" height="250" rx="20" fill="url(#body)" stroke="url(#metal)" stroke-width="2"/>
-  <rect x="6" y="6" width="168" height="240" rx="16" fill="none" stroke="#b7d9a14e"/>
-  <circle cx="21" cy="21" r="14" fill="#203331" stroke="url(#metal)" stroke-width="2"/>
-  <circle cx="21" cy="21" r="9" fill="#54745f" stroke="#f0dda2"/>
+  <rect x="6" y="6" width="168" height="240" rx="16" fill="none" stroke="#e1cba14e"/>
+  <circle cx="21" cy="21" r="14" fill="#352b26" stroke="url(#metal)" stroke-width="2"/>
+  <circle cx="21" cy="21" r="9" fill="#785b3e" stroke="#f2ddb0"/>
   <text x="21" y="25.5" fill="#fff0c3" text-anchor="middle" font-family="CardCinzel" font-size="12" font-weight="700">1</text>
   <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.3" font-weight="700">import copy</text>
-  <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
-  <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
-  <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
+  <g transform="translate(-1.5 1.5)">
+    <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
+    <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+    <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
+  </g>
   <path d="M90 35C112 35 143 50.5 151.5 57.5C160 64.5 168 98 168 122C168 146 160 179.5 151.5 186.5C143 193.5 112 209 90 209C68 209 37 193.5 28.5 186.5C20 179.5 12 146 12 122C12 98 20 64.5 28.5 57.5C37 50.5 68 35 90 35Z" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
-  <path d="M90 43C110 43 134 57 143 66C152 75 160 99 160 122C160 145 152 169 143 178C134 187 110 201 90 201C70 201 46 187 37 178C28 169 20 145 20 122C20 99 28 75 37 66C46 57 70 43 90 43Z" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
-  <path d="M90 38C112 38 139 52 148.5 60.5C158 69 165 99 165 122C165 146 158 175 148.5 183.5C139 192 112 206 90 206C68 206 41 192 31.5 183.5C22 175 15 146 15 122C15 99 22 69 31.5 60.5C41 52 68 38 90 38Z" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
-  <path d="M90 35v9m0 156v9M12 122h9m138 0h9" stroke="#e0cc8b" stroke-width="1.4"/>
-  <path d="M8 84h14l12 12m-26 32h14l12-12m138-32h-14l-12 12m26 32h-14l-12-12" fill="none" stroke="#82b49560" stroke-width="1.1"/>
-  <g fill="#e0cc8b" opacity=".76"><circle cx="30" cy="59" r="1"/><circle cx="150" cy="59" r="1"/><circle cx="30" cy="185" r="1"/><circle cx="150" cy="185" r="1"/></g>
+  <path d="M90 43C110 43 134 57 143 66C152 75 160 99 160 122C160 145 152 169 143 178C134 187 110 201 90 201C70 201 46 187 37 178C28 169 20 145 20 122C20 99 28 75 37 66C46 57 70 43 90 43Z" fill="url(#well)" stroke="#b99f7b" stroke-width="1"/>
+  <path d="M90 38C112 38 139 52 148.5 60.5C158 69 165 99 165 122C165 146 158 175 148.5 183.5C139 192 112 206 90 206C68 206 41 192 31.5 183.5C22 175 15 146 15 122C15 99 22 69 31.5 60.5C41 52 68 38 90 38Z" fill="none" stroke="#e1c28a58" stroke-dasharray="1 5"/>
+  <path d="M90 35v9m0 156v9M12 122h9m138 0h9" stroke="#e5cd91" stroke-width="1.4"/>
+  <path d="M8 84h14l12 12m-26 32h14l12-12m138-32h-14l-12 12m26 32h-14l-12-12" fill="none" stroke="#bd987560" stroke-width="1.1"/>
+  <g fill="#e5cd91" opacity=".76"><circle cx="30" cy="59" r="1"/><circle cx="150" cy="59" r="1"/><circle cx="30" cy="185" r="1"/><circle cx="150" cy="185" r="1"/></g>
     <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
   <rect x="10" y="146" width="160" height="89" rx="12" fill="url(#paper)" stroke="url(#metal)" stroke-width="1.8"/>
   <path d="M16 152h148v77H16z" fill="none" stroke="#526a5985"/>
-  <rect x="24" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
-  <text x="52.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
-  <text x="160" y="171" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
+  <rect x="24" y="156" width="57" height="21" rx="10" fill="#594a3b" stroke="#ab8d68"/>
+  <text x="52.5" y="171" fill="#f7ecd4" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+  <text x="160" y="171" fill="#44382f" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
   <path d="M18 185h144" stroke="#65786480"/>
   <text x="25" y="207" fill="#2e6a53" font-family="CardCinzel" font-size="9.3" font-weight="700" letter-spacing=".4">CONSTANT</text>
-  <text x="159" y="207" fill="#344036" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
+  <text x="159" y="207" fill="#44382f" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
 </svg>

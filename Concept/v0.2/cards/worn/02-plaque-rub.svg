@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" role="img" aria-labelledby="t d">
-  <title id="t">Worn Concept 02 — parchment rub — import copy</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" data-frame="rootglass" data-halo="rootglass" data-palette="verdant" data-wear="low" data-wear-type="paper-rub" role="img" aria-labelledby="t d">
+  <title id="t">Surface study — parchment rub</title>
   <desc id="d">A pristine Rootglass card with a faint rubbed patch along the lower parchment edge.</desc>
   <style>@font-face{font-family:CardCinzel;src:url("../../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
   <defs>
@@ -14,9 +14,11 @@
   <circle cx="21" cy="21" r="9" fill="#54745f" stroke="#f0dda2"/>
   <text x="21" y="25.5" fill="#fff0c3" text-anchor="middle" font-family="CardCinzel" font-size="12" font-weight="700">1</text>
   <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.3" font-weight="700">import copy</text>
-  <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
-  <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
-  <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
+  <g transform="translate(-1.5 1.5)">
+    <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
+    <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+    <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
+  </g>
   <path d="M90 35C112 35 143 50.5 151.5 57.5C160 64.5 168 98 168 122C168 146 160 179.5 151.5 186.5C143 193.5 112 209 90 209C68 209 37 193.5 28.5 186.5C20 179.5 12 146 12 122C12 98 20 64.5 28.5 57.5C37 50.5 68 35 90 35Z" fill="none" stroke="url(#metal)" stroke-width="3.5"/>
   <path d="M90 43C110 43 134 57 143 66C152 75 160 99 160 122C160 145 152 169 143 178C134 187 110 201 90 201C70 201 46 187 37 178C28 169 20 145 20 122C20 99 28 75 37 66C46 57 70 43 90 43Z" fill="url(#well)" stroke="#88a98e" stroke-width="1"/>
   <path d="M90 38C112 38 139 52 148.5 60.5C158 69 165 99 165 122C165 146 158 175 148.5 183.5C139 192 112 206 90 206C68 206 41 192 31.5 183.5C22 175 15 146 15 122C15 99 22 69 31.5 60.5C41 52 68 38 90 38Z" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>

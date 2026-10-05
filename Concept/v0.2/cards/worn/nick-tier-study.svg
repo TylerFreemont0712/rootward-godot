@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="670" height="300" viewBox="0 0 670 300" role="img" aria-labelledby="title desc">
+  <title id="title">CARD-EDGE NICKS wear tier study</title>
+  <desc id="desc">Three Rootglass card concepts compare low, medium, and very worn cosmetic treatments.</desc>
+  <style>@font-face{font-family:CardCinzel;src:url("../../../../game/ui/fonts/cinzel.ttf") format("truetype")}</style>
+  <defs><clipPath id="clip0"><rect x="20" y="38" width="140" height="196" rx="15"/></clipPath><clipPath id="clip1"><rect x="265" y="38" width="140" height="196" rx="15"/></clipPath><clipPath id="clip2"><rect x="510" y="38" width="140" height="196" rx="15"/></clipPath></defs>
+  <rect width="670" height="300" rx="18" fill="#1e292b" stroke="#9eb69c" stroke-opacity=".6"/>
+  <text x="335" y="28" fill="#e9e0bf" text-anchor="middle" font-family="CardCinzel" font-size="14" font-weight="700" letter-spacing="1">CARD-EDGE NICKS</text>
+  <image href="01-edge-nick-low-preview.png" x="20" y="38" width="140" height="196" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip0)"/>
+  <text x="90" y="255" fill="#e9e0bf" text-anchor="middle" font-family="CardCinzel" font-size="10.5" font-weight="700">LOW</text>
+  <text x="90" y="276" fill="#aebeb0" text-anchor="middle" font-family="CardCinzel" font-size="8">One outer-edge chip</text>
+  <image href="05-edge-nick-medium-preview.png" x="265" y="38" width="140" height="196" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip1)"/>
+  <text x="335" y="255" fill="#e9e0bf" text-anchor="middle" font-family="CardCinzel" font-size="10.5" font-weight="700">MEDIUM</text>
+  <text x="335" y="276" fill="#aebeb0" text-anchor="middle" font-family="CardCinzel" font-size="8">Edge chips + halo nick</text>
+  <image href="06-edge-nick-very-worn-preview.png" x="510" y="38" width="140" height="196" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip2)"/>
+  <text x="580" y="255" fill="#e9e0bf" text-anchor="middle" font-family="CardCinzel" font-size="10.5" font-weight="700">VERY WORN</text>
+  <text x="580" y="276" fill="#aebeb0" text-anchor="middle" font-family="CardCinzel" font-size="8">Several edge losses</text>
+</svg>

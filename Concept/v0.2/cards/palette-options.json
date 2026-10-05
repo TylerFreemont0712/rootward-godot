@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "shared_frame": "rootglass",
+  "palette_axis_is_independent_of_halo": true,
+  "palettes": {
+    "ember-bronze": {
+      "label": "Ember Bronze",
+      "body": [
+        "#40382f",
+        "#302927",
+        "#211f24"
+      ],
+      "metal": [
+        "#f1e2be",
+        "#c29c74",
+        "#766147",
+        "#e0bd80",
+        "#705841"
+      ],
+      "portrait": [
+        "#5b4b42",
+        "#332c2a",
+        "#1f1d22"
+      ],
+      "plaque": [
+        "#e5dbc3",
+        "#b8a58a"
+      ],
+      "cost": "#785b3e",
+      "import_badge": "#594a3b",
+      "semantic_constant": "#2e6a53"
+    },
+    "moonstone": {
+      "label": "Moonstone",
+      "body": [
+        "#2f4048",
+        "#23323b",
+        "#1b242d"
+      ],
+      "metal": [
+        "#e5e4cf",
+        "#9dbac1",
+        "#627d89",
+        "#d7c486",
+        "#677d82"
+      ],
+      "portrait": [
+        "#46545a",
+        "#273840",
+        "#19262c"
+      ],
+      "plaque": [
+        "#dfe4dd",
+        "#aebfc0"
+      ],
+      "cost": "#547985",
+      "import_badge": "#3d5961",
+      "semantic_constant": "#2e6a53"
+    },
+    "violet-etch": {
+      "label": "Violet Etch",
+      "body": [
+        "#3c3342",
+        "#2c2633",
+        "#211e29"
+      ],
+      "metal": [
+        "#eadbbf",
+        "#ad96b5",
+        "#6f687f",
+        "#d8bd82",
+        "#6a596d"
+      ],
+      "portrait": [
+        "#56465c",
+        "#332c39",
+        "#211e2a"
+      ],
+      "plaque": [
+        "#e1d9d2",
+        "#b9a9b7"
+      ],
+      "cost": "#70547a",
+      "import_badge": "#514051",
+      "semantic_constant": "#2e6a53"
+    },
+    "verdant": {
+      "label": "Verdant Rootglass",
+      "body": [
+        "#2a403d",
+        "#1d2c30",
+        "#20202d"
+      ],
+      "metal": [
+        "#f3e4b4",
+        "#98b9a0",
+        "#637d75",
+        "#d9b978",
+        "#637970"
+      ],
+      "portrait": [
+        "#4b4652",
+        "#26343a",
+        "#192529"
+      ],
+      "plaque": [
+        "#dde0bd",
+        "#a9baa0"
+      ],
+      "cost": "#54745f",
+      "import_badge": "#334e43",
+      "semantic_constant": "#2e6a53"
+    }
+  },
+  "concepts": {
+    "01-hearth-medallion.svg": {
+      "halo": "bezel",
+      "palette": "ember-bronze"
+    },
+    "02-astral-wheel.svg": {
+      "halo": "orbit",
+      "palette": "moonstone"
+    },
+    "03-velvet-oracle.svg": {
+      "halo": "etching",
+      "palette": "violet-etch"
+    },
+    "04-rootglass-halo.svg": {
+      "halo": "rootglass",
+      "palette": "verdant"
+    }
+  },
+  "note": "Concept token catalog for a future reusable card-art builder. Current SVGs are curated previews, not runtime-rendered from this file."
+}

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="650" viewBox="0 0 540 650" role="img" aria-labelledby="title desc">
+  <title id="title">Rootglass halo and palette comparison</title>
+  <desc id="desc">Four pristine Rootglass cards compare independent halo ornaments and color palettes.</desc>
+  <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype")}</style>
+  <defs><clipPath id="clip0"><rect x="30" y="62" width="190" height="266" rx="20"/></clipPath><clipPath id="clip1"><rect x="320" y="62" width="190" height="266" rx="20"/></clipPath><clipPath id="clip2"><rect x="30" y="352" width="190" height="266" rx="20"/></clipPath><clipPath id="clip3"><rect x="320" y="352" width="190" height="266" rx="20"/></clipPath></defs>
+  <rect width="540" height="650" rx="18" fill="#1e292b" stroke="#9eb69c" stroke-opacity=".6"/>
+  <text x="270" y="29" fill="#e9e0bf" text-anchor="middle" font-family="CardCinzel" font-size="14" font-weight="700" letter-spacing=".6">HALO · PALETTE COMPARISON</text>
+  <text x="125" y="54" fill="#c9b992" text-anchor="middle" font-family="CardCinzel" font-size="9.2" font-weight="700">BEZEL · EMBER BRONZE</text>
+  <image href="01-hearth-medallion-preview.png" x="30" y="62" width="190" height="266" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip0)"/>
+  <text x="415" y="54" fill="#c9b992" text-anchor="middle" font-family="CardCinzel" font-size="9.2" font-weight="700">ORBIT · MOONSTONE</text>
+  <image href="02-astral-wheel-preview.png" x="320" y="62" width="190" height="266" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip1)"/>
+  <text x="125" y="344" fill="#c9b992" text-anchor="middle" font-family="CardCinzel" font-size="9.2" font-weight="700">ETCHING · VIOLET ETCH</text>
+  <image href="03-velvet-oracle-preview.png" x="30" y="352" width="190" height="266" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip2)"/>
+  <text x="415" y="344" fill="#c9b992" text-anchor="middle" font-family="CardCinzel" font-size="9.2" font-weight="700">ROOTGLASS · VERDANT</text>
+  <image href="04-rootglass-halo-preview.png" x="320" y="352" width="190" height="266" preserveAspectRatio="xMidYMid meet" clip-path="url(#clip3)"/>
+</svg>
