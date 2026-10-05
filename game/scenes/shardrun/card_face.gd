@@ -40,8 +40,8 @@ const COMPLEXITY_COLOURS := {
 	"pseudo": "#294c6b",
 }
 const ROOTGLASS_FRAME := "cards/rootglass"
-const ROOTGLASS_ART_SCALE := 0.58
-const ROOTGLASS_ART_LIFT := 0.04
+const ROOTGLASS_ART_SCALE := 0.48
+const ROOTGLASS_ART_LIFT := 0.06
 const TINT := preload("res://ui/card_tint.gdshader")
 const FRAME := "cards/frame"
 const DETAIL_DELAY := 0.08
