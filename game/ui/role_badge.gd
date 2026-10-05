@@ -50,7 +50,7 @@ func _draw() -> void:
 	if text_only:
 		var label_font := UiTheme.ui_font(600)
 		var label := Text.t(ROLES[role].word)
-		var label_size := int(size.y * 0.43)
+		var label_size := int(size.y * 0.49)
 		while (
 			label_size > 6
 			and label_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, label_size).x > size.x * 0.86

@@ -67,13 +67,14 @@ beside the numbers; a `.log` button instead of the scrolling log; a wider code p
 
 ## Amended (2026-10-05, Rootglass program cards)
 
-- Program cards in the Shardrun use the Rootglass frame (`assets/cards/rootglass.svg`) at 190 × 266 in the hand. The
+- Program cards in the Shardrun use the Rootglass frame (`assets/cards/rootglass.svg`) at 194 × 274 in the hand. The
   existing shard picture stays inside the oval bezel; cost remains at upper left, with the title sharing that header
   and lifted 2 px from the concept placement. Long names balance across two lines rather than shrinking to a thin
   single line. Spellforge and older shard cards keep the painted frame above.
 - A shield crest at upper right identifies the card's paradigm with a distinct glyph and the paradigm's color; neutral
   cards use a neutral star. The lower plaque keeps the role pill in its role color, the card's short characteristic in
   its own semantic color, and complexity plus Big-O side by side. The full explanation and code stay in `CardDetail`.
-- `CardWear` adds small irregular edge chips. Their positions, shape, count and finish quality come from a stable hash
-  of the card id, so they do not flicker when the hand moves and cannot change game rules or consume the run's random
-  stream. The hand rests partly below the viewport and raises a pointed-at card fully into view.
+- `CardWear` adds small irregular edge chips. Each displayed card instance gets a one-time visual seed, so duplicate
+  copies can have different finishes while each card stays the same when the hand moves or it is hovered. This does
+  not change game rules or consume the run's random stream. The hand rests partly below the viewport and raises a
+  pointed-at card fully into view.

@@ -8,18 +8,20 @@ var quality := 1.0
 var _marks: Array[Dictionary] = []
 
 
-static func create(card_id: String, accent: Color) -> CardWear:
+static func create(accent: Color) -> CardWear:
 	var wear := CardWear.new()
 	wear.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	wear._arrange_marks(card_id, accent)
+	var seed_source := RandomNumberGenerator.new()
+	seed_source.randomize()
+	wear._arrange_marks(seed_source.randi(), accent)
 	return wear
 
 
-func _arrange_marks(card_id: String, accent: Color) -> void:
-	# LEARN: Keep cosmetic randomness in this renderer and derive it from card identity; rearranging a hand never consumes
-	# the run's random stream or changes a card's finish halfway through a fight.
+func _arrange_marks(instance_seed: int, accent: Color) -> void:
+	# LEARN: Assign the visible card its own seed once. Its finish stays fixed while drawn or hovered, but repeated copies
+	# of the same shard can have different wear without consuming the run's random stream.
 	var random := RandomNumberGenerator.new()
-	random.seed = _stable_seed(card_id)
+	random.seed = instance_seed
 	var roll := random.randf()
 	var count := 0
 	if roll >= 0.12:
@@ -107,10 +109,3 @@ func _shape(mark: Dictionary) -> PackedVector2Array:
 		points.append(edge + tangent * offset.x + inward * offset.y)
 	points.append(edge + tangent * span * 0.5)
 	return points
-
-
-static func _stable_seed(card_id: String) -> int:
-	var value := 2166136261
-	for byte: int in card_id.to_utf8_buffer():
-		value = int(((value ^ byte) * 16777619) & 0x7FFFFFFF)
-	return maxi(1, value)

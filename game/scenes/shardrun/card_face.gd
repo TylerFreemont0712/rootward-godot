@@ -10,7 +10,7 @@ extends Control
 enum Size { HAND, SLOT, DECK }
 
 ## The frame's own proportions (480 x 664), at three sizes in the design canvas.
-const SIZES := {Size.HAND: Vector2(190, 266), Size.SLOT: Vector2(122, 171), Size.DECK: Vector2(140, 196)}
+const SIZES := {Size.HAND: Vector2(194, 274), Size.SLOT: Vector2(122, 171), Size.DECK: Vector2(140, 196)}
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
 ## of the width]). The pipeline writes the same numbers beside the frame (layouts.CARD); these are its fallback.
 const GEOMETRY := {
@@ -24,13 +24,13 @@ const GEOMETRY := {
 ## The colour of the element a shard gives its bolts, for an old shard's frame; a program card takes its paradigm's.
 const ELEMENT_FRAME := {"fire": "#ff9147", "frost": "#82d8ff", "spark": "#ffe066"}
 const COMPLEXITY_COLOURS := {
-	"constant": "#2e6a53",
-	"logarithmic": "#387f82",
-	"linear": "#937126",
-	"linearithmic": "#497a5b",
-	"quadratic": "#765493",
-	"exponential": "#a64949",
-	"pseudo": "#496d8c",
+	"constant": "#20543d",
+	"logarithmic": "#175d60",
+	"linear": "#6a4d11",
+	"linearithmic": "#315638",
+	"quadratic": "#563276",
+	"exponential": "#842f34",
+	"pseudo": "#294c6b",
 }
 const ROOTGLASS_FRAME := "cards/rootglass"
 const TINT := preload("res://ui/card_tint.gdshader")
@@ -195,20 +195,20 @@ func _build(size_kind: Size) -> void:
 	if not _rootglass and not (shard.get("keywords", []) as Array).is_empty():
 		_keywords = KeywordChips.create(shard.keywords)
 		add_child(_keywords)
-	_name = _text(UiTheme.ui_font(600), Color("#f4ead2"), 3 if _rootglass else 5)
-	_cost = _text(UiTheme.ui_font(600), Color("#fff0c3") if _rootglass else Color.WHITE, 0 if _rootglass else 5)
+	_name = _text(UiTheme.ui_font(600), Color("#fff0d8"), 4 if _rootglass else 5)
+	_cost = _text(UiTheme.ui_font(600), Color("#fff0c3") if _rootglass else Color.WHITE, 1 if _rootglass else 5)
 	_speed = _text(
-		UiTheme.ui_font(600), Color("#344036") if _rootglass else colour.lightened(0.45), 0 if _rootglass else 5
+		UiTheme.ui_font(600), Color("#26362e") if _rootglass else colour.lightened(0.45), 1 if _rootglass else 5
 	)
 	_name.text = Text.t(shard.get("name", shard_id))
 	_cost.text = str(int(shard.get("cost", 0)))
 	_speed.text = ShardrunViews.complexity(shard)
 	if _rootglass:
-		_feature = _text(UiTheme.ui_font(600), _feature_colour(), 0)
+		_feature = _text(UiTheme.ui_font(600), _feature_colour(), 1)
 		_feature.text = _feature_text()
-		_complexity = _text(UiTheme.ui_font(600), _complexity_colour(), 0)
+		_complexity = _text(UiTheme.ui_font(600), _complexity_colour(), 1)
 		_complexity.text = String(shard.get("complexity", "linear")).to_upper()
-		_wear = CardWear.create(shard_id, colour if shard.has("paradigm") else UiTheme.AMBER)
+		_wear = CardWear.create(colour if shard.has("paradigm") else UiTheme.AMBER)
 		add_child(_wear)
 	for child in get_children():
 		(child as Control).mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -385,21 +385,21 @@ func _feature_text() -> String:
 	var keywords: Array = shard.get("keywords", [])
 	if not keywords.is_empty():
 		return String(keywords[0]).to_upper()
-	return Text.t(String(shard.get("rarity", "common")).to_upper())
+	return ""
 
 
 func _feature_colour() -> Color:
 	for effect: Dictionary in shard.get("effects", []):
 		if effect.get("kind", "") in ["hook-before", "hook-after"]:
-			return RoleBadge.colour_of("import")
+			return RoleBadge.colour_of("import").darkened(0.4)
 		if effect.get("kind", "") == "index-size-add":
-			return UiTheme.TEAL
+			return Color("#24574d")
 	if shard.has("needs") or shard.has("makes"):
-		return UiTheme.TEAL
+		return UiTheme.TEAL.darkened(0.45)
 	var keywords: Array = shard.get("keywords", [])
 	if not keywords.is_empty():
-		return KeywordChips.colour_of(String(keywords[0]))
-	return UiTheme.rarity(String(shard.get("rarity", "common"))).darkened(0.12)
+		return KeywordChips.colour_of(String(keywords[0])).darkened(0.35)
+	return UiTheme.FAINT
 
 
 func _complexity_colour() -> Color:

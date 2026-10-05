@@ -885,6 +885,6 @@ the platform cannot report may be 0, -1 or NaN, so test `value > 0.0` rather tha
 
 ## 2026-10-05 — Stable cosmetic variation (`game/ui/card_wear.gd`, ADR-0013)
 
-Card edge nicks are decoration, so their seed comes from the immutable shard id and stays inside the UI renderer. A
-card moving or being hovered cannot advance the run's random stream; the same card keeps the same finish, while
-different shard ids get their own quality and irregular chip pattern.
+Card edge nicks are decoration, so each visible card instance gets a one-time seed inside the UI renderer. A card
+moving or being hovered cannot advance the run's random stream or change its finish, and two copies of the same shard
+can have different quality and irregular chip patterns.
