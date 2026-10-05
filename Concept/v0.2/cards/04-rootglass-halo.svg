@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="190" height="266" viewBox="0 0 180 252" role="img" aria-labelledby="t d">
-  <title id="t">Rootglass Halo — import copy</title>
-  <desc id="d">A verdigris and gold collectible frame with a tall oval halo around the shard, a branching crest, and quiet engravings.</desc>
+  <title id="t">Rootglass Halo — pristine import copy</title>
+  <desc id="d">Pristine Rootglass card with a softly sculpted oval halo, branching crest, and quiet engravings.</desc>
   <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
   <defs>
     <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#2a403d"/><stop offset=".42" stop-color="#1d2c30"/><stop offset="1" stop-color="#20202d"/></linearGradient>

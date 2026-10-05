@@ -1,14 +1,25 @@
 # Hand-card concepts · v0.2
 
-Four portrait treatments of the same `import copy` card explore a Hearthstone-like collectible frame with a little of Slay the Spire's worn paper and restrained ink. The cost gem and title share one header row. Each concept uses Cinzel, a compact rules plaque, and an oversized oval shard frame; the illustration is fully contained, not clipped by the frame. **Rootglass Halo is the current lead**, with its branching paradigm crest in the upper-right corner.
+The four pristine concepts share the approved Rootglass look: Cinzel lettering, verdigris and warm-metal edging, the upper-right paradigm crest, a softly sculpted halo, and the centered rules plaque. Each keeps the existing shard art at 76 × 76 and the same card dimensions. Only the quiet frame ornament changes between concepts.
 
-| Design | Size | Frame treatment |
-|---|---:|---|
-| [Hearth Medallion](01-hearth-medallion.svg) · [preview](01-hearth-medallion-preview.png) | 190 × 266 | Beveled gold medallion; paradigm color glows behind the shard |
-| [Astral Wheel](02-astral-wheel.svg) · [preview](02-astral-wheel-preview.png) | 188 × 264 | Open astrolabe rings; paradigm color glows behind the shard |
-| [Velvet Oracle](03-velvet-oracle.svg) · [preview](03-velvet-oracle-preview.png) | 192 × 270 | Jewel portrait, grimoire seal, and a small branching crest |
-| [Rootglass Halo](04-rootglass-halo.svg) · [preview](04-rootglass-halo-preview.png) | 190 × 266 | Segmented halo, quiet branching engravings, and a branching crest |
+| Pristine concept | SVG | Preview | Ornament |
+|---|---|---|---|
+| Rootglass Bezel | [SVG](01-hearth-medallion.svg) | [PNG](01-hearth-medallion-preview.png) | Tiny symmetrical metal studs at the halo shoulders |
+| Rootglass Orbit | [SVG](02-astral-wheel.svg) | [PNG](02-astral-wheel-preview.png) | Faint astrolabe orbit behind the shard |
+| Rootglass Etching | [SVG](03-velvet-oracle.svg) | [PNG](03-velvet-oracle-preview.png) | Fine sage corner marks |
+| Rootglass Halo · lead | [SVG](04-rootglass-halo.svg) | [PNG](04-rootglass-halo-preview.png) | The approved smooth halo with mirrored side engravings |
 
-The first two concepts try paradigm color as a soft violet portrait well; the last two use a compact branching crest in the upper-right corner. The crest silhouette can also use pewter for neutral cards, with a simple neutral mark. The shard remains 76 × 76 in the same position. Rootglass's frame has a 156 × 174 SVG-unit outline: its side edges move inward 5 units from the prior draft, while the 45°/135° shoulders extend slightly outward with smoothed transitions. The halo, dotted guide, ticks, and side engravings mirror around the centerline. The `IMPORT` badge is centered in the left half of the plaque. The textbox masks the lower 33% of the frame. The panel keeps only the role, timing, and complexity cues: `IMPORT`, `BEFORE STRIKE`, `CONSTANT`, and `O(1)`. The colored `CONSTANT` label sits on the left, with smaller neutral `O(1)` on the right. The card does not explain its effect, leaving the code as the place to learn what it does.
+## Worn-card studies
 
-These concepts use the existing pixel art at `game/assets/shardrun/card-import-copy.png`. The current hand card is 164 × 227; these are about 15–17% wider and 16–19% taller. [The hand study](hand-hover-study.svg) shows the proposed resting crop with about 35 px hidden below the viewport and a fully raised, 16% enlarged hover card. No live UI or production art is changed here.
+Each study starts from the pristine Rootglass Halo and adds one small cosmetic mark. These are fixed visual examples, not a selected wear rule or a gameplay system.
+
+| Wear study | SVG | Preview | Mark |
+|---|---|---|---|
+| Halo nick | [SVG](worn/01-halo-nick.svg) | [PNG](worn/01-halo-nick-preview.png) | A tiny break in the metal shoulder |
+| Parchment rub | [SVG](worn/02-plaque-rub.svg) | [PNG](worn/02-plaque-rub-preview.png) | A light scuff at the plaque edge |
+| Hairline scuffs | [SVG](worn/03-hairline-scuffs.svg) | [PNG](worn/03-hairline-scuffs-preview.png) | Two faint scratches beside the halo |
+| Soft scorch | [SVG](worn/04-soft-scorch.svg) | [PNG](worn/04-soft-scorch-preview.png) | A small warm stain suggesting a fire trace |
+
+The marks leave the shard, cost, rules labels, and card text unchanged. They show possible directions for purely visual wear that might build with use or respond to an element; when or how that happens remains open.
+
+The [hand-hover study](hand-hover-study.svg) uses the Rootglass design at the proposed fight size: cards rest with about 35 px below the viewport edge, then rise and enlarge on hover. These assets are concepts only; no production UI or card behavior changes here.

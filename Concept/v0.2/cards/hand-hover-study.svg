@@ -1,31 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="430" viewBox="0 0 1080 430" role="img" aria-labelledby="t d">
   <title id="t">Fight hand size and hover study</title>
-  <desc id="d">A static study of 190 by 266 cards resting 35 pixels below the viewport edge and one hovered card raised and enlarged for readability.</desc>
+  <desc id="d">A static study of 190 by 266 Rootglass-style cards resting 35 pixels below the viewport edge and one hovered card raised and enlarged for readability.</desc>
   <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
   <defs>
     <linearGradient id="background" x2="0" y2="1"><stop stop-color="#222332"/><stop offset="1" stop-color="#11161f"/></linearGradient>
     <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#282838"/><stop offset="1" stop-color="#1a2029"/></linearGradient>
-    <linearGradient id="card-body" x2=".85" y2="1"><stop stop-color="#49344a"/><stop offset=".46" stop-color="#27202d"/><stop offset="1" stop-color="#171d28"/></linearGradient>
-    <linearGradient id="card-gold" x2="0" y2="1"><stop stop-color="#fff0be"/><stop offset=".35" stop-color="#d2a15a"/><stop offset=".7" stop-color="#78513b"/><stop offset="1" stop-color="#e1c57f"/></linearGradient>
-    <radialGradient id="card-well"><stop stop-color="#a17bc9"/><stop offset=".78" stop-color="#573b70"/><stop offset="1" stop-color="#2a2236"/></radialGradient>
-    <linearGradient id="card-paper" x2="0" y2="1"><stop stop-color="#e1d1aa"/><stop offset="1" stop-color="#b59a73"/></linearGradient>
+    <linearGradient id="card-body" x2=".9" y2="1"><stop stop-color="#2a403d"/><stop offset=".42" stop-color="#1d2c30"/><stop offset="1" stop-color="#20202d"/></linearGradient>
+    <linearGradient id="card-gold" x2="0" y2="1"><stop stop-color="#f3e4b4"/><stop offset=".3" stop-color="#98b9a0"/><stop offset=".6" stop-color="#637d75"/><stop offset=".82" stop-color="#d9b978"/><stop offset="1" stop-color="#637970"/></linearGradient>
+    <radialGradient id="card-well"><stop stop-color="#4b4652"/><stop offset=".77" stop-color="#26343a"/><stop offset="1" stop-color="#192529"/></radialGradient>
+    <linearGradient id="card-paper" x2=".2" y2="1"><stop stop-color="#dde0bd"/><stop offset="1" stop-color="#a9baa0"/></linearGradient>
     <clipPath id="rest"><rect x="32" y="113" width="500" height="255" rx="12"/></clipPath>
     <clipPath id="neighbors"><rect x="586" y="113" width="496" height="255" rx="12"/></clipPath>
     <g id="sample-card" transform="scale(1.0556)">
-      <rect x="1" y="1" width="178" height="250" rx="18" fill="url(#card-body)" stroke="url(#card-gold)" stroke-width="2"/>
-      <circle cx="21" cy="21" r="14" fill="#38233b" stroke="url(#card-gold)" stroke-width="2"/>
-      <text x="21" y="25.5" fill="#fff1c4" text-anchor="middle" font-family="CardCinzel" font-size="13" font-weight="700">1</text>
-      <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.4" font-weight="700">import copy</text>
-      <ellipse cx="90" cy="122" rx="83" ry="87" fill="url(#card-well)" stroke="url(#card-gold)" stroke-width="2"/>
-      <ellipse cx="90" cy="122" rx="75" ry="79" fill="none" stroke="url(#card-gold)" stroke-width="3"/>
+      <rect x="1" y="1" width="178" height="250" rx="20" fill="url(#card-body)" stroke="url(#card-gold)" stroke-width="2"/>
+      <rect x="6" y="6" width="168" height="240" rx="16" fill="none" stroke="#b7d9a14e"/>
+      <circle cx="21" cy="21" r="14" fill="#203331" stroke="url(#card-gold)" stroke-width="2"/>
+      <circle cx="21" cy="21" r="9" fill="#54745f" stroke="#f0dda2"/>
+      <text x="21" y="25.5" fill="#fff0c3" text-anchor="middle" font-family="CardCinzel" font-size="12" font-weight="700">1</text>
+      <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.3" font-weight="700">import copy</text>
+      <path d="M158 10l12 4v8c0 7-5 12-12 15-7-3-12-8-12-15v-8z" fill="#59447c" stroke="#d5b3ee" stroke-width="1.5"/>
+      <path d="M158 15v6m0 0-5 5m5-5 5 5" fill="none" stroke="#f2e3ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+      <circle cx="158" cy="15" r="1.7" fill="#fff2ff"/><circle cx="153" cy="27" r="1.7" fill="#fff2ff"/><circle cx="163" cy="27" r="1.7" fill="#fff2ff"/>
+      <path d="M90 35C112 35 143 50.5 151.5 57.5C160 64.5 168 98 168 122C168 146 160 179.5 151.5 186.5C143 193.5 112 209 90 209C68 209 37 193.5 28.5 186.5C20 179.5 12 146 12 122C12 98 20 64.5 28.5 57.5C37 50.5 68 35 90 35Z" fill="none" stroke="url(#card-gold)" stroke-width="3.5"/>
+      <path d="M90 43C110 43 134 57 143 66C152 75 160 99 160 122C160 145 152 169 143 178C134 187 110 201 90 201C70 201 46 187 37 178C28 169 20 145 20 122C20 99 28 75 37 66C46 57 70 43 90 43Z" fill="url(#card-well)" stroke="#88a98e" stroke-width="1"/>
+      <path d="M90 38C112 38 139 52 148.5 60.5C158 69 165 99 165 122C165 146 158 175 148.5 183.5C139 192 112 206 90 206C68 206 41 192 31.5 183.5C22 175 15 146 15 122C15 99 22 69 31.5 60.5C41 52 68 38 90 38Z" fill="none" stroke="#a1c59158" stroke-dasharray="1 5"/>
+      <path d="M90 35v9m0 156v9M12 122h9m138 0h9" stroke="#e0cc8b" stroke-width="1.4"/>
+      <path d="M8 84h14l12 12m-26 32h14l12-12m138-32h-14l-12 12m26 32h-14l-12-12" fill="none" stroke="#82b49560" stroke-width="1.1"/>
       <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
-      <rect x="11" y="146" width="158" height="95" rx="9" fill="url(#card-paper)" stroke="url(#card-gold)" stroke-width="1.7"/>
-      <rect x="19" y="161" width="57" height="21" rx="9" fill="#4a3455" stroke="#a67abd"/>
-      <text x="47.5" y="176" fill="#fbecff" text-anchor="middle" font-family="CardCinzel" font-size="8.4" font-weight="700">IMPORT</text>
-      <text x="158" y="176" fill="#382d37" text-anchor="end" font-family="CardCinzel" font-size="7.7" font-weight="700">BEFORE STRIKE</text>
-      <path d="M19 189h142" stroke="#77634e80"/>
-      <text x="25" y="212" fill="#3b684f" font-family="CardCinzel" font-size="9.4" font-weight="700" letter-spacing=".4">CONSTANT</text>
-      <text x="156" y="212" fill="#3b2d38" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
+      <rect x="10" y="146" width="160" height="89" rx="12" fill="url(#card-paper)" stroke="url(#card-gold)" stroke-width="1.8"/>
+      <path d="M16 152h148v77H16z" fill="none" stroke="#526a5985"/>
+      <rect x="24" y="156" width="57" height="21" rx="10" fill="#334e43" stroke="#789785"/>
+      <text x="52.5" y="171" fill="#edf5df" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+      <text x="160" y="171" fill="#334136" text-anchor="end" font-family="CardCinzel" font-size="7.5" font-weight="700">BEFORE STRIKE</text>
+      <path d="M18 185h144" stroke="#65786480"/>
+      <text x="25" y="207" fill="#2e6a53" font-family="CardCinzel" font-size="9.3" font-weight="700" letter-spacing=".4">CONSTANT</text>
+      <text x="159" y="207" fill="#344036" text-anchor="end" font-family="CardCinzel" font-size="12.5" font-weight="700">O(1)</text>
     </g>
   </defs>
   <rect width="1080" height="430" rx="20" fill="url(#background)"/>
