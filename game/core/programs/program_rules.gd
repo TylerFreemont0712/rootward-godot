@@ -495,7 +495,8 @@ static func ran_cards(battle: Dictionary, card_ids: Array, catalog: Dictionary) 
 	return out
 
 
-## Program output as bolts the rules accept: {power (whole, 0..max_power), element, foe?, block?}, at most max_bolts.
+## Program output bolts: {power, element, foe?, block?, stash?, from_index?, pivot?, idle?}, at most max_bolts. `idle` is
+## short-lived provenance for scheduler spacers; the matching guard consumes it before landing.
 static func bolt_limit(state: Dictionary, catalog: Dictionary) -> int:
 	return maxi(int(config_of(catalog).max_bolts), int(ProgramRelics.modifiers(state, catalog).max_bolts))
 
@@ -516,7 +517,7 @@ static func normalize(raw: Array, catalog: Dictionary, limit := -1) -> Array[Dic
 		var foe: Variant = bolt.get("foe")
 		if (foe is int or foe is float) and int(foe) >= 0:
 			clean.foe = int(foe)
-		for flag: String in ["block", "stash", "from_index", "pivot"]:
+		for flag: String in ["block", "stash", "from_index", "pivot", "idle"]:
 			if bolt.get(flag, false) == true:
 				clean[flag] = true
 		out.append(clean)

@@ -1,5 +1,11 @@
 # v0.2 Balance Pass: Program Cards
 
+## Implementation update · 2026-10-06
+
+The recommendations below are the original intuition-based audit against the pool as it stood then. The first repair pass is now implemented: ten cards were added and the identified C cards were adjusted. See [Balance-Fix-Cards.md](Shards-Relics/Concepts/Balance-Fix-Cards.md) for current rules, card roles, artwork briefs, and open tuning questions. The earlier 149-card count and ratings remain the report's historical baseline; this pass has not been playtested, so the new cards' ratings are provisional.
+
+Implemented changes include shared sorted-volley and recursion payoffs, dedicated Greedy and Brute Force guards, tactical targeting for Search & Index, direct combat effects for Heapify and Bogosort, and useful fallback behavior for Coin Change and Equal Partition. Sorting and scheduler cards now have explicit downstream partners. No rating is upgraded solely on the basis of the proposed synergy; confirm that in real runs.
+
 ## Scope and rating key
 
 This is an intuition-based audit of the active **Shardrun Program** card pool, in response to the concern that some algorithm cards do not earn their place in a build. It covers the 149 distinct draftable cards across the five paradigms and the neutral pool, plus their forge outcomes. Spellforge shards are a separate card pool and are outside this pass. I did not use probe outcomes to assign these ratings.

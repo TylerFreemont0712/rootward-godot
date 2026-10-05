@@ -5,11 +5,11 @@
   "cost": 0,
   "rarity": "uncommon",
   "complexity": "exponential",
-  "big_o": "O(n·n!) expected, first 6",
+  "big_o": "O(n·n!) expected, uncapped; code stops at 120 shuffles, first 6",
   "icon": "shardrun/card-bogosort",
   "id": "bogosort",
   "name": "Bogosort",
-  "summary": "Shuffles the first six bolts, seeded by the turn and the bolts, until they are in order or 120 shuffles have passed, then keeps the best try. Absurd work. volatile: gone if not played.",
+  "summary": "Shuffles the first six bolts until they sort or 120 shuffles pass. A successful sort gives those bolts +1 power; at the cap, the strongest bolt in the best attempt gets +3. Absurd work. volatile: gone if not played.",
   "function": "bogosort",
   "keywords": [
     "volatile"
@@ -23,7 +23,7 @@
   },
   "examples": [
     {
-      "name": "four bolts shuffle into order",
+      "name": "four bolts sort and gain power",
       "bolts": [
         {
           "power": 7,
@@ -71,19 +71,19 @@
       },
       "expect": [
         {
-          "power": 2,
+          "power": 3,
           "element": "none"
         },
         {
-          "power": 4,
+          "power": 5,
           "element": "none"
         },
         {
-          "power": 7,
+          "power": 8,
           "element": "none"
         },
         {
-          "power": 9,
+          "power": 10,
           "element": "none"
         }
       ]
@@ -145,10 +145,6 @@
       },
       "expect": [
         {
-          "power": 1,
-          "element": "none"
-        },
-        {
           "power": 2,
           "element": "none"
         },
@@ -166,6 +162,10 @@
         },
         {
           "power": 6,
+          "element": "none"
+        },
+        {
+          "power": 7,
           "element": "none"
         }
       ]
@@ -235,7 +235,7 @@
           "element": "none"
         },
         {
-          "power": 6,
+          "power": 9,
           "element": "none"
         },
         {
@@ -317,10 +317,6 @@
       },
       "expect": [
         {
-          "power": 1,
-          "element": "none"
-        },
-        {
           "power": 2,
           "element": "none"
         },
@@ -329,7 +325,7 @@
           "element": "none"
         },
         {
-          "power": 7,
+          "power": 4,
           "element": "none"
         },
         {
@@ -338,6 +334,10 @@
         },
         {
           "power": 9,
+          "element": "none"
+        },
+        {
+          "power": 10,
           "element": "none"
         },
         {

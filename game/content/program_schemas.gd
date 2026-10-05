@@ -35,6 +35,8 @@ static func bolt() -> Dictionary:
 				"stash": Schema.optional(Schema.BOOL),
 				"from_index": Schema.optional(Schema.BOOL),
 				"pivot": Schema.optional(Schema.BOOL),
+				# A scheduler-created rest bolt, consumed by the matching cooldown card before landing.
+				"idle": Schema.optional(Schema.BOOL),
 			}
 		)
 	)

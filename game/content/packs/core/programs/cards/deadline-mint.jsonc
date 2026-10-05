@@ -1,0 +1,50 @@
+{
+  "id": "deadline-mint",
+  "name": "Deadline Mint",
+  "icon": "shardrun/card-deadline-mint",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "source",
+  "complexity": "linear",
+  "big_o": "O(f)",
+  "summary": "Adds a neutral bolt aimed at the foe with the fastest attack intent (lowest tempo). Ties favour the greatest total damage; the bolt has damage × hits power, capped at 8.",
+  "function": "deadline_mint",
+  "examples": [
+    {
+      "name": "the earliest attack sets the target",
+      "bolts": [
+        { "power": 2, "element": "none" }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 5 },
+        "foes": [
+          { "name": "Tally Wisp", "hp": 9, "max": 9, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "attack", "damage": 3, "hits": 2, "tempo": 40 } },
+          { "name": "Race Imp", "hp": 8, "max": 8, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "attack", "damage": 2, "hits": 2, "tempo": 24 } },
+          { "name": "Memory Ooze", "hp": 12, "max": 12, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "heal", "damage": 0, "hits": 0, "tempo": 8 } }
+        ]
+      },
+      "expect": [
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "none", "foe": 1 }
+      ]
+    },
+    {
+      "name": "largest total damage breaks an exact tempo tie",
+      "bolts": [],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 5 },
+        "foes": [
+          { "name": "Tally Wisp", "hp": 9, "max": 9, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "attack", "damage": 2, "hits": 2, "tempo": 16 } },
+          { "name": "Race Imp", "hp": 8, "max": 8, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "attack", "damage": 3, "hits": 2, "tempo": 16 } },
+          { "name": "Memory Ooze", "hp": 12, "max": 12, "shield": 0, "weak": [], "resist": [], "intent": { "kind": "attack", "damage": 6, "hits": 1, "tempo": 16 } }
+        ]
+      },
+      "expect": [
+        { "power": 6, "element": "none", "foe": 1 }
+      ]
+    }
+  ]
+}

@@ -9,7 +9,7 @@
   "icon": "shardrun/card-task-scheduler",
   "id": "task-scheduler-plus",
   "name": "Task Scheduler+",
-  "summary": "Reorders the volley so no two bolts of one element are neighbours. Where that is impossible, a 2-power idle bolt goes between them.",
+  "summary": "Reorders the volley so no two bolts of one element are neighbours. When the cooldown leaves no task to run, it inserts a 2-power spacer marked idle; Handoff Ward can turn only those spacers into block.",
   "function": "task_scheduler_plus",
   "keywords": [],
   "makes": "unsorted",
@@ -122,7 +122,8 @@
         },
         {
           "power": 2,
-          "element": "none"
+          "element": "none",
+          "idle": true
         },
         {
           "power": 3,
@@ -130,7 +131,8 @@
         },
         {
           "power": 2,
-          "element": "none"
+          "element": "none",
+          "idle": true
         },
         {
           "power": 3,
@@ -187,7 +189,8 @@
         },
         {
           "power": 2,
-          "element": "none"
+          "element": "none",
+          "idle": true
         },
         {
           "power": 7,
@@ -195,7 +198,8 @@
         },
         {
           "power": 2,
-          "element": "none"
+          "element": "none",
+          "idle": true
         },
         {
           "power": 8,

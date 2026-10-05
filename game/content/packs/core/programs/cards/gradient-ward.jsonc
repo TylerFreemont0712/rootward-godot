@@ -1,0 +1,47 @@
+{
+  "id": "gradient-ward",
+  "name": "Gradient Ward",
+  "icon": "shardrun/card-gradient-ward",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "neutral",
+  "role": "guard",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "needs": "sorted",
+  "summary": "On weakest-first attacks, each strict rise gives 1 block by shaving 1 power from its higher bolt, up to 6. With no rise, the weakest attack gives 1 block. Existing wards stay as they are.",
+  "function": "gradient_ward",
+  "examples": [
+    {
+      "name": "each strict rise pays once",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "fire" },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 5, "element": "frost" },
+        { "power": 8, "element": "spark" }
+      ],
+      "expect": [
+        { "power": 1, "element": "frost", "block": true },
+        { "power": 1, "element": "spark", "block": true },
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "fire" },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 4, "element": "frost" },
+        { "power": 7, "element": "spark" }
+      ]
+    },
+    {
+      "name": "equal attacks fall back to the weakest",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 2, "element": "fire" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none" },
+        { "power": 2, "element": "fire" }
+      ]
+    }
+  ]
+}

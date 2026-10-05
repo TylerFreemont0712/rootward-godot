@@ -1,0 +1,37 @@
+{
+  "id": "threat-index",
+  "name": "Threat Index",
+  "icon": "shardrun/card-threat-index",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "guard",
+  "complexity": "linear",
+  "big_o": "O(n + t log n), t ≤ 3",
+  "needs": "sorted",
+  "summary": "For each of the first three attacking foes, binary-searches a weakest-first volley for the smallest unused attack that covers its intent, then turns that bolt into block. Unmatched attacks still fly.",
+  "function": "threat_index",
+  "examples": [
+    {
+      "name": "finds the smallest bolt for each attack",
+      "bolts": [
+        { "power": 2, "element": "none" },
+        { "power": 4, "element": "none" },
+        { "power": 7, "element": "frost" }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 5 },
+        "foes": [
+          { "name": "Tally Wisp", "hp": 9, "max": 9, "shield": 0, "weak": [], "resist": [], "hits": 0, "intent": { "kind": "attack", "damage": 2, "hits": 1, "tempo": 40 } },
+          { "name": "Tally Wisp", "hp": 9, "max": 9, "shield": 0, "weak": [], "resist": [], "hits": 0, "intent": { "kind": "attack", "damage": 4, "hits": 1, "tempo": 40 } }
+        ]
+      },
+      "expect": [
+        { "power": 2, "element": "none", "block": true },
+        { "power": 4, "element": "none", "block": true },
+        { "power": 7, "element": "frost" }
+      ]
+    }
+  ]
+}

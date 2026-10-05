@@ -922,3 +922,17 @@ after review, scale the art to 45.6% of the opening and lift it by 6% of the ope
 more breathing room around each relic while the parchment plaque naturally covers the lower picture. Older frames keep
 their original inset art. Reviewed reward and hand captures: `/tmp/rootward-pack-oval-art-polish.png` and
 `/tmp/rootward-hand-oval-art-polish.png`.
+
+## 2026-10-06 — Preserve source when a program bolt is a scheduler rest (ADR-0054)
+
+A one-power neutral bolt might be a real attack or a `Task Scheduler` spacer, so power and element cannot say whether
+it is safe for Handoff Ward to convert. Keep the scheduler's provenance as an explicit `idle` bit through program
+normalization and the C++ bridge. The matching guard consumes that bit; this avoids guessing from a bolt's visible
+shape and makes the two-card interaction work across languages.
+
+The v0.2 balance-fix set adds ten program cards with separate generated icons and repairs the audited low-payoff
+cards. `Equal Partition` uses an explicitly bounded word bitset, then a deterministic greedy split above 1,024 total
+power; `Coin Change` uses the same fixed-sum boundary for its exact search. This keeps work estimates close to the
+algorithms' actual bounded work, and the greedy fallback is explained on the card. The native build compiles 1,222
+Program functions and 77 Spellforge functions. Reviewed the hover capture at `shots/balance-cards-hand-hover.png`.
+Balance impact still needs playtesting.

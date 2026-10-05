@@ -1,0 +1,28 @@
+{
+  "id": "boundary-guard",
+  "name": "Boundary Guard",
+  "icon": "shardrun/card-boundary-guard",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "guard",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "summary": "In each recursive section with at least two attacks, turns that section's weakest attack into block. Each section can guard once; the other bolts keep attacking.",
+  "function": "boundary_guard",
+  "examples": [
+    {
+      "name": "one weakest bolt guards this section",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 3, "element": "frost" }
+      ]
+    }
+  ]
+}

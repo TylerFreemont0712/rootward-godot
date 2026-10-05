@@ -1,0 +1,35 @@
+{
+  "id": "collision-census",
+  "name": "Collision Census",
+  "icon": "shardrun/card-collision-census",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "brute-force",
+  "role": "shape",
+  "complexity": "quadratic",
+  "big_o": "O(n²), first 24 bolts",
+  "cap_n": 24,
+  "summary": "Among the first 24 bolts, each attack gains +1 for every other attack with the same power and element, up to +3. Wards and later bolts do not count.",
+  "function": "collision_census",
+  "examples": [
+    {
+      "name": "only matching attacks collide",
+      "bolts": [
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "fire" },
+        { "power": 4, "element": "frost" },
+        { "power": 4, "element": "fire", "block": true }
+      ],
+      "expect": [
+        { "power": 7, "element": "fire" },
+        { "power": 7, "element": "fire" },
+        { "power": 7, "element": "fire" },
+        { "power": 7, "element": "fire" },
+        { "power": 4, "element": "frost" },
+        { "power": 4, "element": "fire", "block": true }
+      ]
+    }
+  ]
+}

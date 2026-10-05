@@ -9,7 +9,7 @@
   "icon": "shardrun/card-selection-sort",
   "id": "selection-sort-plus",
   "name": "Selection Sort+",
-  "summary": "Finds the strongest bolt of the rest and swaps it to the front, again and again: always n² comparisons, even on a sorted volley. Strongest first.",
+  "summary": "Finds the weakest bolt in each unsorted suffix and swaps it to the front. Always weakest first, with n² comparisons even on a sorted volley.",
   "function": "selection_sort_plus",
   "keywords": [],
   "makes": "unsorted",
@@ -69,15 +69,7 @@
       },
       "expect": [
         {
-          "power": 5,
-          "element": "none"
-        },
-        {
-          "power": 4,
-          "element": "none"
-        },
-        {
-          "power": 3,
+          "power": 1,
           "element": "none"
         },
         {
@@ -85,7 +77,15 @@
           "element": "none"
         },
         {
-          "power": 1,
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
+          "element": "none"
+        },
+        {
+          "power": 5,
           "element": "none"
         }
       ]
@@ -139,11 +139,7 @@
       },
       "expect": [
         {
-          "power": 4,
-          "element": "none"
-        },
-        {
-          "power": 3,
+          "power": 1,
           "element": "none"
         },
         {
@@ -151,7 +147,11 @@
           "element": "none"
         },
         {
-          "power": 1,
+          "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
           "element": "none"
         }
       ]
@@ -201,16 +201,16 @@
       },
       "expect": [
         {
+          "power": 1,
+          "element": "none"
+        },
+        {
           "power": 3,
           "element": "fire"
         },
         {
           "power": 3,
           "element": "frost"
-        },
-        {
-          "power": 1,
-          "element": "none"
         }
       ]
     },

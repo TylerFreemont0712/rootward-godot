@@ -1,46 +1,95 @@
 function equalPartition(bolts, battle) {
-  // The partition problem: can the volley be split into two groups of equal sum? Subset-sum DP over half the total:
-  // reach[s] remembers the bolt that first made sum s reachable (one bolt at a time, so none is used twice). If half
-  // is reachable, walk the table back for one group; the rest are the other. Each group fuses into one bolt and
-  // gains 25%. Ward bolts and zero-power bolts stay out; totals past 1024 are too big for the table.
+  // Exact 0/1 subset-sum finds the closest split through 1,024 total power. Above that, a deterministic
+  // strongest-first greedy balance bounds work. The larger side attacks; the smaller can become block. Only an exact
+  // split keeps the original +25% bonus.
   const pool = [];
   let total = 0;
   bolts.forEach((bolt, i) => {
-    if (bolt.power > 0 && !bolt.block) {
+    if (bolt.power > 0 && !bolt.block && !bolt.stash) {
       pool.push(i);
       total += bolt.power;
     }
   });
-  if (pool.length < 2 || total % 2 === 1 || total > 1024) return bolts.map((bolt) => ({ ...bolt }));
-  const target = total / 2;
-  const reach = new Array(target + 1).fill(-1);
-  reach[0] = bolts.length;
-  for (const i of pool) {
-    const power = bolts[i].power;
-    for (let s = target; s >= power; s--) {
-      if (reach[s] === -1 && reach[s - power] !== -1) reach[s] = i;
+  if (pool.length < 2) return bolts.map((bolt) => ({ ...bolt }));
+  const smaller = new Set();
+  let smallerTotal;
+  if (total <= 1024) {
+    const target = Math.floor(total / 2);
+
+    // A bounded 64-bit bitset updates and saves at most nine words per bolt, plus one backtracking check; height 20
+    // bills this bounded work through total power 1,024.
+    let reachable = 1n;
+    const mask = (1n << BigInt(target + 1)) - 1n;
+    const history = [reachable];
+    for (const i of pool) {
+      const power = bolts[i].power;
+      reachable = (reachable | (reachable << BigInt(power))) & mask;
+      history.push(reachable);
     }
-  }
-  if (reach[target] === -1) return bolts.map((bolt) => ({ ...bolt }));
-  const left = new Set();
-  let s = target;
-  while (s > 0) {
-    const i = reach[s];
-    left.add(i);
-    s -= bolts[i].power;
-  }
-  const inPool = new Set(pool);
-  const fused = [];
-  for (const group of [pool.filter((i) => left.has(i)), pool.filter((i) => !left.has(i))]) {
-    let lead = group[0];
-    for (const i of group) {
-      if (bolts[i].power > bolts[lead].power) lead = i;
+
+    smallerTotal = reachable.toString(2).length - 1;
+    if (smallerTotal <= 0) return bolts.map((bolt) => ({ ...bolt }));
+
+    let remaining = BigInt(smallerTotal);
+    for (let position = pool.length - 1; position >= 0; position--) {
+      const i = pool[position];
+      if ((history[position] & (1n << remaining)) !== 0n) continue;
+      smaller.add(i);
+      remaining -= BigInt(bolts[i].power);
     }
-    fused.push({ ...bolts[lead], power: Math.floor((target * 5) / 4) });
+  } else {
+    // Above the exact-DP limit, process strongest-first and always place the next bolt on the lighter side.
+    const sides = [[], []];
+    const sideTotals = [0, 0];
+    const ordered = [...pool].sort((a, b) => bolts[b].power - bolts[a].power || a - b);
+    for (const i of ordered) {
+      const side = sideTotals[0] <= sideTotals[1] ? 0 : 1;
+      sides[side].push(i);
+      sideTotals[side] += bolts[i].power;
+    }
+    const smallerSide = sideTotals[0] <= sideTotals[1] ? 0 : 1;
+    for (const i of sides[smallerSide]) smaller.add(i);
+    smallerTotal = sideTotals[smallerSide];
   }
-  const others = [];
+  const smallerIndices = pool.filter((i) => smaller.has(i));
+  const largerIndices = pool.filter((i) => !smaller.has(i));
+  const smallerLead = smallerIndices.reduce((best, i) => (bolts[i].power > bolts[best].power ? i : best), smallerIndices[0]);
+  const largerLead = largerIndices.reduce((best, i) => (bolts[i].power > bolts[best].power ? i : best), largerIndices[0]);
+  const largerTotal = total - smallerTotal;
+  const largeAttack = { ...bolts[largerLead], power: largerTotal };
+  const smallAttack = { ...bolts[smallerLead], power: smallerTotal };
+  let result;
+
+  if (smallerTotal === largerTotal) {
+    // Keep the original payoff only when the two groups are exactly balanced.
+    largeAttack.power = Math.floor((largeAttack.power * 5) / 4);
+    smallAttack.power = Math.floor((smallAttack.power * 5) / 4);
+    result = [largeAttack, smallAttack];
+  } else {
+    const threat = (battle.foes || []).reduce((max, foe) => {
+      const intent = foe.intent || {};
+      const damage = intent.kind === undefined || intent.kind === "attack"
+        ? (intent.damage ?? 0) * (intent.hits ?? 1)
+        : 0;
+      return Math.max(max, damage);
+    }, 0);
+    const have = (battle.me?.block ?? 0) + bolts.reduce(
+      (sum, bolt) => sum + (bolt.block ? bolt.power ?? 0 : 0),
+      0,
+    );
+    const blockPower = Math.min(smallerTotal, Math.max(0, threat - have));
+    result = [largeAttack];
+    if (blockPower > 0) {
+      const excess = smallerTotal - blockPower;
+      // Keep the residual offensive power in the larger attack output without adding another bolt.
+      if (excess > 0) largeAttack.power += excess;
+      result = [largeAttack, { ...bolts[smallerLead], power: blockPower, block: true }];
+    } else result.push(smallAttack);
+  }
+
+  const poolSet = new Set(pool);
   bolts.forEach((bolt, i) => {
-    if (!inPool.has(i)) others.push({ ...bolt });
+    if (!poolSet.has(i)) result.push({ ...bolt });
   });
-  return fused.concat(others);
+  return result;
 }

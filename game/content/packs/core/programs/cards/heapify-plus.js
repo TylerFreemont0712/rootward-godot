@@ -13,6 +13,7 @@ function heapifyPlus(bolts, battle) {
       root = child;
     }
   }
-  if (out.length > 0) out[0] = { ...out[0], power: out[0].power + 1 };
+  // The upgraded root bonus is larger than Heapify's +2 while preserving the max-heap.
+  if (out.length > 0) out[0] = { ...out[0], power: out[0].power + 3 };
   return out;
 }

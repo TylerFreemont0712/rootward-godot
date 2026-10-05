@@ -19,6 +19,7 @@ struct Bolt {
 	bool stash = false;
 	bool from_index = false;
 	bool pivot = false;
+	bool idle = false;  // A scheduler-created spacer, so Handoff Ward need not guess from power or element.
 };
 
 using Bolts = std::vector<Bolt>;

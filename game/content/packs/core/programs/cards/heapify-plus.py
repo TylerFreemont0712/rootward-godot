@@ -14,5 +14,6 @@ def heapify_plus(bolts, battle):
             out[root], out[child] = out[child], out[root]
             root = child
     if out:
-        out[0] = dict(out[0], power=out[0]["power"] + 1)
+        # The upgraded root bonus is larger than Heapify's +2 while preserving the max-heap.
+        out[0] = dict(out[0], power=out[0]["power"] + 3)
     return out

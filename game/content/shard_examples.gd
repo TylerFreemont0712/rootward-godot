@@ -152,8 +152,8 @@ static func _run_quick(language: String, spells: Array[Dictionary]) -> Dictionar
 	return SpellHarness.run(language, spells, input, limits)
 
 
-## A program card's bolts ({power, element, foe?, block?}) match when every field does, the power within a rounding
-## error and `block: false` the same as no block at all.
+## A program card's bolts match when power, element, aim, block, and scheduler provenance match; false optional flags
+## are the same as absent, and power is compared within a rounding error.
 static func same_program_bolts(actual: Array, expected: Array) -> bool:
 	if actual.size() != expected.size():
 		return false
@@ -166,6 +166,8 @@ static func same_program_bolts(actual: Array, expected: Array) -> bool:
 		if not (power is int or power is float) or absf(float(power) - float(want.power)) >= 1e-6:
 			return false
 		if got.get("element") != want.element or bool(got.get("block", false)) != bool(want.get("block", false)):
+			return false
+		if bool(got.get("idle", false)) != bool(want.get("idle", false)):
 			return false
 		var foe: Variant = got.get("foe")
 		if want.has("foe") != (foe != null):

@@ -98,6 +98,7 @@ static Bolt bolt_of(const Value& v) {
 	bolt.stash = v["stash"].truthy();
 	bolt.from_index = v["from_index"].truthy();
 	bolt.pivot = v["pivot"].truthy();
+	bolt.idle = v["idle"].truthy();
 #endif
 	return bolt;
 }
@@ -117,6 +118,7 @@ static Value value_of(const Bolt& bolt) {
 	if (bolt.stash) v.set("stash", Value::of(true));
 	if (bolt.from_index) v.set("from_index", Value::of(true));
 	if (bolt.pivot) v.set("pivot", Value::of(true));
+	if (bolt.idle) v.set("idle", Value::of(true));
 #endif
 	return v;
 }

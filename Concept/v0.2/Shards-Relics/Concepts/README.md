@@ -1,13 +1,14 @@
 # Shardrun card and relic gaps · v0.2
 
-**Status:** concept work only. These proposals are not in the live card pool. Prototype card functions are in
-[`prototype_cards.py`](prototype_cards.py); they use the current `bolts, battle -> bolts` contract where possible.
-
-The card-by-card repairs for the C-rated v0.2 balance findings are in [Balance-Fix-Cards.md](Balance-Fix-Cards.md).
+**Status:** mixed. Parity Lattice, Collision Census, Deadline Mint, Radix Sort, and Boundary Guard are live alongside
+five additional cards and the C-rated card repairs documented in [Balance-Fix-Cards.md](Balance-Fix-Cards.md).
+Other proposals here remain concepts. Prototype card functions are in [`prototype_cards.py`](prototype_cards.py);
+they use the current `bolts, battle -> bolts` contract where possible.
 
 ## Starting point
 
-The current 149 draftable Program cards break down by role as follows. Counts exclude the 150 non-draftable refactors.
+Before the first balance-fix packet, the 149 draftable Program cards broke down by role as follows. Counts exclude the
+150 non-draftable refactors; the live pool now has ten additional draftable cards.
 
 | Role | Cards |
 |---|---:|
@@ -58,8 +59,8 @@ polished face.
 
 **Common · cost 1 · O(n) · cap 12 block per cast**
 
-Every third attack bolt becomes a ward if its full power fits under the 12-block cap. Other bolts keep flying. Existing
-wards pass through and count toward the cap. It converts part of a wide volley into predictable defense without
+Every third attack bolt becomes a ward if its full power fits under the 12 block added by this card. Other bolts keep flying. Existing
+wards pass through and do not count toward this card's cap. It converts part of a wide volley into predictable defense without
 adding another expensive search. The cap keeps 192-bolt volleys from making a limitless shield.
 
 **Prototype:** `parity_lattice` in `prototype_cards.py`.
@@ -285,7 +286,7 @@ paradigms first; the delayed Brute Force guard is one candidate payoff for its d
 
 ## Suggested first concept batch
 
-Move forward first with **Parity Lattice**, **Collision Census**, **Deadline Mint**, **Radix Sort**, **Boundary Guard**,
-**Cold Cache**, and **Salvage Dividend**. Keep **Exact Prefix** parked until the card pool has a stronger reason to
-care about a carefully chosen prefix. These are candidates for later balance, art, localization, and executable
-examples in all three supported languages; none of those production steps is included in this concept pass.
+**Cold Cache** and **Salvage Dividend** are the next concept candidates. Keep **Exact Prefix** parked until the card
+pool has a stronger reason to care about a carefully chosen prefix. The five implemented cards named above have shipped
+in the live pool; the remaining candidates still need balance review, localization, art, and examples in all three
+supported languages.

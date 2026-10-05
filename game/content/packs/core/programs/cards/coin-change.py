@@ -1,30 +1,100 @@
+DP_SUM_LIMIT = 1024
+
+
+def _best_lethal_subset(bolts, candidates, need):
+    items = [i for i in candidates if bolts[i].get("power", 0) > 0]
+    total_power = sum(bolts[i]["power"] for i in items)
+    if total_power < need:
+        return None, -1
+
+    max_power = max(bolts[i]["power"] for i in items)
+    # A minimum lethal subset crosses `need` on its last bolt, so it is below need + max bolt power.
+    limit = min(total_power, need + max_power - 1, DP_SUM_LIMIT)
+    if need <= limit:
+        # Bitset DP updates and saves at most 17 64-bit words per bolt; backtracking adds one step per bolt.
+        reachable = 1
+        mask = (1 << (limit + 1)) - 1
+        history = [reachable]
+        for i in items:
+            power = bolts[i]["power"]
+            if power <= limit:
+                reachable = (reachable | (reachable << power)) & mask
+            history.append(reachable)
+
+        above_need = reachable >> need
+        if above_need:
+            # The lowest set bit gives the smallest lethal total; bit zero is the exact-change case.
+            chosen_total = need + ((above_need & -above_need).bit_length() - 1)
+            chosen = set()
+            remaining = chosen_total
+            for position in range(len(items) - 1, -1, -1):
+                if (history[position] >> remaining) & 1:
+                    continue
+                i = items[position]
+                chosen.add(i)
+                remaining -= bolts[i]["power"]
+            return chosen, chosen_total
+
+    # The target or its minimum lethal sum is beyond the bounded table: take strongest bolts first deterministically.
+    chosen, chosen_total = set(), 0
+    for i in sorted(items, key=lambda index: (-bolts[index]["power"], index)):
+        chosen.add(i)
+        chosen_total += bolts[i]["power"]
+        if chosen_total >= need:
+            return chosen, chosen_total
+    return None, -1
+
+
 def coin_change(bolts, battle):
-    # Each table row considers one more bolt: descending totals prevent using a bolt twice.
+    # Bounded 0/1 bitset prefers an exact lethal total, then the least lethal total through 1,024. Above that search
+    # range, strongest-first greedy selects a deterministic lethal group. Only an exact kill enables weak spare wards.
     foes = battle.get("foes", [])
     if not foes:
-        return bolts
-    assigned, available = [None] * len(bolts), list(range(len(bolts)))
-    for target in range(1):
-        need = max(0, foes[target]["hp"] + foes[target].get("shield", 0))
-        paths = [None] * (need + 1)
-        paths[0] = (None, -1, 0)
-        for i in available:
+        return [dict(bolt) for bolt in bolts]
+    need = max(0, foes[0].get("hp", 0) + foes[0].get("shield", 0))
+    if need <= 0:
+        return [dict(bolt) for bolt in bolts]
+
+    candidates = [i for i, bolt in enumerate(bolts) if not bolt.get("block") and not bolt.get("stash")]
+    chosen, chosen_total = _best_lethal_subset(bolts, candidates, need)
+    if chosen is None:
+        # No subset can kill the front foe; keep the attack together on that foe.
+        return [dict(bolt, foe=0) if i in candidates else dict(bolt) for i, bolt in enumerate(bolts)]
+
+    exact_kill = chosen_total == need
+    killed_targets = {0}
+    warded = set()
+    if exact_kill:
+        threat = max(
+            (
+                foe.get("intent", {}).get("damage", 0) * foe.get("intent", {}).get("hits", 1)
+                for index, foe in enumerate(foes)
+                if index not in killed_targets and foe.get("intent", {}).get("kind", "attack") == "attack"
+            ),
+            default=0,
+        )
+        have = battle.get("me", {}).get("block", 0)
+        have += sum(bolt.get("power", 0) for bolt in bolts if bolt.get("block"))
+        room = max(0, threat - have)
+        spare = sorted(
+            (i for i in candidates if i not in chosen and bolts[i].get("power", 0) > 0),
+            key=lambda i: (bolts[i]["power"], i),
+        )
+        for i in spare:
             power = bolts[i]["power"]
-            if power <= 0:
-                continue
-            for total in range(need, power - 1, -1):
-                prior = paths[total - power]
-                if prior is not None and (paths[total] is None or prior[2] + 1 < paths[total][2]):
-                    paths[total] = (prior, i, prior[2] + 1)
-        if paths[need] is not None:
-            chosen, node = set(), paths[need]
-            while node[0] is not None:
-                chosen.add(node[1])
-                node = node[0]
-            for i in chosen:
-                assigned[i] = target
-            available = [i for i in available if i not in chosen]
-        elif target == 0 and not False:
-            return [dict(bolt, foe=0) for bolt in bolts]
-    rest = min(1, len(foes) - 1)
-    return [dict(bolt, foe=assigned[i] if assigned[i] is not None else rest) for i, bolt in enumerate(bolts)]
+            if power <= room:
+                warded.add(i)
+                room -= power
+
+    next_foe = 1 if len(foes) > 1 else 0
+    result = []
+    for i, bolt in enumerate(bolts):
+        copy = dict(bolt)
+        if i in chosen:
+            copy["foe"] = 0
+        elif i in warded:
+            copy["block"] = True
+        elif i in candidates:
+            copy["foe"] = next_foe
+        result.append(copy)
+    return result

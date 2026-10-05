@@ -5,11 +5,11 @@
   "cost": 0,
   "rarity": "uncommon",
   "complexity": "exponential",
-  "big_o": "O(n·n!) expected, first 7",
+  "big_o": "O(n·n!) expected, uncapped; code stops at 120 tries, first 7",
   "icon": "shardrun/card-bogosort",
   "id": "bogosort-plus",
   "name": "Bogosort+",
-  "summary": "Shuffles the first seven bolts, seeded by the turn and the bolts, until they are in order or 120 shuffles have passed, then keeps the best try. Absurd work. volatile: gone if not played.",
+  "summary": "Shuffles the first seven bolts, seeded by the turn and the bolts. If they reach sorted order, each gains +1 power; if the 120-try cap is reached first, the strongest bolt in the best try gains +3. Bolts after the first seven pass through unchanged. Absurd work. volatile: gone if not played.",
   "function": "bogosort_plus",
   "keywords": [
     "volatile"
@@ -21,7 +21,7 @@
   "draftable": false,
   "examples": [
     {
-      "name": "four bolts shuffle into order",
+      "name": "four sorted bolts each gain one power",
       "bolts": [
         {
           "power": 7,
@@ -69,25 +69,25 @@
       },
       "expect": [
         {
-          "power": 2,
+          "power": 3,
           "element": "none"
         },
         {
-          "power": 4,
+          "power": 5,
           "element": "none"
         },
         {
-          "power": 7,
+          "power": 8,
           "element": "none"
         },
         {
-          "power": 9,
+          "power": 10,
           "element": "none"
         }
       ]
     },
     {
-      "name": "a sorted volley is checked once",
+      "name": "a sorted volley receives the small sorting payoff immediately",
       "bolts": [
         {
           "power": 1,
@@ -143,10 +143,6 @@
       },
       "expect": [
         {
-          "power": 1,
-          "element": "none"
-        },
-        {
           "power": 2,
           "element": "none"
         },
@@ -165,11 +161,15 @@
         {
           "power": 6,
           "element": "none"
+        },
+        {
+          "power": 7,
+          "element": "none"
         }
       ]
     },
     {
-      "name": "six bolts may stay out of order",
+      "name": "the capped best try buffs its strongest bolt by three",
       "bolts": [
         {
           "power": 6,
@@ -233,7 +233,7 @@
           "element": "none"
         },
         {
-          "power": 6,
+          "power": 9,
           "element": "none"
         },
         {
@@ -251,7 +251,7 @@
       ]
     },
     {
-      "name": "bolts past the sixth are left alone",
+      "name": "bolts past the seventh are left alone",
       "bolts": [
         {
           "power": 3,
@@ -339,7 +339,7 @@
           "element": "none"
         },
         {
-          "power": 9,
+          "power": 12,
           "element": "none"
         },
         {

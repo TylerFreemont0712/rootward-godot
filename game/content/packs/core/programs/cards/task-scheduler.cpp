@@ -1,6 +1,6 @@
 Bolts task_scheduler(Bolts bolts, const Battle& battle) {
   // Task scheduling with a cooldown of one: always take the element with the most bolts left that is not the one
-  // just used. When only the element just used remains, an idle bolt of 1 power goes in between.
+  // just used. Only a spacer inserted when no task is eligible is marked idle for Handoff Ward.
   std::vector<std::string> names;
   std::vector<Bolts> rows;
   for (const Bolt& bolt : bolts) {
@@ -27,7 +27,11 @@ Bolts task_scheduler(Bolts bolts, const Battle& battle) {
       }
     }
     if (pick < 0) {
-      result.push_back(Bolt{.power = 1, .element = "none"});
+      Bolt idle;
+      idle.power = 1;
+      idle.element = "none";
+      idle.idle = true;
+      result.push_back(idle);
       last = -1;
       continue;
     }

@@ -8,16 +8,16 @@
   "focus": "exact",
   "role": "shape",
   "complexity": "pseudo",
-  "big_o": "O(n·S)",
-  "summary": "If the volley can be split into two groups of equal sum (subset-sum DP), each group fuses into one bolt and both gain 40%. Otherwise nothing changes.",
+  "big_o": "O(9n) 64-bit words through 1,024 total power; O(n log n) fallback",
+  "summary": "A bounded 64-bit bitset finds the closest split through 1,024 total attack power, using at most nine words per bolt. Above that, deterministic strongest-first greedy places each bolt on the lighter side. The larger side attacks; the smaller becomes block up to incoming threat, with any excess kept as attack. Only a truly equal split gets the forge’s +40% bonus on both groups. Existing wards pass through.",
   "function": "equal_partition_plus",
   "keywords": [],
-  "height": 16,
+  "height": 20,
   "art": "equal-partition",
   "draftable": false,
   "examples": [
     {
-      "name": "two groups of five",
+      "name": "an exact split keeps the upgraded power bonus",
       "bolts": [
         {
           "power": 3,
@@ -83,7 +83,7 @@
       ]
     },
     {
-      "name": "an odd total cannot split",
+      "name": "the closest uneven split trades the smaller side for block",
       "bolts": [
         {
           "power": 3,
@@ -109,7 +109,13 @@
             "max": 9,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -123,17 +129,18 @@
       },
       "expect": [
         {
-          "power": 3,
+          "power": 4,
           "element": "none"
         },
         {
-          "power": 4,
-          "element": "none"
+          "power": 3,
+          "element": "none",
+          "block": true
         }
       ]
     },
     {
-      "name": "an even total that still cannot split",
+      "name": "the nearest split caps block and preserves excess attack",
       "bolts": [
         {
           "power": 5,
@@ -167,7 +174,13 @@
             "max": 9,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 6,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -181,25 +194,18 @@
       },
       "expect": [
         {
-          "power": 5,
+          "power": 12,
           "element": "none"
         },
         {
-          "power": 5,
-          "element": "none"
-        },
-        {
-          "power": 5,
-          "element": "none"
-        },
-        {
-          "power": 3,
-          "element": "none"
+          "power": 6,
+          "element": "none",
+          "block": true
         }
       ]
     },
     {
-      "name": "a ward stays out",
+      "name": "an existing ward stays outside the upgraded exact split",
       "bolts": [
         {
           "power": 9,
@@ -230,7 +236,13 @@
             "max": 9,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 8,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -256,6 +268,34 @@
           "element": "none",
           "block": true
         }
+      ]
+    },
+    {
+      "name": "above 1,024 power, strongest-first greedy balances the sides before routing block",
+      "bolts": [
+        { "power": 700, "element": "none" },
+        { "power": 400, "element": "none" },
+        { "power": 300, "element": "none" },
+        { "power": 200, "element": "none" }
+      ],
+      "battle": {
+        "turn": 1,
+        "me": { "hp": 30, "max": 30, "block": 0, "mana": 5 },
+        "foes": [
+          {
+            "name": "Tally Wisp",
+            "hp": 9,
+            "max": 9,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": { "kind": "attack", "damage": 350, "hits": 1, "tempo": 40 }
+          }
+        ]
+      },
+      "expect": [
+        { "power": 1250, "element": "none" },
+        { "power": 350, "element": "none", "block": true }
       ]
     },
     {

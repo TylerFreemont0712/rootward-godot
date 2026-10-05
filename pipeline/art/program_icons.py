@@ -53,12 +53,17 @@ def board(manifest, destination, wanted=None, all_cards=False):
         if not source.exists():
             source = ROOT / asset["out"]
         original = BEFORE / f"card-{name}.png"
-        if not original.exists():
+        if not original.exists() and manifest.get("baseline_commit"):
             result = subprocess.run(
                 ["git", "show", f"{manifest['baseline_commit']}:game/assets/shardrun/card-{name}.png"],
-                cwd=ROOT, capture_output=True, check=True,
+                cwd=ROOT, capture_output=True,
             )
-            original = io.BytesIO(result.stdout)
+            if result.returncode == 0:
+                original = io.BytesIO(result.stdout)
+            else:
+                original = source
+        elif not original.exists():
+            original = source
         preview(canvas, source, 128, x + 96, y + 4)
         preview(canvas, original, 32, x + 8, y + 146)
         preview(canvas, source, 32, x + 52, y + 146)
@@ -76,11 +81,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("record", "board", "accept", "check"))
     parser.add_argument("--records", type=Path, help="JSON records keyed by canonical texture id")
+    parser.add_argument("--manifest", type=Path, help="pass manifest (defaults to program-icons-pass-9.json)")
     parser.add_argument("--out", type=Path, help="review board path")
     parser.add_argument("--only", help="comma-separated base card ids")
     parser.add_argument("--all", action="store_true", help="include reused and existing icons on the board")
     args = parser.parse_args()
-    manifest = json.loads(MANIFEST.read_text())
+    manifest_path = args.manifest or MANIFEST
+    if not manifest_path.is_absolute():
+        manifest_path = Path(__file__).with_name(manifest_path.name)
+    manifest = json.loads(manifest_path.read_text())
     wanted = set(args.only.split(",")) if args.only else None
     if args.command == "record":
         for icon, record in json.loads(args.records.read_text()).items():
@@ -120,9 +129,9 @@ def main():
         return
     # Each card keeps its sharing category; only newly painted designs change status.
     for card in manifest["cards"].values():
-        if card["status"] == "pending" and manifest["assets"][card["icon"]]["status"] == "accepted":
+        if card["status"] in ("pending", "awaiting-source") and manifest["assets"][card["icon"]]["status"] == "accepted":
             card["status"] = "repainted"
-    MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+{
+  "id": "runoff-echo",
+  "name": "Runoff Echo",
+  "icon": "shardrun/card-runoff-echo",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "strike",
+  "complexity": "linear",
+  "big_o": "O(n), at most 3 echoes",
+  "needs": "sorted",
+  "summary": "For each of up to three strict rises in a weakest-first attack volley, adds a 1-power echo of the stronger bolt with its element and target. Originals remain unchanged.",
+  "function": "runoff_echo",
+  "examples": [
+    {
+      "name": "rising bolts shed small echoes",
+      "bolts": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "fire", "foe": 1 },
+        { "power": 5, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "fire", "foe": 1 },
+        { "power": 5, "element": "frost" },
+        { "power": 1, "element": "fire", "foe": 1 },
+        { "power": 1, "element": "frost" }
+      ]
+    }
+  ]
+}

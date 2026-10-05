@@ -1,0 +1,250 @@
+{
+  "generator": "OpenAI image_gen built-in",
+  "date": "2026-10-06",
+  "intent": "Generated and accepted original artwork for ten new balance and strategy cards; this per-batch manifest preserves prompts, source hashes, and review sizes.",
+  "shared_prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: ",
+  "cards": {
+    "gradient-ward": {
+      "icon": "shardrun/card-gradient-ward",
+      "status": "repainted"
+    },
+    "handoff-ward": {
+      "icon": "shardrun/card-handoff-ward",
+      "status": "repainted"
+    },
+    "parity-lattice": {
+      "icon": "shardrun/card-parity-lattice",
+      "status": "repainted"
+    },
+    "collision-census": {
+      "icon": "shardrun/card-collision-census",
+      "status": "repainted"
+    },
+    "deadline-mint": {
+      "icon": "shardrun/card-deadline-mint",
+      "status": "repainted"
+    },
+    "radix-sort": {
+      "icon": "shardrun/card-radix-sort",
+      "status": "repainted"
+    },
+    "boundary-guard": {
+      "icon": "shardrun/card-boundary-guard",
+      "status": "repainted"
+    },
+    "median-pulse": {
+      "icon": "shardrun/card-median-pulse",
+      "status": "repainted"
+    },
+    "runoff-echo": {
+      "icon": "shardrun/card-runoff-echo",
+      "status": "repainted"
+    },
+    "threat-index": {
+      "icon": "shardrun/card-threat-index",
+      "status": "repainted"
+    }
+  },
+  "assets": {
+    "shardrun/card-gradient-ward": {
+      "out": "game/assets/shardrun/card-gradient-ward.png",
+      "status": "accepted",
+      "cards": [
+        "gradient-ward"
+      ],
+      "subject": "A short ascending row of three faceted crystal bolts; each rising step sheds one small amber facet into a cyan ward arc, while most of each bolt remains intact.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a short ascending row of three faceted crystal bolts; each rising step sheds one small amber facet into a cyan ward arc, while most of each bolt remains intact.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-2fc8b7d8-0ae8-4605-b1b1-a3d49ba21048.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ceacb38b0de401404ff55918a9ceebaee018be1d1dfe23aec5887a70df947b25",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-handoff-ward": {
+      "out": "game/assets/shardrun/card-handoff-ward.png",
+      "status": "accepted",
+      "cards": [
+        "handoff-ward"
+      ],
+      "subject": "Three small neutral crystal tokens moving along a bronze scheduler rail; the empty gap tokens are handed across a simple bronze clasp into a compact cyan shield crystal.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: three small neutral crystal tokens moving along a bronze scheduler rail; the empty-gap tokens are handed across a simple bronze clasp into a compact cyan shield crystal. Keep the transfer visually clear and the composition uncluttered.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-d62a9497-9c62-4533-98ea-e812751a0393.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "69bfce8ff75123100ea7039ee3bda99047e7cf370496aa4144ebab53f752e577",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-parity-lattice": {
+      "out": "game/assets/shardrun/card-parity-lattice.png",
+      "status": "accepted",
+      "cards": [
+        "parity-lattice"
+      ],
+      "subject": "An alternating bronze-and-teal crystal lattice, with one of every three inset crystal cells locking into a small bright ward facet while the other cells remain open.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: an alternating bronze-and-teal crystal lattice, with one of every three inset crystal cells locking into a small bright ward facet while the other cells remain open. Use a few large, unmistakable cells rather than fine mesh.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-1b3c32f8-c58e-4ea1-9b48-b3fe403ca095.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "8bc7721c532324d0e24c31c44ebe92b17ee44d36959a2002d095b1a29cbb4e59",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-collision-census": {
+      "out": "game/assets/shardrun/card-collision-census.png",
+      "status": "accepted",
+      "cards": [
+        "collision-census"
+      ],
+      "subject": "Two matching pairs of faceted crystals linked by short bronze threads; the matching pair centers flare amber, while a single unmatched cyan crystal remains dim at the edge.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: two matching pairs of faceted crystals linked by short bronze threads; the matching pair centers flare amber, while a single unmatched cyan crystal remains dim at the edge. Make the repeated pairs readable at small icon size.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-c7f54a63-877f-4d6a-a59e-d9239f5e1282.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b0375c482a3208d7d3d36b86da2aca7afee10712ae0b08925d73072e92baa62f",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-deadline-mint": {
+      "out": "game/assets/shardrun/card-deadline-mint.png",
+      "status": "accepted",
+      "cards": [
+        "deadline-mint"
+      ],
+      "subject": "A compact bronze clockwork die press stamps a single bright amber crystal bolt, already angled toward a small violet threat crystal beneath a shortening fuse-like arc.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a compact bronze clockwork die press stamps a single bright amber crystal bolt, already angled toward a small violet threat crystal beneath a shortening fuse-like arc. Avoid readable markings on the die or any clock numerals.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-91c97a29-9098-4fcb-9aa2-ee9f536d116d.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "4eeee99a0af8263feecacd411b54d51b7d01e49a231f0708d84e45ee8c27c385",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-radix-sort": {
+      "out": "game/assets/shardrun/card-radix-sort.png",
+      "status": "accepted",
+      "cards": [
+        "radix-sort"
+      ],
+      "subject": "Four shallow bronze sorting trays arranged as a compact staircase, with broad crystal pieces moving in stable left-to-right rows from mixed colors into a clean ascending sequence.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: four shallow bronze sorting trays arranged as a compact staircase, with broad crystal pieces moving in stable left-to-right rows from mixed colors into a clean ascending sequence. Use bold crystal shapes and simple separators; no written digits or runes.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-0ce9d8cf-e43e-4076-bbde-6a39a7392490.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "3f3de82bead2c1063c4d606fdb4642bf600ad37772a48ab658c37baaf686e176",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-boundary-guard": {
+      "out": "game/assets/shardrun/card-boundary-guard.png",
+      "status": "accepted",
+      "cards": [
+        "boundary-guard"
+      ],
+      "subject": "A bronze branch divides into two sturdy forks; at the outer edge of each fork sits a small cyan shield crystal, with one larger amber attack crystal continuing through the center.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a bronze branch divides into two sturdy forks; at the outer edge of each fork sits a small cyan shield crystal, with one larger amber attack crystal continuing through the center. Keep the branching silhouette broad and symmetrical.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-01202efc-78ec-4e87-bbd3-24e0e99ece5f.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "b336fa78c2a4f95bff2b9a07fbdff83faa00c51a9c3fe1c9dd24ae90b3ec3c19",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-median-pulse": {
+      "out": "game/assets/shardrun/card-median-pulse.png",
+      "status": "accepted",
+      "cards": [
+        "median-pulse"
+      ],
+      "subject": "A balanced row of five crystals with the center crystal glowing violet; a restrained circular pulse radiates from that middle stone through the two nearest bronze index rings.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a balanced row of five crystals with the center crystal glowing violet; a restrained circular pulse radiates from that middle stone through the two nearest bronze index rings. Make the central selection unmistakable, with no graph lines or tiny markings.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-d1c0a48f-8251-4d53-b87c-731755f51ea1.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "ec2f7aa7b190bb52dfd9fdef6f899f7a0fc1bd732cdf8d7a21a2897cd8afb30a",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-runoff-echo": {
+      "out": "game/assets/shardrun/card-runoff-echo.png",
+      "status": "accepted",
+      "cards": [
+        "runoff-echo"
+      ],
+      "subject": "A strong amber crystal bolt passes through a bronze loop and leaves a smaller cyan echo crystal trailing behind it, with a clean curved arc joining the pair.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a strong amber crystal bolt passes through a bronze loop and leaves a smaller cyan echo crystal trailing behind it, with a clean curved arc joining the pair. Keep the two crystals distinct and avoid cluttering the loop.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-0bc019bc-c6e3-47d2-8fdc-854c9c655e67.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "344828819f1e2e1691c631674f31e0cbd045cc09d5c80e24f803890d91361f32",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    },
+    "shardrun/card-threat-index": {
+      "out": "game/assets/shardrun/card-threat-index.png",
+      "status": "accepted",
+      "cards": [
+        "threat-index"
+      ],
+      "subject": "A small bronze index wheel with three broad crystal markers around its rim; a bright amber pointer selects the largest violet threat marker, while two weaker cyan markers stay subdued.",
+      "prompt": "Use case: stylized-concept. Asset type: ONE Rootward fantasy programming roguelite card icon. Style: polished high-resolution fantasy pixel art matching the finished bronze-and-jewel icons. Bold dark plum contours, rich bronze fittings, broad cyan, amber, and violet crystal planes, restrained ivory highlights, crisp stepped edges, and large readable clusters. Render at 1254 by 1254 pixels with roughly 128-pixel detail density, not as an enlarged crude low-resolution placeholder. Compact square composition; one centered subject filling about 82 percent of the width and height, with genuine transparent alpha margins. No words, letters, numerals, UI, decorative outer frame, scenery, ground, fake checkerboard, haze, tiny wires, or particles. Subject: a small bronze index wheel with three broad crystal markers around its rim; a bright amber pointer selects the largest violet threat marker, while two weaker cyan markers stay subdued. Make the chosen target immediately legible at small icon size.",
+      "source": "/home/joejin/.codex/generated_images/01a106d0-da9d-7350-be25-9417c5def14c/exec-f25be18d-990a-4077-9571-2b67eb52572e.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "sha256": "de5b29c08cbe6b7e50333233e8d8b116acb3b0045fbb43d24b1bae186a8c597b",
+      "review_sizes": [
+        32,
+        64,
+        128
+      ]
+    }
+  }
+}

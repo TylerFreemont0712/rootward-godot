@@ -1,10 +1,12 @@
 def bogosort_plus(bolts, battle):
     # Bogosort: shuffle, check, repeat. A seeded LCG stands in for chance (the preview must equal the cast), and a
-    # fixed number of tries stops the joke: after that, the arrangement with the fewest bolts out of place is kept.
+    # fixed number of tries stops the joke: after that, keep the best try; successful sorting buffs the head, while the
+    # capped result gives its strongest bolt a smaller bonus.
     head, rest = bolts[:7], bolts[7:]
     seed = (battle.get("turn", 1) * 7919 + sum(bolt["power"] * (i + 1) for i, bolt in enumerate(head))) & 0xFFFFFFFF
     order = list(head)
     best, best_descents = list(head), -1
+    sorted_successfully = False
     for attempt in range(120):
         descents = 0
         for i in range(len(order) - 1):
@@ -13,9 +15,17 @@ def bogosort_plus(bolts, battle):
         if best_descents < 0 or descents < best_descents:
             best, best_descents = list(order), descents
         if descents == 0:
+            sorted_successfully = True
             break
         for i in range(len(order) - 1, 0, -1):
             seed = (seed * 1664525 + 1013904223) & 0xFFFFFFFF
             j = (seed >> 16) % (i + 1)
             order[i], order[j] = order[j], order[i]
-    return [dict(bolt) for bolt in best + rest]
+    result = [dict(bolt) for bolt in best]
+    if sorted_successfully:
+        for bolt in result:
+            bolt["power"] += 1
+    elif result:
+        strongest = max(range(len(result)), key=lambda i: result[i]["power"])
+        result[strongest]["power"] += 3
+    return result + [dict(bolt) for bolt in rest]

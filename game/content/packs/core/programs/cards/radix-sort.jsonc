@@ -1,0 +1,31 @@
+{
+  "id": "radix-sort",
+  "name": "Radix Sort",
+  "icon": "shardrun/card-radix-sort",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "search-index",
+  "role": "order",
+  "complexity": "linear",
+  "big_o": "O(4n + 64)",
+  "makes": "sorted",
+  "summary": "Stable-sorts bolt power from weakest to strongest with four base-16 passes. Four fixed passes keep the work bounded by the game's 9,999 power limit.",
+  "function": "radix_sort",
+  "examples": [
+    {
+      "name": "four stable hexadecimal passes",
+      "bolts": [
+        { "power": 258, "element": "fire" },
+        { "power": 17, "element": "none" },
+        { "power": 258, "element": "frost" },
+        { "power": 3, "element": "none" }
+      ],
+      "expect": [
+        { "power": 3, "element": "none" },
+        { "power": 17, "element": "none" },
+        { "power": 258, "element": "fire" },
+        { "power": 258, "element": "frost" }
+      ]
+    }
+  ]
+}

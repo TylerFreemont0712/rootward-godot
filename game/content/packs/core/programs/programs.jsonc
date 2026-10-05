@@ -114,7 +114,7 @@
       "pool": ["divide", "merge-strike", "quick-sort", "quickselect", "recursion-tree", "split", "import-math",
         "import-copy", "recursive-mirror", "base-case", "k-way-merge", "dutch-flag", "closest-pair",
         "counting-inversions", "fast-power", "halve", "introsort", "karatsuba", "max-subarray", "median-of-medians",
-        "skyline", "tower-of-hanoi", "tail-call"],
+        "skyline", "tower-of-hanoi", "tail-call", "boundary-guard", "median-pulse"],
       "law": "recurse",
       "swap": {
         "out": "fork",
@@ -166,7 +166,7 @@
       "pool": ["prefix-sum", "binary-execute", "hash-merge", "bisect-insert", "dedupe", "two-pointers", "hash-aim",
         "import-bisect", "import-collections", "run-length", "lookup", "two-sum", "interpolation-search",
         "bloom-filter", "consistent-hashing", "counting-sort", "cursor", "exponential-search", "lower-bound-ward",
-        "range-query", "ternary-search", "write-ahead-log", "b-tree"],
+        "range-query", "ternary-search", "write-ahead-log", "b-tree", "radix-sort", "runoff-echo", "threat-index"],
       "law": "the-index",
       "swap": {
         "out": "kindle",
@@ -218,7 +218,8 @@
       "pool": ["greedy-assign", "take-max", "sweep", "make-change", "huffman", "load-balance", "greedy-ward",
         "import-heapq", "stable-partition", "chain-lightning", "activity-selection", "top-k", "first-fit-decreasing",
         "boyer-moore", "brace", "break-loop", "fractional-knapsack", "heap-sort", "heapify", "increase-key",
-        "job-sequencing", "minimum-arrows", "nearest-neighbour", "stock-trader", "task-scheduler"],
+        "job-sequencing", "minimum-arrows", "nearest-neighbour", "stock-trader", "task-scheduler", "handoff-ward",
+        "deadline-mint"],
       "law": "local-optimum",
       "swap": {
         "out": "round-robin",
@@ -270,7 +271,7 @@
       "pool": ["pairwise", "exhaustive-kill", "bubble-sort", "power-set", "linear-search", "exhaustive-ward",
         "import-itertools", "cartesian-product", "backtracking", "nested-strike", "all-pairs-rank", "bogosort",
         "branch-and-bound", "combinations", "grid-search", "meet-in-the-middle", "n-queens", "permutations",
-        "selection-sort"],
+        "selection-sort", "parity-lattice", "collision-census"],
       "law": "throw-hardware-at-it",
       "swap": {
         "out": "amplify",
@@ -367,7 +368,7 @@
     "repeat", "reverse", "filter-weak", "reduce", "import-numpy", "generator", "higher-order", "import-operator",
     "fire-constant", "frost-constant", "spark-constant", "zip-ward", "bit-shift", "enumerate-bolts",
     "list-comprehension", "monte-carlo", "pop-bolt", "range-source", "read-input", "reservoir-sampling",
-    "rotate-bolts", "slice-bolts", "sort-by-key", "swap-ends", "prefetch"],
+    "rotate-bolts", "slice-bolts", "sort-by-key", "swap-ends", "prefetch", "gradient-ward"],
   // Programming words for what a card does in the deck (ADR-0018), shown on the card with these meanings.
   "keywords": {
     "once": "Runs once a fight: after its program it leaves the deck until the next fight.",

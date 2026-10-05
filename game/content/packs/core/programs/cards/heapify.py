@@ -13,4 +13,7 @@ def heapify(bolts, battle):
                 break
             out[root], out[child] = out[child], out[root]
             root = child
+    if out:
+        # The heap root is the strongest bolt; make that payoff immediate without disturbing heap order.
+        out[0] = dict(out[0], power=out[0]["power"] + 2)
     return out

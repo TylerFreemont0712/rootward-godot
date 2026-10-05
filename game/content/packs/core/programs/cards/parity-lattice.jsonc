@@ -1,0 +1,36 @@
+{
+  "id": "parity-lattice",
+  "name": "Parity Lattice",
+  "icon": "shardrun/card-parity-lattice",
+  "rarity": "common",
+  "cost": 1,
+  "paradigm": "brute-force",
+  "role": "guard",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "summary": "In attack order, every third attack becomes block, up to 12 total block from this card. Existing wards do not count; the first conversion that would exceed 12 ends the scan.",
+  "function": "parity_lattice",
+  "examples": [
+    {
+      "name": "existing ward does not shift the cadence",
+      "bolts": [
+        { "power": 2, "element": "fire" },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "frost" },
+        { "power": 7, "element": "spark" },
+        { "power": 5, "element": "fire" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "frost" }
+      ],
+      "expect": [
+        { "power": 2, "element": "fire" },
+        { "power": 3, "element": "none", "block": true },
+        { "power": 3, "element": "frost" },
+        { "power": 7, "element": "spark", "block": true },
+        { "power": 5, "element": "fire" },
+        { "power": 4, "element": "none" },
+        { "power": 6, "element": "frost" }
+      ]
+    }
+  ]
+}

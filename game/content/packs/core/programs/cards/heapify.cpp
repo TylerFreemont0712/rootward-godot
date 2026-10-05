@@ -12,5 +12,7 @@ Bolts heapify(Bolts bolts, const Battle& battle) {
       root = child;
     }
   }
+  // The heap root is the strongest bolt; make that payoff immediate without disturbing heap order.
+  if (!bolts.empty()) bolts[0].power += 2;
   return bolts;
 }

@@ -1,0 +1,33 @@
+{
+  "id": "median-pulse",
+  "name": "Median Pulse",
+  "icon": "shardrun/card-median-pulse",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "divide-conquer",
+  "role": "shape",
+  "complexity": "linearithmic",
+  "big_o": "O(n log n), first 16 bolts",
+  "cap_n": 16,
+  "summary": "Among the first 16 bolts in this section, gives the median attack bolt +2 power. Recurse applies the pulse separately to each smaller section.",
+  "function": "median_pulse",
+  "examples": [
+    {
+      "name": "the middle attack receives the pulse",
+      "bolts": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 3, "element": "frost" },
+        { "power": 4, "element": "none" },
+        { "power": 2, "element": "none" }
+      ],
+      "expect": [
+        { "power": 5, "element": "none" },
+        { "power": 1, "element": "none" },
+        { "power": 5, "element": "frost" },
+        { "power": 4, "element": "none" },
+        { "power": 2, "element": "none" }
+      ]
+    }
+  ]
+}

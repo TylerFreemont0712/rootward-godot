@@ -1,36 +1,115 @@
-function coinChangePlus(bolts, battle) {
-  // Each table row considers one more bolt: descending totals prevent using a bolt twice.
-  const foes = battle.foes || [];
-  if (foes.length === 0) return bolts;
-  const assigned = new Array(bolts.length).fill(null);
-  let available = bolts.map((_, i) => i);
-  for (let target = 0; target < Math.min(2, foes.length); target++) {
-    const need = Math.max(0, foes[target].hp + (foes[target].shield || 0));
-    const paths = new Array(need + 1).fill(null);
-    paths[0] = { prev: null, i: -1, count: 0 };
-    for (const i of available) {
+const COIN_CHANGE_PLUS_SUM_LIMIT = 1024;
+
+function bestLethalSubsetPlus(bolts, candidates, need) {
+  const items = candidates.filter((i) => bolts[i].power > 0);
+  const totalPower = items.reduce((sum, i) => sum + bolts[i].power, 0);
+  if (totalPower < need) return { chosen: null, total: -1 };
+
+  const maxPower = items.reduce((max, i) => Math.max(max, bolts[i].power), 0);
+  // A minimum lethal group crosses need on its last bolt; cap this target search at 1,024 power.
+  const limit = Math.min(totalPower, need + maxPower - 1, COIN_CHANGE_PLUS_SUM_LIMIT);
+  if (need <= limit) {
+    // Each target updates and saves at most 17 64-bit words per bolt; backtracking adds one step per bolt.
+    let reachable = 1n;
+    const mask = (1n << BigInt(limit + 1)) - 1n;
+    const history = [reachable];
+    for (const i of items) {
       const power = bolts[i].power;
-      if (power <= 0) continue;
-      for (let total = need; total >= power; total--) {
-        const prior = paths[total - power];
-        if (prior !== null && (paths[total] === null || prior.count + 1 < paths[total].count)) {
-          paths[total] = { prev: prior, i, count: prior.count + 1 };
-        }
-      }
+      if (power <= limit) reachable = (reachable | (reachable << BigInt(power))) & mask;
+      history.push(reachable);
     }
-    if (paths[need] !== null) {
+
+    const lethal = reachable >> BigInt(need);
+    if (lethal > 0n) {
+      const lowest = lethal & -lethal;
+      const chosenTotal = need + lowest.toString(2).length - 1;
       const chosen = new Set();
-      let node = paths[need];
-      while (node.prev !== null) {
-        chosen.add(node.i);
-        node = node.prev;
+      let remaining = chosenTotal;
+      for (let position = items.length - 1; position >= 0; position--) {
+        if (((history[position] >> BigInt(remaining)) & 1n) !== 0n) continue;
+        const i = items[position];
+        chosen.add(i);
+        remaining -= bolts[i].power;
       }
-      for (const i of chosen) assigned[i] = target;
-      available = available.filter((i) => !chosen.has(i));
-    } else if (target === 0 && !true) {
-      return bolts.map((bolt) => ({ ...bolt, foe: 0 }));
+      return { chosen, total: chosenTotal };
     }
   }
-  const rest = Math.min(2, foes.length - 1);
-  return bolts.map((bolt, i) => ({ ...bolt, foe: assigned[i] === null ? rest : assigned[i] }));
+
+  // Beyond the bounded search, pick strongest bolts first until the target is lethal.
+  const chosen = new Set();
+  let chosenTotal = 0;
+  for (const i of [...items].sort((a, b) => bolts[b].power - bolts[a].power || a - b)) {
+    chosen.add(i);
+    chosenTotal += bolts[i].power;
+    if (chosenTotal >= need) return { chosen, total: chosenTotal };
+  }
+  return { chosen: null, total: -1 };
+}
+
+function coinChangePlus(bolts, battle) {
+  // Search the first two foes in order. Each bounded bitset prefers exact, then minimum-lethal damage through 1,024;
+  // larger ranges use deterministic strongest-first greedy. Exact kills permit weak spare wards against the largest
+  // attack intent among foes the selected groups leave alive. Other bolts continue to the next searched foe.
+  const foes = battle.foes || [];
+  if (foes.length === 0) return bolts.map((bolt) => ({ ...bolt }));
+  const candidates = bolts.map((_, i) => i).filter((i) => !bolts[i].block && !bolts[i].stash);
+  let available = candidates.slice();
+  const assigned = new Map();
+  const resolvedTargets = new Set();
+  let unresolvedTarget = null;
+  let exactKill = false;
+
+  for (let target = 0; target < Math.min(2, foes.length); target++) {
+    const need = Math.max(0, (foes[target].hp || 0) + (foes[target].shield || 0));
+    if (need <= 0) {
+      resolvedTargets.add(target);
+      continue;
+    }
+    const { chosen, total: chosenTotal } = bestLethalSubsetPlus(bolts, available, need);
+    if (chosen === null) {
+      unresolvedTarget = target;
+      break;
+    }
+
+    for (const i of chosen) assigned.set(i, target);
+    available = available.filter((i) => !chosen.has(i));
+    resolvedTargets.add(target);
+    if (chosenTotal === need) exactKill = true;
+  }
+
+  const warded = new Set();
+  if (exactKill) {
+    const threat = foes.reduce((max, foe, index) => {
+      if (resolvedTargets.has(index)) return max;
+      const intent = foe.intent || {};
+      const damage = intent.kind === undefined || intent.kind === "attack"
+        ? (intent.damage ?? 0) * (intent.hits ?? 1)
+        : 0;
+      return Math.max(max, damage);
+    }, 0);
+    const have = (battle.me?.block ?? 0) + bolts.reduce(
+      (sum, bolt) => sum + (bolt.block ? bolt.power ?? 0 : 0),
+      0,
+    );
+    let room = Math.max(0, threat - have);
+    const spare = available
+      .filter((i) => bolts[i].power > 0)
+      .sort((a, b) => bolts[a].power - bolts[b].power || a - b);
+    for (const i of spare) {
+      const power = bolts[i].power;
+      if (power <= room) {
+        warded.add(i);
+        room -= power;
+      }
+    }
+  }
+
+  const restTarget = unresolvedTarget === null ? Math.min(2, foes.length - 1) : unresolvedTarget;
+  return bolts.map((bolt, i) => {
+    const copy = { ...bolt };
+    if (assigned.has(i)) copy.foe = assigned.get(i);
+    else if (warded.has(i)) copy.block = true;
+    else if (candidates.includes(i)) copy.foe = restTarget;
+    return copy;
+  });
 }

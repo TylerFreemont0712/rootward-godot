@@ -1,0 +1,42 @@
+{
+  "id": "handoff-ward",
+  "name": "Handoff Ward",
+  "icon": "shardrun/card-handoff-ward",
+  "rarity": "uncommon",
+  "cost": 1,
+  "paradigm": "greedy",
+  "role": "guard",
+  "complexity": "linear",
+  "big_o": "O(n)",
+  "summary": "Turns scheduler-created idle bolts into block, up to 6. Only the explicit idle mark counts; other attacks keep their power, and every idle mark is cleared.",
+  "function": "handoff_ward",
+  "examples": [
+    {
+      "name": "only marked idles guard",
+      "bolts": [
+        { "power": 3, "element": "fire" },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 3, "element": "frost" },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 1, "element": "none", "idle": true },
+        { "power": 1, "element": "none", "idle": true }
+      ],
+      "expect": [
+        { "power": 3, "element": "fire" },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 3, "element": "frost" },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none" },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none", "block": true },
+        { "power": 1, "element": "none" }
+      ]
+    }
+  ]
+}

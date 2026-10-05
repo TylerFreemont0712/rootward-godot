@@ -9,7 +9,7 @@
   "icon": "shardrun/card-heapify",
   "id": "heapify",
   "name": "Heapify",
-  "summary": "Builds a heap bottom-up in O(n): the strongest bolt comes first and the rest are in heap order, not sorted.",
+  "summary": "Builds a max-heap bottom-up in O(n), then gives its strongest root bolt +2 power. The rest stay in heap order, not sorted.",
   "function": "heapify",
   "keywords": [],
   "makes": "unsorted",
@@ -62,7 +62,7 @@
       },
       "expect": [
         {
-          "power": 9,
+          "power": 11,
           "element": "none"
         },
         {
@@ -135,7 +135,7 @@
       },
       "expect": [
         {
-          "power": 7,
+          "power": 9,
           "element": "none"
         },
         {
@@ -192,7 +192,7 @@
       },
       "expect": [
         {
-          "power": 4,
+          "power": 6,
           "element": "fire"
         },
         {
@@ -225,7 +225,7 @@
       },
       "expect": [
         {
-          "power": 6,
+          "power": 8,
           "element": "none"
         }
       ]

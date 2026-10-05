@@ -5,18 +5,19 @@
   "cost": 2,
   "rarity": "rare",
   "complexity": "pseudo",
-  "big_o": "O(n·H)",
+  "big_o": "O(2·(17n+17)) through 1,024 power per target; O(2n log n) fallback",
+  "height": 80,
   "icon": "shardrun/card-coin-change",
   "id": "coin-change-plus",
   "name": "Coin Change (DP)+",
-  "summary": "A 0/1 DP table finds the fewest bolts summing exactly to the first two foes' HP in turn. Bolts are used only once.",
+  "summary": "Searches the first two foes in order with a bounded 0/1 bitset: exact lethal totals first, then the lowest lethal total through 1,024 power. Above that range, each target uses strongest-first greedy. Exact kills can turn weak spare bolts into block, limited to attack intent among foes left alive after both searches; other bolts go to the next foe.",
   "function": "coin_change_plus",
   "keywords": [],
   "art": "coin-change",
   "draftable": false,
   "examples": [
     {
-      "name": "fewest bolts for an exact sum",
+      "name": "selected kills remove their threats, so leftovers do not block",
       "bolts": [
         {
           "power": 2,
@@ -54,7 +55,13 @@
             "max": 10,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 6,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -62,7 +69,27 @@
             "max": 5,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
+          },
+          {
+            "name": "Tally Wisp",
+            "hp": 20,
+            "max": 20,
+            "shield": 0,
+            "weak": [],
+            "resist": [],
+            "intent": {
+              "kind": "skill",
+              "damage": 0,
+              "hits": 1,
+              "tempo": 40
+            }
           }
         ]
       },
@@ -70,7 +97,7 @@
         {
           "power": 2,
           "element": "none",
-          "foe": 1
+          "foe": 0
         },
         {
           "power": 3,
@@ -80,22 +107,22 @@
         {
           "power": 5,
           "element": "none",
-          "foe": 1
+          "foe": 0
         },
         {
           "power": 7,
           "element": "none",
-          "foe": 0
+          "foe": 1
         },
         {
           "power": 3,
           "element": "none",
-          "foe": 1
+          "foe": 2
         }
       ]
     },
     {
-      "name": "a bolt cannot be used twice",
+      "name": "no exact total uses the minimum lethal sum",
       "bolts": [
         {
           "power": 3,
@@ -139,7 +166,7 @@
       ]
     },
     {
-      "name": "zero-power bolts need no table updates",
+      "name": "zero-power bolts pass through two lethal searches",
       "bolts": [
         {
           "power": 0,
@@ -215,7 +242,7 @@
       "expect": []
     },
     {
-      "name": "repeat for the second foe only",
+      "name": "a surviving third foe sets the block cap after both searches",
       "bolts": [
         {
           "power": 2,
@@ -235,6 +262,10 @@
         },
         {
           "power": 3,
+          "element": "none"
+        },
+        {
+          "power": 4,
           "element": "none"
         }
       ],
@@ -265,11 +296,17 @@
           },
           {
             "name": "Tally Wisp",
-            "hp": 3,
-            "max": 3,
+            "hp": 8,
+            "max": 8,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
           }
         ]
       },
@@ -277,7 +314,7 @@
         {
           "power": 2,
           "element": "none",
-          "foe": 2
+          "foe": 0
         },
         {
           "power": 3,
@@ -287,15 +324,20 @@
         {
           "power": 5,
           "element": "none",
-          "foe": 1
+          "foe": 0
         },
         {
           "power": 7,
           "element": "none",
-          "foe": 0
+          "foe": 1
         },
         {
           "power": 3,
+          "element": "none",
+          "block": true
+        },
+        {
+          "power": 4,
           "element": "none",
           "foe": 2
         }

@@ -1,6 +1,6 @@
 function taskScheduler(bolts, battle) {
   // Task scheduling with a cooldown of one: always take the element with the most bolts left that is not the one
-  // just used. When only the element just used remains, an idle bolt of 1 power goes in between.
+  // just used. Only a spacer inserted when no task is eligible is marked idle for Handoff Ward.
   const names = [];
   const rows = [];
   for (const bolt of bolts) {
@@ -22,7 +22,7 @@ function taskScheduler(bolts, battle) {
       }
     }
     if (pick < 0) {
-      result.push({ power: 1, element: "none" });
+      result.push({ power: 1, element: "none", idle: true });
       last = -1;
       continue;
     }

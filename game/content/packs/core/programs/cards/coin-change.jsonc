@@ -5,11 +5,12 @@
   "cost": 2,
   "rarity": "rare",
   "complexity": "pseudo",
-  "big_o": "O(n·H)",
+  "big_o": "O(17n+17) through 1,024 power; O(n log n) fallback",
+  "height": 40,
   "icon": "shardrun/card-coin-change",
   "id": "coin-change",
   "name": "Coin Change (DP)",
-  "summary": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe.",
+  "summary": "A bounded 0/1 bitset prefers exact lethal damage, then the lowest lethal total through 1,024 power. Above that range, it selects the strongest bolts first until they kill. An exact kill can turn weak spare bolts into block, limited to the largest attack intent among surviving foes; other spare attacks go to the next foe.",
   "function": "coin_change",
   "keywords": [],
   "forge": {
@@ -18,7 +19,7 @@
   },
   "examples": [
     {
-      "name": "fewest bolts for an exact sum",
+      "name": "a front kill removes its threat before weak leftovers guard",
       "bolts": [
         {
           "power": 2,
@@ -56,7 +57,13 @@
             "max": 10,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 6,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -64,7 +71,13 @@
             "max": 5,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 4,
+              "hits": 1,
+              "tempo": 40
+            }
           }
         ]
       },
@@ -72,7 +85,7 @@
         {
           "power": 2,
           "element": "none",
-          "foe": 1
+          "foe": 0
         },
         {
           "power": 3,
@@ -82,22 +95,22 @@
         {
           "power": 5,
           "element": "none",
-          "foe": 1
+          "foe": 0
         },
         {
           "power": 7,
           "element": "none",
-          "foe": 0
+          "foe": 1
         },
         {
           "power": 3,
           "element": "none",
-          "foe": 1
+          "block": true
         }
       ]
     },
     {
-      "name": "a bolt cannot be used twice",
+      "name": "no exact total uses the smallest lethal sum",
       "bolts": [
         {
           "power": 3,
@@ -141,7 +154,7 @@
       ]
     },
     {
-      "name": "zero-power bolts need no table updates",
+      "name": "an exact kill guards with a weak spare bolt",
       "bolts": [
         {
           "power": 0,
@@ -171,7 +184,13 @@
             "max": 5,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 3,
+              "hits": 1,
+              "tempo": 40
+            }
           },
           {
             "name": "Tally Wisp",
@@ -179,7 +198,13 @@
             "max": 2,
             "shield": 0,
             "weak": [],
-            "resist": []
+            "resist": [],
+            "intent": {
+              "kind": "attack",
+              "damage": 2,
+              "hits": 1,
+              "tempo": 40
+            }
           }
         ]
       },
@@ -197,7 +222,7 @@
         {
           "power": 2,
           "element": "none",
-          "foe": 1
+          "block": true
         }
       ]
     },
