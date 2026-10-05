@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="188" height="264" viewBox="0 0 178 250" role="img" aria-labelledby="t d">
+  <title id="t">Astral Wheel — import copy</title>
+  <desc id="d">A blue-silver portrait card with a circular astrolabe framing the complete shard art and a restrained paper-text panel.</desc>
+  <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
+  <defs>
+    <linearGradient id="body" x2=".9" y2="1"><stop stop-color="#29364a"/><stop offset=".45" stop-color="#1c2534"/><stop offset="1" stop-color="#141e29"/></linearGradient>
+    <linearGradient id="silver" x2="0" y2="1"><stop stop-color="#f5e8c0"/><stop offset=".28" stop-color="#9bbbc0"/><stop offset=".62" stop-color="#667f91"/><stop offset=".84" stop-color="#e4c78a"/><stop offset="1" stop-color="#607a85"/></linearGradient>
+    <radialGradient id="well"><stop stop-color="#9c77c5"/><stop offset=".77" stop-color="#49365d"/><stop offset="1" stop-color="#202333"/></radialGradient>
+    <linearGradient id="paper" x2="0" y2="1"><stop stop-color="#e4dec4"/><stop offset="1" stop-color="#b3ad91"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="176" height="248" rx="17" fill="url(#body)" stroke="url(#silver)" stroke-width="2"/>
+  <rect x="6" y="6" width="166" height="238" rx="13" fill="none" stroke="#b7d1d353"/>
+  <path d="M10 39h158" stroke="#cfbf8c70"/>
+  <circle cx="21" cy="21" r="14" fill="#1d2b3c" stroke="url(#silver)" stroke-width="2"/>
+  <path d="M21 13l7 8-7 8-7-8z" fill="#4e7288" stroke="#e8deb4"/>
+  <text x="21" y="24.5" fill="#fff2c9" text-anchor="middle" font-family="CardCinzel" font-size="8.5" font-weight="700">1</text>
+  <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.1" font-weight="700">import copy</text>
+  <path d="M90 49a46 46 0 0 1 46 46M136 95a46 46 0 0 1-46 46M90 141a46 46 0 0 1-46-46M44 95a46 46 0 0 1 46-46" fill="none" stroke="url(#silver)" stroke-width="4"/>
+  <circle cx="90" cy="95" r="43" fill="url(#well)" stroke="#8097a0" stroke-width="1"/>
+  <ellipse cx="90" cy="95" rx="46" ry="30" fill="none" stroke="#d3c1857c" stroke-width="1" transform="rotate(-25 90 95)"/>
+  <circle cx="90" cy="95" r="47" fill="none" stroke="#9cb6c96b" stroke-dasharray="1 5"/>
+  <circle cx="43" cy="73" r="2.4" fill="#e5cc87"/><circle cx="137" cy="117" r="2.4" fill="#e5cc87"/>
+  <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="57" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
+  <rect x="10" y="142" width="158" height="93" rx="8" fill="url(#paper)" stroke="url(#silver)" stroke-width="1.7"/>
+  <path d="M15 147h148v83H15z" fill="none" stroke="#4b536080"/>
+  <rect x="18" y="159" width="58" height="20" rx="4" fill="#3b5064" stroke="#7993a1"/>
+  <text x="47" y="173.5" fill="#eff3e7" text-anchor="middle" font-family="CardCinzel" font-size="8.2" font-weight="700">IMPORT</text>
+  <text x="158" y="173.5" fill="#303846" text-anchor="end" font-family="CardCinzel" font-size="7.4" font-weight="700">BEFORE STRIKE</text>
+  <path d="M18 186h142" stroke="#5c647166"/>
+  <text x="25" y="211" fill="#315e6a" font-family="CardCinzel" font-size="19" font-weight="700">O(1)</text>
+  <text x="156" y="208" fill="#303a40" text-anchor="end" font-family="CardCinzel" font-size="8.1" font-weight="700" letter-spacing=".45">CONSTANT</text>
+</svg>

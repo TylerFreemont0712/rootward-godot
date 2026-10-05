@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="430" viewBox="0 0 1080 430" role="img" aria-labelledby="t d">
+  <title id="t">Fight hand size and hover study</title>
+  <desc id="d">A static study of 190 by 266 cards resting 35 pixels below the viewport edge and one hovered card raised and enlarged for readability.</desc>
+  <style>@font-face{font-family:CardCinzel;src:url("../../../game/ui/fonts/cinzel.ttf") format("truetype");font-weight:100 900}</style>
+  <defs>
+    <linearGradient id="background" x2="0" y2="1"><stop stop-color="#222332"/><stop offset="1" stop-color="#11161f"/></linearGradient>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#282838"/><stop offset="1" stop-color="#1a2029"/></linearGradient>
+    <linearGradient id="card-body" x2=".85" y2="1"><stop stop-color="#49344a"/><stop offset=".46" stop-color="#27202d"/><stop offset="1" stop-color="#171d28"/></linearGradient>
+    <linearGradient id="card-gold" x2="0" y2="1"><stop stop-color="#fff0be"/><stop offset=".35" stop-color="#d2a15a"/><stop offset=".7" stop-color="#78513b"/><stop offset="1" stop-color="#e1c57f"/></linearGradient>
+    <radialGradient id="card-well"><stop stop-color="#a17bc9"/><stop offset=".78" stop-color="#573b70"/><stop offset="1" stop-color="#2a2236"/></radialGradient>
+    <linearGradient id="card-paper" x2="0" y2="1"><stop stop-color="#e1d1aa"/><stop offset="1" stop-color="#b59a73"/></linearGradient>
+    <clipPath id="rest"><rect x="32" y="113" width="500" height="255" rx="12"/></clipPath>
+    <clipPath id="neighbors"><rect x="586" y="113" width="496" height="255" rx="12"/></clipPath>
+    <g id="sample-card" transform="scale(1.0556)">
+      <rect x="1" y="1" width="178" height="250" rx="18" fill="url(#card-body)" stroke="url(#card-gold)" stroke-width="2"/>
+      <circle cx="21" cy="21" r="14" fill="#38233b" stroke="url(#card-gold)" stroke-width="2"/>
+      <text x="21" y="25.5" fill="#fff1c4" text-anchor="middle" font-family="CardCinzel" font-size="13" font-weight="700">1</text>
+      <text x="39" y="28" fill="#fff0d8" font-family="CardCinzel" font-size="12.4" font-weight="700">import copy</text>
+      <circle cx="90" cy="98" r="47" fill="url(#card-well)" stroke="url(#card-gold)" stroke-width="2"/>
+      <circle cx="90" cy="98" r="40" fill="none" stroke="url(#card-gold)" stroke-width="3"/>
+      <image href="../../../game/assets/shardrun/card-import-copy.png" x="52" y="60" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
+      <rect x="11" y="143" width="158" height="96" rx="9" fill="url(#card-paper)" stroke="url(#card-gold)" stroke-width="1.7"/>
+      <rect x="19" y="166" width="57" height="20" rx="9" fill="#4a3455" stroke="#a67abd"/>
+      <text x="47.5" y="180" fill="#fbecff" text-anchor="middle" font-family="CardCinzel" font-size="8.4" font-weight="700">IMPORT</text>
+      <text x="158" y="180" fill="#382d37" text-anchor="end" font-family="CardCinzel" font-size="7.7" font-weight="700">BEFORE STRIKE</text>
+      <path d="M19 193h142" stroke="#77634e80"/>
+      <text x="25" y="218" fill="#3b684f" font-family="CardCinzel" font-size="20" font-weight="700">O(1)</text>
+      <text x="156" y="215" fill="#3b2d38" text-anchor="end" font-family="CardCinzel" font-size="8.4" font-weight="700">CONSTANT</text>
+    </g>
+  </defs>
+  <rect width="1080" height="430" rx="20" fill="url(#background)"/>
+  <text x="24" y="38" fill="#f3e5cc" font-family="CardCinzel" font-size="19" font-weight="700">FIGHT HAND / REST &amp; HOVER</text>
+  <text x="1056" y="37" fill="#b6aa98" text-anchor="end" font-family="CardCinzel" font-size="10" font-weight="700">CARD FOOTPRINT · 190 × 266</text>
+  <rect x="18" y="57" width="526" height="344" rx="14" fill="url(#panel)" stroke="#9b815d" stroke-width="1.4"/>
+  <rect x="554" y="57" width="526" height="344" rx="14" fill="url(#panel)" stroke="#9b815d" stroke-width="1.4"/>
+  <text x="36" y="88" fill="#f0d6a2" font-family="CardCinzel" font-size="13" font-weight="700">RESTING FAN</text>
+  <text x="526" y="88" fill="#aa9b84" text-anchor="end" font-family="CardCinzel" font-size="9" font-weight="700">LOWER EDGE TUCKED UNDER</text>
+  <text x="572" y="88" fill="#f0d6a2" font-family="CardCinzel" font-size="13" font-weight="700">HOVERED CARD</text>
+  <text x="1062" y="88" fill="#aa9b84" text-anchor="end" font-family="CardCinzel" font-size="9" font-weight="700">RAISED · +16% SCALE</text>
+  <rect x="31" y="112" width="502" height="256" rx="12" fill="#131820" stroke="#556069"/>
+  <rect x="585" y="112" width="496" height="256" rx="12" fill="#131820" stroke="#556069"/>
+  <g clip-path="url(#rest)">
+    <g transform="translate(24 137) rotate(-7 95 133)"><use href="#sample-card"/></g>
+    <g transform="translate(128 137) rotate(-3 95 133)"><use href="#sample-card"/></g>
+    <g transform="translate(232 137)"><use href="#sample-card"/></g>
+    <g transform="translate(336 137) rotate(4 95 133)"><use href="#sample-card"/></g>
+  </g>
+  <path d="M32 369h500M586 369h495" stroke="#e3c889" stroke-opacity=".8" stroke-dasharray="4 4"/>
+  <text x="40" y="390" fill="#bdad91" font-family="CardCinzel" font-size="9" font-weight="700">35 PX BELOW THE VIEWPORT EDGE</text>
+  <g clip-path="url(#neighbors)">
+    <g transform="translate(588 160) scale(.86) rotate(-4 90 126)"><use href="#sample-card"/></g>
+    <g transform="translate(928 160) scale(.86) rotate(4 90 126)"><use href="#sample-card"/></g>
+  </g>
+    <g transform="translate(713 58) scale(1.16)"><use href="#sample-card"/></g>
+  <path d="M572 390h490" stroke="#e3c889" stroke-opacity=".45"/>
+  <text x="817" y="390" fill="#bdad91" text-anchor="middle" font-family="CardCinzel" font-size="9" font-weight="700">FULL FACE VISIBLE · LABELS EASY TO READ</text>
+</svg>
