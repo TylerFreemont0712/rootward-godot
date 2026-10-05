@@ -913,3 +913,10 @@ leave names visible in `hold` and in the hand.
 Abandoning a run changes the current Shardrun state and shows its score; it does not load another scene. Reuse
 `ArchivePassage` over the current screen and redraw at its opaque midpoint, while title returns use the same veil via
 `Game.go(..., true)`. The player sees the same transition in both flows.
+
+## 2026-10-05 — Let Rootglass's frame crop the card art (`game/scenes/shardrun/card_face.gd`)
+
+The Rootglass SVG already has an opaque body with a transparent oval opening, so draw the card picture beneath that
+frame and size it to the opening instead of adding a second rectangular window. `TextureRect.STRETCH_KEEP_ASPECT_COVERED`
+fills the oval's bounds; a small inset protects wide or tall icon subjects from harsh clipping, and the parchment plaque
+in the frame naturally covers the lower part of the picture. Older frames keep their original inset art.

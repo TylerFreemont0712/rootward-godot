@@ -40,11 +40,12 @@ const COMPLEXITY_COLOURS := {
 	"pseudo": "#294c6b",
 }
 const ROOTGLASS_FRAME := "cards/rootglass"
+const ROOTGLASS_ART_SCALE := 0.86
 const TINT := preload("res://ui/card_tint.gdshader")
 const FRAME := "cards/frame"
 const DETAIL_DELAY := 0.08
 const ROOTGLASS_GEOMETRY := {
-	"art": [0.075, 0.108, 0.925, 0.635],
+	"art": [0.0667, 0.1389, 0.9333, 0.8294],
 	"title": [0.217, 0.0275, 0.797, 0.1275],
 	"orb": [0.1167, 0.0833, 0.0778],
 	"role": [0.1333, 0.619, 0.45, 0.702],
@@ -175,6 +176,8 @@ func _build(size_kind: Size) -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	_art = Ui.picture(ShardrunViews.art(shard, shard_id), Vector2(64, 64), "◆")
+	if _rootglass and _art is TextureRect:
+		(_art as TextureRect).stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	add_child(_art)
 	var frame_id := ROOTGLASS_FRAME if _rootglass else FRAME
 	var texture := Art.texture(frame_id)
@@ -251,12 +254,20 @@ func _layout() -> void:
 		_frame.position = Vector2.ZERO
 		_frame.size = card_size
 	var window := _box("art", card_size)
-	# The picture sits a little above the window's middle, well clear of the speed plate under the window.
-	var side := minf(window.size.x, window.size.y) * (0.58 if _rootglass else 0.64)
-	_art.custom_minimum_size = Vector2(side, side)
-	_art.size = Vector2(side, side)
-	var art_shift := Vector2(0, window.size.y * (0.05 if _rootglass else -0.05))
-	_art.position = window.get_center() - Vector2(side, side) * 0.5 + art_shift
+	if _rootglass and _art is TextureRect:
+		# Rootglass's transparent frame opening masks the art to its oval, including the textbox overlap at the bottom.
+		# A slight inset keeps isolated icon subjects from being unnaturally chopped at the oval's edge.
+		var art_size := window.size * ROOTGLASS_ART_SCALE
+		_art.custom_minimum_size = art_size
+		_art.size = art_size
+		_art.position = window.get_center() - art_size * 0.5
+	else:
+		# A fallback glyph or an older frame keeps its smaller, centered picture.
+		var side := minf(window.size.x, window.size.y) * (0.58 if _rootglass else 0.64)
+		_art.custom_minimum_size = Vector2(side, side)
+		_art.size = Vector2(side, side)
+		var art_shift := Vector2(0, window.size.y * (0.05 if _rootglass else -0.05))
+		_art.position = window.get_center() - Vector2.ONE * side * 0.5 + art_shift
 	var title_box := (
 		_box("title", card_size)
 		if _rootglass
