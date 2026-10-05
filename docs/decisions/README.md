@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0049**.
+The next number is **ADR-0053**.
 
 - [ADR-0048](ADR-0048-paradigm-laws-and-focuses.md): paradigm laws and focuses, fight memory, pure Index reads and
   compatibility with existing drafts and trial lessons (implementation in progress).
@@ -70,3 +70,7 @@ The next number is **ADR-0049**.
 - [ADR-0049](ADR-0049-cycles-the-registry-and-scripts.md): cycles earned per kill by kind, layer and difficulty; the Registry (Semver) with seeded stock, prices and services; sixteen scripts on a belt of three.
 
 - [ADR-0050](ADR-0050-issues.md): Issues, the program run's events as a stage machine over effect lists, with quizzes made from real sandbox runs of the player's own cards.
+
+- [ADR-0051](ADR-0051-borderless-fullscreen-and-frame-cap.md): fullscreen is a borderless window the size of the screen (the window manager's fullscreen state flashed green on the player's PRIME laptop), and frames are capped at a whole share of the refresh rate, 90 or less.
+
+- [ADR-0052](ADR-0052-graphics-settings-and-drawing-device.md): a Graphics settings tab (window, vsync, frame limit, interface size, background slowdown) and a choice of drawing device and renderer applied by relaunching the game; the player's flicker was the NVIDIA-to-AMD frame copy.

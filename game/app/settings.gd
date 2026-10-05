@@ -22,7 +22,25 @@ static var predictions := true
 static var shake := true
 ## Calm menus and shard flourishes, while retaining the essential combat playback.
 static var reduced_motion := false
+## Fullscreen is a borderless window the size of the screen (Graphics.apply_window, ADR-0051).
 static var fullscreen := false
+## The window's size when it is not fullscreen: one of Graphics.WINDOW_SIZES, or the default (leave it as launched).
+static var window_size := Graphics.DEFAULT_WINDOW
+## The screen the window goes to, or -1 for wherever it is.
+static var screen := -1
+## "on", "adaptive" or "off" (Graphics.VSYNC_MODES).
+static var vsync := "on"
+## Frames a second at most: Graphics.AUTO fits the screen's refresh rate, Graphics.UNLIMITED is no limit.
+static var frame_limit := Graphics.AUTO
+## Draw fewer frames while the window is behind another one.
+static var background_slowdown := true
+## A small frame-rate readout in the corner.
+static var show_fps := false
+## The interface's size, one of Graphics.UI_SCALES (0.88 is how the layouts were drawn).
+static var ui_scale := 0.88
+## Which graphics device draws (Graphics.GPU_INDEXES) and with which renderer (Graphics.RENDERERS); both take a restart.
+static var gpu_index := Graphics.AUTO
+static var renderer := "auto"
 ## The selected game lettering; Cinzel is the default, with the original terminal still available.
 static var font_style := DEFAULT_FONT
 ## The last journey selected on the title screen.
@@ -54,6 +72,15 @@ static func load_file(from := PATH) -> void:
 	shake = _bool(values, "shake", shake)
 	reduced_motion = _bool(values, "reduced_motion", reduced_motion)
 	fullscreen = _bool(values, "fullscreen", fullscreen)
+	window_size = Graphics.parse_size(values.get("window_size"), window_size)
+	screen = int(Graphics.choose(values.get("screen"), range(-1, 8), screen))
+	vsync = String(Graphics.choose(values.get("vsync"), Graphics.VSYNC_MODES, vsync))
+	frame_limit = int(Graphics.choose(values.get("frame_limit"), Graphics.FRAME_LIMITS, frame_limit))
+	background_slowdown = _bool(values, "background_slowdown", background_slowdown)
+	show_fps = _bool(values, "show_fps", show_fps)
+	ui_scale = float(Graphics.choose(values.get("ui_scale"), Graphics.UI_SCALES, ui_scale))
+	gpu_index = int(Graphics.choose(values.get("gpu_index"), Graphics.GPU_INDEXES, gpu_index))
+	renderer = String(Graphics.choose(values.get("renderer"), Graphics.RENDERERS, renderer))
 	var face: Variant = values.get("font_style", DEFAULT_FONT)
 	# The former default becomes Cinzel once; explicit Original selections in new saves remain Original.
 	var revision: Variant = values.get("font_revision", 0)
@@ -111,6 +138,15 @@ static func save_file() -> void:
 		"shake": shake,
 		"reduced_motion": reduced_motion,
 		"fullscreen": fullscreen,
+		"window_size": Graphics.size_text(window_size),
+		"screen": screen,
+		"vsync": vsync,
+		"frame_limit": frame_limit,
+		"background_slowdown": background_slowdown,
+		"show_fps": show_fps,
+		"ui_scale": ui_scale,
+		"gpu_index": gpu_index,
+		"renderer": renderer,
 		"font_style": font_style,
 		"font_revision": FONT_REVISION,
 		"music_volume": music_volume,
@@ -126,11 +162,9 @@ static func save_file() -> void:
 		file.store_string(JSON.stringify(values, "\t", false))
 
 
+## Applies the window, vsync, frame limit and interface size (Graphics).
 static func apply_display() -> void:
-	if DisplayServer.get_name() != "headless":
-		DisplayServer.window_set_mode(
-			DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
-		)
+	Graphics.apply()
 
 
 static func _bool(values: Dictionary, key: String, fallback: bool) -> bool:

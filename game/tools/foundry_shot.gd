@@ -36,17 +36,11 @@ func _ready() -> void:
 			panel.call("_rebuild")
 		"settings":
 			title.call("_open_options")
-		"audio", "settings-battle", "settings-fonts":
+		"audio", "settings-battle", "settings-fonts", "settings-graphics":
 			title.call("_open_options")
 			var panel := _panel(title, "FoundrySettingsPanel")
-			panel.set(
-				"_tab",
-				(
-					"Audio"
-					if moment == "audio"
-					else ("Fonts" if moment.trim_suffix("-ja") == "settings-fonts" else "Battle")
-				)
-			)
+			var tabs := {"audio": "Audio", "settings-fonts": "Fonts", "settings-graphics": "Graphics"}
+			panel.set("_tab", tabs.get(moment.trim_suffix("-ja"), "Battle"))
 			panel.call("_rebuild")
 		"character", "character-spells", "character-dummy", "character-moves", "character-circle", "character-weave":
 			title.call("_open_skins")

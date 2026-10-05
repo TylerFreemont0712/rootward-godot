@@ -39,6 +39,7 @@ static func boot() -> bool:
 	catalog = loaded.catalog
 	diagnostics = loaded.diagnostics
 	Settings.load_file()
+	Graphics.apply()
 	var override_root := OS.get_environment(SAVES_ENV)
 	profiles = ProfileStore.new(override_root.path_join("profiles") if override_root != "" else ProfileStore.ROOT)
 	var existing := profiles.list_profiles()

@@ -856,3 +856,29 @@ The Will It Halt Issue reads the executed card's trace to decide whether its pro
 made this path fail. Read `trace`, convert it through `ProgramRules.stages`, and keep the shared work total numeric.
 End-to-end Issue flows now pass for Rubber Duck, Oracle Test Suite, Big-O Quiz and Will It Halt in Python, JavaScript
 and C++.
+
+## 2026-10-05 — Fullscreen is not one thing, and a frame cap has to fit the refresh rate
+
+`WINDOW_MODE_FULLSCREEN` asks the window manager for its fullscreen state, which lets the compositor skip itself and
+show the game straight; on a laptop where one GPU draws for a screen another drives, that path flashed garbage green
+when the window lost focus. A borderless window the size of the screen looks the same and stays composited. Separately,
+`Engine.max_fps` with vsync on only looks smooth when it is the refresh rate divided by a whole number: 90 on a 165 Hz
+panel shows some frames for one refresh and some for two. `Settings.frame_cap` picks the largest such share that is 90
+or less. See ADR-0051.
+
+## 2026-10-05 — Some settings can only be set before the program starts
+
+Godot picks the graphics device and the renderer once, from the command line, so a setting for them cannot take effect
+while the game runs. The game saves the choice and starts itself again with the right flags (`OS.create_process` on
+`OS.get_executable_path()`, with the original arguments), marking the second start so it cannot loop. Two guards matter:
+`--gpu-index` past the last device quietly falls back to automatic, but an unknown `--rendering-method` aborts, so only
+whitelisted names are passed; and a test, a tool or the editor must never relaunch, so those are recognised by their
+arguments. See ADR-0052.
+
+## 2026-10-05 — A laptop's two GPUs are a bug source, not just a speed knob
+
+With the AMD chip driving the screen and the NVIDIA chip chosen to draw, every frame is copied between them, and that
+copy was unstable while the window was behind another. Drawing on the chip that drives the screen (or OpenGL through
+Mesa) was steady. Measure with a screenshot loop and a count of the odd pixels, unfocused, on each GPU: it showed the
+difference where reading the code could not. And `ceili(NaN)` is the smallest integer, not zero: a refresh rate that
+the platform cannot report may be 0, -1 or NaN, so test `value > 0.0` rather than `value <= 0.0`.
