@@ -23,14 +23,13 @@ func _build() -> void:
 	var choosing := String(state.get("paradigm", "")) == ""
 	var main := Ui.vbox([], 12)
 	main.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	main.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	main.size_flags_stretch_ratio = 3.0
 	if choosing:
 		main.add_child(Ui.label(Text.t("Choose how your program thinks"), "Heading"))
-		var line := Text.t(
-			"A paradigm is a way of solving problems. Its cards are real algorithms; its speed decides who acts first."
-		)
-		main.add_child(Ui.label(line, "Muted", true))
+		main.add_child(Ui.label(Text.t("Hover a paradigm name for its description."), "Muted", true))
 		var row := Ui.hbox([], 12)
+		row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		for id: String in draft.offers:
 			row.add_child(_paradigm(ProgramDraft.paradigm_of(session.catalog, id)))
 		main.add_child(row)
@@ -45,6 +44,7 @@ func _build() -> void:
 			)
 		)
 		var row := Ui.hbox([], 12)
+		row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		for id: String in draft.focus_offers:
 			row.add_child(_focus(paradigm, ProgramDraft.focus_of(session.catalog, paradigm.id, id)))
 		main.add_child(row)
@@ -79,12 +79,19 @@ func _build() -> void:
 		for card_id: String in draft.pack:
 			row.add_child(_pick(card_id))
 		main.add_child(row)
-	var deck := Ui.panel(Ui.scroll(DeckPanel.create(session)), "")
+	var deck_scroll := Ui.scroll(DeckPanel.create(session))
+	deck_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var deck := Ui.panel(deck_scroll, "")
 	deck.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	deck.size_flags_stretch_ratio = 1.4
-	var body := Ui.hbox([Ui.panel(Ui.scroll(main), ""), deck], 12)
-	(body.get_child(0) as Control).size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	(body.get_child(0) as Control).size_flags_stretch_ratio = 3.0
+	deck.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var main_scroll := Ui.scroll(main)
+	main_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var main_panel := Ui.panel(main_scroll, "")
+	main_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	main_panel.size_flags_stretch_ratio = 3.0
+	main_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var body := Ui.hbox([main_panel, deck], 12)
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_child(body)
 
@@ -92,36 +99,39 @@ func _build() -> void:
 ## A paradigm on offer: its name in its colour, its speed class large, what it is, and its signature cards.
 func _paradigm(paradigm: Dictionary) -> Control:
 	var colour := Color(paradigm.colour)
-	var name := Ui.tint(Ui.sized(Ui.label(Text.t(String(paradigm.name)).to_upper(), "Heading"), 32), colour)
-	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 47), colour.lightened(0.2))
+	var name := Ui.tint(Ui.sized(Ui.label(Text.t(String(paradigm.name)).to_upper(), "Heading"), 29), colour)
+	name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	HoverInfo.attach(name, Text.t(String(paradigm.name)), Text.t(String(paradigm.summary)), "", colour)
+	var tier := Ui.tint(Ui.sized(Ui.label(paradigm.tier, ""), 42), colour.lightened(0.2))
 	(tier as Label).add_theme_font_override("font", UiTheme.crt_font())
-	var summary := Ui.sized(Ui.label(Text.t(paradigm.summary), "Muted", true), 14)
 	var law: Dictionary = session.catalog.relics.get(String(paradigm.get("law", "")), {})
 	var cards := Ui.hbox([], 8)
+	cards.alignment = BoxContainer.ALIGNMENT_CENTER
 	for card_id: String in paradigm.signature:
 		var face := CardFace.create(
-			card_id, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.DECK
+			card_id, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.DRAFT
 		)
 		face.draggable = false
 		cards.add_child(face)
-	cards.alignment = BoxContainer.ALIGNMENT_CENTER
 	var choose := Ui.button(
 		Text.f("Choose %s", [Text.t(paradigm.name)]),
 		func() -> void: wants.emit({"type": "pick-paradigm", "paradigm_id": paradigm.id}),
 		"PrimaryButton"
 	)
-	var contents: Array[Control] = [name, tier, summary]
-	if not law.is_empty():
-		contents.append(Cards.relic(law, null, Vector2(68, 68)))
-	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, Ui.spacer(), choose])
+	var contents: Array[Control] = [name, tier, _relic_slot(law, Vector2(54, 54), 142)]
+	var push_button := Ui.spacer()
+	push_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, push_button, choose])
 	var column := Ui.vbox(contents, 10)
-	column.custom_minimum_size.y = 470
+	column.custom_minimum_size.y = 570
+	column.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var tile := Ui.panel(column, "Card")
 	var look := UiTheme.box(Color("#15101c").lerp(colour, 0.05), colour.darkened(0.3), 2, 12, Vector2(16, 14))
 	look.shadow_color = Color(colour, 0.2)
 	look.shadow_size = 8
 	tile.add_theme_stylebox_override("panel", look)
 	tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tile.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	return tile
 
 
@@ -146,9 +156,13 @@ func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 	var tag := Ui.tint(Ui.label(focus.tag, "Subheading"), colour.lightened(0.2))
 	tag.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	var face := CardFace.create(
-		focus.signature, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.DECK
+		focus.signature, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.HAND
 	)
 	face.draggable = false
+	var face_stage := CenterContainer.new()
+	face_stage.custom_minimum_size.y = CardFace.SIZES[CardFace.Size.HAND].y + 16.0
+	face_stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	face_stage.add_child(face)
 	var choose := Ui.button(
 		Text.f("Choose %s", [Text.t(focus.name)]),
 		func() -> void: wants.emit({"type": "pick-focus", "focus_id": focus.id}),
@@ -158,17 +172,31 @@ func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 		name,
 		tag,
 		Ui.label(Text.t(focus.rule), "Muted", true),
-		Cards.relic(relic, null, Vector2(68, 68)) if not relic.is_empty() else Ui.spacer(),
-		face,
+		_relic_slot(relic, Vector2(54, 54), 142),
+		face_stage,
 		Ui.label(Text.t(focus.plays_like), "Muted", true),
 		Ui.spacer(),
 		choose
 	]
 	var column := Ui.vbox(items, 10)
-	column.custom_minimum_size.y = 520
+	column.custom_minimum_size.y = 650
+	column.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var tile := Ui.panel(column, "Card")
 	tile.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color("#15101c").lerp(colour, 0.05), colour.darkened(0.3), 2, 12, Vector2(16, 14))
 	)
 	tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tile.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	return tile
+
+
+## Keeps each paradigm and focus relic in the same visual slot even when its rule text wraps differently.
+func _relic_slot(relic: Dictionary, icon_size: Vector2, height: float) -> Control:
+	var slot := CenterContainer.new()
+	slot.custom_minimum_size.y = height
+	slot.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if not relic.is_empty():
+		var face := Cards.relic(relic, null, icon_size)
+		face.custom_minimum_size.x = 300
+		slot.add_child(face)
+	return slot

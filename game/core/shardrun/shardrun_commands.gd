@@ -33,14 +33,22 @@ static func apply(next: Dictionary, command: Dictionary, catalog: Dictionary) ->
 			return ProgramShop.apply(next, command, catalog)
 		"take-script":
 			return _take_script(next, command, catalog)
+		"skip-script":
+			return _skip_script(next, catalog)
 		"use-script":
 			return ProgramScripts.use(next, int(command.index), String(command.get("foe", "")), catalog)
 		"drop-script":
 			return {} if ProgramScripts.drop_at(next, int(command.index)) else _no("no-script", "No such script.")
 		"claim-relic":
 			return _claim_relic(next, command, catalog)
+		"skip-relics":
+			return _skip_relics(next, catalog)
+		"ack-cursed-relic":
+			return _ack_cursed_relic(next, catalog)
 		"claim-spell":
 			return _claim_spell(next, catalog)
+		"skip-spell":
+			return _skip_spell(next, catalog)
 		"leave":
 			if next.status != "reward":
 				return _no("no-reward", "There is nothing to leave behind.")
@@ -281,6 +289,16 @@ static func _take_script(next: Dictionary, command: Dictionary, catalog: Diction
 	return {}
 
 
+static func _skip_script(next: Dictionary, catalog: Dictionary) -> Dictionary:
+	var reward: Dictionary = next.get("reward", {})
+	if next.status != "reward" or not reward.has("script"):
+		return _no("no-script", "There is no script to skip.")
+	reward.erase("script")
+	Shardrun.record(next, {"kind": "note", "text": "You leave the script behind."})
+	Shardrun.settle_reward(next, catalog)
+	return {}
+
+
 static func _open_chest(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	var reward: Dictionary = next.get("reward", {})
 	if next.status != "reward" or not reward.has("chest"):
@@ -319,6 +337,27 @@ static func _claim_relic(next: Dictionary, command: Dictionary, catalog: Diction
 	return {}
 
 
+## Skipping a relic clears just that reward stage, preserving any cards or scripts that follow it.
+static func _skip_relics(next: Dictionary, catalog: Dictionary) -> Dictionary:
+	var reward: Dictionary = next.get("reward", {})
+	if next.status != "reward" or not reward.has("relics"):
+		return _no("no-relics", "There are no relics to skip.")
+	reward.erase("relics")
+	Shardrun.record(next, {"kind": "note", "text": "You leave the relics behind."})
+	Shardrun.settle_reward(next, catalog)
+	return {}
+
+
+## Opening a cursed cache binds the relic immediately; this acknowledges its focused display without removing the curse.
+static func _ack_cursed_relic(next: Dictionary, catalog: Dictionary) -> Dictionary:
+	var reward: Dictionary = next.get("reward", {})
+	if next.status != "reward" or not reward.has("cursed_relic"):
+		return _no("no-cursed-relic", "There is no bound relic to acknowledge.")
+	reward.erase("cursed_relic")
+	Shardrun.settle_reward(next, catalog)
+	return {}
+
+
 static func _claim_spell(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	var reward: Dictionary = next.get("reward", {})
 	if next.status != "reward" or not reward.has("spell"):
@@ -332,6 +371,16 @@ static func _claim_spell(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	var text := "A new spell, %s, with %d empty slots." % [offered.name, capacity]
 	Shardrun.record(next, {"kind": "spell", "spell": id, "text": text})
 	reward.erase("spell")
+	Shardrun.settle_reward(next, catalog)
+	return {}
+
+
+static func _skip_spell(next: Dictionary, catalog: Dictionary) -> Dictionary:
+	var reward: Dictionary = next.get("reward", {})
+	if next.status != "reward" or not reward.has("spell"):
+		return _no("no-spell", "There is no spell to skip.")
+	reward.erase("spell")
+	Shardrun.record(next, {"kind": "note", "text": "You leave the guardian's spell behind."})
 	Shardrun.settle_reward(next, catalog)
 	return {}
 

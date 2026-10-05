@@ -92,6 +92,7 @@
 
   // --- The draft -----------------------------------------------------------------------------------------------------
   {"en": "Choose how your program thinks", "to": "きみのプログラムの考え方をえらぼう"},
+  {"en": "Hover a paradigm name for its description.", "to": "パラダイム名にマウスをのせると、説明が読めるよ。"},
   {"en": "A paradigm is a way of solving problems. Its cards are real algorithms; its speed decides who acts first.", "to": "パラダイムは、問題のとき方のこと。カードは本物のアルゴリズムで、その速さでどちらが先に動くかが決まるよ。"},
   {"en": "Pack %d of %d", "to": "パック %d / %d"},
   {"en": "Take one card. Its code is what it does; the order you play cards in is the program.", "to": "カードを1枚えらぼう。コードがそのままカードの働き。カードを出す順番が、プログラムになるよ。"},

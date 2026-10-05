@@ -888,3 +888,10 @@ the platform cannot report may be 0, -1 or NaN, so test `value > 0.0` rather tha
 Card edge nicks are decoration, so each visible card instance gets a one-time seed inside the UI renderer. A card
 moving or being hovered cannot advance the run's random stream or change its finish, and two copies of the same shard
 can have different quality and irregular chip patterns.
+
+## 2026-10-05 — Reward stages leave later rewards intact (`game/core/shardrun/shardrun_commands.gd`, ADR-0049)
+
+Program rewards can contain several independent fields. The loot view shows relics before cards, and a skip command
+clears only the selected reward field; the next stage is then built from the remaining state. A forced cursed relic is
+already applied by the rules, so its “keep going” command only dismisses the presentation. This keeps UI sequencing
+from quietly changing reward rules.

@@ -42,127 +42,203 @@ func _reward() -> void:
 		_legacy_reward(state, catalog, reward)
 		return
 	var title := Text.t("An opened cache")
-	if reward.has("shards"):
-		title = Text.t("Shards in the rubble")
-	elif reward.has("chest"):
-		title = Text.t("A sealed cache")
-	elif reward.has("cursed_relic"):
-		title = Text.t("A curse has bound itself")
-	add_child(Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), _wallet(int(state.get("cycles", 0)))], 12))
-	var choices := Ui.vbox([], 10)
-	var payout: VBoxContainer
-	if reward.has("receipt") or reward.has("script"):
-		payout = Ui.vbox([], 10)
-	if reward.has("receipt"):
-		payout.add_child(_receipt(reward.receipt, int(state.get("cycles", 0))))
-	if reward.has("script"):
-		payout.add_child(_script_reward(String(reward.script)))
-	if reward.has("chest"):
-		var chance := roundi(float(reward.chest.curse_chance) * 100.0)
-		var warning := run_on(
-			[
-				Text.f(
-					"Curse chance: %d%%. Opening may bind a cursed relic instead of offering helpful relics.", [chance]
-				),
-				Text.t("Leaving it unopened is safe.")
-			]
-		)
-		var chest_copy := Ui.vbox(
-			[
-				Ui.label(warning, "Narration", true),
-				Ui.label(Text.t("At a rest, you can cleanse one cursed relic instead of healing."), "Muted", true)
-			],
-			4
-		)
-		var open := Ui.button(Text.t("Open the cache"), _ask({"type": "open-chest"}), "PrimaryButton")
-		choices.add_child(
-			Ui.panel(
-				Ui.hbox(
-					[Ui.picture("shardrun/map-prop-treasure", Vector2(72, 72), "◇"), Ui.expand(chest_copy), open], 12
-				)
-			)
-		)
 	if reward.has("cursed_relic"):
-		choices.add_child(
-			Ui.label(Text.t("The curse is already bound to you. Leaving does not remove it."), "Narration", true)
+		title = Text.t("A curse has bound itself")
+	elif reward.has("receipt"):
+		title = Text.t("Victory spoils")
+	elif not reward.has("relics"):
+		if reward.has("shards"):
+			title = Text.t("Shards in the rubble")
+		elif reward.has("chest"):
+			title = Text.t("A sealed cache")
+	add_child(Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), _wallet(int(state.get("cycles", 0)))], 12))
+	if reward.has("receipt") or reward.has("script"):
+		var keepsakes := Ui.hbox([], 12)
+		if reward.has("receipt"):
+			keepsakes.add_child(Ui.expand(_receipt(reward.receipt)))
+		if reward.has("script"):
+			keepsakes.add_child(Ui.expand(_script_reward(String(reward.script))))
+		add_child(keepsakes)
+	if reward.has("cursed_relic"):
+		_add_forced_relic(reward, catalog)
+	elif reward.has("relics"):
+		_add_relic_choices(reward, catalog)
+	elif reward.has("shards"):
+		_add_card_choices(state, reward, catalog)
+	elif reward.has("chest"):
+		_add_chest(reward)
+	elif reward.has("spell"):
+		_add_spell(reward)
+	else:
+		add_child(Ui.label(Text.t("The cache is empty."), "Narration", true))
+
+
+## Relics and cards get one focused, generously sized stage at a time. Taking or skipping it leaves the next reward
+## in the state, so a guardian's relic choice naturally leads into its card choice.
+func _choice_stage(contents: Control) -> void:
+	var center := CenterContainer.new()
+	center.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	center.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	center.custom_minimum_size.y = 460
+	center.add_child(contents)
+	var stage := Ui.panel(center, "Overlay")
+	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	stage.add_theme_stylebox_override(
+		"panel", UiTheme.box(Color("#090710", 0.86), Color(UiTheme.AMBER, 0.52), 1, 12, Vector2(20, 18))
+	)
+	add_child(stage)
+
+
+func _add_relic_choices(reward: Dictionary, catalog: Dictionary) -> void:
+	var relics: Array = reward.relics
+	var row := Ui.hbox([], 18)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for relic_id: String in relics:
+		var relic: Dictionary = catalog.relics.get(relic_id, {})
+		var claim := Ui.button(Text.t("Claim"), _ask({"type": "claim-relic", "relic_id": relic_id}), "PrimaryButton")
+		var face := Cards.relic(relic, claim, Vector2(92, 92))
+		face.custom_minimum_size = Vector2(320, 190)
+		row.add_child(face)
+	var actions := (
+		Ui
+		. hbox(
+			[
+				Ui.button(Text.t("Skip"), _ask({"type": "skip-relics"})),
+			],
+			10
 		)
-		var curse: Dictionary = catalog.relics.get(
-			reward.cursed_relic, {"id": reward.cursed_relic, "name": "?", "summary": "", "rarity": ""}
-		)
-		choices.add_child(Cards.relic(curse, null, Vector2(64, 64)))
-	if reward.has("spell"):
-		var offered: Dictionary = reward.spell
-		var text := Text.f(
-			"The guardian's core holds a spell of its own: %s, with %d empty slots.",
-			[Text.t(offered.name), int(offered.capacity)]
-		)
-		choices.add_child(
-			Ui.panel(
-				Ui.hbox(
-					[
-						Ui.picture("shardrun/map-boss", Vector2(72, 72), "✦"),
-						Ui.expand(Ui.label(text, "Narration", true)),
-						Ui.button(
-							Text.f("Claim %s", [Text.t(offered.name)]), _ask({"type": "claim-spell"}), "PrimaryButton"
-						)
-					],
-					12
-				)
+	)
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	var column := Ui.vbox(
+		[Ui.label(Text.t("Choose a relic") if relics.size() > 1 else Text.t("A relic"), "Subheading"), row, actions], 20
+	)
+	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_choice_stage(column)
+
+
+func _add_forced_relic(reward: Dictionary, catalog: Dictionary) -> void:
+	var relic_id := String(reward.cursed_relic)
+	var relic: Dictionary = catalog.relics.get(
+		relic_id, {"id": relic_id, "name": "?", "summary": "", "rarity": "", "cursed": true}
+	)
+	var face := Cards.relic(relic, null, Vector2(112, 112))
+	face.custom_minimum_size = Vector2(430, 190)
+	var actions := Ui.hbox(
+		[
+			Ui.button(Text.t("Skip"), Callable(), ""),
+			Ui.button(Text.t("Keep going"), _ask({"type": "ack-cursed-relic"}), "PrimaryButton")
+		],
+		10
+	)
+	(actions.get_child(0) as Button).disabled = true
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	var column := Ui.vbox(
+		[
+			Ui.label(Text.t("The curse is already bound to you. Leaving does not remove it."), "Narration", true),
+			face,
+			actions
+		],
+		18
+	)
+	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_choice_stage(column)
+
+
+func _add_card_choices(state: Dictionary, reward: Dictionary, catalog: Dictionary) -> void:
+	var deck := ShardrunRules.is_deck(state)
+	var row := Ui.hbox([], 24)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	for shard_id: String in reward.shards:
+		var face := CardFace.create(shard_id, catalog, state.language, session.show_summaries(), CardFace.Size.REWARD)
+		face.draggable = false
+		_lift_reward_card(face)
+		var take := Ui.button(Text.t("Claim"), _ask({"type": "take", "shard_id": shard_id}), "PrimaryButton")
+		var option := Ui.vbox([face, take], 8)
+		option.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		row.add_child(option)
+	var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
+	if ProgramRewards.applies(state):
+		skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
+	var actions := Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))])
+	actions.alignment = BoxContainer.ALIGNMENT_CENTER
+	var column := Ui.vbox(
+		[
+			Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading"),
+			Ui.label(Text.t("Hover a card to read its code."), "Muted", true),
+			row,
+			actions
+		],
+		16
+	)
+	column.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_choice_stage(column)
+
+
+func _lift_reward_card(face: CardFace) -> void:
+	face.pivot_offset = face.custom_minimum_size * 0.5
+	var motion: Array[Tween] = []
+	var hover := func(over: bool) -> void:
+		if not motion.is_empty() and motion[0].is_valid():
+			motion[0].kill()
+		var tween := face.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		motion.assign([tween])
+		tween.tween_property(face, "scale", Vector2.ONE * (1.05 if over else 1.0), 0.12)
+	face.mouse_entered.connect(hover.bind(true))
+	face.mouse_exited.connect(hover.bind(false))
+
+
+func _add_chest(reward: Dictionary) -> void:
+	var chance := roundi(float(reward.chest.curse_chance) * 100.0)
+	var warning := run_on(
+		[
+			Text.f("Curse chance: %d%%. Opening may bind a cursed relic instead of offering helpful relics.", [chance]),
+			Text.t("Leaving it unopened is safe.")
+		]
+	)
+	var chest_copy := Ui.vbox(
+		[
+			Ui.label(warning, "Narration", true),
+			Ui.label(Text.t("At a rest, you can cleanse one cursed relic instead of healing."), "Muted", true)
+		],
+		4
+	)
+	var actions := Ui.hbox(
+		[
+			Ui.button(Text.t("Leave it unopened"), _ask({"type": "leave"})),
+			Ui.button(Text.t("Open the cache"), _ask({"type": "open-chest"}), "PrimaryButton")
+		],
+		10
+	)
+	var contents := Ui.vbox([Ui.picture("shardrun/map-prop-treasure", Vector2(112, 112), "◇"), chest_copy, actions], 16)
+	contents.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_choice_stage(contents)
+
+
+func _add_spell(reward: Dictionary) -> void:
+	var offered: Dictionary = reward.spell
+	var description := Text.f(
+		"The guardian's core holds a spell of its own: %s, with %d empty slots.",
+		[Text.t(offered.name), int(offered.capacity)]
+	)
+	var contents := Ui.vbox(
+		[
+			Ui.picture("shardrun/map-boss", Vector2(112, 112), "✦"),
+			Ui.label(description, "Narration", true),
+			Ui.hbox(
+				[
+					Ui.button(Text.t("Skip"), _ask({"type": "skip-spell"})),
+					Ui.button(
+						Text.f("Claim %s", [Text.t(offered.name)]), _ask({"type": "claim-spell"}), "PrimaryButton"
+					)
+				],
+				10
 			)
-		)
-	if reward.has("relics"):
-		var relics: Array = reward.relics
-		choices.add_child(Ui.label(Text.t("A relic") if relics.size() == 1 else Text.t("Choose a relic"), "Subheading"))
-		var row := Ui.flow([], 8)
-		for relic_id: String in relics:
-			var relic: Dictionary = catalog.relics.get(relic_id, {})
-			var claim := Ui.button(
-				Text.t("Claim"), _ask({"type": "claim-relic", "relic_id": relic_id}), "PrimaryButton"
-			)
-			var face := Cards.relic(relic, claim, Vector2(64, 64))
-			face.custom_minimum_size.x = 310
-			row.add_child(face)
-		choices.add_child(row)
-	if reward.has("shards"):
-		var deck := ShardrunRules.is_deck(state)
-		choices.add_child(
-			Ui.label(Text.t("Add one card to your deck") if deck else Text.t("Take one shard"), "Subheading")
-		)
-		var joins := (
-			Text.t("It is shuffled into your deck for every fight from now on.")
-			if deck
-			else Text.t("It joins your spare shards; slot it into a spell before the next fight.")
-		)
-		choices.add_child(Ui.label(joins, "Muted", true))
-		var cards := Ui.flow([], 8)
-		for shard_id: String in reward.shards:
-			var shard: Dictionary = catalog.shards.get(shard_id, {})
-			var name := Text.t(shard.get("name", shard_id))
-			var verb := Text.f("Add %s to the deck", [name]) if deck else Text.f("Take %s", [name])
-			var take := Ui.button(verb, _ask({"type": "take", "shard_id": shard_id}))
-			take.theme_type_variation = "PrimaryButton"
-			var face := CardFace.create(shard_id, catalog, state.language, session.show_summaries(), CardFace.Size.DECK)
-			face.draggable = false
-			var option := Ui.vbox([face, Ui.label(Text.t(String(shard.get("summary", ""))), "Muted", true), take], 6)
-			option.custom_minimum_size.x = 204
-			cards.add_child(Ui.panel(option, "Card"))
-		choices.add_child(cards)
-		var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
-		if ProgramRewards.applies(state):
-			skip = Text.f("Skip the cards (+%d cycles)", [ProgramCycles.skip_pay(state, catalog)])
-		choices.add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
-	var body := Ui.hbox([], 14)
-	choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	choices.size_flags_stretch_ratio = 2.4
-	body.add_child(choices)
-	if payout != null:
-		payout.custom_minimum_size.x = 350
-		payout.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		payout.size_flags_stretch_ratio = 1.0
-		body.add_child(payout)
-	add_child(Ui.expand(body, true))
-	var leave := Text.t("Leave it unopened") if reward.has("chest") else Text.t("Leave the rest and move on")
-	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}), "PrimaryButton")]))
+		],
+		16
+	)
+	contents.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_choice_stage(contents)
 
 
 ## Spellforge and the card run keep their original reward layout; the compact ledger belongs to program runs.
@@ -249,14 +325,14 @@ func _wallet(cycles: int) -> Control:
 
 
 ## A compact payout panel keeps the individual kill math visible without pushing the card choices down the room.
-func _receipt(receipt: Dictionary, wallet: int) -> Control:
+func _receipt(receipt: Dictionary) -> Control:
 	var lines := Ui.flow([], 6)
 	for line: Dictionary in receipt.lines:
 		var label := Text.t(String(line.label))
 		var amount := "+%d" % int(line.amount) if line.kind == "bonus" else "%d" % int(line.amount)
 		var chip := Ui.hbox([Ui.label(label, "Faint"), Ui.tint(Ui.label(amount, "Subheading"), UiTheme.TEAL)], 8)
 		lines.add_child(Ui.panel(chip, "Sunken"))
-	var summary := Ui.label(Text.f("cycles %d   (total %d)", [int(receipt.total), wallet]), "Subheading")
+	var summary := Ui.label(Text.f("cycles %d earned", [int(receipt.total)]), "Subheading")
 	var body := Ui.vbox(
 		[
 			Ui.hbox(
@@ -306,6 +382,7 @@ func _script_reward(id: String) -> Control:
 					_ask({"type": "take-script", "drop_index": index})
 				)
 			)
+	actions.add_child(Ui.button(Text.t("Skip"), _ask({"type": "skip-script"})))
 	return Ui.panel(
 		Ui.hbox([Ui.picture("shardrun/script-" + id, Vector2(72, 72), "📜"), Ui.expand(text), actions], 10), "Card"
 	)

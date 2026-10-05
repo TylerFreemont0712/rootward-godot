@@ -55,9 +55,16 @@ func _build(
 		Ui.label(Text.t(card.get("name", id)), "Subheading"),
 		UiTheme.rarity(card.get("rarity", "common")).lightened(0.25)
 	)
+	name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var cost := Ui.tint(Ui.label("%d◆" % int(card.get("cost", 0)), "Subheading"), UiTheme.SHARD.lightened(0.2))
 	var speed := Ui.tint(Ui.label(ShardrunViews.complexity(card), "Subheading"), colour.lightened(0.35))
-	var column := Ui.vbox([Ui.hbox([name, Ui.spacer(), speed, cost], 12)], 6)
+	var identity: Control = name
+	if card.has("role"):
+		var crest_colour := colour if card.has("paradigm") else Color("#d9c796")
+		var crest := CardCrest.create(String(card.get("paradigm", "neutral")), crest_colour)
+		crest.custom_minimum_size = Vector2(26, 26)
+		identity = Ui.hbox([name, crest], 6)
+	var column := Ui.vbox([Ui.hbox([identity, Ui.spacer(), speed, cost], 12)], 6)
 	var kinds: Array[Control] = []
 	if RoleBadge.ROLES.has(String(card.get("role", ""))):
 		# The role first, in its own colour, as on the card's face.

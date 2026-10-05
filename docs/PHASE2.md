@@ -35,9 +35,10 @@ code window and end. This is the Phase 2 audit snapshot from before the later Pa
 The Artificer's program run now has five combat laws, fifteen focuses, 80 new algorithms with refactors, cross-paradigm
 rewards, cycles, the Registry, 30 Issues and consumable scripts. Its room icons and layer backdrops now use the game's
 bronze-and-crystal language with retro-computer details. Paradigm and focus picks show the relic art they grant, and
-program loot has a dedicated scrollable layout for its receipt, script, relic and card choices. Spellforge and Card
-Shardrun retain their existing reward and rules flow. Implementation history, screenshots, exact tests and the final
-paired balance data are in [PLAN.md](PLAN.md) and [ParadigmUpdate.md](ParadigmUpdate.md).
+program rewards present relics and full-size cards one focused choice at a time, with compact cycle/script receipts
+above them. Spellforge and Card Shardrun retain their existing reward and rules flow. Implementation history,
+screenshots, exact tests and the final paired balance data are in [PLAN.md](PLAN.md) and
+[ParadigmUpdate.md](ParadigmUpdate.md).
 
 ## 2. The recommendation in one screen
 
@@ -285,7 +286,7 @@ clear `trial_active`; a test should pin it). [28] The wardrobe row was replaced 
 | P2-34 | Medium | **Layer names and numbers disagree.** The title says "Salvage → Heap → Kernel" (three layers, old names). The program run has four: Sandbox, Heapworks, Interrupt Foundry, Kernel. The end screen says "The Salvage keeps what you carried". The map counts rings down ("Ring 3 · layer 1 of 4") while the Library counts layers up ("Layer 2 · The Heapworks"). Pick one name per layer and one count, and show both only where both help |
 | P2-35 | Low | The end screen greets a Japanese-preferring profile in Japanese ("Player 1、おつかれさま！") above an English summary (`scenes/shardrun/run_summary.gd:32`). Resolved by A4 |
 | P2-36 | Low | After a win, the "4 incoming" badge stays up beside the victory banner over the fading foe (`run-volley.png`) |
-| P2-37 | Improvement | **Rewards show cards as small shard icons plus code**, not the card faces used everywhere else, so a reward doesn't look like the card you'll hold (`run-reward.png`). Offer three card faces with the code on hover, as the hand does |
+| P2-37 | Improvement | Verified: **Rewards showed cards as small shard icons plus code**, not the card faces used everywhere else (`run-reward.png`). Program rewards now offer three full-size card faces with the code on hover |
 | P2-38 | Improvement | **Rest, cache and forge rooms are a line of text and a button** on a 1,350-pixel empty panel (`run-rest.png`, `run-treasure.png`). Give each room its painting, centre the choice, and consider the ROADMAP's single campfire (heal or refactor, decision 8) |
 | P2-39 | Low | In the deck panel, the "×2" count tiles look like empty card slots (`run-reward.png`). A badge on the card's corner reads better |
 | P2-40 | Parked | Hallway foes are Spellforge's elemental creatures with weakness and resistance; they don't touch your program, and several clash with the dungeon backdrops (the player's note; ROADMAP stage 4) |

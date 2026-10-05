@@ -7,10 +7,16 @@ extends Control
 ## It can be dragged (Godot's own drag and drop) and dropped onto: its table decides what a move means, through the
 ## `moved` and `pressed` Callables it is given. `spot` is where the card sits ({zone, index, spell?}).
 
-enum Size { HAND, SLOT, DECK }
+enum Size { HAND, SLOT, DECK, DRAFT, REWARD }
 
-## The frame's own proportions (480 x 664), at three sizes in the design canvas.
-const SIZES := {Size.HAND: Vector2(194, 274), Size.SLOT: Vector2(122, 171), Size.DECK: Vector2(140, 196)}
+## The frame's own proportions (480 x 664), at the sizes used around the game.
+const SIZES := {
+	Size.HAND: Vector2(194, 274),
+	Size.SLOT: Vector2(122, 171),
+	Size.DECK: Vector2(140, 196),
+	Size.DRAFT: Vector2(170, 238),
+	Size.REWARD: Vector2(226, 320)
+}
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
 ## of the width]). The pipeline writes the same numbers beside the frame (layouts.CARD); these are its fallback.
 const GEOMETRY := {
@@ -345,6 +351,9 @@ func _fit_rootglass_title(label: Label, title_box: Rect2) -> void:
 		if not lines.is_empty():
 			label.text = "\n".join(lines)
 			label.add_theme_font_size_override("font_size", font_size)
+			# A wrapped title uses more vertical room; lift it slightly so its last line clears the art window's border.
+			label.position.y -= title_box.size.y * 0.18
+			label.add_theme_constant_override("line_spacing", -1)
 			return
 	label.text = title
 	label.add_theme_font_size_override("font_size", maxi(6, single_size))

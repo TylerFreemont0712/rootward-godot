@@ -68,7 +68,10 @@ static func _grid(ids: Array, session: ShardrunSession) -> Control:
 			id, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.DECK
 		)
 		var count := int(counts[id])
-		var badge := Ui.panel(Ui.tint(Ui.label("×%d" % count, "Subheading"), UiTheme.SHARD), "Chip")
+		var copies := Ui.tint(Ui.label("×%d" % count, "Subheading"), UiTheme.SHARD) as Label
+		copies.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var badge := Ui.panel(copies, "Chip")
+		badge.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		badge.visible = count > 1
 		flow.add_child(Ui.vbox([face, badge], 2))
 	return flow

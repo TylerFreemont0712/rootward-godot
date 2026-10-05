@@ -30,6 +30,10 @@ same update.
 - The program run's own map rows (`programs.jsonc` `map`) are two longer than the Shardrun's; Spellforge's maps, relics
   and fixtures are unchanged (`ShardrunMap.ROOM_KINDS` gained `shop` and `issue`, which a layer with no weight for them
   never draws; program-only battle keys are only written in a program run).
+- Program loot presents a relic choice before its card choice, one focused stage at a time; the cycle receipt and an
+  optional script stay in a compact header, and an optional spell follows the card stage. Skipping clears only that
+  reward field, so later rewards remain available; acknowledging a forced cursed relic advances the presentation
+  without undoing the curse already applied by the rules.
 
 ## Consequences
 
@@ -37,3 +41,5 @@ same update.
   handoff). The bot shops (relic, script, card) and takes script drops; it does not use scripts in a fight yet.
 - Old program saves load: new state fields have defaults in `ShardrunSchemas.program_state_defaults`, and a run begun
   before keeps its map (no Registry) and no belt.
+- The reward screen follows the reward data's lifecycle rather than collapsing everything into one crowded list. The
+  command layer owns the skip/claim effects, while the UI simply shows the next nonempty reward stage.

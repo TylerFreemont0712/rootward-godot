@@ -217,9 +217,13 @@ func _between(state: Dictionary) -> Control:
 	if state.status == "reward" and state.get("playstyle", "") == "program":
 		var loot := RoomPanel.create(session)
 		loot.wants.connect(send)
-		var loot_scroll := Ui.scroll(loot)
-		loot_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		return Ui.expand(Ui.panel(loot_scroll), true)
+		loot.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		var loot_panel := Ui.panel(loot)
+		loot_panel.add_theme_stylebox_override(
+			"panel", UiTheme.box(Color("#090710", 0.66), Color(UiTheme.LINE, 0.72), 1, 8, Vector2(12, 10))
+		)
+		loot_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		return Ui.expand(loot_panel, true)
 	var left := Ui.vbox([], 8)
 	left.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	left.size_flags_stretch_ratio = 2.7 if ShardrunRules.is_deck(state) else 1.25
