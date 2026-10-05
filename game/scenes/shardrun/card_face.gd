@@ -40,8 +40,9 @@ const COMPLEXITY_COLOURS := {
 	"pseudo": "#294c6b",
 }
 const ROOTGLASS_FRAME := "cards/rootglass"
-const ROOTGLASS_ART_SCALE := 0.48
+const ROOTGLASS_ART_SCALE := 0.456
 const ROOTGLASS_ART_LIFT := 0.06
+const ROOTGLASS_ART_NUDGE_UP := 7.0
 const TINT := preload("res://ui/card_tint.gdshader")
 const FRAME := "cards/frame"
 const DETAIL_DELAY := 0.08
@@ -261,7 +262,7 @@ func _layout() -> void:
 		var art_size := window.size * ROOTGLASS_ART_SCALE
 		_art.custom_minimum_size = art_size
 		_art.size = art_size
-		_art.position = window.get_center() - art_size * 0.5 - Vector2(0, window.size.y * ROOTGLASS_ART_LIFT)
+		_art.position = window.get_center() - art_size * 0.5 - Vector2(0, window.size.y * ROOTGLASS_ART_LIFT + ROOTGLASS_ART_NUDGE_UP)
 	else:
 		# A fallback glyph or an older frame keeps its smaller, centered picture.
 		var side := minf(window.size.x, window.size.y) * (0.58 if _rootglass else 0.64)

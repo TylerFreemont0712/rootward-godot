@@ -918,7 +918,7 @@ Abandoning a run changes the current Shardrun state and shows its score; it does
 
 The Rootglass SVG already has an opaque body with a transparent oval opening, so draw the card picture beneath that
 frame instead of adding a second rectangular window. `TextureRect.STRETCH_KEEP_ASPECT_COVERED` fills the oval's bounds;
-after review, scale the art to 48% of the opening and lift it by 6% of the opening's height. This leaves more breathing
-room around each relic while the parchment plaque naturally covers the lower picture. Older frames keep their original
-inset art. Reviewed reward and hand captures: `/tmp/rootward-pack-oval-art-smaller.png` and
-`/tmp/rootward-hand-oval-art-smaller.png`.
+after review, scale the art to 45.6% of the opening and lift it by 6% of the opening's height plus 7 px. This leaves
+more breathing room around each relic while the parchment plaque naturally covers the lower picture. Older frames keep
+their original inset art. Reviewed reward and hand captures: `/tmp/rootward-pack-oval-art-polish.png` and
+`/tmp/rootward-hand-oval-art-polish.png`.
