@@ -122,8 +122,10 @@ func _paradigm(paradigm: Dictionary) -> Control:
 	push_cards_down.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var button_buffer := Control.new()
 	button_buffer.custom_minimum_size.y = 36
+	var signature_heading := Ui.label(Text.t("SIGNATURE CARDS"), "Faint")
+	signature_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var contents: Array[Control] = [name, tier, _relic_slot(law, Vector2(54, 54), 142), push_cards_down]
-	contents.append_array([Ui.label(Text.t("SIGNATURE CARDS"), "Faint"), cards, button_buffer, choose])
+	contents.append_array([signature_heading, cards, button_buffer, choose])
 	var column := Ui.vbox(contents, 10)
 	column.custom_minimum_size.y = 570
 	column.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -158,13 +160,16 @@ func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 	var tag := Ui.tint(Ui.label(focus.tag, "Subheading"), colour.lightened(0.2))
 	tag.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
 	var face := CardFace.create(
-		focus.signature, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.HAND
+		focus.signature, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.FOCUS
 	)
 	face.draggable = false
 	var face_stage := CenterContainer.new()
-	face_stage.custom_minimum_size.y = CardFace.SIZES[CardFace.Size.HAND].y + 16.0
-	face_stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	face_stage.custom_minimum_size.y = CardFace.SIZES[CardFace.Size.FOCUS].y + 16.0
 	face_stage.add_child(face)
+	var push_focus_down := Ui.spacer()
+	push_focus_down.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var button_buffer := Control.new()
+	button_buffer.custom_minimum_size.y = 36
 	var choose := Ui.button(
 		Text.f("Choose %s", [Text.t(focus.name)]),
 		func() -> void: wants.emit({"type": "pick-focus", "focus_id": focus.id}),
@@ -175,9 +180,10 @@ func _focus(paradigm: Dictionary, focus: Dictionary) -> Control:
 		tag,
 		Ui.label(Text.t(focus.rule), "Muted", true),
 		_relic_slot(relic, Vector2(54, 54), 142),
-		face_stage,
+		push_focus_down,
 		Ui.label(Text.t(focus.plays_like), "Muted", true),
-		Ui.spacer(),
+		face_stage,
+		button_buffer,
 		choose
 	]
 	var column := Ui.vbox(items, 10)

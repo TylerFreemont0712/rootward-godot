@@ -7,14 +7,15 @@ extends Control
 ## It can be dragged (Godot's own drag and drop) and dropped onto: its table decides what a move means, through the
 ## `moved` and `pressed` Callables it is given. `spot` is where the card sits ({zone, index, spell?}).
 
-enum Size { HAND, SLOT, DECK, DRAFT, REWARD }
+enum Size { HAND, SLOT, DECK, DRAFT, FOCUS, REWARD }
 
 ## The frame's own proportions (480 x 664), at the sizes used around the game.
 const SIZES := {
 	Size.HAND: Vector2(194, 274),
 	Size.SLOT: Vector2(122, 171),
 	Size.DECK: Vector2(140, 196),
-	Size.DRAFT: Vector2(194, 274),
+	Size.DRAFT: Vector2(204, 288),
+	Size.FOCUS: Vector2(228, 322),
 	Size.REWARD: Vector2(291, 411)
 }
 ## Where the frame has room for each part, as shares of its size ([left, top, right, bottom]; the orb [x, y, radius
