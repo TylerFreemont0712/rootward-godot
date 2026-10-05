@@ -68,17 +68,21 @@ func _build() -> void:
 				)
 			)
 		)
-		main.add_child(
-			Ui.label(
-				Text.t("Take one card. Its code is what it does; the order you play cards in is the program."),
-				"Muted",
-				true
-			)
-		)
+		var pick_heading := Ui.label(Text.t("Add one card to your deck"), "Subheading")
+		pick_heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		main.add_child(pick_heading)
+		var pick_instruction := Ui.label(Text.t("Hover to read a card's code; click it to choose."), "Muted", true)
+		pick_instruction.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		main.add_child(pick_instruction)
 		var row := Ui.hbox([], 12)
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
 		for card_id: String in draft.pack:
 			row.add_child(_pick(card_id))
-		main.add_child(row)
+		var card_stage := CenterContainer.new()
+		card_stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		card_stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		card_stage.add_child(row)
+		main.add_child(card_stage)
 	var deck_scroll := Ui.scroll(DeckPanel.create(session))
 	deck_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var deck := Ui.panel(deck_scroll, "")
@@ -139,17 +143,33 @@ func _paradigm(paradigm: Dictionary) -> Control:
 	return tile
 
 
-## A card in the pack: the card, its code, and Take.
+## A card in the pack uses the same large, hoverable, click-to-choose face as a card reward.
 func _pick(card_id: String) -> Control:
-	var card: Dictionary = session.catalog.shards.get(card_id, {})
-	var take := Ui.button(
-		Text.f("Take %s", [Text.t(card.get("name", card_id))]),
-		func() -> void: wants.emit({"type": "draft-card", "card_id": card_id}),
-		"PrimaryButton"
+	var face := CardFace.create(
+		card_id, session.catalog, session.state.language, session.show_summaries(), CardFace.Size.REWARD
 	)
-	var face := Cards.shard(card, session.state.language, session.show_summaries(), 0, take)
-	face.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	face.draggable = false
+	face.pressed = _select_draft_card.bind(card_id)
+	_lift_draft_card(face)
 	return face
+
+
+func _select_draft_card(_spot: Dictionary, button: int, card_id: String) -> void:
+	if button == MOUSE_BUTTON_LEFT:
+		wants.emit({"type": "draft-card", "card_id": card_id})
+
+
+func _lift_draft_card(face: CardFace) -> void:
+	face.pivot_offset = face.custom_minimum_size * 0.5
+	var motion: Array[Tween] = []
+	var hover := func(over: bool) -> void:
+		if not motion.is_empty() and motion[0].is_valid():
+			motion[0].kill()
+		var tween := face.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		motion.assign([tween])
+		tween.tween_property(face, "scale", Vector2.ONE * (1.05 if over else 1.0), 0.12)
+	face.mouse_entered.connect(hover.bind(true))
+	face.mouse_exited.connect(hover.bind(false))
 
 
 ## A focus shows its associated relic before its signature card and rule.

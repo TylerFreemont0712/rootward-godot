@@ -907,3 +907,9 @@ needs its child controls to pass pointer input up to the panel before it can sel
 The same small card size is used for both the active spell and the held-card row, but only the spell slot compresses
 names into jittery, unreadable text. `CardFace.spot.zone` distinguishes them, so hide only the name for `spell` and
 leave names visible in `hold` and in the hand.
+
+## 2026-10-05 — Swap an ending under the sigil veil (`game/scenes/shardrun/shardrun_screen.gd`)
+
+Abandoning a run changes the current Shardrun state and shows its score; it does not load another scene. Reuse
+`ArchivePassage` over the current screen and redraw at its opaque midpoint, while title returns use the same veil via
+`Game.go(..., true)`. The player sees the same transition in both flows.

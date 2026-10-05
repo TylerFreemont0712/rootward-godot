@@ -270,7 +270,7 @@ func _between(state: Dictionary) -> Control:
 
 
 func _ending(state: Dictionary) -> Control:
-	var return_home := func() -> void: Game.go(Game.TITLE)
+	var return_home := func() -> void: Game.go(Game.TITLE, true)
 	var buttons := (
 		Ui
 		. hbox(
@@ -432,7 +432,7 @@ func _refresh_coach() -> void:
 
 func _skip_trial() -> void:
 	Game.skip_trial()
-	Game.go(Game.TITLE)
+	Game.go(Game.TITLE, true)
 
 
 # --- Overlays -------------------------------------------------------------------------------------------------------
@@ -550,7 +550,8 @@ func _open_run_menu() -> void:
 	tools_row.add_child(Ui.button(Text.t("Archives"), _open_archive))
 	column.add_child(tools_row)
 	var actions := Ui.hbox(
-		[Ui.button(Text.t("Return to title"), func() -> void: Game.go(Game.TITLE), "PrimaryButton"), Ui.spacer()], 8
+		[Ui.button(Text.t("Return to title"), func() -> void: Game.go(Game.TITLE, true), "PrimaryButton"), Ui.spacer()],
+		8
 	)
 	if Game.trial_active:
 		actions.add_child(Ui.button(Text.t("Skip Trial"), _skip_trial, "DangerButton"))
@@ -611,7 +612,7 @@ func _confirm_abandon() -> void:
 	var text := Text.t("Climb back out? The run ends here and is scored as it stands; the shards stay behind.")
 	var abandon := func() -> void:
 		_close_overlay()
-		send({"type": "abandon"})
+		_abandon_with_veil()
 	var yes := Ui.button(Text.t("Abandon this run"), abandon, "DangerButton")
 	var no := Ui.button(Text.t("Keep going"), _close_overlay, "PrimaryButton")
 	var column := Ui.vbox(
@@ -620,6 +621,26 @@ func _confirm_abandon() -> void:
 	var panel := Ui.panel(column, "Overlay")
 	panel.custom_minimum_size = Vector2(560, 0)
 	_open(panel)
+
+
+func _abandon_with_veil() -> void:
+	if Settings.reduced_motion:
+		send({"type": "abandon"})
+		return
+	var veil := ArchivePassage.new()
+	veil.cover_viewport()
+	veil.z_index = 120
+	veil.z_as_relative = false
+	add_child(veil)
+	# LEARN: Abandon stays in Shardrun to show its scored ending, so redraw that state at the veil's opaque midpoint.
+	veil.midpoint.connect(func() -> void: send({"type": "abandon"}), CONNECT_ONE_SHOT)
+	veil.finished.connect(
+		func() -> void:
+			remove_child(veil)
+			veil.queue_free(),
+		CONNECT_ONE_SHOT
+	)
+	veil.play()
 
 
 func _explore(spell_id: String) -> void:
