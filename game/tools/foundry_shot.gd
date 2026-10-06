@@ -121,8 +121,6 @@ func _ready() -> void:
 			if base != "character" and base != "character-dummy":
 				await get_tree().create_timer(at).timeout
 				rehearsal.set_paused(true)
-		"academy":
-			title.call("_open_academy")
 		"library", "library-transition", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":
 			title.call("_open_archive")
 			if moment == "library-transition":

@@ -109,8 +109,9 @@
     argv: ["node", entry].concat(args.slice(2)),
     env: {},
     platform: "rootward-sandbox",
-    stdout: { write: function (text) { out.puts(String(text)); return true; } },
-    stderr: { write: function (text) { err.puts(String(text)); return true; } },
+    // flush() is not Node's: it pushes buffered output out now, for a harness whose run may be stopped mid-way.
+    stdout: { write: function (text) { out.puts(String(text)); return true; }, flush: function () { out.flush(); } },
+    stderr: { write: function (text) { err.puts(String(text)); return true; }, flush: function () { err.flush(); } },
     exit: function (code) { throw new Exit(code === undefined ? 0 : code); }
   };
   globalThis.require = makeRequire(dirname(entry));

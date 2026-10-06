@@ -1,0 +1,28 @@
+{
+  "id": "market-total",
+  "order": 5,
+  "day": 2,
+  "villager": "bramble",
+  "title": "Adding up the basket",
+  "module": "market",
+  "function": "total",
+  "params": ["prices"],
+  "concepts": ["lists", "loops", "accumulators"],
+  "requires": [],
+  "letter": "Oi, Tinker! Bramble, from the market stall. Customers pile things in their baskets and I lose count. I'll give your function a list of prices, one for each thing in the basket, and you give me back the total. Some folk bring an empty basket just to chat, mind.",
+  "examples": [
+    {"args": [[3, 4, 5]], "expect": 12},
+    {"args": [[10]], "expect": 10}
+  ],
+  "checks": [
+    {"name": "an empty basket", "args": [[]], "expect": 0},
+    {"name": "a heavy shop", "args": [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], "expect": 55},
+    {"name": "a free sample (0 coins)", "args": [[0, 7, 0]], "expect": 7}
+  ],
+  "hints": [
+    "Imagine Bramble adding by hand: start at nothing, then add each price in turn. What is the running total before the first price?",
+    "A loop visits every item of a list: `for price in prices:` in Python, `for (const price of prices)` in JavaScript. A variable outside the loop can collect the sum.",
+    "Start a total at 0 before the loop, add each price to it inside the loop, and return it after the loop ends."
+  ],
+  "learn": "Start a variable, update it once per item, use it after the loop: this pattern is called an accumulator, and you will write it a thousand times (Python's `sum` is one built in). Starting at 0 is what makes the empty basket work."
+}

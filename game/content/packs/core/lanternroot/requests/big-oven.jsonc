@@ -1,0 +1,31 @@
+{
+  "id": "big-oven",
+  "order": 8,
+  "day": 3,
+  "villager": "mabel",
+  "title": "The new oven (a change)",
+  "module": "bakery",
+  "function": "loaves_for",
+  "params": ["guests", "per_loaf"],
+  "concepts": ["default parameters", "changing code safely"],
+  "requires": ["loaves", "bread-order"],
+  "replaces": "loaves",
+  "letter": "Oh Tinker, look! My new oven bakes great big loaves, and one of those feeds 6. But I still bake the small ones too. Could `loaves_for` be told how many guests a loaf feeds? And when nobody tells it, it should go on thinking 4, because Bramble's market asks it every day and I'd hate to upset Bramble.",
+  "examples": [
+    {"args": [12, 6], "expect": 2},
+    {"args": [13, 6], "expect": 3},
+    {"args": [9], "expect": 3}
+  ],
+  "checks": [
+    {"name": "small loaves when nobody says", "args": [8], "expect": 2},
+    {"name": "a loaf for each guest", "args": [5, 1], "expect": 5},
+    {"name": "a giant loaf", "args": [7, 100], "expect": 1},
+    {"name": "still nobody comes", "args": [0, 6], "expect": 0}
+  ],
+  "hints": [
+    "This is a change to code that already works and that the market relies on. Which callers pass one value, and which will pass two?",
+    "A parameter can have a default: `def loaves_for(guests, per_loaf=4):` in Python, `function loavesFor(guests, perLoaf = 4)` in JavaScript. Callers that leave it out get the default.",
+    "Add the new parameter with its default, then replace every 4 inside the function with it. When you light this lantern, ring the night bell and see whether Bramble's market still works."
+  ],
+  "learn": "Changing a function other code depends on is where real programs break. A default parameter keeps every old caller working, and the Night Watch (your test suite) is how you know for sure: it reruns the market's tests too. That safety net is called regression testing."
+}

@@ -1,0 +1,31 @@
+// Lanternroot (ADR-0055): a hamlet hanging in the roots below the surface station, whose whole town is the player's
+// program. Every module the player writes is a house; every import between two modules is a rope bridge; every
+// letter they answer is a lantern, lit by its tests passing and checked again by the Night Watch each evening.
+{
+  "id": "lanternroot",
+  "villagers": {
+    "wick": {"name": "Wick", "role": "the lamplighter", "colour": "#f2c45a"},
+    "mabel": {"name": "Mabel", "role": "the baker", "colour": "#e8955a"},
+    "quill": {"name": "Quill", "role": "the postmaster", "colour": "#82d8ff"},
+    "bramble": {"name": "Bramble", "role": "the grocer", "colour": "#8bc96a"},
+    "tamsin": {"name": "Old Tamsin", "role": "the miller", "colour": "#d19bff"},
+    "everyone": {"name": "Everyone", "role": "the whole hamlet", "colour": "#f2a541"}
+  },
+  // Where each module the letters ask for stands, in a 1000 x 1000 square the town view scales to its size. A module
+  // the player adds on their own gets one of the `huts` spots in order.
+  "houses": {
+    "lamps": {"name": "Lamplighter's Loft", "at": [130, 330], "roof": "#6b4fa8"},
+    "bakery": {"name": "The Bakery", "at": [400, 470], "roof": "#a8512a"},
+    "post": {"name": "The Post Office", "at": [780, 300], "roof": "#2f6f8f"},
+    "market": {"name": "The Market", "at": [560, 760], "roof": "#4f7a32"},
+    "mill": {"name": "The Mill", "at": [880, 650], "roof": "#7a5a2a"},
+    "festival": {"name": "The Festival Hall", "at": [450, 110], "roof": "#a8712a"}
+  },
+  "huts": [[150, 700], [780, 900], [960, 420], [300, 920], [650, 470], [40, 520]],
+  "days": [
+    {"day": 1, "title": "First Light", "dawn": "The hamlet is dark. Three letters are pinned to your door."},
+    {"day": 2, "title": "Bridges", "dawn": "Word spreads: the new tinker's code works. More letters arrive."},
+    {"day": 3, "title": "The Mill Wakes", "dawn": "The old mill creaks. And Mabel has a new oven."},
+    {"day": 4, "title": "The Lantern Festival", "dawn": "Tonight is the festival. Everything you built must work together."}
+  ]
+}

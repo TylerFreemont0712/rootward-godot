@@ -1,0 +1,28 @@
+{
+  "id": "bread-order",
+  "order": 6,
+  "day": 2,
+  "villager": "bramble",
+  "title": "A week of bread",
+  "module": "market",
+  "function": "bread_order",
+  "params": ["guests_by_day"],
+  "concepts": ["imports", "reusing your code"],
+  "requires": ["loaves", "market-total"],
+  "letter": "Tinker, it's Bramble again. I order bread from Mabel for the whole week at once. I'll give you a list: how many guests come to the market each day. Tell me how many loaves to order in total. Now, Mabel's oven already knows how many loaves a day's guests need. Don't make it count twice; ask her bakery. Build a bridge!",
+  "examples": [
+    {"args": [[8, 5]], "expect": 4},
+    {"args": [[4, 4, 4]], "expect": 3}
+  ],
+  "checks": [
+    {"name": "a closed week", "args": [[]], "expect": 0},
+    {"name": "rounding up every single day", "args": [[1, 1, 1, 1, 1, 1, 1]], "expect": 7},
+    {"name": "a quiet day in the middle", "args": [[9, 0, 9]], "expect": 6}
+  ],
+  "hints": [
+    "You already wrote the hard part yesterday: `loaves_for` in the bakery. How can the market use it?",
+    "Code in one file can use another file's functions. In Python: `from bakery import loaves_for`. In JavaScript: `const { loavesFor } = require(\"./bakery\");`. Put it at the top of the market.",
+    "Loop over the days, ask the bakery for each day's loaves, and add them up. Note that rounding up each day is not the same as rounding up the week's total."
+  ],
+  "learn": "That import is a bridge in your town: the market now depends on the bakery. Reusing code means it is written (and fixed) in one place. It also means a change in the bakery reaches the market, and the Night Watch will check that it still works."
+}

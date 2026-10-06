@@ -1,0 +1,30 @@
+{
+  "id": "loaves",
+  "order": 2,
+  "day": 1,
+  "villager": "mabel",
+  "title": "How many loaves?",
+  "module": "bakery",
+  "function": "loaves_for",
+  "params": ["guests"],
+  "concepts": ["arithmetic", "rounding up"],
+  "requires": [],
+  "letter": "Hello dear! Mabel here, from the bakery. One loaf feeds 4 guests, and I never, ever want anyone left hungry. If 5 guests come, that is 2 loaves, crumbs to spare. Please make me a function: give it the number of guests, and it tells me how many loaves to bake.",
+  "examples": [
+    {"args": [8], "expect": 2},
+    {"args": [5], "expect": 2},
+    {"args": [9], "expect": 3}
+  ],
+  "checks": [
+    {"name": "exactly one loaf's worth", "args": [4], "expect": 1},
+    {"name": "a single guest", "args": [1], "expect": 1},
+    {"name": "nobody comes", "args": [0], "expect": 0},
+    {"name": "a big wedding", "args": [101], "expect": 26}
+  ],
+  "hints": [
+    "Try it by hand: 8 guests is 8 / 4 = 2 loaves. What about 9 guests? Why is that 3 and not 2?",
+    "Plain division gives 2.25 for 9 guests. Whole-number division (`//` in Python, `Math.floor` in JavaScript) rounds down. Mabel needs rounding up when anything is left over.",
+    "Divide, then check whether there was a remainder (the `%` operator). If there was, bake one more loaf."
+  ],
+  "learn": "Rounding up is a classic: whole-number division rounds down, so you add one when the remainder is not zero (or use a ceiling). You will meet it again whenever things come in boxes, pages or loaves."
+}

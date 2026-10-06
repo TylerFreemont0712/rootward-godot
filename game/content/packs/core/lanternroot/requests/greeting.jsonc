@@ -1,0 +1,27 @@
+{
+  "id": "greeting",
+  "order": 3,
+  "day": 1,
+  "villager": "quill",
+  "title": "A proper greeting",
+  "module": "post",
+  "function": "greeting",
+  "params": ["name"],
+  "concepts": ["strings", "joining text"],
+  "requires": [],
+  "letter": "To the Tinker. Quill, postmaster. Every letter in this hamlet begins the same way: \"Dear\", a space, the name, and a comma. I have written it by hand four thousand times. Build a function that is given a name and returns the opening line, exactly. Exactly, Tinker.",
+  "examples": [
+    {"args": ["Mabel"], "expect": "Dear Mabel,"},
+    {"args": ["Wick"], "expect": "Dear Wick,"}
+  ],
+  "checks": [
+    {"name": "a long name", "args": ["Old Tamsin"], "expect": "Dear Old Tamsin,"},
+    {"name": "a one-letter name", "args": ["Q"], "expect": "Dear Q,"}
+  ],
+  "hints": [
+    "The answer is text built from three pieces: the word before, the name, the comma after.",
+    "Text joins with `+`. Python also has f-strings (`f\"...{name}...\"`) and JavaScript has template literals (`` `...${name}...` ``).",
+    "Quill said exactly: check the space after \"Dear\" and the comma at the end. A test compares every character."
+  ],
+  "learn": "Strings are text, and building them from pieces is half of all programs. Tests compare them character by character, which is why Quill's \"exactly\" matters: a missing space is a different answer."
+}

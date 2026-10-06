@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0054**.
+The next number is **ADR-0056**.
 
 - [ADR-0048](ADR-0048-paradigm-laws-and-focuses.md): paradigm laws and focuses, fight memory, pure Index reads and
   compatibility with existing drafts and trial lessons (implementation in progress).
@@ -76,3 +76,5 @@ The next number is **ADR-0054**.
 - [ADR-0051](ADR-0051-borderless-fullscreen-and-frame-cap.md): fullscreen is a borderless window the size of the screen (the window manager's fullscreen state flashed green on the player's PRIME laptop), and frames are capped at a whole share of the refresh rate, 90 or less.
 
 - [ADR-0052](ADR-0052-graphics-settings-and-drawing-device.md): a Graphics settings tab (window, vsync, frame limit, interface size, background slowdown) and a choice of drawing device and renderer applied by relaunching the game; the player's flicker was the NVIDIA-to-AMD frame copy.
+
+- [ADR-0055](ADR-0055-lanternroot.md): Lanternroot replaces the Academy: a town that is the player's program (files are houses, imports are bridges, passing letters are lanterns), with a Night Watch that reruns every test each night.

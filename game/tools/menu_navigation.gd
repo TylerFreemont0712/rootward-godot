@@ -32,7 +32,7 @@ func _walk() -> void:
 		Settings.reduced_motion = reduced
 		for label: String in ["日本語", "EN", "日本語", "EN"]:
 			await _click(label)
-		for label: String in ["Character", "Library", "Settings", "Academy", "Navigation Tester"]:
+		for label: String in ["Character", "Library", "Settings", "Navigation Tester"]:
 			await _click(label)
 			if label == "Character":
 				await _click("Artificer")

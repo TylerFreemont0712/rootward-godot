@@ -1,0 +1,32 @@
+{
+  "id": "sack-count",
+  "order": 7,
+  "day": 3,
+  "villager": "tamsin",
+  "title": "Whose sacks are these?",
+  "module": "mill",
+  "function": "count_sacks",
+  "params": ["sacks"],
+  "concepts": ["dictionaries", "counting"],
+  "requires": ["market-total"],
+  "letter": "Young Tinker. The mill has woken, and so have the sacks. Every sack of grain has its owner's name chalked on it, and they come to me in one long jumble. Give me a function: I hand it the list of names, one per sack, and it tells me how many sacks belong to each name. A table of name and count, if you please.",
+  "examples": [
+    {"args": [["Mabel", "Wick", "Mabel"]], "expect": {"Mabel": 2, "Wick": 1}},
+    {"args": [["Bramble"]], "expect": {"Bramble": 1}}
+  ],
+  "checks": [
+    {"name": "no sacks today", "args": [[]], "expect": {}},
+    {"name": "all one owner", "args": [["Quill", "Quill", "Quill", "Quill"]], "expect": {"Quill": 4}},
+    {
+      "name": "a long jumble",
+      "args": [["Wick", "Mabel", "Tamsin", "Mabel", "Wick", "Mabel", "Bramble"]],
+      "expect": {"Wick": 2, "Mabel": 3, "Tamsin": 1, "Bramble": 1}
+    }
+  ],
+  "hints": [
+    "You need a table that maps a name to a number. Python calls it a dictionary (`{}`), JavaScript an object (`{}`).",
+    "For each sack, look the name up: if it is not in the table yet, its count starts at 0. Then add one. (`counts.get(name, 0)` in Python; `(counts[name] || 0)` in JavaScript.)",
+    "Start with an empty table, loop over the sacks, add one to that name's count each time, and return the table."
+  ],
+  "learn": "A dictionary finds a value by its key in one step, however big it grows. Counting things by name is one of its most common jobs; Python even has `collections.Counter` for exactly this."
+}

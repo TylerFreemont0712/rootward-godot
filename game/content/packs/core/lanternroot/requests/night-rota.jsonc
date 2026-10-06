@@ -1,0 +1,28 @@
+{
+  "id": "night-rota",
+  "order": 9,
+  "day": 3,
+  "villager": "wick",
+  "title": "Who keeps watch?",
+  "module": "lamps",
+  "function": "watch_rota",
+  "params": ["names", "nights"],
+  "concepts": ["lists", "remainder (%)", "building a list"],
+  "requires": ["lamp-oil", "market-total"],
+  "letter": "Tinker! Wick again. Someone must keep watch over the lamps each night, and we take turns, in order, round and round. Give your function the names, in order, and how many nights to plan. It should hand back a list with one name per night. With Wick and Mabel for three nights, that is Wick, Mabel, Wick.",
+  "examples": [
+    {"args": [["Wick", "Mabel"], 3], "expect": ["Wick", "Mabel", "Wick"]},
+    {"args": [["Quill", "Bramble", "Tamsin"], 4], "expect": ["Quill", "Bramble", "Tamsin", "Quill"]}
+  ],
+  "checks": [
+    {"name": "no nights to plan", "args": [["Wick", "Mabel"], 0], "expect": []},
+    {"name": "only one volunteer", "args": [["Wick"], 3], "expect": ["Wick", "Wick", "Wick"]},
+    {"name": "fewer nights than names", "args": [["Wick", "Mabel", "Quill"], 2], "expect": ["Wick", "Mabel"]}
+  ],
+  "hints": [
+    "Write out night 0, 1, 2, 3, 4 for three names. Which name's position does each night use?",
+    "The remainder operator `%` wraps a number around: `night % 3` goes 0, 1, 2, 0, 1, 2... Use it to turn a night number into a position in the names list.",
+    "Start an empty list, loop over the night numbers (`range(nights)` in Python, a counting `for` loop in JavaScript), append the name at position night % len(names), and return the list."
+  ],
+  "learn": "`%` wraps a counter around a fixed size: clocks, turns, rotas, ring buffers. Building a list one item per loop pass is the accumulator again, with a list instead of a number."
+}

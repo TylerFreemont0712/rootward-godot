@@ -205,7 +205,7 @@ func _home() -> void:
 		. hbox(
 			[
 				FoundryUi.icon_button("adventure", _text("Adventure", "冒険"), _show_setup, true),
-				FoundryUi.icon_button("academy", _text("Academy", "アカデミー"), _open_academy),
+				FoundryUi.icon_button("lanternroot", _text("Lanternroot", "ともしび村"), _open_lanternroot),
 			],
 			18
 		)
@@ -315,55 +315,8 @@ func _mount_character() -> void:
 	_show_overlay(character, false, false, true)
 
 
-func _open_academy() -> void:
-	var column := Ui.vbox(
-		[
-			FoundryUi.heading(
-				_text("ACADEMY / THE LEARNING WORKSHOP", "アカデミー / 学びの工房"),
-				_text("A place to grow", "学びを育てる場所"),
-				_close_overlay
-			),
-			FoundryUi.rule()
-		],
-		8
-	)
-	column.add_child(Ui.tint(Ui.label(_text("IN PREPARATION", "準備中"), "Faint"), UiTheme.AMBER))
-	column.add_child(Ui.sized(Ui.label(_text("The workbench is taking shape.", "学びの工房を準備しているよ。"), "Heading", true), 22))
-	column.add_child(
-		Ui.label(
-			_text(
-				"A separate journey into programming, at your own pace. Lessons, practice and projects will live here.",
-				"自分のペースでプログラミングを学ぶ、もうひとつの旅。レッスンや練習、プロジェクトをここに用意するよ。"
-			),
-			"Muted",
-			true
-		)
-	)
-	var paths := [
-		[_text("Read & trace", "読む・追う"), _text("Follow an idea, one step at a time.", "一歩ずつ、考えの流れを追う。")],
-		[_text("Build & test", "作る・試す"), _text("Turn a small problem into working code.", "小さな問題を、動くコードにする。")],
-		[
-			_text("Explore & improve", "探る・磨く"),
-			_text("Find another way. Understand the difference.", "別の方法を見つけ、その違いを知る。")
-		],
-	]
-	var plans := Ui.hbox([], 8)
-	for i in paths.size():
-		var card := Ui.panel(
-			Ui.vbox(
-				[
-					Ui.label("0%d" % (i + 1), "Faint"),
-					Ui.label(paths[i][0], "Subheading", true),
-					Ui.label(paths[i][1], "Muted", true)
-				],
-				6
-			),
-			"Card"
-		)
-		card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		plans.add_child(card)
-	column.add_child(plans)
-	_show_overlay(FoundryUi.page(column, Vector2(700, 0)))
+func _open_lanternroot() -> void:
+	Game.go(Game.LANTERNROOT)
 
 
 func _open_profiles() -> void:

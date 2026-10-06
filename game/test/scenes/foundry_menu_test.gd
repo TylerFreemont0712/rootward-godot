@@ -49,20 +49,11 @@ func after_test() -> void:
 	UiTheme.refresh_fonts()
 
 
-func test_home_separates_adventure_from_the_learning_placeholder() -> void:
+func test_home_separates_adventure_from_lanternroot() -> void:
 	assert_object(_button(_title, "Adventure")).is_not_null()
-	assert_object(_button(_title, "Academy")).is_not_null()
+	assert_object(_button(_title, "Lanternroot")).is_not_null()
+	assert_object(_button(_title, "Academy")).is_null()
 	assert_object(_button(_title, "Play")).is_null()
-	_title.call("_open_academy")
-	var overlay := _title.get("_overlay") as Control
-	(
-		assert_bool(
-			overlay.find_children("*", "Label", true, false).any(
-				func(label: Label) -> bool: return label.text == "IN PREPARATION"
-			)
-		)
-		. is_true()
-	)
 	assert_bool(Game.session.in_progress()).is_false()
 	_title.call("_close_overlay")
 	_title.call("_show_setup")
@@ -410,7 +401,7 @@ func test_locale_buttons_rebuild_without_freeing_the_signal_sender() -> void:
 func test_menu_buttons_round_trip_with_and_without_animation() -> void:
 	for reduced: bool in [true, false]:
 		Settings.reduced_motion = reduced
-		for label: String in ["Settings", "Character", "Library", "Academy", "Menu Tester"]:
+		for label: String in ["Settings", "Character", "Library", "Menu Tester"]:
 			await _press(label)
 			assert_int((_title.get("_overlay") as Control).get_child_count()).is_greater(0)
 			await _press("Back")

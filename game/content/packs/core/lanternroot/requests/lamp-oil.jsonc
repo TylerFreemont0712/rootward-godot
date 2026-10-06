@@ -1,0 +1,27 @@
+{
+  "id": "lamp-oil",
+  "order": 1,
+  "day": 1,
+  "villager": "wick",
+  "title": "Oil for the lamps",
+  "module": "lamps",
+  "function": "lamp_oil",
+  "params": ["lamps"],
+  "concepts": ["functions", "return"],
+  "requires": [],
+  "letter": "Dear Tinker, welcome! I am Wick, and I light the lamps. Every lamp burns 3 drops of oil a night. Could you build me a function that is given how many lamps there are and hands back how many drops I need? Then I can ask it every evening instead of counting on my claws.",
+  "examples": [
+    {"args": [2], "expect": 6},
+    {"args": [10], "expect": 30}
+  ],
+  "checks": [
+    {"name": "a single lamp", "args": [1], "expect": 3},
+    {"name": "no lamps at all", "args": [0], "expect": 0}
+  ],
+  "hints": [
+    "A function is a little machine: something goes in (the parameter), something comes out. What should come out for 2 lamps?",
+    "Printing a number shows it to you; `return` hands it back to whoever asked. Wick's code asks, so the answer must be returned.",
+    "Multiply the number of lamps by the drops each one burns, and return the result."
+  ],
+  "learn": "A function names a piece of work. Its parameter is what it is given, and `return` is what it gives back. From now on, any part of town can ask lamps how much oil it needs, without knowing how it counts."
+}

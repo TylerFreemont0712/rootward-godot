@@ -6,7 +6,8 @@ completely separate from the shardrun ... lessons, ideas of how to improve, and 
 different styles of play". This file is the plan; two companions hold the design:
 
 - `docs/SHARDRUN_DESIGN.md`: the Shardrun made deep (core loop, run, enemies, classes, cards, relics, meta).
-- `docs/ACADEMY_DESIGN.md`: the learning mode (lessons, grading, "how to improve", progression, curriculum).
+- `docs/LANTERNROOT_DESIGN.md`: the learning mode, Lanternroot (ADR-0055), which replaced the Academy: a town that
+  is your program, with letters, lanterns, bridges and a Night Watch.
 
 Once the player agrees, the stages below become phases in `docs/PLAN.md`, and each gets its ADR as it lands.
 
@@ -145,13 +146,16 @@ curve has to rise at the start as it falls later. Stage 1 starts from there.
 
 ### 3.2 The Academy: a course that runs your code
 
+> Superseded on 2026-10-06 by Lanternroot (ADR-0055, `docs/LANTERNROOT_DESIGN.md`). The Academy stages below are
+> kept as a record of the earlier plan; their ideas map onto the villages of LANTERNROOT_DESIGN section 5.
+
 Lessons in Python and JavaScript, English and Japanese, from Apprentice (foundations) through Journeyman (programs),
 Adept (data structures and algorithms), Expert (craft) to Master (build a VM, a Lisp, a mini git). Exercises ask the
 player to produce (predict, trace, order, fix, write, improve), graded by running the code. After each pass a review
 measures the solution's work as the input grows, names its complexity against the reference's, points out style
 fixes, and shows another way to write it. Progress is the Root Map (the concept graph drawn as roots), mastery per
 concept, a version number as rank, and five minutes of spaced review a day. Pip's Path teaches young players with a
-character walking a grid. (The Verifier was removed instead of moved in, ADR-0045.) See `docs/ACADEMY_DESIGN.md`.
+character walking a grid. (The Verifier was removed instead of moved in, ADR-0045.) The Academy design was replaced by `docs/LANTERNROOT_DESIGN.md`.
 
 ### 3.3 Where they meet, lightly
 

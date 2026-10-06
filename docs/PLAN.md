@@ -197,7 +197,7 @@ the rules' modifiers table in Stats, keyboard focus through the map.
 
 ### Next: the game plan (proposed on 2026-09-28)
 `docs/ROADMAP.md` proposes stages 0 to 10 for two journeys: the Shardrun toward Slay the Spire's depth
-(`docs/SHARDRUN_DESIGN.md`), and the Academy, a separate course from beginner to advanced (`docs/ACADEMY_DESIGN.md`).
+(`docs/SHARDRUN_DESIGN.md`), and the learning mode, now Lanternroot (ADR-0055, `docs/LANTERNROOT_DESIGN.md`; it replaced the Academy).
 Phase 8's open items are folded in: the balance pass is stage 1; cards of their own, more of each paradigm and relics
 that bend work are stage 6; spell animations per role come with stage 10. The player chose to start with the
 Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
@@ -291,7 +291,8 @@ Shardrun's stages 1 and 6 (Phase 9); the rest become phases as they start.
       Pip's travels starts only by choice; ordinary descents no longer trigger a tutorial offer.
 - [x] Compact contents as well as panels: 16-pixel body text, 20-pixel headings, 12–14-pixel captions, tighter
       padding and section gaps, and 32-pixel Library entries. Reviewed English, Japanese and 1280 × 720 layouts.
-- [ ] Implement the Academy curriculum and additional classes. Shardrun menu redesign remains a later task.
+- [x] The Academy placeholder replaced by Lanternroot (ADR-0055; see its phase below).
+- [ ] Additional classes. Shardrun menu redesign remains a later task.
 - [x] Living Archive room (ADR-0034): separate generated background, reversible transition, illustrated collection
       navigation, remembered searches/selections and reset; creatures and bosses separated by live encounter pools
       with mode-specific layer filters, base stats and multipart companions. Shared art and run archives retained.
@@ -405,4 +406,24 @@ Started 2026-10-04. The bug ids (P2-nn) are PHASE2.md section 6.
 - [x] The runtime, harness, instrumenter, build (`scripts/build-cpp.sh`) and checker (`scripts/try-cpp.sh`).
 - [x] All 139 program cards and 77 Spellforge shards in C++, every worked example passing; import lines; the census.
 - [x] On screen: the language's name, `main.cpp`, `./main`, C++ colours, the program and spell listings as C++.
-- [ ] A C++ badge for the run button (the Python and JavaScript ones are pictures); C++ in the Academy, later.
+- [ ] A C++ badge for the run button (the Python and JavaScript ones are pictures); C++ in Lanternroot, later.
+
+### Lanternroot: the town that is your program (ADR-0055)
+
+Started 2026-10-06. The Academy was scrapped at the player's request and a new mode built in its place.
+
+- [x] The concept and its design (`docs/LANTERNROOT_DESIGN.md`): letters ask for functions, lanterns light when their
+      tests pass, files are houses, imports are bridges, the Night Watch reruns every test each night.
+- [x] Pure rules (`core/lanternroot/`): letters by day and prerequisite, starters, change orders sharing a lantern,
+      the Night Watch, yesterday's files, workshops of the player's own, the layout read from the code, advice.
+- [x] The watch in the sandbox, Python and JavaScript twins: one run per suite, prints per case, the player's file and
+      line for errors, a never-ending case costing only its own letter.
+- [x] Content: four days, ten letters (one change order), starters and solutions in both languages, proven by tests.
+- [x] The screen: the drawn town, the letter board, the workbench (editor, examples, hints, results), the night walk,
+      the dawn report, the welcome; the title's Academy button opens it.
+- [x] Japanese for every screen and letter; screenshots of each moment in both languages.
+- [ ] Play-test the first four days with the player and the daughters; tune the letters' wording and hints.
+- [ ] The almanac (every night a commit, a diff per house) and storms (seeded property tests that pin what they find).
+- [ ] Mosslight, the next village: data structures; travelling merchants (work budgets) for Emberdeep after it.
+- [ ] Pip's lanterns: Parsons letters for the youngest, Japanese first.
+

@@ -1,0 +1,37 @@
+{
+  "id": "festival",
+  "order": 10,
+  "day": 4,
+  "villager": "everyone",
+  "title": "The Lantern Festival",
+  "module": "festival",
+  "function": "festival_plan",
+  "params": ["guests"],
+  "concepts": ["composing modules", "dictionaries", "a whole program"],
+  "requires": ["lamp-oil", "big-oven", "greeting"],
+  "letter": "To our Tinker, from all of us. Tonight is the Lantern Festival! Here is the guest list. We need one plan with three things in it: \"loaves\", how many small loaves for everyone; \"oil\", oil for one lamp per guest; and \"letters\", an invitation opening for each guest, in order. Everything you built for us is already in town. Put it together in a new Festival Hall.",
+  "examples": [
+    {
+      "args": [["Mabel", "Wick"]],
+      "expect": {"loaves": 1, "oil": 6, "letters": ["Dear Mabel,", "Dear Wick,"]}
+    }
+  ],
+  "checks": [
+    {"name": "nobody is invited", "args": [[]], "expect": {"loaves": 0, "oil": 0, "letters": []}},
+    {
+      "name": "the whole hamlet",
+      "args": [["Wick", "Mabel", "Quill", "Bramble", "Tamsin"]],
+      "expect": {
+        "loaves": 2,
+        "oil": 15,
+        "letters": ["Dear Wick,", "Dear Mabel,", "Dear Quill,", "Dear Bramble,", "Dear Tamsin,"]
+      }
+    }
+  ],
+  "hints": [
+    "Count how many functions you already have that answer part of this. Which modules do you need to import from?",
+    "Three imports (lamps, bakery, post) and a dictionary (an object in JavaScript) with three keys. How many guests are there? `len(guests)` or `guests.length`.",
+    "Import the three functions, count the guests, then return a dictionary: loaves from the bakery, oil from the lamps, and a list with one greeting per guest."
+  ],
+  "learn": "This is how programs grow: small pieces, each tested on its own, put together into something bigger. Look at the town: the Festival Hall has bridges to three houses. That picture is your program's dependency graph, and you built every part of it."
+}

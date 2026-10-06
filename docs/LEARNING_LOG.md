@@ -936,3 +936,31 @@ power; `Coin Change` uses the same fixed-sum boundary for its exact search. This
 algorithms' actual bounded work, and the greedy fallback is explained on the card. The native build compiles 1,222
 Program functions and 77 Spellforge functions. Reviewed the hover capture at `shots/balance-cards-hand-hover.png`.
 Balance impact still needs playtesting.
+
+## Finding the file a stack trace means (`game/sandbox/lanternroot/watch.js`)
+QuickJS names every function built with `new Function` `<input>` in a stack trace, so a trace cannot say which of
+the player's modules failed. Lanternroot's watch loads module number k with `k * 10000` blank lines in front of it:
+line 7 of module 2 is reported as line 20009 (plus the 2 lines QuickJS's wrapper adds), and dividing by 10000 gives
+the file back. Blank lines cost the parser almost nothing. When a tool hides information, sometimes you can encode it
+in something the tool does keep.
+
+## Output a killed program never sent (`game/sandbox/launch/launch.js`)
+Standard output to a pipe is buffered: text waits in memory until the buffer fills or the program ends. A program
+stopped by the time limit loses whatever was still waiting. The watch reports each test as it finishes and flushes
+right away (`process.stdout.flush()`, which the launcher adds), so a test that never ends still leaves the ones
+before it reported.
+
+## Smooth glows (`game/scenes/lanternroot/town_painter.gd`)
+A glow drawn as stacked translucent circles shows its rings as bands. One radial `GradientTexture2D` with an eased
+falloff, made once and kept in a `static var`, is smooth at any size and can be tinted and stretched for every
+lantern, firefly and gremlin eye.
+
+## Keys a focused control takes first (`game/scenes/lanternroot/workbench.gd`)
+Godot offers input to `_input` first, then to the focused Control (`_gui_input`), and only then to
+`_unhandled_input`. A `CodeEdit` with focus takes Ctrl+Enter as "new line below", so the workbench's Run shortcut
+lives in `_input`, and checks that the workbench is visible.
+
+## Small capitals and code (`LanternWorkbench.prose`)
+The interface font is Cinzel, which has only capitals: `loaves_for` in a sentence shows as LOAVES_FOR, and in code
+case matters ("Dear Mabel," is not "DEAR MABEL,"). Anything that is code or a value goes through a RichTextLabel with
+backtick spans in the code font, so the player sees exactly what their program produced.

@@ -1,0 +1,30 @@
+{
+  "id": "postage",
+  "order": 4,
+  "day": 2,
+  "villager": "quill",
+  "title": "Stamps by weight",
+  "module": "post",
+  "function": "postage",
+  "params": ["grams"],
+  "concepts": ["if / elif / else", "boundaries"],
+  "requires": ["greeting"],
+  "letter": "Tinker. Your greeting is acceptable. Next: stamps. A letter of 10 grams or less costs 2 coins. Up to 50 grams costs 5. Anything heavier costs 9. Add a function to the post office that is given the weight and returns the price. Mind the edges; the moles always weigh their letters to exactly 10.",
+  "examples": [
+    {"args": [4], "expect": 2},
+    {"args": [30], "expect": 5},
+    {"args": [80], "expect": 9}
+  ],
+  "checks": [
+    {"name": "exactly 10 grams", "args": [10], "expect": 2},
+    {"name": "just over 10 grams", "args": [11], "expect": 5},
+    {"name": "exactly 50 grams", "args": [50], "expect": 5},
+    {"name": "a feather (0 grams)", "args": [0], "expect": 2}
+  ],
+  "hints": [
+    "There are three prices, so there are three cases. Which question do you ask first?",
+    "`if`, then `elif` (`else if` in JavaScript), then `else`: the first true condition wins and the rest are skipped. \"10 grams or less\" is `<=`, not `<`.",
+    "Ask about the lightest band first (10 or less), then the middle band (50 or less), and let everything else fall through to the last price."
+  ],
+  "learn": "A chain of conditions is checked top to bottom, and the first one that holds wins. Bugs love the edges: 10 exactly, 50 exactly. Checking values right at a boundary is the cheapest way to catch an off-by-one."
+}
