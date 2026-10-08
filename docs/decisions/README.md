@@ -78,3 +78,7 @@ The next number is **ADR-0056**.
 - [ADR-0052](ADR-0052-graphics-settings-and-drawing-device.md): a Graphics settings tab (window, vsync, frame limit, interface size, background slowdown) and a choice of drawing device and renderer applied by relaunching the game; the player's flicker was the NVIDIA-to-AMD frame copy.
 
 - [ADR-0055](ADR-0055-lanternroot.md): Lanternroot replaces the Academy: a town that is the player's program (files are houses, imports are bridges, passing letters are lanterns), with a Night Watch that reruns every test each night.
+
+- [ADR-0056](ADR-0056-the-forge-acts-on-the-cards.md): the forge opens on doors (melt, refactor, widen, bind) beside the anvil; each stage is framed in its colour, and melting and refactoring act on the cards themselves, through the same one command.
+
+- [ADR-0057](ADR-0057-each-element-strikes-with-its-own-blow.md): fire, frost and spark bolts land with blows of their own (hit-ember, hit-rime, hit-arc), drawn without a GPU; anything else keeps the bracket slam.
