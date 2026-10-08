@@ -3,7 +3,7 @@
   "name": "Scheduler",
   "tier": "focus",
   "icon": "focus-schedule",
-  "summary": "A program that hits every living foe gives each bolt +1.",
+  "summary": "If a program hits every living foe, each attack bolt gains +1 power.",
   "flavor": "Spread bolts over crowds exactly.",
   "effects": [
     {

@@ -4,7 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "function": "scatter",
-  "summary": "Every bolt hits every foe, at half power each.",
+  "summary": "Every attack hits every foe, at half power each.",
   "tags": ["lists"],
   "examples": [
     {

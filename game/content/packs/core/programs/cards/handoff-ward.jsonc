@@ -8,7 +8,7 @@
   "role": "guard",
   "complexity": "linear",
   "big_o": "O(n)",
-  "summary": "Turns scheduler-created idle bolts into block, up to 6. Only the explicit idle mark counts; other attacks keep their power, and every idle mark is cleared.",
+  "summary": "Turns Task Scheduler's idle spacers into block, up to 6 power in total; other bolts keep their power, and every idle mark is cleared.",
   "function": "handoff_ward",
   "examples": [
     {

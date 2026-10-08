@@ -3,7 +3,7 @@
   "name": "Partitioner",
   "tier": "focus",
   "icon": "focus-pivot",
-  "summary": "A pivot card marks its pivot bolt, which lands doubled on the toughest foe.",
+  "summary": "When a pivot algorithm marks a bolt, it deals double damage to the living foe with the most HP.",
   "flavor": "Partitions, selection, quick sort.",
   "effects": [
     {

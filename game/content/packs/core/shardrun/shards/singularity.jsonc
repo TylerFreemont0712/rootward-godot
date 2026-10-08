@@ -5,7 +5,7 @@
   "cost": 2,
   "complexity": "constant",
   "function": "singularity",
-  "summary": "Collapses the whole volley into one bolt: 4 power for every bolt it swallowed, and a multiplier to match. It never walks the volley, so it is billed almost nothing.",
+  "summary": "Replaces the volley with one piercing attack aimed at the foe with most HP: power is 4 × the bolt count, and its multiplier equals that count. It costs almost no work.",
   "tags": ["len", "lists"],
   "examples": [
     {

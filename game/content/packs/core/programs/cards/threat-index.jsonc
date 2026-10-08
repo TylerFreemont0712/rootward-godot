@@ -9,7 +9,7 @@
   "complexity": "linear",
   "big_o": "O(n + t log n), t ≤ 3",
   "needs": "sorted",
-  "summary": "For each of the first three attacking foes, binary-searches a weakest-first volley for the smallest unused attack that covers its intent, then turns that bolt into block. Unmatched attacks still fly.",
+  "summary": "For each of the first three attacking foes, binary-searches a weakest-first volley for the smallest unused bolt that covers its intent, then turns that bolt into block. Unmatched bolts still fly.",
   "function": "threat_index",
   "examples": [
     {

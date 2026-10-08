@@ -3,7 +3,7 @@
   "name": "Feedback Loop",
   "rarity": "rare",
   "icon": "feedback-loop",
-  "summary": "Every spell you have already cast this fight adds 2 to your bolts' multipliers. Cast small, then cast big.",
+  "summary": "Each earlier cast attempt this fight, including one that fizzled, adds +2 to every bolt's multiplier.",
   "flavor": "Output wired back into input. The Machine listened to itself and grew louder.",
   "effects": [
     { "kind": "mult-per-cast", "add": 2 }

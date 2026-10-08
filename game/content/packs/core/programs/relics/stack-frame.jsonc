@@ -2,7 +2,7 @@
   "id": "stack-frame",
   "name": "Stack Frame",
   "tier": "rare",
-  "summary": "The card after a splitting card does half the work.",
+  "summary": "The card immediately after any card that splits its volley uses half its usual operations, rounded down.",
   "flavor": "Each call pushes a little less.",
   "effects": [
     {

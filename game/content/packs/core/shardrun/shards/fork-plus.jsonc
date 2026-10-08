@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "function": "fork_plus",
-  "summary": "Splits every bolt into two copies at 80% power.",
+  "summary": "Splits every bolt into two copies, each with 80% of the original power.",
   "tags": ["loops", "lists"],
   "draftable": false,
   "examples": [

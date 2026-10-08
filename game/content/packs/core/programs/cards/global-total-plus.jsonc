@@ -3,7 +3,7 @@
   "name": "global total+",
   "rarity": "uncommon",
   "art": "global-total",
-  "cost": 0,
+  "cost": 1,
   "paradigm": "dynamic",
   "focus": "table",
   "role": "import",

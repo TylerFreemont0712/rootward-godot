@@ -9,7 +9,7 @@
   "icon": "shardrun/card-b-tree",
   "id": "b-tree-plus",
   "name": "from sortedcontainers import SortedList+",
-  "summary": "For the rest of the fight, you have an Index of 12 more bolts, and the 3 strongest it holds at the end of the fight start the next one.",
+  "summary": "For the rest of the fight, the Index holds 12 more bolts, and its 3 strongest bolts at the end of the fight start the next one.",
   "function": "b_tree_plus",
   "keywords": [],
   "module": "sortedcontainers",

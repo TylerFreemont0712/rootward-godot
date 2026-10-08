@@ -1,14 +1,14 @@
 {
   "paradigm": "neutral",
   "role": "shape",
-  "cost": 0,
+  "cost": 1,
   "rarity": "uncommon",
   "complexity": "linear",
   "big_o": "O(n)",
   "icon": "shardrun/card-reservoir-sampling",
   "id": "reservoir-sampling",
   "name": "Reservoir Sampling",
-  "summary": "One pass keeps three bolts chosen at random (seeded), each doubled; the rest fade.",
+  "summary": "One pass keeps three random bolts, each doubled, and the rest fade; with fewer than three, all are kept. Seeded by the turn and the volley, so the preview is the cast.",
   "function": "reservoir_sampling",
   "keywords": [],
   "forge": {

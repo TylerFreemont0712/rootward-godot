@@ -1,4 +1,4 @@
-function runoff_echo(bolts, battle) {
+function runoffEcho(bolts, battle) {
   // Each strict rise produces a small echo; the cap keeps an already wide volley manageable.
   const result = bolts.map((bolt) => ({ ...bolt }));
   const attacks = bolts.filter((bolt) => !bolt.block && !bolt.stash);

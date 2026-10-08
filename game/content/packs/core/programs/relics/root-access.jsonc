@@ -3,7 +3,7 @@
   "name": "Root Access",
   "tier": "legendary",
   "icon": "root-access",
-  "summary": "3 more mana every turn. The price: foes wait 12 fewer operations, and your budget is a quarter of what it was.",
+  "summary": "Gain 3 mana each turn. Foes act 12 operations sooner, and your operation budget drops to one quarter.",
   "flavor": "sudo, with nobody left to ask for the password.",
   "effects": [{ "kind": "mana-per-turn", "add": 3 }, { "kind": "tempo", "add": -12 }, { "kind": "budget-factor", "factor": 0.25 }]
 }

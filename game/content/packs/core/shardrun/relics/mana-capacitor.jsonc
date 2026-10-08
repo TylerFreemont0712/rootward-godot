@@ -3,7 +3,7 @@
   "name": "Mana Capacitor",
   "rarity": "boss",
   "icon": "mana-capacitor",
-  "summary": "Gain 1 more mana every turn.",
+  "summary": "Gain 1 additional mana at the start of every fight turn.",
   "flavor": "It stores what the guardian could not spend.",
   "effects": [
     { "kind": "mana-per-turn", "add": 1 }

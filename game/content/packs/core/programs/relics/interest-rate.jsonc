@@ -2,7 +2,7 @@
   "id": "interest-rate",
   "name": "Interest Rate",
   "tier": "rare",
-  "summary": "At every Registry, first gain 10% of your cycles (at most 30).",
+  "summary": "When you enter a Registry, gain cycles equal to 10% of your current balance, up to 30.",
   "flavor": "Your money works while you walk.",
   "effects": [
     {

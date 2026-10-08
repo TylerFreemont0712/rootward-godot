@@ -9,10 +9,11 @@
   "icon": "shardrun/card-exponential-search",
   "id": "exponential-search",
   "name": "Exponential Search",
-  "summary": "On a sorted volley, gallops 1, 2, 4, 8 ... until a bolt kills the front foe, then binary-searches the last gap. Cheapest when the answer is near the front.",
+  "summary": "On a sorted volley, gallops 1, 2, 4, 8 ... until a bolt kills the front foe (the strongest, if none does), then binary-searches the last gap. Cheapest when the answer is near the front.",
   "function": "exponential_search",
   "keywords": [],
   "needs": "sorted",
+  "work_mode": "measured",
   "forge": {
     "into": "exponential-search-plus",
     "verb": "upgrade"

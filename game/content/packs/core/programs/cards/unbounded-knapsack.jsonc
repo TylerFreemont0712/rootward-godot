@@ -3,7 +3,7 @@
   "icon": "shardrun/card-unbounded-knapsack",
   "name": "Unbounded Knapsack",
   "rarity": "uncommon",
-  "cost": 1,
+  "cost": 2,
   "paradigm": "dynamic",
   "focus": "exact",
   "role": "source",

@@ -3,7 +3,7 @@
   "name": "Runoff Echo",
   "icon": "shardrun/card-runoff-echo",
   "rarity": "uncommon",
-  "cost": 1,
+  "cost": 0,
   "paradigm": "search-index",
   "role": "strike",
   "complexity": "linear",

@@ -9,7 +9,7 @@
   "icon": "shardrun/card-cursor",
   "id": "cursor",
   "name": "Cursor",
-  "summary": "Takes the three weakest bolts from the index in order; each brings a 2-power bolt of its element.",
+  "summary": "Takes the three weakest bolts from the index in order; each flies and brings a 2-power bolt of its element.",
   "function": "cursor",
   "keywords": [],
   "forge": {

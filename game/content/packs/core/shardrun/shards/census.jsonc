@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linearithmic",
   "function": "census",
-  "summary": "Sorts the volley weakest first, then adds each bolt's place in the line to its power. Sorting costs more than a walk.",
+  "summary": "Sorts bolts by power, weakest first, then adds rank as power: +0 to the weakest, +1 to the next, and so on. Sorting costs more than a linear pass.",
   "tags": ["sorting", "enumerate"],
   "examples": [
     {

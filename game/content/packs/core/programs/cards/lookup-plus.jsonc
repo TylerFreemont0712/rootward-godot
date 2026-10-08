@@ -9,7 +9,7 @@
   "icon": "shardrun/card-lookup",
   "id": "lookup-plus",
   "name": "Lookup+",
-  "summary": "Binary-searches the index twice for bolts that kill the front foe; otherwise takes the strongest remaining.",
+  "summary": "Takes the smallest index bolt that kills the front foe, plus one more from the index; if none kills, takes the two strongest.",
   "function": "lookup_plus",
   "keywords": [],
   "art": "lookup",
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "name": "otherwise take the strongest once",
+      "name": "otherwise take the two strongest",
       "bolts": [
         {
           "power": 2,

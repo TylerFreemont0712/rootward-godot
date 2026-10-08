@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "reserve_tap",
-  "summary": "Attacks gain +1 multiplier per 4 block you already have. Reads your protection without spending it; wards are unchanged.",
+  "summary": "Attacks gain +1 multiplier for each full 4 block you already have. It does not spend block; wards are unchanged.",
   "art_note": "A tap drawing golden light from a full teal shield reservoir.",
   "tags": ["lists", "dictionaries"],
   "examples": [

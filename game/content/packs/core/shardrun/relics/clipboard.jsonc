@@ -3,7 +3,7 @@
   "name": "Clipboard",
   "rarity": "common",
   "icon": "clipboard",
-  "summary": "Hold 1 more card into the next turn.",
+  "summary": "In Deck mode, keep one additional card in your hand when ending your turn.",
   "flavor": "Copy it now; paste it when it fits.",
   // Shardrun only (ADR-0020): it works on the hand and the deck, which Spellforge does not have.
   "playstyles": ["deck"],

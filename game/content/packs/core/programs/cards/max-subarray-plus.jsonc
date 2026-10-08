@@ -10,7 +10,7 @@
   "splits": true,
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "summary": "The best run fuses into one bolt of its whole power, 2 stronger for every level of the recursion.",
+  "summary": "The best run (each bolt scoring its power minus 3) fuses into one bolt of its whole power, 2 stronger for every level of the recursion.",
   "function": "max_subarray_plus",
   "keywords": [],
   "art": "max-subarray",

@@ -8,7 +8,7 @@
   "role": "strike",
   "complexity": "exponential",
   "cap_n": 12,
-  "summary": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill (2ⁿ subsets). The rest go at the next foe.",
+  "summary": "Tries every subset of the first 12 bolts (2ⁿ of them) for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance. Those bolts hit it, the rest go at the next foe; if no subset kills, every bolt hits the front foe.",
   "function": "exhaustive_kill",
   "forge": {"into": "exhaustive-kill-plus", "verb": "upgrade"},
   "examples": [

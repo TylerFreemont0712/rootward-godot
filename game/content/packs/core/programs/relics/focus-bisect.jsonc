@@ -3,7 +3,7 @@
   "name": "Bisector",
   "tier": "focus",
   "icon": "focus-bisect",
-  "summary": "A volley sorted when a strike reads it gives each of that strike's bolts +1.",
+  "summary": "When a Strike reads bolts in weakest-first order, each attack bolt it creates gains +1 power.",
   "flavor": "Sort once, search many times.",
   "effects": [
     {

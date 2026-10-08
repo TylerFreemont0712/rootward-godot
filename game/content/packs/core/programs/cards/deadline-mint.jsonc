@@ -8,7 +8,7 @@
   "role": "source",
   "complexity": "linear",
   "big_o": "O(f)",
-  "summary": "Adds a neutral bolt aimed at the foe with the fastest attack intent (lowest tempo). Ties favour the greatest total damage; the bolt has damage × hits power, capped at 8.",
+  "summary": "Adds a neutral bolt aimed at the foe with the fastest attack intent (lowest tempo). Ties favour the greatest total damage; the bolt has damage × hits power, capped at 8, and nothing is added to a volley of 128 bolts or more.",
   "function": "deadline_mint",
   "examples": [
     {

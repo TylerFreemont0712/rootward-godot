@@ -3,7 +3,7 @@
   "icon": "shardrun/shard-echo",
   "name": "Recursive Mirror+",
   "rarity": "uncommon",
-  "cost": 1,
+  "cost": 2,
   "paradigm": "divide-conquer",
   "focus": "merge",
   "role": "source",

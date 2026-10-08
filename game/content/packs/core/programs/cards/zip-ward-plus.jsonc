@@ -7,7 +7,7 @@
   "paradigm": "neutral",
   "role": "guard",
   "complexity": "linear",
-  "summary": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down) +2. Existing guards pass through.",
+  "summary": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down) plus 2. Existing guards pass through.",
   "function": "zip_ward_plus",
   "draftable": false,
   "examples": [

@@ -2,7 +2,7 @@
   "paradigm": "divide-conquer",
   "focus": "deep",
   "role": "shape",
-  "cost": 0,
+  "cost": 1,
   "rarity": "common",
   "complexity": "constant",
   "big_o": "O(1)",

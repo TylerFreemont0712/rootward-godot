@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 0,
   "function": "sieve",
-  "summary": "Throws away bolts under 3 power, so later shards spend no work on them. Wards are kept.",
+  "summary": "Drops attack bolts under 3 power so later shards spend no work on them. All wards are kept.",
   "tags": ["filtering", "conditionals"],
   "examples": [
     {

@@ -22,8 +22,8 @@
     "to": "二分探索の一撃"
   },
   {
-    "en": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it. Only those bolts fly. On unsorted data it picks wrong.",
-    "to": "弱い敵から順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます。飛ぶのは選んだ矢だけ。並んでいないデータでは選び間違えます。"
+    "en": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it (the strongest if none does). Only those bolts fly. On unsorted data it picks wrong.",
+    "to": "敵ごとに弱い順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます（倒せる矢がなければ、いちばん強い矢）。選んだ矢だけが飛びます。並んでいないデータでは、選び間違えます。"
   },
   {
     "en": "Bisect Insert+",
@@ -98,40 +98,40 @@
     "to": "分割"
   },
   {
-    "en": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger: about log₂ n each.",
-    "to": "一斉射を半分に、そのまた半分にと、1本ずつになるまで分けます。一段ごとにすべての矢の威力が1上がり、1本あたりおよそ log₂ n 強くなります。"
+    "en": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger (2 with import math): about log₂ n each.",
+    "to": "一斉射を半分に割り、その半分をさらに半分に、一本になるまで割ります。割るたびに矢は威力1上がります（数学のインポートがあれば2）。およそlog₂ n回です。"
   },
   {
     "en": "Exhaustive Kill+",
     "to": "総当たりの一撃+"
   },
   {
-    "en": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill; those bolts hit it, the rest hit the weakest of the other foes.",
-    "to": "先頭12本の矢のすべての部分集合を試し、前列の敵をいちばん無駄なく倒せる組を探します。その矢で前列の敵を撃ち、残りはほかの敵のうち最も弱い敵を撃ちます。"
+    "en": "Tries every subset of the first 12 bolts for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance; those bolts hit it, the rest hit the weakest of the other foes. If no subset kills, every bolt hits the front foe.",
+    "to": "最初の12本の矢の部分集合から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは残りの敵のうち最も弱い敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
   },
   {
     "en": "Exhaustive Kill",
     "to": "総当たりの一撃"
   },
   {
-    "en": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill (2ⁿ subsets). The rest go at the next foe.",
-    "to": "先頭12本の矢のすべての部分集合（2ⁿ通り）を試し、前列の敵をいちばん無駄なく倒せる組を探します。残りの矢は次の敵へ向かいます。"
+    "en": "Tries every subset of the first 12 bolts (2ⁿ of them) for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance. Those bolts hit it, the rest go at the next foe; if no subset kills, every bolt hits the front foe.",
+    "to": "最初の12本の矢の部分集合（2ⁿ通り）の中から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは次の敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
   },
   {
     "en": "Exhaustive Ward+",
     "to": "総当たりの守り+"
   },
   {
-    "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard; the rest still fly.",
-    "to": "先頭10本の矢のすべての部分集合（2ⁿ通り）から、防御16にいちばん無駄なく届く組を探します。その矢が守りになり、残りはそのまま飛びます。"
+    "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard and the rest still fly; if none reaches 16, all ten guard.",
+    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック16に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りも飛びます。どの部分集合も16に届かなければ、10本すべてが守ります。"
   },
   {
     "en": "Exhaustive Ward",
     "to": "総当たりの守り"
   },
   {
-    "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you; the rest still fly. Perfect, and slow.",
-    "to": "先頭10本の矢のすべての部分集合（2ⁿ通り）から、防御12にいちばん無駄なく届く組を探します。その矢があなたを守り、残りはそのまま飛びます。完璧で、そして遅い。"
+    "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you and the rest still fly; if none reaches 12, all ten guard. Perfect, and slow.",
+    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック12に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りは飛びます。どの部分集合も12に届かなければ、10本すべてが守ります。完璧だけど、遅い。"
   },
   {
     "en": "Fibonacci Table+",
@@ -174,12 +174,12 @@
     "to": "威力3未満の矢を取り除き、残った中で最も強い矢が取り除いた分を吸収します。1本も残らないなら、すべてそのままにします。"
   },
   {
-    "en": "Every bolt splits in two, each with 70% of its power (at least 1). The volley doubles.",
-    "to": "すべての矢が2本に分かれ、それぞれ元の威力の70%（最低1）になります。一斉射の本数は2倍に。"
+    "en": "Every bolt splits in two, each with 70% of its power, rounded down (at least 1). The volley doubles.",
+    "to": "すべての矢が二本に分かれ、それぞれ威力の70%（切り捨て、最低1）になります。一斉射は二倍になります。"
   },
   {
-    "en": "Every bolt splits in two, each with 60% of its power (at least 1). The volley doubles.",
-    "to": "すべての矢が2本に分かれ、それぞれ元の威力の60%（最低1）になります。一斉射の本数は2倍に。"
+    "en": "Every bolt splits in two, each with 60% of its power, rounded down (at least 1). The volley doubles.",
+    "to": "すべての矢が二本に分かれ、それぞれ威力の60%（切り捨て、最低1）になります。一斉射は二倍になります。"
   },
   {
     "en": "Generator+",
@@ -212,8 +212,8 @@
     "to": "貪欲な割り当て+"
   },
   {
-    "en": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would fall. Every bolt it aims gains 1.",
-    "to": "矢を強い順に、敵を弱い順に並べ、倒れるまでそれぞれの敵に矢を注ぎます。狙いをつけた矢は、どれも威力が1上がります。"
+    "en": "Sorts the bolts strongest first and the foes weakest first, pours bolts into each foe until it would fall, and sends the rest at the toughest; every bolt it aims gains 1.",
+    "to": "矢を強い順、敵を弱い順に並べ、倒れるまで各敵へ矢を注ぎます。残りの矢は一番手強い敵へ送ります。狙った矢はすべて威力が1上がります。"
   },
   {
     "en": "Greedy Assign",
@@ -244,8 +244,8 @@
     "to": "ハッシュ照準+"
   },
   {
-    "en": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt flies at the foe weak to its element, or else at the weakest foe.",
-    "to": "敵を一度たどって、属性ごとに「それに弱い最初の敵」の対応表を作ります。どの矢も自分の属性に弱い敵へ、いなければ最も弱い敵へ飛びます。"
+    "en": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt flies at the foe weak to its element, or else at the foe with the least HP plus shield.",
+    "to": "敵を一回走査して、属性ごとに、その属性に弱い最初の敵の表を作ります。各矢は、その属性に弱い敵へ飛びます。いなければ、HPにシールドを足した値がいちばん小さい敵へ飛びます。"
   },
   {
     "en": "Hash Aim",
@@ -292,16 +292,16 @@
     "to": "ハフマン+"
   },
   {
-    "en": "A min-heap: take the two weakest bolts, fuse them into one 2 stronger than both together, and repeat until three are left.",
-    "to": "最小ヒープ。最も弱い2本の矢を取り出し、2本の合計より2強い1本に融合します。3本になるまでくり返します。"
+    "en": "A min-heap: take the two weakest bolts, fuse them into one bolt with their combined power plus 2, and repeat until three are left.",
+    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に2を足した1本にまとめます。矢が3本残るまで繰り返します。"
   },
   {
     "en": "Huffman",
     "to": "ハフマン"
   },
   {
-    "en": "A min-heap: take the two weakest bolts, fuse them into one 1 stronger than both together, push it back, until three bolts remain. Huffman's greedy step; they come out weakest first.",
-    "to": "最小ヒープ。最も弱い2本の矢を取り出し、2本の合計より1強い1本に融合してヒープへ戻します。残りが3本になるまで。ハフマンの貪欲な一手で、弱い順に出てきます。"
+    "en": "A min-heap: take the two weakest bolts, fuse them into one bolt with their combined power plus 1, push it back, until three bolts remain. Huffman's greedy step; they come out weakest first.",
+    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に1を足した1本にまとめて戻します。矢が3本になるまで繰り返します。ハフマンの貪欲な一手で、弱い順に出てきます。"
   },
   {
     "en": "import bisect+",
@@ -351,8 +351,12 @@
     "note": "code: stays as written"
   },
   {
+    "en": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you. Always in your opening hand.",
+    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。いつも最初の手札にあります。"
+  },
+  {
     "en": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you.",
-    "to": "この戦いのあいだ、「総当たりの対」「総当たりの一撃」「べき集合」「総当たりの守り」のマナが1安くなります。標準ライブラリがループを書いてくれます。"
+    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。"
   },
   {
     "en": "import itertools",
@@ -504,8 +508,8 @@
     "to": "負荷分散+"
   },
   {
-    "en": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after the bolts already given. It costs nothing.",
-    "to": "大きな仕事から割り振るスケジューリング。強い矢から順に、すでに向けた矢を引いてもHPが最も多く残る敵へ送ります。マナはかかりません。"
+    "en": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after the bolts already given. The damage spreads evenly.",
+    "to": "大きい仕事から割り当てます。矢を威力の強い順に、それまでに割り当てた矢を差し引いて残りHPがいちばん多い敵へ送ります。ダメージは均等に散らばります。"
   },
   {
     "en": "Load Balance",
@@ -560,8 +564,8 @@
     "to": "マージの一撃"
   },
   {
-    "en": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20%. It flies at the toughest foe.",
-    "to": "矢を2本ずつ、その組をまた2組ずつと、1本になるまで融合します。融合のたびに威力が20%上がり、最も手ごわい敵へ飛びます。"
+    "en": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20% (40% with import math). It flies at the toughest foe.",
+    "to": "矢を二本ずつ、次は組同士で、一本になるまで合わせます。合わせるたびに威力が20%上がります（数学のインポートがあれば40%）。いちばん手強い敵へ飛びます。"
   },
   {
     "en": "Pairwise+",
@@ -608,24 +612,20 @@
     "to": "べき集合"
   },
   {
-    "en": "Every non-empty subset of the first three bolts, counted as a bitmask from 1 to 7, becomes one bolt of its sum. Seven bolts from three; the rest of the volley follows.",
-    "to": "先頭3本の矢の空でない部分集合を、1から7までのビットマスクで数え、それぞれを合計の威力の矢にします。3本から7本。一斉射の残りはその後ろに続きます。"
+    "en": "Every non-empty subset of the first three bolts, counted as a bitmask from 1 to 7, becomes one bolt of its sum. Seven bolts from three; the rest of the volley follows. volatile: gone if not played.",
+    "to": "最初の三本の矢の、空でないすべての部分集合（ビットマスクで1から7）が、その合計の威力の矢一本になります。三本から七本。残りの一斉射はそのまま続きます。揮発性（プレイしないまま手札に残ると、ターン終了時に消える）。"
   },
   {
     "en": "Prefix Sum+",
     "to": "累積和+"
   },
   {
-    "en": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted. It costs nothing.",
-    "to": "どの矢も、そこまでのすべての矢の合計になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。マナはかかりません。"
+    "en": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted.",
+    "to": "各矢は、それまでのすべての矢の合計の威力になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
   },
   {
     "en": "Prefix Sum",
     "to": "累積和"
-  },
-  {
-    "en": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted.",
-    "to": "どの矢も、そこまでのすべての矢の合計になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
   },
   {
     "en": "Quick Sort+",
@@ -656,8 +656,8 @@
     "to": "クイックセレクト"
   },
   {
-    "en": "Finds the median bolt without sorting the volley: every bolt at or above it flies at the toughest foe, the rest at the weakest.",
-    "to": "一斉射を並べ替えずに中央値の矢を見つけます。それ以上の矢は最も手ごわい敵へ、残りは最も弱い敵へ飛びます。"
+    "en": "Finds the median bolt without sorting the volley: every bolt at or above it flies at the toughest foe, the rest at the weakest. On a volley already sorted it slows to O(n²).",
+    "to": "一斉射を並べ替えずに中央値の矢を見つけます。中央値以上の矢はいちばん手強い敵へ、残りは最も弱い敵へ飛びます。すでに並んでいる一斉射では、O(n²)まで遅くなります。"
   },
   {
     "en": "Recursion Tree+",
@@ -672,8 +672,8 @@
     "to": "再帰の木"
   },
   {
-    "en": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep: one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
-    "to": "自分自身を2回呼ぶ関数が、葉に届くまで3段の木を育てます。根に威力5の矢が1本、威力4が2本、3が4本。一斉射の後ろに加わります。"
+    "en": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep (four with import math): one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
+    "to": "自分を二回呼び出す関数が、葉に届くまで、三段の木を育てます（数学のインポートがあれば四段）。根は威力5の矢が一本、次の段は4が二本、その次は3が四本で、一斉射の後に加わります。"
   },
   {
     "en": "Reduce+",
@@ -688,8 +688,8 @@
     "to": "畳み込み"
   },
   {
-    "en": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element.",
-    "to": "一斉射全体を1本の矢に畳み込みます。威力はすべての合計に、その10分の1を足したもの。属性は最も強い矢のもの。"
+    "en": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element. Runs once a fight.",
+    "to": "一斉射全体を一本にまとめます。威力の合計に、その十分の一を足します。属性はいちばん強い矢のものです。一戦闘に一度だけ動きます。"
   },
   {
     "en": "Release+",
@@ -744,8 +744,8 @@
     "to": "ラウンドロビン+"
   },
   {
-    "en": "Deals the bolts to the foes in turn, like cards, but skips a foe whose dealt bolts already cover its HP: nothing is wasted on the fallen.",
-    "to": "カードを配るように、矢を敵へ順番に配ります。ただし、配った矢でもうHPを削りきれる敵は飛ばします。倒れた敵に無駄撃ちしません。"
+    "en": "Deals the bolts to the foes in turn, like cards, but skips a foe whose dealt bolts already cover its HP and shield. Once every foe is covered, it deals on as before.",
+    "to": "矢を敵へ順番に配ります。ただし、配った矢の合計がその敵のHPとシールドを覆った敵は飛ばします。全員が覆われたら、それまでどおり配り続けます。"
   },
   {
     "en": "Round Robin",
@@ -824,8 +824,8 @@
     "to": "最大の選抜+"
   },
   {
-    "en": "Keeps only the four strongest bolts and makes each half again as strong. Focus beats volume.",
-    "to": "最も強い4本の矢だけを残し、それぞれの威力を1.5倍にします。数より集中。"
+    "en": "Keeps only the four strongest bolts and makes each half again as strong. Focus beats volume. Comes out weakest first.",
+    "to": "いちばん強い4本だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順に出てきます。"
   },
   {
     "en": "Take Max",
@@ -840,8 +840,8 @@
     "to": "2つのポインタ+"
   },
   {
-    "en": "On a sorted volley, one pointer at each end: the weakest and the strongest bolt fuse, 1 stronger, then the next pair in, until the pointers meet. Balanced bolts.",
-    "to": "並んだ一斉射の両端にポインタを1つずつ置き、最も弱い矢と最も強い矢を、威力を1足して融合します。ポインタが出会うまで、内側の組へと進みます。釣り合った矢ができます。"
+    "en": "On a sorted volley, one pointer at each end: the weakest and the strongest bolt fuse, 1 stronger, then the next pair inward. Half as many bolts, all of about the same power.",
+    "to": "並んだ一斉射の両端に一つずつ、ポインタを置きます。いちばん弱い矢といちばん強い矢が合わさって威力1上がり、次の組が内側へ進みます。矢は半分になり、どれもほぼ同じ威力になります。"
   },
   {
     "en": "Two Pointers",
@@ -864,8 +864,8 @@
     "to": "ビッグOの羅針盤"
   },
   {
-    "en": "While every card of your program runs in O(n) or faster, it deals 30% more.",
-    "to": "プログラムのカードがすべてO(n)以下で動くあいだ、与えるダメージが30%増えます。"
+    "en": "Your program deals 30% more attack damage if every card is linear or faster (O(n) or cheaper).",
+    "to": "すべてのカードが線形時間（O(n)）以下で動くと、プログラムの攻撃ダメージが30%増えます。"
   },
   {
     "en": "It always points away from the nested loop.",
@@ -929,8 +929,8 @@
     "to": "DRY原則"
   },
   {
-    "en": "A second copy of a card in the same program costs no mana.",
-    "to": "同じプログラムの中の、同じカードの2枚目はマナがかかりません。"
+    "en": "The first copy of each card costs its usual mana; every repeat of that card in the same program costs 0.",
+    "to": "各カードの1枚目は通常どおりマナを使い、同じプログラム内でくり返す分はマナ0になります。"
   },
   {
     "en": "Don't repeat yourself. Or do, if it is free.",
@@ -941,8 +941,8 @@
     "to": "デュアルコア"
   },
   {
-    "en": "Your program's volley lands twice.",
-    "to": "プログラムの一斉射が2回着弾します。"
+    "en": "Every bolt in your program's volley resolves twice at full strength; the cards run only once.",
+    "to": "プログラムの各ボルトは威力を保ったまま2回着弾します。カード自体は1回だけ実行されます。"
   },
   {
     "en": "Two of everything, running at once, neither waiting for the other.",
@@ -953,8 +953,8 @@
     "to": "ガベージコレクション"
   },
   {
-    "en": "Each foe your program breaks restores 4 Integrity and gives 1 more mana next turn (3 at most).",
-    "to": "プログラムで敵を1体倒すごとに整合性が4回復し、次のターンのマナが1増えます（最大3）。"
+    "en": "Each foe your program defeats restores 4 Integrity and grants 1 bonus mana next turn, up to 3 that turn.",
+    "to": "プログラムで敵を1体倒すごとにIntegrityが4回復し、次のターンに追加マナを1得ます（そのターン最大3）。"
   },
   {
     "en": "What nothing points to anymore is swept up and handed back.",
@@ -1026,16 +1026,16 @@
     "to": "ロードバランサー"
   },
   {
-    "en": "Damage past a foe's last HP flows on into the next foe still standing.",
-    "to": "敵のHPを越えたダメージは、まだ立っている次の敵へ流れ込みます。"
+    "en": "Damage past a foe's last HP flows on into the next plain foe still standing (guardians and foes with special damage rules are passed over).",
+    "to": "敵のHPを超えたダメージは、まだ残っている次の普通の敵へ流れます（ガーディアンや特別なダメージ規則のある敵は飛ばされます）。"
   },
   {
     "en": "No request dropped, no server idle.",
     "to": "取りこぼす要求はなく、遊んでいるサーバーもない。"
   },
   {
-    "en": "Your programs may do 1024 more operations before they time out, in every layer.",
-    "to": "どの層でも、プログラムが時間切れになるまでの演算が1024多くなります。"
+    "en": "Your programs may do 256 more operations before they time out, in every layer.",
+    "to": "プログラムは、時間切れになるまでに、あと256回多く操作できます（どの階層でも）。"
   },
   {
     "en": "Voids the warranty. Runs anyway.",
@@ -1058,8 +1058,8 @@
     "to": "プリエンプション"
   },
   {
-    "en": "Initiative bites deeper: a foe your program lands before takes 30% more, on top of Initiative's 25%.",
-    "to": "先制がさらに深く刺さります。プログラムが先に着弾した敵は、先制の25%に加えて、さらに30%多くダメージを受けます。"
+    "en": "Initiative bites deeper: a foe your program lands before takes 30% more on top of Initiative's 25%, so 62.5% more in all (the two multiply).",
+    "to": "イニシアチブが深く効きます。プログラムが先に当てた敵は、さらに30%多くダメージを受けます。イニシアチブの25%にさらに重なり、合計62.5%多くなります（二つは掛け合わさります）。"
   },
   {
     "en": "The scheduler takes the time slice back mid-sentence.",
@@ -1070,16 +1070,12 @@
     "to": "プロファイラ"
   },
   {
-    "en": "The first card of every program does no work.",
-    "to": "どのプログラムでも、最初のカードは演算がかかりません。"
+    "en": "The first card in each program uses 0 operations but still resolves and costs its usual mana.",
+    "to": "各プログラムの最初のカードはオペレーションを消費しませんが、効果は発動し、通常どおりマナを使います。"
   },
   {
     "en": "Measure before you optimise. The first line was never the slow one.",
     "to": "最適化の前に測れ。遅いのは、いつだって最初の1行ではなかった。"
-  },
-  {
-    "en": "Radix Sort",
-    "to": "基数ソート"
   },
   {
     "en": "Order cards cost no mana and do only O(n) work.",
@@ -1106,8 +1102,8 @@
     "to": "root権限"
   },
   {
-    "en": "3 more mana every turn. The price: foes wait 12 fewer operations, and your budget is a quarter of what it was.",
-    "to": "毎ターンのマナが3増えます。その代わり、敵が行動するまでの演算が12少なくなり、処理の上限が4分の1になります。"
+    "en": "Gain 3 mana each turn. Foes act 12 operations sooner, and your operation budget drops to one quarter.",
+    "to": "毎ターン、マナを3多く得ます。その代わり敵は12オペレーション早く行動し、オペレーション予算は4分の1になります。"
   },
   {
     "en": "sudo, with nobody left to ask for the password.",
@@ -1324,8 +1320,8 @@
   {"en": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe. Costs 1 mana.", "to": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。1マナ。"},
   {"en": "Nested Strike", "to": "入れ子の一撃"},
   {"en": "Nested Strike+", "to": "入れ子の一撃+"},
-  {"en": "For each foe, fires the whole volley at full power until that foe falls. Bolts can strike each foe.", "to": "敵ごとに、倒れるまで元の威力で一斉射を送る。同じボルトがすべての敵を攻撃できる。"},
-  {"en": "For each foe, fires the whole volley at full power until that foe falls. Costs 1 mana.", "to": "敵ごとに、倒れるまで元の威力で一斉射を送る。1マナ。"},
+  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls, so every bolt can strike every foe. Bolts no foe needed are lost.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの矢もどの敵にも当たりえます。どの敵も必要としなかった矢は失われます。"},
+  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls; bolts no foe needed are lost. Costs 1 mana.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの敵も必要としなかった矢は失われます。1マナかかります。"},
   {"en": "Memo Strike", "to": "メモの一撃"},
   {"en": "Memo Strike+", "to": "メモの一撃+"},
   {"en": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 4.", "to": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大4。"},
@@ -1345,29 +1341,29 @@
   {"en": "Lookup", "to": "ルックアップ"},
   {"en": "Lookup+", "to": "ルックアップ+"},
   {"en": "Binary-searches the index for the smallest bolt that kills the front foe; otherwise takes its strongest.", "to": "インデックスを二分探索して、前の敵を倒せる最小のボルトを取る。なければ最も強いものを取る。"},
-  {"en": "Binary-searches the index twice for bolts that kill the front foe; otherwise takes the strongest remaining.", "to": "インデックスを2回二分探索して、前の敵を倒せるボルトを取る。なければ残りで最も強いものを取る。"},
+  {"en": "Takes the smallest index bolt that kills the front foe, plus one more from the index; if none kills, takes the two strongest.", "to": "前の敵を倒す最小の索引の矢を取り、さらに索引からもう一本取ります。倒せる矢がなければ、いちばん強い2本を取ります。"},
   {"en": "Two Sum", "to": "2つの和"},
   {"en": "Two Sum+", "to": "2つの和+"},
-  {"en": "A hash map finds two bolts summing to the front foe's HP; they fuse. Otherwise its two strongest aim there.", "to": "ハッシュ表で、前の敵のHPと合計が同じになる2本を探して合体する。なければ最も強い2本を狙わせる。"},
-  {"en": "A hash map finds two bolts summing to each of the first two foes' HP; exact pairs fuse. Otherwise the two strongest aim there.", "to": "ハッシュ表で、最初の2体の敵のHPと合計が同じになる2本を探して合体する。なければ最も強い2本を狙わせる。"},
+  {"en": "A hash map finds two bolts summing to the front foe's HP plus shield; they fuse into one bolt aimed at it. Otherwise its two strongest aim there.", "to": "ハッシュマップで、前の敵のHPにシールドを足した値になる矢の組を見つけます。その組は一本に合わさり、その敵へ飛びます。見つからなければ、いちばん強い2本がそこへ飛びます。"},
+  {"en": "A hash map finds two bolts summing to each of the first two foes' HP plus shield; each pair found fuses into one bolt aimed at its foe. Otherwise the two strongest aim at that foe.", "to": "ハッシュマップで、先頭の2体の敵それぞれのHPにシールドを足した値になる矢の組を見つけます。見つけた組は一本に合わさって、その敵へ飛びます。見つからなければ、いちばん強い2本がその敵へ飛びます。"},
   {"en": "Coin Change (DP)", "to": "おつり計算（DP）"},
   {"en": "Coin Change (DP)+", "to": "おつり計算（DP）+"},
   {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe.", "to": "DP表で、前の敵のHPぴったりになる最少本数を探す。残りは次の敵へ送る。"},
   {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the first two foes' HP in turn. Bolts are used only once.", "to": "DP表で、最初の2体の敵のHPぴったりになる最少本数を順に探す。各ボルトを使うのは1回だけ。"},
   {"en": "Backtracking", "to": "バックトラッキング"},
   {"en": "Backtracking+", "to": "バックトラッキング+"},
-  {"en": "Backtracks over assignments to all foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, m choices per bolt.", "to": "すべての敵への割り当てをたどり、最も多く倒す。よくならない枝は切る。最大12本で、各ボルトに敵の数だけ選び方がある。"},
+  {"en": "Backtracks over assignments of bolts to foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, each choosing one of the foes.", "to": "すべての敵への矢の割り当てを試して、倒す数がいちばん多いものを探します。最良を超えられない枝は切り捨てます。矢は最大12本で、それぞれ敵の一体を選びます。"},
   {"en": "Backtracks over assignments to all foes for the most kills, then least overkill. Also prunes already beaten foes; up to 12 bolts.", "to": "すべての敵への割り当てをたどり、最も多く倒し、余りも小さくする。倒した敵への枝も切る。最大12本。"},
   {"en": "Interpolation Search", "to": "補間探索（ほかんたんさく）"},
   {"en": "Interpolation Search+", "to": "補間探索（ほかんたんさく）+"},
-  {"en": "On a sorted volley, estimates where each foe's killing bolt lies from its power. Uses the strongest if none kills.", "to": "並んだ一斉射で、威力から倒せるボルトの位置を予想する。なければ最も強いものを使う。"},
+  {"en": "On a sorted volley, estimates where each foe's killing bolt lies from its power, with no fallback, so a lopsided volley costs linear work. Uses the strongest if none kills.", "to": "並んだ一斉射で、各敵を倒す矢がどこにあるかを、威力から見積もります。二分探索による予備はないので、偏った一斉射は線形の仕事になります。倒せる矢がなければ、いちばん強い矢を使います。"},
   {"en": "On a sorted volley, estimates each killing bolt's position; falls back to binary search after a poor guess.", "to": "並んだ一斉射で、倒せるボルトの位置を予想する。予想が悪ければ二分探索へ切りかえる。"},
   {"en": "K-Way Merge", "to": "K列マージ"},
   {"en": "K-Way Merge+", "to": "K列マージ+"},
   {"en": "Finds rising runs and heap-merges them weakest first. Every bolt gains 1 per run.", "to": "上がり続ける列を見つけ、ヒープで弱い順にまとめる。ボルトの威力は列の数だけ上がる。"},
-  {"en": "Finds rising runs and heap-merges them. Every bolt gains 1 per run; the code chooses strongest first.", "to": "上がり続ける列をヒープでまとめ、列の数だけ威力を上げる。コードで強い順を選べる。"},
+  {"en": "Finds rising runs and heap-merges them. Every bolt gains 1 per run, and the volley comes out strongest first.", "to": "上昇する並びを見つけて、ヒープで合わせます。矢は並びごとに威力が1上がり、一斉射は威力の強い順に出てきます。"},
   {"en": "Dutch Flag", "to": "3色の旗"},
   {"en": "Dutch Flag+", "to": "3色の旗+"},
-  {"en": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact bolts are pivots.", "to": "前の敵のHPを基準に3つへ分ける。ぴったり、強い、弱いの順。ぴったりのボルトがピボットになる。"},
-  {"en": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact pivots gain 1.", "to": "前の敵のHPを基準に3つへ分ける。ぴったり、強い、弱いの順。ぴったりのピボットは威力が1上がる。"}
+  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact bolts are pivots.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの矢が基準になります。"},
+  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact pivots gain 1.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの基準の矢は威力が1上がります。"}
 ]

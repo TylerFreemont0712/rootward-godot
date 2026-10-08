@@ -7,7 +7,7 @@
   "role": "import",
   "complexity": "constant",
   "art": "import-operator",
-  "summary": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power.",
+  "summary": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power. It is always in your opening hand.",
   "function": "import_operator_plus",
   "keywords": [
     "__init__"

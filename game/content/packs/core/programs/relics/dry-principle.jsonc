@@ -3,7 +3,7 @@
   "name": "DRY Principle",
   "tier": "uncommon",
   "icon": "dry-principle",
-  "summary": "A second copy of a card in the same program costs no mana.",
+  "summary": "The first copy of each card costs its usual mana; every repeat of that card in the same program costs 0.",
   "flavor": "Don't repeat yourself. Or do, if it is free.",
   "effects": [{ "kind": "duplicate-free" }]
 }

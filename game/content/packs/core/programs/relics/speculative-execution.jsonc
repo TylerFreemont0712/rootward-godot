@@ -2,7 +2,7 @@
   "id": "speculative-execution",
   "name": "Speculative Execution",
   "tier": "rare",
-  "summary": "Your first strike each program does no work.",
+  "summary": "The first Strike card in each program uses 0 operations but still resolves and costs its usual mana.",
   "flavor": "It already ran, just in case.",
   "effects": [
     {

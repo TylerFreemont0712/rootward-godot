@@ -4,7 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "function": "apex",
-  "summary": "Keeps only the strongest bolt, and gives it 3 more power.",
+  "summary": "Keeps only the strongest bolt by power, and gives it 3 more power.",
   "tags": ["lists", "min-max"],
   "examples": [
     {

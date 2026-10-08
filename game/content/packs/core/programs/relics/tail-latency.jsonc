@@ -2,7 +2,7 @@
   "id": "tail-latency",
   "name": "Tail Latency",
   "tier": "common",
-  "summary": "Foes wait 12 more operations before they act.",
+  "summary": "Each foe waits 12 additional operations before its next action.",
   "flavor": "The slowest one decides everything.",
   "effects": [
     {

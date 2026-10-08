@@ -7,7 +7,7 @@
   "paradigm": "neutral",
   "role": "strike",
   "complexity": "linear",
-  "summary": "Deals the bolts to the foes in turn, like cards, but skips a foe whose dealt bolts already cover its HP: nothing is wasted on the fallen.",
+  "summary": "Deals the bolts to the foes in turn, like cards, but skips a foe whose dealt bolts already cover its HP and shield. Once every foe is covered, it deals on as before.",
   "function": "round_robin_plus",
   "draftable": false,
   "examples": [

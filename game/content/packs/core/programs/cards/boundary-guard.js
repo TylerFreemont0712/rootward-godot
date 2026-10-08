@@ -1,4 +1,4 @@
-function boundary_guard(bolts, battle) {
+function boundaryGuard(bolts, battle) {
   // A recursive call gets its own small boundary: sacrifice its weakest attack when there are at least two.
   const result = bolts.map((bolt) => ({ ...bolt }));
   const attacks = result.map((bolt, i) => i).filter((i) => !result[i].block && !result[i].stash);

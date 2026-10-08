@@ -10,7 +10,7 @@
   "complexity": "exponential",
   "big_o": "O(2ⁿ)",
   "cap_n": 10,
-  "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard; the rest still fly.",
+  "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard and the rest still fly; if none reaches 16, all ten guard.",
   "function": "exhaustive_ward_plus",
   "draftable": false,
   "examples": [

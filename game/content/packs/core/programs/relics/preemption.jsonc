@@ -3,7 +3,7 @@
   "name": "Preemption",
   "tier": "rare",
   "icon": "preemption",
-  "summary": "Initiative bites deeper: a foe your program lands before takes 30% more, on top of Initiative's 25%.",
+  "summary": "Initiative bites deeper: a foe your program lands before takes 30% more on top of Initiative's 25%, so 62.5% more in all (the two multiply).",
   "flavor": "The scheduler takes the time slice back mid-sentence.",
   "effects": [{ "kind": "initiative", "factor": 1.3 }]
 }

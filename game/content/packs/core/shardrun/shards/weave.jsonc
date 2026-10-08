@@ -5,7 +5,7 @@
   "cost": 0,
   "complexity": "linear",
   "function": "weave",
-  "summary": "Alternates doubled-multiplier wards and attacks, starting with a ward. Build protection and damage in the same volley.",
+  "summary": "Turns the 1st, 3rd, and later odd-numbered bolts into wards with doubled multipliers. Even-numbered bolts become attacks with their original multipliers.",
   "art_note": "Teal shield threads and amber arrow threads woven into one ribbon.",
   "tags": ["lists", "dictionaries"],
   "examples": [

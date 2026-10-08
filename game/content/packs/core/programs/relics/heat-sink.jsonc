@@ -2,7 +2,7 @@
   "id": "heat-sink",
   "name": "Heat Sink",
   "tier": "uncommon",
-  "summary": "A timeout gives its mana back, and block for the operations over the budget.",
+  "summary": "When a program times out, refund its mana and gain block equal to the excess operations divided by 64.",
   "flavor": "Where the heat goes, the danger follows.",
   "effects": [
     {

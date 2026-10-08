@@ -10,7 +10,7 @@
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
   "makes": "sorted",
-  "summary": "A min-heap: take the two weakest bolts, fuse them into one 2 stronger than both together, and repeat until three are left.",
+  "summary": "A min-heap: take the two weakest bolts, fuse them into one bolt with their combined power plus 2, and repeat until three are left.",
   "function": "huffman_plus",
   "draftable": false,
   "examples": [

@@ -5,7 +5,7 @@
   "cost": 2,
   "complexity": "linear",
   "function": "transduce",
-  "summary": "Converts bolts above 4 power to exactly 4 power, preserving their effective strength in the multiplier. Amplifying afterward is much stronger.",
+  "summary": "Bolts above 4 power become 4 power, with their multiplier scaled up to preserve the original power × multiplier. Amplifying afterward is much stronger.",
   "art_note": "A thick brass energy pipe narrowing into a bright multiplier rune.",
   "tags": ["lists", "dictionaries"],
   "examples": [

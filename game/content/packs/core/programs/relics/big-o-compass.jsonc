@@ -3,7 +3,7 @@
   "name": "Big-O Compass",
   "tier": "rare",
   "icon": "big-o-compass",
-  "summary": "While every card of your program runs in O(n) or faster, it deals 30% more.",
+  "summary": "Your program deals 30% more attack damage if every card is linear or faster (O(n) or cheaper).",
   "flavor": "It always points away from the nested loop.",
   "effects": [{ "kind": "fast-program", "complexity": "linear", "factor": 1.3 }]
 }

@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "function": "arc",
-  "summary": "Charges every bolt: spark, and 1 more power.",
+  "summary": "Changes every bolt to spark and adds 1 power.",
   "tags": ["lists", "dictionaries"],
   "examples": [
     {

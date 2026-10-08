@@ -3,7 +3,7 @@
   "name": "Grimoire Page",
   "rarity": "rare",
   "icon": "grimoire-page",
-  "summary": "Every spell gains a slot.",
+  "summary": "Each spell can hold one additional shard.",
   "flavor": "A page torn from a Maintainer's spellbook, still humming.",
   "effects": [
     { "kind": "spell-capacity", "add": 1 }

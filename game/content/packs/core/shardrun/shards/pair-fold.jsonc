@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "pair_fold",
-  "summary": "Merges adjacent pairs that share attack/ward roles, keeping the first bolt's shape and combined effective power. An unpaired bolt stays.",
+  "summary": "Merges bolts in pairs from the front when both are attacks or both are wards. The first keeps its element, target and power, and its multiplier is raised so the pair's total (power × multiplier) is kept. Anything else stays.",
   "art_note": "Two folded parchment bolts become a dense paired rune.",
   "tags": ["lists", "dictionaries"],
   "examples": [

@@ -9,7 +9,7 @@
   "role": "source",
   "complexity": "linear",
   "makes": "unsorted",
-  "summary": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep: one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
+  "summary": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep (four with import math): one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
   "function": "recursion_tree",
   "forge": {"into": "recursion-tree-plus", "verb": "upgrade"},
   "examples": [

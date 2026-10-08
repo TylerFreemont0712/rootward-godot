@@ -9,7 +9,7 @@
   "icon": "shardrun/card-range-query",
   "id": "range-query",
   "name": "Range Query",
-  "summary": "Two binary searches find, for each foe, the bolts with power from half its HP up to its HP; they fly at it. Needs a sorted volley. The rest are stashed in the index.",
+  "summary": "Two binary searches find, for each foe, the bolts with power from half its HP plus shield up to that sum; they fly at it. Needs a sorted volley. The rest are stashed in the index.",
   "function": "range_query",
   "keywords": [],
   "needs": "sorted",

@@ -8,7 +8,7 @@
   "role": "guard",
   "complexity": "linear",
   "big_o": "O(n)",
-  "summary": "In attack order, every third attack becomes block, up to 12 total block from this card. Existing wards do not count; the first conversion that would exceed 12 ends the scan.",
+  "summary": "In attack order, every third attack becomes block, up to 12 total block from this card. Wards and stashed bolts are skipped, and the scan stops at the first conversion that would pass 12.",
   "function": "parity_lattice",
   "examples": [
     {

@@ -2,7 +2,7 @@
   "id": "bug-bounty-program",
   "name": "Bug Bounty Program",
   "tier": "common",
-  "summary": "Every foe you kill pays 2 more cycles.",
+  "summary": "Earn 2 extra cycles for each foe you defeat, except summoned ones.",
   "flavor": "Someone is always paying for bugs.",
   "effects": [
     {

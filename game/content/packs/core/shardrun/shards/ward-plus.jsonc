@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "function": "ward_plus",
-  "summary": "Turns the first bolt into block, 5 stronger. Other bolts still fly.",
+  "summary": "Turns the first bolt into a ward with 5 more power. Other bolts are unchanged.",
   "tags": ["lists", "slicing"],
   "draftable": false,
   "examples": [

@@ -8,7 +8,7 @@
   "focus": "schedule",
   "role": "strike",
   "complexity": "linearithmic",
-  "summary": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would fall. Every bolt it aims gains 1.",
+  "summary": "Sorts the bolts strongest first and the foes weakest first, pours bolts into each foe until it would fall, and sends the rest at the toughest; every bolt it aims gains 1.",
   "function": "greedy_assign_plus",
   "draftable": false,
   "examples": [

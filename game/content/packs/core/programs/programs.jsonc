@@ -282,7 +282,7 @@
           "id": "enumerate",
           "name": "Enumerator",
           "tag": "enumerate",
-          "rule": "Brute-force sources make bolts with +1 power; a volley may hold 192 bolts.",
+          "rule": "Each bolt created by a Brute Force Source card gains +1 power, rewarding wide volleys. The volley limit rises to 192 bolts.",
           "signature": "cartesian-product",
           "relic": "focus-enumerate",
           "plays_like": "Floods of hundreds of bolts.",

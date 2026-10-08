@@ -3,7 +3,7 @@
   "name": "Deep Recursion",
   "tier": "focus",
   "icon": "focus-deep",
-  "summary": "Recurse goes one level deeper: the card after a split runs on each quarter.",
+  "summary": "Recurse splits one level deeper, so the next card runs on each quarter-size piece instead of each half.",
   "flavor": "Towers of small cards on small pieces.",
   "effects": [
     {

@@ -3,7 +3,7 @@
   "name": "Overclocked Core",
   "rarity": "boss",
   "icon": "overclocked-core",
-  "summary": "All damage is multiplied by 1.3.",
+  "summary": "Attack bolts deal 30% more damage. Wards are unaffected.",
   "flavor": "Running hotter than it was ever rated for.",
   "effects": [
     { "kind": "damage-multiplier", "factor": 1.3 }

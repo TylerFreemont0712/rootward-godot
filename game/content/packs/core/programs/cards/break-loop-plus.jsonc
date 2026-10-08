@@ -9,7 +9,7 @@
   "icon": "shardrun/card-break-loop",
   "id": "break-loop-plus",
   "name": "Break+",
-  "summary": "Hits the front foe with each bolt until it falls, then breaks. The bolts after the kill are aimed at the next foe (aiming them counts as work).",
+  "summary": "Hits the front foe with each bolt until it falls, then breaks. The bolts after the kill are aimed at the next foe (aiming them counts as work), or wasted if there is no next foe.",
   "function": "break_loop_plus",
   "keywords": [],
   "work_mode": "measured",

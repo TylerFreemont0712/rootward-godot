@@ -16,7 +16,7 @@
   "draftable": false,
   "examples": [
     {
-      "name": "weak elements gain, and one false positive slips through",
+      "name": "weak elements gain, and nothing else does",
       "bolts": [
         {
           "power": 3,

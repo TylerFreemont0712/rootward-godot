@@ -2,7 +2,7 @@
   "id": "specialist",
   "name": "Specialist",
   "tier": "uncommon",
-  "summary": "Your focus's cards are three times as likely in your rewards.",
+  "summary": "Among your paradigm's cards in fight rewards, your current Focus's cards are three times as likely to appear (twice by default).",
   "flavor": "Ten thousand hours, give or take.",
   "effects": [
     {

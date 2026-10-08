@@ -8,7 +8,7 @@
   "role": "shape",
   "splits": true,
   "complexity": "linearithmic",
-  "summary": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger: about log₂ n each.",
+  "summary": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger (2 with import math): about log₂ n each.",
   "function": "divide",
   "forge": {"into": "divide-plus", "verb": "upgrade"},
   "examples": [

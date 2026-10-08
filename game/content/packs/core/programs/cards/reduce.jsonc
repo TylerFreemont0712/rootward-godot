@@ -7,7 +7,7 @@
   "paradigm": "neutral",
   "role": "shape",
   "complexity": "linear",
-  "summary": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element.",
+  "summary": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element. Runs once a fight.",
   "function": "reduce",
   "keywords": ["once"],
   "forge": {"into": "reduce-plus", "verb": "upgrade"},

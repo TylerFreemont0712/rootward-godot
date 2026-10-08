@@ -10,7 +10,7 @@
   "splits": true,
   "complexity": "linearithmic",
   "big_o": "O(n log n)",
-  "summary": "Fuses the closest pair, then the closest pair among the rest.",
+  "summary": "Fuses the closest pair, then the closest pair among the rest, each into one bolt of double their total.",
   "function": "closest_pair_plus",
   "keywords": [],
   "art": "closest-pair",

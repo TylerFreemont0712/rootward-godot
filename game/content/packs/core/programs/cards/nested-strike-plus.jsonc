@@ -9,7 +9,7 @@
   "icon": "shardrun/card-nested-strike",
   "id": "nested-strike-plus",
   "name": "Nested Strike+",
-  "summary": "For each foe, fires the whole volley at full power until that foe falls. Costs 1 mana.",
+  "summary": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls; bolts no foe needed are lost. Costs 1 mana.",
   "function": "nested_strike_plus",
   "keywords": [],
   "work_mode": "measured",

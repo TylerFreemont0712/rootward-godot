@@ -92,8 +92,12 @@
     "to": "import operator"
   },
   {
+    "en": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power. It is always in your opening hand.",
+    "to": "この戦闘の間、形のカードの後ごとに、すべての攻撃の矢の威力が1上がります。ガードの矢の威力は変わりません。いつも最初の手札にあります。"
+  },
+  {
     "en": "For this fight, after each shape card, add 1 power to every attack bolt. Guard bolts keep their power.",
-    "to": "この戦闘中、シェイプカードの後で各攻撃弾の威力を1増やす。防御弾の威力は変わらない。"
+    "to": "この戦闘の間、形のカードの後ごとに、すべての攻撃の矢の威力が1上がります。ガードの矢の威力は変わりません。"
   },
   {
     "en": "import operator+",
@@ -176,7 +180,7 @@
     "to": "ジップ結界+"
   },
   {
-    "en": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down) +2. Existing guards pass through.",
-    "to": "各攻撃弾を、威力の半分（切り上げ）の攻撃弾と半分（切り捨て）の防御弾に分ける。防御弾の威力をさらに2加える。既存の防御弾はそのまま通す。"
+    "en": "Split each attack into an attack of half power (rounded up) and a guard of half power (rounded down) plus 2. Existing guards pass through.",
+    "to": "各攻撃を、半分の威力（切り上げ）の攻撃と、半分の威力（切り捨て）に2を足したガードに分けます。既存のガードはそのまま通ります。"
   }
 ]

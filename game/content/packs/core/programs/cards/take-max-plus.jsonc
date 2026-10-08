@@ -9,7 +9,7 @@
   "role": "shape",
   "complexity": "linear",
   "makes": "sorted",
-  "summary": "Keeps only the four strongest bolts and makes each half again as strong. Focus beats volume.",
+  "summary": "Keeps only the four strongest bolts and makes each half again as strong. Focus beats volume. Comes out weakest first.",
   "function": "take_max_plus",
   "draftable": false,
   "examples": [

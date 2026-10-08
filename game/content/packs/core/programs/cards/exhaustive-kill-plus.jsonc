@@ -9,7 +9,7 @@
   "role": "strike",
   "complexity": "exponential",
   "cap_n": 12,
-  "summary": "Tries every subset of the first 12 bolts to find the one that kills the front foe with the least overkill; those bolts hit it, the rest hit the weakest of the other foes.",
+  "summary": "Tries every subset of the first 12 bolts for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance; those bolts hit it, the rest hit the weakest of the other foes. If no subset kills, every bolt hits the front foe.",
   "function": "exhaustive_kill_plus",
   "draftable": false,
   "examples": [

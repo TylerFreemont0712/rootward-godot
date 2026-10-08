@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linearithmic",
   "function": "priority_queue",
-  "summary": "Sorts bolts from strongest to weakest, and sends the strongest at the foe with the most HP.",
+  "summary": "Sorts bolts by power, strongest first, and sends the strongest at the foe with the most HP.",
   "tags": ["sorting", "lambda"],
   "examples": [
     {

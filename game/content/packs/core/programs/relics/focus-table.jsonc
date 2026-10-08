@@ -3,7 +3,7 @@
   "name": "Tabulator",
   "tier": "focus",
   "icon": "focus-table",
-  "summary": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
+  "summary": "Starting on turn 2, the Table adds a seed bolt with power floor((damage of the last 2 programs) / 3).",
   "flavor": "Slow first turns, overwhelming late turns.",
   "effects": [
     {

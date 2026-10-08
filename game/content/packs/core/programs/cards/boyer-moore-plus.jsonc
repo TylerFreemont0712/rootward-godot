@@ -2,7 +2,7 @@
   "paradigm": "greedy",
   "focus": "sprint",
   "role": "shape",
-  "cost": 0,
+  "cost": 1,
   "rarity": "common",
   "complexity": "linear",
   "big_o": "O(n)",

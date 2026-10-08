@@ -10,7 +10,7 @@
   "splits": true,
   "complexity": "linearithmic",
   "big_o": "O(n^1.58)",
-  "summary": "Adds a new bolt of a × b ÷ 8.",
+  "summary": "Multiplies the two strongest bolts and adds a new bolt of their product ÷ 8.",
   "function": "karatsuba_plus",
   "keywords": [],
   "art": "karatsuba",

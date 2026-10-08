@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "function": "fork",
-  "summary": "Splits every bolt into two copies at 60% power. More bolts, a little less power in all.",
+  "summary": "Splits every bolt into two copies, each with 60% of the original power.",
   "tags": ["loops", "lists"],
   "forge": { "into": "fork-plus", "verb": "upgrade" },
   "examples": [

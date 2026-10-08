@@ -9,7 +9,7 @@
   "icon": "shardrun/card-dutch-flag",
   "id": "dutch-flag",
   "name": "Dutch Flag",
-  "summary": "Three-way partitions around the front foe's HP: exact bolts first, stronger next, weaker last. Exact bolts are pivots.",
+  "summary": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact bolts are pivots.",
   "function": "dutch_flag",
   "keywords": [],
   "splits": true,

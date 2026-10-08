@@ -9,7 +9,7 @@
   "role": "strike",
   "complexity": "linear",
   "big_o": "O(n + m)",
-  "summary": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt flies at the foe weak to its element, or else at the weakest foe.",
+  "summary": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt flies at the foe weak to its element, or else at the foe with the least HP plus shield.",
   "function": "hash_aim_plus",
   "draftable": false,
   "examples": [

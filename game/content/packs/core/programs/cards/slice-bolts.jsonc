@@ -8,7 +8,7 @@
   "icon": "shardrun/card-slice-bolts",
   "id": "slice-bolts",
   "name": "Slice",
-  "summary": "Keeps the first four bolts (bolts[:4]), each gaining 2.",
+  "summary": "Keeps the first four bolts (bolts[:4]), each gaining 2; the rest are dropped, power and all.",
   "function": "slice_bolts",
   "keywords": [],
   "forge": {

@@ -2,7 +2,7 @@
   "paradigm": "brute-force",
   "focus": "prune",
   "role": "source",
-  "cost": 1,
+  "cost": 2,
   "rarity": "uncommon",
   "complexity": "exponential",
   "big_o": "O(n!) pruned, n = 8",

@@ -3,7 +3,7 @@
   "name": "Optimiser",
   "tier": "focus",
   "icon": "focus-exact",
-  "summary": "A kill with no overkill writes double into the Table and gives 2 block.",
+  "summary": "Killing a foe with exactly enough damage (no overkill) records that damage twice in the Table and grants 2 block.",
   "flavor": "Exact kills, never a point wasted.",
   "effects": [
     {

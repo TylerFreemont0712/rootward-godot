@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "prefix_charge",
-  "summary": "Each bolt receives the sum of all multipliers up to its position. Ordering decides who inherits the charge.",
+  "summary": "Each bolt's multiplier becomes the running total of all multipliers up to and including its own. Ordering decides who inherits the charge.",
   "art_note": "A row of amber capacitors linked by an increasingly bright thread.",
   "tags": ["lists", "dictionaries"],
   "examples": [

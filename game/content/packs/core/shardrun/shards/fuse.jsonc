@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "fuse",
-  "summary": "Fuses all attacks into one bolt carrying their combined power × multiplier. Keeps its first attack's aim and element; wards stay separate.",
+  "summary": "Fuses all attacks into one bolt that deals the sum of their power × multiplier. It keeps the first attack's power, aim and element; wards stay separate.",
   "art_note": "Gold filaments converge into one white-hot needle beside an untouched teal shield.",
   "tags": ["lists", "dictionaries"],
   "examples": [

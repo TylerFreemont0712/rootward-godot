@@ -3,7 +3,7 @@
   "name": "import numpy+",
   "rarity": "rare",
   "art": "import-numpy",
-  "cost": 1,
+  "cost": 2,
   "paradigm": "neutral",
   "role": "import",
   "complexity": "constant",

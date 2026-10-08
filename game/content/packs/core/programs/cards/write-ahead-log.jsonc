@@ -9,7 +9,7 @@
   "icon": "shardrun/card-write-ahead-log",
   "id": "write-ahead-log",
   "name": "Write-Ahead Log",
-  "summary": "Every bolt under 4 power is stashed into the index instead of flying: nothing weak is wasted.",
+  "summary": "Every bolt under 4 power that is not a ward is stashed into the index instead of flying: nothing weak is wasted.",
   "function": "write_ahead_log",
   "keywords": [],
   "forge": {

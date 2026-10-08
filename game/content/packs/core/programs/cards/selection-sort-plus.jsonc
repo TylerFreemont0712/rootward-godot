@@ -12,7 +12,7 @@
   "summary": "Finds the weakest bolt in each unsorted suffix and swaps it to the front. Always weakest first, with n² comparisons even on a sorted volley.",
   "function": "selection_sort_plus",
   "keywords": [],
-  "makes": "unsorted",
+  "makes": "sorted",
   "art": "selection-sort",
   "draftable": false,
   "examples": [

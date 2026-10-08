@@ -3,7 +3,7 @@
   "name": "Indexer",
   "tier": "focus",
   "icon": "focus-index",
-  "summary": "The index holds 16, and the seed takes its two strongest bolts.",
+  "summary": "The Index stores up to 16 wasted bolts (overkill, bolts aimed at fallen foes, stashed bolts); each program starts with its 2 strongest stored bolts.",
   "flavor": "Bank overkill, then spend it precisely.",
   "effects": [
     {

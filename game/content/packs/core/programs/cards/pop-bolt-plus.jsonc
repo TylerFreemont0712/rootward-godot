@@ -8,7 +8,7 @@
   "icon": "shardrun/card-pop-bolt",
   "id": "pop-bolt-plus",
   "name": "Pop+",
-  "summary": "Removes the last bolt and adds its power plus 1 to the first.",
+  "summary": "Removes the last bolt and adds its power plus 1 to the first; a lone bolt is left as it is.",
   "function": "pop_bolt_plus",
   "keywords": [],
   "makes": "unsorted",

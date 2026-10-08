@@ -4,7 +4,7 @@
   "rarity": "uncommon",
   "cost": 1,
   "function": "focus",
-  "summary": "Merges every bolt into one, adding up their power. It keeps the first bolt's element and aim.",
+  "summary": "Combines all bolt power into one bolt. It keeps the first bolt's multiplier, element, aim, pierce, and attack or ward role.",
   "tags": ["accumulator", "lists"],
   "examples": [
     {

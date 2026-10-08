@@ -9,7 +9,7 @@
   "complexity": "logarithmic",
   "big_o": "O(m log n)",
   "needs": "sorted",
-  "summary": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it. Only those bolts fly. On unsorted data it picks wrong.",
+  "summary": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it (the strongest if none does). Only those bolts fly. On unsorted data it picks wrong.",
   "function": "binary_execute",
   "forge": {"into": "binary-execute-plus", "verb": "upgrade"},
   "examples": [

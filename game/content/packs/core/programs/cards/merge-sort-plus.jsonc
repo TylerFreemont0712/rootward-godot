@@ -3,7 +3,7 @@
   "name": "Merge Sort+",
   "rarity": "common",
   "art": "merge-sort",
-  "cost": 0,
+  "cost": 1,
   "paradigm": "neutral",
   "role": "order",
   "splits": true,

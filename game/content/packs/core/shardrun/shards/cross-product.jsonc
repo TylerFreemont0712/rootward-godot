@@ -5,7 +5,7 @@
   "cost": 2,
   "complexity": "quadratic",
   "function": "cross_product",
-  "summary": "Makes a bolt for each ordered pair of different elements, averaging power and adding multipliers. Keeps the first bolt's shape. Same-element pairs vanish. Quadratic work.",
+  "summary": "For each ordered pair of bolts with different elements, makes one with the first bolt's element, target, pierce, and attack or ward role; it gets their average power and summed multipliers. Same-element pairs vanish. Quadratic work.",
   "art_note": "A three-color lattice with bright bolts at the intersections between unlike strands.",
   "tags": ["lists", "dictionaries"],
   "examples": [

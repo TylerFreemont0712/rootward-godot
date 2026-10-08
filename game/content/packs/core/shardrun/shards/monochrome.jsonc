@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "monochrome",
-  "summary": "Doubles multipliers only when the entire volley shares one non-arcane element.",
+  "summary": "Doubles every bolt's multiplier only if all bolts share the same element and it is fire, frost, or spark.",
   "art_note": "Identical colored shards locking into a single harmonious ring.",
   "tags": ["lists", "dictionaries"],
   "examples": [

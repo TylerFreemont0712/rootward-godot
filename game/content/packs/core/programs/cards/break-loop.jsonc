@@ -9,7 +9,7 @@
   "icon": "shardrun/card-break-loop",
   "id": "break-loop",
   "name": "Break",
-  "summary": "Hits the front foe with each bolt until it falls, then breaks out of the loop. The bolts after the kill stay unaimed for the next card, and only the bolts used count as work.",
+  "summary": "Hits the front foe with each bolt until it falls, then breaks out of the loop. The bolts after the kill stay unaimed for the next card (wasted if none aims them), and only the bolts used count as work.",
   "function": "break_loop",
   "keywords": [],
   "work_mode": "measured",

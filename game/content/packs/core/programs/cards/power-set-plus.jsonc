@@ -4,6 +4,7 @@
   "rarity": "rare",
   "art": "power-set",
   "cost": 2,
+  "keywords": ["volatile"],
   "paradigm": "brute-force",
   "focus": "enumerate",
   "role": "source",

@@ -8,7 +8,7 @@
   "icon": "shardrun/card-read-input",
   "id": "read-input-plus",
   "name": "Read Input+",
-  "summary": "One bolt per foe, its power that foe's intended damage plus 2 (at least 3): the battle is your input.",
+  "summary": "One bolt per foe, its power the total of that foe's next attack (damage per hit times hits) plus 2, at least 3: the battle is your input.",
   "function": "read_input_plus",
   "keywords": [],
   "art": "read-input",

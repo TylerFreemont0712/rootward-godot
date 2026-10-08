@@ -38,16 +38,16 @@
     "to": "頂点"
   },
   {
-    "en": "Keeps only the strongest bolt, and gives it 3 more power.",
-    "to": "最も強い矢だけを残し、その威力を 3 上げます。"
+    "en": "Keeps only the strongest bolt by power, and gives it 3 more power.",
+    "to": "威力がいちばん大きい矢だけを残し、その矢の威力を3上げます。"
   },
   {
     "en": "Arc",
     "to": "電弧"
   },
   {
-    "en": "Charges every bolt: spark, and 1 more power.",
-    "to": "すべての矢を帯電させます。雷属性になり、威力が 1 上がります。"
+    "en": "Changes every bolt to spark and adds 1 power.",
+    "to": "すべてのボルトを雷属性に変え、威力を1上げます。"
   },
   {
     "en": "Attune",
@@ -78,8 +78,8 @@
     "to": "点呼"
   },
   {
-    "en": "Sorts the volley weakest first, then adds each bolt's place in the line to its power. Sorting costs more than a walk.",
-    "to": "一斉射を弱い順に並べ替え、各矢の順番をその威力に加えます。並べ替えは、ひと巡りするより高くつきます。"
+    "en": "Sorts bolts by power, weakest first, then adds rank as power: +0 to the weakest, +1 to the next, and so on. Sorting costs more than a linear pass.",
+    "to": "矢を威力順に並べ、弱い順に、順位ぶんの威力を足します（最も弱い矢は+0、次は+1、と続きます）。並べ替えは、直線の一回の走査より多くの手間がかかります。"
   },
   {
     "en": "Charge",
@@ -150,24 +150,24 @@
     "to": "集束レンズ"
   },
   {
-    "en": "Merges every bolt into one, adding up their power. It keeps the first bolt's element and aim.",
-    "to": "すべての矢を一本にまとめ、威力を合計します。属性と狙いは最初の矢のものを引き継ぎます。"
+    "en": "Combines all bolt power into one bolt. It keeps the first bolt's multiplier, element, aim, pierce, and attack or ward role.",
+    "to": "すべてのボルトの威力を1本にまとめます。倍率、属性、狙い、貫通、攻撃か防御かは最初のボルトを引き継ぎます。"
   },
   {
     "en": "Fork+",
     "to": "分岐+"
   },
   {
-    "en": "Splits every bolt into two copies at 80% power.",
-    "to": "すべての矢を威力 80% の複製二本に分けます。"
+    "en": "Splits every bolt into two copies, each with 80% of the original power.",
+    "to": "各ボルトを2本に分け、それぞれ元の威力の80%にします。"
   },
   {
     "en": "Fork",
     "to": "分岐"
   },
   {
-    "en": "Splits every bolt into two copies at 60% power. More bolts, a little less power in all.",
-    "to": "すべての矢を威力 60% の複製二本に分けます。矢は増え、合計の威力は少し下がります。"
+    "en": "Splits every bolt into two copies, each with 60% of the original power.",
+    "to": "各ボルトを2本に分け、それぞれ元の威力の60%にします。"
   },
   {
     "en": "Headcount",
@@ -198,8 +198,8 @@
     "to": "壊れた分岐"
   },
   {
-    "en": "A free Fork, salvaged from broken code. Something about it is off by one. A forge can repair it.",
-    "to": "壊れたコードから拾った、ただの分岐。どこかが一つずれています。鍛冶場で直せます。"
+    "en": "Splits every bolt except the last into two 60%-power copies, then drops the last bolt. A forge can repair it.",
+    "to": "最後以外のボルトを、それぞれ威力60%の2本に分け、最後の1本は捨てます。鍛冶場で修理できます。"
   },
   {
     "en": "Overclock",
@@ -238,8 +238,8 @@
     "to": "優先度付き待ち行列"
   },
   {
-    "en": "Sorts bolts from strongest to weakest, and sends the strongest at the foe with the most HP.",
-    "to": "矢を強い順に並べ替え、最も強い矢を体力の最も多い敵に向けます。"
+    "en": "Sorts bolts by power, strongest first, and sends the strongest at the foe with the most HP.",
+    "to": "矢を威力順に並べ、いちばん強い矢を、いちばんHPの多い敵へ向けます。"
   },
   {
     "en": "Prism",
@@ -278,8 +278,8 @@
     "to": "拡散"
   },
   {
-    "en": "Every bolt hits every foe, at half power each.",
-    "to": "すべての矢がすべての敵に、それぞれ半分の威力で当たります。"
+    "en": "Every attack hits every foe, at half power each.",
+    "to": "すべての攻撃の矢が、すべての敵に、それぞれ半分の威力で当たります。"
   },
   {
     "en": "Seeker",
@@ -294,24 +294,24 @@
     "to": "篩"
   },
   {
-    "en": "Throws away bolts under 3 power, so later shards spend no work on them. Wards are kept.",
-    "to": "威力 3 未満の矢を捨て、あとの欠片がそれらに手間をかけずに済むようにします。防壁は残ります。"
+    "en": "Drops attack bolts under 3 power so later shards spend no work on them. All wards are kept.",
+    "to": "威力3未満の攻撃ボルトを捨て、後続の欠片が処理しないようにします。防御ボルトはすべて残ります。"
   },
   {
     "en": "Singularity",
     "to": "特異点"
   },
   {
-    "en": "Collapses the whole volley into one bolt: 4 power for every bolt it swallowed, and a multiplier to match. It never walks the volley, so it is billed almost nothing.",
-    "to": "一斉射をまるごと一本に潰します。飲み込んだ矢ごとに威力 4、倍率もそれに見合います。一斉射を辿らないので、代金はほとんどかかりません。"
+    "en": "Replaces the volley with one piercing attack aimed at the foe with most HP: power is 4 × the bolt count, and its multiplier equals that count. It costs almost no work.",
+    "to": "一斉射を、HPが最も多い敵を狙う貫通攻撃1本にします。威力はボルト数×4、倍率はボルト数と同じです。処理量はほとんどかかりません。"
   },
   {
     "en": "Siphon",
     "to": "吸い上げ"
   },
   {
-    "en": "Turns the weakest bolt into a ward at double power. The rest still fly.",
-    "to": "最も弱い矢を、二倍の威力の防壁に変えます。残りはそのまま飛びます。"
+    "en": "Turns the bolt with the least power into a ward at double power. The rest still fly.",
+    "to": "いちばん威力の小さい矢を、2倍の威力のワードに変えます。残りの矢は飛びます。"
   },
   {
     "en": "Tally",
@@ -326,16 +326,16 @@
     "to": "焼き入れ"
   },
   {
-    "en": "Rounds every bolt's power up to the next multiple of 5.",
-    "to": "すべての矢の威力を、5 の倍数に切り上げます。"
+    "en": "Rounds every bolt's power up to the next multiple of 5, and leaves a multiple of 5 alone.",
+    "to": "各矢の威力を次の5の倍数まで切り上げます。すでに5の倍数の矢は、そのままです。"
   },
   {
     "en": "Tithe",
     "to": "十分の一税"
   },
   {
-    "en": "Halves every bolt's power and doubles its multiplier. The same damage today, on the axis that has room to grow.",
-    "to": "すべての矢の威力を半分にし、倍率を二倍にします。今日のダメージは同じでも、伸びしろのある軸に移ります。"
+    "en": "Halves each bolt's power, rounding down, and doubles its multiplier. The multiplier has more room to grow.",
+    "to": "各ボルトの威力を切り捨てで半分にし、倍率を2倍にします。倍率のほうが伸びしろを残せます。"
   },
   {
     "en": "Triage",
@@ -358,16 +358,16 @@
     "to": "防護+"
   },
   {
-    "en": "Turns the first bolt into block, 5 stronger. Other bolts still fly.",
-    "to": "最初の矢を、5 だけ強い防御に変えます。ほかの矢はそのまま飛びます。"
+    "en": "Turns the first bolt into a ward with 5 more power. Other bolts are unchanged.",
+    "to": "最初のボルトを防御に変え、威力を5上げます。ほかのボルトはそのままです。"
   },
   {
     "en": "Ward",
     "to": "防護"
   },
   {
-    "en": "Turns the first bolt into block, 2 stronger. Other bolts still fly.",
-    "to": "最初の矢を、2 だけ強い防御に変えます。ほかの矢はそのまま飛びます。"
+    "en": "Turns the first bolt into a ward with 2 more power. Other bolts are unchanged.",
+    "to": "最初のボルトを防御に変え、威力を2上げます。ほかのボルトはそのままです。"
   },
   // --- Foes ---------------------------------------------------------------------------------------------------------
   {
@@ -508,8 +508,8 @@
     "to": "誤り訂正メモリ"
   },
   {
-    "en": "Gain 12 maximum Integrity.",
-    "to": "整合性の上限が 12 増えます。"
+    "en": "Raise your maximum and current Integrity by 12.",
+    "to": "最大Integrityと現在のIntegrityが、それぞれ12増えます。"
   },
   {
     "en": "It corrects its own mistakes before you notice them.",
@@ -544,8 +544,8 @@
     "to": "ならし計算の台帳"
   },
   {
-    "en": "A cast is billed the logarithm of the work it did, instead of its square root. Wide and quadratic spells become payable.",
-    "to": "詠唱の代金が、仕事量の平方根ではなく対数になります。幅広い呪文や二乗の呪文が、払える値段になります。"
+    "en": "Spell cost grows logarithmically with work instead of with its square root, making wide, high-work spells cheaper.",
+    "to": "呪文のマナ代は仕事量の平方根ではなく対数に応じて増えます。幅広く処理量の多い呪文が安くなります。"
   },
   {
     "en": "Someone kept the books for the whole Machine, and rounded every page down.",
@@ -568,8 +568,8 @@
     "to": "帰還回路"
   },
   {
-    "en": "Every spell you have already cast this fight adds 2 to your bolts' multipliers. Cast small, then cast big.",
-    "to": "この戦いですでに唱えた呪文ひとつにつき、矢の倍率が 2 上がります。小さく唱えてから、大きく唱えましょう。"
+    "en": "Each earlier cast attempt this fight, including one that fizzled, adds +2 to every bolt's multiplier.",
+    "to": "この戦いでそれ以前に唱えようとした回数だけ、各ボルトの倍率が2上がります。不発になった詠唱も数えます。"
   },
   {
     "en": "Output wired back into input. The Machine listened to itself and grew louder.",
@@ -592,8 +592,8 @@
     "to": "広がった絞り"
   },
   {
-    "en": "Eight more bolts land before the rest fizzle.",
-    "to": "着弾する矢が 8 本増えてから、残りが不発になります。"
+    "en": "Raises the landing cap by 8, so up to 8 more bolts land before extras fizzle.",
+    "to": "着弾上限を8上げます。これにより、追加で最大8本のボルトが着弾し、それ以降は不発になります。"
   },
   {
     "en": "The lens the first Maintainers ground, before anyone thought to stop at sixteen.",
@@ -628,8 +628,8 @@
     "to": "魔道書の頁"
   },
   {
-    "en": "Every spell gains a slot.",
-    "to": "すべての呪文の枠が一つ増えます。"
+    "en": "Each spell can hold one additional shard.",
+    "to": "各呪文にシャードをもう1つ入れられます。"
   },
   {
     "en": "A page torn from a Maintainer's spellbook, still humming.",
@@ -640,8 +640,8 @@
     "to": "暴走コイル"
   },
   {
-    "en": "Every bolt's multiplier is doubled after your last shard — including everything your shards did to it.",
-    "to": "最後の欠片のあとで、すべての矢の倍率が二倍になります。欠片がそこまでに上げた分も、まとめて二倍です。"
+    "en": "After all shards resolve, double every bolt's multiplier, including changes made by the shards.",
+    "to": "すべてのシャードが解決したあと、各ボルトの倍率を2倍にします。シャードによる変化分も含みます。"
   },
   {
     "en": "It was wound to store a little current. Nobody agreed on when it should stop.",
@@ -652,8 +652,8 @@
     "to": "過剰駆動の中核"
   },
   {
-    "en": "All damage is multiplied by 1.3.",
-    "to": "すべてのダメージが 1.3 倍になります。"
+    "en": "Attack bolts deal 30% more damage. Wards are unaffected.",
+    "to": "攻撃ボルトのダメージが30%増えます。防御ボルトには影響しません。"
   },
   {
     "en": "Running hotter than it was ever rated for.",
@@ -664,8 +664,8 @@
     "to": "マナ蓄電器"
   },
   {
-    "en": "Gain 1 more mana every turn.",
-    "to": "毎ターンのマナが 1 増えます。"
+    "en": "Gain 1 additional mana at the start of every fight turn.",
+    "to": "戦闘中、各ターン開始時にマナを1多く得ます。"
   },
   {
     "en": "It stores what the guardian could not spend.",
@@ -730,8 +730,8 @@
     "to": "クリップボード"
   },
   {
-    "en": "Hold 1 more card into the next turn.",
-    "to": "次のターンへ持ち越せるカードが 1 枚増えます。"
+    "en": "In Deck mode, keep one additional card in your hand when ending your turn.",
+    "to": "Deckモードでは、ターン終了時に手札のカードをもう1枚持ち越せます。"
   },
   {
     "en": "Copy it now; paste it when it fits.",
@@ -754,8 +754,8 @@
     "to": "依存パッケージ"
   },
   {
-    "en": "Adds Pierce, Seeker and Focus Lens to your deck.",
-    "to": "山札に貫通・追尾・集束レンズを加えます。"
+    "en": "Adds Pierce, Seeker, and Focus Lens to your collection (or to your deck in Deck mode).",
+    "to": "Pierce、Seeker、Focus Lensをコレクションに加えます（Deckモードではデッキに加えます）。"
   },
   {
     "en": "You asked for one package. Three more came with it, and all of them turn out to be useful.",
@@ -802,8 +802,8 @@
     "to": "ツリーシェイカー"
   },
   {
-    "en": "Every bolt gains 1 power for each card your deck has fewer than 12.",
-    "to": "山札が 12 枚より 1 枚少ないごとに、すべての矢の威力が 1 上がります。"
+    "en": "In Deck mode, each bolt gains +1 power for every card your deck is short of 12 (an 8-card deck gives +4).",
+    "to": "Deckモードでは、デッキが12枚に足りない枚数ぶん、各ボルトの威力が1上がります（8枚なら+4）。"
   },
   {
     "en": "Whatever is never called gets shaken out, and what is left runs lighter.",

@@ -3,7 +3,7 @@
   "name": "Sprint",
   "tier": "focus",
   "icon": "focus-sprint",
-  "summary": "A program of three cards or fewer counts 25% less work.",
+  "summary": "Programs with 1–3 cards count as doing 25% less work toward timeouts and foes that move first.",
   "flavor": "Tiny cheap programs every turn; kill chains for mana.",
   "effects": [
     {

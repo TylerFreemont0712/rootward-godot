@@ -3,7 +3,7 @@
   "icon": "shardrun/card-exhaustive-kill",
   "name": "Knapsack Strike+",
   "rarity": "rare",
-  "cost": 1,
+  "cost": 2,
   "paradigm": "dynamic",
   "focus": "exact",
   "role": "strike",

@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 1,
   "function": "temper",
-  "summary": "Rounds every bolt's power up to the next multiple of 5.",
+  "summary": "Rounds every bolt's power up to the next multiple of 5, and leaves a multiple of 5 alone.",
   "tags": ["loops", "lists"],
   "examples": [
     {

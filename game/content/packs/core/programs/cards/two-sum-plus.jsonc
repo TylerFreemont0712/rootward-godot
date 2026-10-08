@@ -9,7 +9,7 @@
   "icon": "shardrun/card-two-sum",
   "id": "two-sum-plus",
   "name": "Two Sum+",
-  "summary": "A hash map finds two bolts summing to each of the first two foes' HP; exact pairs fuse. Otherwise the two strongest aim there.",
+  "summary": "A hash map finds two bolts summing to each of the first two foes' HP plus shield; each pair found fuses into one bolt aimed at its foe. Otherwise the two strongest aim at that foe.",
   "function": "two_sum_plus",
   "keywords": [],
   "art": "two-sum",

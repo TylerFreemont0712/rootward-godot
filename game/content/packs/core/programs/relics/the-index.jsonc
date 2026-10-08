@@ -3,7 +3,7 @@
   "name": "The Index",
   "tier": "paradigm",
   "icon": "the-index",
-  "summary": "Wasted power is kept in a sorted index of at most 8 bolts. Each program takes its strongest bolt.",
+  "summary": "Power a program wastes (overkill, bolts that land on a fallen foe, bolts left over) is stored as bolts in an Index of up to 8; each program starts with the strongest stored bolt, which leaves the Index.",
   "flavor": "The law of your paradigm.",
   "effects": [
     {

@@ -1,4 +1,4 @@
-function threat_index(bolts, battle) {
+function threatIndex(bolts, battle) {
   // Intent checks stay in foe order; each bolt is used at most once, and unmatched attacks remain attacks.
   const result = bolts.map((bolt) => ({ ...bolt }));
   const used = new Set();

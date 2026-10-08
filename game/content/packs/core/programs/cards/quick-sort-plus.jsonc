@@ -9,7 +9,7 @@
   "role": "order",
   "splits": true,
   "complexity": "linearithmic",
-  "big_o": "O(n log n), O(n²) sorted",
+  "big_o": "O(n log n), O(n²) on crafted input",
   "makes": "sorted",
   "summary": "The median of the first, middle and last bolts is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. O(n log n), even on a sorted volley.",
   "function": "quick_sort_plus",

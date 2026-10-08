@@ -2,7 +2,7 @@
   "id": "dead-code-elimination",
   "name": "Dead Code Elimination",
   "tier": "uncommon",
-  "summary": "At a rest site you may also remove a card.",
+  "summary": "Rest sites let you remove one card from your deck, in addition to resting.",
   "flavor": "What never runs, never hurts.",
   "effects": [
     {

@@ -38,8 +38,8 @@
         { "power": 2, "element": "fire" }
       ],
       "expect": [
-        { "power": 1, "element": "none", "block": true },
         { "power": 1, "element": "none" },
+        { "power": 1, "element": "none", "block": true },
         { "power": 2, "element": "fire" }
       ]
     }

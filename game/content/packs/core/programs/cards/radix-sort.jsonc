@@ -7,9 +7,10 @@
   "paradigm": "search-index",
   "role": "order",
   "complexity": "linear",
+  "work_mode": "measured",
   "big_o": "O(4n + 64)",
   "makes": "sorted",
-  "summary": "Stable-sorts bolt power from weakest to strongest with four base-16 passes. Four fixed passes keep the work bounded by the game's 9,999 power limit.",
+  "summary": "Stable-sorts bolt power from weakest to strongest in four base-16 passes, enough for every power up to the game's 9,999 cap.",
   "function": "radix_sort",
   "examples": [
     {

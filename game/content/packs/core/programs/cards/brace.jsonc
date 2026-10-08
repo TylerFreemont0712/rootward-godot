@@ -9,7 +9,7 @@
   "icon": "shardrun/card-brace",
   "id": "brace",
   "name": "Brace",
-  "summary": "Turns the weakest bolts into block, one by one, until the block covers the biggest incoming intent. The rest still fly.",
+  "summary": "Turns the weakest bolts into block, one by one, until the block covers the biggest incoming intent's total damage (damage × hits). The rest still fly.",
   "function": "brace",
   "keywords": [],
   "forge": {

@@ -3,7 +3,7 @@
   "name": "Overclock",
   "tier": "common",
   "icon": "overclock",
-  "summary": "Your programs may do 1024 more operations before they time out, in every layer.",
+  "summary": "Your programs may do 256 more operations before they time out, in every layer.",
   "flavor": "Voids the warranty. Runs anyway.",
-  "effects": [{ "kind": "budget", "add": 1024 }]
+  "effects": [{ "kind": "budget", "add": 256 }]
 }

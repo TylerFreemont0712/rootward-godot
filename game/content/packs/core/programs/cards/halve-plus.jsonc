@@ -10,7 +10,7 @@
   "splits": true,
   "complexity": "constant",
   "big_o": "O(1)",
-  "summary": "Splits, and gives the first bolt of each half 1 more power.",
+  "summary": "Splits, so the card after it runs on each half, and gives the first bolt of each half 1 more power.",
   "function": "halve_plus",
   "keywords": [],
   "art": "halve",

@@ -2,7 +2,7 @@
   "id": "memory-pool",
   "name": "Memory Pool",
   "tier": "uncommon",
-  "summary": "The Index holds 4 more bolts, and the bolt it adds to your seed gains 2.",
+  "summary": "With The Index, it holds 4 more bolts; each stored bolt added to a program's seed gains +2 power.",
   "flavor": "Allocate once, reuse forever.",
   "effects": [
     {

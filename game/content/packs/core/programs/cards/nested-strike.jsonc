@@ -9,7 +9,7 @@
   "icon": "shardrun/card-nested-strike",
   "id": "nested-strike",
   "name": "Nested Strike",
-  "summary": "For each foe, fires the whole volley at full power until that foe falls. Bolts can strike each foe.",
+  "summary": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls, so every bolt can strike every foe. Bolts no foe needed are lost.",
   "function": "nested_strike",
   "keywords": [],
   "work_mode": "measured",

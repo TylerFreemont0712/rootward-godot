@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "entrench",
-  "summary": "Multiplies ward multipliers by the turn number, up to ×5. Later defenses can support a bigger counterattack.",
+  "summary": "Multiplies ward multipliers by the turn number, up to ×5. Later wards gather more block.",
   "art_note": "Five concentric defensive earthworks around a glowing hourglass.",
   "tags": ["lists", "dictionaries"],
   "examples": [

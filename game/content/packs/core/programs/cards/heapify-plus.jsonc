@@ -9,7 +9,7 @@
   "icon": "shardrun/card-heapify",
   "id": "heapify-plus",
   "name": "Heapify+",
-  "summary": "Builds a max-heap bottom-up in O(n), then gives its strongest root bolt +3 power. The upgraded root bonus exceeds Heapify’s +2; the rest stay in heap order.",
+  "summary": "Builds a max-heap bottom-up in O(n), then gives its strongest root bolt +3 power. The rest stay in heap order.",
   "function": "heapify_plus",
   "keywords": [],
   "makes": "unsorted",

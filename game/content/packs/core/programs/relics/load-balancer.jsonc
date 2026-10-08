@@ -3,7 +3,7 @@
   "name": "Load Balancer",
   "tier": "rare",
   "icon": "load-balancer",
-  "summary": "Damage past a foe's last HP flows on into the next foe still standing.",
+  "summary": "Damage past a foe's last HP flows on into the next plain foe still standing (guardians and foes with special damage rules are passed over).",
   "flavor": "No request dropped, no server idle.",
   "effects": [{ "kind": "overkill-flows" }]
 }

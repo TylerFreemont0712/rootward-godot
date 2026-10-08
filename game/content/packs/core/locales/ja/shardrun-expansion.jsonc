@@ -13,16 +13,16 @@
     "to": "融合"
   },
   {
-    "en": "Fuses all attacks into one bolt carrying their combined power × multiplier. Keeps its first attack's aim and element; wards stay separate.",
-    "to": "攻撃の矢を1本にまとめ、威力×倍率の合計を引き継ぎます。最初の攻撃の狙いと属性を保ち、防護の矢は別に残します。"
+    "en": "Fuses all attacks into one bolt that deals the sum of their power × multiplier. It keeps the first attack's power, aim and element; wards stay separate.",
+    "to": "すべての攻撃の矢を一本にまとめ、その威力×倍率の合計のダメージを与えます。威力、狙い、属性は最初の攻撃の矢のものを保ちます。ワードは別のままです。"
   },
   {
     "en": "Pair Fold",
     "to": "対の折り畳み"
   },
   {
-    "en": "Merges adjacent pairs that share attack/ward roles, keeping the first bolt's shape and combined effective power. An unpaired bolt stays.",
-    "to": "隣り合う矢が同じ役割（攻撃または防護）なら、最初の形を保って実効威力を合算します。余った1本はそのままです。"
+    "en": "Merges bolts in pairs from the front when both are attacks or both are wards. The first keeps its element, target and power, and its multiplier is raised so the pair's total (power × multiplier) is kept. Anything else stays.",
+    "to": "前から順に、両方が攻撃の矢、または両方がワードの矢であれば、二本ずつ合わせます。最初の矢は属性・狙い・威力を保ち、その倍率は組の合計（威力×倍率）が保たれるように上げられます。それ以外はそのままです。"
   },
   {
     "en": "Mirror Power",
@@ -37,16 +37,16 @@
     "to": "累積充填"
   },
   {
-    "en": "Each bolt receives the sum of all multipliers up to its position. Ordering decides who inherits the charge.",
-    "to": "各矢の倍率を、先頭からその位置までの倍率の合計に置き換えます。並び順が充填の受け手を決めます。"
+    "en": "Each bolt's multiplier becomes the running total of all multipliers up to and including its own. Ordering decides who inherits the charge.",
+    "to": "各矢の倍率は、それまでのすべての倍率の合計（その矢自身を含む）になります。順番が、どの矢が充電を受け継ぐかを決めます。"
   },
   {
     "en": "Weave",
     "to": "織り交ぜ"
   },
   {
-    "en": "Alternates doubled-multiplier wards and attacks, starting with a ward. Build protection and damage in the same volley.",
-    "to": "倍率を2倍にした防護の矢と攻撃の矢を交互に並べます。先頭は防護。同じ一斉射で守りと攻撃を組み立てます。"
+    "en": "Turns the 1st, 3rd, and later odd-numbered bolts into wards with doubled multipliers. Even-numbered bolts become attacks with their original multipliers.",
+    "to": "1本目、3本目と奇数番目の矢（以降も同じ）が、倍率を2倍にしたワードになります。偶数番目の矢は、元の倍率のままの攻撃になります。"
   },
   {
     "en": "Backdraft",
@@ -69,8 +69,8 @@
     "to": "超伝導"
   },
   {
-    "en": "Turns frost bolts into piercing spark bolts with triple multipliers. Other bolts are unchanged.",
-    "to": "霜属性の矢を貫通する雷属性の矢に変え、倍率を3倍にします。他の矢は変わりません。"
+    "en": "Turns frost bolts into piercing spark bolts and triples their multipliers. Other bolts are unchanged.",
+    "to": "霜の矢を、貫通する雷の矢に変え、その倍率を3倍にします。ほかの矢は変わりません。"
   },
   {
     "en": "Flash Freeze",
@@ -85,24 +85,24 @@
     "to": "合流"
   },
   {
-    "en": "Multiplies every multiplier by the number of distinct fire, frost and spark elements present (at least ×1).",
-    "to": "一斉射に含まれる火・霜・雷の異なる属性の数だけ、すべての倍率を乗算します（最低1倍）。"
+    "en": "Multiplies each bolt's multiplier by the number of distinct fire, frost, and spark elements in the volley (minimum ×1).",
+    "to": "一斉射に含まれる火・霜・雷の異なる属性の数を、各ボルトの倍率に掛けます（最低1倍）。"
   },
   {
     "en": "Monochrome",
     "to": "単色"
   },
   {
-    "en": "Doubles multipliers only when the entire volley shares one non-arcane element.",
-    "to": "一斉射のすべての矢が同じ火・霜・雷属性のいずれかである場合だけ、倍率を2倍にします。"
+    "en": "Doubles every bolt's multiplier only if all bolts share the same element and it is fire, frost, or spark.",
+    "to": "すべてのボルトが同じ属性で、その属性が火・霜・雷のいずれかの場合だけ、各倍率を2倍にします。"
   },
   {
     "en": "Spectrum Wheel",
     "to": "分光輪"
   },
   {
-    "en": "Cycles bolt elements through fire, frost and spark without splitting them. Prepare diversity without adding work from width.",
-    "to": "矢の属性を火・霜・雷の順に繰り返し割り当てます。矢を増やさず、多属性の組み合わせを準備します。"
+    "en": "Sets bolt elements in order to fire, frost, spark, then repeats without splitting bolts or widening the volley.",
+    "to": "ボルトの属性を火、霜、雷の順に設定し、くり返します。ボルトを分裂させず、一斉射の本数も増やしません。"
   },
   {
     "en": "Resonant Run",
@@ -125,8 +125,8 @@
     "to": "威力変換"
   },
   {
-    "en": "Converts bolts above 4 power to exactly 4 power, preserving their effective strength in the multiplier. Amplifying afterward is much stronger.",
-    "to": "威力が4を超える矢を威力4に変え、実効威力を保つよう倍率に移します。その後の威力加算がより強力になります。"
+    "en": "Bolts above 4 power become 4 power, with their multiplier scaled up to preserve the original power × multiplier. Amplifying afterward is much stronger.",
+    "to": "威力が4を超えるボルトを威力4にし、元の「威力×倍率」を保つよう倍率を上げます。その後に増幅すると、さらに強力です。"
   },
   {
     "en": "Rebuke",
@@ -141,8 +141,8 @@
     "to": "備えの活用"
   },
   {
-    "en": "Attacks gain +1 multiplier per 4 block you already have. Reads your protection without spending it; wards are unchanged.",
-    "to": "現在の防御4ごとに、攻撃の矢の倍率を1加えます。防御は消費せず、防護の矢は変わりません。"
+    "en": "Attacks gain +1 multiplier for each full 4 block you already have. It does not spend block; wards are unchanged.",
+    "to": "すでに持っているブロックが4増えるごとに、攻撃の倍率が1上がります。ブロックは消費せず、防御ボルトも変わりません。"
   },
   {
     "en": "Counterweight",
@@ -165,8 +165,8 @@
     "to": "陣地構築"
   },
   {
-    "en": "Multiplies ward multipliers by the turn number, up to ×5. Later defenses can support a bigger counterattack.",
-    "to": "防護の矢の倍率をターン数倍にします（最大5倍）。長く守るほど、大きな反撃を支えられます。"
+    "en": "Multiplies ward multipliers by the turn number, up to ×5. Later wards gather more block.",
+    "to": "ワードの倍率に、ターン数を掛けます（最大×5）。後のワードほど、より多くのブロックを集めます。"
   },
   {
     "en": "Time Dilation",
@@ -245,8 +245,8 @@
     "to": "直積"
   },
   {
-    "en": "Makes a bolt for each ordered pair of different elements, averaging power and adding multipliers. Keeps the first bolt's shape. Same-element pairs vanish. Quadratic work.",
-    "to": "異なる属性の順序付きペアごとに、威力を平均し倍率を足した矢を作ります。最初の矢の形を保ち、同属性のペアは除きます。計算量は二次です。"
+    "en": "For each ordered pair of bolts with different elements, makes one with the first bolt's element, target, pierce, and attack or ward role; it gets their average power and summed multipliers. Same-element pairs vanish. Quadratic work.",
+    "to": "属性の異なるボルトの順序付きペアごとに1本作ります。最初のボルトの属性・対象・貫通・攻撃/防御を引き継ぎ、威力は2本の平均、倍率は合計です。同属性のペアは消えます。処理量は二次です。"
   },
   {
     "en": "Guard Echo",
@@ -261,8 +261,8 @@
     "to": "小さな精鋭"
   },
   {
-    "en": "If one or two bolts survive the landing cap, double their multipliers. Fuse or trim a volley to qualify.",
-    "to": "着弾上限の適用後に矢が1～2本なら、その倍率を2倍にします。融合や絞り込みで条件を満たしましょう。"
+    "en": "If only 1 or 2 bolts remain after the landing cap, double each one's multiplier. Fuse or trim a volley to qualify.",
+    "to": "着弾上限の適用後に残るボルトが1～2本なら、それぞれの倍率を2倍にします。融合や絞り込みで条件を満たしましょう。"
   },
   {
     "en": "Nothing wasted. Nothing diluted.",
@@ -273,8 +273,8 @@
     "to": "群れの旗"
   },
   {
-    "en": "If at least eight bolts survive the landing cap, double all their multipliers. Pair with a wider aperture.",
-    "to": "着弾上限の適用後に矢が8本以上あれば、すべての倍率を2倍にします。開口の拡張と組み合わせましょう。"
+    "en": "If 8 or more bolts remain after the landing cap, double every bolt's multiplier. Pair with a wider aperture.",
+    "to": "着弾上限の適用後にボルトが8本以上残ると、すべての倍率を2倍にします。開口の拡張と組み合わせましょう。"
   },
   {
     "en": "One signal. A thousand answers.",
@@ -333,8 +333,8 @@
     "to": "無属性の印章"
   },
   {
-    "en": "Elementless bolts double their multipliers.",
-    "to": "無属性の矢の倍率を2倍にします。"
+    "en": "Bolts with no element double their multipliers.",
+    "to": "属性のないボルトの倍率を2倍にします。"
   },
   {
     "en": "Before the elements, there was intent.",
@@ -417,8 +417,8 @@
     "to": "反撃の時計"
   },
   {
-    "en": "If your previous successful cast in this fight contained only wards, attack bolts triple their multipliers.",
-    "to": "この戦いで直前に成功した詠唱が防護の矢だけなら、攻撃の矢の倍率を3倍にします。"
+    "en": "If your last successful cast this fight had only ward bolts, attack bolts in this cast have triple multipliers.",
+    "to": "この戦いで直前に成功した詠唱が防御ボルトだけなら、今回の攻撃ボルトの倍率が3倍になります。"
   },
   {
     "en": "First shelter. Then answer.",

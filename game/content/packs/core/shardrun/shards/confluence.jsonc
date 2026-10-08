@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "confluence",
-  "summary": "Multiplies every multiplier by the number of distinct fire, frost and spark elements present (at least ×1).",
+  "summary": "Multiplies each bolt's multiplier by the number of distinct fire, frost, and spark elements in the volley (minimum ×1).",
   "art_note": "Three differently colored tributaries meet in a brilliant triskelion.",
   "tags": ["lists", "dictionaries"],
   "examples": [

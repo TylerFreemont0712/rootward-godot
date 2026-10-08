@@ -1,4 +1,4 @@
-function radix_sort(bolts, battle) {
+function radixSort(bolts, battle) {
   // Four stable hexadecimal passes cover every power from 0 through the game's 9,999 cap.
   let result = bolts.map((bolt) => ({ ...bolt }));
   for (const shift of [0, 4, 8, 12]) {

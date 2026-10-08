@@ -3,7 +3,7 @@
   "name": "Wider Aperture",
   "rarity": "uncommon",
   "icon": "wider-aperture",
-  "summary": "Eight more bolts land before the rest fizzle.",
+  "summary": "Raises the landing cap by 8, so up to 8 more bolts land before extras fizzle.",
   "flavor": "The lens the first Maintainers ground, before anyone thought to stop at sixteen.",
   "effects": [
     { "kind": "bolt-cap", "add": 8 }

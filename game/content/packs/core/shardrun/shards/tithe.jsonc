@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "tithe",
-  "summary": "Halves every bolt's power and doubles its multiplier. The same damage today, on the axis that has room to grow.",
+  "summary": "Halves each bolt's power, rounding down, and doubles its multiplier. The multiplier has more room to grow.",
   "tags": ["lists", "dictionaries"],
   "examples": [
     {

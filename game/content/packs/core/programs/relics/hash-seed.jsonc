@@ -2,7 +2,7 @@
   "id": "hash-seed",
   "name": "Hash Seed",
   "tier": "uncommon",
-  "summary": "Bolts that hit a weakness deal 1 more.",
+  "summary": "Bolts that hit a weakness gain 1 power before the weakness multiplier.",
   "flavor": "Collisions are only a matter of time.",
   "effects": [
     {

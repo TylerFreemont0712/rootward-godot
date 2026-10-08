@@ -8,7 +8,7 @@
   "icon": "shardrun/card-sort-by-key",
   "id": "sort-by-key",
   "name": "Sort by Key",
-  "summary": "A stable sort by element, then by power: the elements are grouped, and equal bolts keep their order.",
+  "summary": "A stable sort by element (none, fire, frost, then spark), then by power: the elements are grouped, and equal bolts keep their order.",
   "function": "sort_by_key",
   "keywords": [],
   "makes": "unsorted",

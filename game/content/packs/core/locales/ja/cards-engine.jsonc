@@ -13,6 +13,6 @@
   {"en": "For the rest of the fight, every program's seed gains a bolt of the Table's best row divided by 4. Build the answer from the smallest case up.", "to": "戦いのあいだずっと、毎回のプログラムの種に、表のいちばん大きい行を4でわったボルトが1本ふえる。小さいところから答えを積み上げよう。"},
   {"en": "from sortedcontainers import SortedList", "to": "from sortedcontainers import SortedList"},
   {"en": "from sortedcontainers import SortedList+", "to": "from sortedcontainers import SortedList+"},
-  {"en": "For the rest of the fight, you have an Index of 8 more bolts, and the 2 strongest it holds at the end of the fight start the next one.", "to": "戦いのあいだずっと、インデックスにボルトを8本多くためられる。戦いの終わりにいちばん強い2本は、次の戦いに持ちこせる。"},
-  {"en": "For the rest of the fight, you have an Index of 12 more bolts, and the 3 strongest it holds at the end of the fight start the next one.", "to": "戦いのあいだずっと、インデックスにボルトを12本多くためられる。戦いの終わりにいちばん強い3本は、次の戦いに持ちこせる。"}
+  {"en": "For the rest of the fight, the Index holds 8 more bolts, and its 2 strongest bolts at the end of the fight start the next one.", "to": "この戦闘の残りの間、索引の容量が8本ぶん増えます。戦闘の終わりに索引の中でいちばん強い2本が、次の戦闘の最初の矢になります。"},
+  {"en": "For the rest of the fight, the Index holds 12 more bolts, and its 3 strongest bolts at the end of the fight start the next one.", "to": "この戦闘の残りの間、索引の容量が12本ぶん増えます。戦闘の終わりに索引の中でいちばん強い3本が、次の戦闘の最初の矢になります。"}
 ]

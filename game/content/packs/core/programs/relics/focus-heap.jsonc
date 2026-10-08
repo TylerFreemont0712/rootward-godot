@@ -3,7 +3,7 @@
   "name": "Priority Queue",
   "tier": "focus",
   "icon": "focus-heap",
-  "summary": "import heapq is in force from the first turn of every fight, free.",
+  "summary": "From the first turn of every fight, import heapq is free: each strike card is handed the volley strongest first.",
   "flavor": "A few huge bolts, strongest first.",
   "effects": [
     {

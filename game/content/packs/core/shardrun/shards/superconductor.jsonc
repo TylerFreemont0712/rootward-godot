@@ -5,7 +5,7 @@
   "cost": 1,
   "complexity": "linear",
   "function": "superconductor",
-  "summary": "Turns frost bolts into piercing spark bolts with triple multipliers. Other bolts are unchanged.",
+  "summary": "Turns frost bolts into piercing spark bolts and triples their multipliers. Other bolts are unchanged.",
   "art_note": "A blue-white lightning filament racing along a frozen copper coil.",
   "tags": ["lists", "dictionaries"],
   "examples": [

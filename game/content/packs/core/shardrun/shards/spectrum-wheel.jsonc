@@ -5,7 +5,7 @@
   "cost": 0,
   "complexity": "linear",
   "function": "spectrum_wheel",
-  "summary": "Cycles bolt elements through fire, frost and spark without splitting them. Prepare diversity without adding work from width.",
+  "summary": "Sets bolt elements in order to fire, frost, spark, then repeats without splitting bolts or widening the volley.",
   "art_note": "A three-spoked stained-glass wheel turning above three intact bolts.",
   "tags": ["lists", "dictionaries"],
   "examples": [

@@ -9,7 +9,7 @@
   "icon": "shardrun/card-backtracking",
   "id": "backtracking",
   "name": "Backtracking",
-  "summary": "Backtracks over assignments to all foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, m choices per bolt.",
+  "summary": "Backtracks over assignments of bolts to foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, each choosing one of the foes.",
   "function": "backtracking",
   "keywords": [],
   "cap_n": 12,

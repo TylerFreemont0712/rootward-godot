@@ -8,7 +8,7 @@
   "focus": "merge",
   "role": "strike",
   "complexity": "linear",
-  "summary": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20%. It flies at the toughest foe.",
+  "summary": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20% (40% with import math). It flies at the toughest foe.",
   "function": "merge_strike",
   "forge": {"into": "merge-strike-plus", "verb": "upgrade"},
   "examples": [

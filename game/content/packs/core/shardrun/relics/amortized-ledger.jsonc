@@ -3,7 +3,7 @@
   "name": "Amortized Ledger",
   "rarity": "rare",
   "icon": "amortized-ledger",
-  "summary": "A cast is billed the logarithm of the work it did, instead of its square root. Wide and quadratic spells become payable.",
+  "summary": "Spell cost grows logarithmically with work instead of with its square root, making wide, high-work spells cheaper.",
   "flavor": "Someone kept the books for the whole Machine, and rounded every page down.",
   "effects": [
     { "kind": "work-billing", "curve": "log" }

@@ -9,7 +9,7 @@
   "icon": "shardrun/card-lower-bound-ward",
   "id": "lower-bound-ward",
   "name": "Lower-Bound Ward",
-  "summary": "Binary-searches the index for the smallest bolt that covers the biggest incoming attack and takes it as block. Exact defence.",
+  "summary": "Binary-searches the index for the smallest bolt that covers the biggest incoming attack (damage times hits) and takes it as block; if none covers it, the strongest does. Exact defence.",
   "function": "lower_bound_ward",
   "keywords": [],
   "forge": {

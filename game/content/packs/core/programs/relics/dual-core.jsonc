@@ -3,7 +3,7 @@
   "name": "Dual Core",
   "tier": "legendary",
   "icon": "dual-core",
-  "summary": "Your program's volley lands twice.",
+  "summary": "Every bolt in your program's volley resolves twice at full strength; the cards run only once.",
   "flavor": "Two of everything, running at once, neither waiting for the other.",
   "effects": [{ "kind": "echo" }]
 }

@@ -9,7 +9,7 @@
   "complexity": "exponential",
   "big_o": "O(2ⁿ)",
   "cap_n": 10,
-  "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you; the rest still fly. Perfect, and slow.",
+  "summary": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you and the rest still fly; if none reaches 12, all ten guard. Perfect, and slow.",
   "function": "exhaustive_ward",
   "forge": {"into": "exhaustive-ward-plus", "verb": "upgrade"},
   "examples": [

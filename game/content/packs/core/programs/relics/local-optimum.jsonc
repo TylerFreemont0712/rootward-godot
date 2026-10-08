@@ -3,7 +3,7 @@
   "name": "Local Optimum",
   "tier": "paradigm",
   "icon": "local-optimum",
-  "summary": "A foe your program kills with Initiative pays 1 mana next turn, at most 2.",
+  "summary": "Defeating a foe before it acts grants 1 bonus mana next turn, up to 2 that turn.",
   "flavor": "The law of your paradigm.",
   "effects": [
     {

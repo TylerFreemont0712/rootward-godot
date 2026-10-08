@@ -9,7 +9,7 @@
   "complexity": "quadratic",
   "big_o": "O(n²), first 24 bolts",
   "cap_n": 24,
-  "summary": "Among the first 24 bolts, each attack gains +1 for every other attack with the same power and element, up to +3. Wards and later bolts do not count.",
+  "summary": "Among the first 24 bolts, each attack gains +1 for every other attack with the same power and element, up to +3. Wards, stashed bolts and later bolts do not count.",
   "function": "collision_census",
   "examples": [
     {

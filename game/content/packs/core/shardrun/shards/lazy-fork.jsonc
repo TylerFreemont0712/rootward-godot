@@ -4,7 +4,7 @@
   "rarity": "common",
   "cost": 0,
   "function": "lazy_fork",
-  "summary": "A free Fork, salvaged from broken code. Something about it is off by one. A forge can repair it.",
+  "summary": "Splits every bolt except the last into two 60%-power copies, then drops the last bolt. A forge can repair it.",
   "tags": ["loops", "off-by-one"],
   "forge": { "into": "fork", "verb": "repair" },
   "examples": [

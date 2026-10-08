@@ -4,8 +4,8 @@
     "to": "スプリント"
   },
   {
-    "en": "A program of three cards or fewer counts 25% less work.",
-    "to": "カードが3枚以下のプログラムは、仕事量が25%少なくなる。"
+    "en": "Programs with 1–3 cards count as doing 25% less work toward timeouts and foes that move first.",
+    "to": "1〜3枚のカードのプログラムは、タイムアウトと先に動く敵に向けた仕事が25%少ないものとして数えられます。"
   },
   {
     "en": "Tiny cheap programs every turn; kill chains for mana.",
@@ -16,8 +16,8 @@
     "to": "短絡評価、break、ストリーミング。"
   },
   {
-    "en": "import heapq is in force from the first turn of every fight, free.",
-    "to": "戦闘の最初から、無料で import heapq が使える。"
+    "en": "From the first turn of every fight, import heapq is free: each strike card is handed the volley strongest first.",
+    "to": "どの戦闘の最初のターンからも、import heapqは無料です。どの攻撃カードも、一斉射を威力の強い順に渡されます。"
   },
   {
     "en": "A few huge bolts, strongest first.",
@@ -32,8 +32,8 @@
     "to": "スケジューラー"
   },
   {
-    "en": "A program that hits every living foe gives each bolt +1.",
-    "to": "生きている敵すべてに当たるプログラムは、各ボルトの威力が1上がる。"
+    "en": "If a program hits every living foe, each attack bolt gains +1 power.",
+    "to": "プログラムが生きている敵全員に攻撃を当てると、各攻撃ボルトの威力が1上がります。"
   },
   {
     "en": "Spread bolts over crowds exactly.",
@@ -48,8 +48,8 @@
     "to": "列挙（れっきょ）"
   },
   {
-    "en": "Brute-force sources make bolts with +1 power; a volley may hold 192 bolts.",
-    "to": "総当たりの生成カードは、ボルトの威力が1上がる。一斉射は192本まで持てる。"
+    "en": "Each bolt created by a Brute Force Source card gains +1 power, rewarding wide volleys. The volley limit rises to 192 bolts.",
+    "to": "Brute ForceのSourceカードが作るボルトは、それぞれ威力が1上がります。さらに、一斉射の上限が192本になります。"
   },
   {
     "en": "Floods of hundreds of bolts.",
@@ -112,8 +112,8 @@
     "to": "表づくり"
   },
   {
-    "en": "The Table's bolt starts on turn 2 and is (dp[t-1] + dp[t-2]) // 3.",
-    "to": "テーブルのボルトは2ターン目から。(dp[t-1] + dp[t-2]) // 3 の威力になる。"
+    "en": "Starting on turn 2, the Table adds a seed bolt with power floor((damage of the last 2 programs) / 3).",
+    "to": "2ターン目から、テーブルは威力（直前の2プログラムのダメージ÷3、切り捨て）の種の矢を一本加えます。"
   },
   {
     "en": "Slow first turns, overwhelming late turns.",
@@ -128,8 +128,8 @@
     "to": "最適化"
   },
   {
-    "en": "A kill with no overkill writes double into the Table and gives 2 block.",
-    "to": "ぴったり倒すと、テーブルに2倍のダメージを書き、ブロックを2得る。"
+    "en": "Killing a foe with exactly enough damage (no overkill) records that damage twice in the Table and grants 2 block.",
+    "to": "敵をオーバーキルなしでちょうど倒すと、そのダメージがテーブルに2倍で記録され、ブロックを2得ます。"
   },
   {
     "en": "Exact kills, never a point wasted.",
@@ -144,8 +144,8 @@
     "to": "索引（さくいん）"
   },
   {
-    "en": "The index holds 16, and the seed takes its two strongest bolts.",
-    "to": "インデックスは16本まで持てる。種に最も強い2本を取り出す。"
+    "en": "The Index stores up to 16 wasted bolts (overkill, bolts aimed at fallen foes, stashed bolts); each program starts with its 2 strongest stored bolts.",
+    "to": "索引には、無駄になった矢を最大16本まで保存できます（オーバーキル、倒れた敵に向いた矢、保存された矢）。各プログラムは、保存された中でいちばん強い2本から始まります。"
   },
   {
     "en": "Bank overkill, then spend it precisely.",
@@ -176,8 +176,8 @@
     "to": "二分探索"
   },
   {
-    "en": "A volley sorted when a strike reads it gives each of that strike's bolts +1.",
-    "to": "攻撃カードが読む一斉射が順番どおりなら、そのカードの各ボルトの威力が1上がる。"
+    "en": "When a Strike reads bolts in weakest-first order, each attack bolt it creates gains +1 power.",
+    "to": "Strikeが弱い順に並んだボルトを読むと、作り出す攻撃ボルトの威力がそれぞれ1上がります。"
   },
   {
     "en": "Sort once, search many times.",
@@ -192,8 +192,8 @@
     "to": "深い再帰"
   },
   {
-    "en": "Recurse goes one level deeper: the card after a split runs on each quarter.",
-    "to": "分割の次のカードは、半分ではなく4分の1ずつ実行する。"
+    "en": "Recurse splits one level deeper, so the next card runs on each quarter-size piece instead of each half.",
+    "to": "Recurseがもう一段深く分割するため、次のカードは半分ではなく4分の1ずつに対して実行されます。"
   },
   {
     "en": "Towers of small cards on small pieces.",
@@ -224,8 +224,8 @@
     "to": "分割"
   },
   {
-    "en": "A pivot card marks its pivot bolt, which lands doubled on the toughest foe.",
-    "to": "ピボットのカードは目印のボルトを作る。そのボルトは最もタフな敵に2倍の威力で当たる。"
+    "en": "When a pivot algorithm marks a bolt, it deals double damage to the living foe with the most HP.",
+    "to": "ピボットを使うアルゴリズムがボルトに印をつけると、HPが最も多い生存中の敵に2倍のダメージを与えます。"
   },
   {
     "en": "Partitions, selection, quick sort.",
@@ -240,8 +240,8 @@
     "to": "局所最適（きょくしょさいてき）"
   },
   {
-    "en": "A foe your program kills with Initiative pays 1 mana next turn, at most 2.",
-    "to": "先手で敵を倒すと、次のターンのマナを1得る。最大2。"
+    "en": "Defeating a foe before it acts grants 1 bonus mana next turn, up to 2 that turn.",
+    "to": "敵が行動する前に倒すと、次のターンに追加マナを1得ます（そのターン最大2）。"
   },
   {
     "en": "Throw Hardware At It",
@@ -256,16 +256,16 @@
     "to": "テーブル"
   },
   {
-    "en": "Each program's landed damage is written to dp[t]. From turn 3, the seed gains a bolt of (dp[t-1] + dp[t-2]) // 4.",
-    "to": "当たったダメージを dp[t] に書く。3ターン目から、(dp[t-1] + dp[t-2]) // 4 のボルトが種に加わる。"
+    "en": "Records each turn's damage to foes. Starting turn 3, the next program gets a seed bolt with power floor((damage from the last 2 turns) / 4).",
+    "to": "各ターンに敵へ与えたダメージを記録します。3ターン目から、直近2ターンのダメージを4で割って切り捨てた威力の種ボルトが次のプログラムに加わります。"
   },
   {
     "en": "The Index",
     "to": "インデックス"
   },
   {
-    "en": "Wasted power is kept in a sorted index of at most 8 bolts. Each program takes its strongest bolt.",
-    "to": "むだになった威力を、8本までの並んだインデックスにためる。各プログラムは最も強い1本を取り出す。"
+    "en": "Power a program wastes (overkill, bolts that land on a fallen foe, bolts left over) is stored as bolts in an Index of up to 8; each program starts with the strongest stored bolt, which leaves the Index.",
+    "to": "プログラムが無駄にした威力（オーバーキル、倒れた敵に当たる矢、余った矢）は、最大8本の索引に矢として保存されます。各プログラムは、保存された中でいちばん強い矢から始まり、その矢は索引から出ます。"
   },
   {
     "en": "Recurse",

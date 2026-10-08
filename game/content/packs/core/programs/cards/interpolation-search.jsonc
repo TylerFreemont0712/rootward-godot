@@ -9,7 +9,7 @@
   "icon": "shardrun/card-interpolation-search",
   "id": "interpolation-search",
   "name": "Interpolation Search",
-  "summary": "On a sorted volley, estimates where each foe's killing bolt lies from its power. Uses the strongest if none kills.",
+  "summary": "On a sorted volley, estimates where each foe's killing bolt lies from its power, with no fallback, so a lopsided volley costs linear work. Uses the strongest if none kills.",
   "function": "interpolation_search",
   "keywords": [],
   "needs": "sorted",

@@ -9,7 +9,7 @@
   "icon": "shardrun/card-branch-and-bound",
   "id": "branch-and-bound",
   "name": "Branch and Bound",
-  "summary": "Finds the subset of the first ten bolts that blocks the damage the foes intend with the least to spare, cutting any branch that cannot reach it or beat the best. Exhaustive Ward, pruned.",
+  "summary": "Finds the subset of the first ten bolts that blocks the damage the foes intend with the least to spare, cutting any branch that cannot reach it or beat the best; if the ten cannot reach it, all ten guard. Exhaustive Ward's search, pruned to the damage coming rather than a fixed 12.",
   "function": "branch_and_bound",
   "keywords": [],
   "cap_n": 10,
