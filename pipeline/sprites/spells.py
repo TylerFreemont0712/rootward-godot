@@ -836,6 +836,120 @@ def hit_pillar(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
             f.rune(k + 1, (cx + math.cos(angle) * w * 0.27, ground + math.sin(angle) * w * 0.27 * 0.2), h * 0.04, 0, 1.5, 0.85 * fade_all * span(t, land, land + 0.06))
 
 
+def _polar(centre: tuple[float, float], angle: float, reach: float) -> tuple[float, float]:
+    return (centre[0] + reach * math.cos(math.radians(angle)), centre[1] + reach * math.sin(math.radians(angle)))
+
+
+def hit_ember(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A fire bolt lands: a white-hot flash, a scorch that darkens the ground, a flame tongue that flickers up off the
+    blow, sparks flung mostly upward on curves and pulled down by their own weight, and embers that drift up after."""
+    cx, cy = w / 2, h / 2
+    contact = 0.16
+    flash = fade(t, contact - 0.03, contact + 0.14)
+    f.disc((cx, cy), w * (0.08 + 0.05 * out(span(t, contact, contact + 0.08))), 0.95 * flash, blur=5)
+    if t < contact:
+        return
+    after = span(t, contact, 1.0)
+    f.disc((cx, cy + h * 0.03), w * 0.26 * out(after, 2), 0.35 * fade(t, contact, 0.9), shade=True, blur=8)
+    flicker = 0.85 + 0.15 * math.sin(t * 60)
+    height = h * 0.34 * out(span(t, contact, contact + 0.18), 2) * (1 - span(t, 0.55, 0.9)) * flicker
+    if height > 0.01:
+        tongue = [
+            (cx - w * 0.07, cy),
+            (cx - w * 0.02, cy - height * 0.6),
+            (cx, cy - height),
+            (cx + w * 0.03, cy - height * 0.55),
+            (cx + w * 0.07, cy),
+        ]
+        f.polygon(tongue, 0.8 * fade(t, contact, 0.9), blur=2)
+    ring = w * (0.1 + 0.34 * out(after, 3))
+    f.ellipse((cx, cy), ring, ring * 0.22, 4 * (1 - after) + 1, 0.8 * fade(t, contact, 0.8), blur=1)
+    for i in range(20):
+        angle = rng.uniform(-170, -10) if i < 14 else rng.uniform(0, 360)
+        reach = w * rng.uniform(0.28, 0.5)
+        lift = rng.uniform(0.3, 0.7)
+
+        def spark_at(u: float) -> tuple[float, float]:
+            x, y = _polar((cx, cy), angle, reach * out(u, 2.5))
+            return (x, y + h * 0.22 * lift * u * u)
+
+        head = span(t, contact, 1.0)
+        tail = max(0.0, head - 0.16)
+        f.lines([spark_at(tail), spark_at(head)], 4.5 * (1 - head) + 1.4, fade(t, contact, 0.95))
+    for j in range(14):
+        drift = rng.uniform(-0.14, 0.14)
+        start = rng.uniform(0.0, 0.25)
+        rise = span(t, contact + 0.1 + start * 0.3, 1.0)
+        x = cx + w * (drift + 0.04 * math.sin(t * 9 + j))
+        y = cy - h * (0.05 + 0.42 * rise * (0.5 + start))
+        f.disc((x, y), w * rng.uniform(0.012, 0.026) * (1 - rise * 0.5), fade(t, contact + 0.1, 0.95), blur=1.5)
+
+
+def hit_rime(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A frost bolt lands: a cold white flash, six ice shards thrust out of the blow and held, a notched frost ring, and
+    snowflakes that sift down and out afterwards."""
+    cx, cy = w / 2, h / 2
+    contact = 0.18
+    f.disc((cx, cy), w * 0.1, 0.8 * fade(t, contact - 0.02, contact + 0.12), blur=4)
+    if t < contact:
+        return
+    after = span(t, contact, 1.0)
+    grow = out(span(t, contact, contact + 0.16), 3)
+    for i in range(6):
+        angle = i * 60 + rng.uniform(-9, 9)
+        length = w * rng.uniform(0.3, 0.38) * grow
+        base = w * 0.04
+        tip = _polar((cx, cy), angle, length)
+        left = _polar((cx, cy), angle + 90, base)
+        right = _polar((cx, cy), angle - 90, base)
+        f.polygon([left, tip, right], 0.9 * fade(t, contact, 0.96))
+        f.polygon([left, tip, right], 0.35 * fade(t, contact, 0.8), shade=True, blur=3)
+    radius = w * (0.12 + 0.34 * out(after, 3))
+    for k in range(12):
+        start = k * 30 + 3
+        f.arc((cx, cy), radius, start, start + 22, 4 * (1 - after) + 1.2, 0.8 * fade(t, contact, 0.9))
+    for k in range(8):
+        angle = rng.uniform(0, 360)
+        dist = w * rng.uniform(0.12, 0.42)
+        u = span(t, contact + 0.05, 1.0)
+        x, y = _polar((cx, cy), angle, dist * (0.6 + 0.4 * out(u)))
+        at = (x, y + h * 0.3 * u * u)
+        size = w * rng.uniform(0.02, 0.032)
+        for arm in range(6):
+            spin = arm * 60 + t * 140
+            f.lines([at, _polar(at, spin, size)], 1.6, 0.85 * fade(t, contact + 0.05, 0.95))
+
+
+def hit_arc(f: Frame, t: float, w: int, h: int, rng: random.Random) -> None:
+    """A spark bolt lands: the blow flashes, then jagged arcs leap out of it and crack, forking as they go. The arcs are
+    drawn again every few frames with new kinks, so they flicker like real lightning."""
+    cx, cy = w / 2, h / 2
+    contact = 0.14
+    f.disc((cx, cy), w * 0.1, 1.0 * fade(t, contact - 0.02, contact + 0.08), blur=6)
+    if t < contact:
+        return
+    after = span(t, contact, 1.0)
+    crack = random.Random(int(t * 12))
+    reach = w * 0.44 * out(span(t, contact, contact + 0.22), 2)
+    for arm in range(5):
+        base = arm * 72 + rng.uniform(-12, 12)
+        points = [(cx, cy)]
+        for step in range(1, 8):
+            along = reach * step / 7
+            side = crack.uniform(-w * 0.05, w * 0.05) * (1 - after * 0.5)
+            x, y = _polar((cx, cy), base, along)
+            nx, ny = _polar((0, 0), base + 90, side)
+            points.append((x + nx, y + ny))
+        value = 0.95 * fade(t, contact, 0.85) * (0.7 if crack.random() < 0.3 else 1.0)
+        f.lines(points, 3.2, value)
+        f.lines(points, 7, 0.35 * value, blur=2)
+        fork = points[3]
+        branch = [fork] + [_polar(fork, base + 40 + crack.uniform(-15, 15), reach * 0.18 * k) for k in range(1, 4)]
+        f.lines(branch, 2, 0.7 * value)
+    ring = w * (0.08 + 0.4 * out(after, 4))
+    f.ellipse((cx, cy), ring, ring, 2.4, 0.7 * fade(t, contact, 0.5))
+
+
 MOTIONS = {
     "cast-sigil": cast_sigil,
     "cast-sigil-simple": cast_sigil_simple,
@@ -856,6 +970,9 @@ MOTIONS = {
     "hit-starfall": hit_starfall,
     "hit-roots": hit_roots,
     "hit-pillar": hit_pillar,
+    "hit-ember": hit_ember,
+    "hit-rime": hit_rime,
+    "hit-arc": hit_arc,
 }
 
 

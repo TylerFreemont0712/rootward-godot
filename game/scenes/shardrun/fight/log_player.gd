@@ -417,6 +417,19 @@ static func impact_sheet(look: Dictionary) -> String:
 	return ""
 
 
+## The blow a bolt of this element lands with (ADR-0014's sheets): fire, frost and spark each strike in their own way,
+## and anything else keeps the bracket slam.
+static func blow_sheet(element: String) -> String:
+	match element:
+		"fire":
+			return "hit-ember"
+		"frost":
+			return "hit-rime"
+		"spark":
+			return "hit-arc"
+	return "hit-compile"
+
+
 ## How fast a heavy cast's circle of `tier` writes itself: in a gather of at least HEAVY_GATHER seconds.
 static func gather_speed(tier: int) -> float:
 	var form := float(MagicCircle.TIERS[clampi(tier, 0, MagicCircle.TIERS.size() - 1)].form)
@@ -483,8 +496,12 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 			var blow: SpellAnim = null
 			if critical:
 				blow = stage.spell("hit-critical", aimed.target_point(), element, 0.75 + minf(0.45, weight * 0.6))
+			var power := 0.75 + minf(0.6, weight * 1.2)
 			if blow == null:
-				blow = stage.spell("hit-compile", aimed.target_point(), element, 0.75 + minf(0.6, weight * 1.2))
+				blow = stage.spell(blow_sheet(element), aimed.target_point(), element, power)
+			# A missing sheet falls back to the bracket slam, which every element has.
+			if blow == null:
+				blow = stage.spell("hit-compile", aimed.target_point(), element, power)
 			if blow != null:
 				struck = true
 				await blow.landed()

@@ -44,3 +44,13 @@ func test_a_blow_lands_and_the_animation_goes() -> void:
 func test_a_missing_animation_is_null_not_an_error() -> void:
 	var holder := auto_free(Node2D.new()) as Node2D
 	assert_object(SpellAnim.play(holder, "no-such-spell", Vector2.ZERO)).is_null()
+
+
+func test_each_element_strikes_with_its_own_blow() -> void:
+	# A bolt's element picks its blow; the sheets exist, so no element falls back to the bracket slam.
+	assert_str(LogPlayer.blow_sheet("fire")).is_equal("hit-ember")
+	assert_str(LogPlayer.blow_sheet("frost")).is_equal("hit-rime")
+	assert_str(LogPlayer.blow_sheet("spark")).is_equal("hit-arc")
+	assert_str(LogPlayer.blow_sheet("none")).is_equal("hit-compile")
+	for element: String in ["fire", "frost", "spark"]:
+		assert_bool(SpellAnim.facts_of(LogPlayer.blow_sheet(element)).is_empty()).is_false()
