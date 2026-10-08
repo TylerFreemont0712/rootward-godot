@@ -48,6 +48,8 @@ const TILT := -0.05
 const STACK_STEP := 0.55
 const STACK_SHRINK := 0.68
 const CLOSE_SECONDS := 0.42
+## How much bigger it grows as it closes (a share of its radius), read by _draw and by final_node_global alike.
+const CLOSE_SWELL := 0.35
 ## A resolved shard writes its contribution over this many stage seconds.
 const SHARD_DRAW_SECONDS := 0.34
 const RUNES_FALLBACK := "λ ∑ { } => ; ∀ ∃ ( ) 0 1 ⊕ ⊗ != == [ ] ≤ ≥ :: -> & | ^"
@@ -222,6 +224,15 @@ func launch_point() -> Vector2:
 	return position + _disc_origin(front) + Vector2(cos(angle) * SQUASH, sin(angle)).rotated(TILT) * reach
 
 
+## The orrery's final planet in global space: where its bolts are born. A bolt reads it every frame, so it follows the
+## turning orrery. It uses _draw's clock and swell; with no shards it is the circle's centre.
+func final_node_global() -> Vector2:
+	# LEARN: the origin is the planet as _draw places it this frame (same motion clock, same swell), so a bolt leaves
+	# from the star the player sees, however far the orrery has turned or swelled since the circle was cast.
+	var local := LegendaryOrrery.final_node(LegendaryOrrery.motion_clock(self), radius * _swell(), layers.size())
+	return to_global(local)
+
+
 ## A bolt has left: the circle flares and a ring of light runs out through it.
 func pulse() -> void:
 	_flare = 1.0
@@ -252,6 +263,16 @@ func _lean() -> float:
 ## The centre of the disc a burst starts from: a centred style has no stack in front of it.
 func _centre(index: int) -> Vector2:
 	return Vector2.ZERO if style in CosmeticRules.CENTRED_STYLES else _disc_origin(index)
+
+
+## How far the close has run: 0 while the circle stands, 1 once CLOSE_SECONDS have passed.
+func _closing_share() -> float:
+	return 0.0 if _closing < 0.0 else clampf((clock - _closing) / CLOSE_SECONDS, 0.0, 1.0)
+
+
+## How much the circle has swelled as it closes: 1 while it stands. Its drawing and its final node both use this.
+func _swell() -> float:
+	return 1.0 + _closing_share() * CLOSE_SWELL
 
 
 ## The volley is over: the circle spins up, swells and fades, its runes scattering, then it is gone.
@@ -398,9 +419,9 @@ func _phase(from: float, to: float) -> float:
 func _draw() -> void:
 	if external_construction and _arrived == 0:
 		return
-	var closing := 0.0 if _closing < 0.0 else clampf((clock - _closing) / CLOSE_SECONDS, 0.0, 1.0)
+	var closing := _closing_share()
 	var fade := 1.0 - closing * closing
-	var swell := 1.0 + closing * 0.35
+	var swell := _swell()
 	var pop := 1.0 + 0.08 * maxf(0.0, _flare - 0.4)
 	var breathe := 0.85 + 0.15 * sin(clock * 5.0)
 	if style == "ring-bloom":
@@ -409,6 +430,11 @@ func _draw() -> void:
 		draw_set_transform_matrix(_disc_xf)
 		RingBloom.draw(self, radius * swell, fade)
 		draw_set_transform_matrix(Transform2D.IDENTITY)
+		_light(fade)
+		return
+	if style == "orrery":
+		# LegendaryOrrery places its orbits, planets and glyphs in the centred space itself, so the glyphs stay upright.
+		LegendaryOrrery.draw(self, radius * swell, fade)
 		_light(fade)
 		return
 	if style == "script-loom":

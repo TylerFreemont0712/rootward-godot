@@ -29,6 +29,11 @@ extends Control
 ## ROOTWARD_SHOT_CAPACITY=6 gives the Program six slots, to cast the grand circle's six shards.
 ## ROOTWARD_SHOT_LOADOUT wears cosmetic looks (ADR-0037), slot=id pairs: "circle=rootglass,impact=starfall".
 
+## The legendary hooks (docs/LEGENDARY_LOOKS.md): ROOTWARD_SHOT_AFTER_VOLLEY_MS=n and ROOTWARD_SHOT_AFTER_IMPACT_MS=n
+## catch the moment n ms after a cast's first bolt, or after a black hole's blow lands, and print the state behind the
+## frame.
+## ROOTWARD_SHOT_CASTS=2 (with the volley hook) plays the same spell again in the next turn, and the frame is of that
+## second cast; the first cast's state is printed too, so the two casts' routes can be compared.
 signal shot_ready
 
 const SAVES := "user://shot-saves"
@@ -47,6 +52,20 @@ func _ready() -> void:
 		worn["circle"] = OS.get_environment("ROOTWARD_SHOT_CIRCLE")
 		Settings.loadout = worn
 	var face := OS.get_environment("ROOTWARD_FONT")
+	# ROOTWARD_SHOT_BOLT=<bolt id> and ROOTWARD_SHOT_IMPACT=<impact id> wear those looks the same way:
+	# legendary-constellation draws the cast's volley, legendary-singularity the black hole (docs/LEGENDARY_LOOKS.md).
+	if OS.get_environment("ROOTWARD_SHOT_BOLT") != "":
+		var worn_bolt := Cosmetics.loadout()
+		worn_bolt["bolt"] = OS.get_environment("ROOTWARD_SHOT_BOLT")
+		Settings.loadout = worn_bolt
+	if OS.get_environment("ROOTWARD_SHOT_IMPACT") != "":
+		var worn_impact := Cosmetics.loadout()
+		worn_impact["impact"] = OS.get_environment("ROOTWARD_SHOT_IMPACT")
+		Settings.loadout = worn_impact
+	# ROOTWARD_SHOT_REDUCED=1 shoots the moment with reduced motion (a 0.12 s trace, no origin bursts or sparks), and =0
+	# with it off, whatever the player's settings file says. Unset, the setting is left as it is.
+	if OS.get_environment("ROOTWARD_SHOT_REDUCED") != "":
+		Settings.reduced_motion = OS.get_environment("ROOTWARD_SHOT_REDUCED") == "1"
 	if UiFonts.CHOICES.has(face):
 		Settings.font_style = face
 		UiTheme.refresh_fonts()
@@ -260,6 +279,36 @@ func _ready() -> void:
 	_act(shot, screen)
 
 
+	# ROOTWARD_SHOT_AFTER_VOLLEY_MS=n catches the moment n ms after the cast's first legendary volley exists (its first
+	# bolt has just launched). The sandbox returns the bolts after a delay that varies, so AFTER_MS cannot time it.
+	var after_volley := int(OS.get_environment("ROOTWARD_SHOT_AFTER_VOLLEY_MS"))
+	if after_volley > 0:
+		_act(shot, screen)
+		if not await _wait_for_volley(screen):
+			return
+		if int(OS.get_environment("ROOTWARD_SHOT_CASTS")) >= 2:
+			await get_tree().create_timer(after_volley / 1000.0).timeout
+			_report_legendary(screen)
+			if not await _second_cast(screen, session):
+				return
+		await get_tree().create_timer(after_volley / 1000.0).timeout
+		_report_legendary(screen)
+		set_meta("shot_ready", true)
+		shot_ready.emit()
+		return
+	# ROOTWARD_SHOT_AFTER_IMPACT_MS=n catches the moment n ms after a black hole's blow lands (0.3 s into its 1.2 s
+	# timeline), so its shock ring and jets are read at a known progress. It prints the legendary state, as the volley
+	# hook does.
+	var after_impact := int(OS.get_environment("ROOTWARD_SHOT_AFTER_IMPACT_MS"))
+	if after_impact > 0:
+		_act(shot, screen)
+		if not await _wait_for_impact(screen):
+			return
+		await get_tree().create_timer(after_impact / 1000.0).timeout
+		_report_legendary(screen)
+		set_meta("shot_ready", true)
+		shot_ready.emit()
+		return
 ## ROOTWARD_SHOT=trial plays real commands up to ROOTWARD_SHOT_TRIAL_STEP, then captures its chapter or lesson.
 func _show_trial(language: String) -> void:
 	Game.profile.preferred_language = "ja" if language == "ja" else "en"
@@ -373,8 +422,185 @@ func _act(shot: String, screen: Control) -> void:
 		"forge":
 			# ROOTWARD_SHOT_PICK=<card id> chooses that card in the open forge stage (a melt or a refactor).
 			var picked := OS.get_environment("ROOTWARD_SHOT_PICK")
+## Waits until a legendary volley is under the screen. After 15 s with none, the shot stops with an error (false).
+func _wait_for_volley(screen: Control) -> bool:
+	var started := Time.get_ticks_msec()
+	while _volley_of(screen) == null:
+		if Time.get_ticks_msec() - started > 15000:
+			push_error("no legendary volley within 15 s: the cast did not land")
+			get_tree().quit(2)
+			return false
+		await get_tree().process_frame
+	return true
+
+
+## Casts the same spell again in the next turn, once the first cast has played: the turn ends, the cards of the chosen
+## spell go back into its program (the first cast spent them, as the CARDS staging set them up), and the spell is cast.
+## So both casts run the same card. False (the shot stops) when a step does not happen.
+func _second_cast(screen: Control, session: ShardrunSession) -> bool:
+	var first_id := _volley_id(screen)
+	if not await _until_idle(screen):
+		return false
+	await screen.call("send", {"type": "end-turn"})
+	if not await _until_idle(screen):
+		return false
+	print("legendary-shot: second cast in turn %d" % int(session.state.battle.turn))
+	var ids := OS.get_environment("ROOTWARD_SHOT_CARDS").split(",", false)
+	if not ids.is_empty():
+		# The dev commands rebuild the fight, and a fresh stage counts its casts from 0. The serial is read before them and
+		# written back after them, so the next cast takes the next serial, as it does in a fight that is not rebuilt.
+		var serial := _cast_serial_of(screen)
+		for id: String in ids:
+			await screen.call("send", {"type": "dev-grant-shard", "shard_id": id})
+		await screen.call("send", {"type": "dev-set", "mana": 9})
+		var table := CardTable.of(session.state, session.catalog)
+		var program_now: Dictionary = table.spells[0]
+		program_now.shards = Array(ids)
+		for id: String in ids:
+			(table.hand as Array).erase(id)
+		await screen.call("send", CardTable.command(table))
+		_set_cast_serial(screen, serial)
+		print("legendary-shot: cast serial %d kept across the restage" % serial)
+		if not await _until_idle(screen):
+			return false
+	var spell := OS.get_environment("ROOTWARD_SHOT_SPELL")
+	# Not awaited, as the first cast's send is not: the cast plays on while the shot waits for its volley to appear.
+	screen.call("send", {"type": "cast", "spell_id": spell if spell != "" else "spell-1"})
+	return await _wait_for_new_volley(screen, first_id)
+
+
+## Waits until the fight is not presenting a command. False after 30 s: the shot stops with an error.
+func _until_idle(screen: Control) -> bool:
+	var started := Time.get_ticks_msec()
+	while screen.call("is_busy"):
+		if Time.get_ticks_msec() - started > 30000:
+			push_error("the fight stayed busy for 30 s")
+			get_tree().quit(2)
+			return false
+		await get_tree().process_frame
+	return true
+
+
+## Waits until a legendary volley other than the one with instance id `first_id` is under the screen. False after 30 s:
+## the shot stops with an error.
+func _wait_for_new_volley(screen: Control, first_id: int) -> bool:
+	var started := Time.get_ticks_msec()
+	while _volley_id(screen) == 0 or _volley_id(screen) == first_id:
+		if Time.get_ticks_msec() - started > 30000:
+			push_error("no second legendary volley within 30 s: the second cast did not land")
+			get_tree().quit(2)
+			return false
+		await get_tree().process_frame
+	return true
+
+
+## The newest cast's volley (ConstellationVolley) under the screen, or null while it has not started. Children are kept
+## in the order they were added, so the last volley found is the newest.
+static func _volley_of(screen: Node) -> Node:
+	var newest: Node = null
+	for node: Node in _nodes_of(screen, "ConstellationVolley"):
+		newest = node
+	return newest
+
+
+## The newest cast's volley as an instance id, or 0 while none is under the screen. An id does not hold a freed volley,
+## so a volley can be told from a later one after the first has been freed.
+static func _volley_id(screen: Node) -> int:
+	var volley := _volley_of(screen)
+	return volley.get_instance_id() if volley != null else 0
+
+
+## The fight's cast serial (BattleStage counts its casts), or 0 while no fight is shown.
+static func _cast_serial_of(screen: Node) -> int:
+	var fight := screen.get("_fight") as FightView
+	return int(fight.stage.get("_cast_serial")) if fight != null else 0
+
+
+## Writes the fight's cast serial back onto the fight's stage, after a dev command rebuilt the fight (see _second_cast).
+static func _set_cast_serial(screen: Node, serial: int) -> void:
+	var fight := screen.get("_fight") as FightView
+	if fight != null:
+		fight.stage.set("_cast_serial", serial)
+
+
+## Waits until a black hole's blow has landed (its progress is past the impact). After 15 s with none, the shot stops.
+func _wait_for_impact(screen: Control) -> bool:
+	var started := Time.get_ticks_msec()
+	while not _impact_landed(screen):
+		if Time.get_ticks_msec() - started > 15000:
+			push_error("no black-hole impact within 15 s: the cast did not land")
+			get_tree().quit(2)
+			return false
+		await get_tree().process_frame
+	return true
+
+
+## Whether a black hole under the screen has reached its impact.
+static func _impact_landed(screen: Node) -> bool:
+	for hole: Node in _nodes_of(screen, "BlackHoleImpact"):
+		if (hole as BlackHoleImpact).progress >= BlackHoleImpact.IMPACT_SHARE:
+			return true
+	return false
+
+
+## The nodes under `screen` whose script is the class `script_name`, found as _volley_of finds them.
+static func _nodes_of(screen: Node, script_name: String) -> Array[Node]:
+	var found: Array[Node] = []
+	for node: Node in screen.find_children("*", "", true, false):
+		if node.get_script() != null and node.get_script().get_global_name() == script_name:
+			found.append(node)
+	return found
+
+
+## Prints the legendary state behind a frame, in screenshot pixels: each circle's final star, the cast's origin, each
+## bolt's age, landing, route end, head and stars, and each black hole's centre and progress. The window stretches the
+## canvas (window/stretch/scale in project.godot), so a canvas point is not its pixel: every point goes through the
+## viewport's final transform. It is read within a frame of the frame that is drawn.
+static func _report_legendary(screen: Node) -> void:
+	var to_pixels := screen.get_viewport().get_final_transform()
+	for circle: Node in _nodes_of(screen, "MagicCircle"):
+		var final_star: Vector2 = circle.call("final_node_global")
+		print("legendary-shot: circle %s final star px %s" % [circle.get("style"), to_pixels * final_star])
+	var volleys := _nodes_of(screen, "ConstellationVolley")
+	for v in volleys.size():
+		_report_volley(volleys[v] as Node2D, to_pixels, v)
+	for hole: Node in _nodes_of(screen, "BlackHoleImpact"):
+		var hole_node := hole as Node2D
+		var progress: float = (hole as BlackHoleImpact).progress
+		print("legendary-shot: black hole at px %s progress %.3f" % [to_pixels * hole_node.global_position, progress])
+
+
+## Prints one volley (the `index`th under the screen, oldest first): its origin, then each bolt's age, landing, route
+## end, head and stars. Two casts in one shot (ROOTWARD_SHOT_CASTS=2) give two volleys, so each line names its volley.
+static func _report_volley(volley: Node2D, to_pixels: Transform2D, index: int) -> void:
+	var origin: Callable = volley.get("_origin")
+	if origin.is_valid():
+		var origin_now: Vector2 = origin.call()
+		print("legendary-shot: volley %d origin px %s" % [index, to_pixels * origin_now])
+	var riders: Array = volley.get("_riders")
+	for i in riders.size():
+		var rider: Object = riders[i]
+		var route: PackedVector2Array = volley.call("route_of", i)
+		if route.is_empty():
+			continue
+		var head: Vector2 = ConstellationPath.point_on(route, rider.call("head"))
+		var end_px := to_pixels * volley.to_global(route[route.size() - 1])
+		var head_px := to_pixels * volley.to_global(head)
+		var lands: float = rider.call("arrival_time")
+		print(
+			(
+				"legendary-shot: volley %d bolt %d age %.3f lands %.3f end px %s head px %s stars %s"
+				% [index, i, rider.get("age"), lands, end_px, head_px, rider.get("stars")]
+			)
+		)
+
+
 			for node: Node in screen.find_children("*", "", true, false):
-				if picked != "" and node.get_script() != null and node.get_script().get_global_name() == "ForgeMeltView":
+				if (
+					picked != ""
+					and node.get_script() != null
+					and node.get_script().get_global_name() == "ForgeMeltView"
+				):
 					(node as ForgeMeltView).pick(picked)
 				if picked != "" and node.get_script() != null and node.get_script().get_global_name() == "ForgeView":
 					(node as ForgeView).pick(picked)

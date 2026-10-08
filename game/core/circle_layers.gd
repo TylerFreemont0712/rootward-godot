@@ -115,9 +115,10 @@ static func kind_of(card: Dictionary) -> String:
 	return String(family[seed_of(card) % family.size()])
 
 
-## The layers a spell's cards add, in order: [{id, kind, word, seed, dir, slot, count}], at most one per card and never
-## more than the spell's tier holds. Two different cards never share a look (the second is nudged along its family,
-## then along all the looks); the same card twice keeps its look. Neighbouring layers always turn against each other.
+## The layers a spell's cards add, in order: [{id, kind, word, role, seed, dir, slot, count}], at most one per card
+## and never more than the spell's tier holds. Two different cards never share a look (the second is nudged along its
+## family, then along all the looks); the same card twice keeps its look. Neighbouring layers always turn against each
+## other.
 static func plan(cards: Array) -> Array[Dictionary]:
 	var layers: Array[Dictionary] = []
 	var count := mini(cards.size(), capacity(tier_for(cards.size())))
@@ -141,6 +142,7 @@ static func plan(cards: Array) -> Array[Dictionary]:
 					"id": id,
 					"kind": kind,
 					"word": call_name(card),
+					"role": String(card.get("role", "")),
 					"seed": seed,
 					"dir": 1 if slot % 2 == 0 else -1,
 					"slot": slot,

@@ -49,6 +49,8 @@ var _fx: Control
 var _shake_tween: Tween
 var _clock := 0.0
 var _tweens: Array[Tween] = []
+## The casts this fight has made: next_cast_serial counts them, so no two LogPlayers repeat a serial.
+var _cast_serial := 0
 
 
 func _init() -> void:
@@ -250,6 +252,19 @@ func wait(ms: float) -> void:
 ## Milliseconds on the stage's clock (real time in a fight), for guards against an animation that never ends.
 func clock_ms() -> float:
 	return _clock * 1000.0 if local_clock else float(Time.get_ticks_msec())
+
+
+## The fight's effects layer: sparks, bursts, legendary bolts and black holes are drawn here, so the fight's time
+## scale (_keep_time) reaches them.
+func fx_layer() -> Control:
+	return _fx
+
+
+## The next cast's serial. The fight counts its casts here, not each LogPlayer, so no two commands of a fight
+## repeat a serial (and so a bolt's path).
+func next_cast_serial() -> int:
+	_cast_serial += 1
+	return _cast_serial
 
 
 ## A tween on `node` that keeps the stage's time: at its tempo, and stepped with it on a rehearsal stage.

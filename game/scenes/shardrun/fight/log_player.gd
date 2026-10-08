@@ -45,10 +45,6 @@ var cast_steps: Dictionary = {}
 ## Procedural circles follow source execution order; legacy cast cards keep their original slot order.
 var construction_cards: Dictionary = {}
 var replay_element := "none"
-## The cast being played used three or more shards: its first blow on each foe falls from above.
-var _heavy := false
-## The foes a heavy cast's falling blow is falling or has fallen on (its animation while it falls).
-var _crashed: Dictionary = {}
 ## The cast's magic circle while its volley flies: every bolt is born on it (null when effects are off).
 var _circle: MagicCircle
 ## Bolts launched and not landed yet. The cast's playback ends when this is back to zero, so every hit is on the bars
@@ -64,6 +60,11 @@ var _early_unlocked := 0
 var _early_cursor := 0
 var _early_consumed := 0
 var _early_playing := false
+## The cast being played (LegendaryCast): its serial, whether it is heavy, its falling blows, its constellation volley,
+## the aim of each foe and the holes that have opened. A bolt that waits behind a falling blow rides with the cast it
+## was launched in, and reads that cast's own state. The wait is capped by LANDING_CAP_MS, so that cast may have
+## closed by then: the bolt then joins its closed volley while that still flies, or gets a new one that closes later.
+var _legendary := LegendaryCast.new(0)
 
 
 func _init(on_stage: BattleStage, before: Dictionary) -> void:
@@ -109,6 +110,9 @@ func play(entries: Array) -> void:
 			continue
 		await _one(entry)
 		index += 1
+	# The log is over: no bolt of its last cast is coming, so that cast's volley closes, and frees itself once its
+	# riders are done.
+	_legendary.close()
 
 
 ## Schedule only the command's recorded prefix. The rules keep foe order even when their tempos differ; the queue
@@ -321,13 +325,13 @@ func _finish_failed_construction() -> void:
 
 
 func _cast(entry: Dictionary, volley: Array) -> void:
+	_legendary.close()
+	var heavy := _cast_shard_count(String(entry.get("spell", ""))) >= 3
+	_legendary = LegendaryCast.new(stage.next_cast_serial(), heavy)
 	var bolts := volley.filter(func(e: Dictionary) -> bool: return e.kind in BOLT_KINDS)
 	var element: String = bolts[0].get("element", "none") if not bolts.is_empty() else "none"
 	shown.mana -= int(entry.get("amount", 0))
 	numbers_changed.emit()
-	var heavy := _cast_shard_count(String(entry.get("spell", ""))) >= 3
-	_heavy = heavy
-	_crashed = {}
 	var construction := _constructs(heavy)
 	if not construction:
 		stage.hero.play_cast(heavy)
@@ -388,11 +392,13 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	var gap := clampf(VOLLEY.spread / maxf(1.0, bolts.size()), VOLLEY.min, VOLLEY.max)
 	if heavy:
 		gap *= 1.35
-	for hit: Dictionary in volley:
+	# LEARN: the bolt's place in the cast, not `volley.find(hit)`: two identical bolts would find one place, and one path.
+	for index in volley.size():
+		var hit: Dictionary = volley[index]
 		if not hit.kind in BOLT_KINDS:
 			continue
 		_in_flight += 1
-		_launch(hit, _flight(hit), volley)
+		_launch(hit, _flight(hit), volley, index)
 		await stage.wait(gap)
 	# The program has finished: its circle closes and the Maintainer lets go of it while the last bolts fly.
 	if is_instance_valid(_circle):
@@ -412,14 +418,6 @@ func _cast(entry: Dictionary, volley: Array) -> void:
 	await stage.wait(400.0)
 	if heavy:
 		stage.dim(0.0, 0.4)
-
-
-## The sheet a worn impact plays: its own when it was drawn, else the falling code; "" when neither is there.
-static func impact_sheet(look: Dictionary) -> String:
-	for sheet: String in [String(look.get("sprite", "")), "hit-heavy"]:
-		if sheet != "" and SpellAnim.has(sheet):
-			return sheet
-	return ""
 
 
 ## The blow a bolt of this element lands with (ADR-0014's sheets): fire, frost and spark each strike in their own way,
@@ -446,49 +444,77 @@ static func snap_speed(tier: int) -> float:
 	return SNAP_SPEEDS[clampi(tier, 0, SNAP_SPEEDS.size() - 1)]
 
 
-func _launch(hit: Dictionary, flight: float, volley: Array) -> void:
+func _launch(hit: Dictionary, flight: float, volley: Array, index: int) -> void:
+	# LEARN: the cast, its circle and the bolt's origin are taken before any await. A bolt that waits behind a falling blow
+	# still joins the cast it was launched in, and rides from the point it left even when its circle frees itself during
+	# the wait. The cast is taken, not its volley: a volley is made lazily and may be freed and replaced during the wait.
+	# Its heavy flag and falling blows live on the cast too, so the bolt reads its own cast's state after its await.
+	var cast := _legendary
+	var arrive := _land.bind(hit, volley, cast)
+	var constellation := LegendaryCast.worn_draw(stage, "bolt") == "constellation"
+	var circle: MagicCircle = _circle if is_instance_valid(_circle) else null
 	# Born on the cast's circle, so a volley pours out of it rather than out of her hand; it flares as each one leaves.
 	var from := stage.hero.hand_point()
-	if is_instance_valid(_circle):
-		from = _circle.launch_point()
-		_circle.pulse()
+	var from_node: CanvasItem = stage.hero
+	if circle != null:
+		from = circle.launch_point()
+		from_node = circle
+		circle.pulse()
+	var origin := Callable()
+	if constellation:
+		origin = cast.origin_of(circle, LegendaryCast.global_of(from_node, from))
 	if hit.kind == "ward":
-		stage.fly(
-			from, stage.hero.body_point(), hit.get("element", "none"), flight * 0.6, _land.bind(hit, volley), true
-		)
+		var body := stage.hero.body_point()
+		# A ward flies at 0.6 of the bolt's flight, as an ordinary ward does.
+		if constellation:
+			cast.ride(stage, origin, LegendaryCast.global_of(stage.hero, body), hit, index, flight * 0.6, arrive)
+			return
+		stage.fly(from, body, hit.get("element", "none"), flight * 0.6, arrive, true)
 		return
 	var view: FoeView = stage.foes.get(hit.get("foe", ""))
 	if view == null:
-		_land(hit, volley)
+		_land(hit, volley, cast)
 		return
-	var pending: Variant = _crashed.get(hit.foe)
+	# The foe's aim is taken at this cast's first launch to it, before any wait: its riders and its hole share it.
+	var aim := cast.target_of(
+		String(hit.foe), func() -> Vector2: return LegendaryCast.global_of(view, view.target_point())
+	)
+	# LEARN: the foe's points are read before the first await, as the origin is. A new fight frees every foe view, so
+	# the view may be gone when the wait ends, so the bolt flies on the points it launched with and reads no view after.
+	var target := view.target_point()
+	var foot := view.foot_point()
+	var width := view.sprite_width()
+	var pending: Variant = cast.crashed.get(hit.foe)
 	# LEARN: validity first. `is` on an object that has been freed is a script error that stops this function, and the
 	# falling blow frees itself when its animation ends: a bolt launched after that never flew, and its damage never
 	# reached the bar. is_instance_valid is safe on anything, freed or not an object at all.
 	if is_instance_valid(pending) and pending is SpellAnim:
 		# The foe's falling blow lands first; the bolts after it fly once it has.
-		await (pending as SpellAnim).landed()
-	var impact := impact_sheet(stage.hero.look("impact"))
-	if _heavy and not _crashed.has(hit.foe) and impact != "":
+		await SpellAnim.landed_of(pending as SpellAnim)
+	# A black hole is the blow itself: a heavy first blow must not fall back to the falling code's hit-heavy.
+	var impact := LegendaryCast.crash_sheet(stage)
+	if cast.heavy and not cast.crashed.has(hit.foe) and impact != "":
 		# A heavy cast's first blow on a foe does not fly: it arrives as the worn impact (blocks of code falling on it
 		# from above by default, a star, roots, a pillar of light), anchored at its feet.
-		_crashed[hit.foe] = true
-		var crash := stage.spell(
-			impact, view.foot_point(), hit.get("element", "none"), 0.9 + minf(0.5, view.sprite_width() / 400.0)
-		)
+		cast.crashed[hit.foe] = true
+		var crash := stage.spell(impact, foot, hit.get("element", "none"), 0.9 + minf(0.5, width / 400.0))
 		if crash != null:
-			_crashed[hit.foe] = crash
-			await crash.landed()
+			cast.crashed[hit.foe] = crash
+			await SpellAnim.landed_of(crash)
 			stage.hit_stop(80.0)
-		_land(hit, volley, true)
+		# A blow, not a bolt: no rider is added for it, since this return leaves before the constellation branch.
+		_land(hit, volley, cast, true)
 		return
-	var power := float(int(hit.get("amount", 0)) + int(hit.get("blocked", 0)) + int(hit.get("overkill", 0)))
-	stage.fly(from, view.target_point(), hit.get("element", "none"), flight, _land.bind(hit, volley), false, power)
+	if constellation:
+		cast.ride(stage, origin, aim, hit, index, flight, arrive)
+		return
+	var power := LegendaryCast.power_of(hit)
+	stage.fly(from, target, hit.get("element", "none"), flight, arrive, false, power)
 
 
 ## A bolt reaches its mark. A hit first plays its blow (brackets slamming on the foe) and lands on the frame they meet;
-## `crashed` when a heavy blow already fell there.
-func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
+## `crashed` when a heavy blow already fell there. `cast` is the cast the bolt was launched in.
+func _land(hit: Dictionary, volley: Array, cast: LegendaryCast, crashed := false) -> void:
 	var element: String = hit.get("element", "none")
 	var struck := false
 	if hit.kind == "hit" and not crashed:
@@ -498,18 +524,18 @@ func _land(hit: Dictionary, volley: Array, crashed := false) -> void:
 			# A big blow lands as a critical: drawn in first, then breaking open with two shockwaves, a longer stop and
 			# a shake; the rest slam their brackets, larger for more damage.
 			var critical := int(hit.get("amount", 0)) >= CRITICAL_AMOUNT or weight >= CRITICAL_SHARE
-			var blow: SpellAnim = null
-			if critical:
-				blow = stage.spell("hit-critical", aimed.target_point(), element, 0.75 + minf(0.45, weight * 0.6))
-			var power := 0.75 + minf(0.6, weight * 1.2)
-			if blow == null:
-				blow = stage.spell(blow_sheet(element), aimed.target_point(), element, power)
-			# A missing sheet falls back to the bracket slam, which every element has.
-			if blow == null:
-				blow = stage.spell("hit-compile", aimed.target_point(), element, power)
-			if blow != null:
+			var hole := cast.open_hole(stage, hit, aimed, critical)
+			if hole != null:
+				# The foe's first non-critical blow this cast: the hole lands on its impact, as a sprite's blow lands on its own.
 				struck = true
-				await blow.landed()
+				await hole.landed()
+				Sound.play("sfx-hit-heavy", 0.8)
+			else:
+				var blow: SpellAnim = LegendaryCast.blow_sprite(stage, aimed, element, critical, weight)
+				if blow != null:
+					struck = true
+					await SpellAnim.landed_of(blow)
+			if struck:
 				stage.hit_stop(95.0 if critical else 30.0)
 				if critical:
 					stage.shake(0.8)

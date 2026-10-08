@@ -54,3 +54,42 @@ func test_each_element_strikes_with_its_own_blow() -> void:
 	assert_str(LogPlayer.blow_sheet("none")).is_equal("hit-compile")
 	for element: String in ["fire", "frost", "spark"]:
 		assert_bool(SpellAnim.facts_of(LogPlayer.blow_sheet(element)).is_empty()).is_false()
+
+
+func test_a_blow_freed_before_its_impact_releases_its_waiters() -> void:
+	var holder := auto_free(Node2D.new()) as Node2D
+	add_child(holder)
+	var blow := SpellAnim.play(holder, "hit-compile", Vector2(100, 100), "fire", 1.0, 0.0, true)
+	assert_object(blow).is_not_null()
+	var released := [false]
+	var waiter := func() -> void:
+		await SpellAnim.landed_of(blow)
+		released[0] = true
+	waiter.call()
+	# Taken off the stage before its blow, as an effect is when its foe leaves: whoever waits must still be let go.
+	blow.queue_free()
+	var steps := 0
+	while not released[0] and steps < 20:
+		await get_tree().process_frame
+		steps += 1
+	assert_bool(released[0]).is_true()
+	assert_bool(is_instance_valid(blow)).is_false()
+
+
+func test_a_blow_removed_and_freed_at_once_releases_its_waiters() -> void:
+	var holder := auto_free(Node2D.new()) as Node2D
+	add_child(holder)
+	var blow := SpellAnim.play(holder, "hit-compile", Vector2(100, 100), "fire", 1.0, 0.0, true)
+	assert_object(blow).is_not_null()
+	var released := [false]
+	var waiter := func() -> void:
+		await SpellAnim.landed_of(blow)
+		released[0] = true
+	waiter.call()
+	holder.remove_child(blow)
+	blow.free()
+	var steps := 0
+	while not released[0] and steps < 20:
+		await get_tree().process_frame
+		steps += 1
+	assert_bool(released[0]).is_true()

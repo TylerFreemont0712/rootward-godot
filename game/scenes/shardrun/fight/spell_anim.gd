@@ -5,7 +5,7 @@ extends Sprite2D
 ## loops until `stop()` (a bolt in flight). `impact` fires on the frame its blow lands, so a foe can recoil on it.
 ##
 ##   var hit := SpellAnim.play(stage_fx, "hit-compile", target, "fire", 1.2)
-##   if hit != null: await hit.impact
+##   if hit != null: await SpellAnim.landed_of(hit)
 
 signal impact
 
@@ -26,6 +26,8 @@ const RAMPS := {
 }
 
 static var _facts: Dictionary = {}
+## The releases of blows that left the stage before their impact, until their deferred release runs (see _exit_tree).
+static var _leaving: Array[_Release] = []
 
 ## How fast its time runs (a rehearsal stage slows it, ADR-0037); 1 in a fight.
 var time_scale := 1.0
@@ -34,6 +36,8 @@ var looping := false
 var clock := 0.0
 var _landed := false
 var _stopping := false
+## What the blow's waiters await. It is a RefCounted, so it outlives this animation (see _exit_tree).
+var _release := _Release.new()
 
 
 ## The sheet's facts ({frames, columns, size, fps, loop, anchor, impact, texture}), or {} when it is not there.
@@ -91,10 +95,11 @@ static func play(
 	return anim
 
 
-## Returns once the blow has landed (at once if it already has): a safe thing to await.
-func landed() -> void:
-	if not _landed:
-		await impact
+## Returns once the blow has landed or left the stage (at once if it already has): a safe thing to await. It is static,
+## because a coroutine of an instance is cancelled when that instance is freed, which an early removal does.
+static func landed_of(blow: SpellAnim) -> void:
+	if is_instance_valid(blow) and not blow._landed:
+		await blow._release.released
 
 
 ## Seconds from its start to its blow.
@@ -107,11 +112,30 @@ func duration() -> float:
 
 
 ## An animation taken off the stage before its blow still lets go of whoever waits for it (`landed()`): an awaited
-## signal that never fires would hold that code forever.
+## signal that never fires would hold that code forever. The release waits for this removal to end. A waiter runs its
+## code as the signal fires, and its parent is busy with the removal until it ends, so a waiter adding a child there
+## would fail. The release is held in a static list until the deferred call runs, so neither it nor the call depends on
+## this animation, which may be freed before then.
 func _exit_tree() -> void:
 	if not _landed:
 		_landed = true
-		impact.emit()
+		_leaving.append(_release)
+		SpellAnim._release_leaving.call_deferred()
+
+
+## Releases the blows that left the stage before their impact (see _exit_tree), now that their removals have ended.
+static func _release_leaving() -> void:
+	var waiting := _leaving.duplicate()
+	_leaving.clear()
+	for release: _Release in waiting:
+		release.released.emit()
+
+
+## The blow lands on its frame: its impact is emitted for the listeners, and whoever waits for it is released.
+func _strike() -> void:
+	_landed = true
+	impact.emit()
+	_release.released.emit()
 
 
 ## A looping animation fades out quickly and goes.
@@ -132,11 +156,16 @@ func _process(frame_delta: float) -> void:
 	var index := floori(clock * float(facts.fps))
 	var count := int(facts.frames)
 	if not _landed and clock >= impact_time():
-		_landed = true
-		impact.emit()
+		_strike()
 	if looping:
 		frame = index % count
 	elif index >= count:
 		queue_free()
 	else:
 		frame = index
+
+
+## The signal a blow's waiters await: a class of its own, so the signal outlives the animation that owns it.
+class _Release:
+	extends RefCounted
+	signal released
