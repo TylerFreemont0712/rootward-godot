@@ -37,6 +37,8 @@ const SAVES := "user://shot-saves"
 func _ready() -> void:
 	var shot := OS.get_environment("ROOTWARD_SHOT")
 	var language := OS.get_environment("ROOTWARD_SHOT_LANGUAGE")
+	# ROOTWARD_SHOT_FORGE=melt|improve|widen|bind opens that door of the forge in full (forge_room.gd).
+	ForgeRoom.open_door = OS.get_environment("ROOTWARD_SHOT_FORGE")
 	Game.reset(SAVES)
 	Game.boot()
 	var face := OS.get_environment("ROOTWARD_FONT")
@@ -199,7 +201,10 @@ func _ready() -> void:
 			while session.in_progress() and not (session.state.get("reward", {}) as Dictionary).has("chest"):
 				await bot.send(bot._reward_move(session.state))
 				await bot.play_until("reward", bot.steps + 200)
-		"rest", "forge":
+		"forge":
+			# The forge set up directly: a bot's run rarely reaches one within a shot's steps (as the forge tests do).
+			session.state.status = "forge"
+		"rest":
 			bot.prefer = shot
 			await bot.play_until(shot, 200)
 		"end":
@@ -360,6 +365,14 @@ func _show_git_log(session: ShardrunSession) -> void:
 
 func _act(shot: String, screen: Control) -> void:
 	match shot:
+		"forge":
+			# ROOTWARD_SHOT_PICK=<card id> chooses that card in the open forge stage (a melt or a refactor).
+			var picked := OS.get_environment("ROOTWARD_SHOT_PICK")
+			for node: Node in screen.find_children("*", "", true, false):
+				if picked != "" and node.get_script() != null and node.get_script().get_global_name() == "ForgeMeltView":
+					(node as ForgeMeltView).pick(picked)
+				if picked != "" and node.get_script() != null and node.get_script().get_global_name() == "ForgeView":
+					(node as ForgeView).pick(picked)
 		"cast":
 			Settings.code_speed = "normal"
 			screen.call("send", {"type": "cast", "spell_id": "spell-1"})

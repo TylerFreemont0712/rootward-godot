@@ -1,26 +1,32 @@
 class_name ForgeView
 extends VBoxContainer
-## A program run's forge (ADR-0018): upgrades are refactors. Pick a card of the deck and see what the refactor changes,
-## as `git diff` shows it (lines removed in red, added in green), with its cost and keywords, then refactor it. A
-## card's + keeps its function's name in the diff, so only the real change stands out.
+## Refactoring a card (ADR-0018, redrawn): the cards that have a better version, the chosen one shown beside the version
+## it turns into, with the refactor read as a diff (lines removed in red, added in green, as `git diff` shows them).
+## Confirming plays the card changing from one to the other, then sends the one command the rules judge. A card's +
+## keeps its function's name, so only the real change stands out.
 
 signal wants(command: Dictionary)
 
 var session: ShardrunSession
+var _grid: ForgeCardGrid
+var _detail: VBoxContainer
 var _chosen := ""
-var _picks: HFlowContainer
-var _diff: VBoxContainer
+var _busy := false
 
 
-static func create(run_session: ShardrunSession, card_ids: Array) -> ForgeView:
+static func create(run_session: ShardrunSession) -> ForgeView:
 	var view := ForgeView.new()
 	view.session = run_session
-	view._build(card_ids)
+	view.add_theme_constant_override("separation", 10)
+	view._build()
 	return view
 
 
-func _build(card_ids: Array) -> void:
-	add_theme_constant_override("separation", 8)
+func _build() -> void:
+	var carried := _carried()
+	var usable := {}
+	for id: String in carried:
+		usable[id] = _into(id) != ""
 	add_child(Ui.label(Text.t("Refactor a card"), "Subheading"))
 	add_child(
 		Ui.label(
@@ -29,50 +35,97 @@ func _build(card_ids: Array) -> void:
 			true
 		)
 	)
-	_picks = Ui.flow([], 6)
-	add_child(_picks)
-	_diff = Ui.vbox([], 6)
-	add_child(_diff)
-	for id: String in card_ids:
-		var card: Dictionary = session.catalog.shards.get(id, {})
-		var pick := Ui.button(Text.t(String(card.get("name", id))), _choose.bind(id, card_ids))
-		pick.toggle_mode = true
-		pick.set_meta("card", id)
-		_picks.add_child(pick)
-	if not card_ids.is_empty():
-		_choose(String(card_ids[0]), card_ids)
+	_grid = ForgeCardGrid.create(session, carried, usable, UiTheme.TEAL)
+	_grid.picked.connect(pick)
+	add_child(_grid)
+	_detail = Ui.vbox([], 8)
+	add_child(_detail)
+	for id: String in carried:
+		if usable[id]:
+			pick(id)
+			break
 
 
-func _choose(id: String, card_ids: Array) -> void:
-	_chosen = id
-	for pick: Node in _picks.get_children():
-		(pick as Button).set_pressed_no_signal(String(pick.get_meta("card", "")) == id)
-	Ui.clear(_diff)
+## Every card the forge can see: the deck's in a deck run, else the shards in the spells and the spare ones.
+func _carried() -> Array:
+	var state := session.state
+	var source: Array = []
+	if ShardrunRules.is_deck(state):
+		source = state.deck
+	else:
+		for spell: Dictionary in state.spells:
+			source.append_array(spell.shards)
+		source.append_array(state.inventory)
+	var carried: Array = []
+	for id: String in source:
+		if id != "" and session.catalog.shards.has(id):
+			carried.append(id)
+	return carried
+
+
+## The id of a card's better version, or "" when it has none.
+func _into(shard_id: String) -> String:
+	var forge: Dictionary = (session.catalog.shards.get(shard_id, {}) as Dictionary).get("forge", {})
+	return String(forge.get("into", ""))
+
+
+## Chooses the card to refactor and lays out the change beside it.
+func pick(shard_id: String) -> void:
+	if _busy:
+		return
+	_chosen = shard_id
+	_grid.select(shard_id)
+	Ui.clear(_detail)
 	var catalog := session.catalog
-	var card: Dictionary = catalog.shards.get(id, {})
+	var card: Dictionary = catalog.shards.get(shard_id, {})
 	var forge: Dictionary = card.get("forge", {})
-	var into: Dictionary = catalog.shards.get(String(forge.get("into", "")), {})
+	var into_id := _into(shard_id)
+	var into: Dictionary = catalog.shards.get(into_id, {})
 	if into.is_empty():
+		_detail.add_child(Ui.label(Text.t("This card has no better version."), "Muted", true))
 		return
 	var language := String(session.state.language)
-	var verb := String(forge.get("verb", "upgrade"))
-	var title := "%s → %s" % [Text.t(card.get("name", id)), Text.t(into.get("name", forge.into))]
-	var heading := Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), Ui.label(_changes(card, into), "Faint")], 10)
-	_diff.add_child(heading)
-	if session.show_summaries():
-		_diff.add_child(Ui.label(Text.t(String(into.get("summary", ""))), "Narration", true))
-	var before: String = (card.get("code", {}) as Dictionary).get(language, "")
-	var after: String = (into.get("code", {}) as Dictionary).get(language, "")
-	if String(forge.into) == id + "-plus":
+	var summaries := session.show_summaries()
+	var before := CardFace.create(shard_id, catalog, language, summaries, CardFace.Size.DRAFT)
+	var after := CardFace.create(into_id, catalog, language, summaries, CardFace.Size.DRAFT)
+	var pair := Ui.hbox([before, Ui.label("→", "Heading"), after], 18)
+	pair.alignment = BoxContainer.ALIGNMENT_CENTER
+	_detail.add_child(pair)
+	var title := "%s → %s" % [Text.t(card.get("name", shard_id)), Text.t(into.get("name", into_id))]
+	_detail.add_child(Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), Ui.label(_changes(card, into), "Faint")], 10))
+	if summaries:
+		_detail.add_child(Ui.label(Text.t(String(into.get("summary", ""))), "Narration", true))
+	var before_code: String = (card.get("code", {}) as Dictionary).get(language, "")
+	var after_code: String = (into.get("code", {}) as Dictionary).get(language, "")
+	if into_id == shard_id + "-plus":
 		# The + renames the function (both can sit in one program); the diff shows the refactor, not the rename.
-		after = after.replace(SpellHarness.function_name(into, language), SpellHarness.function_name(card, language))
-	_diff.add_child(_code(CodeDiff.lines(before, after), language))
-	var name := Text.t(card.get("name", id))
-	var label := Text.f("Optimise %s", [name]) if verb == "optimize" else Text.f("Refactor %s", [name])
-	var go := Ui.button(label, func() -> void: wants.emit({"type": "forge", "shard_id": id}), "PrimaryButton")
-	_diff.add_child(Ui.hbox([go]))
-	if card_ids.size() > 1:
-		_diff.add_child(Ui.label(Text.t("One refactor per forge."), "Faint"))
+		after_code = after_code.replace(
+			SpellHarness.function_name(into, language), SpellHarness.function_name(card, language)
+		)
+	_detail.add_child(_code(CodeDiff.lines(before_code, after_code), language))
+	var card_name := Text.t(card.get("name", shard_id))
+	var verb := String(forge.get("verb", "upgrade"))
+	var label := Text.f("Optimise %s", [card_name]) if verb == "optimize" else Text.f("Refactor %s", [card_name])
+	_detail.add_child(Ui.hbox([Ui.button(label, refactor, "PrimaryButton")]))
+	_detail.add_child(Ui.label(Text.t("One refactor per forge."), "Faint"))
+
+
+## The card changes into its better version in place, then the command goes out.
+func refactor() -> void:
+	if _busy or _chosen == "":
+		return
+	_busy = true
+	_grid.lock()
+	var after := CardFace.create(
+		_into(_chosen), session.catalog, String(session.state.language), session.show_summaries(), CardFace.Size.DECK
+	)
+	after.draggable = false
+	var tween := ForgeAnimation.morph(_grid.holder_of(_chosen), _grid.face_of(_chosen), after)
+	if tween != null:
+		await tween.finished
+	if not is_inside_tree():
+		return
+	wants.emit({"type": "forge", "shard_id": _chosen})
 
 
 ## What changes besides the code: "cost 2 → 1 · + __init__".

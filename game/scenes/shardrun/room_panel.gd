@@ -454,91 +454,10 @@ func _rest_text(heal: int) -> Control:
 	)
 
 
-## A Shardrun's forge can melt a card down: a thinner deck deals its best cards more often (never below the minimum).
-func _melt(state: Dictionary, catalog: Dictionary) -> void:
-	var deck: Array = state.get("deck", [])
-	var smallest := int(catalog.balance.deck.min_cards)
-	add_child(Ui.label(Text.t("Melt a card down"), "Subheading"))
-	if deck.size() <= smallest:
-		add_child(Ui.label(Text.f("Your deck is already as thin as it can be (%d cards).", [smallest]), "Muted"))
-		return
-	var row := Ui.flow([], 8)
-	var seen := {}
-	for shard_id: String in deck:
-		if seen.has(shard_id):
-			continue
-		seen[shard_id] = true
-		var shard: Dictionary = catalog.shards.get(shard_id, {})
-		var count := deck.count(shard_id)
-		var name := Text.t(shard.get("name", shard_id))
-		var label := Text.f("Melt %s (1 of %d)", [name, count]) if count > 1 else Text.f("Melt %s", [name])
-		row.add_child(Ui.button(label, _ask({"type": "purge", "shard_id": shard_id})))
-	add_child(row)
-
-
 func _forge() -> void:
-	var state := session.state
-	var catalog := session.catalog
-	var options := ShardrunViews.forge_options(state, catalog)
-	add_child(Ui.label(Text.t("An abandoned forge"), "Heading"))
-	var deck := ShardrunRules.is_deck(state)
-	var thing := "card" if deck else "shard"
-	var text := (
-		"Do one thing here: rework a %s (upgrade it, or repair a broken one), widen a spell by one slot, " % thing
-	)
-	text += "melt a card out of your deck, " if deck else ""
-	text += "or bind a new spell to your book."
-	# Too long for one literal on a line: the whole sentence is the overlay's key.
-	text = Text.sentence(text)
-	if state.playstyle == "program":
-		text = Text.t(
-			"Do one thing here: refactor a card, melt a card out of your deck, or widen your Program by a slot."
-		)
-	add_child(Ui.label(text, "Narration", true))
-	if deck:
-		_melt(state, catalog)
-	if state.playstyle == "program" and not (options.shards as Array).is_empty():
-		# A program run's upgrades are refactors, read as a diff (ADR-0018).
-		var refactor := ForgeView.create(session, options.shards)
-		refactor.wants.connect(func(command: Dictionary) -> void: wants.emit(command))
-		add_child(refactor)
-	elif not (options.shards as Array).is_empty():
-		add_child(Ui.label(Text.t("Rework a card") if deck else Text.t("Rework a shard"), "Subheading"))
-		var row := Ui.flow([], 8)
-		for shard_id: String in options.shards:
-			var shard: Dictionary = catalog.shards.get(shard_id, {})
-			var into: Dictionary = catalog.shards.get(shard.forge.into, {})
-			var verb := Text.t(String(shard.forge.get("verb", "upgrade")).capitalize())
-			var button := Ui.button(
-				"%s %s → %s" % [verb, Text.t(shard.name), Text.t(into.get("name", shard.forge.into))],
-				_ask({"type": "forge", "shard_id": shard_id})
-			)
-			button.tooltip_text = Text.t(into.get("summary", ""))
-			row.add_child(button)
-		add_child(row)
-	if not (options.spells as Array).is_empty():
-		add_child(
-			Ui.label(
-				Text.t("Widen the Program") if state.playstyle == "program" else Text.t("Widen a spell"), "Subheading"
-			)
-		)
-		var row := Ui.flow([], 8)
-		for spell_id: String in options.spells:
-			var spell := Shardrun.spell_by_id(state, spell_id)
-			var label := Text.f("Widen %s to %d slots", [Text.t(spell.name), int(spell.capacity) + 1])
-			row.add_child(Ui.button(label, _ask({"type": "widen", "spell_id": spell_id})))
-		add_child(row)
-	var bind: Dictionary = options.bind
-	if not bind.is_empty():
-		add_child(Ui.label(Text.t("Bind a new spell"), "Subheading"))
-		add_child(
-			Ui.label(
-				Text.f("An empty spell with %d slots, ready for the spare shards you carry.", [int(bind.capacity)]),
-				"Muted"
-			)
-		)
-		add_child(Ui.hbox([Ui.button(Text.f("Bind %s", [Text.t(bind.name)]), _ask({"type": "bind"}), "PrimaryButton")]))
-	add_child(Ui.hbox([Ui.button(Text.t("Leave the forge as it is"), _ask({"type": "forge", "shard_id": null}))]))
+	var forge := ForgeRoom.create(session)
+	forge.wants.connect(func(command: Dictionary) -> void: wants.emit(command))
+	add_child(forge)
 
 
 ## Sentences translated one by one, run together as the language writes them (Japanese leaves no space between).
