@@ -982,3 +982,287 @@ The keys of a move were already smooth. The jerk was a speed spike: a snap whose
 packed into three frames, and a finger ramp that blended in over a quarter of a second. Measure each clip's summed bone
 speed per frame in the live Blender, and the spike shows as a single peak (the worst frames of a clip are its first few).
 Lengthen the ramp or soften the ease, keeping the release, and the peak falls while the timing stays.
+
+## 2026-10-08 — Convert a global point through the parent, every frame (`game/scenes/shardrun/fight/legendary_cast.gd`, `game/scenes/shardrun/fight/black_hole_impact.gd`, `game/scenes/shardrun/fight/constellation_volley.gd`)
+
+A point passed between nodes is global, and each node converts it into its own space every frame, with its parent's
+transform. `LegendaryCast.global_of` uses the node's parent rather than the stage: the stage's shake moves its child
+layers `_world` and `_fx` (`battle_stage.gd`, `shake`), so the stage's own transform misses the shake, and a bolt would
+start a few pixels off. A black hole must not set its position from `to_local` on itself, because that measures from
+where the node already is and moves it every frame, so `_follow` converts through the parent instead. The LEARN comment
+in `black_hole_impact.gd` gives that reason; `black_hole_impact_test.gd` pins the outcome, that the hole stays on its
+point under an offset, a scaled and a moving parent. A volley converts each target and origin every frame as well, since
+the orrery turns and a parent may move during a flight; `constellation_volley_test.gd` checks that a moving parent still
+aims at the global target. The carousel preview converts its card's centre with the card's own transform before it
+places the hole (`game/scenes/title/look_art.gd`). Compare the token entry above, which keeps its flight top-level
+instead.
+
+## 2026-10-08 — A missing shader keeps the clock running (`game/scenes/shardrun/fight/black_hole_impact.gd`)
+
+Without its shader, a black hole still runs its timeline and emits its signals, so a caller that awaits `landed()` never
+hangs. Only the drawing is skipped: `_build` returns before it adds the screen copy and the quad, while the clock in
+`advance` keeps going. A picture that fails to load should cost the picture and nothing else, which is the rule for
+every picture, model and sound in this project. The LEARN comment in `black_hole_impact.gd` states the behaviour; no
+test removes the shader to check it.
+
+## 2026-10-08 — A BackBufferCopy's rect is in viewport coordinates (`game/scenes/shardrun/fight/black_hole_impact.gd`)
+
+A `BackBufferCopy` copies the part of the screen its `rect` names, and that rect is read in viewport coordinates, not in
+the copy's own space. The rect set when the node was built copied the wrong patch of screen, so the lens read as flat
+grey. The fix sets the rect once the node is in the tree, and again every frame after that, as the node's global
+transform applied to its copy area. A render showed the fault; the contract's Verification list does not name that
+render. `black_hole_impact_test.gd` pins the rect to the quad's global rect, which is the viewport reading the fix
+relies on, but a test cannot show what the engine reads.
+
+## 2026-10-08 — A node's signal waits for the tree, and its release outlives the node (`game/scenes/shardrun/fight/black_hole_impact.gd`)
+
+A black hole's clock runs only while the node is in the tree, so an impact is never announced for a node its parent does
+not hold yet; `black_hole_impact_test.gd` checks that no signal comes before the node is in the tree. `landed()` returns
+a signal on a `RefCounted` release, which outlives the node. The LEARN comment in `black_hole_impact.gd` gives the
+engine reason: a node cannot emit its own signal once it is freed, and emitting one from inside the parent's removal
+would run the waiters in the middle of that removal. The tests pin the outcome: the release fires when the node is freed
+before its impact, and a waiter released by that removal may add a child to the parent. On an early removal the release
+fires deferred, after the removal ends, which is what avoids the "Parent node is busy setting up children" error; the
+contract's Verification checks that the error is absent from the log across a legendary cast. At the impact itself the
+release fires at once. The button entry on `game/scenes/title/title.gd` is the same removal problem, seen from a click.
+
+## 2026-10-08 — Drive a shader and its clock from one progress value (`game/scenes/shardrun/fight/black_hole.gdshader`, `game/scenes/shardrun/fight/black_hole_impact.gd`)
+
+Every timed feature of the black hole is a formula of one `progress` uniform from 0 to 1; the style uniforms only choose
+which features show. The shader never reads `TIME`, has no loops and makes at most one screen read (the lens), so the
+same progress draws the same frame over the same background. The clock is `advance(delta)`, which `_process` calls each
+frame with the scaled time, and a test may call it directly to step to any moment exactly;
+`test_progress_drives_the_shader_uniform` checks the uniform. The LEARN comment in `black_hole_impact.gd` gives the
+reason for a plain clock rather than a `Tween`; no test compares the two. The entry on `foundry_lights.gdshader`
+explains why a setting must not drive `TIME`; this entry is about checking one frame.
+
+## 2026-10-08 — Hold a frame by holding its clock (`game/scenes/title/look_art.gd`)
+
+The carousel shows a black hole at 0.6 of its timeline. The timeline is advanced to that point in one step (`advance`),
+and then its `time_scale` goes to 0, so the clock holds while the process keeps running. The lens copy refits every
+frame and stays a true lens; `black_hole_impact_test.gd` checks that a frozen clock still follows its parent and refits
+its copy. Stopping the process instead would leave the copy behind, as the LEARN comment in `look_art.gd` says, and the
+shader reads only `progress`, so the held frame is the same every time.
+
+## 2026-10-08 — Read a setting where the motion is drawn (`game/scenes/shardrun/fight/constellation_volley.gd`, `game/scenes/shardrun/fight/legendary_orrery.gd`)
+
+The volley reads `Settings.reduced_motion` each time an effect starts and each time it is drawn, not once when a bolt
+is added, so turning the setting on during a cast stops the sparks and blooms at once. An effect begun at full motion
+that is no longer drawn ages out unseen. The trace keeps the length it was given, because a timeline cannot change
+length mid-flight without jumping. The orrery takes the same approach: the circle sets its flare on every arrival
+whatever the setting, and the frame that is drawn reads no flare under reduced motion. The state keeps the value, and
+the drawing decides what to show.
+
+## 2026-10-08 — Reduced motion keeps what tells you and drops the decoration (`game/scenes/shardrun/fight/constellation_volley.gd`, `game/scenes/shardrun/fight/black_hole_impact.gd`)
+
+Under reduced motion the volley keeps its flights, its arrivals and the white flash of each star's ignition. It drops
+the origin burst, the sparks, the convergence bloom and the growing ring around the ignition. A star's flare keeps a
+glint that shrinks and fades where it stands, which still says the star flared. The black hole keeps its disc, its
+photon ring, its impact flash and its features (digits, split, cells, scanlines), and drops the spin, the lensing, the
+jets, the dispersal, the shock ring and the inflow arms. The inflow arms are not yet verified on screen. The rule is the
+same in both: whatever tells you what happened stays, and only the motion goes.
+
+## 2026-10-08 — Map a shape's position, not its shape (`game/scenes/shardrun/fight/legendary_orrery.gd`)
+
+The orrery's orbits are narrowed and leaned back to read as a disc seen from the side. The planets and their glyphs are
+placed through the same map, but they are drawn in unsquashed local space, so they keep their round shape while the
+orbits they sit on are narrowed. The magic circle entry above ("A circle seen side-on is a transform, not a picture")
+draws everything in disc space, because its rings should narrow with the disc. Here the planets must not, so transform
+the position, and draw the shape in its own space. The LEARN comment in `legendary_orrery.gd` gives this; no test checks
+the planets' shape.
+
+## 2026-10-08 — A tiny polygon fails to triangulate (`game/scenes/shardrun/fight/constellation_volley.gd`)
+
+A diamond a fraction of a pixel across makes Godot's polygon triangulation fail with "Invalid polygon data,
+triangulation failed", and nobody could see it anyway. The volley skips any diamond under `MIN_DIAMOND_ACROSS` (0.5 px)
+before it builds the polygon. The contract's Verification checks that this error is absent from the log across a
+legendary cast, and `constellation_volley_test.gd` pins the skip. Check the size of a shape before handing it to a
+polygon call, and skip what cannot be seen.
+
+## 2026-10-08 — An effect ends at its longest fade (`game/scenes/shardrun/fight/constellation_volley.gd`)
+
+A bolt's trail fades 0.25 s after the bolt lands, but the bolt is not finished then. The traced line and the last star
+keep their own longer fades, so a rider is done only when the longest of them has ended. Freeing the node at the
+landing would cut those fades short. An effect ends at the latest end of its parts, not at the end of its main motion.
+
+## 2026-10-08 — Close says no bolt is coming, and does not free (`game/scenes/shardrun/fight/constellation_volley.gd`, `game/scenes/shardrun/fight/legendary_cast.gd`)
+
+`close()` on a volley says that no more bolts are coming. It does not free the volley, because a bolt that waits
+behind a falling blow can be added after the next cast has closed it, and that bolt must still fly. The volley frees
+itself once its riders are done. A volley that has already freed itself takes no more riders: `add_rider` would land
+the bolt at once, with a warning. So `LegendaryCast.ride` checks that the volley is valid and not queued for deletion,
+and starts a new volley for a late bolt instead.
+
+## 2026-10-08 — One effect per target, with slack for drift (`game/scenes/shardrun/fight/legendary_cast.gd`, `game/scenes/shardrun/fight/constellation_volley.gd`)
+
+A foe gets one black hole per cast, keyed by the foe and not by the bolt, so one hole stands however many bolts land on
+it. A volley blooms each target once, and it matches targets with four pixels of slack (`SAME_TARGET_PX`). The LEARN
+comment in `constellation_volley.gd` gives the reason: a foe's point may drift a little between two adds. Within one
+cast, though, `LegendaryCast.target_of` keeps each foe's point from its first launch, so the bolts of one cast share an
+exact point and that drift does not reach the volley on this path. The slack is a margin, which
+`constellation_volley_test.gd` pins (bolts aimed a few pixels apart share one bloom). Key a shared effect by the thing
+it belongs to, and allow for drift when you compare positions.
+
+## 2026-10-08 — State that closures share belongs to the owner (`game/scenes/shardrun/fight/legendary_cast.gd`)
+
+Each bolt of a cast gets a closure that returns the cast's origin. The last star the cast saw is kept on the cast
+rather than in a closure, so every bolt shares it. A volley can first read its origin after its circle has freed
+itself, because a bolt waited behind a falling blow; it then gets the star the cast last saw, not the circle's centre.
+A value that several closures must agree on belongs to an object that outlives all of them.
+
+## 2026-10-08 — Lay out for the final count, not the count so far (`game/scenes/shardrun/fight/legendary_orrery.gd`)
+
+The orrery spaces its planets for every shard in the plan, not only the shards that have arrived, so no planet moves as
+shards come in. Arrivals come in plan order, so the last planet belongs to the last shard, which is the last to arrive.
+A circle that never receives its last shard (a function that returned early, or a failed program) keeps that place,
+though it is never drawn. A layout that counted only the arrivals would move every planet each time one came in. The
+LEARN comment in `legendary_orrery.gd` gives this; no test checks that the planets stay still as shards arrive.
+
+## 2026-10-08 — A hash's low bits need a finaliser (`game/scenes/shardrun/fight/legendary_look.gd`, `game/core/rng.gd`)
+
+`Rng.hash_string` is FNV-1a: each UTF-16 code unit is XORed into the state, and the state is multiplied by an odd
+prime. Multiplying by an odd number keeps the lowest bit, so the lowest bit of the hash depends only on the lowest
+bits of the characters, and the seeds of consecutive bolts would alternate in any rule that reads bit 0. `rider_seed`
+therefore runs the hash through `Rng.mix32`, which spreads every input bit across the output, and masks the result to
+31 bits so the seed stays non-negative. Read a hash's low bits only after a finaliser.
+
+## 2026-10-08 — Each rule takes its own bits of a seed (`game/scenes/shardrun/fight/legendary_look.gd`)
+
+`bolt_style` reads two parts of one seed for two rules. The star count reads bit 2 (`(seed >> 2) & 1`), and the prism
+rule reads bits 0 and 1 (`posmod(seed, 4) == 0`). A count that read bit 0 or bit 1 would give every prism bolt four
+stars, since a prism bolt has both low bits at zero. A right shift moves bit 2 down to bit 0 for any sign, so `& 1` is
+right for a negative seed too. Before a rule takes some bits of a seed, check which bits the other rules already read.
+
+## 2026-10-08 — A merge keeps the old value unless it is told to overwrite (`game/scenes/shardrun/fight/legendary_look.gd`)
+
+`Dictionary.merge` keeps the existing value for a key that both dictionaries have, unless it is called with `overwrite`
+set to `true`; the LEARN comment in `legendary_look.gd` states that default. `impact_style` therefore merges each change
+with `true`, and it applies the signature card last, so a signature card wins a clash with its role: quickselect keeps
+its jets on under a guard, which would otherwise turn them off. `legendary_look_test.gd` checks that outcome. When two
+sources set one key, the order of the calls decides the winner, so the order is part of the rule.
+
+## 2026-10-08 — Check the fit before pushing values apart (`game/scenes/shardrun/fight/constellation_path.gd`)
+
+The star places are pushed apart until neighbours differ by at least `MIN_GAP`. Pushing up can run past the top of the
+range, and pulling down from the top then fixes that. Done in that order, it leaves every gap at least `MIN_GAP` and
+keeps the places inside the range, but only when `(count - 1) * MIN_GAP` fits in the range. So the fit is checked first,
+and a crowd that cannot fit is spaced evenly instead. A two-pass fix is correct only under a condition, so the condition
+belongs in the code. `constellation_path_test.gd` pins both branches.
+
+## 2026-10-08 — Clamp the segment index, so the end reads the last segment (`game/scenes/shardrun/fight/constellation_path.gd`)
+
+`point_on` maps `p` from 0 to 1 across equal-time segments. At `p = 1` the index would name the segment after the last
+one, so it is capped at the last segment (`mini(floori(along), segments - 1)`), and the weight becomes 1 at the final
+point instead of reading past the end of the route. A route with N segments has N + 1 points, and its last point needs
+the last segment, so the index is clamped rather than assumed to stay in range.
+
+## 2026-10-08 — Find a bolt by its place, not by its value (`game/scenes/shardrun/fight/log_player.gd`)
+
+The bolt's place in its cast comes from the loop index, not from `volley.find(hit)`. `find` returns the first match, as
+the LEARN comment in `log_player.gd` says, so two identical bolts would find the same place and take the same path. No
+test drives two identical bolts through `_launch`, so the reason rests on that comment. Use the position you already
+have. A search answers only for the first of several equal values.
+
+## 2026-10-08 — Take what you need before the await (`game/scenes/shardrun/fight/log_player.gd`)
+
+A bolt that waits behind a falling blow is paused at an `await`, and the circle it was launched from can free itself
+during that pause. So the cast, its circle, the bolt's origin and the foe's points (`target_point`, `foot_point`,
+`sprite_width`) are read before the first `await`, and the bolt rides from the point it left, even if the foe's view has
+freed. The cast is taken rather than its volley, because a volley is made lazily and can be freed and replaced during
+the wait. State that lives on the cast, such as its heavy flag, is read after the await, because the bolt holds the
+cast. `legendary_cast_test.gd` pins the outcome: a bolt whose circle frees during its wait rises from its final star,
+and a bolt whose foe view frees during a falling blow still lands.
+
+## 2026-10-08 — Tag the item, not its place in a list (`game/core/programs/program_landing.gd`)
+
+A bolt's card and role ride on the bolt itself, in its `shape`, so every record of the bolt (a hit, a ward, an
+overflow) names its card without a lookup. A bolt's index is a position, and relics and withdrawals move positions, so
+an index can point at a different bolt by the time it is read. Carry an identity with the item it names, not with
+where that item sits.
+
+## 2026-10-08 — Capture the built-ins before the card runs (`game/sandbox/shardrun/spell_harness.js`, `game/sandbox/shardrun/spell_harness.py`, `game/sandbox/launch/launch.js`)
+
+A card runs in the same interpreter as the harness, so it can replace a built-in that the harness calls afterwards. The
+JavaScript harness takes `Reflect.apply` and the other functions it needs as constants before the card runs, and calls
+them through a wrapper, because `call` is looked up on a function at call time and a card could rebind it. The Python
+harness binds `dict = dict` and its other names at import: a bare name is looked up in the module's globals and then in
+the builtins at each call, so a card that rebinds `builtins.dict` would otherwise change the harness's `dict(...)`. The
+launcher captures 13 built-in functions and methods, and the `Error`, `Map` and `Set` constructors, in its closure at
+start (16 references in all), so a program cannot change the line the launcher prints. The LEARN comments in the
+harnesses and `launch.js` give these engine reasons; the rebinding cases in `program_tags_test.gd` pin that the output
+does not change.
+
+## 2026-10-08 — Syntax can call a method you did not write (`game/sandbox/shardrun/spell_harness.js`, `game/sandbox/launch/launch.js`)
+
+Some syntax calls a method on an object with no visible call. `for...of` calls the array's `Symbol.iterator` and then
+the iterator's `next`, and `value instanceof C` reads `C[Symbol.hasInstance]` when it runs. A card can replace any of
+those on the built-ins it shares with the harness. So the JavaScript harness indexes its loops over the bolts it copied,
+reading the length once before each loop, and the launcher calls the default `Symbol.hasInstance` itself, with the
+constructor as receiver. Where the harness must trust a loop or a check, it writes the call out itself. The LEARN
+comments in `spell_harness.js` and `launch.js` give the engine rule; the tests that replace the array iterator, its
+`next` and the `instanceof` lookups (`program_tags_test.gd`) pin that the printed output and the tags do not change.
+
+## 2026-10-08 — Read a card's result once, into a copy (`game/sandbox/shardrun/spell_harness.js`)
+
+A card's return value is read once, into a JSON copy, and both the bill and the printed output come from that copy. A
+`Proxy` can answer each read differently, for its length or for a slice, so a second read could bill fewer bolts than
+the output holds; the LEARN comment in `spell_harness.js` gives this. `program_tags_test.gd` checks that a card whose
+length changes between reads is billed for the bolts it returns. Measure and print from one snapshot, and never read a
+value a card controls twice.
+
+## 2026-10-08 — An import is not a step, so stamp its bolts before the next import runs (`game/sandbox/shardrun/spell_harness.py`, `game/sandbox/shardrun/spell_harness.js`, `game/sandbox/cpp/harness.cpp`)
+
+An import is not a step of the program, so after a card the bolts an import hands back still belong to that card. Each
+import's bolts are stamped before the next import runs. Whatever the first import wrote on a bolt is replaced, and the
+second import sees the card's tags, as the C++ harness does. Before a card runs, its bolts are not yet its, so the
+card is handed them as they came. Stamp a value when the step that produced it ends.
+
+## 2026-10-08 — An unset optional is not an empty string (`game/sandbox/cpp/program.hpp`)
+
+The C++ bolt's `card` and `role` fields are `std::optional<std::string>`. An unset optional means "no tag", which a
+plain empty string cannot say, because a card with no role still stamps `""`. The LEARN comment in `program.hpp` gives
+the reason, and `cpp_program_tags_test.gd` checks that a bolt no card returned has neither key. Use an optional where
+absence and an empty value must mean different things, and test `has_value()` where the difference matters.
+
+## 2026-10-08 — A test stands in for compiled code (`game/test/sandbox/cpp_program_tags_test.gd`)
+
+C++ cards are compiled ahead of time, so a test cannot give a built card new code. The test sends a bolt that already
+carries a card and a role, standing in for one a card returned, and checks that the stamp replaces both, whichever
+card they came from. When the code under test cannot change from the test, change the input it receives instead.
+
+## 2026-10-08 — Check a Variant's type and its key, not its truth (`game/core/cosmetic_rules.gd`)
+
+In GDScript, `"yes"` and `1` are truthy, so a flag read from JSON passes a plain `if`. The type is tested before the
+flag is trusted: a look counts as legendary only when its `legendary` value is a boolean that is true. And `get()`
+returns `null` both for a missing key and for a key whose value is `null`, so `has()` decides whether a `draw` is
+present. A `"draw": null` is then reported as an unknown draw, rather than read as no draw. Both GDScript facts are the
+LEARN comments' (`cosmetic_rules.gd`, at the flag and the draw checks). `cosmetic_rules_test.gd` pins the `"yes"` flag
+cases and the unknown-draw cases; no test sets `"draw": null`, so that last sentence is checked by reading the code
+only.
+
+## 2026-10-08 — A frozen object is its own capture (`game/sandbox/shardrun/spell_harness.js`)
+
+The JavaScript harness freezes the job's input before any card runs (`deepFreeze(DATA)`), so the shard table, the
+limits, the execution flag and the relic options cannot change. A frozen object needs no copy to be a capture: nothing
+can change it, so the harness reads it where it is. A card's write to a property of the frozen input does not change it.
+`program_tags_test.gd` (`test_a_card_that_rewrites_the_job_it_runs_in_changes_none_of_it`) pins that a card which
+rewrites the job changes none of its output, in both languages. The LEARN comment in `spell_harness.js` states the rule.
+
+## 2026-10-08 — Keep text for what is read again, and values for what is compared (`game/sandbox/shardrun/spell_harness.py`)
+
+The Python harness reads its input once, at import. A dict the harness keeps can be changed by any card that reaches it
+through `sys._getframe`, and then every later read sees the change. So it keeps JSON text for each shard, spell and rule
+it reads again (`SHARD_TEXT`, `SPELL_TEXT`, `EXECUTION`) and parses a fresh copy each time, and plain values (numbers,
+strings, tuples of pairs) for what it only compares (`LIMIT`, `SOURCE_POWER`, `STAMPS`). `DATA` is read only in the
+block that copies it. `program_tags_test.gd` (`test_a_card_that_rewrites_the_job_it_runs_in_changes_none_of_it`) has a
+Python card write into `DATA` through `sys._getframe`, and the output does not change. The LEARN comment in
+`spell_harness.py` states the rule.
+
+## 2026-10-08 — An exit is one the launcher made, not one that looks like it (`game/sandbox/launch/launch.js`)
+
+The launcher ends a program with `process.exit`, which throws an exit object. A program can reach `Exit.prototype`
+through any error's constructor, so a thrown look-alike with an exit code of 0 would pass an `instanceof` check and exit
+0. The launcher therefore keeps each exit it makes in a `WeakSet` of its own closure, freezes it, and counts a thrown
+object as an exit only if it is in that set. `program_tags_test.gd` (`test_only_the_launchers_own_exits_are_exits`)
+throws a look-alike and a rewritten exit, and both end in a runtime error. The LEARN comment in `launch.js` states the
+reason.
