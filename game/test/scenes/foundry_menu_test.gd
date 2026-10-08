@@ -296,6 +296,94 @@ func test_look_carousels_browse_without_wearing_and_wear_on_request() -> void:
 	assert_int(panel._carousel._cards[1].get_child_count()).is_greater(4)
 
 
+func test_a_legendary_look_names_itself_in_magenta_on_the_wardrobe() -> void:
+	_title.call("_open_skins")
+	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel
+	_button(panel, "Spells").pressed.emit()
+	var index := 0
+	for option: Dictionary in Cosmetics.options("circle"):
+		if option.id == "legendary-orrery":
+			break
+		index += 1
+	# The name label is reused as the carousel turns, so each browse sets its colour; the browse itself is not replayed.
+	panel._carousel.at = index
+	panel._show_look()
+	assert_that(panel._look_name.get_theme_color("font_color")).is_equal(UiTheme.LEGENDARY_NAME)
+	panel._carousel.at = 0
+	panel._show_look()
+	assert_that(panel._look_name.get_theme_color("font_color")).is_equal(UiTheme.AMBER)
+
+
+func test_a_sprite_less_legendary_look_shows_a_still_preview_that_frees_with_its_carousel() -> void:
+	# The lens copy is made only with motion on (BlackHoleImpact), so the previews are checked with motion on.
+	Settings.reduced_motion = false
+	for pick: Array in [["bolt", "legendary-constellation"], ["impact", "legendary-singularity"]]:
+		var carousel := LookCarousel.make(String(pick[0]), String(pick[1]), "")
+		add_child(carousel)
+		await get_tree().process_frame
+		# A look with no sheet is a preview node on its card, not an empty card.
+		var preview: Node2D = (carousel._arts[carousel.at] as LookArt)._effect
+		assert_bool(is_instance_valid(preview)).is_true()
+		if preview is LookArt.StillBolt:
+			assert_int((preview as LookArt.StillBolt).route.size()).is_equal(LookArt.STILL_STARS + 2)
+		elif preview is BlackHoleImpact:
+			preview = await _assert_black_hole_preview_is_a_running_lens(carousel)
+		# The preview goes with its carousel: no node is left behind.
+		assert_bool(is_instance_valid(preview)).is_true()
+		carousel.queue_free()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		assert_bool(is_instance_valid(carousel)).is_false()
+		assert_bool(is_instance_valid(preview)).is_false()
+
+
+## A preview black hole is processing, its clock held at time_scale 0 (docs/LEGENDARY_LOOKS.md, "Carousel previews").
+## When the carousel moves, the card builds it again where the card now is. Returns the black hole shown after the move.
+func _assert_black_hole_preview_is_a_running_lens(carousel: LookCarousel) -> Node2D:
+	var art := carousel._arts[carousel.at] as LookArt
+	var hole := art._effect as BlackHoleImpact
+	assert_object(hole).is_not_null()
+	if hole == null:
+		return null
+	assert_bool(hole.is_processing()).is_true()
+	assert_float(hole.time_scale).is_equal(0.0)
+	assert_object(hole.shader_material()).is_not_null()
+	_assert_lens_on_card(hole, art)
+	carousel.position += Vector2(30.0, 20.0)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	assert_bool(is_instance_valid(hole)).is_false()
+	var moved := art._effect as BlackHoleImpact
+	assert_object(moved).is_not_null()
+	if moved == null:
+		return null
+	assert_bool(moved.is_processing()).is_true()
+	assert_float(moved.time_scale).is_equal(0.0)
+	assert_float(moved.progress).is_equal_approx(LookArt.HOLE_PROGRESS, 0.001)
+	_assert_lens_on_card(moved, art)
+	return moved
+
+
+## The black hole is centred on its card's picture field, and its lens copy is centred on the black hole.
+func _assert_lens_on_card(hole: BlackHoleImpact, art: LookArt) -> void:
+	var field := Vector2(art.size.x, art.size.y - LookArt.BAND_HEIGHT)
+	var centre := art.get_global_transform() * (field * 0.5)
+	assert_vector(hole.global_position).is_equal_approx(centre, Vector2(0.01, 0.01))
+	var copy := _copy_of(hole)
+	assert_object(copy).is_not_null()
+	if copy == null:
+		return
+	assert_int(copy.copy_mode).is_equal(BackBufferCopy.COPY_MODE_RECT)
+	assert_vector(copy.rect.get_center()).is_equal_approx(hole.global_position, Vector2(0.01, 0.01))
+
+
+func _copy_of(hole: BlackHoleImpact) -> BackBufferCopy:
+	for child in hole.get_children():
+		if child is BackBufferCopy:
+			return child as BackBufferCopy
+	return null
+
+
 func test_the_spell_animations_are_browsable_and_wearable_in_spells_and_not_in_moves() -> void:
 	_title.call("_open_skins")
 	var panel := _panel("FoundryCharacterPanel") as FoundryCharacterPanel

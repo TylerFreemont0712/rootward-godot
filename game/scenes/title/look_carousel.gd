@@ -83,7 +83,9 @@ func _card(option: Dictionary, index: int, unplayable: bool) -> Control:
 	band.anchor_right = 1.0
 	band.anchor_bottom = 1.0
 	band.offset_top = -34
-	var title := Ui.sized(Ui.label(Cosmetics.text(String(option.name)), "Subheading"), 15)
+	var title := Ui.tint(
+		Ui.sized(Ui.label(Cosmetics.text(String(option.name)), "Subheading"), 15), UiTheme.name_colour(option)
+	)
 	(title as Label).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	(title as Label).vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	(title as Label).clip_text = true

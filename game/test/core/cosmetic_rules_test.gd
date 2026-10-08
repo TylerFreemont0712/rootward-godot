@@ -86,3 +86,96 @@ func test_no_move_carries_a_spell_animation() -> void:
 		for option in Cosmetics.options("circle"):
 			found = found or option.style == style
 		assert_bool(found).override_failure_message(style).is_true()
+
+
+func test_the_orrery_is_a_circle_style_drawn_at_the_centre() -> void:
+	assert_array(CosmeticRules.CIRCLE_STYLES).contains(["orrery"])
+	assert_array(CosmeticRules.CENTRED_STYLES).contains(["orrery"])
+	var catalog := CATALOG.duplicate(true)
+	var circles: Array = catalog["circle"]
+	circles.append({"id": "orrery", "name": "Orrery", "note": "", "style": "orrery", "legendary": true})
+	assert_array(CosmeticRules.check(catalog)).is_empty()
+
+
+func test_a_legendary_flag_must_be_a_bool() -> void:
+	var broken := CATALOG.duplicate(true)
+	var circles: Array = broken["circle"]
+	var first: Dictionary = circles[0]
+	first["legendary"] = "yes"
+	assert_array(CosmeticRules.check(broken)).contains(["circle.codex: legendary is not a bool"])
+	assert_array(CosmeticRules.check(CATALOG)).is_empty()
+
+
+func test_is_legendary_reads_only_a_true_flag() -> void:
+	assert_bool(CosmeticRules.is_legendary({"legendary": true})).is_true()
+	assert_bool(CosmeticRules.is_legendary({"legendary": false})).is_false()
+	assert_bool(CosmeticRules.is_legendary({"legendary": "yes"})).is_false()
+	assert_bool(CosmeticRules.is_legendary({})).is_false()
+
+
+func test_a_drawn_bolt_or_impact_needs_no_sheet() -> void:
+	var catalog := CATALOG.duplicate(true)
+	var bolts: Array = catalog["bolt"]
+	bolts.append({"id": "line", "name": "Line", "note": "", "draw": "constellation", "legendary": true})
+	var impacts: Array = catalog["impact"]
+	impacts.append({"id": "hole", "name": "Hole", "note": "", "draw": "black-hole", "legendary": true})
+	assert_array(CosmeticRules.check(catalog)).is_empty()
+
+
+func test_an_unknown_draw_is_a_problem_and_each_draw_is_known_only_in_its_slot() -> void:
+	var catalog := CATALOG.duplicate(true)
+	var bolts: Array = catalog["bolt"]
+	bolts.append({"id": "smear", "name": "Smear", "note": "", "draw": "plaid"})
+	bolts.append({"id": "hole", "name": "Hole", "note": "", "draw": "black-hole"})
+	var impacts: Array = catalog["impact"]
+	impacts.append({"id": "line", "name": "Line", "note": "", "draw": "constellation"})
+	(
+		assert_array(CosmeticRules.check(catalog))
+		. contains(
+			[
+				"bolt.smear: unknown draw 'plaid'",
+				"bolt.hole: unknown draw 'black-hole'",
+				"impact.line: unknown draw 'constellation'",
+			]
+		)
+	)
+
+
+func test_an_unknown_draw_is_held_to_its_sheet_as_well() -> void:
+	var catalog := CATALOG.duplicate(true)
+	var bolts: Array = catalog["bolt"]
+	bolts.append({"id": "smear", "name": "Smear", "note": "", "draw": "plaid"})
+	(
+		assert_array(CosmeticRules.check(catalog))
+		. contains(
+			[
+				"bolt.smear: unknown draw 'plaid'",
+				"bolt.smear: no sprite",
+				"bolt.smear: no strong",
+			]
+		)
+	)
+
+
+func test_a_sheeted_bolt_or_impact_still_needs_its_sheet() -> void:
+	var catalog := CATALOG.duplicate(true)
+	var bolts: Array = catalog["bolt"]
+	bolts.append({"id": "bare", "name": "Bare", "note": "", "path": "arc"})
+	var impacts: Array = catalog["impact"]
+	impacts.append({"id": "plain", "name": "Plain", "note": ""})
+	(
+		assert_array(CosmeticRules.check(catalog))
+		. contains(
+			[
+				"bolt.bare: no sprite",
+				"bolt.bare: no strong",
+				"impact.plain: no sprite",
+			]
+		)
+	)
+
+
+func test_each_slot_names_its_own_draws() -> void:
+	assert_array(CosmeticRules.draws_of("bolt")).contains(["constellation"])
+	assert_array(CosmeticRules.draws_of("impact")).contains(["black-hole"])
+	assert_bool(CosmeticRules.draws_of("circle").is_empty()).is_true()

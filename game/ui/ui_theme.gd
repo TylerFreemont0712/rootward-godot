@@ -18,6 +18,9 @@ const LINE_SOFT := Color("#2b2219")
 const AMBER := Color("#f2a541")
 const AMBER_DIM := Color("#a8712a")
 const AMBER_GLOW := Color(0.95, 0.65, 0.25, 0.3)
+## A legendary look's name (docs/LEGENDARY_LOOKS.md): hot magenta, apart from the amber of other names and the orange of
+## the legendary rarity.
+const LEGENDARY_NAME := Color("#ff6ec7")
 const TEXT := Color("#e9dcc0")
 const MUTED := Color("#a58f6e")
 const FAINT := Color("#6f5e46")
@@ -82,6 +85,11 @@ static func rarity(name: String) -> Color:
 
 static func room(kind: String) -> Color:
 	return ROOMS.get(kind, ROOMS.fight)
+
+
+## The colour of an option's name: a legendary look's magenta, and the amber of every other name.
+static func name_colour(option: Dictionary) -> Color:
+	return LEGENDARY_NAME if CosmeticRules.is_legendary(option) else AMBER
 
 
 ## The selected UI face, retaining the original lettering by default.

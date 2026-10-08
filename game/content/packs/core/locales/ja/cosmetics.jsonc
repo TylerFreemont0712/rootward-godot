@@ -46,5 +46,11 @@
   {"en": "Root Eruption", "to": "根の噴出"},
   {"en": "The floor splits in a ring and roots spear up through the foe.", "to": "床が輪のようにさけ、根がやりのように敵をつきあげる。"},
   {"en": "Judgment Pillar", "to": "審判の光柱"},
-  {"en": "A column of light slams down on the foe, runes racing round its foot.", "to": "光の柱が敵にたたきつけられ、その足もとをルーンがかけまわる。"}
+  {"en": "A column of light slams down on the foe, runes racing round its foot.", "to": "光の柱が敵にたたきつけられ、その足もとをルーンがかけまわる。"},
+  {"en": "Orrery of the Codex", "to": "コードの天球儀"},
+  {"en": "A rotating orrery: one planet for each shard, marked with its role. Each arrival links a planet into a constellation.", "to": "回転する天球儀。シャードごとに惑星が一つ現れ、役割の印を帯びる。到着するたびに星座につながる。"},
+  {"en": "Constellation Bolt", "to": "星座の光条"},
+  {"en": "A line of light that hops from star to star on its way to the foe. It starts at the orrery's last star, and follows that star as the orrery turns.", "to": "敵へ向かう途中で星から星へ跳ぶ光の線。天球儀の最後の星から放たれ、その星の回転に従う。"},
+  {"en": "Singularity Burst", "to": "特異点の爆発"},
+  {"en": "A black hole that opens on the foe, bent into prismatic light: it collapses, flashes, and throws out jets.", "to": "敵の上に開く、虹色に曲がった光のブラックホール。収縮し、閃き、噴流を放つ。"}
 ]

@@ -7,12 +7,15 @@
 //   idle, cast_light, cast_heavy  a clip of the shared move library (pipeline/moves/clips/); `thumb` is the moment
 //                                 its card shows (tools/move_thumbs; the release by default)
 //   circle                        a MagicCircle style: codex, rootglass, clockwork, constellation, script-loom,
-//                                 ring-bloom (the last two are drawn by their own renderer, ADR-0043)
+//                                 ring-bloom, orrery (script-loom, ring-bloom and orrery have renderers of their own)
 //   bolt                          a spell sheet for the bolt in flight (assets/fx/spells/), the sheet a strong bolt
-//                                 flies as, and its path: arc, straight or spiral
-//   impact                        the sheet a heavy cast's first blow on each foe arrives as (anchored at its feet)
+//                                 flies as, and its path: arc, straight or spiral; or a `draw` the game draws itself
+//                                 (BOLT_DRAWS in core/cosmetic_rules.gd), which needs no sheet, strong or path
+//   impact                        the sheet a heavy cast's first blow on each foe arrives as (anchored at its feet);
+//                                 or a `draw` the game draws itself (IMPACT_DRAWS), which needs no sheet
 //
-// Names and notes are English here; their Japanese is in packs/core/locales/ja/cosmetics.jsonc.
+// Names and notes are English here; their Japanese is in packs/core/locales/ja/cosmetics.jsonc. A look marked
+// "legendary": true is one of the legendary set (docs/LEGENDARY_LOOKS.md), and its name is magenta.
 {
   "idle": [
     {
@@ -105,6 +108,13 @@
       "name": "Token Stream",
       "note": "Each function's name lifts out of the code where its call stands and flies into the circle, which is built from those names as the code runs.",
       "style": "codex"
+    },
+    {
+      "id": "legendary-orrery",
+      "name": "Orrery of the Codex",
+      "note": "A rotating orrery: one planet for each shard, marked with its role. Each arrival links a planet into a constellation.",
+      "style": "orrery",
+      "legendary": true
     }
   ],
   "bolt": [
@@ -139,6 +149,13 @@
       "sprite": "bolt-thorn",
       "strong": "bolt-thorn",
       "path": "straight"
+    },
+    {
+      "id": "legendary-constellation",
+      "name": "Constellation Bolt",
+      "note": "A line of light that hops from star to star on its way to the foe. It starts at the orrery's last star, and follows that star as the orrery turns.",
+      "draw": "constellation",
+      "legendary": true
     }
   ],
   "impact": [
@@ -165,6 +182,13 @@
       "name": "Judgment Pillar",
       "note": "A column of light slams down on the foe, runes racing round its foot.",
       "sprite": "hit-pillar"
+    },
+    {
+      "id": "legendary-singularity",
+      "name": "Singularity Burst",
+      "note": "A black hole that opens on the foe, bent into prismatic light: it collapses, flashes, and throws out jets.",
+      "draw": "black-hole",
+      "legendary": true
     }
   ]
 }

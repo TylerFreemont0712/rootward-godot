@@ -121,6 +121,26 @@ func _ready() -> void:
 			if base != "character" and base != "character-dummy":
 				await get_tree().create_timer(at).timeout
 				rehearsal.set_paused(true)
+		"character-looks":
+			# ROOTWARD_SHOT_LOOK=<option id> opens the Spells carousel on that option's slot (circle, bolt or impact),
+			# on that option, with its name and note (magenta when it is legendary).
+			title.call("_open_skins")
+			var panel := _panel(title, "FoundryCharacterPanel") as FoundryCharacterPanel
+			var look := OS.get_environment("ROOTWARD_SHOT_LOOK")
+			var slot := _slot_of(look)
+			if slot == "":
+				get_tree().quit(2)
+				return
+			panel._tab = "Spells"
+			panel._spell_slot = slot
+			panel._build_controls()
+			panel.rehearsal.set_look(slot, look)
+			var options := Cosmetics.options(slot)
+			for i in options.size():
+				if String(options[i].id) == look:
+					panel._carousel.at = i
+			panel._carousel.arrange(false)
+			panel._show_look()
 		"library", "library-transition", "foes", "bosses", "boss-root", "boss-heap", "library-relics", "library-spellforge":
 			title.call("_open_archive")
 			if moment == "library-transition":
@@ -158,6 +178,16 @@ func _ready() -> void:
 		await get_tree().process_frame
 	set_meta("shot_ready", true)
 	shot_ready.emit()
+
+
+## The loadout slot an option belongs to: circle, bolt or impact. An unknown id is an error, and the shot stops.
+static func _slot_of(option_id: String) -> String:
+	for slot: String in ["circle", "bolt", "impact"]:
+		for option: Dictionary in Cosmetics.options(slot):
+			if String(option.get("id", "")) == option_id:
+				return slot
+	push_error("no circle, bolt or impact option %s" % option_id)
+	return ""
 
 
 static func _panel(root: Node, wanted: String) -> Control:

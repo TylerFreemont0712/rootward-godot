@@ -467,6 +467,8 @@ func _show_look() -> void:
 	var option := _carousel.current()
 	var worn := String(Cosmetics.loadout().get(_carousel.slot, "")) == String(option.get("id", ""))
 	_look_name.text = Cosmetics.text(String(option.get("name", "")))
+	# LEARN: the name label is reused as the carousel turns, so its colour is set on every browse, not once at build.
+	Ui.tint(_look_name, UiTheme.name_colour(option))
 	_look_note.text = Cosmetics.text(String(option.get("note", "")))
 	_wear.text = FoundryUi.text("Worn", "使用中") if worn else FoundryUi.text("Wear this", "これにする")
 	_wear.disabled = worn
