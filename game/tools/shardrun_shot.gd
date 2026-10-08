@@ -41,6 +41,11 @@ func _ready() -> void:
 	ForgeRoom.open_door = OS.get_environment("ROOTWARD_SHOT_FORGE")
 	Game.reset(SAVES)
 	Game.boot()
+	# ROOTWARD_SHOT_CIRCLE=<circle id> wears that circle (token-stream, codex, ring-bloom...) for the moment shot.
+	if OS.get_environment("ROOTWARD_SHOT_CIRCLE") != "":
+		var worn := Cosmetics.loadout()
+		worn["circle"] = OS.get_environment("ROOTWARD_SHOT_CIRCLE")
+		Settings.loadout = worn
 	var face := OS.get_environment("ROOTWARD_FONT")
 	if UiFonts.CHOICES.has(face):
 		Settings.font_style = face

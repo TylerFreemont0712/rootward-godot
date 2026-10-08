@@ -964,3 +964,9 @@ lives in `_input`, and checks that the workbench is visible.
 The interface font is Cinzel, which has only capitals: `loaves_for` in a sentence shows as LOAVES_FOR, and in code
 case matters ("Dear Mabel," is not "DEAR MABEL,"). Anything that is code or a value goes through a RichTextLabel with
 backtick spans in the code font, so the player sees exactly what their program produced.
+
+## A token follows the layout, not the signal (`token_flight.gd`, `token_stream.gd`)
+The code panel emits "this call started" before it scrolls to the call, so a token launched on that signal left from
+where the line used to be. A flight also computed its positions through the overlay's transform, which had not settled
+yet: the token was placed against a stale origin and ended off the top of the window. Two fixes made it work: wait for
+the reveal to settle, and keep the flight top-level in global coordinates, so no parent's layout can move it.

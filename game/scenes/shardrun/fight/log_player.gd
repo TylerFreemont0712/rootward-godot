@@ -231,6 +231,11 @@ func _constructs(_heavy: bool) -> bool:
 
 
 ## Start before the code walks, keeping the hero idle and the circle on the stage rather than on its hand.
+## Where the spell's circle stands, in global coordinates, for a Token Stream to fly into; zero before it exists.
+func circle_point() -> Vector2:
+	return _circle.global_position if is_instance_valid(_circle) else Vector2.ZERO
+
+
 func begin_construction(spell_id: String, element: String, _heavy := false) -> void:
 	_construction_spell = spell_id
 	_construction_started = true

@@ -301,12 +301,20 @@ func present(result: Dictionary) -> void:
 			player.prepare_early(entries)
 			_program.work_counted.connect(player.count_work)
 			player.code_interrupted.connect(_program.abort)
+		var tokens: TokenStream = null
 		if construction:
 			_program.shard_resolved.connect(player.resolve_shard)
 			_program.import_resolved.connect(player.resolve_import)
 			_program.shard_progress.connect(player.trace_shard)
 			_program.import_progress.connect(player.trace_import)
+			if TokenStream.wanted_by(stage.hero):
+				# The window's root draws the flights above the whole fight: the fight's own panels clip them out of sight.
+				tokens = TokenStream.attach(
+					get_tree().root, _program, player, UiTheme.ELEMENTS.get(player.replay_element, UiTheme.TEXT)
+				)
 		await _program.play_cast(replay.run, code_speed, construction)
+		if tokens != null:
+			tokens.detach()
 		if code_speed != "off":
 			await player.drain_early()
 			_program.work_counted.disconnect(player.count_work)

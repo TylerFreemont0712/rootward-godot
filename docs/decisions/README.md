@@ -82,3 +82,5 @@ The next number is **ADR-0056**.
 - [ADR-0056](ADR-0056-the-forge-acts-on-the-cards.md): the forge opens on doors (melt, refactor, widen, bind) beside the anvil; each stage is framed in its colour, and melting and refactoring act on the cards themselves, through the same one command.
 
 - [ADR-0057](ADR-0057-each-element-strikes-with-its-own-blow.md): fire, frost and spark bolts land with blows of their own (hit-ember, hit-rime, hit-arc), drawn without a GPU; anything else keeps the bracket slam.
+
+- [ADR-0058](ADR-0058-token-stream-the-code-writes-its-circle.md): Token Stream, a circle where each card's function name lifts out of the code and flies into the circle as its call runs, and dissolves into the layer it writes.

@@ -567,6 +567,48 @@ func _is_quiet(index: int) -> bool:
 	return text == "" or text.begins_with("#") or text.begins_with("//")
 
 
+## The index of the call line that runs shard `slot`, or -1 (Token Stream lifts its name from there).
+func line_of_slot(slot: int) -> int:
+	for index in _lines.size():
+		if String(_lines[index].kind) == "call" and int(_lines[index].slot) == slot:
+			return index
+	return -1
+
+
+## The function a call line runs, read from its text: `bolts = salvo(bolts, battle)` gives "salvo".
+static func call_name_of(text: String) -> String:
+	var open := text.find("(")
+	if open < 0:
+		return ""
+	var start := open
+	while start > 0 and _is_name_char(text[start - 1]):
+		start -= 1
+	return text.substr(start, open - start)
+
+
+static func _is_name_char(character: String) -> bool:
+	return (
+		character == "_"
+		or character.is_valid_int()
+		or (character >= "a" and character <= "z")
+		or (character >= "A" and character <= "Z")
+	)
+
+
+## The function a call line runs (see call_name_of).
+func call_name(index: int) -> String:
+	return call_name_of(_code.text_of(index))
+
+
+## Where the function's name stands on the code panel, in global coordinates: the centre of the name on its line.
+func call_point(index: int) -> Vector2:
+	var text := _code.text_of(index)
+	var name := call_name_of(text)
+	var start := text.find(name) if name != "" else -1
+	var column := maxi(0, start + name.length() / 2)
+	return _code.get_global_transform() * _code.cell_centre(index, column)
+
+
 func _focus(index: int) -> void:
 	_code.set_cursor(index)
 	_reveal(index)

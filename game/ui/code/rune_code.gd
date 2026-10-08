@@ -159,6 +159,18 @@ func line_top(index: int) -> float:
 	return float(_lines[index].top)
 
 
+## The centre of character `column` on line `index`, in the panel's own coordinates. A token leaves the code from there.
+func cell_centre(index: int, column: int) -> Vector2:
+	var line: Dictionary = _lines[index]
+	var rows: Array = line.rows
+	for r in rows.size():
+		var chunk: Dictionary = rows[r]
+		if column >= int(chunk.from) and column < int(chunk.to):
+			var x := GUTTER + PAD + int(chunk.shift) * _char_w + (column - int(chunk.from) + 0.5) * _char_w
+			return Vector2(x, float(line.top) + r * _line_h + _line_h * 0.5)
+	return Vector2(GUTTER + PAD, float(line.top) + _line_h * 0.5)
+
+
 func line_height() -> float:
 	return _line_h
 

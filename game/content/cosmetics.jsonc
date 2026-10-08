@@ -99,6 +99,12 @@
       "name": "Ring Bloom",
       "note": "The first shard sets a core, and every shard after it sets another whole ring round the others, up to six. Each turns a little as it settles.",
       "style": "ring-bloom"
+    },
+    {
+      "id": "token-stream",
+      "name": "Token Stream",
+      "note": "Each function's name lifts out of the code where its call stands and flies into the circle, which is built from those names as the code runs.",
+      "style": "codex"
     }
   ],
   "bolt": [
