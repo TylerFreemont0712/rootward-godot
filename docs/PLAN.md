@@ -427,3 +427,20 @@ Started 2026-10-06. The Academy was scrapped at the player's request and a new m
 - [ ] Mosslight, the next village: data structures; travelling merchants (work budgets) for Emberdeep after it.
 - [ ] Pip's lanterns: Parsons letters for the youngest, Japanese first.
 
+
+### 2026-10-08: the forge, the strikes, Token Stream, the content pass and the moves
+- [x] The forge (ADR-0056): four doors beside the anvil (melt, refactor, widen, bind), each stage framed in its colour.
+      Melting shows the deck as cards and covers the chosen one with a rune circle before it breaks away; refactoring
+      turns the card into its `+` in place. The rules are unchanged.
+- [x] Each element strikes with its own blow (ADR-0057): hit-ember (fire), hit-rime (frost), hit-arc (spark), drawn
+      without a GPU by `pipeline/sprites/spells.py`.
+- [x] Token Stream (ADR-0058): a circle where each card's function name lifts out of the code and flies into it.
+- [x] Clarity and balance pass (ADR-0059): about 100 program card edits, 22 relic and shard summaries, costs and one
+      relic number; Japanese updated; 1036 worked examples pass. Open items are in `docs/CARD_AUDIT_2026-10-08.md`.
+- [x] Move smoothing, measured in the live Blender: the cast snaps, the finger ramps and the guard's entry are longer or
+      softer (commit 8fbf10d). [ ] Bezier keys with auto-clamped handles and 60 fps export. [ ] The spikes left in
+      cast-skyward and cast-slam, to be judged in the motion lab.
+- [ ] The walkable hamlet (`docs/WALKABLE_HAMLET.md`): a proposal only; slice 1 waits for the player's choice of beside
+      or instead.
+- [ ] Code bugs from the audit: Sweep's guards, Hash Merge's key, Fractional Knapsack's remainder, Import Collections+
+      and Import Bisect+ (no real upgrade), and the billing of Permutations and Pairwise.

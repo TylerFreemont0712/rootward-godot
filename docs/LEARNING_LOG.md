@@ -970,3 +970,15 @@ The code panel emits "this call started" before it scrolls to the call, so a tok
 where the line used to be. A flight also computed its positions through the overlay's transform, which had not settled
 yet: the token was placed against a stale origin and ended off the top of the window. Two fixes made it work: wait for
 the reveal to settle, and keep the flight top-level in global coordinates, so no parent's layout can move it.
+
+## A shared English summary is one Japanese entry (`locales/ja/`)
+Japanese text is keyed by the English exactly. A card and its refactor often share a summary, so they share one entry.
+Changing the English of one of them moves that entry, and the other card is left without Japanese (a locale test caught
+this twice in one pass). Two cards that come to read the same make a duplicate key, which the locale test rejects. When
+a summary changes, check the entries of its refactor and its base as well.
+
+## Smooth motion is a short peak, measured per frame (`pipeline/moves/clips/`)
+The keys of a move were already smooth. The jerk was a speed spike: a snap whose ease front-loads its movement (expo_out)
+packed into three frames, and a finger ramp that blended in over a quarter of a second. Measure each clip's summed bone
+speed per frame in the live Blender, and the spike shows as a single peak (the worst frames of a clip are its first few).
+Lengthen the ramp or soften the ease, keeping the release, and the peak falls while the timing stays.

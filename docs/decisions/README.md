@@ -84,3 +84,5 @@ The next number is **ADR-0056**.
 - [ADR-0057](ADR-0057-each-element-strikes-with-its-own-blow.md): fire, frost and spark bolts land with blows of their own (hit-ember, hit-rime, hit-arc), drawn without a GPU; anything else keeps the bracket slam.
 
 - [ADR-0058](ADR-0058-token-stream-the-code-writes-its-circle.md): Token Stream, a circle where each card's function name lifts out of the code and flies into the circle as its call runs, and dissolves into the layer it writes.
+
+- [ADR-0059](ADR-0059-the-clarity-and-balance-pass.md): the program cards, relics and shards say what their code does, a refactor is not cheaper than its base, and the open code and balance questions are listed in docs/CARD_AUDIT_2026-10-08.md.
