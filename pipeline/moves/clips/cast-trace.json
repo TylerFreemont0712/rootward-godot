@@ -56,7 +56,7 @@
     {
       "t": 0.5,
       "pose": "trace_stroke",
-      "ease": "expo_out"
+      "ease": "cubic_out"
     },
     {
       "t": 0.85,
@@ -89,7 +89,7 @@
       0.0
     ],
     [
-      0.25,
+      0.5,
       1.0
     ],
     [
