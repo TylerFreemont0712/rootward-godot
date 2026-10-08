@@ -27,6 +27,10 @@ const TIER_ORDER: Array[String] = [
 ]
 ## Work never counts past this (an exponential stage on a big volley): far past any budget.
 const WORK_CAP := 1 << 30
+## A card id: lower-case letters, digits and hyphens (docs/LEGENDARY_LOOKS.md). \A and \z bound the whole string:
+## ^ and $ would also accept an id that ends in a newline.
+const CARD_ID_PATTERN := "\\A[a-z0-9-]+\\z"
+static var _card_id: RegEx
 
 
 ## A program run's catalog: the program cards served as `shards`, one Program for the deck's spells, the basics as
@@ -495,8 +499,8 @@ static func ran_cards(battle: Dictionary, card_ids: Array, catalog: Dictionary) 
 	return out
 
 
-## Program output bolts: {power, element, foe?, block?, stash?, from_index?, pivot?, idle?}, at most max_bolts. `idle` is
-## short-lived provenance for scheduler spacers; the matching guard consumes it before landing.
+## Program output bolts: {power, element, foe?, block?, stash?, from_index?, pivot?, idle?, card?, role?}, at most
+## max_bolts. `idle` is short-lived provenance for scheduler spacers; the matching guard consumes it before landing.
 static func bolt_limit(state: Dictionary, catalog: Dictionary) -> int:
 	return maxi(int(config_of(catalog).max_bolts), int(ProgramRelics.modifiers(state, catalog).max_bolts))
 
@@ -520,8 +524,32 @@ static func normalize(raw: Array, catalog: Dictionary, limit := -1) -> Array[Dic
 		for flag: String in ["block", "stash", "from_index", "pivot", "idle"]:
 			if bolt.get(flag, false) == true:
 				clean[flag] = true
+		# The card that cast the bolt and its role (docs/LEGENDARY_LOOKS.md). A tag the bolt carries is checked, and a bad
+		# one becomes "". A bolt that carries no tag, a relic's, keeps none.
+		if bolt.has("card"):
+			clean.card = card_tag(bolt.get("card"))
+		if bolt.has("role"):
+			clean.role = role_tag(bolt.get("role"))
 		out.append(clean)
 	return out
+
+
+## A bolt's card tag: a card id, or "" for anything else.
+static func card_tag(value: Variant) -> String:
+	if not value is String:
+		return ""
+	var card: String = value
+	if _card_id == null:
+		_card_id = RegEx.create_from_string(CARD_ID_PATTERN)
+	return card if _card_id.search(card) != null else ""
+
+
+## A bolt's role tag: one of ProgramSchemas.ROLES, or "" for anything else.
+static func role_tag(value: Variant) -> String:
+	if not value is String:
+		return ""
+	var role: String = value
+	return role if role in ProgramSchemas.ROLES else ""
 
 
 ## The uids of a battle's living foes, in order: what a program's `foe` indices count in.

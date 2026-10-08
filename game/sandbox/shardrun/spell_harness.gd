@@ -106,6 +106,10 @@ static func build_job(
 	# Program-only execution rules travel with the source and therefore with its preview cache key.
 	if input.has("execution"):
 		data.execution = input.execution
+		# The program tag (docs/LEGENDARY_LOOKS.md): each bolt a card returns carries that card and its role.
+		# Only the program path sends execution rules, so their presence marks a program run. Counting does not:
+		# a counted run must return the bolts an uncounted one does (spell_harness_test.gd).
+		data.tags = true
 	var job: SandboxJob
 	if language == SandboxJob.CPP:
 		# C++ runs a module built ahead of time (ADR-0046): program cards and Spellforge's shards are built apart,

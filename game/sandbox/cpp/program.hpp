@@ -20,6 +20,11 @@ struct Bolt {
 	bool from_index = false;
 	bool pivot = false;
 	bool idle = false;  // A scheduler-created spacer, so Handoff Ward need not guess from power or element.
+	// The program tag (docs/LEGENDARY_LOOKS.md): the card that returned this bolt last, and that card's role. The harness
+	// sets both after each card, whatever the card wrote; a bolt no card returned has neither.
+	// LEARN: an unset std::optional means "no tag", which a plain "" cannot say: a card with no role still stamps "".
+	std::optional<std::string> card;
+	std::optional<std::string> role;
 };
 
 using Bolts = std::vector<Bolt>;

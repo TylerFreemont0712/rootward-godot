@@ -8,9 +8,81 @@ import re
 import sys
 import traceback
 
-DATA = json.loads(sys.stdin.read())
-SHARDS = DATA["shards"]
+# Every built-in or library function the harness calls after a card returns is bound here, before any card code runs
+# (docs/LEGENDARY_LOOKS.md, Program tags). Captured built-ins are safe: a card that rebinds one of them changes nothing
+# the harness stamps, serialises, prints or bills. A card that rebinds a global name of the harness can change only its
+# own run's output; closing that fully is open.
+# LEARN: a bare name is looked up in the module's globals, then in builtins, at each call. Binding `dict = dict` here
+# gives the module a global of its own, so the harness's dict(...) is the builtin as it was at import, whatever a card
+# later does to builtins.dict. The module functions below are bound the same way.
+# LEARN: a capture holds the function, not what the function reads. json.dumps still looks up its own module's globals
+# when it runs, and a card that reaches them can change its own run's output. The guarantee is about the names the
+# harness calls.
+all = all
+any = any
+bool = bool
+callable = callable
+compile = compile
+dict = dict
+enumerate = enumerate
+exec = exec
+float = float
+int = int
+isinstance = isinstance
+len = len
+list = list
+max = max
+min = min
+range = range
+str = str
+sum = sum
+type = type
+Exception = Exception
+NameError = NameError
+SyntaxError = SyntaxError
+TypeError = TypeError
+ceil = math.ceil
+floor = math.floor
+log2 = math.log2
+dumps = json.dumps
+loads = json.loads
+settrace = sys.settrace
+extract_tb = traceback.extract_tb
+write_stdout = sys.stdout.write
+flush_stdout = sys.stdout.flush
+
+# Capture at start (docs/LEGENDARY_LOOKS.md, Program tags). Every record the harness reads after a card has run is copied
+# here, before any card code runs, and each later read uses the copy. A card reaches the harness's globals through
+# sys._getframe, so the copies are values a card cannot change: numbers, strings, tuples, and JSON text that each use
+# parses afresh. DATA itself is read only in this block.
+# LEARN: a dict the harness keeps can be changed by any card that reaches it, and then every later read sees the change.
+# So the harness keeps text for what it reads again (a fresh parse each time) and plain values for what it only compares.
+DATA = loads(sys.stdin.read())
 MARKER = DATA["marker"]
+COUNT = bool(DATA.get("count"))
+TAGS = bool(DATA.get("tags"))
+LIMIT = DATA["limit"]
+TRACE_LIMIT = DATA["traceLimit"]
+SHARD_TEXT = tuple(dumps(shard) for shard in DATA["shards"])
+# A shard's id and role as the stamp writes them (the role is None when the shard has none).
+STAMPS = tuple((shard["id"], shard.get("role")) for shard in DATA["shards"])
+HOOKS = tuple((hook["when"], hook["role"], hook["shard"]) for hook in DATA.get("hooks", []))
+SPELL_TEXT = tuple(dumps(spell) for spell in DATA["spells"])
+DEFAULT_BOLTS = dumps(DATA["bolts"])
+DEFAULT_BATTLE = dumps(DATA["battle"])
+# The execution rules: each spell parses its own copy of the text, and the relic arithmetic reads the values below.
+EXECUTION = dumps(DATA.get("execution", {}))
+EXTENDED = "execution" in DATA
+RULES = DATA.get("execution", {})
+SOURCE_POWER = tuple((rule.get("paradigm"), rule["add"]) for rule in RULES.get("source_power", []))
+REJOIN_POWER = RULES.get("rejoin_power", 0)
+SORTED_STRIKE_POWER = RULES.get("sorted_strike_power", 0)
+del RULES
+
+
+def shard_at(index):
+    """A fresh copy of the shard at `index`, parsed from the text captured at start."""
+    return loads(SHARD_TEXT[index])
 
 
 def load(shard):
@@ -25,7 +97,6 @@ def load(shard):
 
 # A program run (ADR-0012) asks for counts: how many times each loop in a card went round and how many times its
 # function was entered (recursion), measured by a line tracer on the card's own file only. Other runs never trace.
-COUNT = bool(DATA.get("count"))
 LOOP_HEAD = re.compile(r"^\s*(for|while)\b")
 INLINE_FOR = re.compile(r"[\[({].*\bfor\b.+\bin\b")
 
@@ -49,12 +120,13 @@ def counted(function, shard, bolts, battle):
             calls[0] += 1
         return local
 
-    sys.settrace(tracer)
+    settrace(tracer)
     try:
         result = function(bolts, battle)
     finally:
-        sys.settrace(None)
-    return result, {"loops": loops_of(shard["source"], counts), "calls": calls[0]}
+        settrace(None)
+    # The measured copy is a JSON copy made inside the card's try, as in spell_harness.js: its failure is the card's.
+    return result, loads(dumps({"loops": loops_of(shard["source"], counts), "calls": calls[0]}))
 
 
 def loops_of(source, counts):
@@ -101,28 +173,43 @@ def volley_of(bolts):
 
 class ShardFailure(Exception):
     def __init__(self, shard, error):
-        super().__init__(str(error))
+        Exception.__init__(self, str(error))
         self.shard = shard
         self.error = error
+
+
+# A program run's bolts carry the card that returned them and that card's role (docs/LEGENDARY_LOOKS.md, Program tags):
+# the job's `tags`. The card that returns a bolt is the one that cast it, even when it hands the bolt back unchanged.
+# A card cannot choose its look through its returned values: the stamp overwrites any card or role key the card's code
+# put on a bolt. The stamp calls the captures above, so a card that rebinds a built-in cannot change a bolt's tags.
+def tagged(bolts, stamp):
+    """The bolts, each with the card's id and role in place of any card or role key they carry."""
+    return [
+        dict(bolt, card=stamp[0], role=stamp[1] or "") if isinstance(bolt, dict) else bolt
+        for bolt in bolts
+    ]
 
 
 # A program run's imports may hook a role (ADR-0018): the import's own function runs on the volley before or after
 # every card of that role (heapq hands each strike the strongest bolt first; bisect sorts what each source made).
 # LEARN: a hook is a function called around other functions without them knowing (a decorator's idea): the cards stay
 # as they are, and what an import changes is the data they are handed.
-HOOKS = DATA.get("hooks", [])
-
-
-def hooked(when, role, bolts, battle_json):
-    for hook in HOOKS:
-        if hook["when"] != when or hook["role"] != role:
+# LEARN: an import is not a step of the program (ProgramDeck.steps leaves it out), so after a card the bolts it hands
+# back are still that card's. Each import's bolts are stamped before the next import runs: whatever an import wrote on
+# a bolt is replaced, and a second import sees the card's tags, as the C++ harness does. Before a card the bolts are not
+# yet its, so the card is handed them as they came.
+def hooked(when, stamp, bolts, battle_json):
+    for hook_when, hook_role, index in HOOKS:
+        if hook_when != when or hook_role != stamp[1]:
             continue
-        shard = SHARDS[hook["shard"]]
+        shard = shard_at(index)
         try:
-            result = load(shard)(bolts, json.loads(battle_json))
+            result = load(shard)(bolts, loads(battle_json))
             if not isinstance(result, list):
                 raise TypeError(shard["name"] + " must return a list of bolts, not " + type(result).__name__)
-            bolts = json.loads(json.dumps(result[: DATA["limit"]], allow_nan=False))
+            bolts = loads(dumps(result[:LIMIT], allow_nan=False))
+            if TAGS and when == "after":
+                bolts = tagged(bolts, stamp)
         except Exception as error:
             raise ShardFailure(shard, error)
     return bolts
@@ -134,9 +221,9 @@ def work_units(complexity, size, cap=0, height=1):
     if complexity == "constant":
         return 1
     if complexity == "logarithmic":
-        return math.ceil(math.log2(size + 1))
+        return ceil(log2(size + 1))
     if complexity == "linearithmic":
-        return math.ceil(size * math.log2(size + 1))
+        return ceil(size * log2(size + 1))
     if complexity == "quadratic":
         return min(maximum, size * size)
     if complexity == "exponential":
@@ -159,8 +246,8 @@ class Execution:
         self.indexes = spell["shards"]
         self.battle_json = battle_json
         self.trace = trace
-        self.options = DATA.get("execution", {})
-        self.extended = "execution" in DATA
+        self.options = loads(EXECUTION)
+        self.extended = EXTENDED
         self.order = "sorted"
         self.work = 0
         self.discount = 1.0
@@ -168,11 +255,12 @@ class Execution:
             if self.indexes and len(self.indexes) <= rule["max_cards"]:
                 self.discount *= rule["factor"]
 
-    def hooks(self, when, shard, bolts):
-        bolts = hooked(when, shard.get("role"), bolts, self.battle_json)
-        for hook in HOOKS:
-            if hook["when"] == when and hook["role"] == shard.get("role"):
-                self.order = SHARDS[hook["shard"]].get("makes", self.order)
+    def hooks(self, when, index, bolts):
+        stamp = STAMPS[index]
+        bolts = hooked(when, stamp, bolts, self.battle_json)
+        for hook_when, hook_role, hook_index in HOOKS:
+            if hook_when == when and hook_role == stamp[1]:
+                self.order = shard_at(hook_index).get("makes", self.order)
         return bolts
 
     def bill(self, shard, slot, given, returned, measured, sorted_input):
@@ -189,51 +277,58 @@ class Execution:
             self.options.get("jit") and shard["id"] in self.options.get("ran", [])
         ):
             work = 0
-        return math.floor(work * self.options.get("work_factor", 1.0))
+        return floor(work * self.options.get("work_factor", 1.0))
 
     def call(self, slot, bolts, body=None, part=None):
-        shard = SHARDS[self.indexes[slot]]
-        original = json.loads(json.dumps(bolts))
+        index = self.indexes[slot]
+        shard = shard_at(index)
+        stamp = STAMPS[index]
+        original = loads(dumps(bolts))
         original_order = self.order
-        bolts = self.hooks("before", shard, bolts)
+        bolts = self.hooks("before", index, bolts)
         given = len(bolts)
         sorted_input = is_sorted(bolts)
         try:
             function = load(shard)
             measured = None
             if COUNT:
-                result, measured = counted(function, shard, bolts, json.loads(self.battle_json))
+                result, measured = counted(function, shard, bolts, loads(self.battle_json))
             else:
-                result = function(bolts, json.loads(self.battle_json))
+                result = function(bolts, loads(self.battle_json))
             if not isinstance(result, list):
                 raise TypeError(shard["name"] + " must return a list of bolts, not " + type(result).__name__)
-            # A JSON round trip isolates results and rejects non-data values at the card which produced them.
-            snapshot = json.dumps(result[: DATA["limit"]], allow_nan=False)
+            # One JSON copy of what the card returned, made once: the bill and the output both come from this copy, so
+            # a list whose length reads differently cannot change what is billed (docs/LEGENDARY_LOOKS.md). The stamp
+            # runs on the copy inside the card's try, so its errors are the card's.
+            copy = loads(dumps(result, allow_nan=False))
+            if TAGS:
+                copy = tagged(copy, stamp)
         except Exception as error:
             raise ShardFailure(shard, error)
-        work = self.bill(shard, slot, given, len(result), measured, sorted_input)
-        projected = min(1 << 30, math.floor((self.work + work) * self.discount))
+        returned = len(copy)
+        work = self.bill(shard, slot, given, returned, measured, sorted_input)
+        projected = min(1 << 30, floor((self.work + work) * self.discount))
         pruned = self.options.get("prune", False) and projected > self.options.get("budget", 1 << 30)
         if pruned:
             bolts = original
             self.order = original_order
         else:
             self.work += work
-            bolts = json.loads(snapshot)
+            bolts = copy[:LIMIT]
             extra = 0
             if shard.get("role") == "source":
-                extra += sum(rule["add"] for rule in self.options.get("source_power", [])
-                             if not rule.get("paradigm") or rule["paradigm"] == shard.get("paradigm"))
+                extra += sum(add for paradigm, add in SOURCE_POWER
+                             if not paradigm or paradigm == shard.get("paradigm"))
             if shard.get("role") == "strike" and sorted_input:
-                extra += self.options.get("sorted_strike_power", 0)
+                extra += SORTED_STRIKE_POWER
             if extra:
                 bolts = [dict(bolt, power=bolt["power"] + extra)
                          if isinstance(bolt, dict) and isinstance(bolt.get("power"), (int, float))
                          and (shard.get("role") == "source" or not bolt.get("block")) else bolt for bolt in bolts]
             self.order = shard.get("makes", self.order)
-            bolts = self.hooks("after", shard, bolts)
-        step = {"shard": shard["id"], "given": given, "returned": len(result),
-                "bolts": json.loads(json.dumps(bolts))[: DATA["traceLimit"]]}
+            bolts = self.hooks("after", index, bolts)
+        step = {"shard": stamp[0], "given": given, "returned": returned,
+                "bolts": loads(dumps(bolts))[:TRACE_LIMIT]}
         if measured is not None:
             step.update(measured)
             step.update(volley_of(bolts))
@@ -247,7 +342,7 @@ class Execution:
         return bolts, not pruned
 
     def body(self, owner, slot, bolts, depth):
-        shard = SHARDS[self.indexes[slot]]
+        shard = shard_at(self.indexes[slot])
         nested = depth > 1 and shard.get("splits") and slot + 1 < len(self.indexes)
         pieces = [bolts]
         for _ in range(1 if nested else depth):
@@ -259,12 +354,11 @@ class Execution:
             if nested and accepted:
                 result, consumed = self.body(slot, slot + 1, result, depth - 1)
             out.extend(result)
-        extra = self.options.get("rejoin_power", 0)
-        if extra:
-            out = [dict(bolt, power=bolt["power"] + extra) for bolt in out]
-        out = out[: DATA["limit"]]
+        if REJOIN_POWER:
+            out = [dict(bolt, power=bolt["power"] + REJOIN_POWER) for bolt in out]
+        out = out[:LIMIT]
         joined = volley_of(out)
-        self.trace[-1].update(joined=json.loads(json.dumps(out))[: DATA["traceLimit"]], joined_returned=len(out),
+        self.trace[-1].update(joined=loads(dumps(out))[:TRACE_LIMIT], joined_returned=len(out),
                               joined_power=joined["power"], joined_elements=joined["elements"])
         return out, consumed
 
@@ -274,7 +368,7 @@ class Execution:
         depth = max(0, min(2, body_rule.get("depth", 0))) if body_rule.get("kind") == "split" else 0
         while slot < len(self.indexes):
             bolts, accepted = self.call(slot, bolts)
-            shard = SHARDS[self.indexes[slot]]
+            shard = shard_at(self.indexes[slot])
             if depth and accepted and shard.get("splits") and slot + 1 < len(self.indexes):
                 bolts, slot = self.body(slot, slot + 1, bolts, depth)
             else:
@@ -283,7 +377,7 @@ class Execution:
 
 
 def run_spell(spell, battle_json, trace):
-    bolts = json.loads(json.dumps(spell.get("bolts", DATA["bolts"])))
+    bolts = loads(dumps(spell["bolts"]) if "bolts" in spell else DEFAULT_BOLTS)
     return Execution(spell, battle_json, trace).run(bolts)
 
 
@@ -293,16 +387,16 @@ def locate(failure):
     line = None
     if isinstance(error, SyntaxError) and error.filename == filename:
         line = error.lineno
-    for frame in traceback.extract_tb(error.__traceback__):
+    for frame in extract_tb(error.__traceback__):
         if frame.filename == filename:
             line = frame.lineno
     return line
 
 
 def main():
-    default_battle = json.dumps(DATA["battle"])
-    for spell in DATA["spells"]:
-        battle_json = json.dumps(spell["battle"]) if "battle" in spell else default_battle
+    for spell_text in SPELL_TEXT:
+        spell = loads(spell_text)
+        battle_json = dumps(spell["battle"]) if "battle" in spell else DEFAULT_BATTLE
         trace = []
         try:
             bolts = run_spell(spell, battle_json, trace)
@@ -319,7 +413,10 @@ def main():
             line = locate(failure)
             if line is not None:
                 result["line"] = line
-        print(MARKER + json.dumps(result))
+        # The line goes out through the captured stream and is flushed there, so a card that rebinds print or sys.stdout
+        # cannot change it, and the launcher's own flush cannot lose it.
+        write_stdout(MARKER + dumps(result) + "\n")
+        flush_stdout()
 
 
 main()

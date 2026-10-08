@@ -99,6 +99,8 @@ static Bolt bolt_of(const Value& v) {
 	bolt.from_index = v["from_index"].truthy();
 	bolt.pivot = v["pivot"].truthy();
 	bolt.idle = v["idle"].truthy();
+	if (v.has("card")) bolt.card = v["card"].str();
+	if (v.has("role")) bolt.role = v["role"].str();
 #endif
 	return bolt;
 }
@@ -119,6 +121,8 @@ static Value value_of(const Bolt& bolt) {
 	if (bolt.from_index) v.set("from_index", Value::of(true));
 	if (bolt.pivot) v.set("pivot", Value::of(true));
 	if (bolt.idle) v.set("idle", Value::of(true));
+	if (bolt.card) v.set("card", Value::of(*bolt.card));
+	if (bolt.role) v.set("role", Value::of(*bolt.role));
 #endif
 	return v;
 }
@@ -179,20 +183,43 @@ static Bolts call_card(const Shard& shard, const Bolts& bolts, const Battle& bat
 	}
 }
 
+// A program run's bolts carry the card that returned them and that card's role (docs/LEGENDARY_LOOKS.md). The harness
+// stamps a card's volley when the card returns it, and each import hooked after the card as the import hands it back.
+// A volley handed to a card before it is left as it came. Whatever card or role a bolt arrived with is replaced.
+// Spellforge's bolts carry no tags.
+#ifdef ROOTWARD_SPELLFORGE
+static void stamp(Bolts&, const Shard&) {}
+#else
+static void stamp(Bolts& bolts, const Shard& shard) {
+	for (Bolt& bolt : bolts) {
+		bolt.card = shard.id;
+		bolt.role = shard.role;
+	}
+}
+#endif
+
 struct Job {
 	std::vector<Shard> shards;
 	std::vector<std::tuple<std::string, std::string, int>> hooks;  // when, role, shard
 	size_t limit = 64;
 	size_t trace_limit = 8;
 	bool count = false;
+	bool tags = false;  // a program run (the path that sends execution rules) stamps each bolt with its card and role
 	bool extended = false;
 	Value execution;
 };
 
-static Bolts hooked(const Job& job, const std::string& when, const std::string& role, Bolts bolts,
-                    const Battle& battle) {
-	for (const auto& [hook_when, hook_role, index] : job.hooks)
-		if (hook_when == when && hook_role == role) bolts = call_card(job.shards[index], bolts, battle, job.limit);
+// An import hooked to a card (ADR-0018) runs on the volley before or after each card of that role. An import is not a
+// step of the program, so the bolts it hands back after a card are still that card's, whatever the import wrote on
+// them: each is stamped with the card before the next import runs. Before a card the bolts are not yet its, so the card
+// is handed them as they came. LEARN: an after-import's bolts are stamped per import, so a second import sees the card
+// that returned them and not what the first import wrote. The Python and JavaScript harnesses do the same.
+static Bolts hooked(const Job& job, const std::string& when, const Shard& owner, Bolts bolts, const Battle& battle) {
+	for (const auto& [hook_when, hook_role, index] : job.hooks) {
+		if (hook_when != when || hook_role != owner.role) continue;
+		bolts = call_card(job.shards[index], bolts, battle, job.limit);
+		if (job.tags && when == "after") stamp(bolts, owner);
+	}
 	return bolts;
 }
 
@@ -242,7 +269,7 @@ class Execution {
 	double discount = 1;
 
 	Bolts hooks(const std::string& when, const Shard& shard, Bolts bolts) {
-		bolts = hooked(job, when, shard.role, bolts, battle);
+		bolts = hooked(job, when, shard, bolts, battle);
 		for (const auto& [hook_when, hook_role, index] : job.hooks)
 			if (hook_when == when && hook_role == shard.role)
 				order = job.shards[index].metadata["makes"].str(order);
@@ -291,6 +318,7 @@ class Execution {
 		} else {
 			work += stage_work;
 			bolts = result;
+			if (job.tags) stamp(bolts, shard);
 #ifndef ROOTWARD_SPELLFORGE
 			int extra = 0;
 			if (shard.role == "source")
@@ -393,14 +421,15 @@ static Bolts run_spell(const Job& job, const std::vector<int>& indexes, Bolts bo
 	if (job.extended) return Execution(job, indexes, battle, trace).run(bolts);
 	for (int index : indexes) {
 		const Shard& shard = job.shards[index];
-		bolts = hooked(job, "before", shard.role, bolts, battle);
+		bolts = hooked(job, "before", shard, bolts, battle);
 		size_t given = bolts.size();
 		Bolts result = call_card(shard, bolts, battle, job.limit);
+		if (job.tags) stamp(result, shard);
 		Value measured_loops = Value::object();
 		for (const auto& [line, rounds] : loops) measured_loops.set(std::to_string(line), Value::of(double(rounds)));
 		int measured_calls = calls;
 		size_t returned = result.size();
-		bolts = hooked(job, "after", shard.role, result, battle);
+		bolts = hooked(job, "after", shard, result, battle);
 		Value step = Value::object();
 		step.set("shard", Value::of(shard.id));
 		step.set("given", Value::of(double(given)));
@@ -438,6 +467,7 @@ static int main_harness() {
 	job.limit = size_t(data["limit"].num(64));
 	job.trace_limit = size_t(data["traceLimit"].num(8));
 	job.count = data["count"].truthy();
+	job.tags = data["tags"].truthy();
 	job.extended = data.has("execution");
 	job.execution = data["execution"];
 	for (const auto& spell : data["spells"].list()) {

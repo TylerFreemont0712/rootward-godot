@@ -61,7 +61,14 @@ static func resolve(
 		if bolt.get("stash", false):
 			ProgramMemory.stash(battle, bolt, power, relics, true)
 			continue
-		var shape := {"bolt": index, "target": "front"}
+		# LEARN: the shape rides into every record of a bolt (a hit, a ward, an overflow), so each names its card without a
+		# lookup. The index is a position, which relics and withdrawals move, so the tags come from the bolt itself.
+		var shape := {
+			"bolt": index,
+			"target": "front",
+			"card": String(bolt.get("card", "")),
+			"role": String(bolt.get("role", "")),
+		}
 		if bolt.get("block", false):
 			battle.block += power
 			gathered += power

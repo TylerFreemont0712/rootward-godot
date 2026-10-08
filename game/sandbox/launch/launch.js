@@ -8,38 +8,71 @@
 //
 // LEARN: everything is set up inside one function, and the host objects (std, os) are captured in its closure before
 // the player's code runs, so replacing globals cannot break the launcher's own reporting.
+// LEARN: the built-ins the printing path calls are captured here too, before the player's code runs. A program can replace
+// Array.prototype.push, join or String, or a global such as JSON or Map, and the line the launcher prints would then not be
+// what the harness printed. Each capture is called through Reflect.apply, captured as well: `call` is looked up on the
+// function at call time, so a program that rebinds it could reach the printing that way.
 (function (std, os, args) {
   "use strict";
   var RUNTIME_ERROR = 70, COMPILE_ERROR = 71, OUT_OF_MEMORY = 72;
   var WORK = "/work";
   var entry = args[1];
   var out = std.out, err = std.err;
+  var reflectApply = Reflect.apply;
+  var arrayPush = Array.prototype.push, arrayJoin = Array.prototype.join;
+  var stringSplit = String.prototype.split, regexTest = RegExp.prototype.test;
+  var stringOf = String, jsonStringify = JSON.stringify;
+  var ErrorCtor = Error, MapCtor = Map, SetCtor = Set;
+  var mapForEach = Map.prototype.forEach, setForEach = Set.prototype.forEach;
+  // LEARN: `value instanceof C` reads C[Symbol.hasInstance] when it runs, and a program can define its own on Error, Map
+  // or Set. So each check below calls the built-in that `instanceof` uses by default, with the constructor as receiver.
+  var hasInstance = Function.prototype[Symbol.hasInstance];
 
   function inspect(value) {
     if (typeof value === "string") return value;
-    if (value === undefined || value === null || typeof value === "number" || typeof value === "boolean" || typeof value === "bigint") return String(value);
+    if (value === undefined || value === null || typeof value === "number" || typeof value === "boolean" || typeof value === "bigint") return stringOf(value);
     if (typeof value === "function") return "[Function " + (value.name || "anonymous") + "]";
-    if (value instanceof Error) return value.name + ": " + value.message;
-    if (value instanceof Map) return "Map(" + value.size + ") " + inspect(Array.from(value.entries()));
-    if (value instanceof Set) return "Set(" + value.size + ") " + inspect(Array.from(value.values()));
+    if (reflectApply(hasInstance, ErrorCtor, [value])) return value.name + ": " + value.message;
+    if (reflectApply(hasInstance, MapCtor, [value])) return listedMap(value);
+    if (reflectApply(hasInstance, SetCtor, [value])) return listedSet(value);
     try {
-      var json = JSON.stringify(value);
-      return json === undefined ? String(value) : json;
+      var json = jsonStringify(value);
+      return json === undefined ? stringOf(value) : json;
     } catch (error) {
-      return String(value);
+      return stringOf(value);
     }
+  }
+
+  // A Map or a Set is listed by its own forEach: Array.from over its iterator would call the iterator a program can replace.
+  function listedMap(map) {
+    var pairs = [];
+    reflectApply(mapForEach, map, [function (v, k) { reflectApply(arrayPush, pairs, [[k, v]]); }]);
+    return "Map(" + pairs.length + ") " + inspect(pairs);
+  }
+
+  function listedSet(set) {
+    var items = [];
+    reflectApply(setForEach, set, [function (v) { reflectApply(arrayPush, items, [v]); }]);
+    return "Set(" + items.length + ") " + inspect(items);
   }
 
   function printTo(stream, list) {
     var parts = [];
-    for (var i = 0; i < list.length; i++) parts.push(inspect(list[i]));
-    stream.puts(parts.join(" ") + "\n");
+    for (var i = 0; i < list.length; i++) reflectApply(arrayPush, parts, [inspect(list[i])]);
+    stream.puts(reflectApply(arrayJoin, parts, [" "]) + "\n");
   }
 
-  function Exit(code) {
-    this.name = "Exit";
-    this.message = "process.exit(" + code + ")";
-    this.exitCode = code;
+  // LEARN: `instanceof Exit` reads Exit.prototype, which a program reaches through any error's constructor, so a thrown
+  // object with that prototype and an exitCode of 0 would exit 0. The exits the launcher makes are kept in a WeakSet of
+  // this closure instead, and a thrown object is an exit only if it is one of them. Each exit is frozen, so the program
+  // cannot rewrite its exitCode after throwing it.
+  var weakSetAdd = WeakSet.prototype.add, weakSetHas = WeakSet.prototype.has, objectFreeze = Object.freeze;
+  var exits = new WeakSet();
+
+  function makeExit(code) {
+    var exit = objectFreeze({ name: "Exit", message: "process.exit(" + code + ")", exitCode: code });
+    reflectApply(weakSetAdd, exits, [exit]);
+    return exit;
   }
 
   var stdinText = null;
@@ -110,9 +143,9 @@
     env: {},
     platform: "rootward-sandbox",
     // flush() is not Node's: it pushes buffered output out now, for a harness whose run may be stopped mid-way.
-    stdout: { write: function (text) { out.puts(String(text)); return true; }, flush: function () { out.flush(); } },
-    stderr: { write: function (text) { err.puts(String(text)); return true; }, flush: function () { err.flush(); } },
-    exit: function (code) { throw new Exit(code === undefined ? 0 : code); }
+    stdout: { write: function (text) { out.puts(stringOf(text)); return true; }, flush: function () { out.flush(); } },
+    stderr: { write: function (text) { err.puts(stringOf(text)); return true; }, flush: function () { err.flush(); } },
+    exit: function (code) { throw makeExit(code === undefined ? 0 : code); }
   };
   globalThis.require = makeRequire(dirname(entry));
   globalThis.module = mainModule;
@@ -132,8 +165,8 @@
 
   function describe(error) {
     // QuickJS names code from evalScript "<evalScript>"; the player knows it by their file's name.
-    var text = error && error.stack ? String(error.name) + ": " + error.message + "\n" + error.stack : String(error);
-    return text.split("<evalScript>").join(entry);
+    var text = error && error.stack ? stringOf(error.name) + ": " + error.message + "\n" + error.stack : stringOf(error);
+    return reflectApply(arrayJoin, reflectApply(stringSplit, text, ["<evalScript>"]), [entry]);
   }
 
   var source = std.loadFile(WORK + "/" + entry);
@@ -144,13 +177,13 @@
   try {
     std.evalScript(source);
   } catch (error) {
-    if (error instanceof Exit) finish(error.exitCode === 0 ? 0 : RUNTIME_ERROR);
-    if (error && error.name === "InternalError" && /out of memory/.test(error.message)) {
+    if (reflectApply(weakSetHas, exits, [error])) finish(error.exitCode === 0 ? 0 : RUNTIME_ERROR);
+    if (error && error.name === "InternalError" && reflectApply(regexTest, /out of memory/, [error.message])) {
       err.puts("InternalError: out of memory\n");
       finish(OUT_OF_MEMORY);
     }
     err.puts(describe(error) + "\n");
-    finish(error && error.name === "SyntaxError" && /<evalScript>:\d+:\d+\s*$/.test(String(error.stack).split("\n")[0]) ? COMPILE_ERROR : RUNTIME_ERROR);
+    finish(error && error.name === "SyntaxError" && reflectApply(regexTest, /<evalScript>:\d+:\d+\s*$/, [reflectApply(stringSplit, stringOf(error.stack), ["\n"])[0]]) ? COMPILE_ERROR : RUNTIME_ERROR);
   }
   finish(0);
 })(std, os, scriptArgs.slice(0));
