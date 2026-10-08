@@ -444,3 +444,18 @@ Started 2026-10-06. The Academy was scrapped at the player's request and a new m
       or instead.
 - [ ] Code bugs from the audit: Sweep's guards, Hash Merge's key, Fractional Knapsack's remainder, Import Collections+
       and Import Bisect+ (no real upgrade), and the billing of Permutations and Pairwise.
+
+### 2026-10-08 (later): the legendary looks
+- [x] The orrery circle, a constellation bolt and a black-hole impact (ADR-0060, `docs/LEGENDARY_LOOKS.md` v3.5): a cast is a
+      volley of riders, each on a seeded route of four or five stars that converges on one point of the foe, drawn from the
+      orrery's final star; the impact opens once per foe per cast. Reduced motion drops the rings, bursts, sparks and arms.
+      Commits c6766a9 (programs), 4e4d9c2 (fight), 64e2b1f (cosmetics and carousel), 6446a68 (docs).
+- [x] Program bolts carry their card and role in Python, JavaScript and C++; the harness bills and reads tags from copies
+      taken at start; the launcher captures its own built-ins.
+- [ ] Decision: the harness's scope. A card can still replace the harness's globals for its own job. Wrap the harness in one
+      function, or give each program its own process.
+- [ ] Decision: measured work a card hides (`sys.settrace(None)`, a replaced loop counter). Bill tampered runs at the cap, or fail them.
+- [ ] Forged result lines: a later card can print a result for an earlier spell. One process per program closes it.
+- [ ] Reduced motion for the ordinary hit sheets: `SpellAnim` does not read `Settings.reduced_motion`.
+- [ ] The inflow arms are not seen on screen in any frame so far: treat them as unverified.
+- [ ] Gating of the legendary looks is open (none yet).
