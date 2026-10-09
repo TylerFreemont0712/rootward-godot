@@ -13,6 +13,7 @@ start.
 | [04-feel-and-look.md](04-feel-and-look.md) | Animation, movement, skins and spell effects: what is worth doing now |
 | [05-lanternroot-overworld.md](05-lanternroot-overworld.md) | Path 1 refined: a top-down pixel town, light-novel dialogue, and coding your own movement |
 | [06-overworld-handoff.md](06-overworld-handoff.md) | The overworld's first slice as built, what is open, and the prompt and multi-agent plan for turn 2 |
+| [07-lanternroot-quests.md](07-lanternroot-quests.md) | The first four quests as built, and ideas for the quests and programs that come next |
 
 ## The short answer
 
