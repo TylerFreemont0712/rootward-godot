@@ -12,6 +12,7 @@ start.
 | [03-second-class-kurogane.md](03-second-class-kurogane.md) | A second class: Kurogane, the Ward Duelist (and the alternatives) |
 | [04-feel-and-look.md](04-feel-and-look.md) | Animation, movement, skins and spell effects: what is worth doing now |
 | [05-lanternroot-overworld.md](05-lanternroot-overworld.md) | Path 1 refined: a top-down pixel town, light-novel dialogue, and coding your own movement |
+| [06-overworld-handoff.md](06-overworld-handoff.md) | The overworld's first slice as built, what is open, and the prompt and multi-agent plan for turn 2 |
 
 ## The short answer
 
