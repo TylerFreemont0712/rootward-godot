@@ -6,7 +6,7 @@ extends RefCounted
 ##    language, boots: {mode: "blocks" | "code", blocks: [...], code: {python, javascript}}}
 ##
 ## The boots are kept both ways: the blocks the player placed, and the code they typed in each language. Which one
-## walks is `mode`.
+## walks is `mode`. A `draft` in the boots (the editor's unrun work, see BootsEditor) is kept as it was saved.
 
 const VERSION := 1
 const BLOCKS := "blocks"
@@ -23,21 +23,22 @@ static func fresh(map_id: String, cell: Vector2i, facing: String, language: Stri
 		"name": "",
 		"look": {},
 		"language": language,
-		"boots": {"mode": BLOCKS, "blocks": [], "code": {}},
+		"boots": {"mode": BLOCKS, "blocks": [BootsCode.rule("right", "x", 1)], "code": {}},
 	}
 
 
-## A saved state with anything missing filled in, so an older save still loads.
+## A saved state with anything missing filled in, so an older save still loads. Boots that are not a dictionary
+## take the fallback's boots (the first rule), not an empty program. A `draft` in the boots is kept as saved.
 static func normalized(saved: Dictionary, fallback: Dictionary) -> Dictionary:
 	var out := fallback.duplicate(true)
 	for key: String in saved:
 		out[key] = saved[key]
-	var boots: Dictionary = out.boots if out.boots is Dictionary else {}
-	out.boots = {
-		"mode": String(boots.get("mode", BLOCKS)),
-		"blocks": boots.get("blocks", []) if boots.get("blocks", []) is Array else [],
-		"code": boots.get("code", {}) if boots.get("code", {}) is Dictionary else {},
-	}
+	var boots: Dictionary = out.boots if out.boots is Dictionary else fallback.get("boots", {})
+	var kept: Dictionary = boots.duplicate(true)
+	kept.mode = String(boots.get("mode", BLOCKS))
+	kept.blocks = boots.get("blocks", []) if boots.get("blocks", []) is Array else []
+	kept.code = boots.get("code", {}) if boots.get("code", {}) is Dictionary else {}
+	out.boots = kept
 	if not out.flags is Dictionary:
 		out.flags = {}
 	if not out.look is Dictionary:
@@ -62,6 +63,21 @@ static func moved(state: Dictionary, map_id: String, to: Vector2i, facing: Strin
 static func flagged(state: Dictionary, flags: Dictionary) -> Dictionary:
 	var out := state.duplicate(true)
 	out.flags = flags.duplicate()
+	return out
+
+
+## The same boots in another language: the blocks stay as they are, and each language keeps the code typed for it.
+static func with_language(state: Dictionary, language: String) -> Dictionary:
+	var out := state.duplicate(true)
+	out.language = language
+	return out
+
+
+## The same town with the boots its editor holds: the blocks, the code typed in each language and any draft. The editor
+## works on a copy made when it opened, so only its boots are taken; the town's own place, flags and look are kept.
+static func with_boots_of(state: Dictionary, editor: Dictionary) -> Dictionary:
+	var out := state.duplicate(true)
+	out.boots = (editor.boots as Dictionary).duplicate(true)
 	return out
 
 

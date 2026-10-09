@@ -23,6 +23,8 @@ const WELCOME: Array[String] = [
 ]
 
 static var _catalog_cache: Dictionary = {}
+## Where the back control goes when a town screen opened the letters (the overworld's noticeboard); "" is the title.
+static var returns_to: String = ""
 
 var town: Dictionary = {}
 var catalog: Dictionary = {}
@@ -251,7 +253,7 @@ func _fill_side() -> void:
 		)
 		switch.tooltip_text = Text.t("Each language has its own town, with its own code.")
 		_side_box.add_child(switch)
-	_side_box.add_child(FoundryUi.button(Text.t("Back to the surface"), _leave, false, true))
+	_side_box.add_child(FoundryUi.button(_back_label(), _leave, false, true))
 	if _status != "":
 		_side_box.add_child(Ui.tint(Ui.label(_status, "Muted", true), UiTheme.WARN))
 
@@ -505,7 +507,7 @@ func _show_welcome() -> void:
 		for language: String in languages:
 			row.add_child(FoundryUi.button(SandboxJob.NAMES[language], start.bind(language), language == languages[0]))
 		box.add_child(row)
-	box.add_child(FoundryUi.button(Text.t("Back to the surface"), _leave, false, true))
+	box.add_child(FoundryUi.button(_back_label(), _leave, false, true))
 	_show_modal(box, 760)
 
 
@@ -583,11 +585,22 @@ func _save() -> void:
 		_store.save_town(town)
 
 
+## The label of the way out: back to the overworld's town when the letters were opened from there, else the surface.
+func _back_label() -> String:
+	return Text.t("‹ Back to town") if returns_to != "" else Text.t("Back to the surface")
+
+
 func _leave() -> void:
 	if _bench.visible:
 		town.files = _bench.files()
 		_save()
-	Game.go(Game.TITLE)
+	# A screen change already under way (a curtain still fading in) ignores this press, as Game.go does; the return
+	# target is kept for the next press rather than lost.
+	if ScreenTransition.busy:
+		return
+	var back := returns_to
+	returns_to = ""
+	Game.go(back if back != "" else Game.TITLE)
 
 
 func _unhandled_input(event: InputEvent) -> void:

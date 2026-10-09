@@ -174,11 +174,17 @@ static func map_schema() -> Dictionary:
 										"at": point,
 										"size": Schema.with_default(point, [1, 1]),
 										"solid": Schema.with_default(Schema.BOOL, true),
+										"talk": Schema.optional(Schema.ID),
 										"text": Schema.optional(Schema.TEXT),
 										"sink": Schema.with_default(Schema.INT, 0),
 									},
 									"sign":
-									{"art": Schema.with_default(Schema.TEXT, "sign"), "at": point, "text": Schema.TEXT},
+									{
+										"art": Schema.with_default(Schema.TEXT, "sign"),
+										"at": point,
+										"text": Schema.TEXT,
+										"talk": Schema.optional(Schema.ID)
+									},
 									"person": {"id": Schema.ID, "at": point, "facing": facing},
 									"warp": {"at": point, "to": target},
 								}
@@ -262,6 +268,14 @@ static func _cross_check(catalog: Dictionary, diagnostics: Array[Dictionary]) ->
 			)
 	for map_id: String in catalog.maps:
 		var map: Dictionary = catalog.maps[map_id]
+		for thing: Dictionary in map.objects:
+			if thing.has("talk") and not catalog.talk.has(String(thing.talk)):
+				ContentLoader._error(
+					diagnostics,
+					"map",
+					"a thing at %s talks with %s, which is not a talk" % [thing.at, thing.talk],
+					"overworld/maps/%s.jsonc" % map_id
+				)
 		for person: Dictionary in map.people:
 			if not catalog.townsfolk.has(String(person.id)):
 				ContentLoader._error(

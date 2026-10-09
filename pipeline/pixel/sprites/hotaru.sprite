@@ -12,6 +12,8 @@ legend U water.1
 legend G firefly.0
 legend H firefly.1
 legend I firefly.2
+legend N glow.0
+legend Y glow.1
 
 sprite hotaru 16 16
 
@@ -95,3 +97,14 @@ frame left.down from left.up at 0 1 replace
 ....#aeKK#WWV...
 .....#KK#VWWV...
 .....#KKJ#VV....
+
+// The notice above her head: a "!" in the glow colours with an ink outline, 5 x 7 (build.py cuts it out as
+// hotaru-notice.png). Drawn at the frame's top left, so the rest of the 16 x 16 frame stays clear.
+frame notice at 0 0
+..#..
+.#N#.
+.#N#.
+.#Y#.
+..#..
+.#N#.
+..#..

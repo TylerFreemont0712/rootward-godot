@@ -9,26 +9,6 @@ signal done(look: Dictionary, chosen_name: String)
 
 const TURN := 1.1
 const STRIDE := 0.22
-const NAMES := {
-	"hair/short": "Short",
-	"hair/long": "Long",
-	"hair/bun": "Bun",
-	"hair/spiky": "Spiky",
-	"hair/fluffy": "Fluffy",
-	"hair/braid": "Braid",
-	"outfit/tunic": "Tunic",
-	"outfit/dress": "Dress and apron",
-	"outfit/coat": "Warm coat",
-	"outfit/vest": "Vest",
-	"outfit/robe": "Robe",
-	"": "Nothing",
-	"hat/goggles": "Goggles",
-	"hat/leaves": "Leaf crown",
-	"hat/wide": "Wide hat",
-	"hat/hood": "Hood",
-	"face/glasses": "Glasses",
-	"none": "Nothing"
-}
 
 var look: Dictionary = {}
 var options: Dictionary = {}
@@ -42,12 +22,54 @@ var _facing := 0
 
 
 func _ready() -> void:
+	theme = OverworldStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	visible = false
 	var shade := ColorRect.new()
 	shade.color = Color(0.05, 0.04, 0.08, 0.86)
 	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(shade)
+
+
+## The English name of an option, translated. Each one is a literal Text.t call, so the locale check can find it; an id
+## it does not know is shown as it is.
+static func label_of(id: String) -> String:
+	match id:
+		"hair/short":
+			return Text.t("Short")
+		"hair/long":
+			return Text.t("Long")
+		"hair/bun":
+			return Text.t("Bun")
+		"hair/spiky":
+			return Text.t("Spiky")
+		"hair/fluffy":
+			return Text.t("Fluffy")
+		"hair/braid":
+			return Text.t("Braid")
+		"outfit/tunic":
+			return Text.t("Tunic")
+		"outfit/dress":
+			return Text.t("Dress and apron")
+		"outfit/coat":
+			return Text.t("Warm coat")
+		"outfit/vest":
+			return Text.t("Vest")
+		"outfit/robe":
+			return Text.t("Robe")
+		"hat/goggles":
+			return Text.t("Goggles")
+		"hat/leaves":
+			return Text.t("Leaf crown")
+		"hat/wide":
+			return Text.t("Wide hat")
+		"hat/hood":
+			return Text.t("Hood")
+		"face/glasses":
+			return Text.t("Glasses")
+		"", "none":
+			return Text.t("Nothing")
+	return id
 
 
 func open(choices: Dictionary) -> void:
@@ -96,36 +118,33 @@ func _build() -> void:
 	_name = LineEdit.new()
 	_name.placeholder_text = Text.t("Your name")
 	_name.max_length = 12
-	_name.add_theme_font_size_override("font_size", 28)
 	_name.custom_minimum_size = Vector2(420, 0)
-	right.add_child(_row("Name", _name))
-	right.add_child(_row("Hair", _cycler("hair", options.get("hair", []))))
-	right.add_child(_row("Hair colour", _swatches("hair", options.get("hair_colour", []))))
-	right.add_child(_row("Skin", _swatches("skin", options.get("skin", []))))
-	right.add_child(_row("Clothes", _cycler("outfit", options.get("outfit", []))))
-	right.add_child(_row("Clothes colour", _swatches("main", options.get("cloth", []))))
-	right.add_child(_row("Trim colour", _swatches("second", options.get("cloth", []))))
+	right.add_child(_row(Text.t("Name"), _name))
+	right.add_child(_row(Text.t("Hair"), _cycler("hair", options.get("hair", []))))
+	right.add_child(_row(Text.t("Hair colour"), _swatches("hair", options.get("hair_colour", []))))
+	right.add_child(_row(Text.t("Skin"), _swatches("skin", options.get("skin", []))))
+	right.add_child(_row(Text.t("Clothes"), _cycler("outfit", options.get("outfit", []))))
+	right.add_child(_row(Text.t("Clothes colour"), _swatches("main", options.get("cloth", []))))
+	right.add_child(_row(Text.t("Trim colour"), _swatches("second", options.get("cloth", []))))
 	var extras: Array = []
 	extras.append_array(options.get("hat", []))
 	for face: Variant in options.get("face", []):
 		if String(face) != "none":
 			extras.append(face)
-	right.add_child(_row("Something extra", _cycler("extra", extras)))
+	right.add_child(_row(Text.t("Something extra"), _cycler("extra", extras)))
 	var gap := Control.new()
 	gap.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	right.add_child(gap)
 	var random := Ui.button(Text.t("Surprise me"), _surprise)
 	var finish := Ui.button(Text.t("That's me!  ▶"), _finish, "PrimaryButton")
-	for button: Button in [random, finish]:
-		button.add_theme_font_size_override("font_size", 26)
 	right.add_child(Ui.hbox([random, finish], 16))
 	columns.add_child(right)
 
 
-func _row(english: String, control: Control) -> Control:
-	var label := Ui.label(Text.t(english), "Muted")
+func _row(text: String, control: Control) -> Control:
+	var label := Ui.label(text, "Muted")
 	label.custom_minimum_size = Vector2(240, 0)
-	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_font_size_override("font_size", OverworldStyle.LABEL)
 	return Ui.hbox([label, control], 12)
 
 
@@ -133,7 +152,6 @@ func _cycler(slot: String, choices: Array) -> Control:
 	var shown := Ui.label("")
 	shown.custom_minimum_size = Vector2(260, 0)
 	shown.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	shown.add_theme_font_size_override("font_size", 24)
 	_labels[slot] = shown
 	var back := Ui.button("◀", _turn.bind(slot, choices, -1))
 	var next := Ui.button("▶", _turn.bind(slot, choices, 1))
@@ -216,7 +234,7 @@ func _any(list: String, fallback: String) -> String:
 
 func _refresh() -> void:
 	for slot: String in _labels:
-		(_labels[slot] as Label).text = Text.t(String(NAMES.get(_value(slot), _value(slot))))
+		(_labels[slot] as Label).text = label_of(_value(slot))
 	_atlas.atlas = OverworldArt.sheet(look)
 	_show_frame()
 

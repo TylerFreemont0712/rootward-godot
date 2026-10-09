@@ -6,6 +6,8 @@ extends Control
 ## Rules live in game/core/overworld/; this screen draws the town and sends it keys.
 
 const START_MAP := "home"
+## How long "Hotaru is reading your boots..." stays up: until the table lands, with this as the longest it may wait.
+const READING_HOLD := 120.0
 const DIRECTIONS := {
 	KEY_UP: "up",
 	KEY_W: "up",
@@ -43,6 +45,10 @@ var _held: Array[String] = []
 var _busy := false
 var _told := {}
 var _table_source := ""
+## Each boots run takes a serial; only the newest run's answer may become the table (a late one is dropped).
+var _table_serial := 0
+var _reading := false
+var _bubble_tween: Tween
 
 
 func _ready() -> void:
@@ -54,11 +60,8 @@ func _ready() -> void:
 	_build()
 	Sound.music("music-rest")
 	var saved := _store.load_state()
-	var language := (
-		Settings.language if Settings.language in [BootsCode.PYTHON, BootsCode.JAVASCRIPT] else BootsCode.PYTHON
-	)
 	var home: Dictionary = catalog.maps.get(START_MAP, {})
-	var fresh := OverworldState.fresh(START_MAP, home.get("start", Vector2i.ZERO), "down", language)
+	var fresh := OverworldState.fresh(START_MAP, home.get("start", Vector2i.ZERO), "down", BootsCode.PYTHON)
 	state = OverworldState.normalized(saved, fresh) if not saved.is_empty() else fresh
 	if not catalog.maps.has(String(state.map)):
 		state = fresh
@@ -95,9 +98,10 @@ func _build() -> void:
 	_player.set_meta("player", true)
 	_player.arrived.connect(_on_arrived)
 	_map.things.add_child(_player)
+	# Hotaru is drawn over the town, after its things, so a house never hides her.
 	_hotaru = HotaruSprite.new()
 	_hotaru.target = _player
-	_map.things.add_child(_hotaru)
+	_map.add_child(_hotaru)
 
 	_bubble = PanelContainer.new()
 	_bubble.add_theme_stylebox_override(
@@ -114,13 +118,15 @@ func _build() -> void:
 	face.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_bubble_text = Ui.label("", "", true)
 	_bubble_text.custom_minimum_size = Vector2(620, 0)
-	_bubble_text.add_theme_font_size_override("font_size", 24)
+	_bubble_text.add_theme_font_override("font", OverworldStyle.body_font())
+	_bubble_text.add_theme_font_size_override("font_size", OverworldStyle.BODY)
 	_bubble_text.add_theme_color_override("font_color", Color("#f3e6c8"))
 	_bubble.add_child(Ui.hbox([face, _bubble_text], 14))
 	add_child(_bubble)
 
 	_prompt = Ui.label("", "Muted")
-	_prompt.add_theme_font_size_override("font_size", 22)
+	_prompt.add_theme_font_override("font", OverworldStyle.body_font())
+	_prompt.add_theme_font_size_override("font_size", OverworldStyle.LABEL)
 	_prompt.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
 	_prompt.position = Vector2(-200, -70)
 	_prompt.custom_minimum_size = Vector2(400, 0)
@@ -137,6 +143,7 @@ func _build() -> void:
 	_boots = BootsEditor.new()
 	_boots.tried.connect(_on_boots_tried)
 	_boots.closed.connect(_on_boots_closed)
+	_boots.language_chosen.connect(_on_language_chosen)
 	add_child(_boots)
 	_creator = CharacterCreator.new()
 	_creator.done.connect(_on_creator_done)
@@ -256,13 +263,18 @@ func _step(key: String) -> void:
 			_held.clear()
 			_player.bump(String(step.facing))
 			_hotaru.facing = String(step.facing)
+			state = OverworldState.moved(state, String(state.map), _player.cell, String(step.facing))
 			Sound.play("sfx-whiff", 0.25, 0.8)
+			_tell("bump", Text.t("Bonk! Something is in the way."))
 		"still":
 			_held.erase(key)
 			_tell("still-" + key, Text.f("Your boots don't know the %s key yet. Press B to teach them.", [Text.t(key)]))
 		"empty":
 			_held.clear()
-			_tell("empty", Text.t("Your boots are empty! Press B to open them."), true)
+			if _reading:
+				_hotaru_says(_reading_text(), READING_HOLD)
+			else:
+				_hotaru_says(_boots_problem())
 		"error":
 			_held.clear()
 			var error: Dictionary = step.error
@@ -306,26 +318,60 @@ func _go_through(warp: Dictionary) -> void:
 	_beat_on_enter(from)
 
 
-## The boots table for this map. Made again only when the code or the map's size changes; made on a thread, so the
-## town keeps drawing while the sandbox runs.
-func _refresh_table() -> void:
+## The boots table for this map. Made again only when the code or the map's size changes, or when the player tries them
+## (`force`). It is made on a thread, so the town keeps drawing while the sandbox runs, and each run takes a serial: a
+## late answer never overwrites a newer one. True when this run's table is the one the town walks on now.
+func _refresh_table(force := false) -> bool:
 	var source := OverworldState.boots_source(state)
-	var size := OverworldMap.size_of(_current())
-	var key := "%s|%s|%s" % [state.language, size, source]
-	if key == _table_source:
-		return
+	var map_size := OverworldMap.size_of(_current())
+	var key := "%s|%s|%s" % [state.language, map_size, source]
+	if key == _table_source and not force:
+		return true
 	_table_source = key
+	_table_serial += 1
+	var serial := _table_serial
 	var language := String(state.language)
-	table = await Background.run(func() -> Dictionary: return BootsRun.run(language, source, size))
+	_reading = true
+	_hotaru_says(_reading_text(), READING_HOLD)
+	var made: Dictionary = await Background.run(func() -> Dictionary: return BootsRun.run(language, source, map_size))
+	if serial != _table_serial:
+		return false
+	table = made
+	_reading = false
+	if _bubble_text.text == _reading_text():
+		_hush()
+	return true
+
+
+func _reading_text() -> String:
+	return Text.t("Hotaru is reading your boots...")
+
+
+## What Hotaru says when a key cannot be walked: the table's own message when its code failed or timed out, else
+## that the boots are empty.
+func _boots_problem() -> String:
+	var status := String(table.get("status", ""))
+	var message := String(table.get("message", ""))
+	if (status in ["failed", "broken", "timeout"]) and message != "":
+		return Text.t(message)
+	return Text.t("Your boots are empty! Press B to open them.")
 
 
 # --- boots --------------------------------------------------------------------------------------------------------
 
 
 func _open_boots(hint := "") -> void:
+	# Not mid-step: a step that lands under the open editor would run a talk or a door behind it.
+	if _player.moving:
+		return
 	_held.clear()
 	Sound.play("sfx-open", 0.35)
-	_boots.open(state, hint if hint != "" else _boots_hint())
+	var shown := hint
+	# The first time the editor opens, it explains the one rule the boots start with (saved as a flag, in the state).
+	if shown == "" and not _flag("boots-hint-seen"):
+		_set_flag("boots-hint-seen")
+		shown = Text.t("Your first rule: when right is pressed, x goes up by 1. Press Try them, then walk right.")
+	_boots.open(state, shown if shown != "" else _boots_hint())
 
 
 func _boots_hint() -> String:
@@ -342,9 +388,13 @@ func _boots_hint() -> String:
 
 
 func _on_boots_tried(tried: Dictionary) -> void:
-	state = tried
+	# Only the editor's boots, as a copy: a step can land while the editor is open (its state is from when it opened),
+	# and the editor keeps changing its own state when the player picks a language.
+	state = OverworldState.with_boots_of(state, tried)
 	_save()
-	await _refresh_table()
+	var current: bool = await _refresh_table(true)
+	if not current:
+		return
 	var taught := BootsRules.taught(table)
 	if String(table.status) == "ok":
 		var message := Text.f(
@@ -370,6 +420,20 @@ func _on_boots_tried(tried: Dictionary) -> void:
 
 func _on_boots_closed() -> void:
 	_held.clear()
+	# Only the editor's boots are taken: a step can land while the editor is open, and the town keeps its place for it.
+	state = OverworldState.with_boots_of(state, _boots.state)
+	_save()
+
+
+## The editor's language picker: the same blocks, in another language. Each language keeps the code typed for it, and
+## the blocks are not touched. The table is made again for the new language.
+func _on_language_chosen(language: String) -> void:
+	if language == String(state.language) or not (language in [BootsCode.PYTHON, BootsCode.JAVASCRIPT]):
+		return
+	# The editor's boots carry the code typed in the language it left; the town's place and flags stay as they are.
+	state = OverworldState.with_boots_of(OverworldState.with_language(state, language), _boots.state)
+	_save()
+	_refresh_table()
 
 
 # --- talking --------------------------------------------------------------------------------------------------------
@@ -383,7 +447,12 @@ func _interact() -> void:
 		(_map.people[who] as Walker).face(_opposite(_player.facing))
 		_talk.open(catalog.talk.get(String(person.talk), {}), _speaker(person), state.flags)
 		return
+	# A thing with a talk (the noticeboard) opens it, with nobody's name plate; a thing with only text says that.
 	var thing := OverworldMap.thing_at(_current(), ahead)
+	var talk: Dictionary = catalog.talk.get(String(thing.get("talk", "")), {})
+	if not talk.is_empty():
+		_talk.open(talk, {}, state.flags)
+		return
 	if thing.has("text"):
 		_talk.say([{"text": String(thing.text), "speaker": "", "mood": ""}], {"name": ""}, state.flags)
 
@@ -401,6 +470,17 @@ func _on_talk_ended(flags: Dictionary, opens: Array[String]) -> void:
 	_save()
 	if "boots" in opens:
 		_open_boots()
+	elif "letters" in opens:
+		_open_letters()
+
+
+## The letters are on Lanternroot's workbench (ADR-0055). The state is saved (by the talk's end); the letters screen's
+## back control comes back here.
+func _open_letters() -> void:
+	_busy = true
+	_held.clear()
+	LanternrootScreen.returns_to = Game.OVERWORLD
+	Game.go(Game.LANTERNROOT)
 
 
 func _update_prompt() -> void:
@@ -409,9 +489,10 @@ func _update_prompt() -> void:
 		return
 	var ahead := OverworldMap.ahead(_player.cell, _player.facing)
 	var who := _map.person_at(ahead)
+	var thing := OverworldMap.thing_at(_current(), ahead)
 	if who != "":
 		_prompt.text = Text.f("Space: talk to %s", [Text.t(String(catalog.townsfolk.get(who, {}).get("name", "")))])
-	elif OverworldMap.thing_at(_current(), ahead).has("text"):
+	elif thing.has("text") or thing.has("talk"):
 		_prompt.text = Text.t("Space: read")
 	else:
 		_prompt.text = ""
@@ -428,15 +509,27 @@ func _tell(id: String, text: String, always := false) -> void:
 	_hotaru_says(text)
 
 
-func _hotaru_says(text: String) -> void:
+## Hotaru's words in the bubble over the town. A new remark replaces the one on screen (they never stack). It stays for
+## `hold` seconds, or for a length that suits the words when `hold` is negative.
+func _hotaru_says(text: String, hold := -1.0) -> void:
+	if _bubble_tween != null:
+		_bubble_tween.kill()
 	_bubble_text.text = text
 	_bubble.visible = true
 	_bubble.modulate.a = 0.0
 	var tween := create_tween()
 	tween.tween_property(_bubble, "modulate:a", 1.0, 0.15)
-	tween.tween_interval(clampf(text.length() * 0.06, 3.0, 7.0))
+	tween.tween_interval(hold if hold >= 0.0 else clampf(text.length() * 0.06, 3.0, 7.0))
 	tween.tween_property(_bubble, "modulate:a", 0.0, 0.4)
 	tween.tween_callback(func() -> void: _bubble.visible = false)
+	_bubble_tween = tween
+
+
+## Hotaru stops talking at once.
+func _hush() -> void:
+	if _bubble_tween != null:
+		_bubble_tween.kill()
+	_bubble.visible = false
 
 
 # --- the story's beats --------------------------------------------------------------------------------------------
@@ -461,6 +554,7 @@ func _hotaru_talk(id: String) -> void:
 
 func _after_creator() -> void:
 	if not _flag("woke"):
+		_set_flag("woke")
 		_hotaru_talk("hotaru-wake")
 
 

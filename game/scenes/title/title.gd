@@ -316,7 +316,7 @@ func _mount_character() -> void:
 
 
 func _open_lanternroot() -> void:
-	Game.go(Game.LANTERNROOT)
+	Game.go(Game.OVERWORLD)
 
 
 func _open_profiles() -> void:

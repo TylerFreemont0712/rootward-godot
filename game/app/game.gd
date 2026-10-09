@@ -11,6 +11,8 @@ const TITLE := "res://scenes/title/title.tscn"
 const SHARDRUN := "res://scenes/shardrun/shardrun.tscn"
 ## Lanternroot, the town built from the player's own program (ADR-0055); separate from every run.
 const LANTERNROOT := "res://scenes/lanternroot/lanternroot.tscn"
+## Lanternroot's overworld (ADR-0061): the town the player walks on their own code. Its noticeboard opens the letters.
+const OVERWORLD := "res://scenes/overworld/overworld.tscn"
 ## Each playstyle keeps its own run. The Shardrun is the program run (ADR-0012); the card Shardrun it grew from stays
 ## playable for a run already underway.
 const PLAYSTYLES := {"program": "Shardrun", "deck": "Card Shardrun", "spellbook": "Spellforge"}

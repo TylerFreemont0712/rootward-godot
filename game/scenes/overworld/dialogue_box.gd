@@ -6,12 +6,20 @@ extends Control
 ##
 ##   box.open(talk, person, flags)      # a conversation; `ended(flags, opens)` when it is over
 ##   box.say(lines, person)             # a few lines with no talk behind them (a sign, Hotaru's remarks)
+##
+## The box is as tall as its words and choices need. It grows upward from the bottom of the window, and the portrait
+## and name plate stay on its top edge, so a long line or a set of choices never runs off the screen.
 
 signal ended(flags: Dictionary, opens: Array[String])
 
 const CHARS_PER_SECOND := 42.0
 const PORTRAIT := 384.0
+const PORTRAIT_X := 64.0
+const PORTRAIT_SLIDE := 36.0
+const MARGIN := 36.0
+## The box's height at the start of each line; the words and the choices then make it taller.
 const BOX_HEIGHT := 230.0
+const BLINK_SPEED := 4.0
 const HOTARU := {"name": "Hotaru", "portrait": "hotaru", "voice": 1.45}
 
 var busy := false
@@ -26,18 +34,24 @@ var _line := 0
 var _typing := false
 var _shown := 0.0
 var _blip := 0
+var _blink := 0.0
+var _fade: Tween
+var _slide: Tween
+var _hop: Tween
 
 var _dim: ColorRect
 var _portrait_frame: PanelContainer
 var _portrait: TextureRect
 var _name: Label
 var _name_plate: PanelContainer
+var _box: PanelContainer
 var _text: RichTextLabel
 var _choices: VBoxContainer
 var _more: Label
 
 
 func _ready() -> void:
+	theme = OverworldStyle.theme()
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	visible = false
@@ -61,29 +75,29 @@ func _ready() -> void:
 	_portrait_frame.add_child(_portrait)
 	add_child(_portrait_frame)
 
-	var box := PanelContainer.new()
-	box.name = "Box"
-	box.add_theme_stylebox_override(
+	_box = PanelContainer.new()
+	_box.name = "Box"
+	_box.add_theme_stylebox_override(
 		"panel", UiTheme.box(Color(0.1, 0.075, 0.06, 0.94), UiTheme.AMBER_DIM, 2, 14, Vector2(36, 26))
 	)
-	box.anchor_left = 0.0
-	box.anchor_right = 1.0
-	box.anchor_top = 1.0
-	box.anchor_bottom = 1.0
-	box.offset_left = 48
-	box.offset_right = -48
-	box.offset_top = -BOX_HEIGHT - 36
-	box.offset_bottom = -36
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(box)
+	_box.anchor_left = 0.0
+	_box.anchor_right = 1.0
+	_box.anchor_top = 1.0
+	_box.anchor_bottom = 1.0
+	_box.offset_left = 48
+	_box.offset_right = -48
+	_box.offset_bottom = -MARGIN
+	_box.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_box)
 	var inside := Ui.vbox([], 10)
-	box.add_child(inside)
+	_box.add_child(inside)
 	_text = RichTextLabel.new()
 	_text.bbcode_enabled = true
 	_text.fit_content = true
 	_text.scroll_active = false
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_text.add_theme_font_size_override("normal_font_size", 30)
+	_text.add_theme_font_size_override("normal_font_size", OverworldStyle.BODY)
 	_text.add_theme_color_override("default_color", Color("#f3e6c8"))
 	_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -100,14 +114,16 @@ func _ready() -> void:
 	_name = Ui.label("", "Subheading")
 	_name_plate.add_child(_name)
 	add_child(_name_plate)
+	_box.resized.connect(_layout)
 	resized.connect(_layout)
 	_layout()
 
 
+## The portrait and the name plate follow the box's top edge, which moves as the box grows.
 func _layout() -> void:
-	var bottom := size.y - BOX_HEIGHT - 36
-	_portrait_frame.position = Vector2(64, bottom - PORTRAIT - 4)
-	_name_plate.position = Vector2(64 + PORTRAIT + 28, bottom - 30)
+	var top := _box.position.y
+	_portrait_frame.position = Vector2(PORTRAIT_X, top - PORTRAIT - 4)
+	_name_plate.position = Vector2(PORTRAIT_X + PORTRAIT + 28, top - 30)
 
 
 ## A conversation from content. `person` is the townsperson ({name, portrait, voice}).
@@ -136,8 +152,12 @@ func say(lines: Array[Dictionary], person: Dictionary = {}, flags: Dictionary = 
 func _start() -> void:
 	busy = true
 	visible = true
+	# LEARN: a fade-out still running from the last talk would hide this one when it ends, so the old tween is killed
+	# before a new talk starts. A tween is cancelled by killing it; its callbacks never run after that.
+	_stop(_fade)
 	modulate.a = 0.0
-	create_tween().tween_property(self, "modulate:a", 1.0, 0.15)
+	_fade = create_tween()
+	_fade.tween_property(self, "modulate:a", 1.0, 0.15)
 
 
 func _enter(id: String) -> void:
@@ -150,6 +170,9 @@ func _enter(id: String) -> void:
 	if opens != "":
 		_opens.append(opens)
 	_lines = Talk.lines(_talk, id)
+	if _lines.is_empty():
+		_finish()
+		return
 	_line = 0
 	_show_line()
 
@@ -158,9 +181,17 @@ func _speaker(line: Dictionary) -> Dictionary:
 	return HOTARU if String(line.speaker) == "hotaru" else _person
 
 
+## A new line starts with the box at its usual height; its words and choices then grow it again.
+func _fit_box() -> void:
+	_box.offset_top = _box.offset_bottom - BOX_HEIGHT
+
+
 func _show_line() -> void:
+	# Removed at once, not at the end of the frame, so a choice from the last line is never still counted here.
 	for child in _choices.get_children():
+		_choices.remove_child(child)
 		child.queue_free()
+	_fit_box()
 	var line: Dictionary = _lines[_line]
 	var who := _speaker(line)
 	var shown_name := String(who.get("name", ""))
@@ -171,18 +202,9 @@ func _show_line() -> void:
 	_portrait.texture = face
 	_portrait_frame.visible = face != null
 	if face != null and face != had:
-		_portrait_frame.modulate.a = 0.0
-		var from := _portrait_frame.position
-		_portrait_frame.position = from - Vector2(36, 0)
-		var slide := create_tween().set_parallel()
-		slide.tween_property(_portrait_frame, "position", from, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(
-			Tween.EASE_OUT
-		)
-		slide.tween_property(_portrait_frame, "modulate:a", 1.0, 0.18)
+		_slide_in()
 	if String(line.mood) == "happy" and face != null:
-		var hop := create_tween()
-		hop.tween_property(_portrait, "position:y", -10.0, 0.08)
-		hop.tween_property(_portrait, "position:y", 0.0, 0.12)
+		_hop_portrait()
 	_text.text = Text.t(String(line.text))
 	_text.visible_characters = 0
 	_shown = 0.0
@@ -190,7 +212,28 @@ func _show_line() -> void:
 	_more.visible = false
 
 
+func _slide_in() -> void:
+	_stop(_slide)
+	_portrait_frame.modulate.a = 0.0
+	_portrait_frame.position.x = PORTRAIT_X - PORTRAIT_SLIDE
+	_slide = create_tween().set_parallel()
+	_slide.tween_property(_portrait_frame, "position:x", PORTRAIT_X, 0.2).set_trans(Tween.TRANS_CUBIC).set_ease(
+		Tween.EASE_OUT
+	)
+	_slide.tween_property(_portrait_frame, "modulate:a", 1.0, 0.18)
+
+
+func _hop_portrait() -> void:
+	_stop(_hop)
+	_hop = create_tween()
+	_hop.tween_property(_portrait, "position:y", -10.0, 0.08)
+	_hop.tween_property(_portrait, "position:y", 0.0, 0.12)
+
+
 func _process(delta: float) -> void:
+	if _more.visible:
+		_blink += delta * BLINK_SPEED
+		_more.modulate.a = 0.35 + 0.65 * (0.5 + 0.5 * sin(_blink))
 	if not _typing:
 		return
 	var before := int(_shown)
@@ -211,6 +254,7 @@ func _end_typing() -> void:
 	_text.visible_characters = -1
 	if _line == _lines.size() - 1:
 		_offer_choices()
+	# The blinking marker says "press to go on"; a set of choices replaces it.
 	_more.visible = _choices.get_child_count() == 0
 
 
@@ -219,14 +263,19 @@ func _offer_choices() -> void:
 		return
 	var first: Button = null
 	for choice in Talk.choices(_talk, _node, _flags):
-		var button := Ui.button(Text.t(choice.text), _choose.bind(choice.goto))
-		button.add_theme_font_size_override("font_size", 24)
+		var button := Ui.button(Text.t(String(choice.text)), _choose.bind(String(choice.goto)))
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.add_theme_stylebox_override("focus", _focus_frame())
 		_choices.add_child(button)
 		if first == null:
 			first = button
 	if first != null:
 		first.grab_focus.call_deferred()
+
+
+## The frame of the focused choice: thick and amber, so the one Enter picks is plain at a glance.
+static func _focus_frame() -> StyleBoxFlat:
+	return UiTheme.box(Color(UiTheme.AMBER, 0.14), UiTheme.AMBER, 3, 7, Vector2(20, 8))
 
 
 func _choose(goto: String) -> void:
@@ -257,10 +306,22 @@ func advance() -> void:
 func _finish() -> void:
 	busy = false
 	_typing = false
-	var fade := create_tween()
-	fade.tween_property(self, "modulate:a", 0.0, 0.12)
-	fade.tween_callback(func() -> void: visible = false)
+	_stop(_fade)
+	_fade = create_tween()
+	_fade.tween_property(self, "modulate:a", 0.0, 0.12)
+	_fade.tween_callback(_hide)
 	ended.emit(_flags, _opens.duplicate())
+
+
+## Hides the box once its fade has run, unless a new talk has begun in the meantime.
+func _hide() -> void:
+	if not busy:
+		visible = false
+
+
+static func _stop(tween: Tween) -> void:
+	if tween != null and tween.is_valid():
+		tween.kill()
 
 
 func _on_click(event: InputEvent) -> void:

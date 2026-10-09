@@ -8,6 +8,7 @@ What it writes (the game reads these through OverworldArt):
     tiles/terrain.png, terrain.json ground tiles (terrain.py)
     characters/<part>.png           each character part as a 3 x 3 sheet (characters.py), parts.json lists them
     hotaru.png                      the firefly, 2 x 3 frames of 16 x 16
+    hotaru-notice.png               the firefly's notice mark, a 5 x 7 "!" (sprites/hotaru.sprite, frame notice)
     props/<id>.png                  small props drawn by hand (sprites/props.sprite)
     portraits/<id>.png              the townspeople's portraits, copied from the player's set
 Buildings, landmarks, trees and larger props come from ComfyUI (`scripts/pixel.sh --comfy`, manifest.json) and land in
@@ -56,6 +57,8 @@ def build_hotaru(palette: Palette) -> None:
         for col, wing in enumerate(("up", "down")):
             sheet[row * 16 : (row + 1) * 16, col * 16 : (col + 1) * 16] = sprite.frames[f"{facing}.{wing}"]
     pixelkit.save(sheet, OUT / "hotaru.png")
+    # The notice mark is drawn in a 16 x 16 frame at its top left: cut out its 5 x 7 box.
+    pixelkit.save(np.ascontiguousarray(sprite.frames["notice"][:7, :5]), OUT / "hotaru-notice.png")
 
 
 def build_props(palette: Palette) -> list[str]:

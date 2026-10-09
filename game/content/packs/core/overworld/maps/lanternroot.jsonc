@@ -229,6 +229,7 @@
   {
    "kind": "prop",
    "art": "noticeboard",
+   "talk": "noticeboard",
    "at": [
     16,
     11
