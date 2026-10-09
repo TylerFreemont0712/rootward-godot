@@ -11,6 +11,10 @@ extends RefCounted
 const VERSION := 1
 const BLOCKS := "blocks"
 const CODE := "code"
+## How the player likes to build (state.boots.style): Builder works with blocks beside their code, Scribe types the
+## code directly. Chosen when the character is made; changeable in the editor.
+const BUILDER := "blocks"
+const SCRIBE := "scribe"
 
 
 static func fresh(map_id: String, cell: Vector2i, facing: String, language: String) -> Dictionary:
@@ -23,7 +27,7 @@ static func fresh(map_id: String, cell: Vector2i, facing: String, language: Stri
 		"name": "",
 		"look": {},
 		"language": language,
-		"boots": {"mode": BLOCKS, "blocks": [BootsCode.rule("right", "x", 1)], "code": {}},
+		"boots": {"mode": BLOCKS, "blocks": [BootsCode.rule("right", "x", 1)], "code": {}, "style": BUILDER},
 	}
 
 
@@ -38,6 +42,7 @@ static func normalized(saved: Dictionary, fallback: Dictionary) -> Dictionary:
 	kept.mode = String(boots.get("mode", BLOCKS))
 	kept.blocks = boots.get("blocks", []) if boots.get("blocks", []) is Array else []
 	kept.code = boots.get("code", {}) if boots.get("code", {}) is Dictionary else {}
+	kept.style = SCRIBE if String(boots.get("style", BUILDER)) == SCRIBE else BUILDER
 	out.boots = kept
 	if not out.flags is Dictionary:
 		out.flags = {}

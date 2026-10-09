@@ -124,6 +124,7 @@ static func looks_schema() -> Dictionary:
 				"hair_colour": choices,
 				"cloth": choices,
 				"eye_colour": Schema.with_default(Schema.list_of(Schema.TEXT), []),
+				"item": Schema.with_default(Schema.list_of(Schema.TEXT), []),
 				"start": _look_schema(),
 				# The name the creator shows for each part ("hair/bun": "Bun"), in English; the overlays translate it.
 				"labels": Schema.with_default(Schema.record(Schema.TEXT), {}),
