@@ -1,0 +1,202 @@
+// Japanese for Lanternroot's talk, townspeople and map texts (ADR-0061), keyed by the English exactly (ADR-0047).
+// Names are katakana, ほたる is Hotaru, and the town is ともしび村 as the letters screen has it. Code, ids and
+// symbols stay as they are, and Latin tokens (Python, y, B, Space) sit with a space beside Japanese.
+[
+  // talk/archivist.jsonc
+  {"en": "Ah. The new tinker. I'm Vell. I keep the town's records in the Archive.", "to": "ああ、あたらしい しゅうりやさんですね。わたしは ヴェルです。ともしび村の きろくは、きろくこで わたしが まもっています。"},
+  {"en": "Every change anyone makes in Lanternroot, I write down. When something breaks, we can always see what changed.", "to": "ともしび村で だれかが かえた ことは、ぜんぶ わたしが かきとめて います。なにかが こわれても、なにが かわったのか、すぐ わかるんですよ。"},
+  {"en": "That sounds useful.", "to": "それは べんりそう！"},
+  {"en": "That sounds like a lot of writing.", "to": "それは、かくことが たくさん そう。"},
+  {"en": "Nothing new in the records today. Yet.", "to": "きょうは、きろくに あたらしい ことは まだ ありません。まだ、ですけどね。"},
+  {"en": "Very. You'll see.", "to": "とても。そのうち わかりますよ。"},
+  {"en": "Oh, enormous amounts. I love it.", "to": "ええ、それは もう たくさん！ でも わたしは、そこが だいすきなんです。"},
+
+  // talk/artificer.jsonc
+  {"en": "You're the tinker with the empty boots? Not empty any more, I see!", "to": "からっぽの くつを はいた しゅうりやさんって、あなたのこと？ あら、もう からっぽじゃ ないのね！"},
+  {"en": "I'm Mira. I build little machines in the workshop. They do exactly what they're told.", "to": "わたしは ミラ。こうぼうで ちいさな きかいを つくって いるの。きかいは、いわれた ことを そのまま するのよ。"},
+  {"en": "Exactly what they're told. Not what you meant. That's the tricky part!", "to": "いわれた ことを、そのまま。きみの いいたかった ことには ならないの。そこが いちばん むずかしくて、おもしろいのよ！"},
+  {"en": "Built anything yet? Come and show me when you do.", "to": "もう なにか つくった？ できたら、ぜひ みせに きてね。"},
+
+  // talk/compiler.jsonc
+  {"en": "Hmph. So you're the tinker.", "to": "ふん。おまえさんが しゅうりやさんか。"},
+  {"en": "I'm Brannoc. I turn rough iron into good tools. A tool from my forge works the same way, every single time.", "to": "ブラノックだ。あらい てつを、いい どうぐに かえるのが しごとだ。おれの かじばの どうぐは、なんど つかっても おなじに はたらく。"},
+  {"en": "Bring me careful work one day, and I'll make something of it.", "to": "いつか、ていねいな しごとを もって こい。そしたら、おれも なにか つくって やる。"},
+  {"en": "Still here? The forge doesn't wait.", "to": "まだ いたのか？ かじばは まって くれないぞ。"},
+
+  // talk/guard.jsonc
+  {"en": "Halt! ...Oh, you're the new tinker. Sorry. Habit.", "to": "とまれ！ …あ、あたらしい しゅうりやさんか。すまん、くせなんだ。"},
+  {"en": "I keep watch over the road and the Root Gate. Nothing gets past me.", "to": "わたしは みちと ねっこの もんを みはって いる。なにも、わたしの よこを とおりぬけられないぞ。"},
+  {"en": "I get past you every night.", "to": "わたしは まいばん、あなたの よこを すいっと とおってるけどね。"},
+  {"en": "You glow, firefly. Glowing things are allowed.", "to": "ひかって いるな、ほたる。ひかる ものは とおって いいんだ。"},
+  {"en": "All quiet. The way I like it.", "to": "きょうも しずかだ。わたしは、これが いちばん すきなんだ。"},
+
+  // talk/guildmaster.jsonc
+  {"en": "Welcome to Lanternroot, young tinker. I'm Orin. I've watched this town grow for a very long time.", "to": "ともしび村へ ようこそ、わかい しゅうりやさん。わしは オリンじゃ。この村が そだつのを、ずいぶん ながく みまもって きたんじゃよ。"},
+  {"en": "We've needed a tinker since the old one left. Things here are... a little broken.", "to": "まえの しゅうりやさんが いなくなって から、ずっと しゅうりやさんが ひつようじゃった。ここの ものは…すこし こわれて おってのう。"},
+  {"en": "Take your time. Meet everyone. When you're ready, there will be work.", "to": "あわてなくて いいぞ。みんなに あって おいで。じゅんびが できたら、しごとも あるからの。"},
+  {"en": "The town is glad you came.", "to": "村は きみが きてくれて、よろこんで おるぞ。"},
+
+  // talk/hotaru-all-ways.jsonc
+  {"en": "Up, down, left and right! Your boots can take you anywhere now.", "to": "うえ、した、ひだり、みぎ！ もう、くつで どこへでも いけるよ！"},
+  {"en": "Did you notice? Going up made y smaller. Here, y counts down the page, like lines in a book.", "to": "きづいた？ うえへ いくと、y が ちいさく なったでしょ。ほら、y は ほん の ぎょうみたいに、うえから したへ かぞえて いくのよ。"},
+  {"en": "The door's at the bottom of the room. Let's go meet everyone!", "to": "とびらは へやの いちばん したよ。みんなに あいに いこう！"},
+
+  // talk/hotaru-first-step.jsonc
+  {"en": "You walked! Your own code moved you!", "to": "あるけた！ きみの かいた コードで、きみが うごいたんだよ！"},
+  {"en": "Every time you press a key, your boots run your code. x got one bigger, so you stepped right.", "to": "キーを おすたびに、くつが きみの コードを うごかして いるの。x が ひとつ おおきく なったから、みぎへ いっぽ すすんだんだよ。"},
+  {"en": "The door is at the bottom of the room. Can you teach your boots the other keys? Press B.", "to": "とびらは へやの いちばん した。ほかの キーも、くつに おしえて あげられる？ B を おして みてね。"},
+  {"en": "Here's a hint: y is how far down you are. Going down makes y bigger.", "to": "ヒントだよ。y は、きみが どれだけ したに いるかを あらわすの。したへ いくと、y は おおきく なるの。"},
+
+  // talk/hotaru-town.jsonc
+  {"en": "Welcome to Lanternroot!", "to": "ようこそ、ともしび村へ！"},
+  {"en": "See the big tree in the square? That's the Lantern Root. The whole town grew up around it.", "to": "ひろばの おおきな木が みえる？ あれが ランタンの木。村ぜんぶ、あの木の まわりで そだったのよ。"},
+  {"en": "Walk up to someone and press Space to talk. Everyone wants to meet the new tinker!", "to": "だれかの まえまで いって、スペースキーを おすと はなせるよ。みんな、あたらしい しゅうりやさんに あいたがってるんだ！"},
+
+  // talk/hotaru-wake.jsonc
+  {"en": "Psst! Over here, by the lantern!", "to": "しーっ！ こっちだよ、ランタンの よこ！"},
+  {"en": "I'm Hotaru. I live in the lantern on your desk. Every lantern in Lanternroot has a firefly like me.", "to": "わたしは ほたる。きみの つくえの ランタンに すんで いるの。ともしび村の ランタンには、わたしみたいな ほたるが いつも いるんだよ。"},
+  {"en": "And you're the new tinker! The whole town has been waiting for you.", "to": "それと、きみが あたらしい しゅうりやさんね！ 村の みんなが、きみを まって いたんだよ。"},
+  {"en": "Come over and say hello! ...Oh. You can't, can you?", "to": "こっちに きて、あいさつしてね！ …あ。そっか、いけないんだっけ？"},
+  {"en": "Everything in Lanternroot runs on code. Even your boots. And yours are still empty!", "to": "ともしび村では、なにもかも コードで うごいて いるの。くつも そう。でも きみの くつは、まだ からっぽなんだよ！"},
+  {"en": "Let's teach them to walk. I'll start you off with one rule.", "to": "くつに あるく やりかたを おしえよう。まずは ルールを ひとつ、わたしが つけて あげるね。"},
+
+  // talk/innkeeper.jsonc
+  {"en": "Oh! You must be the new tinker. Welcome, welcome!", "to": "まあ！ あなたが あたらしい しゅうりやさんね。ようこそ、ようこそ！"},
+  {"en": "I'm Marta. I run the Warm Hearth, just here. There's always a pot of soup on, day or night.", "to": "わたしは マルタ。すぐそこの あったかだんろを やってるのよ。おなべには、ひるも よるも いつも スープが にえて いるの。"},
+  {"en": "Always? How?", "to": "いつも？ どうやって？"},
+  {"en": "Nice to meet you!", "to": "はじめまして！"},
+  {"en": "Back again? The soup's still warm!", "to": "また きたの？ スープは まだ あったかいわよ！"},
+  {"en": "I cook one big pot in the morning. Then when someone's hungry, a bowl is ready in a moment.", "to": "あさに、おおきな なべで いっかい にるの。おなかの すいた ひとが くると、ひとわんは すぐ できるのよ。"},
+  {"en": "Cooking it fresh every single time would be far too slow! Remember that trick. It's a good one.", "to": "いちいち ぜんぶ つくって いたら、とても まに あわないでしょ！ この くふうは おぼえて おいてね。いい ほうほうなのよ。"},
+  {"en": "And you, love. Come by when your boots get tired.", "to": "あなたも ね。くつが つかれたら、いつでも よって いってね。"},
+
+  // talk/keeper.jsonc
+  {"en": "Shh. The tree is listening.", "to": "しーっ。木が きいて いるのよ。"},
+  {"en": "I'm Fern. I tend the Lantern Root. Its roots go down further than anyone has ever followed them.", "to": "わたしは ファーン。ランタンの木の せわを して いるの。その ねっこは、だれも おって いけないほど、ふかくまで のびて いるのよ。"},
+  {"en": "I was born on one of its branches!", "to": "わたしは、その えだの ひとつで うまれたのよ！"},
+  {"en": "The roots are humming today. Can you hear them?", "to": "きょうは ねっこが ブーンと ひびいて いるの。きこえる？"},
+
+  // talk/necromancer.jsonc
+  {"en": "Oh. A visitor. Most people avoid my corner.", "to": "あら…おきゃくさま。ここには、みんな あまり きたがらないの。"},
+  {"en": "I'm Morrow. I keep the old stones. Each one marks something that someone made long ago, and then stopped using.", "to": "わたしは モロウ。ふるい いしを まもって いるの。いしは ひとつずつ、むかし だれかが つくって、いつのまにか つかわなくなった ものを しるして いるのよ。"},
+  {"en": "Nothing here is dead, you know. It's only... retired.", "to": "ここの もの、しんで いるわけじゃ ないのよ。ただ…いまは おやすみ して いるだけ。"},
+  {"en": "The stones are quiet today. They usually are.", "to": "きょうは いしが しずかね。いつも そう だけど。"},
+
+  // talk/noticeboard.jsonc
+  {"en": "A sheet pinned at the top, its corners curling: 'Lost: one spare lantern. Found: it was on the bench all along.'", "to": "いちばん うえに はられた かみ。かどが めくれて いる。「まいご：よびの ランタンが ひとつ。みつかった：ずっと ベンチの うえに あったよ。」"},
+  {"en": "Below it, in careful handwriting: 'Letters for the new tinker. Each one asks for one function. Bring them back working.'", "to": "その した、ていねいな じで：「あたらしい しゅうりやさんへの てがみ。ひとつずつ、関数を ひとつ たのんで います。うごく ように して、もどして きてね。」"},
+  {"en": "Take the letters", "to": "てがみを もらう"},
+  {"en": "Not yet", "to": "まだ いい"},
+  {"en": "The letters are on the workbench. Let's see what the villagers need.", "to": "てがみは さぎょうだいの うえに あるよ。むらの みんなが なにを こまって いるのか、みてみよう！"},
+  {"en": "Whenever you're ready. The letters will keep.", "to": "じゅんびが できたら、いつでも いいよ。てがみは ちゃんと まって くれるから。"},
+
+  // talk/oracle.jsonc
+  {"en": "Every lantern in town has a firefly inside. I look after them all.", "to": "村の ランタンには、ひとつずつ ほたるが すんで いるの。わたしは、その ほたるたちを ぜんぶ みて いるのよ。"},
+  {"en": "Hotaru is one of mine, you know. She's very proud to be yours now.", "to": "ほたるも、わたしの ほたるの ひとりなのよ。いまは あなたの ほたるに なれて、とても ほこらしそう。"},
+  {"en": "Lumen! Don't tell them that!", "to": "ルーメン！ そんなこと、みんなに いわないでよ！"},
+  {"en": "May your lantern never go out, tinker.", "to": "あなたの ランタンが、いつまでも きえませんように。しゅうりやさん。"},
+
+  // talk/pell.jsonc
+  {"en": "Hi! You're new! I'm Pell. I make maps.", "to": "やあ！ きみ、あたらしいね！ わたしは ペル。ちずを かいて いるんだ。"},
+  {"en": "I've drawn every street in Lanternroot. Twice! But the roots under the town... nobody has mapped those.", "to": "ともしび村の みちは、ぜんぶ かいたよ。にかいもね！ でも、村の した の ねっこは…だれも ちずに して いないんだ。"},
+  {"en": "One day I'll get past the Root Gate. You'll come too, right?", "to": "いつか、ねっこの もんを とおりぬけて みせるよ。きみも いっしょに いくよね？"},
+  {"en": "Lost? Everything starts at the big tree.", "to": "まいご？ なにもかも、おおきな木から はじまるんだよ。"},
+
+  // talk/pip.jsonc
+  {"en": "Shh! I'm counting the lanterns on the big tree.", "to": "しーっ！ ぼく、おおきな木の ランタンを かぞえて いるんだ。"},
+  {"en": "One, two, three... nine, ten. Ten lanterns!", "to": "いち、に、さん…きゅう、じゅう！ ランタンは じゅっこ！"},
+  {"en": "It's eleven.", "to": "じゅういっこだよ。"},
+  {"en": "Ten! You can't even count, you're a bug.", "to": "じゅうだよ！ ほたるって、かぞえるのも へたっぴだね。むしだもんね！"},
+  {"en": "Did you start counting at zero?", "to": "0から かぞえはじめたの？"},
+  {"en": "Want some help?", "to": "てつだおうか？"},
+  {"en": "Ten lanterns. Or eleven. I'm counting again tomorrow.", "to": "じゅっこ。それとも じゅういっこ。あしたも また かぞえるんだ。"},
+  {"en": "Zero? Why would anybody start counting at zero?", "to": "0？ どうして だれかが 0から かぞえるの？"},
+  {"en": "...Wait. Is that a tinker thing?", "to": "…まって。それって、しゅうりやさんの ひみつ？"},
+  {"en": "No thank you! I'm almost sure it's ten.", "to": "けっこうだよ！ じゅうで まちがいないと おもうもん。"},
+
+  // talk/quartermaster.jsonc
+  {"en": "Welcome to Nym's! Everything a tinker needs, and a few things nobody needs!", "to": "ようこそ、ニムの おみせへ！ しゅうりやさんに ひつような もの、なんでも そろってるよ！ それと、だれも ひつようと おもわない もの、すこしね！"},
+  {"en": "The shop isn't quite open yet. Come back when you've got work and coins.", "to": "おみせは、まだ ちょっとだけ あいて いないの。しごとと おかねが できたら、また きてね。"},
+  {"en": "Nearly open! Very, very nearly.", "to": "もうすぐ あくよ！ ほんとに、もうすぐなんだから！"},
+
+  // talk/sergeant.jsonc
+  {"en": "Tinker! Good. Stand up straight!", "to": "しゅうりやさん！ よし。せすじを のばせ！"},
+  {"en": "I train the town guard. Practise every day, check everything twice, and nothing will surprise you.", "to": "わたしは 村の けいびたいを きたえて いる！ まいにち れんしゅうし、なんども かくにんすれば、なにに おどろかされることも ない！"},
+  {"en": "Those boots look new. Walk a few laps of the square. Good practice!", "to": "その くつ、あたらしいな！ ひろばを なんかい か まわって みろ。いい れんしゅうだ！"},
+  {"en": "Keep those boots moving!", "to": "その くつ、うごかし つづけろ！"},
+
+  // talk/shade.jsonc
+  {"en": "Didn't see me there, did you?", "to": "あれ、いたのに きづかなかった？ ふふ、わたし かくれるのは とくいなの。"},
+  {"en": "I'm Nix. I test the town's locks. If I can open one, so could a thief. So I tell people how to fix them.", "to": "ニックスよ。村の かぎを ためして いるの。わたしに あけられるなら、どろぼうにも あけられるでしょ。だから、なおしかたを みんなに おしえて いるの。"},
+  {"en": "Your front door, by the way. Fine. For now.", "to": "それと、きみの いえの とびら。まあ、いいんじゃない。いまの ところはね。"},
+  {"en": "Locks are holding. For now.", "to": "かぎは、まだ もってるよ。いまの ところはね。"},
+
+  // talk/summoner.jsonc
+  {"en": "Hello, tinker. I'm Seren. I call little helper spirits when they're needed.", "to": "こんにちは、しゅうりやさん。わたしは セレン。こまった とき、ちいさな おてつだいの せいれいを よぶの。"},
+  {"en": "Tell them clearly what to do, and when to do it, and they'll never let you down.", "to": "せいれいには、なにを するのか、いつ するのかを はっきり つたえて あげて。そうすれば、けっして がっかり させないわ。"},
+  {"en": "My helpers are resting. Even spirits need sleep.", "to": "いま おやすみ ちゅうなの。せいれいにも ねむりは いるのよ。"},
+
+  // talk/warden.jsonc
+  {"en": "...STAND BACK. THE ROOT GATE IS SEALED.", "to": "…さがれ！ ねっこの もんは とじられて いる！"},
+  {"en": "...Apologies. My voice gets loud. I guard the way down into the roots.", "to": "…しつれいした。わたしの こえは、どうも おおきく なりがちでな。わたしは、ねっこへ おりる みちを まもって いる。"},
+  {"en": "It opens for tinkers who are ready. You are not ready. Yet.", "to": "もんは、じゅんびの できた しゅうりやさんの ために ひらく。きみは、まだ じゅんびが できて いない。いまは まだ、な。"},
+  {"en": "THE GATE IS SEALED. ...Have a pleasant day.", "to": "もんは とじられて いる！ …よい いちにちを。"},
+
+  // townsfolk.jsonc: names and titles
+  {"en": "Marta", "to": "マルタ"},
+  {"en": "Keeper of the Warm Hearth", "to": "あったかだんろの まもりびと"},
+  {"en": "Pip", "to": "ピップ"},
+  {"en": "Lantern counter", "to": "ランタンかぞえやさん"},
+  {"en": "Hollis", "to": "ホリス"},
+  {"en": "Gate guard", "to": "もんの みはり"},
+  {"en": "Lumen", "to": "ルーメン"},
+  {"en": "Keeper of the Lanterns", "to": "ランタンの まもりびと"},
+  {"en": "Vell", "to": "ヴェル"},
+  {"en": "The Archivist", "to": "きろくがかり"},
+  {"en": "Mira", "to": "ミラ"},
+  {"en": "Artificer", "to": "アーティフィサー"},
+  {"en": "Brannoc", "to": "ブラノック"},
+  {"en": "The Smith", "to": "かじやさん"},
+  {"en": "Orin", "to": "オリン"},
+  {"en": "Elder of Lanternroot", "to": "ともしび村の ちょうろう"},
+  {"en": "Fern", "to": "ファーン"},
+  {"en": "Keeper of the Grove", "to": "もりの まもりびと"},
+  {"en": "Morrow", "to": "モロウ"},
+  {"en": "Keeper of the Old Stones", "to": "ふるい いしの まもりびと"},
+  {"en": "Pell", "to": "ペル"},
+  {"en": "Mapmaker", "to": "ちずかき"},
+  {"en": "Nym", "to": "ニム"},
+  {"en": "Shopkeeper", "to": "おみせやさん"},
+  {"en": "Sergeant Brisk", "to": "ブリスク ぐんそう"},
+  {"en": "Drillmaster", "to": "くんれんかん"},
+  {"en": "Nix", "to": "ニックス"},
+  {"en": "Lockpicker", "to": "かぎあけや"},
+  {"en": "Seren", "to": "セレン"},
+  {"en": "Summoner", "to": "しょうかんし"},
+  {"en": "The Warden", "to": "ばんにん"},
+  {"en": "Keeper of the Root Gate", "to": "ねっこの もんの まもりびと"},
+
+  // the speaker's name in dialogue_box.gd (HOTARU), which is not in townsfolk.jsonc
+  {"en": "Hotaru", "to": "ほたる"},
+
+  // maps/home.jsonc
+  {"en": "Your house", "to": "きみの いえ"},
+  {"en": "Your bed. Still warm.", "to": "きみの ベッド。まだ あたたかい。"},
+  {"en": "Books about gears, lanterns, and something called Python.", "to": "ギアや ランタンの ほん。それと、Python っていう ふしぎな ものの ほん。"},
+  {"en": "Your desk. Hotaru's lantern sits on it.", "to": "きみの つくえ。ほたるの ランタンが のって いるよ。"},
+
+  // maps/lanternroot.jsonc
+  {"en": "Lanternroot", "to": "ともしび村"},
+  {"en": "The Archive. Every change anyone has made in Lanternroot is written down inside.", "to": "きろくこ。ともしび村で だれかが かえた ことは、ぜんぶ なかに かいて あるよ。"},
+  {"en": "The Village Hall. Its doors are closed for now.", "to": "むらの かいぎしょ。いまは とびらが しまって いるよ。"},
+  {"en": "The Lantern Shrine. A warm light glows behind the door.", "to": "ランタンの ほこら。とびらの むこうで、あたたかい ひかりが ゆれて いる。"},
+  {"en": "Mira's workshop. Something inside is ticking.", "to": "ミラの こうぼう。なかで なにかが カチカチ いって いる。"},
+  {"en": "The Warm Hearth. It smells like soup.", "to": "あったかだんろ。スープの いい においが するよ。"},
+  {"en": "Brannoc's forge. The air shimmers with heat.", "to": "ブラノックの かじば。あついから、くうきが ゆらゆら して いる。"},
+  {"en": "Nym's. A sign in the window says: OPENING SOON!", "to": "ニムの おみせ。まどの かんばん：「もうすぐ オープン！」"},
+  {"en": "The Root Gate. It is sealed, and the roots around it are humming.", "to": "ねっこの もん。とじられて いて、まわりの ねっこが ブーンと ひびいて いる。"},
+  {"en": "The Lantern Root. Little lanterns sway in its branches.", "to": "ランタンの木。えだに ちいさな ランタンが ゆれて いる。"},
+  {"en": "LANTERNROOT NOTICES. Lost: one firefly. Found: the same firefly. (Lumen) / The Lantern Festival is coming!", "to": "ともしび村の おしらせ。まいご：ほたるが いっぴき。みつかった：おなじ ほたる。（ルーメン） / ランタンまつりが もうすぐだよ！"},
+  {"en": "A deep old well. Your voice comes back up a moment later.", "to": "ふるくて ふかい いど。こえが、すこし おくれて かえって くるよ。"},
+  {"en": "← Workshop and home   ·   Warm Hearth and the Root Gate →", "to": "← こうぼうと いえ   ·   あったかだんろと ねっこの もん →"}
+]
