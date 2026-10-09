@@ -1,0 +1,41 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "oracle",
+  "start": [
+    {
+      "if": {
+        "flag": "met-oracle"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Every lantern in town has a firefly inside. I look after them all."
+        },
+        {
+          "text": "Hotaru is one of mine, you know. She's very proud to be yours now."
+        },
+        {
+          "text": "Lumen! Don't tell them that!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "met-oracle"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "May your lantern never go out, tinker."
+        }
+      ]
+    }
+  }
+}

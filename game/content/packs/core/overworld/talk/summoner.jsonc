@@ -1,0 +1,37 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "summoner",
+  "start": [
+    {
+      "if": {
+        "flag": "met-summoner"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Hello, tinker. I'm Seren. I call little helper spirits when they're needed."
+        },
+        {
+          "text": "Tell them clearly what to do, and when to do it, and they'll never let you down."
+        }
+      ],
+      "set": [
+        "met-summoner"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "My helpers are resting. Even spirits need sleep."
+        }
+      ]
+    }
+  }
+}

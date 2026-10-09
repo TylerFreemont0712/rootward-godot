@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "sergeant",
+  "start": [
+    {
+      "if": {
+        "flag": "met-sergeant"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Tinker! Good. Stand up straight!"
+        },
+        {
+          "text": "I train the town guard. Practise every day, check everything twice, and nothing will surprise you."
+        },
+        {
+          "text": "Those boots look new. Walk a few laps of the square. Good practice!"
+        }
+      ],
+      "set": [
+        "met-sergeant"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Keep those boots moving!"
+        }
+      ]
+    }
+  }
+}

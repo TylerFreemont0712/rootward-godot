@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "compiler",
+  "start": [
+    {
+      "if": {
+        "flag": "met-compiler"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Hmph. So you're the tinker."
+        },
+        {
+          "text": "I'm Brannoc. I turn rough iron into good tools. A tool from my forge works the same way, every single time."
+        },
+        {
+          "text": "Bring me careful work one day, and I'll make something of it."
+        }
+      ],
+      "set": [
+        "met-compiler"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Still here? The forge doesn't wait."
+        }
+      ]
+    }
+  }
+}

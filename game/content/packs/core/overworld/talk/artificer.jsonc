@@ -1,0 +1,41 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "artificer",
+  "start": [
+    {
+      "if": {
+        "flag": "met-artificer"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "You're the tinker with the empty boots? Not empty any more, I see!",
+          "mood": "happy"
+        },
+        {
+          "text": "I'm Mira. I build little machines in the workshop. They do exactly what they're told."
+        },
+        {
+          "text": "Exactly what they're told. Not what you meant. That's the tricky part!"
+        }
+      ],
+      "set": [
+        "met-artificer"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Built anything yet? Come and show me when you do."
+        }
+      ]
+    }
+  }
+}

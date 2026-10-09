@@ -1,0 +1,66 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "innkeeper",
+  "start": [
+    {
+      "if": {
+        "flag": "met-innkeeper"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Oh! You must be the new tinker. Welcome, welcome!",
+          "mood": "happy"
+        },
+        {
+          "text": "I'm Marta. I run the Warm Hearth, just here. There's always a pot of soup on, day or night."
+        }
+      ],
+      "set": [
+        "met-innkeeper"
+      ],
+      "choices": [
+        {
+          "text": "Always? How?",
+          "goto": "soup"
+        },
+        {
+          "text": "Nice to meet you!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Back again? The soup's still warm!",
+          "mood": "happy"
+        }
+      ]
+    },
+    "soup": {
+      "lines": [
+        {
+          "text": "I cook one big pot in the morning. Then when someone's hungry, a bowl is ready in a moment."
+        },
+        {
+          "text": "Cooking it fresh every single time would be far too slow! Remember that trick. It's a good one."
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "And you, love. Come by when your boots get tired."
+        }
+      ]
+    }
+  }
+}

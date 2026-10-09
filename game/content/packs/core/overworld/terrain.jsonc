@@ -1,0 +1,15 @@
+// The ground of Lanternroot's overworld (ADR-0061): what can be walked on, and what a step on it sounds like.
+// A map's legend names these; the art for each lives in game/assets/overworld/tiles/.
+{
+  "grass": {"walk": true, "step": "grass"},
+  "flowers": {"walk": true, "step": "grass"},
+  "path": {"walk": true, "step": "dirt"},
+  "cobble": {"walk": true, "step": "stone"},
+  "bridge": {"walk": true, "step": "wood"},
+  "floor": {"walk": true, "step": "wood"},
+  "rug": {"walk": true, "step": "cloth"},
+  "water": {"walk": false},
+  "hedge": {"walk": false},
+  "wall": {"walk": false},
+  "void": {"walk": false}
+}

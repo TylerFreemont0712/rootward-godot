@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "warden",
+  "start": [
+    {
+      "if": {
+        "flag": "met-warden"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "...STAND BACK. THE ROOT GATE IS SEALED."
+        },
+        {
+          "text": "...Apologies. My voice gets loud. I guard the way down into the roots."
+        },
+        {
+          "text": "It opens for tinkers who are ready. You are not ready. Yet."
+        }
+      ],
+      "set": [
+        "met-warden"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "THE GATE IS SEALED. ...Have a pleasant day."
+        }
+      ]
+    }
+  }
+}

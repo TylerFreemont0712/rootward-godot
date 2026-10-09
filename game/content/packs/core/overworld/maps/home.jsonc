@@ -1,0 +1,149 @@
+// A map of Lanternroot's overworld (ADR-0061): its ground through the legend, one row a string, and the things on it.
+// Coordinates are [column, row], counted from 0 at the top left.
+{
+ "id": "home",
+ "name": "Your house",
+ "interior": true,
+ "legend": {
+  "W": "wall",
+  "f": "floor",
+  "v": "void"
+ },
+ "ground": [
+  "WWWWWWWWWWW",
+  "WWWWWWWWWWW",
+  "fffffffffff",
+  "fffffffffff",
+  "fffffffffff",
+  "fffffffffff",
+  "fffffffffff",
+  "vvvvvfvvvvv"
+ ],
+ "start": [
+  2,
+  3
+ ],
+ "facing": "down",
+ "objects": [
+  {
+   "kind": "prop",
+   "art": "bed",
+   "at": [
+    1,
+    2
+   ],
+   "size": [
+    1,
+    2
+   ],
+   "text": "Your bed. Still warm."
+  },
+  {
+   "kind": "prop",
+   "art": "bookshelf",
+   "at": [
+    3,
+    2
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "text": "Books about gears, lanterns, and something called Python."
+  },
+  {
+   "kind": "prop",
+   "art": "desk",
+   "at": [
+    7,
+    2
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "text": "Your desk. Hotaru's lantern sits on it."
+  },
+  {
+   "kind": "prop",
+   "art": "lantern",
+   "at": [
+    7,
+    2
+   ],
+   "solid": false,
+   "sink": -7
+  },
+  {
+   "kind": "prop",
+   "art": "chair",
+   "at": [
+    6,
+    2
+   ]
+  },
+  {
+   "kind": "prop",
+   "art": "plant",
+   "at": [
+    9,
+    2
+   ]
+  },
+  {
+   "kind": "prop",
+   "art": "rug",
+   "at": [
+    4,
+    4
+   ],
+   "size": [
+    2,
+    1
+   ],
+   "solid": false
+  },
+  {
+   "kind": "prop",
+   "art": "window",
+   "at": [
+    2,
+    1
+   ],
+   "solid": false
+  },
+  {
+   "kind": "prop",
+   "art": "window",
+   "at": [
+    8,
+    1
+   ],
+   "solid": false
+  },
+  {
+   "kind": "prop",
+   "art": "doormat",
+   "at": [
+    5,
+    7
+   ],
+   "solid": false
+  },
+  {
+   "kind": "warp",
+   "at": [
+    5,
+    7
+   ],
+   "to": {
+    "map": "lanternroot",
+    "at": [
+     6,
+     23
+    ],
+    "facing": "down"
+   }
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+// Hotaru's part of the opening (ADR-0061).
+{
+  "id": "hotaru-all-ways",
+  "start": [
+    {
+      "goto": "free"
+    }
+  ],
+  "nodes": {
+    "free": {
+      "lines": [
+        {
+          "text": "Up, down, left and right! Your boots can take you anywhere now.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Did you notice? Going up made y smaller. Here, y counts down the page, like lines in a book.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "The door's at the bottom of the room. Let's go meet everyone!",
+          "speaker": "hotaru"
+        }
+      ]
+    }
+  }
+}

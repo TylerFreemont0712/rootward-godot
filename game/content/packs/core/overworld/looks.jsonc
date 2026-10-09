@@ -1,0 +1,22 @@
+// What a player can choose for their own character in Lanternroot (ADR-0061, CharacterCreator). Parts are the
+// pictures in game/assets/overworld/characters/; colours are ramps of pipeline/pixel/palette.json. "none" is nothing.
+{
+  "hair": ["hair/short", "hair/long", "hair/bun", "hair/spiky", "hair/fluffy", "hair/braid"],
+  "outfit": ["outfit/tunic", "outfit/dress", "outfit/coat", "outfit/vest", "outfit/robe"],
+  "hat": ["none", "hat/goggles", "hat/leaves", "hat/wide", "hat/hood"],
+  "face": ["none", "face/glasses"],
+  "skin": ["skin_porcelain", "skin_peach", "skin_tan", "skin_bronze", "skin_brown", "skin_deep"],
+  "hair_colour": [
+    "hair_black", "hair_brown", "hair_auburn", "hair_ginger", "hair_blonde", "hair_silver", "hair_pink", "hair_blue",
+    "hair_green", "hair_violet"
+  ],
+  "cloth": [
+    "cloth_red", "cloth_orange", "cloth_yellow", "cloth_green", "cloth_teal", "cloth_blue", "cloth_navy", "cloth_purple",
+    "cloth_pink", "cloth_white", "cloth_grey", "cloth_black", "cloth_brown", "cloth_cream"
+  ],
+  "start": {
+    "outfit": "outfit/tunic",
+    "hair": "hair/short",
+    "colours": {"skin": "skin_peach", "hair": "hair_brown", "main": "cloth_teal", "second": "cloth_cream", "accent": "cloth_orange"}
+  }
+}

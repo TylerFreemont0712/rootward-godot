@@ -1,0 +1,38 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "quartermaster",
+  "start": [
+    {
+      "if": {
+        "flag": "met-quartermaster"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Welcome to Nym's! Everything a tinker needs, and a few things nobody needs!",
+          "mood": "happy"
+        },
+        {
+          "text": "The shop isn't quite open yet. Come back when you've got work and coins."
+        }
+      ],
+      "set": [
+        "met-quartermaster"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Nearly open! Very, very nearly."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "keeper",
+  "start": [
+    {
+      "if": {
+        "flag": "met-keeper"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Shh. The tree is listening."
+        },
+        {
+          "text": "I'm Fern. I tend the Lantern Root. Its roots go down further than anyone has ever followed them."
+        },
+        {
+          "text": "I was born on one of its branches!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "met-keeper"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "The roots are humming today. Can you hear them?"
+        }
+      ]
+    }
+  }
+}

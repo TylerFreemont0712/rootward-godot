@@ -1,0 +1,44 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "guard",
+  "start": [
+    {
+      "if": {
+        "flag": "met-guard"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Halt! ...Oh, you're the new tinker. Sorry. Habit."
+        },
+        {
+          "text": "I keep watch over the road and the Root Gate. Nothing gets past me."
+        },
+        {
+          "text": "I get past you every night.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "You glow, firefly. Glowing things are allowed."
+        }
+      ],
+      "set": [
+        "met-guard"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "All quiet. The way I like it."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,72 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "pip",
+  "start": [
+    {
+      "if": {
+        "flag": "met-pip"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Shh! I'm counting the lanterns on the big tree."
+        },
+        {
+          "text": "One, two, three... nine, ten. Ten lanterns!"
+        },
+        {
+          "text": "It's eleven.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Ten! You can't even count, you're a bug.",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "met-pip"
+      ],
+      "choices": [
+        {
+          "text": "Did you start counting at zero?",
+          "goto": "zero"
+        },
+        {
+          "text": "Want some help?",
+          "goto": "help"
+        }
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Ten lanterns. Or eleven. I'm counting again tomorrow."
+        }
+      ]
+    },
+    "zero": {
+      "lines": [
+        {
+          "text": "Zero? Why would anybody start counting at zero?"
+        },
+        {
+          "text": "...Wait. Is that a tinker thing?"
+        }
+      ]
+    },
+    "help": {
+      "lines": [
+        {
+          "text": "No thank you! I'm almost sure it's ten."
+        }
+      ]
+    }
+  }
+}

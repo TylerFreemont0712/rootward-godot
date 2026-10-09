@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "necromancer",
+  "start": [
+    {
+      "if": {
+        "flag": "met-necromancer"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Oh. A visitor. Most people avoid my corner."
+        },
+        {
+          "text": "I'm Morrow. I keep the old stones. Each one marks something that someone made long ago, and then stopped using."
+        },
+        {
+          "text": "Nothing here is dead, you know. It's only... retired."
+        }
+      ],
+      "set": [
+        "met-necromancer"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "The stones are quiet today. They usually are."
+        }
+      ]
+    }
+  }
+}

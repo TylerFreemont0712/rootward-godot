@@ -1,0 +1,41 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "pell",
+  "start": [
+    {
+      "if": {
+        "flag": "met-pell"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Hi! You're new! I'm Pell. I make maps.",
+          "mood": "happy"
+        },
+        {
+          "text": "I've drawn every street in Lanternroot. Twice! But the roots under the town... nobody has mapped those."
+        },
+        {
+          "text": "One day I'll get past the Root Gate. You'll come too, right?"
+        }
+      ],
+      "set": [
+        "met-pell"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Lost? Everything starts at the big tree."
+        }
+      ]
+    }
+  }
+}

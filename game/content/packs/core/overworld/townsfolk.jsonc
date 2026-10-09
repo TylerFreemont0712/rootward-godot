@@ -1,0 +1,85 @@
+// The people of Lanternroot (ADR-0061): their names, their portraits (game/assets/overworld/portraits/), how they look
+// in town (character parts and colours, as the player's own look), what they say (talk/<id>.jsonc), and the pitch of
+// their voice blips.
+{
+  "innkeeper": {
+    "name": "Marta", "title": "Keeper of the Warm Hearth", "portrait": "innkeeper", "talk": "innkeeper", "voice": 1.1,
+    "look": {"outfit": "outfit/dress", "hair": "hair/bun",
+             "colours": {"hair": "hair_auburn", "main": "cloth_black", "second": "cloth_white", "skin": "skin_porcelain"}}
+  },
+  "pip": {
+    "name": "Pip", "title": "Lantern counter", "portrait": "pip", "talk": "pip", "voice": 1.35,
+    "look": {"outfit": "outfit/coat", "hair": "hair/fluffy",
+             "colours": {"hair": "hair_blonde", "main": "cloth_teal", "second": "cloth_cream", "accent": "cloth_brown"}}
+  },
+  "guard": {
+    "name": "Hollis", "title": "Gate guard", "portrait": "guard", "talk": "guard", "voice": 0.85,
+    "look": {"outfit": "outfit/armor", "hair": "hair/short", "hat": "hat/kettle",
+             "colours": {"hair": "hair_black", "main": "cloth_blue", "accent": "cloth_yellow", "skin": "skin_tan"}}
+  },
+  "oracle": {
+    "name": "Lumen", "title": "Keeper of the Lanterns", "portrait": "oracle", "talk": "oracle", "voice": 1.15,
+    "look": {"outfit": "outfit/robe", "hair": "hair/long", "hat": "hat/hood", "item": "item/lantern",
+             "colours": {"hair": "hair_blonde", "main": "cloth_white", "second": "gold", "accent": "cloth_white"}}
+  },
+  "archivist": {
+    "name": "Vell", "title": "The Archivist", "portrait": "archivist", "talk": "archivist", "voice": 1.0,
+    "look": {"outfit": "outfit/robe", "hair": "hair/braid", "face": "face/glasses", "item": "item/book",
+             "colours": {"hair": "hair_brown", "main": "cloth_red", "second": "cloth_cream", "accent": "cloth_brown", "skin": "skin_porcelain"}}
+  },
+  "artificer": {
+    "name": "Mira", "title": "Artificer", "portrait": "artificer", "talk": "artificer", "voice": 1.25,
+    "look": {"outfit": "outfit/robe", "hair": "hair/short", "hat": "hat/hood", "item": "item/book",
+             "colours": {"hair": "hair_violet", "main": "cloth_purple", "second": "gold", "accent": "cloth_purple"}}
+  },
+  "compiler": {
+    "name": "Brannoc", "title": "The Smith", "portrait": "compiler", "talk": "compiler", "voice": 0.75,
+    "look": {"outfit": "outfit/vest", "hair": "hair/spiky", "face": "face/beard",
+             "colours": {"hair": "hair_red", "main": "cloth_brown", "second": "cloth_blue", "accent": "cloth_black", "skin": "skin_tan"}}
+  },
+  "guildmaster": {
+    "name": "Orin", "title": "Elder of Lanternroot", "portrait": "guildmaster", "talk": "guildmaster", "voice": 0.8,
+    "look": {"outfit": "outfit/coat", "hair": "hair/short", "face": "face/beard",
+             "colours": {"hair": "hair_silver", "main": "cloth_teal", "second": "cloth_grey", "accent": "gold"}}
+  },
+  "keeper": {
+    "name": "Fern", "title": "Keeper of the Grove", "portrait": "keeper", "talk": "keeper", "voice": 1.2,
+    "look": {"outfit": "outfit/robe", "hair": "hair/long", "hat": "hat/leaves", "item": "item/staff",
+             "colours": {"hair": "hair_auburn", "main": "cloth_brown", "second": "cloth_green", "accent": "cloth_orange"}}
+  },
+  "necromancer": {
+    "name": "Morrow", "title": "Keeper of the Old Stones", "portrait": "necromancer", "talk": "necromancer", "voice": 0.9,
+    "look": {"outfit": "outfit/robe", "hair": "hair/long", "hat": "hat/hood", "item": "item/staff",
+             "colours": {"hair": "hair_silver", "main": "cloth_black", "second": "cloth_green", "accent": "cloth_black", "skin": "skin_porcelain"}}
+  },
+  "pell": {
+    "name": "Pell", "title": "Mapmaker", "portrait": "pell", "talk": "pell", "voice": 1.1,
+    "look": {"outfit": "outfit/tunic", "hair": "hair/spiky", "hat": "hat/goggles",
+             "colours": {"hair": "hair_ginger", "main": "cloth_cream", "second": "cloth_brown", "accent": "cloth_red"}}
+  },
+  "quartermaster": {
+    "name": "Nym", "title": "Shopkeeper", "portrait": "quartermaster", "talk": "quartermaster", "voice": 0.95,
+    "look": {"outfit": "outfit/vest", "hair": "hair/short", "face": "face/beard", "hat": "hat/wide",
+             "colours": {"hair": "hair_silver", "main": "cloth_green", "second": "cloth_cream", "accent": "cloth_brown"}}
+  },
+  "sergeant": {
+    "name": "Sergeant Brisk", "title": "Drillmaster", "portrait": "sergeant", "talk": "sergeant", "voice": 1.0,
+    "look": {"outfit": "outfit/armor", "hair": "hair/spiky",
+             "colours": {"hair": "hair_silver", "main": "cloth_grey", "accent": "cloth_red", "skin": "skin_peach"}}
+  },
+  "shade": {
+    "name": "Nix", "title": "Lockpicker", "portrait": "shade", "talk": "shade", "voice": 0.9,
+    "look": {"outfit": "outfit/robe", "hair": "hair/short", "hat": "hat/hood", "face": "face/mask",
+             "colours": {"main": "cloth_green", "accent": "cloth_green", "second": "cloth_black"}}
+  },
+  "summoner": {
+    "name": "Seren", "title": "Summoner", "portrait": "summoner", "talk": "summoner", "voice": 1.2,
+    "look": {"outfit": "outfit/robe", "hair": "hair/long", "item": "item/staff",
+             "colours": {"hair": "hair_silver", "main": "cloth_purple", "second": "cloth_white", "accent": "cloth_blue", "skin": "skin_porcelain"}}
+  },
+  "warden": {
+    "name": "The Warden", "title": "Keeper of the Root Gate", "portrait": "warden", "talk": "warden", "voice": 0.65,
+    "look": {"outfit": "outfit/armor", "hat": "hat/visor",
+             "colours": {"main": "cloth_navy", "metal": "cloth_black", "accent": "cloth_orange"}}
+  }
+}

@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "guildmaster",
+  "start": [
+    {
+      "if": {
+        "flag": "met-guildmaster"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Welcome to Lanternroot, young tinker. I'm Orin. I've watched this town grow for a very long time."
+        },
+        {
+          "text": "We've needed a tinker since the old one left. Things here are... a little broken."
+        },
+        {
+          "text": "Take your time. Meet everyone. When you're ready, there will be work."
+        }
+      ],
+      "set": [
+        "met-guildmaster"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "The town is glad you came."
+        }
+      ]
+    }
+  }
+}

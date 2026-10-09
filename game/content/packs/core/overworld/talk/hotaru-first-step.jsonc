@@ -1,0 +1,32 @@
+// Hotaru's part of the opening (ADR-0061).
+{
+  "id": "hotaru-first-step",
+  "start": [
+    {
+      "goto": "walked"
+    }
+  ],
+  "nodes": {
+    "walked": {
+      "lines": [
+        {
+          "text": "You walked! Your own code moved you!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Every time you press a key, your boots run your code. x got one bigger, so you stepped right.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "The door is at the bottom of the room. Can you teach your boots the other keys? Press B.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Here's a hint: y is how far down you are. Going down makes y bigger.",
+          "speaker": "hotaru"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,62 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "archivist",
+  "start": [
+    {
+      "if": {
+        "flag": "met-archivist"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Ah. The new tinker. I'm Vell. I keep the town's records in the Archive."
+        },
+        {
+          "text": "Every change anyone makes in Lanternroot, I write down. When something breaks, we can always see what changed."
+        }
+      ],
+      "set": [
+        "met-archivist"
+      ],
+      "choices": [
+        {
+          "text": "That sounds useful.",
+          "goto": "useful"
+        },
+        {
+          "text": "That sounds like a lot of writing.",
+          "goto": "writing"
+        }
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Nothing new in the records today. Yet."
+        }
+      ]
+    },
+    "useful": {
+      "lines": [
+        {
+          "text": "Very. You'll see."
+        }
+      ]
+    },
+    "writing": {
+      "lines": [
+        {
+          "text": "Oh, enormous amounts. I love it.",
+          "mood": "happy"
+        }
+      ]
+    }
+  }
+}

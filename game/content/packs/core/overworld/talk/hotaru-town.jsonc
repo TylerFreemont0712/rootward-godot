@@ -1,0 +1,28 @@
+// Hotaru's part of the opening (ADR-0061).
+{
+  "id": "hotaru-town",
+  "start": [
+    {
+      "goto": "welcome"
+    }
+  ],
+  "nodes": {
+    "welcome": {
+      "lines": [
+        {
+          "text": "Welcome to Lanternroot!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "See the big tree in the square? That's the Lantern Root. The whole town grew up around it.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Walk up to someone and press Space to talk. Everyone wants to meet the new tinker!",
+          "speaker": "hotaru"
+        }
+      ]
+    }
+  }
+}

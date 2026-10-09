@@ -1,0 +1,50 @@
+// Hotaru's part of the opening (ADR-0061).
+{
+  "id": "hotaru-wake",
+  "start": [
+    {
+      "goto": "glow"
+    }
+  ],
+  "nodes": {
+    "glow": {
+      "lines": [
+        {
+          "text": "Psst! Over here, by the lantern!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "I'm Hotaru. I live in the lantern on your desk. Every lantern in Lanternroot has a firefly like me.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "And you're the new tinker! The whole town has been waiting for you.",
+          "speaker": "hotaru"
+        }
+      ],
+      "next": "stuck"
+    },
+    "stuck": {
+      "lines": [
+        {
+          "text": "Come over and say hello! ...Oh. You can't, can you?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Everything in Lanternroot runs on code. Even your boots. And yours are still empty!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Let's teach them to walk. I'll start you off with one rule.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "woke"
+      ],
+      "open": "boots"
+    }
+  }
+}

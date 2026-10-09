@@ -1,0 +1,40 @@
+// A townsperson of Lanternroot (ADR-0061, Talk).
+{
+  "id": "shade",
+  "start": [
+    {
+      "if": {
+        "flag": "met-shade"
+      },
+      "goto": "again"
+    },
+    {
+      "goto": "hello"
+    }
+  ],
+  "nodes": {
+    "hello": {
+      "lines": [
+        {
+          "text": "Didn't see me there, did you?"
+        },
+        {
+          "text": "I'm Nix. I test the town's locks. If I can open one, so could a thief. So I tell people how to fix them."
+        },
+        {
+          "text": "Your front door, by the way. Fine. For now."
+        }
+      ],
+      "set": [
+        "met-shade"
+      ]
+    },
+    "again": {
+      "lines": [
+        {
+          "text": "Locks are holding. For now."
+        }
+      ]
+    }
+  }
+}
