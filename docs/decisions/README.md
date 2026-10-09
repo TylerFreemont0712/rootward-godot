@@ -1,7 +1,7 @@
 # Decisions
 
 One file per decision a later reader could reasonably question: context, options, decision, consequences.
-The next number is **ADR-0061**.
+The next number is **ADR-0062**.
 
 - [ADR-0048](ADR-0048-paradigm-laws-and-focuses.md): paradigm laws and focuses, fight memory, pure Index reads and
   compatibility with existing drafts and trial lessons (implementation in progress).
@@ -88,3 +88,5 @@ The next number is **ADR-0061**.
 - [ADR-0059](ADR-0059-the-clarity-and-balance-pass.md): the program cards, relics and shards say what their code does, a refactor is not cheaper than its base, and the open code and balance questions are listed in docs/CARD_AUDIT_2026-10-08.md.
 
 - [ADR-0060](ADR-0060-the-legendary-looks.md): the legendary looks, an orrery circle whose last star launches seeded constellation bolts and a black-hole impact per foe, drawn by name in the catalogue; program bolts carry their card and role.
+
+- [ADR-0061](ADR-0061-lanternroot-overworld.md): Lanternroot's overworld, a top-down pixel town walked on the player's own `on_key` code (one sandbox job makes a table), blocks that are code, a 320 x 180 world at whole-number scale, art from hand-placed parts, code-made tiles and palette-locked ComfyUI buildings.

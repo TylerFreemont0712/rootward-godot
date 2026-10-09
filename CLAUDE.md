@@ -24,6 +24,14 @@
 - Moves for VRM skins (ADR-0028, pipeline/moves/README.md): `scripts/moves.sh` (tests the motion, keys every clip in
   Blender, imports, review sheets in `shots/moves/`), `--reel` also films them (`shots/moves/reel.mp4`). The Blender
   side runs without `--factory-startup` (that disables the VRM extension).
+- **Asset tools are free and local only** (the player's rule, 2026-10-09): ComfyUI, Blender, their MCPs, code, hand-placed
+  pixels, CC0 packs on disk. Never propose paid services or packs. Keep the list of assets that could not ship
+  commercially in `docs/ASSET_LICENCES.md` current.
+- Lanternroot's overworld pixel art (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh` (hand-placed parts and props,
+  code-made tiles, portraits, then a lint that fails soft alpha or off-palette colours), `scripts/pixel.sh --comfy
+  'ow-building-*'` for ComfyUI pictures (palette-locked). 16 px tiles, 16 x 24 characters, one palette.
+- Screenshot the overworld: `ROOTWARD_LANTERNTOWN=town scripts/screenshot.sh res://tools/overworld_shot.tscn
+  shots/overworld/town.png 50` (creator, wake, home, boots, code, town, square, talk; `-ja` for Japanese).
 - Assets (pipeline/README.md): `scripts/art.sh --only '<ids>'`, `scripts/audio.sh --only '<ids>'` (`--reprocess` for
   post-processing only, no GPU), `scripts/character.sh <id>` (Blender export, import, screenshots in `shots/`).
   Never ComfyUI and Blender at once; the scripts refuse.

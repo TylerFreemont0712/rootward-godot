@@ -1,0 +1,421 @@
+{
+ "_doc": "Lanternroot's overworld pictures from ComfyUI (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh --comfy 'ow-*'`. The art pipeline's machinery (pipeline/art/generate.py) with every result locked to pipeline/pixel/palette.json (post `lock`). Buildings, landmarks, trees and larger props come from here; 16-pixel characters, small props and ground tiles do not (ComfyUI walk cycles at 16 x 24 and its tile textures were tried on 2026-10-09 and rejected: thin, faceless, muddy). A `raw_from` entry re-cuts another entry's cached render to keep its second candidate as a variant.",
+ "comfy_url": "http://127.0.0.1:8188",
+ "styles": {
+  "ow-prop": {
+   "checkpoint": "sd_xl_base_1.0.safetensors",
+   "lora": "pixel-art-xl-v1.1.safetensors",
+   "lora_strength": 1.0,
+   "prefix": "pixel art, ",
+   "suffix": ", single rpg game asset, 3/4 top-down view, centered, whole object visible, plain white background, clean silhouette, cozy fantasy village, warm colors",
+   "negative": "blurry, text, watermark, signature, sprite sheet, multiple objects, collage, tileset, inventory, grid, people, characters, cropped, frame, border, drop shadow, gradient background, realistic, photo, 3d render",
+   "width": 1024,
+   "height": 1024,
+   "steps": 28,
+   "cfg": 7,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": true,
+   "candidates": 2,
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     32
+    ],
+    "colors": 14,
+    "saturation": 0.95,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  "ow-portrait": {
+   "checkpoint": "novaAnimeXL_ilV190.safetensors",
+   "prefix": "masterpiece, best quality, fantasy rpg character portrait, ",
+   "suffix": ", upper body, looking at viewer, warm lighting, simple background, white background",
+   "negative": "worst quality, low quality, blurry, text, watermark, signature, multiple views, cropped head, nsfw",
+   "width": 1024,
+   "height": 1024,
+   "steps": 28,
+   "cfg": 5.5,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": true,
+   "candidates": 2,
+   "post": {
+    "kind": "picture",
+    "size": [
+     128,
+     128
+    ],
+    "colors": 48,
+    "transparent": true,
+    "focus_y": 0
+   }
+  }
+ },
+ "assets": [
+  {
+   "id": "ow-prop-well",
+   "out": "overworld/props/well",
+   "style": "ow-prop",
+   "seed": 4201,
+   "pick": 1,
+   "prompt": "old stone water well with a small wooden roof and a hanging bucket"
+  },
+  {
+   "id": "ow-prop-stall",
+   "out": "overworld/props/stall",
+   "style": "ow-prop",
+   "seed": 4204,
+   "pick": 1,
+   "prompt": "wooden market stall with a striped red and white awning, baskets of apples and bread",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     48,
+     40
+    ],
+    "colors": 16,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-tree-oak",
+   "out": "overworld/props/oak",
+   "style": "ow-prop",
+   "seed": 4205,
+   "pick": 0,
+   "prompt": "round leafy green oak tree with a thick brown trunk",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     40
+    ],
+    "colors": 10,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-inn",
+   "out": "overworld/buildings/inn",
+   "style": "ow-prop",
+   "seed": 4301,
+   "pick": 0,
+   "prompt": "cozy two-story village inn, timber frame, cream plaster walls, red tiled roof, wooden front door, hanging sign, flower boxes under the windows, chimney",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 20,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-home",
+   "out": "overworld/buildings/home",
+   "style": "ow-prop",
+   "seed": 4311,
+   "pick": 1,
+   "prompt": "small cozy cottage with a thatched roof, a round window and a little lantern beside the door, flowers by the wall, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-archive",
+   "out": "overworld/buildings/archive",
+   "style": "ow-prop",
+   "seed": 4312,
+   "pick": 0,
+   "prompt": "tall old stone library with arched windows, blue slate roof, a sign with an open book, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     80,
+     80
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-smithy",
+   "out": "overworld/buildings/smithy",
+   "style": "ow-prop",
+   "seed": 4313,
+   "pick": 0,
+   "prompt": "village blacksmith forge with a stone chimney, an anvil under a wooden awning, warm glow from inside, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     80,
+     72
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-shop",
+   "out": "overworld/buildings/shop",
+   "style": "ow-prop",
+   "seed": 4314,
+   "pick": 0,
+   "prompt": "small village general store with a green and white striped awning, crates and barrels by the door, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-shrine",
+   "out": "overworld/buildings/shrine",
+   "style": "ow-prop",
+   "seed": 4315,
+   "pick": 1,
+   "prompt": "small wooden lantern shrine with a curved red roof and a big glowing paper lantern hanging at the entrance, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-hall",
+   "out": "overworld/buildings/hall",
+   "style": "ow-prop",
+   "seed": 4316,
+   "pick": 0,
+   "prompt": "large village hall with a small clock tower, purple roof, stone and timber walls, banners, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     96
+    ],
+    "colors": 26,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-workshop",
+   "out": "overworld/buildings/workshop",
+   "style": "ow-prop",
+   "seed": 4317,
+   "pick": 0,
+   "prompt": "tinker workshop with brass gears on the wall and a telescope on the roof, teal roof, front view facing the viewer, the front door at the bottom middle",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-landmark-rootgate",
+   "out": "overworld/buildings/rootgate",
+   "style": "ow-prop",
+   "seed": 4321,
+   "pick": 0,
+   "prompt": "ancient stone archway into a hillside, covered in thick glowing tree roots, dark cave inside",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     64,
+     64
+    ],
+    "colors": 22,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-landmark-lanterntree",
+   "out": "overworld/buildings/lanterntree",
+   "style": "ow-prop",
+   "seed": 4322,
+   "pick": 1,
+   "prompt": "giant ancient tree with many small glowing paper lanterns hanging from its branches, big roots",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     96
+    ],
+    "colors": 24,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-tree-birch",
+   "out": "overworld/props/birch",
+   "style": "ow-prop",
+   "seed": 4332,
+   "pick": 0,
+   "prompt": "slender white birch tree with light green leaves",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     24,
+     40
+    ],
+    "colors": 10,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-tree-apple",
+   "out": "overworld/props/apple",
+   "style": "ow-prop",
+   "seed": 4333,
+   "pick": 0,
+   "prompt": "small round apple tree with red apples",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     36
+    ],
+    "colors": 12,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-prop-bush",
+   "out": "overworld/props/bush",
+   "style": "ow-prop",
+   "seed": 4341,
+   "pick": 0,
+   "prompt": "round green bush with small flowers",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     16,
+     16
+    ],
+    "colors": 8,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-prop-laundry",
+   "out": "overworld/props/laundry",
+   "style": "ow-prop",
+   "seed": 4343,
+   "pick": 1,
+   "prompt": "laundry line between two wooden posts with colorful clothes hanging",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     24
+    ],
+    "colors": 12,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-portrait-hotaru",
+   "out": "overworld/portraits/hotaru",
+   "style": "ow-portrait",
+   "seed": 4501,
+   "candidates": 4,
+   "pick": 0,
+   "prompt": "1girl, tiny firefly fairy, short black hair, a red-orange hood like a firefly's collar, black dress, translucent pale blue insect wings, a soft yellow-green glow behind her, holding a tiny paper lantern, cheerful smile, big bright eyes, cute"
+  },
+  {
+   "id": "ow-tree-oak2",
+   "out": "overworld/props/oak2",
+   "style": "ow-prop",
+   "seed": 4205,
+   "pick": 1,
+   "prompt": "round leafy green oak tree with a thick brown trunk",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     40
+    ],
+    "colors": 10,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   },
+   "raw_from": "ow-tree-oak"
+  },
+  {
+   "id": "ow-tree-apple2",
+   "out": "overworld/props/apple2",
+   "style": "ow-prop",
+   "seed": 4333,
+   "pick": 1,
+   "prompt": "small round apple tree with red apples",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     36
+    ],
+    "colors": 12,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   },
+   "raw_from": "ow-tree-apple"
+  },
+  {
+   "id": "ow-prop-bush2",
+   "out": "overworld/props/bush2",
+   "style": "ow-prop",
+   "seed": 4341,
+   "pick": 1,
+   "prompt": "round green bush with small flowers",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     16,
+     16
+    ],
+    "colors": 8,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   },
+   "raw_from": "ow-prop-bush"
+  }
+ ]
+}

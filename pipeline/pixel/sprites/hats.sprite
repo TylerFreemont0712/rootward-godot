@@ -1,0 +1,213 @@
+// Hats, hoods and helmets, drawn over the hair. A hood is in the accent slot (x y z), metal in the metal slot (k l n).
+
+legend G leaf.1
+legend D leaf.2
+legend F cloth_pink.0
+
+// A cowl that frames the face and drapes the shoulders (the oracle, the shade, the necromancer).
+sprite hat/hood 16 24
+
+frame down
+................
+.....######.....
+...##xxxxxx##...
+..#xxxxxxxxyy#..
+.#xxxxxxxxxyyy#.
+.#xxxyyyyyyyyz#.
+.#xyyzzzzzzzyz#.
+.#yz........zz#.
+.#yz........zz#.
+.#yz........zz#.
+.#yz........zz#.
+.#yz........zz#.
+.#yyz......zzz#.
+..#yyz....zzz#..
+..#yyyyyyyyyy#..
+...##########...
+
+frame up
+................
+.....######.....
+...##xxxxxx##...
+..#xxxxxxxxyy#..
+.#xxxxxxxxxyyy#.
+.#xxxxxxxxxyyy#.
+.#xxxxxxxxyyyy#.
+.#xxxxxxxyyyyz#.
+.#yxxxxxyyyyyz#.
+.#yyxxxyyyyyzz#.
+.#yyyyyyyyyyzz#.
+.#yyyyyyyyyzzz#.
+.#zyyyyyyyyzzz#.
+..#zyyyyyyyzz#..
+..#yyyyyyyyyy#..
+...##########...
+
+frame left
+................
+.....######.....
+...##xxxxxx##...
+..#xxxxxxxxyy#..
+.#xxxxxxxxxyyy#.
+.#xxxxxxxxxyyy#.
+.#yzzzzxxxxyyy#.
+.#z.....xxyyyz#.
+.#z.....yxyyyz#.
+.#z.....yyyyyz#.
+.#z.....yyyyzz#.
+.#z.....yyyyzz#.
+..#z....yyyzzz#.
+...#zzz#yyyzz#..
+....#yyyyyyy#...
+.....#######....
+
+// A steel kettle helmet with a brim (the town guard).
+sprite hat/kettle 16 24
+
+frame down
+................
+.....######.....
+....#kkkkkl#....
+...#kkkkllll#...
+..#kkkkllllln#..
+.#kkllllllllnn#.
+#lllllllllllllnn
+.##############.
+
+frame up
+................
+.....######.....
+....#kkkkkl#....
+...#kkkkllll#...
+..#kkkkllllln#..
+.#kkllllllllnn#.
+#lllllllllllllnn
+.##############.
+
+frame left
+................
+.....######.....
+....#kkkkkl#....
+...#kkkkllll#...
+..#kkkkllllln#..
+.#kkllllllllnn#.
+#lllllllllllllnn
+.##############.
+
+// A closed helmet with a glowing slit (the warden).
+sprite hat/visor 16 24
+
+frame down
+................
+.....######.....
+...##kkkkll##...
+..#kkkkkkllll#..
+.#kkkkkkllllln#.
+.#kkklllllllnn#.
+.#llllllllllnn#.
+.#n##########n#.
+.#n#xxxxxxxx#n#.
+.#n##########n#.
+.#lllllllllnnn#.
+.#llllllllnnnn#.
+..#nnnnnnnnnn#..
+...##########...
+
+frame up
+................
+.....######.....
+...##kkkkll##...
+..#kkkkkkllll#..
+.#kkkkkkllllln#.
+.#kkklllllllnn#.
+.#llllllllllnn#.
+.#lllllllllnnn#.
+.#lllllllllnnn#.
+.#llllllllnnnn#.
+.#lllllllllnnn#.
+.#llllllllnnnn#.
+..#nnnnnnnnnn#..
+...##########...
+
+frame left
+................
+.....######.....
+...##kkkkll##...
+..#kkkkkkllll#..
+.#kkkkkkllllln#.
+.#kkklllllllnn#.
+.#llllllllllnn#.
+.#####lllllnnn#.
+.#xxx#llllnnnn#.
+.#####lllllnnn#.
+.#lllllllllnnn#.
+.#llllllllnnnn#.
+..#nnnnnnnnnn#..
+...##########...
+
+// A wide hat with a band (the quartermaster), in the accent slot.
+sprite hat/wide 16 24
+
+frame down
+................
+......####......
+.....#xxxy#.....
+....#xxxxyy#....
+...#xxxxxyyy#...
+...#zzzzzzzz#...
+#xxxxxxxxxxxyyy#
+.##############.
+
+frame up
+................
+......####......
+.....#xxxy#.....
+....#xxxxyy#....
+...#xxxxxyyy#...
+...#zzzzzzzz#...
+#xxxxxxxxxxxyyy#
+.##############.
+
+frame left
+................
+......####......
+.....#xxxy#.....
+....#xxxxyy#....
+...#xxxxxyyy#...
+...#zzzzzzzz#...
+#xxxxxxxxxxxyyy#
+.##############.
+
+// Goggles pushed up on the forehead (the journeyman, the artificer).
+sprite hat/goggles 16 24
+
+frame down at 0 4
+...###....###...
+#zz#kw#zz#kw#zz#
+...###....###...
+
+frame up at 0 5
+#zzzzzzzzzzzzzz#
+
+frame left at 0 4
+..###...........
+#kw#zzzzzzzzzzz#
+..###...........
+
+// A crown of leaves (the keeper of the grove).
+sprite hat/leaves 16 24
+
+frame down at 0 1
+...G.D.GG.D.G...
+..GDGGDGDDGGDG..
+...D..F..F..D...
+
+frame up at 0 1
+...G.D.GG.D.G...
+..GDGGDGDDGGDG..
+...D........D...
+
+frame left at 0 1
+....G.D.GG.D.G..
+...GDGGDGDDGGDG.
+.....F......D...

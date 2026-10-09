@@ -721,6 +721,50 @@ def post_walk_cycle(rgba: np.ndarray, post: dict, job: dict) -> list[tuple[str, 
     return outputs
 
 
+OVERWORLD_FACINGS = ("down", "up", "left")
+# The walk sheet's frames that become the overworld's poses: standing, then the two contact steps (pipeline/pixel/).
+OVERWORLD_POSES = (0, 1, 3)
+
+
+def post_overworld_walk(rgba: np.ndarray, post: dict, job: dict) -> list[tuple[str, Image.Image]]:
+    """A pose-guided walk sheet as one overworld sheet: rows facing down, up and left (the side row mirrored, since the
+    sheet draws its figures facing right), columns standing, step a, step b (pipeline/pixel/characters.py)."""
+    strips = dict(post_walk_cycle(rgba, post, job))
+    frame_w, frame_h = post["size"]
+    sheet = np.zeros((frame_h * len(OVERWORLD_FACINGS), frame_w * len(OVERWORLD_POSES), 4), np.uint8)
+    for row, facing in enumerate(OVERWORLD_FACINGS):
+        strip = np.asarray(strips[f"{job['out']}-walk-{'right' if facing == 'left' else facing}"])
+        for col, index in enumerate(OVERWORLD_POSES):
+            frame = strip[:, index * frame_w : (index + 1) * frame_w]
+            if facing == "left":
+                frame = frame[:, ::-1]
+            sheet[row * frame_h : (row + 1) * frame_h, col * frame_w : (col + 1) * frame_w] = frame
+    return [(job["out"], Image.fromarray(sheet, "RGBA"))]
+
+
+def locked(outputs: list[tuple[str, Image.Image]], post: dict) -> list[tuple[str, Image.Image]]:
+    """`lock`: every opaque colour snapped to the overworld's palette (pipeline/pixel/palette.json), so a render sits in
+    the same world as everything else there. Quantizing first keeps each picture to its own few colours; the lock then
+    moves those few onto the shared ones."""
+    if not post.get("lock"):
+        return outputs
+    sys.path.insert(0, str(ROOT / "pipeline" / "pixel"))
+    import pixelkit  # noqa: E402 (the overworld's kit lives beside this pipeline, not inside it)
+
+    colours = sorted(pixelkit.Palette.load().colours())
+    if post.get("lock_ramps"):
+        palette = pixelkit.Palette.load()
+        colours = sorted({c for name in post["lock_ramps"] for c in palette.ramps[name]} | {palette.resolve("ink")})
+    out = []
+    for name, image in outputs:
+        rgba = np.asarray(image.convert("RGBA")).copy()
+        solid = rgba[..., 3] > 127
+        rgba[solid, :3] = pixelkit.nearest(rgba[solid, :3][None], colours)[0]
+        rgba[..., 3] = np.where(solid, 255, 0)
+        out.append((name, Image.fromarray(rgba, "RGBA")))
+    return out
+
+
 def breathe(canvas: np.ndarray, drop: int, waist: float) -> np.ndarray:
     """A still frame with everything above `waist` (a share of the figure's height, from the top) lowered `drop` pixels,
     feet planted.
@@ -862,6 +906,10 @@ def post_glow(raw: np.ndarray, post: dict) -> Image.Image:
 
 
 def process(job: dict, raw: np.ndarray) -> list[tuple[str, Image.Image]]:
+    return locked(processed(job, raw), job["post"])
+
+
+def processed(job: dict, raw: np.ndarray) -> list[tuple[str, Image.Image]]:
     post = job["post"]
     kind = post["kind"]
     if post.get("flip") and kind not in ("glow", "sprite", "picture"):
@@ -887,6 +935,8 @@ def process(job: dict, raw: np.ndarray) -> list[tuple[str, Image.Image]]:
         return [(job["out"], post_card(raw, post))]
     if kind == "walk-cycle":
         return post_walk_cycle(sheet_alpha(raw, post), post, job)
+    if kind == "overworld-walk":
+        return post_overworld_walk(sheet_alpha(raw, post), post, job)
     if kind == "walk-sheet":
         figures = sheet_figures(sheet_alpha(raw, post), post.get("figure_fraction", 0.25))
         outputs = []

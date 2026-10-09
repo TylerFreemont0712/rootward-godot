@@ -1,0 +1,118 @@
+// Things carried, drawn last. A lantern's light is fixed (glow); a staff's stone is the accent slot.
+
+legend H glow.0
+legend G glow.1
+legend R glow.2
+legend F gold.2
+legend W wood.1
+legend V wood.2
+
+// A hand lantern (the oracle, the keeper): Lanternroot's own.
+sprite item/lantern 16 24
+
+frame down at 0 18
+...F............
+.#FFF#..........
+.#GHG#..........
+.#RGR#..........
+.#FFF#..........
+..###...........
+
+frame up at 0 18
+............F...
+..........#FFF#.
+..........#GHG#.
+..........#RGR#.
+..........#FFF#.
+...........###..
+
+frame left at 0 18
+........F.......
+.......#F#......
+......#GHG#.....
+......#RGR#.....
+......#FFF#.....
+.......###......
+
+// A tall staff with a stone (the keeper, the summoner, the necromancer).
+sprite item/staff 16 24
+
+frame down at 12 2
+.##.
+#xy#
+#yz#
+.##.
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+..#.
+
+frame up at 0 2
+.##.
+#xy#
+#yz#
+.##.
+#W#.
+#V#.
+#W#.
+#V#.
+#W#.
+#V#.
+#W#.
+#V#.
+#W#.
+#V#.
+#W#.
+#V#.
+#W#.
+#V#.
+.#..
+
+frame left at 2 2
+.##.
+#xy#
+#yz#
+.##.
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+.#W#
+.#V#
+..#.
+
+// A book held to the chest (the archivist, the artificer).
+sprite item/book 16 24
+
+frame down at 4 15
+.######.
+#xxwwxx#
+#yywwyy#
+#zzzzzz#
+.######.
+
+frame left at 2 15
+.####.
+#xxwy#
+#yywz#
+#zzzz#
+.####.
