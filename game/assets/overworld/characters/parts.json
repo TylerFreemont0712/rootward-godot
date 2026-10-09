@@ -1,0 +1,33 @@
+{
+ "frame": [
+  16,
+  24
+ ],
+ "parts": [
+  "body/base",
+  "face/beard",
+  "face/glasses",
+  "face/mask",
+  "hair/braid",
+  "hair/bun",
+  "hair/fluffy",
+  "hair/long",
+  "hair/short",
+  "hair/spiky",
+  "hat/goggles",
+  "hat/hood",
+  "hat/kettle",
+  "hat/leaves",
+  "hat/visor",
+  "hat/wide",
+  "item/book",
+  "item/lantern",
+  "item/staff",
+  "outfit/armor",
+  "outfit/coat",
+  "outfit/dress",
+  "outfit/robe",
+  "outfit/tunic",
+  "outfit/vest"
+ ]
+}

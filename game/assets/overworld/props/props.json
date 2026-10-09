@@ -1,0 +1,177 @@
+{
+ "barrel": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "bed": {
+  "frames": 1,
+  "size": [
+   16,
+   32
+  ]
+ },
+ "bench": {
+  "frames": 1,
+  "size": [
+   32,
+   16
+  ]
+ },
+ "bookshelf": {
+  "frames": 1,
+  "size": [
+   32,
+   32
+  ]
+ },
+ "chair": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "crate": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "desk": {
+  "frames": 1,
+  "size": [
+   32,
+   24
+  ]
+ },
+ "doormat": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "fence": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "fencepost": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "flowerpot": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "lamppost": {
+  "frames": 2,
+  "size": [
+   16,
+   32
+  ]
+ },
+ "lantern": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "mailbox": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "mushrooms": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "noticeboard": {
+  "frames": 1,
+  "size": [
+   32,
+   32
+  ]
+ },
+ "plant": {
+  "frames": 1,
+  "size": [
+   16,
+   24
+  ]
+ },
+ "rock": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "rug": {
+  "frames": 1,
+  "size": [
+   32,
+   16
+  ]
+ },
+ "sack": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "sign": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "stump": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "tombstone": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "tuft": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "window": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ }
+}

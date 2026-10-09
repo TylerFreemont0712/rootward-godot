@@ -1,0 +1,51 @@
+{
+ "tile": 16,
+ "base": {
+  "grass": {
+   "row": 0,
+   "count": 6
+  },
+  "floor": {
+   "row": 1,
+   "count": 2
+  },
+  "wall": {
+   "row": 2,
+   "count": 2
+  },
+  "void": {
+   "row": 3,
+   "count": 1
+  },
+  "path": {
+   "row": 4,
+   "count": 2
+  },
+  "cobble": {
+   "row": 5,
+   "count": 2
+  },
+  "water": {
+   "row": 6,
+   "count": 3
+  }
+ },
+ "overlay": {
+  "path": {
+   "row": 7,
+   "frames": 1
+  },
+  "cobble": {
+   "row": 8,
+   "frames": 1
+  },
+  "water": {
+   "row": 9,
+   "frames": 3
+  },
+  "flowers": {
+   "row": 12,
+   "frames": 1
+  }
+ }
+}
