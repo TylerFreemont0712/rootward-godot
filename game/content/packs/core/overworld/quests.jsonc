@@ -1,0 +1,53 @@
+// Lanternroot's quests (ADR-0061): what to do next. A step is done when its condition holds over the town's flags
+// (Quests.holds: {flag}, {not}, {all}, {count: prefix, at_least}); a quest opens when the quests it comes after are
+// done. The tracker shows the first open quest's next step; the log shows them all.
+{
+  "boots": {
+    "order": 1,
+    "title": "Your own two feet",
+    "giver": "hotaru",
+    "summary": "Everything in Lanternroot runs on code, even your boots. Teach them to walk.",
+    "steps": [
+      {"text": "Press Try them, then walk right.", "hint": "B opens your boots.", "done": {"flag": "first-step"}},
+      {"text": "Teach your boots all four ways.", "hint": "Up makes y smaller.", "done": {"flag": "all-ways"}},
+      {"text": "Walk out of your house.", "hint": "The door is at the bottom of the room.", "done": {"flag": "left-home"}}
+    ]
+  },
+  "hello": {
+    "order": 2,
+    "after": ["boots"],
+    "title": "Hello, Lanternroot",
+    "giver": "hotaru",
+    "summary": "The whole town wants to meet the new tinker.",
+    "steps": [
+      {"text": "Say hello to Marta at the Warm Hearth.", "done": {"flag": "met-innkeeper"}},
+      {"text": "Meet Elder Orin by the Lantern Root.", "done": {"flag": "met-guildmaster"}},
+      {"text": "Meet more of the town.", "done": {"count": "met-", "at_least": 6}},
+      {"text": "Read the noticeboard in the square.", "done": {"flag": "read-notices"}}
+    ]
+  },
+  "memory": {
+    "order": 3,
+    "after": ["hello"],
+    "title": "Remember me",
+    "giver": "archivist",
+    "summary": "Nothing in Lanternroot is kept unless someone writes the code that keeps it. Not even you.",
+    "steps": [
+      {"text": "Visit Vell at the Archive.", "done": {"flag": "memory-asked"}},
+      {"text": "Write your save: what should the town remember about you?", "done": {"flag": "memory-written"}},
+      {"text": "Save from the menu (Esc).", "done": {"flag": "saved-once"}}
+    ]
+  },
+  "lamps": {
+    "order": 4,
+    "after": ["memory"],
+    "title": "Light the lane",
+    "giver": "oracle",
+    "summary": "The lamps along the north lane went dark. Lumen needs a tinker who can light them all at once.",
+    "steps": [
+      {"text": "Ask Lumen about the dark lane.", "done": {"flag": "lamps-asked"}},
+      {"text": "Write light_all: light every lamp on the lane.", "done": {"flag": "lamps-written"}},
+      {"text": "Watch the lane light up.", "done": {"flag": "lamps-lit"}}
+    ]
+  }
+}

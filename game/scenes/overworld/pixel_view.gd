@@ -8,7 +8,7 @@ extends Control
 ## screen pixels. `get_final_transform()` gives the canvas-to-window scale; dividing by it turns a size in screen
 ## pixels back into canvas units, which is how the picture lands on exact screen pixels.
 
-const BASE := Vector2i(320, 180)
+const BASE := Vector2i(240, 135)
 
 var viewport: SubViewport
 ## How many screen pixels one art pixel is, now.

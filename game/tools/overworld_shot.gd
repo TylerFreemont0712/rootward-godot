@@ -2,6 +2,7 @@ extends Control
 ## Moments of Lanternroot's overworld for screenshots (ADR-0061), each in its own save folder:
 ##   ROOTWARD_LANTERNTOWN=<moment> scripts/screenshot.sh res://tools/overworld_shot.tscn shots/town.png 40
 ## Moments: creator, wake, home, boots, code, town, square, talk, board, choice, bubble; add "-ja" for Japanese.
+## Hooks for any moment: ROOTWARD_LANTERNTOWN_MAP, _AT (x,y), _FACING, _FLAGS (comma list) and _CALL (a screen method).
 ## A moment says `shot_ready` once it is set up (the boots have been read, and a talk is typed out as far as the picture
 ## needs), so the frames the screenshot waits are counted from then.
 
@@ -68,6 +69,16 @@ func _ready() -> void:
 		"choice":
 			# The innkeeper, Marta, stands at (32, 17).
 			state = OverworldState.moved(state, "lanternroot", Vector2i(32, 18), "up")
+	# Any moment can be placed elsewhere, and given flags: ROOTWARD_LANTERNTOWN_MAP=home, ROOTWARD_LANTERNTOWN_AT=4,5,
+	# ROOTWARD_LANTERNTOWN_FACING=up, ROOTWARD_LANTERNTOWN_FLAGS=met-innkeeper,read-notices.
+	var place_map := OS.get_environment("ROOTWARD_LANTERNTOWN_MAP")
+	var place_at := OS.get_environment("ROOTWARD_LANTERNTOWN_AT").split(",", false)
+	if place_map != "" or place_at.size() == 2:
+		var cell := Vector2i(int(place_at[0]), int(place_at[1])) if place_at.size() == 2 else OverworldState.cell(state)
+		var facing := OS.get_environment("ROOTWARD_LANTERNTOWN_FACING")
+		state = OverworldState.moved(state, place_map if place_map != "" else String(state.map), cell, facing)
+	for flag in OS.get_environment("ROOTWARD_LANTERNTOWN_FLAGS").split(",", false):
+		state.flags[flag.strip_edges()] = true
 	store.save_state(state)
 	var screen := (load("res://scenes/overworld/overworld.tscn") as PackedScene).instantiate()
 	add_child(screen)
@@ -75,6 +86,11 @@ func _ready() -> void:
 		await get_tree().process_frame
 	await _until_read(screen)
 	await _play(screen, base)
+	# Any method of the screen, called once the moment is set up: ROOTWARD_LANTERNTOWN_CALL=_open_menu.
+	var call := OS.get_environment("ROOTWARD_LANTERNTOWN_CALL")
+	if call != "" and screen.has_method(call):
+		screen.call(call)
+		await _frames(20)
 	shot_ready.emit()
 
 

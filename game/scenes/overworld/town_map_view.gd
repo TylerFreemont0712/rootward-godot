@@ -31,7 +31,8 @@ func _ready() -> void:
 	add_child(things)
 
 
-func show_map(shown: Dictionary, lit := true) -> void:
+## Shows a map. Lamps (props with a lit frame) are lit, except those in `dark_groups` (the lane before lesson 3).
+func show_map(shown: Dictionary, lit := true, dark_groups: Array = []) -> void:
 	map = shown
 	ground.show_map(map)
 	for child in things.get_children():
@@ -48,7 +49,8 @@ func show_map(shown: Dictionary, lit := true) -> void:
 			"prop", "sign":
 				var art := String(object.get("art", "sign"))
 				var frames := int((_prop_sizes.get(art, {}) as Dictionary).get("frames", 1))
-				var frame := frames - 1 if lit and frames > 1 else 0
+				var dark := String(object.get("group", "")) in dark_groups
+				var frame := frames - 1 if lit and not dark and frames > 1 else 0
 				things.add_child(_standing(OverworldArt.prop(art), object, frame, frames))
 			"person":
 				_add_person(object)

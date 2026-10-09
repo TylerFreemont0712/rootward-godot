@@ -4,6 +4,7 @@ extends RefCounted
 ##
 ##   terrain.jsonc        what each kind of ground is (walkable or not, the sound of a step on it)
 ##   townsfolk.jsonc      who lives in town: name, title, portrait, how they look, what they say
+##   quests.jsonc         what to do next: quests of steps, each done when the town's flags say so (Quests)
 ##   looks.jsonc          what the player can choose for their own character
 ##   maps/<id>.jsonc      a map: its ground as rows of characters, and the things on it
 ##   talk/<id>.jsonc      a conversation (Talk)
@@ -17,7 +18,7 @@ const SLOTS: Array[String] = ["skin", "hair", "main", "second", "accent", "metal
 
 static func load_world(root := ContentLoader.ROOT) -> Dictionary:
 	var diagnostics: Array[Dictionary] = []
-	var catalog := {"terrain": {}, "townsfolk": {}, "looks": {}, "maps": {}, "talk": {}}
+	var catalog := {"terrain": {}, "townsfolk": {}, "looks": {}, "maps": {}, "talk": {}, "quests": {}}
 	var raw_maps := {}
 	for pack in ContentLoader._sorted_dirs(root.path_join("packs")):
 		var dir := root.path_join("packs").path_join(pack).path_join("overworld")
@@ -26,6 +27,7 @@ static func load_world(root := ContentLoader.ROOT) -> Dictionary:
 		_merge(catalog.terrain, _section(dir.path_join("terrain.jsonc"), terrain_schema(), diagnostics))
 		_merge(catalog.townsfolk, _section(dir.path_join("townsfolk.jsonc"), townsfolk_schema(), diagnostics))
 		_merge(catalog.looks, _section(dir.path_join("looks.jsonc"), looks_schema(), diagnostics))
+		_merge(catalog.quests, _section(dir.path_join("quests.jsonc"), quests_schema(), diagnostics))
 		_load_each(dir.path_join("maps"), map_schema(), raw_maps, diagnostics)
 		_load_each(dir.path_join("talk"), talk_schema(), catalog.talk, diagnostics)
 	for id: String in raw_maps:
@@ -121,8 +123,33 @@ static func looks_schema() -> Dictionary:
 				"skin": choices,
 				"hair_colour": choices,
 				"cloth": choices,
+				"eye_colour": Schema.with_default(Schema.list_of(Schema.TEXT), []),
 				"start": _look_schema(),
+				# The name the creator shows for each part ("hair/bun": "Bun"), in English; the overlays translate it.
+				"labels": Schema.with_default(Schema.record(Schema.TEXT), {}),
 			}
+		)
+	)
+
+
+static func quests_schema() -> Dictionary:
+	var step := Schema.object({"text": Schema.TEXT, "hint": Schema.optional(Schema.TEXT), "done": {"type": "any"}})
+	return (
+		Schema
+		. record(
+			(
+				Schema
+				. object(
+					{
+						"order": Schema.INT,
+						"title": Schema.TEXT,
+						"summary": Schema.TEXT,
+						"giver": Schema.optional(Schema.TEXT),
+						"after": Schema.list_of(Schema.ID, []),
+						"steps": Schema.list_of(step, null, 1),
+					}
+				)
+			)
 		)
 	)
 
@@ -177,6 +204,8 @@ static func map_schema() -> Dictionary:
 										"talk": Schema.optional(Schema.ID),
 										"text": Schema.optional(Schema.TEXT),
 										"sink": Schema.with_default(Schema.INT, 0),
+										# Props that act together (the lamps of one lane), for a quest or a program to find.
+										"group": Schema.optional(Schema.TEXT),
 									},
 									"sign":
 									{
@@ -254,6 +283,8 @@ static func talk_schema() -> Dictionary:
 
 
 static func _cross_check(catalog: Dictionary, diagnostics: Array[Dictionary]) -> void:
+	for problem in Quests.problems(catalog.quests):
+		ContentLoader._error(diagnostics, "quests", problem, "overworld/quests.jsonc")
 	for id: String in catalog.talk:
 		for problem in Talk.problems(catalog.talk[id]):
 			ContentLoader._error(diagnostics, "talk", problem, "overworld/talk/%s.jsonc" % id)

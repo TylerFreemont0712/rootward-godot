@@ -8,6 +8,7 @@
         {"text": "A sheet pinned at the top, its corners curling: 'Lost: one spare lantern. Found: it was on the bench all along.'"},
         {"text": "Below it, in careful handwriting: 'Letters for the new tinker. Each one asks for one function. Bring them back working.'"}
       ],
+      "set": ["read-notices"],
       "choices": [
         {"text": "Take the letters", "goto": "to_letters"},
         {"text": "Not yet", "goto": "later"}

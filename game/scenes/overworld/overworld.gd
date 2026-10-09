@@ -37,6 +37,7 @@ var _hotaru: HotaruSprite
 var _talk: DialogueBox
 var _boots: BootsEditor
 var _creator: CharacterCreator
+var _lessons: LessonHost
 var _bubble: PanelContainer
 var _bubble_text: Label
 var _prompt: Label
@@ -63,6 +64,7 @@ func _ready() -> void:
 	var home: Dictionary = catalog.maps.get(START_MAP, {})
 	var fresh := OverworldState.fresh(START_MAP, home.get("start", Vector2i.ZERO), "down", BootsCode.PYTHON)
 	state = OverworldState.normalized(saved, fresh) if not saved.is_empty() else fresh
+	state = LessonHost.restore(state)
 	if not catalog.maps.has(String(state.map)):
 		state = fresh
 	_enter_map(String(state.map), OverworldState.cell(state), String(state.facing))
@@ -145,6 +147,9 @@ func _build() -> void:
 	_boots.closed.connect(_on_boots_closed)
 	_boots.language_chosen.connect(_on_language_chosen)
 	add_child(_boots)
+	_lessons = LessonHost.new()
+	_lessons.state_changed.connect(_on_lesson_state)
+	add_child(_lessons)
 	_creator = CharacterCreator.new()
 	_creator.done.connect(_on_creator_done)
 	add_child(_creator)
@@ -166,7 +171,7 @@ func _current() -> Dictionary:
 func _enter_map(id: String, cell: Vector2i, facing: String) -> void:
 	state = OverworldState.moved(state, id, cell, facing)
 	var map := _current()
-	_map.show_map(map)
+	_map.show_map(map, true, _dark_groups())
 	_player.place(cell, String(state.facing))
 	_hotaru.facing = _player.facing
 	_hotaru.settle()
@@ -192,7 +197,7 @@ func _aim_camera(snap := false) -> void:
 func _process(_delta: float) -> void:
 	_aim_camera()
 	_update_prompt()
-	if _busy or _talk.busy or _boots.visible or _creator.visible or _player.moving:
+	if _busy or _talk.busy or _boots.visible or _creator.visible or _lessons.busy() or _player.moving:
 		return
 	if not _held.is_empty():
 		_step(_held[-1])
@@ -223,7 +228,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_talk.advance()
 			get_viewport().set_input_as_handled()
 		return
-	if _boots.visible or _creator.visible or _busy:
+	if _boots.visible or _creator.visible or _lessons.busy() or _busy:
 		return
 	if _is_accept(event):
 		_interact()
@@ -472,6 +477,22 @@ func _on_talk_ended(flags: Dictionary, opens: Array[String]) -> void:
 		_open_boots()
 	elif "letters" in opens:
 		_open_letters()
+	for opened in opens:
+		if opened.begins_with("lesson:"):
+			_held.clear()
+			_lessons.open_lesson(opened.substr("lesson:".length()), state)
+
+
+## A lesson changed the town (a flag, the saved memory, the lamps): keep it, and draw the lamps as they are now.
+func _on_lesson_state(changed: Dictionary) -> void:
+	state = OverworldState.with_boots_of(changed, state)
+	_save()
+	_map.show_map(_current(), true, _dark_groups())
+
+
+## The lamps that stay dark: the lane's, until lesson 3 lights them.
+func _dark_groups() -> Array:
+	return [] if _flag("lamps-lit") else ["lane"]
 
 
 ## The letters are on Lanternroot's workbench (ADR-0055). The state is saved (by the talk's end); the letters screen's
@@ -484,7 +505,7 @@ func _open_letters() -> void:
 
 
 func _update_prompt() -> void:
-	if _talk.busy or _boots.visible or _creator.visible:
+	if _talk.busy or _boots.visible or _creator.visible or _lessons.busy():
 		_prompt.text = ""
 		return
 	var ahead := OverworldMap.ahead(_player.cell, _player.facing)
