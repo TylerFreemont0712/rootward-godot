@@ -1,0 +1,79 @@
+{
+  "id": "expand-watering-can",
+  "kind": "prop",
+  "what": "copper watering can village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.2,
+        0.08
+      ],
+      "size": [
+        0.52,
+        0.52,
+        0.4
+      ],
+      "ramp": "steel",
+      "shade": 1
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.62,
+        0.34,
+        0.24
+      ],
+      "size": [
+        0.3,
+        0.18,
+        0.16
+      ],
+      "ramp": "steel",
+      "shade": 1
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.28,
+        0.27,
+        0.46
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.23
+      ],
+      "ramp": "steel"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.21,
+        0.22,
+        0.47
+      ],
+      "size": [
+        0.38,
+        0.08,
+        0.07
+      ],
+      "ramp": "steel"
+    }
+  ]
+}

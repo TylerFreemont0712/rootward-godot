@@ -1,0 +1,102 @@
+// Tall wardrobe; generated geometric furniture blockout.
+{
+  "id": "expand-wardrobe",
+  "kind": "furniture",
+  "what": "a tall double door wardrobe with brass handles",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "metal": "gold"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.3,
+        0
+      ],
+      "size": [
+        1.8,
+        0.62,
+        2.0
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.22,
+        0.14
+      ],
+      "size": [
+        0.82,
+        0.16,
+        1.72
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1,
+        0.22,
+        0.14
+      ],
+      "size": [
+        0.82,
+        0.16,
+        1.72
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.94,
+        0.18,
+        0.2
+      ],
+      "size": [
+        0.05,
+        0.1,
+        1.6
+      ],
+      "ramp": "metal"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.82,
+        0.12,
+        0.9
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "ramp": "metal"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        1.08,
+        0.12,
+        0.9
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "ramp": "metal"
+    }
+  ]
+}

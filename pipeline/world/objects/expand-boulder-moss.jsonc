@@ -1,0 +1,51 @@
+{
+  "id": "expand-boulder-moss",
+  "kind": "prop",
+  "what": "moss-capped boulder village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "ball",
+      "at": [
+        0.08,
+        0.12,
+        0
+      ],
+      "size": [
+        0.84,
+        0.76,
+        0.72
+      ],
+      "ramp": "stone",
+      "shade": 1
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.25,
+        0.22,
+        0.48
+      ],
+      "size": [
+        0.48,
+        0.4,
+        0.22
+      ],
+      "ramp": "leaf",
+      "shade": 1
+    }
+  ]
+}

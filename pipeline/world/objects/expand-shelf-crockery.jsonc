@@ -1,0 +1,143 @@
+// Crockery shelf; generated geometric furniture blockout.
+{
+  "id": "expand-shelf-crockery",
+  "kind": "furniture",
+  "what": "a wall shelf with stacked plates and blue pottery",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "ceramic": "cloth_blue",
+    "cream": "cloth_cream"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.48,
+        0.2
+      ],
+      "size": [
+        1.84,
+        0.32,
+        0.1
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.48,
+        0.82
+      ],
+      "size": [
+        1.84,
+        0.32,
+        0.1
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.38,
+        0.3
+      ],
+      "size": [
+        0.34,
+        0.18,
+        0.18
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.72,
+        0.38,
+        0.3
+      ],
+      "size": [
+        0.24,
+        0.18,
+        0.2
+      ],
+      "ramp": "ceramic"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        1.1,
+        0.38,
+        0.3
+      ],
+      "size": [
+        0.24,
+        0.18,
+        0.2
+      ],
+      "ramp": "ceramic"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.5,
+        0.38,
+        0.3
+      ],
+      "size": [
+        0.3,
+        0.18,
+        0.26
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.38,
+        0.92
+      ],
+      "size": [
+        0.28,
+        0.18,
+        0.26
+      ],
+      "ramp": "ceramic"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.64,
+        0.38,
+        0.92
+      ],
+      "size": [
+        0.3,
+        0.18,
+        0.22
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        1.12,
+        0.38,
+        0.92
+      ],
+      "size": [
+        0.28,
+        0.18,
+        0.24
+      ],
+      "ramp": "ceramic"
+    }
+  ]
+}

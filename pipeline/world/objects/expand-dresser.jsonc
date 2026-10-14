@@ -1,0 +1,116 @@
+// Three drawer dresser; generated geometric furniture blockout.
+{
+  "id": "expand-dresser",
+  "kind": "furniture",
+  "what": "a waist high chest of three drawers with brass pulls",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "metal": "gold"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.2,
+        0
+      ],
+      "size": [
+        1.76,
+        0.7,
+        1.08
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.1,
+        0.14
+      ],
+      "size": [
+        1.64,
+        0.16,
+        0.24
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.1,
+        0.43
+      ],
+      "size": [
+        1.64,
+        0.16,
+        0.24
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.1,
+        0.72
+      ],
+      "size": [
+        1.64,
+        0.16,
+        0.24
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.92,
+        0.05,
+        0.22
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "ramp": "metal"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.92,
+        0.05,
+        0.51
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "ramp": "metal"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.92,
+        0.05,
+        0.8
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "ramp": "metal"
+    }
+  ]
+}

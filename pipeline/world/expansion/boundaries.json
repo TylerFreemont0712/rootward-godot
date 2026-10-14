@@ -1,0 +1,674 @@
+{
+  "expand-rail_fence": {
+    "name": "Split rail fence",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "rail fence"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-rail_fence",
+    "variant": "Horizontal"
+  },
+  "expand-rail_fence_v": {
+    "name": "Split rail fence (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "vertical"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-rail_fence",
+    "variant": "Vertical"
+  },
+  "expand-picket_fence": {
+    "name": "Picket fence",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "picket fence"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-picket_fence",
+    "variant": "Horizontal"
+  },
+  "expand-picket_fence_v": {
+    "name": "Picket fence (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "vertical"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-picket_fence",
+    "variant": "Vertical"
+  },
+  "expand-iron_rail": {
+    "name": "Iron railing",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "iron rail"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-iron_rail",
+    "variant": "Horizontal"
+  },
+  "expand-iron_rail_v": {
+    "name": "Iron railing (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "vertical"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-iron_rail",
+    "variant": "Vertical"
+  },
+  "expand-garden_lattice": {
+    "name": "Garden lattice",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "garden lattice"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-garden_lattice",
+    "variant": "Horizontal"
+  },
+  "expand-garden_lattice_v": {
+    "name": "Garden lattice (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "modular",
+      "vertical"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-garden_lattice",
+    "variant": "Vertical"
+  },
+  "expand-brick_wall": {
+    "name": "Red brick wall",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "horizontal",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "Horizontal"
+  },
+  "expand-brick_wall_corner": {
+    "name": "Red brick wall corner",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "Corner"
+  },
+  "expand-fieldstone_wall": {
+    "name": "Fieldstone wall",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "horizontal",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "Horizontal"
+  },
+  "expand-fieldstone_wall_corner": {
+    "name": "Fieldstone wall corner",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "Corner"
+  },
+  "expand-plaster_wall": {
+    "name": "Timber plaster wall",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "horizontal",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "Horizontal"
+  },
+  "expand-plaster_wall_corner": {
+    "name": "Timber plaster wall corner",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "Corner"
+  },
+  "expand-log_wall": {
+    "name": "Log wall",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "horizontal",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "Horizontal"
+  },
+  "expand-log_wall_corner": {
+    "name": "Log wall corner",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "Corner"
+  },
+  "expand-stone_boundary_post": {
+    "name": "Carved stone boundary post",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "stone",
+      "post",
+      "boundary"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-boundary-post",
+    "variant": "Stone"
+  },
+  "expand-lantern_boundary_post": {
+    "name": "Lantern fence post",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "lamps_and_lights",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "lantern",
+      "post",
+      "boundary"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-boundary-post",
+    "variant": "Lantern"
+  },
+  "expand-arched_wood_gate": {
+    "name": "Arched garden gate",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "gate",
+      "garden",
+      "wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-gate",
+    "variant": "Arched"
+  },
+  "expand-iron_garden_gate": {
+    "name": "Iron garden gate",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "gate",
+      "iron",
+      "ornate"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-gate",
+    "variant": "Iron"
+  },
+  "expand-backless_bench": {
+    "name": "Backless village bench",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "benches_and_seats",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bench",
+      "seat",
+      "wood"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-bench",
+    "variant": "Backless"
+  },
+  "expand-stone_bench": {
+    "name": "Stone garden bench",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "benches_and_seats",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bench",
+      "seat",
+      "stone"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-bench",
+    "variant": "Stone"
+  },
+  "expand-wooden_steps": {
+    "name": "Wooden porch steps",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "bridges_and_steps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "steps",
+      "porch",
+      "wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true
+  },
+  "expand-wide_stone_steps": {
+    "name": "Wide stone stair",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "bridges_and_steps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "steps",
+      "stone",
+      "stair"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true
+  },
+  "expand-street_bollard": {
+    "name": "Stone lane bollard",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "posts_and_mailboxes",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bollard",
+      "lane",
+      "stone"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true
+  },
+  "expand-brick_wall_v": {
+    "name": "Brick wall (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "end-on",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "End on"
+  },
+  "expand-fieldstone_wall_v": {
+    "name": "Fieldstone wall (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "end-on",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "End on"
+  },
+  "expand-plaster_wall_v": {
+    "name": "Plaster wall (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "end-on",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "End on"
+  },
+  "expand-log_wall_v": {
+    "name": "Log wall (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "end-on",
+      "modular"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "End on"
+  }
+}

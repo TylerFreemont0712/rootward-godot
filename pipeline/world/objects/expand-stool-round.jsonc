@@ -1,0 +1,74 @@
+// Round stool; generated geometric furniture blockout.
+{
+  "id": "expand-stool-round",
+  "kind": "furniture",
+  "what": "a small three legged round wooden stool",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.22,
+        0.22,
+        0.42
+      ],
+      "size": [
+        0.56,
+        0.56,
+        0.12
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.27,
+        0.27,
+        0
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.65,
+        0.27,
+        0
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.45,
+        0.65,
+        0
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-iron_rail",
+  "kind": "prop",
+  "what": "a black wrought iron railing with narrow vertical bars",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "plaster": "plaster",
+    "steel": "steel",
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.02,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.84,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.39,
+        0.2
+      ],
+      "size": [
+        1,
+        0.1,
+        0.09
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.39,
+        0.78
+      ],
+      "size": [
+        1,
+        0.1,
+        0.09
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.055,
+        0.07,
+        0.5
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.31,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.055,
+        0.07,
+        0.5
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.5,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.055,
+        0.07,
+        0.5
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.69,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.055,
+        0.07,
+        0.5
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.88,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.055,
+        0.07,
+        0.5
+      ],
+      "ramp": "steel",
+      "shade": 3
+    }
+  ]
+}

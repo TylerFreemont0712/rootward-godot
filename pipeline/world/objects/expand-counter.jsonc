@@ -1,0 +1,102 @@
+// Kitchen counter; generated geometric furniture blockout.
+{
+  "id": "expand-counter",
+  "kind": "furniture",
+  "what": "a long kitchen counter with a pale worktop and cupboards",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "top": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.15,
+        0
+      ],
+      "size": [
+        1.9,
+        0.75,
+        0.85
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.02,
+        0.1,
+        0.84
+      ],
+      "size": [
+        1.96,
+        0.86,
+        0.16
+      ],
+      "ramp": "top"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.04,
+        0.18
+      ],
+      "size": [
+        0.72,
+        0.1,
+        0.48
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.12,
+        0.04,
+        0.18
+      ],
+      "size": [
+        0.72,
+        0.1,
+        0.48
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.5,
+        0.02,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.06,
+        0.08
+      ],
+      "ramp": "gold"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.46,
+        0.02,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.06,
+        0.08
+      ],
+      "ramp": "gold"
+    }
+  ]
+}

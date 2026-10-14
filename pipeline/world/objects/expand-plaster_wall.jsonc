@@ -1,0 +1,287 @@
+// Solid modular boundary wall; five courses reach the same 1.105-tile height.
+{
+  "id": "expand-plaster_wall",
+  "kind": "prop",
+  "what": "a solid continuous low plaster-and-timber boundary wall, five uninterrupted courses",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wall": "plaster",
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.33,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.33,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.34,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.67,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.33,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.29,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.29,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.42,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.71,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.29,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.36,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.36,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.28,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.64,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.36,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.28,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.28,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.44,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.72,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.28,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.34,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.32,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.66,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.34,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.035,
+        0.18,
+        0
+      ],
+      "size": [
+        0.075,
+        0.045,
+        1.105
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.46,
+        0.18,
+        0
+      ],
+      "size": [
+        0.075,
+        0.045,
+        1.105
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.89,
+        0.18,
+        0
+      ],
+      "size": [
+        0.075,
+        0.045,
+        1.105
+      ],
+      "ramp": "wood",
+      "shade": 2
+    }
+  ],
+  "denoise": 0.4
+}

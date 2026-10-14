@@ -1,0 +1,22 @@
+{
+  "expand-bakery": {
+    "source": "pipeline/world/expansion/imagegen/expand-bakery.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a small welcoming fantasy bakery building, pale cream plaster and exposed dark timber, terracotta pitched roof, stone foundation, a central full-height wooden door, two warm lit windows, a hanging bread-shaped sign and brick chimney. No exterior furniture. Wide facade facing camera. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
+    "tool": "ChatGPT built-in image_gen"
+  },
+  "expand-greenhouse": {
+    "source": "pipeline/world/expansion/imagegen/expand-greenhouse.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a compact fantasy village greenhouse building, green patinated iron frame, many pale aqua glass window panes, pitched glass roof, low stone foundation, centered wooden entrance door. Plants visible inside the glass. Wide facade facing camera. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
+    "tool": "ChatGPT built-in image_gen"
+  },
+  "expand-fountain": {
+    "source": "pipeline/world/expansion/imagegen/expand-fountain.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a round village stone fountain landmark with a broad octagonal basin of clear blue water, central carved stone column and a smaller upper bowl with gently trickling water. Gray warm stone, moss accents. Entire fountain alone. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
+    "tool": "ChatGPT built-in image_gen"
+  },
+  "expand-noticeboard": {
+    "source": "pipeline/world/expansion/imagegen/expand-noticeboard.png",
+    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a village roofed noticeboard prop, two sturdy wooden legs supporting a wide rectangular cork board with several pinned cream notices, tiny gabled terracotta roof over the board. No readable text. Entire noticeboard alone. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
+    "tool": "ChatGPT built-in image_gen"
+  }
+}

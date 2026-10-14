@@ -1,0 +1,104 @@
+// Low coffee table; generated geometric furniture blockout.
+{
+  "id": "expand-coffee-table",
+  "kind": "furniture",
+  "what": "a low oval coffee table with a lower shelf",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.12,
+        0.42
+      ],
+      "size": [
+        1.76,
+        0.76,
+        0.12
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.2,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.66,
+        0.2,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.68,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.66,
+        0.68,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.2,
+        0.2
+      ],
+      "size": [
+        1.56,
+        0.6,
+        0.08
+      ],
+      "ramp": "wood",
+      "shade": 1
+    }
+  ]
+}

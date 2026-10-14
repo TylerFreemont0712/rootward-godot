@@ -1,0 +1,65 @@
+{
+  "id": "expand-barrel-small",
+  "kind": "prop",
+  "what": "small lidded cask village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.22,
+        0.22,
+        0
+      ],
+      "size": [
+        0.56,
+        0.56,
+        0.58
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.2,
+        0.2,
+        0.56
+      ],
+      "size": [
+        0.6,
+        0.6,
+        0.07
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.18,
+        0.18,
+        0.16
+      ],
+      "size": [
+        0.64,
+        0.64,
+        0.05
+      ],
+      "ramp": "steel",
+      "shade": 2
+    }
+  ]
+}

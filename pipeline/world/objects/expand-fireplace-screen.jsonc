@@ -1,0 +1,106 @@
+// Fireplace screen; generated geometric furniture blockout.
+{
+  "id": "expand-fireplace-screen",
+  "kind": "furniture",
+  "what": "a folding three panel iron fireplace screen with a leafy cutout",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "iron": "steel",
+    "accent": "gold"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.68,
+        0.18
+      ],
+      "size": [
+        0.58,
+        0.1,
+        0.88
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.71,
+        0.68,
+        0.18
+      ],
+      "size": [
+        0.58,
+        0.1,
+        0.88
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.34,
+        0.68,
+        0.18
+      ],
+      "size": [
+        0.58,
+        0.1,
+        0.88
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.68,
+        0.66,
+        0.18
+      ],
+      "size": [
+        0.08,
+        0.12,
+        0.88
+      ],
+      "ramp": "accent",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.15,
+        0.6,
+        0.12
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.12
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.7,
+        0.6,
+        0.12
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.12
+      ],
+      "ramp": "iron",
+      "shade": 3
+    }
+  ]
+}

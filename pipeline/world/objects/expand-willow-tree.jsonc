@@ -1,0 +1,19 @@
+{
+  "id": "expand-willow-tree",
+  "kind": "tree",
+  "what": "weeping willow village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "trunk": 1.8,
+  "canopy": [
+    2.5,
+    2.7
+  ],
+  "shape": "round",
+  "ramps": {
+    "trunk": "wood",
+    "leaves": "leaf"
+  }
+}

@@ -1,0 +1,46 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-street_bollard",
+  "kind": "prop",
+  "what": "a short rounded stone bollard with an iron band",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "stone": "stone",
+    "steel": "steel"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.24,
+        0.25,
+        0
+      ],
+      "size": [
+        0.52,
+        0.5,
+        0.56
+      ],
+      "ramp": "stone",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.21,
+        0.22,
+        0.36
+      ],
+      "size": [
+        0.58,
+        0.56,
+        0.1
+      ],
+      "ramp": "steel",
+      "shade": 2
+    }
+  ]
+}

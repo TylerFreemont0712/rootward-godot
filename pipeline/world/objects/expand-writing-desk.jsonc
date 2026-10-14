@@ -1,0 +1,118 @@
+// Writing desk; generated geometric furniture blockout.
+{
+  "id": "expand-writing-desk",
+  "kind": "furniture",
+  "what": "a compact writing desk with pigeonholes and a green blotter",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leather": "cloth_green",
+    "paper": "cloth_cream"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.12,
+        0.78
+      ],
+      "size": [
+        1.84,
+        0.76,
+        0.12
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.18,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.78
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.72,
+        0.18,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.78
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.8,
+        0.48,
+        0.025
+      ],
+      "ramp": "leather"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.24,
+        0.15,
+        0.52
+      ],
+      "size": [
+        0.62,
+        0.55,
+        0.34
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.32,
+        0.2,
+        0.62
+      ],
+      "size": [
+        0.44,
+        0.08,
+        0.1
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.28,
+        0.58,
+        0.9
+      ],
+      "size": [
+        0.26,
+        0.2,
+        0.03
+      ],
+      "ramp": "paper"
+    }
+  ]
+}

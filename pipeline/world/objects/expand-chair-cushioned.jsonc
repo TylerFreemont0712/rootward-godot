@@ -1,0 +1,88 @@
+// Cushioned chair; generated geometric furniture blockout.
+{
+  "id": "expand-chair-cushioned",
+  "kind": "furniture",
+  "what": "a broad wooden armchair with a plum cushion",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "cushion": "cloth_purple"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.12,
+        0.4
+      ],
+      "size": [
+        0.76,
+        0.72,
+        0.16
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.2,
+        0.56
+      ],
+      "size": [
+        0.6,
+        0.54,
+        0.12
+      ],
+      "ramp": "cushion"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.14,
+        0.4
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.62
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.78,
+        0.14,
+        0.4
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.62
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.72,
+        0.4
+      ],
+      "size": [
+        0.76,
+        0.12,
+        0.68
+      ],
+      "ramp": "wood"
+    }
+  ]
+}

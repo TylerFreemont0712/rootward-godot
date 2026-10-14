@@ -1,0 +1,60 @@
+// Prospective version: keep the 3/4-view oval; its current projected depth suits a 2 x 1 footprint.
+{
+  "id": "expand-rug-round",
+  "kind": "furniture",
+  "what": "a round teal woven rug with concentric golden medallion rings",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "cloth": "cloth_blue",
+    "pattern": "gold"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.08,
+        0.08,
+        0
+      ],
+      "size": [
+        1.84,
+        1.84,
+        0.025
+      ],
+      "ramp": "cloth"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.3,
+        0.3,
+        0.025
+      ],
+      "size": [
+        1.4,
+        1.4,
+        0.02
+      ],
+      "ramp": "pattern",
+      "shade": 1
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.62,
+        0.62,
+        0.045
+      ],
+      "size": [
+        0.76,
+        0.76,
+        0.02
+      ],
+      "ramp": "cloth",
+      "shade": 2
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "expand-shrub-round",
+  "kind": "prop",
+  "what": "round clipped shrub village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "ball",
+      "at": [
+        0.08,
+        0.18,
+        0.05
+      ],
+      "size": [
+        0.84,
+        0.64,
+        0.75
+      ],
+      "ramp": "leaf",
+      "shade": 1
+    }
+  ]
+}

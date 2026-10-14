@@ -1,0 +1,78 @@
+{
+  "id": "expand-basket-apples",
+  "kind": "prop",
+  "what": "basket of apples village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.18,
+        0.22,
+        0
+      ],
+      "size": [
+        0.64,
+        0.56,
+        0.4
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.22,
+        0.24,
+        0.36
+      ],
+      "size": [
+        0.22,
+        0.2,
+        0.2
+      ],
+      "ramp": "cloth_red"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.42,
+        0.34,
+        0.4
+      ],
+      "size": [
+        0.22,
+        0.2,
+        0.2
+      ],
+      "ramp": "cloth_red",
+      "shade": 1
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.58,
+        0.2,
+        0.36
+      ],
+      "size": [
+        0.2,
+        0.2,
+        0.2
+      ],
+      "ramp": "cloth_red"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+// Canopy bed; generated geometric furniture blockout.
+{
+  "id": "expand-bed-canopy",
+  "kind": "furniture",
+  "what": "a tall four poster bed with a blue canopy and cream cover",
+  "footprint": [
+    2,
+    2
+  ],
+  "ramps": {
+    "wood": "wood",
+    "linen": "cloth_cream",
+    "canopy": "cloth_blue"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.05,
+        0.25
+      ],
+      "size": [
+        1.76,
+        1.82,
+        0.28
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.12,
+        0.5
+      ],
+      "size": [
+        1.64,
+        1.36,
+        0.12
+      ],
+      "ramp": "linen"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        1.53,
+        0.52
+      ],
+      "size": [
+        1.64,
+        0.32,
+        0.13
+      ],
+      "ramp": "linen"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.04,
+        0.48
+      ],
+      "size": [
+        0.12,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.72,
+        0.04,
+        0.48
+      ],
+      "size": [
+        0.12,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        1.78,
+        0.48
+      ],
+      "size": [
+        0.12,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.72,
+        1.78,
+        0.48
+      ],
+      "size": [
+        0.12,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.04,
+        1.45
+      ],
+      "size": [
+        1.76,
+        1.86,
+        0.14
+      ],
+      "ramp": "canopy"
+    }
+  ]
+}

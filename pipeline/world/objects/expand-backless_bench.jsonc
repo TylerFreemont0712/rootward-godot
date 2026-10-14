@@ -1,0 +1,60 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-backless_bench",
+  "kind": "prop",
+  "what": "a simple backless village bench made from three thick wooden planks",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.22,
+        0.43
+      ],
+      "size": [
+        1.8,
+        0.54,
+        0.12
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.28,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.43
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.7,
+        0.28,
+        0
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.43
+      ],
+      "ramp": "wood",
+      "shade": 2
+    }
+  ]
+}

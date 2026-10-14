@@ -1,0 +1,166 @@
+// L-shaped join from the matching complete horizontal and end-on wall courses.
+{
+  "id": "expand-log_wall_corner",
+  "kind": "prop",
+  "what": "a solid L-shaped log boundary wall corner with five uninterrupted courses",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wall": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.0
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.225
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.45
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.675
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.9
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0,
+        0.0
+      ],
+      "size": [
+        0.56,
+        1.667,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0,
+        0.225
+      ],
+      "size": [
+        0.56,
+        1.667,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0,
+        0.45
+      ],
+      "size": [
+        0.56,
+        1.667,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0,
+        0.675
+      ],
+      "size": [
+        0.56,
+        1.667,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0,
+        0.9
+      ],
+      "size": [
+        0.56,
+        1.667,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    }
+  ],
+  "denoise": 0.4
+}

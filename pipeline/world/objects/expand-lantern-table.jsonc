@@ -1,0 +1,89 @@
+// Table lantern; generated geometric furniture blockout.
+{
+  "id": "expand-lantern-table",
+  "kind": "furniture",
+  "what": "a squat brass lantern with glowing amber panes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "brass": "gold",
+    "glass": "glow"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.28,
+        0.28,
+        0
+      ],
+      "size": [
+        0.44,
+        0.44,
+        0.12
+      ],
+      "ramp": "brass",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.32,
+        0.32,
+        0.12
+      ],
+      "size": [
+        0.36,
+        0.36,
+        0.48
+      ],
+      "ramp": "glass"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.27,
+        0.27,
+        0.6
+      ],
+      "size": [
+        0.46,
+        0.46,
+        0.12
+      ],
+      "ramp": "brass"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.32,
+        0.32,
+        0.72
+      ],
+      "size": [
+        0.36,
+        0.36,
+        0.22
+      ],
+      "ramp": "brass",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.46,
+        0.46,
+        0.94
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.22
+      ],
+      "ramp": "brass",
+      "shade": 2
+    }
+  ]
+}

@@ -1,0 +1,301 @@
+// Solid modular boundary wall; five courses reach the same 1.105-tile height.
+{
+  "id": "expand-brick_wall",
+  "kind": "prop",
+  "what": "a solid continuous low red brick boundary wall, five uninterrupted courses",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wall": "cloth_red"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.27,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.27,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.23,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.5,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.27,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.77,
+        0.22,
+        0.0
+      ],
+      "size": [
+        0.23,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.39,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.39,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.3,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.69,
+        0.22,
+        0.225
+      ],
+      "size": [
+        0.31,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.18,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.22,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.4,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.2,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.6,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.22,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.82,
+        0.22,
+        0.45
+      ],
+      "size": [
+        0.18,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.34,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.32,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.66,
+        0.22,
+        0.675
+      ],
+      "size": [
+        0.34,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.25,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.25,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.25,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.5,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.25,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.75,
+        0.22,
+        0.9
+      ],
+      "size": [
+        0.25,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    }
+  ],
+  "denoise": 0.4
+}

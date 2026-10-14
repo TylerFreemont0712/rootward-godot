@@ -1,0 +1,60 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-wide_stone_steps",
+  "kind": "prop",
+  "what": "a broad flight of three pale stone steps with a landing",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.0,
+        0.0,
+        0
+      ],
+      "size": [
+        1,
+        0.32,
+        0.18
+      ],
+      "ramp": "stone",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.0,
+        0.27,
+        0.18
+      ],
+      "size": [
+        1,
+        0.32,
+        0.18
+      ],
+      "ramp": "stone",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.0,
+        0.54,
+        0.36
+      ],
+      "size": [
+        1,
+        0.4,
+        0.18
+      ],
+      "ramp": "stone",
+      "shade": 0
+    }
+  ]
+}

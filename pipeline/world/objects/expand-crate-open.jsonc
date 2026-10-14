@@ -1,0 +1,94 @@
+{
+  "id": "expand-crate-open",
+  "kind": "prop",
+  "what": "open produce crate village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.12,
+        0
+      ],
+      "size": [
+        0.76,
+        0.76,
+        0.12
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.12,
+        0.12
+      ],
+      "size": [
+        0.08,
+        0.76,
+        0.42
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.8,
+        0.12,
+        0.12
+      ],
+      "size": [
+        0.08,
+        0.76,
+        0.42
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.12,
+        0.12
+      ],
+      "size": [
+        0.6,
+        0.08,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.8,
+        0.12
+      ],
+      "size": [
+        0.6,
+        0.08,
+        0.42
+      ],
+      "ramp": "wood",
+      "shade": 1
+    }
+  ]
+}

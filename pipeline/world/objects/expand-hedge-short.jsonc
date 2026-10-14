@@ -1,0 +1,79 @@
+{
+  "id": "expand-hedge-short",
+  "kind": "prop",
+  "what": "low hedge segment village asset with clear readable shapes",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.15,
+        0
+      ],
+      "size": [
+        2,
+        0.7,
+        0.48
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.05,
+        0.18,
+        0.34
+      ],
+      "size": [
+        0.7,
+        0.62,
+        0.34
+      ],
+      "ramp": "leaf",
+      "shade": 1
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.68,
+        0.18,
+        0.34
+      ],
+      "size": [
+        0.7,
+        0.62,
+        0.34
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        1.3,
+        0.18,
+        0.34
+      ],
+      "size": [
+        0.65,
+        0.62,
+        0.34
+      ],
+      "ramp": "leaf",
+      "shade": 2
+    }
+  ]
+}

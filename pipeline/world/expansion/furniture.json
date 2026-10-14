@@ -1,0 +1,556 @@
+{
+  "expand-bed-canopy": {
+    "name": "Canopy bed",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "beds",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "sleep",
+      "canopy",
+      "blue"
+    ],
+    "size": [
+      2,
+      2
+    ],
+    "flippable": true,
+    "family": "expand-bed",
+    "variant": "Canopy"
+  },
+  "expand-bed-bunk": {
+    "name": "Bunk bed",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "beds",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "sleep",
+      "bunk",
+      "wood"
+    ],
+    "size": [
+      2,
+      2
+    ],
+    "flippable": true,
+    "family": "expand-bed",
+    "variant": "Bunk"
+  },
+  "expand-stool-round": {
+    "name": "Round stool",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "seating",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "stool",
+      "wood",
+      "small"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-chair-windsor": {
+    "name": "Windsor chair",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "seating",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "chair",
+      "spindles",
+      "dark wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-chair",
+    "variant": "Windsor"
+  },
+  "expand-chair-cushioned": {
+    "name": "Cushioned chair",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "seating",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "chair",
+      "cushion",
+      "plum"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-chair",
+    "variant": "Cushioned"
+  },
+  "expand-bench-back": {
+    "name": "Hall bench",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "seating",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "bench",
+      "long",
+      "slatted"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-sofa": {
+    "name": "Two seat sofa",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "seating",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "sofa",
+      "green",
+      "two seat"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-dining-table": {
+    "name": "Dining table",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "tables_and_desks",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "dining",
+      "farmhouse",
+      "table"
+    ],
+    "size": [
+      2,
+      2
+    ],
+    "flippable": true
+  },
+  "expand-coffee-table": {
+    "name": "Low coffee table",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "tables_and_desks",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "low",
+      "oval",
+      "living room"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-writing-desk": {
+    "name": "Writing desk",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "tables_and_desks",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "writing",
+      "study",
+      "pigeonholes"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-wardrobe": {
+    "name": "Tall wardrobe",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "storage",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "wardrobe",
+      "clothes",
+      "brass"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-dresser": {
+    "name": "Three drawer dresser",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "storage",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "dresser",
+      "drawers",
+      "brass"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-cabinet": {
+    "name": "Glass front cabinet",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "storage",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "cabinet",
+      "glass",
+      "display"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-pantry": {
+    "name": "Pantry cupboard",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "storage",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "pantry",
+      "jars",
+      "kitchen"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-shelf-crockery": {
+    "name": "Crockery shelf",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "storage",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "shelf",
+      "plates",
+      "pottery"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-counter": {
+    "name": "Kitchen counter",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "tables_and_desks",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "kitchen",
+      "counter",
+      "cupboards"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-stove": {
+    "name": "Cast iron stove",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "stove",
+      "iron",
+      "kitchen"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-sink": {
+    "name": "Copper kitchen sink",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "sink",
+      "basin",
+      "kitchen"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-rug-round": {
+    "name": "Round medallion rug",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "rugs_and_mats",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "round",
+      "teal",
+      "floral"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground",
+    "family": "expand-rug",
+    "variant": "Round"
+  },
+  "expand-rug-runner": {
+    "name": "Striped runner",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "rugs_and_mats",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "runner",
+      "striped",
+      "hallway"
+    ],
+    "size": [
+      1,
+      2
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground",
+    "family": "expand-rug",
+    "variant": "Runner"
+  },
+  "expand-lantern-table": {
+    "name": "Table lantern",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "lighting",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "lantern",
+      "brass",
+      "glow"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-candle-sconce": {
+    "name": "Candle wall sconce",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "lighting",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "candle",
+      "wall",
+      "iron"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-chandelier": {
+    "name": "Woodland chandelier",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "lighting",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "chandelier",
+      "iron",
+      "six candles"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-wall-clock": {
+    "name": "Pendulum wall clock",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "windows_and_wall_decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "clock",
+      "time",
+      "pendulum"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-wall-tapestry": {
+    "name": "Root tapestry",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "windows_and_wall_decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "tapestry",
+      "purple",
+      "roots"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-mirror": {
+    "name": "Standing mirror",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "windows_and_wall_decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "mirror",
+      "arched",
+      "oak"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false
+  },
+  "expand-fireplace-screen": {
+    "name": "Fireplace screen",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "fireplace",
+      "screen",
+      "iron"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-room-divider": {
+    "name": "Folding screen",
+    "kind": "prop",
+    "category": "furniture",
+    "subcategory": "decor",
+    "place": [
+      "indoor"
+    ],
+    "tags": [
+      "screen",
+      "folding",
+      "blue flowers"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  }
+}

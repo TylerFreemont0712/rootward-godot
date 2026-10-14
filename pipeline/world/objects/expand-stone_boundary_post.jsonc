@@ -1,0 +1,46 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-stone_boundary_post",
+  "kind": "prop",
+  "what": "a square carved stone fence post with a broad capstone",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "stone": "stone",
+    "cap": "cobble"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.27,
+        0.28,
+        0
+      ],
+      "size": [
+        0.46,
+        0.44,
+        1.25
+      ],
+      "ramp": "stone",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.19,
+        1.25
+      ],
+      "size": [
+        0.64,
+        0.62,
+        0.16
+      ],
+      "ramp": "cobble",
+      "shade": 0
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+// Root tapestry; generated geometric furniture blockout.
+{
+  "id": "expand-wall-tapestry",
+  "kind": "furniture",
+  "what": "a hanging deep purple tapestry embroidered with golden roots",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "cloth": "cloth_purple",
+    "thread": "gold"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.7,
+        0.15
+      ],
+      "size": [
+        0.76,
+        0.08,
+        1.55
+      ],
+      "ramp": "cloth"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.66,
+        1.68
+      ],
+      "size": [
+        0.84,
+        0.16,
+        0.1
+      ],
+      "ramp": "thread"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.44,
+        0.58,
+        0.3
+      ],
+      "size": [
+        0.12,
+        0.1,
+        1.18
+      ],
+      "ramp": "thread"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.58,
+        0.62
+      ],
+      "size": [
+        0.54,
+        0.1,
+        0.1
+      ],
+      "ramp": "thread"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.26,
+        0.58,
+        0.94
+      ],
+      "size": [
+        0.42,
+        0.1,
+        0.1
+      ],
+      "ramp": "thread"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.14,
+        0.58,
+        1.35
+      ],
+      "size": [
+        0.66,
+        0.1,
+        0.1
+      ],
+      "ramp": "thread"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.36,
+        0.56,
+        0.24
+      ],
+      "size": [
+        0.3,
+        0.12,
+        0.26
+      ],
+      "ramp": "thread"
+    }
+  ]
+}

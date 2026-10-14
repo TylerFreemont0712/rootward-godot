@@ -1,0 +1,183 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-garden_lattice",
+  "kind": "prop",
+  "what": "a wooden garden lattice panel framed by thick posts",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "plaster": "plaster",
+    "steel": "steel",
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.02,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.84,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.38,
+        0.22
+      ],
+      "size": [
+        1,
+        0.1,
+        0.1
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.38,
+        0.85
+      ],
+      "size": [
+        1,
+        0.1,
+        0.1
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.39,
+        0.27
+      ],
+      "size": [
+        0.07,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.36,
+        0.39,
+        0.27
+      ],
+      "size": [
+        0.07,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.64,
+        0.39,
+        0.27
+      ],
+      "size": [
+        0.07,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.92,
+        0.39,
+        0.27
+      ],
+      "size": [
+        0.07,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.39,
+        0.3
+      ],
+      "size": [
+        0.84,
+        0.08,
+        0.06
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.39,
+        0.48
+      ],
+      "size": [
+        0.84,
+        0.08,
+        0.06
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.39,
+        0.66
+      ],
+      "size": [
+        0.84,
+        0.08,
+        0.06
+      ],
+      "ramp": "wood",
+      "shade": 2
+    }
+  ]
+}

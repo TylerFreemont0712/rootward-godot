@@ -1,0 +1,63 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-rail_fence_v",
+  "kind": "prop",
+  "what": "a rustic split rail fence seen end on, running away from us with chunky crossed timber rails",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "plaster": "plaster",
+    "steel": "steel",
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.38,
+        0,
+        0
+      ],
+      "size": [
+        0.24,
+        0.16,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0,
+        0.28
+      ],
+      "size": [
+        0.12,
+        1.667,
+        0.13
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0,
+        0.66
+      ],
+      "size": [
+        0.12,
+        1.667,
+        0.13
+      ],
+      "ramp": "wood",
+      "shade": 1
+    }
+  ]
+}

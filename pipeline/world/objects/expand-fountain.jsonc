@@ -1,0 +1,18 @@
+{
+  "id": "expand-fountain",
+  "kind": "landmark",
+  "what": "a village fountain for a cozy fantasy village",
+  "footprint": [
+    3,
+    2
+  ],
+  "ramps": {
+    "stone": "stone",
+    "water": "water",
+    "moss": "leaf"
+  },
+  "source": {
+    "image": "pipeline/world/expansion/imagegen/expand-fountain.png"
+  },
+  "above": 1
+}

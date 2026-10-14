@@ -1,0 +1,91 @@
+// Solid modular boundary wall; five courses reach the same 1.105-tile height.
+{
+  "id": "expand-log_wall",
+  "kind": "prop",
+  "what": "a solid continuous low log boundary wall, five uninterrupted courses",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wall": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.0
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.225
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.45
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.675
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.22,
+        0.9
+      ],
+      "size": [
+        1.0,
+        0.56,
+        0.205
+      ],
+      "ramp": "wall",
+      "shade": 1
+    }
+  ],
+  "denoise": 0.4
+}

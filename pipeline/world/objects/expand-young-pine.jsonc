@@ -1,0 +1,19 @@
+{
+  "id": "expand-young-pine",
+  "kind": "tree",
+  "what": "young pine tree village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "trunk": 1.1,
+  "canopy": [
+    1.5,
+    2.3
+  ],
+  "shape": "pine",
+  "ramps": {
+    "trunk": "wood",
+    "leaves": "pine"
+  }
+}

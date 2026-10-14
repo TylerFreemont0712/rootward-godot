@@ -1,0 +1,51 @@
+{
+  "id": "expand-log-fallen",
+  "kind": "prop",
+  "what": "fallen split log village asset with clear readable shapes",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.08,
+        0.25,
+        0.08
+      ],
+      "size": [
+        1.82,
+        0.48,
+        0.4
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.06,
+        0.25,
+        0.08
+      ],
+      "size": [
+        0.12,
+        0.48,
+        0.4
+      ],
+      "ramp": "wood",
+      "shade": 0
+    }
+  ]
+}

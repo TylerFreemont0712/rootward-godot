@@ -1,0 +1,94 @@
+{
+  "id": "expand-workbench-outdoor",
+  "kind": "prop",
+  "what": "outdoor carpentry bench village asset with clear readable shapes",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.18,
+        0.5
+      ],
+      "size": [
+        1.84,
+        0.64,
+        0.18
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.24,
+        0
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.52
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.64,
+        0.24,
+        0
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.52
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.25,
+        0.69
+      ],
+      "size": [
+        0.6,
+        0.18,
+        0.22
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.1,
+        0.28,
+        0.68
+      ],
+      "size": [
+        0.42,
+        0.14,
+        0.18
+      ],
+      "ramp": "steel"
+    }
+  ]
+}

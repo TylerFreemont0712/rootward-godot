@@ -1,0 +1,150 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-iron_garden_gate",
+  "kind": "prop",
+  "what": "a decorative black iron garden gate with spear tips and a curved top rail",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "steel": "steel"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.04,
+        0.32,
+        0
+      ],
+      "size": [
+        0.13,
+        0.2,
+        1.25
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.83,
+        0.32,
+        0
+      ],
+      "size": [
+        0.13,
+        0.2,
+        1.25
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.36,
+        0.25
+      ],
+      "size": [
+        0.8,
+        0.1,
+        0.09
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.36,
+        0.8
+      ],
+      "size": [
+        0.8,
+        0.1,
+        0.09
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.16,
+        0.38,
+        0.34
+      ],
+      "size": [
+        0.055,
+        0.06,
+        0.54
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.33,
+        0.38,
+        0.34
+      ],
+      "size": [
+        0.055,
+        0.06,
+        0.54
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.5,
+        0.38,
+        0.34
+      ],
+      "size": [
+        0.055,
+        0.06,
+        0.54
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.67,
+        0.38,
+        0.34
+      ],
+      "size": [
+        0.055,
+        0.06,
+        0.54
+      ],
+      "ramp": "steel",
+      "shade": 3
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.84,
+        0.38,
+        0.34
+      ],
+      "size": [
+        0.055,
+        0.06,
+        0.54
+      ],
+      "ramp": "steel",
+      "shade": 3
+    }
+  ]
+}

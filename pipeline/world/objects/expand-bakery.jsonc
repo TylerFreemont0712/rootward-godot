@@ -1,0 +1,20 @@
+{
+  "id": "expand-bakery",
+  "kind": "building",
+  "what": "a bakery for a cozy fantasy village",
+  "footprint": [
+    5,
+    5
+  ],
+  "ramps": {
+    "walls": "plaster",
+    "roof": "cloth_red",
+    "trim": "wood",
+    "base": "stone",
+    "window": "glow"
+  },
+  "source": {
+    "image": "pipeline/world/expansion/imagegen/expand-bakery.png"
+  },
+  "above": 0
+}

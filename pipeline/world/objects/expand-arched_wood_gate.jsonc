@@ -1,0 +1,136 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-arched_wood_gate",
+  "kind": "prop",
+  "what": "a small arched wooden garden gate with iron hinges and upright slats",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "iron": "steel"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.04,
+        0.32,
+        0
+      ],
+      "size": [
+        0.16,
+        0.22,
+        1.4
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.8,
+        0.32,
+        0
+      ],
+      "size": [
+        0.16,
+        0.22,
+        1.4
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.33,
+        0.86
+      ],
+      "size": [
+        0.8,
+        0.16,
+        0.12
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.33,
+        0.28
+      ],
+      "size": [
+        0.8,
+        0.12,
+        0.1
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.37,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.37,
+        0.37,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.56,
+        0.37,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.75,
+        0.37,
+        0.38
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 1
+    }
+  ]
+}

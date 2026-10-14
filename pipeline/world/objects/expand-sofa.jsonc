@@ -1,0 +1,118 @@
+// Two seat sofa; generated geometric furniture blockout.
+{
+  "id": "expand-sofa",
+  "kind": "furniture",
+  "what": "a two seat forest green sofa with rolled wooden arms",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "upholstery": "cloth_green"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.12,
+        0.3
+      ],
+      "size": [
+        1.84,
+        0.75,
+        0.22
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.12,
+        0.52
+      ],
+      "size": [
+        1.76,
+        0.18,
+        0.45
+      ],
+      "ramp": "upholstery"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.72,
+        0.52
+      ],
+      "size": [
+        1.76,
+        0.16,
+        0.48
+      ],
+      "ramp": "upholstery"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.12,
+        0.3
+      ],
+      "size": [
+        0.18,
+        0.78,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.74,
+        0.12,
+        0.3
+      ],
+      "size": [
+        0.18,
+        0.78,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.3,
+        0.52
+      ],
+      "size": [
+        0.72,
+        0.44,
+        0.14
+      ],
+      "ramp": "upholstery",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.08,
+        0.3,
+        0.52
+      ],
+      "size": [
+        0.72,
+        0.44,
+        0.14
+      ],
+      "ramp": "upholstery",
+      "shade": 1
+    }
+  ]
+}

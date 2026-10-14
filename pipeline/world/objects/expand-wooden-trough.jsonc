@@ -1,0 +1,79 @@
+{
+  "id": "expand-wooden-trough",
+  "kind": "prop",
+  "what": "long wooden water trough village asset with clear readable shapes",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.16,
+        0
+      ],
+      "size": [
+        1.84,
+        0.68,
+        0.4
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.15,
+        0.22,
+        0.3
+      ],
+      "size": [
+        1.7,
+        0.56,
+        0.16
+      ],
+      "ramp": "water",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.08,
+        0.16,
+        0.37
+      ],
+      "size": [
+        0.1,
+        0.68,
+        0.08
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.82,
+        0.16,
+        0.37
+      ],
+      "size": [
+        0.1,
+        0.68,
+        0.08
+      ],
+      "ramp": "wood"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+// Woodland chandelier; generated geometric furniture blockout.
+{
+  "id": "expand-chandelier",
+  "kind": "furniture",
+  "what": "a six candle wrought iron chandelier with warm lights",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "iron": "steel",
+    "flame": "glow"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.42,
+        1.45
+      ],
+      "size": [
+        1.6,
+        0.16,
+        0.12
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.92,
+        0.1,
+        1.5
+      ],
+      "size": [
+        0.16,
+        0.8,
+        0.1
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.92,
+        0.42,
+        1.55
+      ],
+      "size": [
+        0.16,
+        0.16,
+        0.55
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.16,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.3
+      ],
+      "ramp": "flame"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.72,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.3
+      ],
+      "ramp": "flame"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        1.28,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.3
+      ],
+      "ramp": "flame"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.16,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.4
+      ],
+      "ramp": "iron"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.72,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.4
+      ],
+      "ramp": "iron"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        1.28,
+        0.38,
+        1.15
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.4
+      ],
+      "ramp": "iron"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+// Cast iron stove; generated geometric furniture blockout.
+{
+  "id": "expand-stove",
+  "kind": "furniture",
+  "what": "a black cast iron range with four burners and a short flue",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "iron": "steel",
+    "trim": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.15,
+        0.18,
+        0
+      ],
+      "size": [
+        0.7,
+        0.64,
+        1.15
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.14,
+        1.08
+      ],
+      "size": [
+        0.76,
+        0.72,
+        0.12
+      ],
+      "ramp": "iron",
+      "shade": 2
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.22,
+        0.23,
+        1.2
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.08
+      ],
+      "ramp": "trim",
+      "shade": 3
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.56,
+        0.23,
+        1.2
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.08
+      ],
+      "ramp": "trim",
+      "shade": 3
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.22,
+        0.55,
+        1.2
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.08
+      ],
+      "ramp": "trim",
+      "shade": 3
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.56,
+        0.55,
+        1.2
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.08
+      ],
+      "ramp": "trim",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.4,
+        0.65,
+        1.2
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.9
+      ],
+      "ramp": "iron",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.25,
+        0.1,
+        0.25
+      ],
+      "size": [
+        0.5,
+        0.04,
+        0.28
+      ],
+      "ramp": "trim"
+    }
+  ]
+}

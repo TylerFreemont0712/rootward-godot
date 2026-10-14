@@ -1,0 +1,585 @@
+{
+  "expand-shrub-flowering": {
+    "name": "Flowering shrub",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "bushes_and_flowers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "blossoms",
+      "garden",
+      "pink"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-shrub",
+    "variant": "Bloom"
+  },
+  "expand-shrub-round": {
+    "name": "Round clipped shrub",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "bushes_and_flowers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "hedge",
+      "trimmed",
+      "green"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-shrub",
+    "variant": "Round"
+  },
+  "expand-hedge-short": {
+    "name": "Low hedge segment",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "bushes_and_flowers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "hedge",
+      "boundary",
+      "low"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-hedge",
+    "variant": "Low"
+  },
+  "expand-hedge-tall": {
+    "name": "Tall squared hedge",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "bushes_and_flowers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "hedge",
+      "boundary",
+      "dense"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-hedge",
+    "variant": "Tall"
+  },
+  "expand-planter-round": {
+    "name": "Round stone planter with herbs",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "bushes_and_flowers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "planter",
+      "herbs",
+      "stone"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-stump-mossy": {
+    "name": "Mossy broad stump",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "rocks_and_stumps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "tree",
+      "moss",
+      "cut"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-stump",
+    "variant": "Mossy"
+  },
+  "expand-log-fallen": {
+    "name": "Fallen split log",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "rocks_and_stumps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "wood",
+      "fallen",
+      "forest"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-boulder-moss": {
+    "name": "Moss-capped boulder",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "rocks_and_stumps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "stone",
+      "moss",
+      "large"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-boulder-stack": {
+    "name": "Three stacked stones",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "rocks_and_stumps",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "stone",
+      "stack",
+      "garden"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-mushroom-patch": {
+    "name": "Golden mushroom patch",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "ground_cover",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "fungus",
+      "forest",
+      "cluster"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground"
+  },
+  "expand-cherry-tree": {
+    "name": "Cherry blossom tree",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "trees",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "blossom",
+      "spring",
+      "pink"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-seasonal-tree",
+    "variant": "Cherry blossom tree"
+  },
+  "expand-golden-tree": {
+    "name": "Golden autumn tree",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "trees",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "autumn",
+      "gold",
+      "leaves"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-seasonal-tree",
+    "variant": "Golden autumn tree"
+  },
+  "expand-willow-tree": {
+    "name": "Weeping willow",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "trees",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "willow",
+      "drooping",
+      "pond"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-seasonal-tree",
+    "variant": "Weeping willow"
+  },
+  "expand-young-pine": {
+    "name": "Young pine tree",
+    "kind": "prop",
+    "category": "nature",
+    "subcategory": "trees",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "evergreen",
+      "young",
+      "conifer"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-seasonal-tree",
+    "variant": "Young pine tree"
+  },
+  "expand-carrot-row": {
+    "name": "Carrot row",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "crops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "carrot",
+      "root",
+      "farm"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground"
+  },
+  "expand-turnip-row": {
+    "name": "Turnip row",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "crops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "turnip",
+      "root",
+      "farm"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground"
+  },
+  "expand-pumpkin-patch": {
+    "name": "Pumpkin patch",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "crops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "pumpkin",
+      "autumn",
+      "farm"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground"
+  },
+  "expand-berry-patch": {
+    "name": "Berry bush patch",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "crops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "berries",
+      "fruit",
+      "farm"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "solid": false,
+    "draw_layer": "ground"
+  },
+  "expand-haybale-stack": {
+    "name": "Stack of hay bales",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "containers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "hay",
+      "stack",
+      "straw"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-basket-apples": {
+    "name": "Basket of apples",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "containers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "basket",
+      "fruit",
+      "harvest"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-crate-open": {
+    "name": "Open produce crate",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "containers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "wood",
+      "open",
+      "harvest"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-crate",
+    "variant": "Open"
+  },
+  "expand-barrel-small": {
+    "name": "Small lidded cask",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "containers",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "wood",
+      "small",
+      "storage"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true,
+    "family": "expand-barrel",
+    "variant": "Small"
+  },
+  "expand-wooden-trough": {
+    "name": "Long wooden water trough",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "animal_care",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "water",
+      "wood",
+      "farm"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-compost-bin": {
+    "name": "Three-sided compost bin",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "farm_tools",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "compost",
+      "garden",
+      "wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-beehive": {
+    "name": "Straw skep beehive",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "farm_tools",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bees",
+      "honey",
+      "straw"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-tool-rack": {
+    "name": "Garden tool rack",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "farm_tools",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "tools",
+      "garden",
+      "wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-workbench-outdoor": {
+    "name": "Outdoor carpentry bench",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "workstations",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bench",
+      "carpentry",
+      "wood"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-watering-can": {
+    "name": "Copper watering can",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "farm_tools",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "watering",
+      "garden",
+      "metal"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "flippable": true
+  },
+  "expand-handcart-harvest": {
+    "name": "Harvest handcart",
+    "kind": "prop",
+    "category": "farm_and_work",
+    "subcategory": "carts",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "cart",
+      "harvest",
+      "wheels"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  }
+}

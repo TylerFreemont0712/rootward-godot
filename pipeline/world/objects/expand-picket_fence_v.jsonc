@@ -1,0 +1,138 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-picket_fence_v",
+  "kind": "prop",
+  "what": "a neat white picket fence seen end on, running away from us with pointed slats and end posts",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "plaster": "plaster",
+    "steel": "steel",
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.38,
+        0,
+        0
+      ],
+      "size": [
+        0.24,
+        0.16,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.3,
+        0,
+        0.25
+      ],
+      "size": [
+        0.1,
+        1.667,
+        0.11
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.3,
+        0,
+        0.66
+      ],
+      "size": [
+        0.1,
+        1.667,
+        0.11
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.34,
+        0.12,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.1,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.34,
+        0.4,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.1,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.34,
+        0.68,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.1,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.34,
+        0.96,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.1,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.34,
+        1.24,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.1,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    }
+  ]
+}

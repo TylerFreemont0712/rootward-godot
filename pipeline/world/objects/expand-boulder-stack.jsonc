@@ -1,0 +1,65 @@
+{
+  "id": "expand-boulder-stack",
+  "kind": "prop",
+  "what": "three stacked stones village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "ball",
+      "at": [
+        0.1,
+        0.12,
+        0
+      ],
+      "size": [
+        0.75,
+        0.7,
+        0.35
+      ],
+      "ramp": "cobble",
+      "shade": 2
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.28,
+        0.2,
+        0.3
+      ],
+      "size": [
+        0.55,
+        0.5,
+        0.35
+      ],
+      "ramp": "stone",
+      "shade": 1
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.42,
+        0.28,
+        0.58
+      ],
+      "size": [
+        0.3,
+        0.34,
+        0.27
+      ],
+      "ramp": "cobble"
+    }
+  ]
+}

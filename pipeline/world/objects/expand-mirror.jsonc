@@ -1,0 +1,74 @@
+// Standing mirror; generated geometric furniture blockout.
+{
+  "id": "expand-mirror",
+  "kind": "furniture",
+  "what": "a tall arched floor mirror in a carved oak frame",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "glass": "glow"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.14,
+        0.26,
+        0
+      ],
+      "size": [
+        0.72,
+        0.16,
+        1.75
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.24,
+        0.16,
+        0.14
+      ],
+      "size": [
+        0.52,
+        0.08,
+        1.48
+      ],
+      "ramp": "glass",
+      "shade": 1
+    },
+    {
+      "shape": "gable",
+      "at": [
+        0.24,
+        0.16,
+        1.3
+      ],
+      "size": [
+        0.52,
+        0.08,
+        0.5
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.3,
+        0
+      ],
+      "size": [
+        0.8,
+        0.12,
+        0.12
+      ],
+      "ramp": "wood"
+    }
+  ]
+}

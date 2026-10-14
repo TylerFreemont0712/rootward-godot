@@ -1,0 +1,147 @@
+// Folding screen; generated geometric furniture blockout.
+{
+  "id": "expand-room-divider",
+  "kind": "furniture",
+  "what": "a three panel folding room divider painted with blue flowers",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "cloth": "cloth_blue",
+    "flower": "cloth_cream"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.62,
+        0.1
+      ],
+      "size": [
+        0.6,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.54,
+        0.18
+      ],
+      "size": [
+        0.46,
+        0.1,
+        1.35
+      ],
+      "ramp": "cloth"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.7,
+        0.62,
+        0.1
+      ],
+      "size": [
+        0.6,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.77,
+        0.54,
+        0.18
+      ],
+      "size": [
+        0.46,
+        0.1,
+        1.35
+      ],
+      "ramp": "cloth",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.35,
+        0.62,
+        0.1
+      ],
+      "size": [
+        0.6,
+        0.12,
+        1.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.42,
+        0.54,
+        0.18
+      ],
+      "size": [
+        0.46,
+        0.1,
+        1.35
+      ],
+      "ramp": "cloth"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.25,
+        0.5,
+        0.7
+      ],
+      "size": [
+        0.18,
+        0.08,
+        0.18
+      ],
+      "ramp": "flower"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.9,
+        0.5,
+        1.0
+      ],
+      "size": [
+        0.2,
+        0.08,
+        0.2
+      ],
+      "ramp": "flower"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        1.56,
+        0.5,
+        0.62
+      ],
+      "size": [
+        0.18,
+        0.08,
+        0.18
+      ],
+      "ramp": "flower"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "expand-greenhouse",
+  "kind": "building",
+  "what": "a greenhouse for a cozy fantasy village",
+  "footprint": [
+    5,
+    4
+  ],
+  "ramps": {
+    "frame": "steel",
+    "glass": "water",
+    "base": "stone",
+    "plants": "leaf",
+    "door": "wood"
+  },
+  "source": {
+    "image": "pipeline/world/expansion/imagegen/expand-greenhouse.png"
+  },
+  "above": 0
+}

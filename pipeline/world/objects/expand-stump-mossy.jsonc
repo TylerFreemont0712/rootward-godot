@@ -1,0 +1,66 @@
+{
+  "id": "expand-stump-mossy",
+  "kind": "prop",
+  "what": "mossy broad stump village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.12,
+        0.15,
+        0
+      ],
+      "size": [
+        0.76,
+        0.7,
+        0.55
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.16,
+        0.19,
+        0.53
+      ],
+      "size": [
+        0.68,
+        0.62,
+        0.07
+      ],
+      "ramp": "wood",
+      "shade": 0
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.18,
+        0.24,
+        0.59
+      ],
+      "size": [
+        0.38,
+        0.3,
+        0.1
+      ],
+      "ramp": "leaf",
+      "shade": 1
+    }
+  ]
+}

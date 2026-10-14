@@ -1,0 +1,102 @@
+// Pantry cupboard; generated geometric furniture blockout.
+{
+  "id": "expand-pantry",
+  "kind": "furniture",
+  "what": "a narrow pantry cupboard with shelves of jars",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "glass": "glow",
+    "goods": "cloth_yellow"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.12,
+        0.2,
+        0
+      ],
+      "size": [
+        0.76,
+        0.62,
+        1.75
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.12,
+        0.2
+      ],
+      "size": [
+        0.6,
+        0.12,
+        1.42
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.24,
+        0.05,
+        0.35
+      ],
+      "size": [
+        0.16,
+        0.12,
+        0.28
+      ],
+      "ramp": "glass"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.52,
+        0.05,
+        0.38
+      ],
+      "size": [
+        0.18,
+        0.12,
+        0.24
+      ],
+      "ramp": "goods"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.24,
+        0.05,
+        0.88
+      ],
+      "size": [
+        0.2,
+        0.12,
+        0.3
+      ],
+      "ramp": "goods"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.52,
+        0.05,
+        0.9
+      ],
+      "size": [
+        0.17,
+        0.12,
+        0.28
+      ],
+      "ramp": "glass"
+    }
+  ]
+}

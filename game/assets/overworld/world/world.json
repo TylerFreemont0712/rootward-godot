@@ -1,0 +1,2186 @@
+{
+ "anvil": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "b9f817e484cf2f28",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "apple": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "8b84f047f386eb4b",
+  "size": [
+   120,
+   140
+  ],
+  "tile": 40
+ },
+ "apple2": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "6c94ae37b9e42b48",
+  "size": [
+   120,
+   140
+  ],
+  "tile": 40
+ },
+ "archive": {
+  "footprint": [
+   7,
+   6
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "977599df9cd9ca0a",
+  "size": [
+   280,
+   240
+  ],
+  "tile": 40
+ },
+ "banner": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "04043eeb7a16f74a",
+  "size": [
+   40,
+   120
+  ],
+  "tile": 40
+ },
+ "barrel": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "86e1a8dbda1ed6db",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "barrel-2x1": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f3a0cbd5eda8b4da",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "bed": {
+  "footprint": [
+   1,
+   2
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "7fcfa3ccc32b1aa4",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "bench": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "23ddf6e1de2a6312",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "birch": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "60513b56ac1815ad",
+  "size": [
+   120,
+   160
+  ],
+  "tile": 40
+ },
+ "bookshelf": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "43e8322b3aa3f422",
+  "size": [
+   80,
+   120
+  ],
+  "tile": 40
+ },
+ "bridge": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "d35cfcbf87e52880",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "bush": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "fd8dac9de6fe5019",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "bush2": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "7ef6bfdbb8611ee2",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "cabbages": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "e874a43615b7ec36",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "cart": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "c7656f878b008ff7",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "chair": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "021ec68a0055c771",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "cottage": {
+  "footprint": [
+   5,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "8d0b1452220fb392",
+  "size": [
+   200,
+   200
+  ],
+  "tile": 40
+ },
+ "cottage-hollis": {
+  "footprint": [
+   5,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "74fc7fecb3151732",
+  "size": [
+   200,
+   200
+  ],
+  "tile": 40
+ },
+ "cottage-pell": {
+  "footprint": [
+   5,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "a4d7eb54b0406830",
+  "size": [
+   200,
+   200
+  ],
+  "tile": 40
+ },
+ "cottage-seren": {
+  "footprint": [
+   5,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "bde26702d5b4c190",
+  "size": [
+   200,
+   200
+  ],
+  "tile": 40
+ },
+ "crate": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "eb1c3d7e41e5d008",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "desk": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "f03434384902bedb",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "doormat": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "d8fc7970c0a96a52",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-arched_wood_gate": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "071461a8bb6b3d4a",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-backless_bench": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "eeea23fc11d22715",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-bakery": {
+  "footprint": [
+   5,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "c5b1eddff8d1984d",
+  "size": [
+   200,
+   200
+  ],
+  "tile": 40
+ },
+ "expand-barrel-small": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "ad91f5ee8a0c2eb0",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-basket-apples": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "ea4c24e1de26a639",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-bed-bunk": {
+  "footprint": [
+   2,
+   2
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "a123bd82f17ad677",
+  "size": [
+   80,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-bed-canopy": {
+  "footprint": [
+   2,
+   2
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "5f496f10e62c6b08",
+  "size": [
+   80,
+   140
+  ],
+  "tile": 40
+ },
+ "expand-beehive": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "23a0e664f21d3704",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-bench-back": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "053b523380327bdf",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-berry-patch": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "5a425ae5c2fb8a82",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-boulder-moss": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "e46f226f89724d12",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-boulder-stack": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "c3e5779c290a9a38",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-brick_wall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f210248f6d5fadbc",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-brick_wall_corner": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "8daa7e5e69b15f7d",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-brick_wall_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "d96f6d14cc341e33",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-cabinet": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "5077aca695061905",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-candle-sconce": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "7549b57a3d503d8e",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-carrot-row": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "1f958bb969a0e3cf",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-chair-cushioned": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "ae8af7258714e168",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-chair-windsor": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "5d8496c6714eea7e",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-chandelier": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "ef7365b395d91931",
+  "size": [
+   80,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-cherry-tree": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "8e7390c49ce409ef",
+  "size": [
+   120,
+   160
+  ],
+  "tile": 40
+ },
+ "expand-coffee-table": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "0b9b9f7d0b5a9ecf",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-compost-bin": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "850708ac6a9acd0f",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-counter": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "bef5421f6ccd66b1",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-crate-open": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "4cb83bd5f75e9353",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-dining-table": {
+  "footprint": [
+   2,
+   2
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "96db5652461633e2",
+  "size": [
+   80,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-dresser": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "2155d4e7fed127aa",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-fieldstone_wall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "956797a8d9df8b31",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-fieldstone_wall_corner": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "a1cbadb66f77ce89",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-fieldstone_wall_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "3155cfbb23b006f7",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-fireplace-screen": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "2a1443b8f0202509",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-fountain": {
+  "footprint": [
+   3,
+   2
+  ],
+  "frames": 1,
+  "kind": "landmark",
+  "made_from": "244bafcaba68d5ca",
+  "size": [
+   120,
+   120
+  ],
+  "tile": 40
+ },
+ "expand-garden_lattice": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "d21039778736a374",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-garden_lattice_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "cc7f69030705be55",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-golden-tree": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "0d80be138b2f5962",
+  "size": [
+   120,
+   180
+  ],
+  "tile": 40
+ },
+ "expand-greenhouse": {
+  "footprint": [
+   5,
+   4
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "0c3818a510fa92a2",
+  "size": [
+   200,
+   160
+  ],
+  "tile": 40
+ },
+ "expand-handcart-harvest": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "090722d5add3138c",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-haybale-stack": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f513b10eb87e002b",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-hedge-short": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "64210149f5272802",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-hedge-tall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "3c572f377330a35b",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-iron_garden_gate": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "b8e3d0bcd2e34d0c",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-iron_rail": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "cbc34e5dab08a768",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-iron_rail_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "42473a5db3ce92b6",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-lantern-table": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "d871dac201ccb016",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-lantern_boundary_post": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "4fb652e9312c7529",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-log-fallen": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "6fd6743e0c5ffdc3",
+  "size": [
+   80,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-log_wall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "bdbfb24d244aeb6a",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-log_wall_corner": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "3bc60d5371608b06",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-log_wall_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "a92e5ac7e415de34",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-mirror": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "d0ced54b7b5868d0",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-mushroom-patch": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "825987de4910af7f",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-noticeboard": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "efb91f525c6201e0",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-pantry": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "095cbe043fcd2c07",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-picket_fence": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "75148ff52ac7edef",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-picket_fence_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "6cddb953e4b39e18",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-planter-round": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "011e5b2f35aa5269",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-plaster_wall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "c7b608a3cda808ff",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-plaster_wall_corner": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "159fba3a29b5c8b3",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-plaster_wall_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "ac55c1a239e9eaf9",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-pumpkin-patch": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "26a2fa9f0970c562",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-rail_fence": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "8451ad04a7e0af13",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-rail_fence_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f5390300d56c54a9",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-room-divider": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "47cab532d3ba87c3",
+  "size": [
+   80,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-rug-round": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "5308f8efba75f278",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-rug-runner": {
+  "footprint": [
+   1,
+   2
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "134bf547cd86312d",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-shelf-crockery": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "b72d6475017017c7",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-shrub-flowering": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "760b261ec2a7ed0c",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-shrub-round": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "197296bd9d972432",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-sink": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "374db4806ed3b8a3",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-sofa": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "7aa16307990c9e45",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-stone_bench": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "249177e8a95d8b14",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-stone_boundary_post": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "95e97b5ed55804de",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "expand-stool-round": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "56f0fd8ea86426b3",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-stove": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "9de97e4fecb9a550",
+  "size": [
+   40,
+   120
+  ],
+  "tile": 40
+ },
+ "expand-street_bollard": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "6d239af6e702a089",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-stump-mossy": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "c406083a21d8e139",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-tool-rack": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "b5a12f95b03adef5",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-turnip-row": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "bdd263b9a0428bca",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-wall-clock": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "444406d5b9c360d2",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-wall-tapestry": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "ebb4a138c9f7a5cf",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "expand-wardrobe": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "5fc1899917587bce",
+  "size": [
+   80,
+   120
+  ],
+  "tile": 40
+ },
+ "expand-watering-can": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "572f3fed0de51c1f",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "expand-wide_stone_steps": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "4f497b0261252f72",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-willow-tree": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "cd4b74f0da06ab42",
+  "size": [
+   120,
+   200
+  ],
+  "tile": 40
+ },
+ "expand-wooden-trough": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "32cc50bc6225213b",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-wooden_steps": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "34f90e8125894d05",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-workbench-outdoor": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "8be3a5603b55aa5a",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-writing-desk": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "0360f9355d5be8de",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "expand-young-pine": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "70fe55bd5e16aad3",
+  "size": [
+   80,
+   160
+  ],
+  "tile": 40
+ },
+ "fence": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "e1ca85ffabab3285",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "fence_v": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "73af1edd372d8225",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "fencepost": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "6f4c8b3fefd4b2e8",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "flowerbed": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "076dbb7a3fca866c",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "flowerpot": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "ba596be0f6e6c76d",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "gate": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "872f243e01146da5",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "hall": {
+  "footprint": [
+   9,
+   8
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "0431053c2aa12fa3",
+  "size": [
+   360,
+   320
+  ],
+  "tile": 40
+ },
+ "haycart": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "4a9f8491c90a08a3",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "home": {
+  "footprint": [
+   6,
+   6
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "e421588fcb99f639",
+  "size": [
+   240,
+   240
+  ],
+  "tile": 40
+ },
+ "inn": {
+  "footprint": [
+   6,
+   6
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "322800d296c600f7",
+  "size": [
+   240,
+   240
+  ],
+  "tile": 40
+ },
+ "lamppost": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 2,
+  "kind": "prop",
+  "made_from": "f69f092ed01eefc0",
+  "size": [
+   80,
+   120
+  ],
+  "tile": 40
+ },
+ "lantern": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "0149bbac904ef0d0",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "lanterntree": {
+  "footprint": [
+   5,
+   4
+  ],
+  "frames": 1,
+  "kind": "landmark",
+  "made_from": "486c36cf9a9d20d6",
+  "size": [
+   360,
+   360
+  ],
+  "tile": 40
+ },
+ "laundry": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f23dd3571a4c4417",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "lilypad": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "283872d3d6a90ded",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "mailbox": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "f8dbeeb315d8ca1e",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "mushrooms": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "3b4779798bd906b8",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "noticeboard": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "0e3b60a3c6ad3f32",
+  "size": [
+   80,
+   100
+  ],
+  "tile": 40
+ },
+ "oak": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "09ff5a44de681269",
+  "size": [
+   120,
+   160
+  ],
+  "tile": 40
+ },
+ "oak2": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "8532ed31b0401a16",
+  "size": [
+   120,
+   160
+  ],
+  "tile": 40
+ },
+ "pine": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "tree",
+  "made_from": "97696bee7bd25313",
+  "size": [
+   80,
+   180
+  ],
+  "tile": 40
+ },
+ "plant": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "d7a13efc3611faa8",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "reeds": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "73ae9b4af928106e",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "rock": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "1bb8bb8b7c07fac3",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "rootgate": {
+  "footprint": [
+   6,
+   6
+  ],
+  "frames": 1,
+  "kind": "landmark",
+  "made_from": "664796ba626cf969",
+  "size": [
+   240,
+   240
+  ],
+  "tile": 40
+ },
+ "rug": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "6023a945272d41a9",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "sack": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "b07c7b3d4f73cd1d",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "shop": {
+  "footprint": [
+   6,
+   6
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "49605897daa6cd69",
+  "size": [
+   240,
+   240
+  ],
+  "tile": 40
+ },
+ "shrine": {
+  "footprint": [
+   6,
+   6
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "10db315986b69875",
+  "size": [
+   240,
+   240
+  ],
+  "tile": 40
+ },
+ "sign": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "11801aac24165a5a",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "signpost": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "86b853647016fdf9",
+  "size": [
+   40,
+   80
+  ],
+  "tile": 40
+ },
+ "smithy": {
+  "footprint": [
+   7,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "f6ccd1f23a1af6fc",
+  "size": [
+   280,
+   200
+  ],
+  "tile": 40
+ },
+ "stall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "84213e58ddb259c8",
+  "size": [
+   40,
+   100
+  ],
+  "tile": 40
+ },
+ "step": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "a6ad0748c2bc0ade",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "stonewall": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "ac2c3d659bc2e8be",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "stump": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "00b607b0d78b78ea",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "tombstone": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "2cd4f8e909a708b6",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "tuft": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "de4195c944f337cd",
+  "size": [
+   40,
+   60
+  ],
+  "tile": 40
+ },
+ "well": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "cec20549bdcca713",
+  "size": [
+   80,
+   80
+  ],
+  "tile": 40
+ },
+ "window": {
+  "footprint": [
+   1,
+   1
+  ],
+  "frames": 1,
+  "kind": "furniture",
+  "made_from": "318985c814d480e3",
+  "size": [
+   40,
+   40
+  ],
+  "tile": 40
+ },
+ "woodpile": {
+  "footprint": [
+   2,
+   1
+  ],
+  "frames": 1,
+  "kind": "prop",
+  "made_from": "c46be1162fc84212",
+  "size": [
+   80,
+   60
+  ],
+  "tile": 40
+ },
+ "workshop": {
+  "footprint": [
+   6,
+   5
+  ],
+  "frames": 1,
+  "kind": "building",
+  "made_from": "3ab7e787ab72831b",
+  "size": [
+   240,
+   200
+  ],
+  "tile": 40
+ }
+}

@@ -1,0 +1,90 @@
+{
+  "expand-bakery": {
+    "name": "Bakery",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "shops_and_inns",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bread",
+      "shop",
+      "timber",
+      "red roof"
+    ],
+    "size": [
+      5,
+      5
+    ],
+    "flippable": false,
+    "door": [
+      2,
+      4
+    ]
+  },
+  "expand-greenhouse": {
+    "name": "Greenhouse",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "workshops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "glass",
+      "garden",
+      "nursery",
+      "green"
+    ],
+    "size": [
+      5,
+      4
+    ],
+    "flippable": false,
+    "door": [
+      2,
+      3
+    ]
+  },
+  "expand-fountain": {
+    "name": "Village fountain",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "wells",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "water",
+      "basin",
+      "square",
+      "fountain"
+    ],
+    "size": [
+      3,
+      2
+    ],
+    "flippable": true
+  },
+  "expand-noticeboard": {
+    "name": "Roofed noticeboard",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "signs_and_boards",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "board",
+      "notices",
+      "roofed",
+      "wood"
+    ],
+    "size": [
+      2,
+      1
+    ],
+    "flippable": true
+  }
+}

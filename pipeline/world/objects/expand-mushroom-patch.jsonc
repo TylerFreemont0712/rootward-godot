@@ -1,0 +1,77 @@
+{
+  "id": "expand-mushroom-patch",
+  "kind": "prop",
+  "what": "golden mushroom patch village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cylinder",
+      "at": [
+        0.18,
+        0.24,
+        0.05
+      ],
+      "size": [
+        0.12,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_cream"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.1,
+        0.16,
+        0.24
+      ],
+      "size": [
+        0.28,
+        0.28,
+        0.19
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.62,
+        0.48,
+        0.05
+      ],
+      "size": [
+        0.1,
+        0.1,
+        0.19
+      ],
+      "ramp": "cloth_cream"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.55,
+        0.4,
+        0.22
+      ],
+      "size": [
+        0.24,
+        0.24,
+        0.16
+      ],
+      "ramp": "cloth_red"
+    }
+  ]
+}

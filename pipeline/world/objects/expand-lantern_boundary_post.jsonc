@@ -1,0 +1,77 @@
+// Expansion asset spec; dimensions are tiles.
+{
+  "id": "expand-lantern_boundary_post",
+  "kind": "prop",
+  "what": "a wooden boundary post topped by a small glowing lantern",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "steel": "steel",
+    "glow": "glow"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.3,
+        0.3,
+        0
+      ],
+      "size": [
+        0.4,
+        0.4,
+        1.15
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.22,
+        1.15
+      ],
+      "size": [
+        0.56,
+        0.56,
+        0.08
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.27,
+        0.27,
+        1.23
+      ],
+      "size": [
+        0.46,
+        0.46,
+        0.42
+      ],
+      "ramp": "glow",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.22,
+        1.65
+      ],
+      "size": [
+        0.56,
+        0.56,
+        0.09
+      ],
+      "ramp": "steel",
+      "shade": 2
+    }
+  ]
+}

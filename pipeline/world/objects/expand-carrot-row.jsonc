@@ -1,0 +1,161 @@
+{
+  "id": "expand-carrot-row",
+  "kind": "prop",
+  "what": "carrot row village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "cone",
+      "at": [
+        0.08,
+        0.16,
+        0.03
+      ],
+      "size": [
+        0.18,
+        0.16,
+        0.45
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.12,
+        0.18,
+        0.24
+      ],
+      "size": [
+        0.11,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.42,
+        0.3,
+        0.03
+      ],
+      "size": [
+        0.18,
+        0.16,
+        0.45
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.45999999999999996,
+        0.32,
+        0.24
+      ],
+      "size": [
+        0.11,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.7,
+        0.12,
+        0.03
+      ],
+      "size": [
+        0.18,
+        0.16,
+        0.45
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.74,
+        0.13999999999999999,
+        0.24
+      ],
+      "size": [
+        0.11,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.2,
+        0.56,
+        0.03
+      ],
+      "size": [
+        0.18,
+        0.16,
+        0.45
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.24000000000000002,
+        0.5800000000000001,
+        0.24
+      ],
+      "size": [
+        0.11,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.58,
+        0.52,
+        0.03
+      ],
+      "size": [
+        0.18,
+        0.16,
+        0.45
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.62,
+        0.54,
+        0.24
+      ],
+      "size": [
+        0.11,
+        0.12,
+        0.25
+      ],
+      "ramp": "cloth_orange"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "expand-shrub-flowering",
+  "kind": "prop",
+  "what": "flowering shrub village asset with clear readable shapes",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "ball",
+      "at": [
+        0.08,
+        0.2,
+        0.18
+      ],
+      "size": [
+        0.84,
+        0.62,
+        0.56
+      ],
+      "ramp": "leaf"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.15,
+        0.26,
+        0.58
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "ramp": "flower"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.48,
+        0.16,
+        0.62
+      ],
+      "size": [
+        0.2,
+        0.2,
+        0.2
+      ],
+      "ramp": "cloth_pink"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.62,
+        0.48,
+        0.58
+      ],
+      "size": [
+        0.18,
+        0.18,
+        0.18
+      ],
+      "ramp": "cloth_white"
+    }
+  ]
+}

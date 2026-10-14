@@ -1,0 +1,65 @@
+{
+  "id": "expand-haybale-stack",
+  "kind": "prop",
+  "what": "stack of hay bales village asset with clear readable shapes",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.18,
+        0
+      ],
+      "size": [
+        0.9,
+        0.64,
+        0.55
+      ],
+      "ramp": "thatch",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.02,
+        0.18,
+        0
+      ],
+      "size": [
+        0.9,
+        0.64,
+        0.55
+      ],
+      "ramp": "thatch",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.55,
+        0.2,
+        0.52
+      ],
+      "size": [
+        0.9,
+        0.6,
+        0.5
+      ],
+      "ramp": "thatch"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "expand-noticeboard",
+  "kind": "prop",
+  "what": "a roofed noticeboard for a cozy fantasy village",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "roof": "cloth_red",
+    "paper": "cloth_cream"
+  },
+  "source": {
+    "image": "pipeline/world/expansion/imagegen/expand-noticeboard.png"
+  },
+  "above": 1
+}
