@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"length_test": 1, "size": 1, "digit_test": 1}, "toggles": []},
+    {"slots": {"length_test": 1, "size": 1, "digit_test": 1}, "toggles": ["strong"]}
+  ]
+}

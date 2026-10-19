@@ -1,0 +1,5 @@
+{
+  "stages": [
+    {"slots": {"home_until": 1, "home_from": 1, "work_until": 1}, "toggles": []}
+  ]
+}

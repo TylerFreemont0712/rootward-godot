@@ -1,0 +1,17 @@
+// A market stall for one tile (catalog only so far): a counter with goods under a striped awning on two posts.
+{
+ "id": "stall",
+ "kind": "prop",
+ "what": "a small wooden market stall, a counter with baskets of apples under a red and white striped awning",
+ "footprint": [1, 1],
+ "ramps": {"wood": "wood", "awning": "cloth_red", "stripes": "cloth_white", "goods": "cloth_orange"},
+ "parts": [
+  {"shape": "box", "at": [0.05, 0.25, 0], "size": [0.9, 0.5, 0.75], "ramp": "wood"},
+  {"shape": "box", "at": [0.12, 0.3, 0.75], "size": [0.32, 0.3, 0.14], "ramp": "goods"},
+  {"shape": "box", "at": [0.56, 0.3, 0.75], "size": [0.32, 0.3, 0.14], "ramp": "goods", "shade": 1},
+  {"shape": "box", "at": [0.06, 0.62, 0.75], "size": [0.08, 0.08, 1.05], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.86, 0.62, 0.75], "size": [0.08, 0.08, 1.05], "ramp": "wood", "shade": 2},
+  {"shape": "gable", "at": [0.0, 0.1, 1.75], "size": [1.0, 0.7, 0.3], "ramp": "awning"},
+  {"shape": "box", "at": [0.0, 0.08, 1.68], "size": [1.0, 0.04, 0.12], "ramp": "stripes"}
+ ]
+}

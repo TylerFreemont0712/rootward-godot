@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"night_until": 1, "morning_until": 1, "afternoon_until": 1, "evening_until": 1, "phase": 1}, "toggles": []},
+    {"slots": {"night_until": 1, "morning_until": 1, "afternoon_until": 1, "evening_until": 1, "phase": 1, "hour_by": 1, "minute_by": 1, "minutes_text": 1}, "toggles": ["text"]}
+  ]
+}

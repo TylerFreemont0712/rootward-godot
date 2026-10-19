@@ -1,0 +1,14 @@
+// A wooden chair at the desk.
+{
+ "id": "chair",
+ "kind": "furniture",
+ "what": "a simple wooden chair with a slatted back",
+ "footprint": [1, 1],
+ "ramps": {"wood": "wood"},
+ "parts": [
+  {"shape": "box", "at": [0.2, 0.2, 0.42], "size": [0.6, 0.58, 0.08], "ramp": "wood"},
+  {"shape": "box", "at": [0.22, 0.22, 0.0], "size": [0.08, 0.08, 0.42], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.7, 0.22, 0.0], "size": [0.08, 0.08, 0.42], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.2, 0.72, 0.42], "size": [0.6, 0.08, 0.62], "ramp": "wood"}
+ ]
+}

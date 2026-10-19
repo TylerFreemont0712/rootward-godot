@@ -46,19 +46,16 @@ func _reward() -> void:
 		title = Text.t("A curse has bound itself")
 	elif reward.has("receipt"):
 		title = Text.t("Victory spoils")
+	elif reward.has("script") and _script_is_last(reward):
+		title = Text.t("A recovered script")
 	elif not reward.has("relics"):
 		if reward.has("shards"):
 			title = Text.t("Shards in the rubble")
 		elif reward.has("chest"):
 			title = Text.t("A sealed cache")
 	add_child(Ui.hbox([Ui.label(title, "Heading"), Ui.spacer(), _wallet(int(state.get("cycles", 0)))], 12))
-	if reward.has("receipt") or reward.has("script"):
-		var keepsakes := Ui.hbox([], 12)
-		if reward.has("receipt"):
-			keepsakes.add_child(Ui.expand(_receipt(reward.receipt)))
-		if reward.has("script"):
-			keepsakes.add_child(Ui.expand(_script_reward(String(reward.script))))
-		add_child(keepsakes)
+	if reward.has("receipt"):
+		add_child(_receipt(reward.receipt))
 	if reward.has("cursed_relic"):
 		_add_forced_relic(reward, catalog)
 	elif reward.has("relics"):
@@ -69,6 +66,8 @@ func _reward() -> void:
 		_add_chest(reward)
 	elif reward.has("spell"):
 		_add_spell(reward)
+	elif reward.has("script"):
+		_choice_stage(_script_reward(String(reward.script)))
 	else:
 		add_child(Ui.label(Text.t("The cache is empty."), "Narration", true))
 
@@ -280,8 +279,6 @@ func _legacy_reward(state: Dictionary, catalog: Dictionary, reward: Dictionary) 
 	elif reward.has("cursed_relic"):
 		title = Text.t("A curse has bound itself")
 	add_child(Ui.label(title, "Heading"))
-	if reward.has("script"):
-		add_child(_script_reward(String(reward.script)))
 	if reward.has("chest"):
 		var chance := roundi(float(reward.chest.curse_chance) * 100.0)
 		var warning := run_on(
@@ -341,6 +338,8 @@ func _legacy_reward(state: Dictionary, catalog: Dictionary, reward: Dictionary) 
 		add_child(column)
 		var skip := Text.t("Skip the cards") if deck else Text.t("Skip the shards")
 		add_child(Ui.hbox([Ui.button(skip, _ask({"type": "take", "shard_id": null}))]))
+	if reward.has("script") and _script_is_last(reward):
+		add_child(_script_reward(String(reward.script)))
 	var leave := Text.t("Leave it unopened") if reward.has("chest") else Text.t("Leave the rest and move on")
 	add_child(Ui.hbox([Ui.button(leave, _ask({"type": "leave"}))]))
 
@@ -387,14 +386,18 @@ func _script_reward(id: String) -> Control:
 	if script.is_empty():
 		return Ui.spacer()
 	var full := (state.get("belt", []) as Array).size() >= ProgramScripts.belt_size(state, session.catalog)
+	var tint := UiTheme.rarity(String(script.rarity))
 	var text := Ui.vbox(
 		[
 			Ui.label(Text.t("A script"), "Faint"),
-			Ui.tint(Ui.label(Text.t(script.name), "Subheading"), UiTheme.rarity(String(script.rarity))),
+			Ui.tint(Ui.label(Text.t(script.name), "Subheading"), tint),
 			Ui.label(Text.t(script.summary), "Muted", true)
 		],
 		2
 	)
+	var icon := Ui.picture("shardrun/script-" + id, Vector2(88, 88), "📜")
+	var needs := Text.t("Aim it at a foe.") if String(script.get("target", "none")) == "foe" else ""
+	HoverInfo.attach(icon, Text.t(script.name), Text.t(script.summary), needs, tint)
 	var actions := Ui.flow([], 6)
 	if not full:
 		actions.add_child(
@@ -412,9 +415,16 @@ func _script_reward(id: String) -> Control:
 				)
 			)
 	actions.add_child(Ui.button(Text.t("Skip"), _ask({"type": "skip-script"})))
-	return Ui.panel(
-		Ui.hbox([Ui.picture("shardrun/script-" + id, Vector2(72, 72), "📜"), Ui.expand(text), actions], 10), "Card"
-	)
+	var reward := Ui.panel(Ui.hbox([icon, Ui.expand(text), actions], 14), "Card")
+	reward.custom_minimum_size = Vector2(740, 128)
+	return reward
+
+
+static func _script_is_last(reward: Dictionary) -> bool:
+	for key: String in ["cursed_relic", "relics", "shards", "chest", "spell"]:
+		if reward.has(key):
+			return false
+	return true
 
 
 func _rest() -> void:

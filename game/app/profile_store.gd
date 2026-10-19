@@ -24,6 +24,7 @@ func get_profile(id: String) -> Dictionary:
 	var value: Variant = JsJson.parse(FileAccess.get_file_as_string(path))
 	if not value is Dictionary or value.get("id") != id or not value.get("name") is String:
 		return {}
+	value.japanese_reading = "kanji" if value.get("japanese_reading", "hiragana") == "kanji" else "hiragana"
 	return value
 
 
@@ -77,6 +78,7 @@ static func _new_profile(name: String, preferred_language: String, avatar: Strin
 		"id": id,
 		"name": ProfileRules.clean_name(name),
 		"preferred_language": preferred_language if preferred_language in ["en", "ja"] else "en",
+		"japanese_reading": "hiragana",
 		"avatar": avatar if avatar in Settings.CHARACTER_SKINS else "vesper",
 		"created_at": now,
 		"last_played": now,

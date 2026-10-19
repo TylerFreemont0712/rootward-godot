@@ -1,7 +1,20 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Vell teaches lesson 2, "Remember me": the player's own save.
+// She offers it once the hello quest's named steps are done (Talk's conditions cannot count the met- flags, so the
+// offer leans on the flags the quest names: met-innkeeper, met-guildmaster, read-notices) and the player has opened
+// their own menu (menu-opened: since v0.4 the save quest comes after Mira's menu).
 {
   "id": "archivist",
   "start": [
+    {"if": {"flag": "history-viewed"}, "goto": "history_done"},
+    {"if": {"flag": "history-asked"}, "goto": "history_waits"},
+    {"if": {"all": [{"flag": "stones-rest"}, {"flag": "bag-tidied"}]}, "goto": "history_offer"},
+    {"if": {"all": [{"flag": "memory-written"}, {"flag": "saved-once"}]}, "goto": "kept"},
+    {"if": {"flag": "memory-written"}, "goto": "use_it"},
+    {"if": {"flag": "memory-asked"}, "goto": "page_waits"},
+    {
+      "if": {"all": [{"flag": "met-innkeeper"}, {"flag": "met-guildmaster"}, {"flag": "read-notices"}, {"flag": "menu-opened"}]},
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-archivist"
@@ -13,6 +26,67 @@
     }
   ],
   "nodes": {
+    "offer": {
+      "lines": [
+        {"text": "Ah, the tinker who has met everyone. I've written you down in three places already."},
+        {"text": "Here is a secret of the Archive. Nothing in Lanternroot is kept unless someone writes code to keep it."},
+        {"text": "Not the bread at the inn. Not the lamps. Not even you. Close your eyes tonight, and the town forgets where you stood."},
+        {"text": "Forgets?! Then we have to write it down!", "speaker": "hotaru"},
+        {"text": "Exactly. A save is a small piece of code. You give it what to keep, and it gives it back."}
+      ],
+      "set": ["met-archivist"],
+      "choices": [
+        {"text": "Show me how.", "goto": "teach"},
+        {"text": "Maybe later.", "goto": "later"}
+      ]
+    },
+    "teach": {
+      "lines": [
+        {"text": "Here is a fresh page."},
+        {"text": "Choose what the town should keep about you. I'll check it on three tinkers.", "mood": "happy"}
+      ],
+      "set": ["memory-asked"],
+      "open": "lesson:memory"
+    },
+    "later": {
+      "lines": [
+        {"text": "Take your time. The page will wait. Pages are very good at waiting."}
+      ]
+    },
+    "page_waits": {
+      "lines": [
+        {"text": "Your page is still open on my desk. Shall we finish your save?"}
+      ],
+      "choices": [
+        {"text": "Yes, let's.", "goto": "teach"},
+        {"text": "Not yet.", "goto": "later"}
+      ]
+    },
+    "use_it": {
+      "lines": [
+        {"text": "Your save is written, and it's a good one."},
+        {"text": "But a save only keeps things when you use it. Press Esc for the menu, and choose Save."}
+      ],
+      "choices": [
+        {"text": "Can I change my save?", "goto": "teach"},
+        {"text": "I'll go and save.", "goto": "bye"}
+      ]
+    },
+    "kept": {
+      "lines": [
+        {"text": "You're in the records now. Wherever you wander, the town can find you again."},
+        {"text": "I made a copy. Then a copy of the copy. You can never have too many copies.", "mood": "happy"}
+      ],
+      "choices": [
+        {"text": "Can I change my save?", "goto": "teach"},
+        {"text": "Thank you, Vell.", "goto": "bye"}
+      ]
+    },
+    "bye": {
+      "lines": [
+        {"text": "Off you go, then. I'll be here, writing."}
+      ]
+    },
     "hello": {
       "lines": [
         {
@@ -56,6 +130,39 @@
           "text": "Oh, enormous amounts. I love it.",
           "mood": "happy"
         }
+      ]
+    },
+    "history_offer": {
+      "lines": [
+        {"text": "Tinker, you changed your code again. Good. Every change deserves a record."},
+        {"text": "I keep a changelog for every tinker. It says which lines are different from the version before."},
+        {"text": "A changelog! I do love a changelog. Show me which lines changed.", "speaker": "hotaru", "mood": "happy"}
+      ],
+      "choices": [
+        {"text": "Show me how.", "goto": "history_teach"},
+        {"text": "Maybe later.", "goto": "later"}
+      ]
+    },
+    "history_teach": {
+      "lines": [
+        {"text": "Two lists of lines, side by side: the old version and the new one."},
+        {"text": "Tell me the numbers of the lines that changed. Count from 1.", "mood": "happy"}
+      ],
+      "set": ["history-asked"],
+      "open": "task:history"
+    },
+    "history_waits": {
+      "lines": [
+        {"text": "Your changelog is still blank. Shall we write it?"}
+      ],
+      "choices": [
+        {"text": "Yes, let's.", "goto": "history_teach"},
+        {"text": "Not yet.", "goto": "later"}
+      ]
+    },
+    "history_done": {
+      "lines": [
+        {"text": "Every version of your code is a page in the Archive. Now each page says what changed.", "mood": "happy"}
       ]
     }
   }

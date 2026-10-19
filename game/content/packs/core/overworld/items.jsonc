@@ -1,0 +1,20 @@
+// The bag's items (Concept/v0.4/01, 5.6 and 11): each has a name, one cozy line about it, its icon (item-<id>, a picture in
+// the world's items) and a palette ramp, which draws the stand-in circle when the picture is missing.
+{
+  "apple": {"name": "Apple", "about": "Crisp and red. Marta says they're best in pie.", "icon": "item-apple", "colour": "cloth_red"},
+  "cabbage": {"name": "Cabbage", "about": "Round, green and a little proud of itself. Marta needs one for soup.", "icon": "item-cabbage", "colour": "cloth_green"},
+  "carrot": {"name": "Carrot", "about": "Orange and crunchy, from the rows behind the grove. Fern says it likes the rain.", "icon": "item-carrot", "colour": "cloth_coral"},
+  "turnip": {"name": "Turnip", "about": "Pale and round, with a purple hat. Good in a stew, Marta says.", "icon": "item-turnip", "colour": "cloth_purple"},
+  "pumpkin": {"name": "Pumpkin", "about": "Big and orange, and it sits very still. Pip wants to count its seeds.", "icon": "item-pumpkin", "colour": "cloth_orange"},
+  "berries": {"name": "Berries", "about": "A handful of little red ones. Save some for Marta's tarts.", "icon": "item-berries", "colour": "cloth_maroon"},
+  "mushroom": {"name": "Mushroom", "about": "Brown-capped and damp, from the shady side of the grove. Ask Fern first.", "icon": "item-mushroom", "colour": "cloth_brown"},
+  "flower": {"name": "Flower", "about": "One pressed flower, still a little sweet. Mira says it would make a good bookmark.", "icon": "item-flower", "colour": "cloth_pink"},
+  "honey": {"name": "Honey", "about": "Golden and sticky, from the hive by the square. Marta spreads it on her bread.", "icon": "item-honey", "colour": "cloth_yellow"},
+  "pinecone": {"name": "Pinecone", "about": "Scaly and brown, and it still smells of the forest.", "icon": "item-pinecone", "colour": "cloth_olive"},
+  "pebble": {"name": "Pebble", "about": "Smooth and grey, and warm from the sun. Pell likes it as a paperweight.", "icon": "item-pebble", "colour": "cloth_grey"},
+  "bread": {"name": "Bread", "about": "A fresh loaf, still warm. Marta bakes it every morning.", "icon": "item-bread", "colour": "cloth_cream"},
+  "letter": {"name": "Letter", "about": "Folded twice and sealed with green wax. Nym says the post is always late.", "icon": "item-letter", "colour": "cloth_blue"},
+  "gear": {"name": "Gear", "about": "A brass gear, a little oily. Mira says every lantern in town has one inside.", "icon": "item-gear", "colour": "cloth_teal"},
+  "key": {"name": "Key", "about": "Iron and cold, and cut for a door somewhere. Nym thinks it is worth keeping.", "icon": "item-key", "colour": "cloth_black"},
+  "lantern-oil": {"name": "Lantern oil", "about": "A little bottle that smells of warm wax. Lumen keeps the lanterns lit with it.", "icon": "item-lantern-oil", "colour": "cloth_sky"}
+}

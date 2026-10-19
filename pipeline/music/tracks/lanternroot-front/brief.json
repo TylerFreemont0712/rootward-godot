@@ -1,0 +1,21 @@
+{
+  "id": "lanternroot-front",
+  "out": "music-lanternroot-front",
+  "kind": "loop",
+  "title": "Lanternroot's Front Door",
+  "role": "The character select screen, the town's front door at night: anticipation, then a welcome. A steady groove you can tap your foot to, the player picking their shape before the town wakes. Solid, not a lullaby.",
+  "theme": "The motif (1 5 1 3 2 1, D A D F# E D) stated plainly on plucked guitar in the verse, its first two bars exactly; the chorus lifts its 1, 3, 2 and 1 an octave into eighth-note steps and closes each phrase on E D, like a door swinging open.",
+  "reference": "The player's request: the mode played music-rest, a lullaby in F at 76 BPM in 3/4 with harp, and wanted more of a solid soundtrack concept. This is the front door's share of that.",
+  "bpm": 100,
+  "key": "D major",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (a groove builds, a pickup into the verse), verse 8 (the motif on plucked guitar), chorus 8 (the motif lifted an octave, in eighths)",
+  "loop": {
+    "from": "verse",
+    "to": "chorus",
+    "occurrence": 1
+  },
+  "style": "bright lantern folk groove, strummed acoustic guitar, plucked guitar melody, upright bass, light live drums with a backbeat, welcoming and anticipating, clear warm recording, instrumental, no vocals, D major, 100 BPM",
+  "lyrics": "",
+  "pick": "yue2-comfy-1001-1101-s32-a99095"
+}

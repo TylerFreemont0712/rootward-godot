@@ -1,0 +1,11 @@
+// The cabbage-plot gate (TownThings, ADR-0061): solid until its code sets `open`. Its prop is in maps/lanternroot.jsonc.
+{
+  "id": "cabbage-gate",
+  "name": "The cabbage-plot gate",
+  "hints": [
+    "A gate can count something. What could it count?",
+    "thing.keys is the list of keys your boots know.",
+    "Ask whether that list holds four keys, then set open."
+  ],
+  "starter": {"python": "cabbage-gate.starter.py", "javascript": "cabbage-gate.starter.js"}
+}

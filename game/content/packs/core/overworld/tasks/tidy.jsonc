@@ -1,0 +1,131 @@
+// A tidy bag (Concept/v0.4/05, 2.10): Mira's bag counts what it holds and tidies itself. Stage 1 is total(bag): every
+// stack's count added together. Stage 2 is tidy(bag): the same stacks in A to Z order by item name. The Bag panel asks
+// both live; tidy is judged by tidy_sorted, which checks the stacks against the bag it was given.
+{
+  "id": "tidy",
+  "name": "A Tidy Bag",
+  "title": "A tidy bag",
+  "giver": "artificer",
+  "built_line": "Your bag counts and tidies itself with your total() and tidy().",
+  "entry": {"python": "total", "javascript": "total"},
+  "params": [
+    {"name": "bag", "meaning": "Your bag: a list of stacks. Each stack is a dictionary with \"item\" (what it holds) and \"count\" (how many), such as {\"item\": \"pear\", \"count\": 1}.", "example": "[{\"item\": \"pear\", \"count\": 2}]"}
+  ],
+  "gives": {"meaning": "How many things the bag holds: every stack's count added together.", "example": "3"},
+  "words": {
+    "python": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in a list, in order.", "example": "for score in scores:\n    total += score"},
+      {"term": "+=", "meaning": "Adds to the number a name holds, and keeps the new number there.", "example": "score += 10"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in an array, in order.", "example": "for (const score of scores) {\n  total += score;\n}"},
+      {"term": "let", "meaning": "Makes a name that holds a value, and that can change.", "example": "let lives = 3;"},
+      {"term": "+=", "meaning": "Adds to the number a name holds, and keeps the new number there.", "example": "score += 10;"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "tidy.starter.py", "javascript": "tidy.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def total(bag):",
+        "    count = 0",
+        "    for stack in bag:",
+        "        count {count_op} stack[\"count\"]",
+        "    return count",
+        "",
+        "[sort]def tidy(bag):",
+        "[sort]    return sorted(bag, key=lambda stack: stack[{field}])"
+      ],
+      "javascript": [
+        "function total(bag) {",
+        "  let count = 0;",
+        "  for (const stack of bag) {",
+        "    count {count_op} stack.count;",
+        "  }",
+        "  return count;",
+        "}",
+        "",
+        "[sort]function tidy(bag) {",
+        "[sort]  return bag.slice().sort((a, b) => (a.{field} < b.{field} ? -1 : 1));",
+        "[sort]}"
+      ]
+    },
+    "slots": {
+      "count_op": {"label": "do what", "choices": ["-=", "+="]},
+      "field": {
+        "label": "sort by",
+        "choices": [
+          {"label": "count", "python": "\"count\"", "javascript": "count"},
+          {"label": "item", "python": "\"item\"", "javascript": "item"}
+        ],
+        "stage": 1
+      }
+    },
+    "toggles": {
+      "sort": {"label": "Write tidy too", "stage": 1}
+    },
+    "start": {"slots": {"count_op": 0, "field": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "tidy-total",
+      "goal": "Give back how many things the bag holds: every stack's count added together.",
+      "judge": "equals",
+      "cases": [
+        {"args": [[{"item": "apple", "count": 2}, {"item": "cabbage", "count": 3}, {"item": "carrot", "count": 1}]], "want": 6, "say": "three stacks"},
+        {"args": [[{"item": "apple", "count": 4}]], "want": 4, "say": "one stack"},
+        {"args": [[]], "want": 0, "say": "an empty bag", "edge": true}
+      ],
+      "hints": [
+        "A bag is a list of stacks, and each stack has a count. What is it that you need to add up?",
+        "Start with a total of 0, then look at each stack in turn. Which word goes through a list one thing at a time?",
+        "Each time, add the stack's count to the total. Which word adds a number onto a name's number?"
+      ]
+    },
+    {
+      "flag": "tidy-sorted",
+      "goal": "Give back the same stacks, in A to Z order by item name. Each stack keeps its item and its count.",
+      "unlocked_by": {"flag": "tidy-total"},
+      "entry": {"python": "tidy", "javascript": "tidy"},
+      "gives": {"meaning": "The same stacks, sorted A to Z by item name.", "example": "[{\"item\": \"apple\", \"count\": 2}, {\"item\": \"honey\", \"count\": 4}]"},
+      "words": {
+        "python": [
+          {"term": "sorted", "meaning": "Gives back a new list with its things in order. key says what each thing is compared by.", "example": "sorted([3, 1, 2])"},
+          {"term": "lambda", "meaning": "A tiny function with no name. lambda word: len(word) gives back the length of a word.", "example": "lambda word: len(word)"},
+          {"term": "[ ]", "meaning": "Looks up the thing under a name in a dictionary.", "example": "scores[\"ana\"]"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+        ],
+        "javascript": [
+          {"term": ".slice", "meaning": "Makes a copy of an array, so the array you started with stays the same.", "example": "scores.slice()"},
+          {"term": ".sort", "meaning": "Puts an array's things in order. Its function says which of two things comes first.", "example": "scores.sort((a, b) => a - b)"},
+          {"term": "=>", "meaning": "Makes a tiny function with no name. (word) => word.length gives back the length of a word.", "example": "(word) => word.length"},
+          {"term": "? :", "meaning": "Picks one of two answers: the one after ? when the question is true, else the one after :.", "example": "ready ? \"go\" : \"wait\""},
+          {"term": "<", "meaning": "Asks whether one thing comes before another. The answer is true or false.", "example": "2 < 5"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+        ]
+      },
+      "judge": "tidy_sorted",
+      "cases": [
+        {"args": [[{"item": "cabbage", "count": 3}, {"item": "apple", "count": 2}, {"item": "carrot", "count": 1}]], "say": "three stacks, not in order"},
+        {"args": [[{"item": "apple", "count": 2}, {"item": "carrot", "count": 1}, {"item": "honey", "count": 4}]], "say": "three stacks already in order"},
+        {"args": [[]], "say": "an empty bag", "edge": true}
+      ],
+      "hints": [
+        "The stacks stay the same. Only their order changes: you want them sorted by the item's name, from A to Z.",
+        "Each stack is a dictionary. Which key holds the name that you sort by?",
+        "Python has sorted, which gives back a new list in order, and its key says what to sort by. JavaScript has sort, which takes a function that says which of two things comes first."
+      ]
+    }
+  ],
+  "advice": {
+    "nothing": "For {say}, nothing came back. It should be {want}.",
+    "wrong": "For {say}, the answer was {got}, but it should be {want}.",
+    "not-list": "Give back the whole bag, as a list of stacks. Yours gave back {got}.",
+    "not-stack": "One of the things you gave back is {got}. Every stack needs an \"item\" (a word) and a \"count\" (a whole number).",
+    "lost": "Tidy keeps every stack. The {name} stack should hold {want}, but it holds {got}.",
+    "invented": "Tidy must not add a stack. There is an extra {name} stack, holding {got}.",
+    "not-sorted": "{name} is out of order. The stacks go from A to Z by item name."
+  }
+}

@@ -1,0 +1,12 @@
+// Where the scheduled townsfolk keep their hours (Concept/v0.4/05, 2.8): each one's home, work and the inn, as [column, row]
+// cells of Lanternroot's map. "work" is the cell the person stands on in maps/lanternroot.jsonc; "home" and "inn" are free,
+// walkable cells, and no two spots share a cell.
+{
+  "pip": {"home": [33, 29], "work": [36, 33], "inn": [49, 27]},
+  "guard": {"home": [72, 28], "work": [79, 23], "inn": [50, 28]},
+  "compiler": {"home": [39, 44], "work": [48, 42], "inn": [51, 29]},
+  "keeper": {"home": [13, 27], "work": [42, 33], "inn": [55, 27]},
+  "quartermaster": {"home": [65, 26], "work": [65, 24], "inn": [56, 28]},
+  "artificer": {"home": [28, 19], "work": [29, 15], "inn": [57, 30]},
+  "pell": {"home": [4, 18], "work": [11, 18], "inn": [53, 29]}
+}

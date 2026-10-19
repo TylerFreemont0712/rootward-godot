@@ -1,0 +1,83 @@
+// Pip's count (Concept/v0.4/05, 2.1): Pip's tally board counts the lit lanterns with your count(lanterns). One stage.
+{
+  "id": "count",                        // the file's name, and the part's id (Parts.IDS)
+  "name": "Pip's Tally",                // the part's name: Workbench card, banner
+  "title": "Pip's count",               // the editor's heading
+  "giver": "pip",                       // a townsfolk id: their portrait in the editor and on the Workbench card
+  "built_line": "Pip's tally board counts the lit lanterns with your count().",
+  "entry": {"python": "count", "javascript": "count"},
+  "params": [
+    {"name": "lanterns", "meaning": "The town's lanterns. Each one is a dictionary with a \"name\" and a \"lit\", which is true when the lantern is lit.", "example": "[{\"name\": \"Lamp 1\", \"lit\": true}, {\"name\": \"Lamp 2\", \"lit\": false}]"}
+  ],
+  "gives": {"meaning": "How many lanterns are lit, as a whole number from 0 up.", "example": "3"},
+  "words": {
+    "python": [
+      {"term": "for", "meaning": "Runs the lines under it once for each item in a list, one item at a time.", "example": "for pet in pets:\n    print(pet)"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if score > 10:\n    won = True"},
+      {"term": "[\"part\"]", "meaning": "Reads one part of a dictionary, by the name of that part in quotes.", "example": "pet[\"colour\"]"},
+      {"term": "=", "meaning": "Puts a value into a name, so you can use it later.", "example": "score = 0"},
+      {"term": "+", "meaning": "Adds two numbers together.", "example": "score = score + 10"}
+    ],
+    "javascript": [
+      {"term": "for", "meaning": "Runs the lines in its braces once for each item in a list, one item at a time.", "example": "for (const pet of pets) {\n  console.log(pet);\n}"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (score > 10) {\n  won = true;\n}"},
+      {"term": "[\"part\"]", "meaning": "Reads one part of an object, by the name of that part in quotes.", "example": "pet[\"colour\"]"},
+      {"term": "=", "meaning": "Puts a value into a name, so you can use it later.", "example": "score = 0;"},
+      {"term": "+", "meaning": "Adds two numbers together.", "example": "score = score + 10;"}
+    ]
+  },
+  "starter": {"python": "count.starter.py", "javascript": "count.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def count(lanterns):",
+        "    lit = 0",
+        "    for lantern in lanterns:",
+        "        if lantern[{field_name}]:",
+        "            lit = lit + {step}",
+        "    return lit"
+      ],
+      "javascript": [
+        "function count(lanterns) {",
+        "  let lit = 0;",
+        "  for (const lantern of lanterns) {",
+        "    if (lantern[{field_name}]) {",
+        "      lit = lit + {step};",
+        "    }",
+        "  }",
+        "  return lit;",
+        "}"
+      ]
+    },
+    "slots": {
+      "field_name": {"label": "which part", "choices": ["\"name\"", "\"lit\"", "\"colour\""]},
+      "step": {"label": "add", "choices": ["0", "1", "2"]}
+    },
+    "toggles": {},
+    "start": {"slots": {"field_name": 0, "step": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "count-built",
+      "goal": "Pip wants to count the lit lanterns. Give back how many of them are lit.",
+      "judge": "equals",
+      "cases": [
+        {"args": [[{"name": "Lamp 1", "lit": true}, {"name": "Lamp 2", "lit": false}, {"name": "Lamp 3", "lit": true}, {"name": "Lamp 4", "lit": true}, {"name": "Lamp 5", "lit": false}]], "want": 3, "say": "three of five lit"},
+        {"args": [[{"name": "Lamp 1", "lit": true}, {"name": "Lamp 2", "lit": true}, {"name": "Lamp 3", "lit": true}, {"name": "Lamp 4", "lit": true}, {"name": "Lamp 5", "lit": true}]], "want": 5, "say": "all five lit"},
+        {"args": [[{"name": "Lamp 1", "lit": false}, {"name": "Lamp 2", "lit": false}, {"name": "Lamp 3", "lit": false}, {"name": "Lamp 4", "lit": false}]], "want": 0, "say": "none lit"},
+        {"args": [[]], "want": 0, "say": "no lanterns at all", "edge": true}
+      ],
+      "hints": [
+        "Pip's board has to look at each lantern in the list, one by one. Which kind of loop does that?",
+        "Keep a number that starts at 0 before the loop. It is your tally: how many lit lanterns you have counted so far.",
+        "Each lantern has a lit part that is True or False. Ask about it with if, and only then add one to your tally.",
+        "Give back your tally after the loop has looked at every lantern. Where must the give-back line go to do that?"
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "For {say}, your count gave {got}, but it should give {want}. Did you look at every lantern, and count only the lit ones?",
+    "nothing": "For {say}, your count gave nothing back. Pip's board needs a number.",
+    "wrong-type": "For {say}, your count gave {got}. Pip's board needs a number."
+  }
+}

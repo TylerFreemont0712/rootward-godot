@@ -1,0 +1,14 @@
+// A mossy boulder (catalog only so far): a big grey rock with a smaller one against it and a patch of moss.
+{
+ "id": "rock",
+ "kind": "prop",
+ "what": "a rounded grey boulder with a smaller rock beside it and a patch of green moss",
+ "footprint": [1, 1],
+ "ramps": {"rock": "stone", "moss": "leaf"},
+ "parts": [
+  {"shape": "ball", "at": [0.1, 0.2, 0], "size": [0.8, 0.6, 0.62], "ramp": "rock", "shade": 1},
+  {"shape": "ball", "at": [0.56, 0.38, 0.08], "size": [0.38, 0.34, 0.38], "ramp": "rock", "shade": 0},
+  {"shape": "ball", "at": [0.04, 0.18, 0], "size": [0.34, 0.3, 0.28], "ramp": "rock", "shade": 2},
+  {"shape": "ball", "at": [0.3, 0.3, 0.48], "size": [0.34, 0.24, 0.14], "ramp": "moss", "shade": 1}
+ ]
+}

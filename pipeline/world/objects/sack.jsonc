@@ -1,0 +1,14 @@
+// A sack of grain, tied at the neck (catalog only so far): soft and lumpy, not a pot.
+{
+ "id": "sack",
+ "kind": "prop",
+ "what": "a lumpy burlap grain sack tied with string at the top, slumped and soft",
+ "footprint": [1, 1],
+ "ramps": {"burlap": "thatch", "string": "wood"},
+ "parts": [
+  {"shape": "ball", "at": [0.14, 0.16, 0], "size": [0.72, 0.62, 0.62], "ramp": "burlap"},
+  {"shape": "cone", "at": [0.3, 0.3, 0.52], "size": [0.4, 0.34, 0.3], "ramp": "burlap", "shade": 1},
+  {"shape": "cylinder", "at": [0.4, 0.4, 0.74], "size": [0.2, 0.16, 0.06], "ramp": "string"},
+  {"shape": "ball", "at": [0.38, 0.38, 0.78], "size": [0.24, 0.2, 0.16], "ramp": "burlap", "shade": 1}
+ ]
+}

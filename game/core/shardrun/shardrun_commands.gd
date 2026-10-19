@@ -277,6 +277,8 @@ static func _take_script(next: Dictionary, command: Dictionary, catalog: Diction
 	var reward: Dictionary = next.get("reward", {})
 	if next.status != "reward" or not reward.has("script"):
 		return _no("no-script", "There is no script here.")
+	if _has_reward_before_script(reward):
+		return _no("script-not-ready", "Resolve the other rewards before choosing a script.")
 	var belt: Array = next.get("belt", [])
 	if belt.size() >= ProgramScripts.belt_size(next, catalog):
 		var drop := int(command.get("drop_index", -1))
@@ -293,10 +295,19 @@ static func _skip_script(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	var reward: Dictionary = next.get("reward", {})
 	if next.status != "reward" or not reward.has("script"):
 		return _no("no-script", "There is no script to skip.")
+	if _has_reward_before_script(reward):
+		return _no("script-not-ready", "Resolve the other rewards before choosing a script.")
 	reward.erase("script")
 	Shardrun.record(next, {"kind": "note", "text": "You leave the script behind."})
 	Shardrun.settle_reward(next, catalog)
 	return {}
+
+
+static func _has_reward_before_script(reward: Dictionary) -> bool:
+	for key: String in ["cursed_relic", "relics", "shards", "chest", "spell"]:
+		if reward.has(key):
+			return true
+	return false
 
 
 static func _open_chest(next: Dictionary, catalog: Dictionary) -> Dictionary:
@@ -304,20 +315,25 @@ static func _open_chest(next: Dictionary, catalog: Dictionary) -> Dictionary:
 	if next.status != "reward" or not reward.has("chest"):
 		return _no("no-chest", "There is no sealed chest to open.")
 	var chest: Dictionary = reward.chest
+	var remaining := reward.duplicate(true)
+	remaining.erase("chest")
 	# LEARN: the stream belongs to the room, not the revision: reloading or rearranging cannot reroll it.
 	var rng := Rng.create(next.seed, "cache:%d:%s" % [next.layer, JsMath.text(next.position)])
 	var curses := Shardrun.curses_left(next, catalog)
 	if rng.next() < float(chest.curse_chance) and not curses.is_empty():
 		var curse: Dictionary = curses[floori(rng.next() * curses.size())]
 		Shardrun.gain_relic(next, curse, catalog)
-		next.reward = {"cursed_relic": curse.id}
+		remaining["cursed_relic"] = curse.id
+		next.reward = remaining
 		var text := "The seal breaks. A curse binds itself to your run; a rest can cleanse it instead of healing."
 		Shardrun.record(next, {"kind": "note", "text": text})
 	else:
 		var relics := ShardrunBattle.draft_relics(
 			next, "treasure", int(catalog.balance.treasure_relic_choices), catalog
 		)
-		next.reward = {"relics": relics} if not relics.is_empty() else {}
+		if not relics.is_empty():
+			remaining["relics"] = relics
+		next.reward = remaining
 		var text := "The cache opens safely. Choose a relic." if not relics.is_empty() else "The cache is empty."
 		Shardrun.record(next, {"kind": "note", "text": text})
 		Shardrun.settle_reward(next, catalog)

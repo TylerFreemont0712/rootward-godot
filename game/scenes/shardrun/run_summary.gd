@@ -84,12 +84,21 @@ static func stats_panel(state: Dictionary) -> Control:
 	var skin := Settings.character_skin
 	var portrait := TextureRect.new()
 	var image := {
-		"vesper": "res://assets/sprites/vesper/profile.png",
-		"emberfox": "res://characters/emberfox/emberfox_front.png",
+		"vesper": "res://assets/portraits/vesper.png",
+		"emberfox": "res://assets/portraits/emberfox.png",
+		"mana": "res://assets/portraits/mana.png",
+		"anby": "res://assets/portraits/anby.png",
 		"shibu": "res://assets/portraits/shibu.png",
 		"dummy": "res://assets/portraits/dummy.png",
 	}
-	var portrait_path: String = image.get(skin, image.emberfox)
+	var local_portrait := Settings.LOCAL_SKINS + skin + "/portrait.png"
+	var portrait_path: String = (
+		"res://assets/portraits/%s.png" % skin
+		if ResourceLoader.exists("res://assets/portraits/%s.png" % skin)
+		else String(image.get(skin, image.emberfox))
+	)
+	if ResourceLoader.exists(local_portrait) and skin not in image:
+		portrait_path = local_portrait
 	portrait.texture = load(portrait_path) as Texture2D if ResourceLoader.exists(portrait_path) else null
 	portrait.custom_minimum_size = Vector2(136, 136)
 	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -99,6 +108,8 @@ static func stats_panel(state: Dictionary) -> Control:
 	var names := {
 		"vesper": ["Vesper", Text.t("Star-Script Witch")],
 		"emberfox": ["Emberfox", Text.t("Salvage Runner")],
+		"mana": ["Mana", "Zenless Zone Zero"],
+		"anby": ["Anby", "Zenless Zone Zero"],
 		"shibu": ["Shibu", Text.t("Hovering Caster")],
 		"dummy": ["Motion Dummy", Text.t("Animation lab")],
 	}

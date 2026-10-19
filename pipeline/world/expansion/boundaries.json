@@ -19,7 +19,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-rail_fence",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-rail_fence",
+      "vertical": "expand-rail_fence_v"
+    }
   },
   "expand-rail_fence_v": {
     "name": "Split rail fence (end on)",
@@ -41,7 +45,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-rail_fence",
-    "variant": "Vertical"
+    "variant": "Vertical",
+    "line": {
+      "horizontal": "expand-rail_fence",
+      "vertical": "expand-rail_fence_v"
+    }
   },
   "expand-picket_fence": {
     "name": "Picket fence",
@@ -63,7 +71,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-picket_fence",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-picket_fence",
+      "vertical": "expand-picket_fence_v"
+    }
   },
   "expand-picket_fence_v": {
     "name": "Picket fence (end on)",
@@ -85,7 +97,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-picket_fence",
-    "variant": "Vertical"
+    "variant": "Vertical",
+    "line": {
+      "horizontal": "expand-picket_fence",
+      "vertical": "expand-picket_fence_v"
+    }
   },
   "expand-iron_rail": {
     "name": "Iron railing",
@@ -107,7 +123,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-iron_rail",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-iron_rail",
+      "vertical": "expand-iron_rail_v"
+    }
   },
   "expand-iron_rail_v": {
     "name": "Iron railing (end on)",
@@ -129,7 +149,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-iron_rail",
-    "variant": "Vertical"
+    "variant": "Vertical",
+    "line": {
+      "horizontal": "expand-iron_rail",
+      "vertical": "expand-iron_rail_v"
+    }
   },
   "expand-garden_lattice": {
     "name": "Garden lattice",
@@ -151,7 +175,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-garden_lattice",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-garden_lattice",
+      "vertical": "expand-garden_lattice_v"
+    }
   },
   "expand-garden_lattice_v": {
     "name": "Garden lattice (end on)",
@@ -173,7 +201,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-garden_lattice",
-    "variant": "Vertical"
+    "variant": "Vertical",
+    "line": {
+      "horizontal": "expand-garden_lattice",
+      "vertical": "expand-garden_lattice_v"
+    }
   },
   "expand-brick_wall": {
     "name": "Red brick wall",
@@ -198,7 +230,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-brick-wall",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-brick_wall",
+      "vertical": "expand-brick_wall_v"
+    }
   },
   "expand-brick_wall_corner": {
     "name": "Red brick wall corner",
@@ -224,7 +260,7 @@
     "solid": true,
     "flippable": true,
     "family": "expand-brick-wall",
-    "variant": "Corner"
+    "variant": "Corner NW"
   },
   "expand-fieldstone_wall": {
     "name": "Fieldstone wall",
@@ -249,7 +285,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-fieldstone-wall",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-fieldstone_wall",
+      "vertical": "expand-fieldstone_wall_v"
+    }
   },
   "expand-fieldstone_wall_corner": {
     "name": "Fieldstone wall corner",
@@ -275,7 +315,7 @@
     "solid": true,
     "flippable": true,
     "family": "expand-fieldstone-wall",
-    "variant": "Corner"
+    "variant": "Corner NW"
   },
   "expand-plaster_wall": {
     "name": "Timber plaster wall",
@@ -300,7 +340,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-plaster-wall",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-plaster_wall",
+      "vertical": "expand-plaster_wall_v"
+    }
   },
   "expand-plaster_wall_corner": {
     "name": "Timber plaster wall corner",
@@ -326,7 +370,7 @@
     "solid": true,
     "flippable": true,
     "family": "expand-plaster-wall",
-    "variant": "Corner"
+    "variant": "Corner NW"
   },
   "expand-log_wall": {
     "name": "Log wall",
@@ -351,7 +395,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-log-wall",
-    "variant": "Horizontal"
+    "variant": "Horizontal",
+    "line": {
+      "horizontal": "expand-log_wall",
+      "vertical": "expand-log_wall_v"
+    }
   },
   "expand-log_wall_corner": {
     "name": "Log wall corner",
@@ -377,7 +425,7 @@
     "solid": true,
     "flippable": true,
     "family": "expand-log-wall",
-    "variant": "Corner"
+    "variant": "Corner NW"
   },
   "expand-stone_boundary_post": {
     "name": "Carved stone boundary post",
@@ -443,7 +491,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-gate",
-    "variant": "Arched"
+    "variant": "Arched horizontal",
+    "line": {
+      "horizontal": "expand-arched_wood_gate",
+      "vertical": "expand-arched_wood_gate_v"
+    }
   },
   "expand-iron_garden_gate": {
     "name": "Iron garden gate",
@@ -465,7 +517,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-gate",
-    "variant": "Iron"
+    "variant": "Iron horizontal",
+    "line": {
+      "horizontal": "expand-iron_garden_gate",
+      "vertical": "expand-iron_garden_gate_v"
+    }
   },
   "expand-backless_bench": {
     "name": "Backless village bench",
@@ -594,7 +650,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-brick-wall",
-    "variant": "End on"
+    "variant": "End on",
+    "line": {
+      "horizontal": "expand-brick_wall",
+      "vertical": "expand-brick_wall_v"
+    }
   },
   "expand-fieldstone_wall_v": {
     "name": "Fieldstone wall (end on)",
@@ -619,7 +679,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-fieldstone-wall",
-    "variant": "End on"
+    "variant": "End on",
+    "line": {
+      "horizontal": "expand-fieldstone_wall",
+      "vertical": "expand-fieldstone_wall_v"
+    }
   },
   "expand-plaster_wall_v": {
     "name": "Plaster wall (end on)",
@@ -644,7 +708,11 @@
     "solid": true,
     "flippable": true,
     "family": "expand-plaster-wall",
-    "variant": "End on"
+    "variant": "End on",
+    "line": {
+      "horizontal": "expand-plaster_wall",
+      "vertical": "expand-plaster_wall_v"
+    }
   },
   "expand-log_wall_v": {
     "name": "Log wall (end on)",
@@ -669,6 +737,374 @@
     "solid": true,
     "flippable": true,
     "family": "expand-log-wall",
-    "variant": "End on"
+    "variant": "End on",
+    "line": {
+      "horizontal": "expand-log_wall",
+      "vertical": "expand-log_wall_v"
+    }
+  },
+  "expand-brick_wall_corner_ne": {
+    "name": "Red brick wall corner (NE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "Corner NE"
+  },
+  "expand-brick_wall_corner_se": {
+    "name": "Red brick wall corner (SE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "Corner SE"
+  },
+  "expand-brick_wall_corner_sw": {
+    "name": "Red brick wall corner (SW)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "brick",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-brick-wall",
+    "variant": "Corner SW"
+  },
+  "expand-fieldstone_wall_corner_ne": {
+    "name": "Fieldstone wall corner (NE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "Corner NE"
+  },
+  "expand-fieldstone_wall_corner_se": {
+    "name": "Fieldstone wall corner (SE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "Corner SE"
+  },
+  "expand-fieldstone_wall_corner_sw": {
+    "name": "Fieldstone wall corner (SW)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "fieldstone",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-fieldstone-wall",
+    "variant": "Corner SW"
+  },
+  "expand-plaster_wall_corner_ne": {
+    "name": "Timber plaster wall corner (NE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "Corner NE"
+  },
+  "expand-plaster_wall_corner_se": {
+    "name": "Timber plaster wall corner (SE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "Corner SE"
+  },
+  "expand-plaster_wall_corner_sw": {
+    "name": "Timber plaster wall corner (SW)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "plaster",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-plaster-wall",
+    "variant": "Corner SW"
+  },
+  "expand-log_wall_corner_ne": {
+    "name": "Log wall corner (NE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "Corner NE"
+  },
+  "expand-log_wall_corner_se": {
+    "name": "Log wall corner (SE)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "Corner SE"
+  },
+  "expand-log_wall_corner_sw": {
+    "name": "Log wall corner (SW)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "indoor",
+      "outdoor"
+    ],
+    "tags": [
+      "boundary",
+      "wall",
+      "log",
+      "corner",
+      "modular",
+      "corner"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-log-wall",
+    "variant": "Corner SW"
+  },
+  "expand-arched_wood_gate_v": {
+    "name": "Arched garden gate (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "gate",
+      "garden",
+      "wood"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-gate",
+    "variant": "Arched vertical",
+    "line": {
+      "horizontal": "expand-arched_wood_gate",
+      "vertical": "expand-arched_wood_gate_v"
+    }
+  },
+  "expand-iron_garden_gate_v": {
+    "name": "Iron garden gate (end on)",
+    "kind": "prop",
+    "category": "street",
+    "subcategory": "fences_and_gates",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "gate",
+      "iron",
+      "ornate"
+    ],
+    "size": [
+      1,
+      1
+    ],
+    "solid": true,
+    "flippable": true,
+    "family": "expand-gate",
+    "variant": "Iron vertical",
+    "line": {
+      "horizontal": "expand-iron_garden_gate",
+      "vertical": "expand-iron_garden_gate_v"
+    }
   }
 }

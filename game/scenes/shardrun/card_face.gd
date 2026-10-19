@@ -42,7 +42,7 @@ const COMPLEXITY_COLOURS := {
 const ROOTGLASS_FRAME := "cards/rootglass"
 const ROOTGLASS_ART_SCALE := 0.456
 const ROOTGLASS_ART_LIFT := 0.06
-const ROOTGLASS_ART_NUDGE_UP := 7.0
+const ROOTGLASS_ART_NUDGE_UP := 11
 const TINT := preload("res://ui/card_tint.gdshader")
 const FRAME := "cards/frame"
 const DETAIL_DELAY := 0.08
@@ -58,6 +58,7 @@ const ROOTGLASS_GEOMETRY := {
 }
 
 static var _geometry: Dictionary = {}
+static var _rootglass_glow: GradientTexture2D
 
 var shard_id := ""
 var spot: Dictionary = {}
@@ -262,7 +263,8 @@ func _layout() -> void:
 		var art_size := window.size * ROOTGLASS_ART_SCALE
 		_art.custom_minimum_size = art_size
 		_art.size = art_size
-		_art.position = window.get_center() - art_size * 0.5 - Vector2(0, window.size.y * ROOTGLASS_ART_LIFT + ROOTGLASS_ART_NUDGE_UP)
+		var lift := window.size.y * ROOTGLASS_ART_LIFT + ROOTGLASS_ART_NUDGE_UP
+		_art.position = window.get_center() - art_size * 0.5 - Vector2(0, lift)
 	else:
 		# A fallback glyph or an older frame keeps its smaller, centered picture.
 		var side := minf(window.size.x, window.size.y) * (0.58 if _rootglass else 0.64)
@@ -455,10 +457,16 @@ func _draw() -> void:
 	# Behind the frame's window: a dark glow in the card's colour, for its picture to stand in.
 	var window := _box("art", card_size)
 	draw_style_box(UiTheme.box(Color("#0c0b12"), Color.TRANSPARENT, 0, int(radius * 0.4)), window)
-	var centre := window.get_center()
-	for ring in 6:
-		var reach := window.size.x * (0.5 - ring * 0.07)
-		draw_circle(centre, reach, Color(colour, 0.05 + ring * 0.018))
+	if _rootglass:
+		# A cubic radial texture blends the paradigm colour smoothly and follows the relic art's 11 px lift.
+		draw_texture_rect(
+			_smooth_rootglass_glow(), Rect2(window.position + Vector2(0, -11), window.size), false, colour
+		)
+	else:
+		var centre := window.get_center()
+		for ring in 6:
+			var reach := window.size.x * (0.5 - ring * 0.07)
+			draw_circle(centre, reach, Color(colour, 0.05 + ring * 0.018))
 	if _frame != null:
 		return
 	if _rootglass:
@@ -481,6 +489,25 @@ func _draw() -> void:
 	var orb := Vector2(float(shares[0]) * card_size.x, float(shares[1]) * card_size.y)
 	draw_circle(orb, float(shares[2]) * card_size.x * 1.15, Color("#c49a45"))
 	draw_circle(orb, float(shares[2]) * card_size.x, Color("#3a2466"))
+
+
+static func _smooth_rootglass_glow() -> GradientTexture2D:
+	if _rootglass_glow != null:
+		return _rootglass_glow
+	var gradient := Gradient.new()
+	gradient.offsets = PackedFloat32Array([0.0, 0.36, 0.76, 1.0])
+	gradient.colors = PackedColorArray(
+		[Color(1, 1, 1, 0.22), Color(1, 1, 1, 0.16), Color(1, 1, 1, 0.05), Color(1, 1, 1, 0)]
+	)
+	gradient.interpolation_mode = Gradient.GRADIENT_INTERPOLATE_CUBIC
+	_rootglass_glow = GradientTexture2D.new()
+	_rootglass_glow.width = 256
+	_rootglass_glow.height = 256
+	_rootglass_glow.fill = GradientTexture2D.FILL_RADIAL
+	_rootglass_glow.fill_from = Vector2(0.5, 0.5)
+	_rootglass_glow.fill_to = Vector2(1.0, 0.5)
+	_rootglass_glow.gradient = gradient
+	return _rootglass_glow
 
 
 ## The element a shard gives its bolts, read from its first worked example ("" when it gives none).

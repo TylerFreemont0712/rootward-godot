@@ -1,0 +1,20 @@
+// A tuft of tall grass on the ground (3 placements, ground layer).
+{
+ "id": "tuft",
+ "kind": "prop",
+ "what": "a small tuft of tall green grass blades",
+ "footprint": [1, 1],
+ "ramps": {"blades": "grass"},
+ "parts": [
+  {"shape": "cone", "at": [0.12, 0.3, 0], "size": [0.1, 0.1, 0.4], "ramp": "blades", "shade": 1},
+  {"shape": "cone", "at": [0.22, 0.4, 0], "size": [0.1, 0.1, 0.6], "ramp": "blades", "shade": 2},
+  {"shape": "cone", "at": [0.32, 0.3, 0], "size": [0.1, 0.1, 0.5], "ramp": "blades", "shade": 1},
+  {"shape": "cone", "at": [0.42, 0.42, 0], "size": [0.1, 0.1, 0.72], "ramp": "blades", "shade": 2},
+  {"shape": "cone", "at": [0.52, 0.3, 0], "size": [0.1, 0.1, 0.55], "ramp": "blades", "shade": 1},
+  {"shape": "cone", "at": [0.62, 0.4, 0], "size": [0.1, 0.1, 0.62], "ramp": "blades", "shade": 2},
+  {"shape": "cone", "at": [0.72, 0.3, 0], "size": [0.1, 0.1, 0.42], "ramp": "blades", "shade": 1},
+  {"shape": "cone", "at": [0.8, 0.25, 0], "size": [0.1, 0.1, 0.3], "ramp": "blades", "shade": 0},
+  {"shape": "cone", "at": [0.3, 0.2, 0], "size": [0.1, 0.1, 0.3], "ramp": "blades", "shade": 0},
+  {"shape": "cone", "at": [0.55, 0.18, 0], "size": [0.1, 0.1, 0.32], "ramp": "blades", "shade": 0}
+ ]
+}

@@ -4,6 +4,7 @@
     "ink": ["#2a1d2b"],
     "ink_soft": ["#4a3446"],
     "night": ["#1c1a30"],
+    "black": ["#000000"],
 
     "skin_porcelain": ["#ffe8d8", "#f6c7ae", "#d9978a"],
     "skin_peach": ["#fbd5b5", "#eeab8a", "#c97f72"],
@@ -23,6 +24,26 @@
     "hair_green": ["#b0dc8c", "#72ae5c", "#467640"],
     "hair_violet": ["#cdb0f2", "#9a7ad4", "#664e9e"],
     "hair_red": ["#f06c58", "#c03e3e", "#842a34"],
+    "hair_espresso": ["#7c5c4e", "#4e3632", "#2f2024"],
+    "hair_strawberry": ["#fcc8a0", "#eb9a74", "#b86a58"],
+    "hair_teal": ["#90e8dc", "#3eb0a8", "#26706e"],
+    "hair_mint": ["#d4f6da", "#96d8b0", "#5c9a80"],
+    "hair_navy": ["#6a7cc8", "#3c4888", "#252a58"],
+    "hair_ash": ["#ccc0b4", "#958a86", "#625a62"],
+    "hair_sky": ["#d6f0ff", "#a0cdf0", "#6c94c4"],
+    "hair_magenta": ["#f494d8", "#c4509e", "#843070"],
+
+    "eyes_dark": ["#5e4a68", "#35263a", "#1f1622"],
+    "eyes_brown": ["#b07a52", "#7a4a2e", "#4e2c1e"],
+    "eyes_hazel": ["#c8a050", "#8c7a36", "#5a4c26"],
+    "eyes_green": ["#8ad870", "#3e9a4a", "#25603a"],
+    "eyes_blue": ["#8ac8ff", "#3a7ce0", "#244c9a"],
+    "eyes_grey": ["#c4ccd8", "#7c8698", "#4c5466"],
+    "eyes_violet": ["#c8a0ff", "#8a52d8", "#56309a"],
+    "eyes_amber": ["#ffd070", "#e09a28", "#9a5e1a"],
+    "eyes_pink": ["#ffaad0", "#e05a98", "#9a3466"],
+    "eyes_teal": ["#80f0e0", "#20b0a8", "#14706c"],
+    "eyes_red": ["#ff8a7a", "#d8343a", "#8a1e2a"],
 
     "cloth_red": ["#f2766a", "#c84a4a", "#8c2e3c", "#5e2032"],
     "cloth_orange": ["#f6a85a", "#d97a3c", "#a0502e", "#6a3426"],
@@ -38,6 +59,13 @@
     "cloth_black": ["#555066", "#383447", "#24212f", "#161420"],
     "cloth_brown": ["#c08856", "#8e5c3c", "#60402e", "#40291f"],
     "cloth_cream": ["#f6e8c4", "#dcc092", "#ad8c68", "#7c6250"],
+    "cloth_mint": ["#c4f2d4", "#8ad4ac", "#58a07e", "#3a6c5a"],
+    "cloth_sky": ["#c0e6ff", "#86c0f0", "#5a8cc8", "#3c5e94"],
+    "cloth_lavender": ["#e0ccf6", "#b89ce0", "#8a6eb4", "#5e4a82"],
+    "cloth_maroon": ["#c45a6a", "#8e3448", "#602234", "#3e1624"],
+    "cloth_olive": ["#c8c47a", "#9a9450", "#6a6838", "#444428"],
+    "cloth_coral": ["#ffae9a", "#f07a6a", "#b85050", "#7c343c"],
+    "cloth_denim": ["#8aa6cc", "#5c78a6", "#3e5278", "#2a3652"],
     "steel": ["#e0e6ee", "#a6b0c2", "#6c7690", "#454c66"],
     "gold": ["#ffe88a", "#f0b840", "#b07a2a", "#74501e"],
 
@@ -61,8 +89,10 @@
     "main": "cloth_blue",
     "second": "cloth_cream",
     "accent": "cloth_red",
-    "metal": "steel"
+    "metal": "steel",
+    "eyes": "eyes_dark"
   },
+  "_eyes": "The eyes slot colours the iris (legend g, shade 1 of the eye ramp). Its default, eyes_dark, sits next to the ink, so a look that names no eye colour keeps the dark eyes every character had.",
   "_legend": "The characters a .sprite file may use without declaring them. A slot letter means that slot's shade; a ramp name is a fixed colour.",
   "legend": {
     "#": "ink",
@@ -76,6 +106,7 @@
     "t": "@second.0", "u": "@second.1", "v": "@second.2",
     "x": "@accent.0", "y": "@accent.1", "z": "@accent.2",
     "k": "@metal.0", "l": "@metal.1", "n": "@metal.2",
+    "g": "@eyes.1",
     "o": "cloth_brown.2", "O": "cloth_brown.3"
   }
 }

@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"add_op": 1, "add_stop": 1, "take_op": 0}, "toggles": ["look", "new"]},
+    {"slots": {"add_op": 1, "add_stop": 1, "take_op": 1}, "toggles": ["look", "new", "take", "empty"]}
+  ]
+}

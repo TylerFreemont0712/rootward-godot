@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): the first time something is picked up and goes into the bag (the first picked-* flag).
+{
+  "id": "hotaru-first-pick",
+  "start": [
+    {
+      "goto": "pick"
+    }
+  ],
+  "nodes": {
+    "pick": {
+      "lines": [
+        {
+          "text": "Into the bag it goes! Your add code did that!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Every time you pick something up, your code runs. Try a few different things.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Three different kinds, and Nym will be very proud.",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "first-pick-told"
+      ]
+    }
+  }
+}

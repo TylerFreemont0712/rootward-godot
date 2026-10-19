@@ -1,0 +1,90 @@
+// Everyone's hours (Concept/v0.4/05, 2.8): the player's where(person, hour) says where a townsfolk is at an hour: home,
+// work or the inn. One stage. The game asks it for every scheduled person and every hour (a table), and moves people
+// to the spot their answer changes to when the clock's hour changes.
+{
+  "id": "hours",
+  "name": "Everyone's Hours",
+  "title": "Everyone's hours",
+  "giver": "guard",
+  "built_line": "Everyone walks between home, work and the inn by your where().",
+  "entry": {"python": "where", "javascript": "where"},
+  "params": [
+    {"name": "person", "meaning": "The townsfolk's id: a word like \"pip\" or \"innkeeper\".", "example": "\"pip\""},
+    {"name": "hour", "meaning": "The hour on the clock, a whole number from 0 to 23. 0 is midnight.", "example": "20"}
+  ],
+  "gives": {"meaning": "Where that person is at that hour: \"home\", \"work\" or \"inn\".", "example": "\"inn\""},
+  "words": {
+    "python": [
+      {"term": "<", "meaning": "Asks whether the first number is less than the second. The answer is True or False.", "example": "score < 10"},
+      {"term": ">=", "meaning": "Asks whether the first number is the same as the second, or more. The answer is True or False.", "example": "score >= 10"},
+      {"term": "or", "meaning": "True when either of its two questions is True.", "example": "fruit == \"pear\" or fruit == \"plum\""},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if score == 10:\n    return \"ten\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "<", "meaning": "Asks whether the first number is less than the second. The answer is true or false.", "example": "score < 10"},
+      {"term": ">=", "meaning": "Asks whether the first number is the same as the second, or more. The answer is true or false.", "example": "score >= 10"},
+      {"term": "||", "meaning": "True when either of its two questions is true.", "example": "fruit === \"pear\" || fruit === \"plum\""},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (score === 10) {\n  return \"ten\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "hours.starter.py", "javascript": "hours.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def where(person, hour):",
+        "    if hour < {home_until} or hour >= {home_from}:",
+        "        return \"home\"",
+        "    if hour < {work_until}:",
+        "        return \"work\"",
+        "    return \"inn\""
+      ],
+      "javascript": [
+        "function where(person, hour) {",
+        "  if (hour < {home_until} || hour >= {home_from}) {",
+        "    return \"home\";",
+        "  }",
+        "  if (hour < {work_until}) {",
+        "    return \"work\";",
+        "  }",
+        "  return \"inn\";",
+        "}"
+      ]
+    },
+    "slots": {
+      "home_until": {"label": "home until", "choices": ["10", "7", "12"]},
+      "home_from": {"label": "home from", "choices": ["19", "22", "20"]},
+      "work_until": {"label": "work until", "choices": ["10", "18", "21"]}
+    },
+    "start": {"slots": {"home_until": 0, "home_from": 0, "work_until": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "hours-built",
+      "goal": "Give back home, work or the inn for each person at each hour, by the hours in the starter.",
+      "judge": "hours",
+      "cases": [
+        {"args": ["innkeeper", 3], "want": "home", "say": "the innkeeper at hour 3"},
+        {"args": ["innkeeper", 10], "want": "work", "say": "the innkeeper at hour 10"},
+        {"args": ["innkeeper", 20], "want": "inn", "say": "the innkeeper at hour 20"},
+        {"args": ["innkeeper", 7], "say": "the innkeeper at hour 7 (any of the three will do)"},
+        {"args": ["innkeeper", 23], "say": "the innkeeper at hour 23 (any of the three will do)"},
+        {"args": ["pip", 3], "want": "home", "say": "pip at hour 3"},
+        {"args": ["pip", 10], "want": "work", "say": "pip at hour 10"},
+        {"args": ["pip", 20], "want": "inn", "say": "pip at hour 20"},
+        {"args": ["pip", 7], "say": "pip at hour 7 (any of the three will do)"},
+        {"args": ["pip", 23], "say": "pip at hour 23 (any of the three will do)"}
+      ],
+      "hints": [
+        "Start with home, since it covers the night. Which hours of the night are the home hours?",
+        "A question can ask whether the hour is less than a number. Two such questions, joined with or, can catch the hours at both ends of the night.",
+        "Once the night hours are caught, ask about work next. Whatever is left after that is the inn."
+      ]
+    }
+  ],
+  "advice": {
+    "not-spot": "At hour {arg1}, {arg0} gave back {got}. A person is always at home, at work or at the inn, so give back one of those three words.",
+    "wrong": "At hour {arg1}, {arg0} should be at {want}, but your where() gives {got}."
+  }
+}

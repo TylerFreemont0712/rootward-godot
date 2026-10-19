@@ -1,7 +1,24 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Lumen teaches lesson 3, "Light the lane": light_all, a loop over the
+// lamps. She offers it once the memory quest is done (its steps are all flags: memory-asked, memory-written,
+// saved-once). After the lamps are lit (v0.4, Concept/v0.4/03-story.md) she tells "the turn": the lamps listened. She
+// also gives the clock (quest 12, "What time is it?", the clock task in two stages) once the map is opened.
 {
   "id": "oracle",
   "start": [
+    {"if": {"flag": "glow-built", "not": "glow-told"}, "goto": "glow_built"},
+    {"if": {"flag": "glow-asked", "not": "glow-built"}, "goto": "to_hotaru"},
+    {"if": {"flag": "clock-evening"}, "goto": "clock_done"},
+    {"if": {"flag": "clock-text"}, "goto": "wait_evening"},
+    {"if": {"flag": "clock-built"}, "goto": "text_offer"},
+    {"if": {"flag": "clock-asked"}, "goto": "clock_waits"},
+    {"if": {"flag": "lamps-lit", "not": "turn-told"}, "goto": "turn"},
+    {"if": {"all": [{"flag": "map-places"}, {"flag": "map-opened"}]}, "goto": "clock_offer"},
+    {"if": {"flag": "lamps-lit"}, "goto": "glow"},
+    {"if": {"flag": "lamps-asked"}, "goto": "lane_waits"},
+    {
+      "if": {"all": [{"flag": "memory-asked"}, {"flag": "memory-written"}, {"flag": "saved-once"}]},
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-oracle"
@@ -13,6 +30,155 @@
     }
   ],
   "nodes": {
+    "turn": {
+      "lines": [
+        {"text": "Look at the lane, tinker. Every lamp, awake at once.", "mood": "happy"},
+        {"text": "I have kept these lamps for as long as I can remember. They never listened to me."},
+        {"text": "They listened to you. Your words, in your loop. The lamps listened."},
+        {"text": "Is that... unusual?", "speaker": "hotaru"},
+        {"text": "It has not happened in a very long time. Ask Elder Orin about the Makers."}
+      ],
+      "set": ["turn-told"]
+    },
+    "clock_offer": {
+      "lines": [
+        {"text": "Tinker, a quiet question. What time is it in Lanternroot?"},
+        {"text": "There is no answer. The town has no clock, so it is always now."},
+        {"text": "Always now? That sounds tiring.", "speaker": "hotaru"},
+        {"text": "It is. A town needs mornings. And my lamps should know when the evening comes."},
+        {"text": "First, teach the town day from night. A minute goes in. Night, morning, afternoon or evening comes out."}
+      ],
+      "choices": [
+        {"text": "I'll build a clock.", "goto": "clock_teach"},
+        {"text": "Not yet.", "goto": "clock_later"}
+      ]
+    },
+    "clock_teach": {
+      "lines": [
+        {"text": "The town's hours are written in the margin of the page. Follow them."}
+      ],
+      "set": ["clock-asked"],
+      "open": "task:clock"
+    },
+    "clock_later": {
+      "lines": [
+        {"text": "Time can wait. It is very good at it."}
+      ]
+    },
+    "clock_waits": {
+      "lines": [
+        {"text": "The day is not finished. The town is still waiting for its hours."}
+      ],
+      "choices": [
+        {"text": "Let's finish it.", "goto": "clock_teach"},
+        {"text": "Not yet.", "goto": "clock_later"}
+      ]
+    },
+    "text_offer": {
+      "lines": [
+        {"text": "Day and night! Look, the light is changing already.", "mood": "happy"},
+        {"text": "Everything is a little peach-coloured!", "speaker": "hotaru"},
+        {"text": "Now words for the clock. Turn the minute into the time we say aloud: hours, a colon, minutes."},
+        {"text": "A clock that says seven colon five makes me sad.", "speaker": "hotaru"}
+      ],
+      "choices": [
+        {"text": "Let me write it.", "goto": "text_teach"},
+        {"text": "Not yet.", "goto": "clock_later"}
+      ]
+    },
+    "text_teach": {
+      "lines": [
+        {"text": "A minute goes in. Words come out, like the time on a wall."}
+      ],
+      "open": "task:clock"
+    },
+    "wait_evening": {
+      "lines": [
+        {"text": "The clock speaks! Now wait for the evening, tinker. The lamps will be so pleased."},
+        {"text": "A whole day takes only a few minutes in Lanternroot.", "speaker": "hotaru"}
+      ],
+      "choices": [
+        {"text": "Change my day and night.", "goto": "clock_teach"},
+        {"text": "Change my clock words.", "goto": "text_teach"},
+        {"text": "I'll wait.", "goto": "again"}
+      ]
+    },
+    "clock_done": {
+      "lines": [
+        {"text": "Evening. The lamps are glowing, and I did not say a word.", "mood": "happy"},
+        {"text": "Look at the lane!", "speaker": "hotaru", "mood": "happy"},
+        {"text": "The Makers would have liked you, tinker."}
+      ],
+      "choices": [
+        {"text": "Change my day and night.", "goto": "clock_teach"},
+        {"text": "Change my clock words.", "goto": "text_teach"},
+        {"text": "Thank you, Lumen.", "goto": "again"}
+      ]
+    },
+    "offer": {
+      "lines": [
+        {"text": "Tinker. Do you see the lamp lane? Every lamp along it has gone dark."},
+        {"text": "The fireflies inside are only sleeping. A lamp wakes when someone tells it so: lit is true."},
+        {"text": "There are so many! Telling them one by one would take all night.", "speaker": "hotaru"},
+        {"text": "That is why I need a tinker. Say it once, in a loop, and every lamp hears it."}
+      ],
+      "set": ["met-oracle"],
+      "choices": [
+        {"text": "I'll light them.", "goto": "teach"},
+        {"text": "Not yet.", "goto": "later"}
+      ]
+    },
+    "teach": {
+      "lines": [
+        {"text": "Here they are, all in one list. Light every one, however many there are.", "mood": "happy"}
+      ],
+      "set": ["lamps-asked"],
+      "open": "lesson:lamps"
+    },
+    "later": {
+      "lines": [
+        {"text": "The fireflies will dream a little longer. Come back when you're ready."}
+      ]
+    },
+    "lane_waits": {
+      "lines": [
+        {"text": "The lane is still waiting for your loop."}
+      ],
+      "choices": [
+        {"text": "Let's light it.", "goto": "teach"},
+        {"text": "Not yet.", "goto": "later"}
+      ]
+    },
+    "glow": {
+      "lines": [
+        {"text": "Look at the lane. Every lamp, awake at once."},
+        {"text": "One loop, and the whole lane listened. That is a kind of magic, you know.", "mood": "happy"},
+        {"text": "Even the ones at the very end!", "speaker": "hotaru", "mood": "happy"}
+      ]
+    },
+    "glow_built": {
+      "lines": [
+        {"text": "Hotaru shines in your pattern now, and she has not stopped blinking since."}
+      ],
+      "set": ["glow-told"]
+    },
+    "to_hotaru": {
+      "lines": [
+        {"text": "Hotaru has asked for a light of her own. A tinker's work, for a light that is hers."},
+        {"text": "Pleeease? Just one number for each second!", "speaker": "hotaru", "mood": "happy"}
+      ],
+      "choices": [
+        {"text": "Let's make her glow.", "goto": "glow_task"},
+        {"text": "Not yet.", "goto": "glow_later"}
+      ]
+    },
+    "glow_task": {
+      "lines": [{"text": "Yay! One number for each second, from 0 to 1.", "speaker": "hotaru", "mood": "happy"}],
+      "open": "task:glow"
+    },
+    "glow_later": {
+      "lines": [{"text": "She will wait. Fireflies are patient, mostly."}]
+    },
     "hello": {
       "lines": [
         {

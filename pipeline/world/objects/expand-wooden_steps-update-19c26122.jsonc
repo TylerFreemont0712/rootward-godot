@@ -1,0 +1,60 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "expand-wooden_steps-update-19c26122",
+  "kind": "prop",
+  "what": "a short flight of three sturdy wooden porch steps with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.0,
+        0
+      ],
+      "size": [
+        0.9,
+        0.34,
+        0.18
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.28,
+        0.18
+      ],
+      "size": [
+        0.9,
+        0.34,
+        0.18
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.56,
+        0.36
+      ],
+      "size": [
+        0.9,
+        0.34,
+        0.18
+      ],
+      "ramp": "wood",
+      "shade": 0
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+// The berries: a Bag and pickup icon (pipeline/world/README.md). A small heap of blue berries with two leaves.
+{
+ "id": "item-berries",
+ "kind": "prop",
+ "what": "a small cluster of plump blue berries with two green leaves, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"berry": "cloth_blue", "leaf": "leaf"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.34, 0.34, 0.34], "ramp": "berry", "shade": 1},
+  {"shape": "ball", "at": [0.51, 0.15, 0], "size": [0.34, 0.34, 0.34], "ramp": "berry", "shade": 1},
+  {"shape": "ball", "at": [0.32, 0.4, 0], "size": [0.36, 0.36, 0.36], "ramp": "berry"},
+  {"shape": "ball", "at": [0.34, 0.36, 0.34], "size": [0.32, 0.32, 0.32], "ramp": "berry"},
+  {"shape": "ball", "at": [0.6, 0.6, 0.2], "size": [0.26, 0.16, 0.12], "ramp": "leaf"},
+  {"shape": "ball", "at": [0.12, 0.55, 0.12], "size": [0.24, 0.14, 0.1], "ramp": "leaf", "shade": 1}
+ ]
+}

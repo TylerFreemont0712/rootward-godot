@@ -1,0 +1,16 @@
+Use case: identity-preserve. Asset type: Vesper high-quality anime cast animation RECOVERY KEYFRAMES, eight frames continuing a cast.
+Image1: old cast-return skeleton for loose action order. Image2: the new cast-start keyframes, EXACT model/rendering and forward palm pose to continue. Image3: the new neutral idle keyframes, EXACT rest pose to end on.
+Draw eight complete full-body Vesper poses, same high quality anime witch as Images2/3, identical proportions, face, wavy purple bob, navy gold-crescent hat, short embroidered navy/plum capelet, blue-gem star clasp, teal belted dress, tights and brown heeled boots. Fine clean dark linework, smooth cel shading. Her face is in three-quarter PROFILE TOWARD SCREEN RIGHT, pupils on the ENEMY ON SCREEN RIGHT in EVERY frame, never camera. Preserve same hat/head size and position, boots pinned to same positions, pelvis rooted, compact motion.
+This CONTINUES the first sheet's last pose. Keep the same casting arm: the FAR arm on the SCREEN-RIGHT side of the torso extends to the right; the foreground SCREEN-LEFT arm stays relaxed/down throughout.
+Eight successive poses row-major:
+1 full rightward palm extension matching previous sheet frame8 exactly;
+2 same extension settles slightly;
+3 casting elbow begins bending, palm retracts slowly;
+4 casting palm now nearer chest, elbow bent;
+5 elbow lowers, empty hand descends toward waist;
+6 wrist drops near hip, shoulder relaxes;
+7 almost neutral, very small cloth follow-through;
+8 EXACT neutral stance and face direction from idle Image3 first frame.
+Do not switch which arm casts or make the palm jerk between positions. Keep the whole gesture contained and continuous; near arm never reaches up to cast. No additional gestures, twisting camera, stepping, head bobbing, costume morphing, props or magic.
+EXACT GRID: FOUR columns x TWO rows = eight FULL-BODY figures, row-major. Canvas 2048x1536 or 3072x2304, tall 512x768 cells. Character uses only 70–75% cell height with at least 80px clear margin around entire hat and boots; all second-row boots fully visible with blank space below. Same scale and baseline for all poses, ample space right for palm. No third row or extra figures.
+ACTUAL transparent alpha background, clean crisp cutouts, no colored speckles/fringe, smoky haze, backdrop, glow, effects, floor/shadow, grid lines, text, labels or watermark. Output the complete sheet.

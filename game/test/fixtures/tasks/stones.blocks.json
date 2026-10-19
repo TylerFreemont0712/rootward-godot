@@ -1,0 +1,7 @@
+{
+  "stages": [
+    {"slots": {"first_value": 1, "second_value": 0, "third_value": 0}, "toggles": []},
+    {"slots": {"first_value": 1, "second_value": 1, "third_value": 0}, "toggles": []},
+    {"slots": {"first_value": 1, "second_value": 1, "third_value": 1}, "toggles": []}
+  ]
+}

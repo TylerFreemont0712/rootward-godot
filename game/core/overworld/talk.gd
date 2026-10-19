@@ -16,6 +16,10 @@ extends RefCounted
 ## A line's `speaker` defaults to the person spoken to; "hotaru" is the firefly, "you" is the player.
 
 
+## The prefix of a bag count among the facts a condition sees ("bag:cabbage": 3).
+const BAG_FACT := "bag:"
+
+
 static func opening(talk: Dictionary, flags: Dictionary) -> String:
 	for rule: Dictionary in talk.get("start", []):
 		if holds(rule.get("if", {}), flags):
@@ -23,9 +27,13 @@ static func opening(talk: Dictionary, flags: Dictionary) -> String:
 	return ""
 
 
-## A condition: {"flag": "x"} (set), {"not": "x"} (not set), {"all": [...]} (every one), or {} (always).
+## A condition: {"flag": "x"} (set), {"not": "x"} (not set), {"all": [...]} (every one), {"has": "cabbage",
+## "at_least": 3} (that many in the bag, v0.4), or {} (always). The bag's counts are facts the town puts beside the
+## flags as "bag:<item>" (Parts.facts); they are never saved, and a talk asked without them sees an empty bag.
 static func holds(condition: Dictionary, flags: Dictionary) -> bool:
 	if condition.has("flag") and not bool(flags.get(String(condition.flag), false)):
+		return false
+	if condition.has("has") and has_count(String(condition.has), flags) < int(condition.get("at_least", 1)):
 		return false
 	if condition.has("not") and bool(flags.get(String(condition.not), false)):
 		return false
@@ -33,6 +41,12 @@ static func holds(condition: Dictionary, flags: Dictionary) -> bool:
 		if not holds(part, flags):
 			return false
 	return true
+
+
+## How many of `item` the bag holds, from the facts beside the flags (0 when they are not there).
+static func has_count(item: String, flags: Dictionary) -> int:
+	var count: Variant = flags.get(BAG_FACT + item, 0)
+	return int(count) if count is int or count is float else 0
 
 
 static func node(talk: Dictionary, id: String) -> Dictionary:

@@ -2,5 +2,5 @@
 // format and the title shows with Text.sentence, keyed by the English format exactly (%s a name or word). Labels and
 // buttons on the title keep their Japanese inline, FoundryUi.text("Adventure", "冒険").
 [
-  {"en": "The saved run could not be continued (%s). It was kept as %s.", "to": "保存された冒険を続けられなかったよ（%s）。%s として残してあるよ。"}
+  {"en": "The saved run could not be continued (%s). It was kept as %s.", "to": "保存された冒険を続けられなかったよ（%s）。%s として残してあるよ。", "kanji": "保存された冒険を続けられなかったよ（%s）。%s として残してあるよ。"}
 ]

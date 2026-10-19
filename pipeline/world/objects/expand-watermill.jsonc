@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-watermill",
+  "kind": "building",
+  "what": "a broad stone watermill with a wooden wheel on its flat front facade",
+  "footprint": [
+    8,
+    7
+  ],
+  "ramps": {
+    "walls": "stone",
+    "roof": "cloth_teal",
+    "trim": "wood",
+    "base": "cobble",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-watermill-source.png"
+  },
+  "door": [
+    4,
+    6
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"count_op": 1, "field": 0}, "toggles": []},
+    {"slots": {"count_op": 1, "field": 1}, "toggles": ["sort"]}
+  ]
+}

@@ -11,802 +11,802 @@
   // --- Shards -------------------------------------------------------------------------------------------------------
   {
     "en": "Adapt",
-    "to": "適応"
+    "to": "適応", "kanji": "適応"
   },
   {
     "en": "Gives every bolt the element the front foe is weak to, if it has one.",
-    "to": "前列の敵に弱点があれば、すべての矢をその属性に変えます。"
+    "to": "前列の敵に弱点があれば、すべての矢をその属性に変えます。", "kanji": "前列の敵に弱点があれば、すべての矢をその属性に変えます。"
   },
   {
     "en": "Amplify+",
-    "to": "増幅+"
+    "to": "増幅+", "kanji": "増幅+"
   },
   {
     "en": "Adds 5 power to every bolt.",
-    "to": "すべての矢に威力を 5 加えます。"
+    "to": "すべての矢に威力を 5 加えます。", "kanji": "すべての矢に威力を 5 加えます。"
   },
   {
     "en": "Amplify",
-    "to": "増幅"
+    "to": "増幅", "kanji": "増幅"
   },
   {
     "en": "Adds 3 power to every bolt.",
-    "to": "すべての矢に威力を 3 加えます。"
+    "to": "すべての矢に威力を 3 加えます。", "kanji": "すべての矢に威力を 3 加えます。"
   },
   {
     "en": "Apex",
-    "to": "頂点"
+    "to": "頂点", "kanji": "頂点"
   },
   {
     "en": "Keeps only the strongest bolt by power, and gives it 3 more power.",
-    "to": "威力がいちばん大きい矢だけを残し、その矢の威力を3上げます。"
+    "to": "威力がいちばん大きい矢だけを残し、その矢の威力を3上げます。", "kanji": "威力がいちばん大きい矢だけを残し、その矢の威力を3上げます。"
   },
   {
     "en": "Arc",
-    "to": "電弧"
+    "to": "電弧", "kanji": "電弧"
   },
   {
     "en": "Changes every bolt to spark and adds 1 power.",
-    "to": "すべてのボルトを雷属性に変え、威力を1上げます。"
+    "to": "すべてのボルトを雷属性に変え、威力を1上げます。", "kanji": "すべてのボルトを雷属性に変え、威力を1上げます。"
   },
   {
     "en": "Attune",
-    "to": "同調"
+    "to": "同調", "kanji": "同調"
   },
   {
     "en": "Finds the best multiplier in the volley and gives it to every bolt. Raise one bolt high, then spread it.",
-    "to": "一斉射のなかで最も高い倍率を見つけ、すべての矢に配ります。まず一本を高め、それから広げましょう。"
+    "to": "一斉射のなかで最も高い倍率を見つけ、すべての矢に配ります。まず一本を高め、それから広げましょう。", "kanji": "一斉射のなかで最も高い倍率を見つけ、すべての矢に配ります。まず一本を高め、それから広げましょう。"
   },
   {
     "en": "Bulwark",
-    "to": "防塁"
+    "to": "防塁", "kanji": "防塁"
   },
   {
     "en": "Turns every bolt into a ward at 75% power. All defense, no attack.",
-    "to": "すべての矢を威力 75% の防壁に変えます。守り一辺倒で、攻撃はありません。"
+    "to": "すべての矢を威力 75% の防壁に変えます。守り一辺倒で、攻撃はありません。", "kanji": "すべての矢を威力 75% の防壁に変えます。守り一辺倒で、攻撃はありません。"
   },
   {
     "en": "Cascade",
-    "to": "連鎖"
+    "to": "連鎖", "kanji": "連鎖"
   },
   {
     "en": "Each bolt's multiplier grows by one more than the bolt before it: +1, then +2, then +3.",
-    "to": "矢の倍率が一本ごとに一つずつ大きく増えます。+1、+2、+3 と続きます。"
+    "to": "矢の倍率が一本ごとに一つずつ大きく増えます。+1、+2、+3 と続きます。", "kanji": "矢の倍率が一本ごとに一つずつ大きく増えます。+1、+2、+3 と続きます。"
   },
   {
     "en": "Census",
-    "to": "点呼"
+    "to": "点呼", "kanji": "点呼"
   },
   {
     "en": "Sorts bolts by power, weakest first, then adds rank as power: +0 to the weakest, +1 to the next, and so on. Sorting costs more than a linear pass.",
-    "to": "矢を威力順に並べ、弱い順に、順位ぶんの威力を足します（最も弱い矢は+0、次は+1、と続きます）。並べ替えは、直線の一回の走査より多くの手間がかかります。"
+    "to": "矢を威力順に並べ、弱い順に、順位ぶんの威力を足します（最も弱い矢は+0、次は+1、と続きます）。並べ替えは、直線の一回の走査より多くの手間がかかります。", "kanji": "矢を威力順に並べ、弱い順に、順位ぶんの威力を足します（最も弱い矢は+0、次は+1、と続きます）。並べ替えは、直線の一回の走査より多くの手間がかかります。"
   },
   {
     "en": "Charge",
-    "to": "充填"
+    "to": "充填", "kanji": "充填"
   },
   {
     "en": "Adds 2 to every bolt's multiplier. A bolt deals its power times its multiplier.",
-    "to": "すべての矢の倍率に 2 を加えます。矢は「威力 × 倍率」のダメージを与えます。"
+    "to": "すべての矢の倍率に 2 を加えます。矢は「威力 × 倍率」のダメージを与えます。", "kanji": "すべての矢の倍率に 2 を加えます。矢は「威力 × 倍率」のダメージを与えます。"
   },
   {
     "en": "Chill+",
-    "to": "凍結+"
+    "to": "凍結+", "kanji": "凍結+"
   },
   {
     "en": "Frosts every bolt: frost, and 3 more power.",
-    "to": "すべての矢を凍らせます。氷属性になり、威力が 3 上がります。"
+    "to": "すべての矢を凍らせます。氷属性になり、威力が 3 上がります。", "kanji": "すべての矢を凍らせます。氷属性になり、威力が 3 上がります。"
   },
   {
     "en": "Chill",
-    "to": "凍結"
+    "to": "凍結", "kanji": "凍結"
   },
   {
     "en": "Frosts every bolt: frost, and 1 more power.",
-    "to": "すべての矢を凍らせます。氷属性になり、威力が 1 上がります。"
+    "to": "すべての矢を凍らせます。氷属性になり、威力が 1 上がります。", "kanji": "すべての矢を凍らせます。氷属性になり、威力が 1 上がります。"
   },
   {
     "en": "Compound",
-    "to": "複利"
+    "to": "複利", "kanji": "複利"
   },
   {
     "en": "Squares every bolt's multiplier. On a fresh bolt that does nothing at all; after the shards that raise one, it is everything.",
-    "to": "すべての矢の倍率を二乗します。まっさらな矢には何も起きませんが、倍率を上げる欠片のあとでは、これがすべてです。"
+    "to": "すべての矢の倍率を二乗します。まっさらな矢には何も起きませんが、倍率を上げる欠片のあとでは、これがすべてです。", "kanji": "すべての矢の倍率を二乗します。まっさらな矢には何も起きませんが、倍率を上げる欠片のあとでは、これがすべてです。"
   },
   {
     "en": "Crosslink",
-    "to": "相互接続"
+    "to": "相互接続", "kanji": "相互接続"
   },
   {
     "en": "Every bolt gains 1 to its multiplier for each other bolt of the same element. Compares every pair, and is billed for it.",
-    "to": "同じ属性の矢が他にあるたび、矢の倍率が 1 上がります。すべての組み合わせを比べるので、その分の代金がかかります。"
+    "to": "同じ属性の矢が他にあるたび、矢の倍率が 1 上がります。すべての組み合わせを比べるので、その分の代金がかかります。", "kanji": "同じ属性の矢が他にあるたび、矢の倍率が 1 上がります。すべての組み合わせを比べるので、その分の代金がかかります。"
   },
   {
     "en": "Double Tap",
-    "to": "二連射"
+    "to": "二連射", "kanji": "二連射"
   },
   {
     "en": "Fires the first bolt twice: a full-power copy goes in front of it.",
-    "to": "最初の矢を二度放ちます。同じ威力の複製がその前に加わります。"
+    "to": "最初の矢を二度放ちます。同じ威力の複製がその前に加わります。", "kanji": "最初の矢を二度放ちます。同じ威力の複製がその前に加わります。"
   },
   {
     "en": "Echo",
-    "to": "反響"
+    "to": "反響", "kanji": "反響"
   },
   {
     "en": "Repeats the whole volley: every bolt is fired twice at full power.",
-    "to": "一斉射をまるごと繰り返します。すべての矢が同じ威力で二度放たれます。"
+    "to": "一斉射をまるごと繰り返します。すべての矢が同じ威力で二度放たれます。", "kanji": "一斉射をまるごと繰り返します。すべての矢が同じ威力で二度放たれます。"
   },
   {
     "en": "Exploit",
-    "to": "弱み突き"
+    "to": "弱み突き", "kanji": "弱み突き"
   },
   {
     "en": "Doubles every bolt's power while the front foe has no shield up.",
-    "to": "前列の敵が防壁を張っていないあいだ、すべての矢の威力を二倍にします。"
+    "to": "前列の敵が防壁を張っていないあいだ、すべての矢の威力を二倍にします。", "kanji": "前列の敵が防壁を張っていないあいだ、すべての矢の威力を二倍にします。"
   },
   {
     "en": "Focus Lens",
-    "to": "集束レンズ"
+    "to": "集束レンズ", "kanji": "集束レンズ"
   },
   {
     "en": "Combines all bolt power into one bolt. It keeps the first bolt's multiplier, element, aim, pierce, and attack or ward role.",
-    "to": "すべてのボルトの威力を1本にまとめます。倍率、属性、狙い、貫通、攻撃か防御かは最初のボルトを引き継ぎます。"
+    "to": "すべてのボルトの威力を1本にまとめます。倍率、属性、狙い、貫通、攻撃か防御かは最初のボルトを引き継ぎます。", "kanji": "すべてのボルトの威力を1本にまとめます。倍率、属性、狙い、貫通、攻撃か防御かは最初のボルトを引き継ぎます。"
   },
   {
     "en": "Fork+",
-    "to": "分岐+"
+    "to": "分岐+", "kanji": "分岐+"
   },
   {
     "en": "Splits every bolt into two copies, each with 80% of the original power.",
-    "to": "各ボルトを2本に分け、それぞれ元の威力の80%にします。"
+    "to": "各ボルトを2本に分け、それぞれ元の威力の80%にします。", "kanji": "各ボルトを2本に分け、それぞれ元の威力の80%にします。"
   },
   {
     "en": "Fork",
-    "to": "分岐"
+    "to": "分岐", "kanji": "分岐"
   },
   {
     "en": "Splits every bolt into two copies, each with 60% of the original power.",
-    "to": "各ボルトを2本に分け、それぞれ元の威力の60%にします。"
+    "to": "各ボルトを2本に分け、それぞれ元の威力の60%にします。", "kanji": "各ボルトを2本に分け、それぞれ元の威力の60%にします。"
   },
   {
     "en": "Headcount",
-    "to": "敵数勘定"
+    "to": "敵数勘定", "kanji": "敵数勘定"
   },
   {
     "en": "Adds 2 power to every bolt for each foe still standing.",
-    "to": "まだ倒れていない敵の数だけ、すべての矢に威力を 2 ずつ加えます。"
+    "to": "まだ倒れていない敵の数だけ、すべての矢に威力を 2 ずつ加えます。", "kanji": "まだ倒れていない敵の数だけ、すべての矢に威力を 2 ずつ加えます。"
   },
   {
     "en": "Kindle+",
-    "to": "着火+"
+    "to": "着火+", "kanji": "着火+"
   },
   {
     "en": "Sets every bolt alight: fire, and 3 more power.",
-    "to": "すべての矢に火を点けます。火属性になり、威力が 3 上がります。"
+    "to": "すべての矢に火を点けます。火属性になり、威力が 3 上がります。", "kanji": "すべての矢に火を点けます。火属性になり、威力が 3 上がります。"
   },
   {
     "en": "Kindle",
-    "to": "着火"
+    "to": "着火", "kanji": "着火"
   },
   {
     "en": "Sets every bolt alight: fire, and 1 more power.",
-    "to": "すべての矢に火を点けます。火属性になり、威力が 1 上がります。"
+    "to": "すべての矢に火を点けます。火属性になり、威力が 1 上がります。", "kanji": "すべての矢に火を点けます。火属性になり、威力が 1 上がります。"
   },
   {
     "en": "Lazy Fork",
-    "to": "壊れた分岐"
+    "to": "壊れた分岐", "kanji": "壊れた分岐"
   },
   {
     "en": "Splits every bolt except the last into two 60%-power copies, then drops the last bolt. A forge can repair it.",
-    "to": "最後以外のボルトを、それぞれ威力60%の2本に分け、最後の1本は捨てます。鍛冶場で修理できます。"
+    "to": "最後以外のボルトを、それぞれ威力60%の2本に分け、最後の1本は捨てます。鍛冶場で修理できます。", "kanji": "最後以外のボルトを、それぞれ威力60%の2本に分け、最後の1本は捨てます。鍛冶場で修理できます。"
   },
   {
     "en": "Overclock",
-    "to": "過剰駆動"
+    "to": "過剰駆動", "kanji": "過剰駆動"
   },
   {
     "en": "Triples every bolt's power. Cursed: each cast burns 3 of your Integrity.",
-    "to": "すべての矢の威力を三倍にします。呪い：詠唱のたびに整合性を 3 失います。"
+    "to": "すべての矢の威力を三倍にします。呪い：詠唱のたびに整合性を 3 失います。", "kanji": "すべての矢の威力を三倍にします。呪い：詠唱のたびに整合性を 3 失います。"
   },
   {
     "en": "Overflow",
-    "to": "溢れ出し"
+    "to": "溢れ出し", "kanji": "溢れ出し"
   },
   {
     "en": "Power above 20 spills into another bolt: a 50-power bolt becomes 20, 20, and 10.",
-    "to": "威力 20 を超えた分が別の矢に溢れます。威力 50 の矢は、20・20・10 になります。"
+    "to": "威力 20 を超えた分が別の矢に溢れます。威力 50 の矢は、20・20・10 になります。", "kanji": "威力 20 を超えた分が別の矢に溢れます。威力 50 の矢は、20・20・10 になります。"
   },
   {
     "en": "Patience",
-    "to": "忍耐"
+    "to": "忍耐", "kanji": "忍耐"
   },
   {
     "en": "Adds 3 power to every bolt for every turn the fight has already lasted.",
-    "to": "戦いが続いたターン数だけ、すべての矢に威力を 3 ずつ加えます。"
+    "to": "戦いが続いたターン数だけ、すべての矢に威力を 3 ずつ加えます。", "kanji": "戦いが続いたターン数だけ、すべての矢に威力を 3 ずつ加えます。"
   },
   {
     "en": "Pierce",
-    "to": "貫通"
+    "to": "貫通", "kanji": "貫通"
   },
   {
     "en": "Bolts ignore shields, but lose 1 power (never below 1).",
-    "to": "矢が防壁を無視します。ただし威力が 1 下がります（1 未満にはなりません）。"
+    "to": "矢が防壁を無視します。ただし威力が 1 下がります（1 未満にはなりません）。", "kanji": "矢が防壁を無視します。ただし威力が 1 下がります（1 未満にはなりません）。"
   },
   {
     "en": "Priority Queue",
-    "to": "優先度付き待ち行列"
+    "to": "優先度付き待ち行列", "kanji": "優先度付き待ち行列"
   },
   {
     "en": "Sorts bolts by power, strongest first, and sends the strongest at the foe with the most HP.",
-    "to": "矢を威力順に並べ、いちばん強い矢を、いちばんHPの多い敵へ向けます。"
+    "to": "矢を威力順に並べ、いちばん強い矢を、いちばんHPの多い敵へ向けます。", "kanji": "矢を威力順に並べ、いちばん強い矢を、一番HPの多い敵へ向けます。"
   },
   {
     "en": "Prism",
-    "to": "分光"
+    "to": "分光", "kanji": "分光"
   },
   {
     "en": "Splits every bolt into three: one fire, one frost, one spark, each at 40% power.",
-    "to": "すべての矢を三本に分けます。火・氷・雷が一本ずつ、それぞれ威力 40% です。"
+    "to": "すべての矢を三本に分けます。火・氷・雷が一本ずつ、それぞれ威力 40% です。", "kanji": "すべての矢を三本に分けます。火・氷・雷が一本ずつ、それぞれ威力 40% です。"
   },
   {
     "en": "Ramp",
-    "to": "傾斜"
+    "to": "傾斜", "kanji": "傾斜"
   },
   {
     "en": "Each bolt gets 2 more power than the one before it: +0, +2, +4, and so on.",
-    "to": "矢の威力が一本ごとに 2 ずつ増えます。+0、+2、+4 と続きます。"
+    "to": "矢の威力が一本ごとに 2 ずつ増えます。+0、+2、+4 と続きます。", "kanji": "矢の威力が一本ごとに 2 ずつ増えます。+0、+2、+4 と続きます。"
   },
   {
     "en": "Resonate",
-    "to": "共鳴"
+    "to": "共鳴", "kanji": "共鳴"
   },
   {
     "en": "Doubles every bolt's multiplier. Put it after the shards that raise one.",
-    "to": "すべての矢の倍率を二倍にします。倍率を上げる欠片のあとに置きましょう。"
+    "to": "すべての矢の倍率を二倍にします。倍率を上げる欠片のあとに置きましょう。", "kanji": "すべての矢の倍率を二倍にします。倍率を上げる欠片のあとに置きましょう。"
   },
   {
     "en": "Rewind",
-    "to": "巻き戻し"
+    "to": "巻き戻し", "kanji": "巻き戻し"
   },
   {
     "en": "Fires the volley back to front: the last bolt becomes the first.",
-    "to": "一斉射を逆順で放ちます。最後の矢が最初になります。"
+    "to": "一斉射を逆順で放ちます。最後の矢が最初になります。", "kanji": "一斉射を逆順で放ちます。最後の矢が最初になります。"
   },
   {
     "en": "Scatter",
-    "to": "拡散"
+    "to": "拡散", "kanji": "拡散"
   },
   {
     "en": "Every attack hits every foe, at half power each.",
-    "to": "すべての攻撃の矢が、すべての敵に、それぞれ半分の威力で当たります。"
+    "to": "すべての攻撃の矢が、すべての敵に、それぞれ半分の威力で当たります。", "kanji": "すべての攻撃の矢が、すべての敵に、それぞれ半分の威力で当たります。"
   },
   {
     "en": "Seeker",
-    "to": "追尾"
+    "to": "追尾", "kanji": "追尾"
   },
   {
     "en": "Aims every bolt at the foe with the least HP.",
-    "to": "すべての矢を、体力の最も少ない敵に向けます。"
+    "to": "すべての矢を、体力の最も少ない敵に向けます。", "kanji": "すべての矢を、体力の最も少ない敵に向けます。"
   },
   {
     "en": "Sieve",
-    "to": "篩"
+    "to": "篩", "kanji": "篩"
   },
   {
     "en": "Drops attack bolts under 3 power so later shards spend no work on them. All wards are kept.",
-    "to": "威力3未満の攻撃ボルトを捨て、後続の欠片が処理しないようにします。防御ボルトはすべて残ります。"
+    "to": "威力3未満の攻撃ボルトを捨て、後続の欠片が処理しないようにします。防御ボルトはすべて残ります。", "kanji": "威力3未満の攻撃ボルトを捨て、後続の欠片が処理しないようにします。防御ボルトはすべて残ります。"
   },
   {
     "en": "Singularity",
-    "to": "特異点"
+    "to": "特異点", "kanji": "特異点"
   },
   {
     "en": "Replaces the volley with one piercing attack aimed at the foe with most HP: power is 4 × the bolt count, and its multiplier equals that count. It costs almost no work.",
-    "to": "一斉射を、HPが最も多い敵を狙う貫通攻撃1本にします。威力はボルト数×4、倍率はボルト数と同じです。処理量はほとんどかかりません。"
+    "to": "一斉射を、HPが最も多い敵を狙う貫通攻撃1本にします。威力はボルト数×4、倍率はボルト数と同じです。処理量はほとんどかかりません。", "kanji": "一斉射を、HPが最も多い敵を狙う貫通攻撃1本にします。威力はボルト数×4、倍率はボルト数と同じです。処理量はほとんどかかりません。"
   },
   {
     "en": "Siphon",
-    "to": "吸い上げ"
+    "to": "吸い上げ", "kanji": "吸い上げ"
   },
   {
     "en": "Turns the bolt with the least power into a ward at double power. The rest still fly.",
-    "to": "いちばん威力の小さい矢を、2倍の威力のワードに変えます。残りの矢は飛びます。"
+    "to": "いちばん威力の小さい矢を、2倍の威力のワードに変えます。残りの矢は飛びます。", "kanji": "いちばん威力の小さい矢を、2倍の威力のワードに変えます。残りの矢は飛びます。"
   },
   {
     "en": "Tally",
-    "to": "集計"
+    "to": "集計", "kanji": "集計"
   },
   {
     "en": "Adds 1 power to every bolt for each bolt in the volley.",
-    "to": "一斉射の矢の数だけ、すべての矢に威力を 1 ずつ加えます。"
+    "to": "一斉射の矢の数だけ、すべての矢に威力を 1 ずつ加えます。", "kanji": "一斉射の矢の数だけ、すべての矢に威力を 1 ずつ加えます。"
   },
   {
     "en": "Temper",
-    "to": "焼き入れ"
+    "to": "焼き入れ", "kanji": "焼き入れ"
   },
   {
     "en": "Rounds every bolt's power up to the next multiple of 5, and leaves a multiple of 5 alone.",
-    "to": "各矢の威力を次の5の倍数まで切り上げます。すでに5の倍数の矢は、そのままです。"
+    "to": "各矢の威力を次の5の倍数まで切り上げます。すでに5の倍数の矢は、そのままです。", "kanji": "各矢の威力を次の5の倍数まで切り上げます。すでに5の倍数の矢は、そのままです。"
   },
   {
     "en": "Tithe",
-    "to": "十分の一税"
+    "to": "十分の一税", "kanji": "十分の一税"
   },
   {
     "en": "Halves each bolt's power, rounding down, and doubles its multiplier. The multiplier has more room to grow.",
-    "to": "各ボルトの威力を切り捨てで半分にし、倍率を2倍にします。倍率のほうが伸びしろを残せます。"
+    "to": "各ボルトの威力を切り捨てで半分にし、倍率を2倍にします。倍率のほうが伸びしろを残せます。", "kanji": "各ボルトの威力を切り捨てで半分にし、倍率を2倍にします。倍率のほうが伸びしろを残せます。"
   },
   {
     "en": "Triage",
-    "to": "選別"
+    "to": "選別", "kanji": "選別"
   },
   {
     "en": "Aims every bolt at the foe with the most HP left.",
-    "to": "すべての矢を、体力の最も多く残っている敵に向けます。"
+    "to": "すべての矢を、体力の最も多く残っている敵に向けます。", "kanji": "すべての矢を、体力の最も多く残っている敵に向けます。"
   },
   {
     "en": "Vengeance",
-    "to": "報復"
+    "to": "報復", "kanji": "報復"
   },
   {
     "en": "While your Integrity is at half or less, every bolt gains 4 power.",
-    "to": "整合性が半分以下のあいだ、すべての矢の威力が 4 上がります。"
+    "to": "整合性が半分以下のあいだ、すべての矢の威力が 4 上がります。", "kanji": "整合性が半分以下のあいだ、すべての矢の威力が 4 上がります。"
   },
   {
     "en": "Ward+",
-    "to": "防護+"
+    "to": "防護+", "kanji": "防護+"
   },
   {
     "en": "Turns the first bolt into a ward with 5 more power. Other bolts are unchanged.",
-    "to": "最初のボルトを防御に変え、威力を5上げます。ほかのボルトはそのままです。"
+    "to": "最初のボルトを防御に変え、威力を5上げます。ほかのボルトはそのままです。", "kanji": "最初のボルトを防御に変え、威力を5上げます。ほかのボルトはそのままです。"
   },
   {
     "en": "Ward",
-    "to": "防護"
+    "to": "防護", "kanji": "防護"
   },
   {
     "en": "Turns the first bolt into a ward with 2 more power. Other bolts are unchanged.",
-    "to": "最初のボルトを防御に変え、威力を2上げます。ほかのボルトはそのままです。"
+    "to": "最初のボルトを防御に変え、威力を2上げます。ほかのボルトはそのままです。", "kanji": "最初のボルトを防御に変え、威力を2上げます。ほかのボルトはそのままです。"
   },
   // --- Foes ---------------------------------------------------------------------------------------------------------
   {
     "en": "Fork Bomb",
-    "to": "フォーク爆弾"
+    "to": "フォーク爆弾", "kanji": "フォーク爆弾"
   },
   {
     "en": "It copies itself faster than you can count. Cold slows it down; fire only feeds it.",
-    "to": "数えるより速く自分を複製します。冷気は動きを鈍らせますが、炎は餌にしかなりません。"
+    "to": "数えるより速く自分を複製します。冷気は動きを鈍らせますが、炎は餌にしかなりません。", "kanji": "数えるより速く自分を複製します。冷気は動きを鈍らせますが、炎は餌にしかなりません。"
   },
   {
     "en": "Deadlock Golem",
-    "to": "デッドロック・ゴーレム"
+    "to": "デッドロック・ゴーレム", "kanji": "デッドロック・ゴーレム"
   },
   {
     "en": "Two locks, each waiting on the other. Only the right element, at the right moment, gets through.",
-    "to": "二つの錠が、互いを待ち続けています。正しい属性を正しい瞬間に当てたときだけ、通ります。"
+    "to": "二つの錠が、互いを待ち続けています。正しい属性を正しい瞬間に当てたときだけ、通ります。", "kanji": "二つの錠が、互いを待ち続けています。正しい属性を正しい瞬間に当てたときだけ、通ります。"
   },
   {
     "en": "Garbage Collector",
-    "to": "ガベージコレクタ"
+    "to": "ガベージコレクタ", "kanji": "ガベージコレクタ"
   },
   {
     "en": "It sweeps away anything too small to matter. Bolts under 6 power are litter to it.",
-    "to": "取るに足らないものを片端から掃き集めます。威力 6 未満の矢は、こいつにはごみ屑です。"
+    "to": "取るに足らないものを片端から掃き集めます。威力 6 未満の矢は、こいつにはごみ屑です。", "kanji": "取るに足らないものを片端から掃き集めます。威力 6 未満の矢は、こいつにはごみ屑です。"
   },
   {
     "en": "Kiln Warden",
-    "to": "窯の番人"
+    "to": "窯の番人", "kanji": "窯の番人"
   },
   {
     "en": "Guardian of the Salvage's hottest vault. Bolts under 5 power glance off its brick hide.",
-    "to": "遺構でもっとも熱い保管庫の守り手。威力 5 未満の矢は、煉瓦の皮膚に弾かれます。"
+    "to": "遺構でもっとも熱い保管庫の守り手。威力 5 未満の矢は、煉瓦の皮膚に弾かれます。", "kanji": "遺構でもっとも熱い保管庫の守り手。威力 5 未満の矢は、煉瓦の皮膚に弾かれます。"
   },
   {
     "en": "Dangling Pointer",
-    "to": "ぶら下がりポインタ"
+    "to": "ぶら下がりポインタ", "kanji": "ぶら下がりポインタ"
   },
   {
     "en": "It points at something that is no longer there, and its weakness keeps moving.",
-    "to": "もう存在しないものを指し続けています。弱点も動き回ります。"
+    "to": "もう存在しないものを指し続けています。弱点も動き回ります。", "kanji": "もう存在しないものを指し続けています。弱点も動き回ります。"
   },
   {
     "en": "Tally Wisp",
-    "to": "数え間違いの灯"
+    "to": "数え間違いの灯", "kanji": "数え間違いの灯"
   },
   {
     "en": "A flicker of miscounted light. Fire only feeds it; cold makes it lose its place.",
-    "to": "数え損ねた光のゆらぎ。炎は餌になるだけで、冷気は数える場所を見失わせます。"
+    "to": "数え損ねた光のゆらぎ。炎は餌になるだけで、冷気は数える場所を見失わせます。", "kanji": "数え損ねた光のゆらぎ。炎は餌になるだけで、冷気は数える場所を見失わせます。"
   },
   {
     "en": "Type Mimic",
-    "to": "型まがい"
+    "to": "型まがい", "kanji": "型まがい"
   },
   {
     "en": "Plain bolts bounce off it, and its weakness changes shape every turn.",
-    "to": "無属性の矢は弾かれ、弱点は毎ターン姿を変えます。"
+    "to": "無属性の矢は弾かれ、弱点は毎ターン姿を変えます。", "kanji": "無属性の矢は弾かれ、弱点は毎ターン姿を変えます。"
   },
   {
     "en": "Null Wraith",
-    "to": "ヌルの亡霊"
+    "to": "ヌルの亡霊", "kanji": "ヌルの亡霊"
   },
   {
     "en": "The first thing you throw at it becomes nothing. Throw something cheap first.",
-    "to": "最初に投げたものは無に帰します。まずは安いものを投げましょう。"
+    "to": "最初に投げたものは無に帰します。まずは安いものを投げましょう。", "kanji": "最初に投げたものは無に帰します。まずは安いものを投げましょう。"
   },
   {
     "en": "Stack Overflow Serpent",
-    "to": "スタック溢れの大蛇"
+    "to": "スタック溢れの大蛇", "kanji": "スタック溢れの大蛇"
   },
   {
     "en": "Every strike calls another. It only stops when something runs out.",
-    "to": "ひと打ちが次のひと打ちを呼びます。何かが尽きたときにだけ止まります。"
+    "to": "ひと打ちが次のひと打ちを呼びます。何かが尽きたときにだけ止まります。", "kanji": "ひと打ちが次のひと打ちを呼びます。何かが尽きたときにだけ止まります。"
   },
   {
     "en": "Race Condition Imp",
-    "to": "競合状態の小鬼"
+    "to": "競合状態の小鬼", "kanji": "競合状態の小鬼"
   },
   {
     "en": "There are always two, and they never agree on who strikes first.",
-    "to": "いつも二匹いて、どちらが先に打つかで永遠に折り合いません。"
+    "to": "いつも二匹いて、どちらが先に打つかで永遠に折り合いません。", "kanji": "いつも二匹いて、どちらが先に打つかで永遠に折り合いません。"
   },
   {
     "en": "Off-by-One Goblin",
-    "to": "一つずれのゴブリン"
+    "to": "一つずれのゴブリン", "kanji": "一つずれのゴブリン"
   },
   {
     "en": "It always hits one more time than you counted on.",
-    "to": "いつも、数えたより一回多く殴ってきます。"
+    "to": "いつも、数えたより一回多く殴ってきます。", "kanji": "いつも、数えたより一回多く殴ってきます。"
   },
   {
     "en": "Regex Sphinx",
-    "to": "正規表現のスフィンクス"
+    "to": "正規表現のスフィンクス", "kanji": "正規表現のスフィンクス"
   },
   {
     "en": "Only the element that matches this turn's pattern gets through at full strength.",
-    "to": "そのターンの型に合う属性だけが、完全な威力で通ります。"
+    "to": "そのターンの型に合う属性だけが、完全な威力で通ります。", "kanji": "そのターンの型に合う属性だけが、完全な威力で通ります。"
   },
   {
     "en": "Segfault Specter",
-    "to": "セグフォルトの亡霊"
+    "to": "セグフォルトの亡霊", "kanji": "セグフォルトの亡霊"
   },
   {
     "en": "Touch the wrong address and it takes the hit for nothing.",
-    "to": "誤った番地に触れれば、その一撃は無駄になります。"
+    "to": "誤った番地に触れれば、その一撃は無駄になります。", "kanji": "誤った番地に触れれば、その一撃は無駄になります。"
   },
   {
     "en": "Memory Leak Ooze",
-    "to": "メモリ漏れの粘体"
+    "to": "メモリ漏れの粘体", "kanji": "メモリ漏れの粘体"
   },
   {
     "en": "It never gives back what it takes. Burn it down before it grows back.",
-    "to": "奪ったものを決して返しません。また膨れる前に焼き切りましょう。"
+    "to": "奪ったものを決して返しません。また膨れる前に焼き切りましょう。", "kanji": "奪ったものを決して返しません。また膨れる前に焼き切りましょう。"
   },
   {
     "en": "The Root Daemon",
-    "to": "ルート・デーモン"
+    "to": "ルート・デーモン", "kanji": "ルート・デーモン"
   },
   {
     "en": "The process that owns every other. It does not stop for signals, and small bolts do not reach it.",
-    "to": "ほかのすべてを所有するプロセス。信号では止まらず、小さな矢は届きません。"
+    "to": "ほかのすべてを所有するプロセス。信号では止まらず、小さな矢は届きません。", "kanji": "ほかのすべてを所有するプロセス。信号では止まらず、小さな矢は届きません。"
   },
   // --- Relics -------------------------------------------------------------------------------------------------------
   {
     "en": "Cache Hit",
-    "to": "キャッシュヒット"
+    "to": "キャッシュヒット", "kanji": "キャッシュヒット"
   },
   {
     "en": "Your first spell each turn costs 1 less mana.",
-    "to": "毎ターン最初の呪文のマナが 1 安くなります。"
+    "to": "毎ターン最初の呪文のマナが 1 安くなります。", "kanji": "毎ターン最初の呪文のマナが 1 安くなります。"
   },
   {
     "en": "The answer was already there. Why compute it twice?",
-    "to": "答えはもうそこにありました。二度も計算する必要がありますか。"
+    "to": "答えはもうそこにありました。二度も計算する必要がありますか。", "kanji": "答えはもうそこにありました。二度も計算する必要がありますか。"
   },
   {
     "en": "ECC Memory",
-    "to": "誤り訂正メモリ"
+    "to": "誤り訂正メモリ", "kanji": "誤り訂正メモリ"
   },
   {
     "en": "Raise your maximum and current Integrity by 12.",
-    "to": "最大Integrityと現在のIntegrityが、それぞれ12増えます。"
+    "to": "最大Integrityと現在のIntegrityが、それぞれ12増えます。", "kanji": "最大Integrityと現在のIntegrityが、それぞれ12増えます。"
   },
   {
     "en": "It corrects its own mistakes before you notice them.",
-    "to": "こちらが気づく前に、自分の誤りを直しています。"
+    "to": "こちらが気づく前に、自分の誤りを直しています。", "kanji": "こちらが気づく前に、自分の誤りを直しています。"
   },
   {
     "en": "Debugger Duck",
-    "to": "デバッグのあひる"
+    "to": "デバッグのあひる", "kanji": "デバッグのあひる"
   },
   {
     "en": "Every bolt gains 1 power.",
-    "to": "すべての矢の威力が 1 上がります。"
+    "to": "すべての矢の威力が 1 上がります。", "kanji": "すべての矢の威力が 1 上がります。"
   },
   {
     "en": "Explain the spell to the duck. It listens, and somehow the spell gets better.",
-    "to": "あひるに呪文を説明してみましょう。黙って聞いてくれて、なぜか呪文がよくなります。"
+    "to": "あひるに呪文を説明してみましょう。黙って聞いてくれて、なぜか呪文がよくなります。", "kanji": "あひるに呪文を説明してみましょう。黙って聞いてくれて、なぜか呪文がよくなります。"
   },
   {
     "en": "Firewall",
-    "to": "防火壁"
+    "to": "防火壁", "kanji": "防火壁"
   },
   {
     "en": "Start every turn with 3 block.",
-    "to": "毎ターン、防御 3 から始まります。"
+    "to": "毎ターン、防御 3 から始まります。", "kanji": "毎ターン、防御 3 から始まります。"
   },
   {
     "en": "Nothing gets in that you did not allow.",
-    "to": "許していないものは、何ひとつ入ってきません。"
+    "to": "許していないものは、何ひとつ入ってきません。", "kanji": "許していないものは、何ひとつ入ってきません。"
   },
   {
     "en": "Amortized Ledger",
-    "to": "ならし計算の台帳"
+    "to": "ならし計算の台帳", "kanji": "ならし計算の台帳"
   },
   {
     "en": "Spell cost grows logarithmically with work instead of with its square root, making wide, high-work spells cheaper.",
-    "to": "呪文のマナ代は仕事量の平方根ではなく対数に応じて増えます。幅広く処理量の多い呪文が安くなります。"
+    "to": "呪文のマナ代は仕事量の平方根ではなく対数に応じて増えます。幅広く処理量の多い呪文が安くなります。", "kanji": "呪文のマナ代は仕事量の平方根ではなく対数に応じて増えます。幅広く処理量の多い呪文が安くなります。"
   },
   {
     "en": "Someone kept the books for the whole Machine, and rounded every page down.",
-    "to": "誰かが機械ぜんたいの帳簿をつけ、どの頁も切り捨てていました。"
+    "to": "誰かが機械ぜんたいの帳簿をつけ、どの頁も切り捨てていました。", "kanji": "誰かが機械ぜんたいの帳簿をつけ、どの頁も切り捨てていました。"
   },
   {
     "en": "Tuning Fork",
-    "to": "音叉"
+    "to": "音叉", "kanji": "音叉"
   },
   {
     "en": "Every bolt gains 1 to its multiplier.",
-    "to": "すべての矢の倍率が 1 上がります。"
+    "to": "すべての矢の倍率が 1 上がります。", "kanji": "すべての矢の倍率が 1 上がります。"
   },
   {
     "en": "Struck once at the Machine's founding, still humming the same note.",
-    "to": "機械が生まれたときに一度だけ叩かれ、いまも同じ音で鳴り続けています。"
+    "to": "機械が生まれたときに一度だけ叩かれ、いまも同じ音で鳴り続けています。", "kanji": "機械が生まれたときに一度だけ叩かれ、いまも同じ音で鳴り続けています。"
   },
   {
     "en": "Feedback Loop",
-    "to": "帰還回路"
+    "to": "帰還回路", "kanji": "帰還回路"
   },
   {
     "en": "Each earlier cast attempt this fight, including one that fizzled, adds +2 to every bolt's multiplier.",
-    "to": "この戦いでそれ以前に唱えようとした回数だけ、各ボルトの倍率が2上がります。不発になった詠唱も数えます。"
+    "to": "この戦いでそれ以前に唱えようとした回数だけ、各ボルトの倍率が2上がります。不発になった詠唱も数えます。", "kanji": "この戦いでそれ以前に唱えようとした回数だけ、各ボルトの倍率が2上がります。不発になった詠唱も数えます。"
   },
   {
     "en": "Output wired back into input. The Machine listened to itself and grew louder.",
-    "to": "出力が入力へ繋ぎ戻されています。機械は自分の声を聞き、どんどん大きくなりました。"
+    "to": "出力が入力へ繋ぎ戻されています。機械は自分の声を聞き、どんどん大きくなりました。", "kanji": "出力が入力へ繋ぎ戻されています。機械は自分の声を聞き、どんどん大きくなりました。"
   },
   {
     "en": "Thread Pool",
-    "to": "スレッドプール"
+    "to": "スレッドプール", "kanji": "スレッドプール"
   },
   {
     "en": "Gain 2 more mana every turn.",
-    "to": "毎ターンのマナが 2 増えます。"
+    "to": "毎ターンのマナが 2 増えます。", "kanji": "毎ターンのマナが 2 増えます。"
   },
   {
     "en": "Workers that were never joined, still waiting to be given something to do.",
-    "to": "回収されないまま残った働き手たちが、まだ仕事を待っています。"
+    "to": "回収されないまま残った働き手たちが、まだ仕事を待っています。", "kanji": "回収されないまま残った働き手たちが、まだ仕事を待っています。"
   },
   {
     "en": "Wider Aperture",
-    "to": "広がった絞り"
+    "to": "広がった絞り", "kanji": "広がった絞り"
   },
   {
     "en": "Raises the landing cap by 8, so up to 8 more bolts land before extras fizzle.",
-    "to": "着弾上限を8上げます。これにより、追加で最大8本のボルトが着弾し、それ以降は不発になります。"
+    "to": "着弾上限を8上げます。これにより、追加で最大8本のボルトが着弾し、それ以降は不発になります。", "kanji": "着弾上限を8上げます。これにより、追加で最大8本のボルトが着弾し、それ以降は不発になります。"
   },
   {
     "en": "The lens the first Maintainers ground, before anyone thought to stop at sixteen.",
-    "to": "十六本で止めようと誰かが考えるより前に、最初のメンテナーたちが磨いたレンズ。"
+    "to": "十六本で止めようと誰かが考えるより前に、最初のメンテナーたちが磨いたレンズ。", "kanji": "十六本で止めようと誰かが考えるより前に、最初のメンテナーたちが磨いたレンズ。"
   },
   {
     "en": "Lens of Types",
-    "to": "型のレンズ"
+    "to": "型のレンズ", "kanji": "型のレンズ"
   },
   {
     "en": "Hits on a weakness deal an extra 50% of their power.",
-    "to": "弱点を突いた一撃が、威力の 50% 分だけ余計に通ります。"
+    "to": "弱点を突いた一撃が、威力の 50% 分だけ余計に通ります。", "kanji": "弱点を突いた一撃が、威力の 50% 分だけ余計に通ります。"
   },
   {
     "en": "See what a thing really is, and where it breaks.",
-    "to": "そのものが本当は何であるか、そしてどこで壊れるかが見えます。"
+    "to": "そのものが本当は何であるか、そしてどこで壊れるかが見えます。", "kanji": "そのものが本当は何であるか、そしてどこで壊れるかが見えます。"
   },
   {
     "en": "Second Grimoire",
-    "to": "二冊目の魔道書"
+    "to": "二冊目の魔道書", "kanji": "二冊目の魔道書"
   },
   {
     "en": "Bind a new, empty spell at once, exceeding the normal two-spell limit.",
-    "to": "通常の二つ制限を超えて、空の呪文をひとつただちに綴じ込みます。"
+    "to": "通常の二つ制限を超えて、空の呪文をひとつただちに綴じ込みます。", "kanji": "通常の二つ制限を超えて、空の呪文をひとつただちに綴じ込みます。"
   },
   {
     "en": "Someone else's book, half burned. The empty pages still take ink.",
-    "to": "半分焼けた、誰かの本。白紙の頁は、まだ墨を受けつけます。"
+    "to": "半分焼けた、誰かの本。白紙の頁は、まだ墨を受けつけます。", "kanji": "半分焼けた、誰かの本。白紙の頁は、まだ墨を受けつけます。"
   },
   {
     "en": "Grimoire Page",
-    "to": "魔道書の頁"
+    "to": "魔道書の頁", "kanji": "魔道書の頁"
   },
   {
     "en": "Each spell can hold one additional shard.",
-    "to": "各呪文にシャードをもう1つ入れられます。"
+    "to": "各呪文にシャードをもう1つ入れられます。", "kanji": "各呪文にシャードをもう1つ入れられます。"
   },
   {
     "en": "A page torn from a Maintainer's spellbook, still humming.",
-    "to": "メンテナーの呪文書から破り取られた頁。まだ微かに鳴っています。"
+    "to": "メンテナーの呪文書から破り取られた頁。まだ微かに鳴っています。", "kanji": "メンテナーの呪文書から破り取られた頁。まだ微かに鳴っています。"
   },
   {
     "en": "Runaway Coil",
-    "to": "暴走コイル"
+    "to": "暴走コイル", "kanji": "暴走コイル"
   },
   {
     "en": "After all shards resolve, double every bolt's multiplier, including changes made by the shards.",
-    "to": "すべてのシャードが解決したあと、各ボルトの倍率を2倍にします。シャードによる変化分も含みます。"
+    "to": "すべてのシャードが解決したあと、各ボルトの倍率を2倍にします。シャードによる変化分も含みます。", "kanji": "すべてのシャードが解決したあと、各ボルトの倍率を2倍にします。シャードによる変化分も含みます。"
   },
   {
     "en": "It was wound to store a little current. Nobody agreed on when it should stop.",
-    "to": "少しの電流を蓄えるために巻かれたものです。どこで止めるかは、誰も決めませんでした。"
+    "to": "少しの電流を蓄えるために巻かれたものです。どこで止めるかは、誰も決めませんでした。", "kanji": "少しの電流を蓄えるために巻かれたものです。どこで止めるかは、誰も決めませんでした。"
   },
   {
     "en": "Overclocked Core",
-    "to": "過剰駆動の中核"
+    "to": "過剰駆動の中核", "kanji": "過剰駆動の中核"
   },
   {
     "en": "Attack bolts deal 30% more damage. Wards are unaffected.",
-    "to": "攻撃ボルトのダメージが30%増えます。防御ボルトには影響しません。"
+    "to": "攻撃ボルトのダメージが30%増えます。防御ボルトには影響しません。", "kanji": "攻撃ボルトのダメージが30%増えます。防御ボルトには影響しません。"
   },
   {
     "en": "Running hotter than it was ever rated for.",
-    "to": "定格よりずっと熱いまま回り続けています。"
+    "to": "定格よりずっと熱いまま回り続けています。", "kanji": "定格よりずっと熱いまま回り続けています。"
   },
   {
     "en": "Mana Capacitor",
-    "to": "マナ蓄電器"
+    "to": "マナ蓄電器", "kanji": "マナ蓄電器"
   },
   {
     "en": "Gain 1 additional mana at the start of every fight turn.",
-    "to": "戦闘中、各ターン開始時にマナを1多く得ます。"
+    "to": "戦闘中、各ターン開始時にマナを1多く得ます。", "kanji": "戦闘中、各ターン開始時にマナを1多く得ます。"
   },
   {
     "en": "It stores what the guardian could not spend.",
-    "to": "守り手が使いきれなかったものを蓄えています。"
+    "to": "守り手が使いきれなかったものを蓄えています。", "kanji": "守り手が使いきれなかったものを蓄えています。"
   },
   {
     "en": "Patch Kit",
-    "to": "修繕道具"
+    "to": "修繕道具", "kanji": "修繕道具"
   },
   {
     "en": "Recover 6 Integrity after every fight.",
-    "to": "戦いのたびに整合性を 6 回復します。"
+    "to": "戦いのたびに整合性を 6 回復します。", "kanji": "戦いのたびに整合性を 6 回復します。"
   },
   {
     "en": "Small fixes, applied often.",
-    "to": "小さな修正を、何度も当てること。"
+    "to": "小さな修正を、何度も当てること。", "kanji": "小さな修正を、何度も当てること。"
   },
   // --- Layers and difficulties --------------------------------------------------------------------------------------
   {
     "en": "The Sandbox",
-    "to": "サンドボックス"
+    "to": "サンドボックス", "kanji": "サンドボックス"
   },
   {
     "en": "Broken programs, shattered into shards. The first guardians still keep their posts.",
-    "to": "砕けて欠片になった、壊れたプログラムたち。最初の守り手たちは、いまも持ち場を離れません。"
+    "to": "砕けて欠片になった、壊れたプログラムたち。最初の守り手たちは、いまも持ち場を離れません。", "kanji": "砕けて欠片になった、壊れたプログラムたち。最初の守り手たちは、いまも持ち場を離れません。"
   },
   {
     "en": "The Heapworks",
-    "to": "ヒープ工房"
+    "to": "ヒープ工房", "kanji": "ヒープ工房"
   },
   {
     "en": "Memory that was never freed, piled into caverns. Things live in the leaks.",
-    "to": "解放されなかったメモリが、洞のように積み上がっています。漏れのなかに、何かが棲んでいます。"
+    "to": "解放されなかったメモリが、洞のように積み上がっています。漏れのなかに、何かが棲んでいます。", "kanji": "解放されなかったメモリが、洞のように積み上がっています。漏れのなかに、何かが棲んでいます。"
   },
   {
     "en": "The Kernel / Root Sanctum",
-    "to": "カーネル / ルート聖域"
+    "to": "カーネル / ルート聖域", "kanji": "カーネル / ルート聖域"
   },
   {
     "en": "The core of the Machine, where every process answers to one owner.",
-    "to": "機械の中枢。ここではすべてのプロセスが、ただ一人の所有者に従います。"
+    "to": "機械の中枢。ここではすべてのプロセスが、ただ一人の所有者に従います。", "kanji": "機械の中枢。ここではすべてのプロセスが、ただ一人の所有者に従います。"
   },
   {
     "en": "Beginner",
-    "to": "初心者"
+    "to": "初心者", "kanji": "初心者"
   },
   {
     "en": "Every shard says what it does in plain words, and every spell predicts its damage before you cast. Foes are a little softer.",
-    "to": "どの欠片も、することを平たい言葉で説明します。呪文は唱える前にダメージを予測します。敵も少し弱めです。"
+    "to": "どの欠片も、することを平たい言葉で説明します。呪文は唱える前にダメージを予測します。敵も少し弱めです。", "kanji": "どの欠片も、することを平たい言葉で説明します。呪文は唱える前にダメージを予測します。敵も少し弱めです。"
   },
   {
     "en": "Programmer",
-    "to": "プログラマー"
+    "to": "プログラマー", "kanji": "プログラマー"
   },
   {
     "en": "Shards show only their code, and spells predict nothing: read the function, or cast it and watch. Foes at full strength.",
-    "to": "欠片はコードだけを見せ、呪文は何も予測しません。関数を読むか、唱えて確かめるかです。敵は本来の強さです。"
+    "to": "欠片はコードだけを見せ、呪文は何も予測しません。関数を読むか、唱えて確かめるかです。敵は本来の強さです。", "kanji": "欠片はコードだけを見せ、呪文は何も予測しません。関数を読むか、唱えて確かめるかです。敵は本来の強さです。"
   },
   // --- Relics for Shardrun, the deck playstyle (ADR-0020) ------------------------------------------------------------
   {
     "en": "Clipboard",
-    "to": "クリップボード"
+    "to": "クリップボード", "kanji": "クリップボード"
   },
   {
     "en": "In Deck mode, keep one additional card in your hand when ending your turn.",
-    "to": "Deckモードでは、ターン終了時に手札のカードをもう1枚持ち越せます。"
+    "to": "Deckモードでは、ターン終了時に手札のカードをもう1枚持ち越せます。", "kanji": "Deckモードでは、ターン終了時に手札のカードをもう1枚持ち越せます。"
   },
   {
     "en": "Copy it now; paste it when it fits.",
-    "to": "今コピーして、合うときに貼りつける。"
+    "to": "今コピーして、合うときに貼りつける。", "kanji": "今コピーして、合うときに貼りつける。"
   },
   {
     "en": "Warm Cache",
-    "to": "温かいキャッシュ"
+    "to": "温かいキャッシュ", "kanji": "温かいキャッシュ"
   },
   {
     "en": "Draw 2 more cards on the first turn of every fight.",
-    "to": "戦いの最初のターンに、カードを 2 枚多く引きます。"
+    "to": "戦いの最初のターンに、カードを 2 枚多く引きます。", "kanji": "戦いの最初のターンに、カードを 2 枚多く引きます。"
   },
   {
     "en": "The first read is always the slow one. Not any more.",
-    "to": "最初の読み込みはいつも遅い。もう、そうではありません。"
+    "to": "最初の読み込みはいつも遅い。もう、そうではありません。", "kanji": "最初の読み込みはいつも遅い。もう、そうではありません。"
   },
   {
     "en": "Dependency Bundle",
-    "to": "依存パッケージ"
+    "to": "依存パッケージ", "kanji": "依存パッケージ"
   },
   {
     "en": "Adds Pierce, Seeker, and Focus Lens to your collection (or to your deck in Deck mode).",
-    "to": "Pierce、Seeker、Focus Lensをコレクションに加えます（Deckモードではデッキに加えます）。"
+    "to": "Pierce、Seeker、Focus Lensをコレクションに加えます（Deckモードではデッキに加えます）。", "kanji": "Pierce、Seeker、Focus Lensをコレクションに加えます（Deckモードではデッキに加えます）。"
   },
   {
     "en": "You asked for one package. Three more came with it, and all of them turn out to be useful.",
-    "to": "頼んだのは一つのパッケージ。三つおまけがついてきて、どれも役に立ちました。"
+    "to": "頼んだのは一つのパッケージ。三つおまけがついてきて、どれも役に立ちました。", "kanji": "頼んだのは一つのパッケージ。三つおまけがついてきて、どれも役に立ちました。"
   },
   {
     "en": "Read-Ahead Buffer",
-    "to": "先読みバッファ"
+    "to": "先読みバッファ", "kanji": "先読みバッファ"
   },
   {
     "en": "Draw 1 more card every turn.",
-    "to": "毎ターン、カードを 1 枚多く引きます。"
+    "to": "毎ターン、カードを 1 枚多く引きます。", "kanji": "毎ターン、カードを 1 枚多く引きます。"
   },
   {
     "en": "It reads the next card before you ask for it.",
-    "to": "頼む前に、次のカードを読んでおいてくれます。"
+    "to": "頼む前に、次のカードを読んでおいてくれます。", "kanji": "頼む前に、次のカードを読んでおいてくれます。"
   },
   {
     "en": "Compacting Collector",
-    "to": "圧縮コレクタ"
+    "to": "圧縮コレクタ", "kanji": "圧縮コレクタ"
   },
   {
     "en": "Whenever your discard pile is shuffled into a new draw pile, gain 6 block.",
-    "to": "捨て札が新しい山札に切り直されるたびに、防御を 6 得ます。"
+    "to": "捨て札が新しい山札に切り直されるたびに、防御を 6 得ます。", "kanji": "捨て札が新しい山札に切り直されるたびに、防御を 6 得ます。"
   },
   {
     "en": "Every sweep of the heap leaves something solid behind.",
-    "to": "ヒープを掃くたびに、固いものが残ります。"
+    "to": "ヒープを掃くたびに、固いものが残ります。", "kanji": "ヒープを掃くたびに、固いものが残ります。"
   },
   {
     "en": "Generator",
-    "to": "ジェネレータ"
+    "to": "ジェネレータ", "kanji": "ジェネレータ"
   },
   {
     "en": "Casting a spell of 3 or more cards draws a card.",
-    "to": "3 枚以上のカードの呪文を唱えると、カードを 1 枚引きます。"
+    "to": "3 枚以上のカードの呪文を唱えると、カードを 1 枚引きます。", "kanji": "3 枚以上のカードの呪文を唱えると、カードを 1 枚引きます。"
   },
   {
     "en": "yield, and the next one is already waiting.",
-    "to": "yield すれば、次のひとつがもう待っています。"
+    "to": "yield すれば、次のひとつがもう待っています。", "kanji": "yield すれば、次のひとつがもう待っています。"
   },
   {
     "en": "Tree Shaker",
-    "to": "ツリーシェイカー"
+    "to": "ツリーシェイカー", "kanji": "ツリーシェイカー"
   },
   {
     "en": "In Deck mode, each bolt gains +1 power for every card your deck is short of 12 (an 8-card deck gives +4).",
-    "to": "Deckモードでは、デッキが12枚に足りない枚数ぶん、各ボルトの威力が1上がります（8枚なら+4）。"
+    "to": "Deckモードでは、デッキが12枚に足りない枚数ぶん、各ボルトの威力が1上がります（8枚なら+4）。", "kanji": "Deckモードでは、デッキが12枚に足りない枚数ぶん、各ボルトの威力が1上がります（8枚なら+4）。"
   },
   {
     "en": "Whatever is never called gets shaken out, and what is left runs lighter.",
-    "to": "呼ばれないものは振り落とされ、残ったものは軽く走ります。"
+    "to": "呼ばれないものは振り落とされ、残ったものは軽く走ります。", "kanji": "呼ばれないものは振り落とされ、残ったものは軽く走ります。"
   }
 ]

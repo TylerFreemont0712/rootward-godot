@@ -1,7 +1,58 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Nym builds the bag (v0.4, quest 8, "A bag of your own"): the bag
+// task's add, then the bag's key, which is the shortcut task's stage 2 (opened from here, since it waits for the
+// story). He offers it once the lamps are lit.
 {
   "id": "quartermaster",
   "start": [
+    {
+      "if": {
+        "flag": "shop-buy"
+      },
+      "goto": "shop_trade"
+    },
+    {
+      "if": {
+        "flag": "shop-asked"
+      },
+      "goto": "shop_waits"
+    },
+    {
+      "if": {
+        "flag": "forge-gear"
+      },
+      "goto": "shop_offer"
+    },
+    {
+      "if": {
+        "flag": "bag-key-written"
+      },
+      "goto": "bag_done"
+    },
+    {
+      "if": {
+        "flag": "bag-built"
+      },
+      "goto": "key_offer"
+    },
+    {
+      "if": {
+        "flag": "bag-asked"
+      },
+      "goto": "bag_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "lamps-lit"
+          },
+          {
+            "flag": "menu-opened"
+          }
+        ]
+      },
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-quartermaster"
@@ -16,7 +67,7 @@
     "hello": {
       "lines": [
         {
-          "text": "Welcome to Nym's! Everything a tinker needs, and a few things nobody needs!",
+          "text": "Nym's! Everything a tinker needs. A few things nobody needs, too.",
           "mood": "happy"
         },
         {
@@ -33,6 +84,229 @@
           "text": "Nearly open! Very, very nearly."
         }
       ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker. A word about shelves."
+        },
+        {
+          "text": "My shelves are full, and nobody has anywhere to put anything. A cabbage rolled all the way to Marta's."
+        },
+        {
+          "text": "Pockets! Pockets are the answer!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Pockets are a mess. I want a bag. Neat piles, each with a name and a number."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll make one.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "Something picked up should go into the bag. If you hold some already, they share a pile."
+        }
+      ],
+      "set": [
+        "bag-asked"
+      ],
+      "open": "task:bag"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "Take your time. The shelves are not going anywhere."
+        }
+      ]
+    },
+    "bag_waits": {
+      "lines": [
+        {
+          "text": "The bag has no bottom yet. Things fall out."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's fix it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "key_offer": {
+      "lines": [
+        {
+          "text": "It holds! I put a pebble in and it stayed. Wonderful."
+        },
+        {
+          "text": "But a bag you cannot open is only a very small cupboard."
+        },
+        {
+          "text": "A key! Press one, and the bag opens. Like the menu!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Mira has the right idea. Teach her key machine one more door: the bag."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's do it.",
+          "goto": "key_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "key_teach": {
+      "lines": [
+        {
+          "text": "Back to Mira's key machine. Add a door for the bag on the I key. I is for inventory."
+        }
+      ],
+      "open": "task:shortcuts"
+    },
+    "bag_done": {
+      "lines": [
+        {
+          "text": "A bag of your own, and a key to open it. I am nearly ready to open the shop."
+        },
+        {
+          "text": "Very, very nearly?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Do not start."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my bag.",
+          "goto": "teach"
+        },
+        {
+          "text": "Change my key.",
+          "goto": "key_teach"
+        },
+        {
+          "text": "Bye, Nym.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "Mind the pebbles."
+        }
+      ]
+    },
+    "shop_offer": {
+      "lines": [
+        {
+          "text": "Tinker. My shop is nearly open. Very, very nearly."
+        },
+        {
+          "text": "It has shelves, a counter and a door. It has no prices on anything."
+        },
+        {
+          "text": "Prices! Then things can be sold, and bought, with coins!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Yes. A price for everything on the shelf. It would be a first for Lanternroot."
+        }
+      ],
+      "set": [
+        "met-quartermaster"
+      ],
+      "choices": [
+        {
+          "text": "Let's write them.",
+          "goto": "teach_shop"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach_shop": {
+      "lines": [
+        {
+          "text": "Write price(prices, item, count): the coins for some of an item. A thing with no price costs nothing."
+        },
+        {
+          "text": "Then write can_buy(coins, cost): true when your coins are enough to pay."
+        }
+      ],
+      "set": [
+        "shop-asked"
+      ],
+      "open": "task:shop"
+    },
+    "shop_waits": {
+      "lines": [
+        {
+          "text": "The shelves still have no prices. Shall we write a few?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's write them.",
+          "goto": "teach_shop"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "shop_trade": {
+      "lines": [
+        {
+          "text": "Look at that! The prices work. Coins go in, and things come out.",
+          "mood": "happy"
+        },
+        {
+          "text": "Shall we trade? Sell me what you do not need. Buy what you do."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's trade!",
+          "goto": "shop_open"
+        },
+        {
+          "text": "Not now.",
+          "goto": "later"
+        }
+      ]
+    },
+    "shop_open": {
+      "lines": [
+        {
+          "text": "Bread, lantern oil and gears, on the shelves. Pay with coins, not with pebbles."
+        }
+      ],
+      "open": "shop"
     }
   }
 }

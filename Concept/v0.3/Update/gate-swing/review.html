@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lanternroot · hinged gates</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #201b22; color: #ead8b7; }
+  body { max-width: 1100px; margin: 40px auto; padding: 0 24px; }
+  h1 { font-family: Georgia, serif; font-weight: normal; margin-bottom: 12px; }
+  p { color: #c7bca8; line-height: 1.6; max-width: 750px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 28px 0; }
+  button { background: #634730; border: 1px solid #ae8459; border-radius: 6px; padding: 9px 16px; color: inherit; cursor: pointer; }
+  input { accent-color: #d49c64; width: min(350px, 65vw); }
+  output { min-width: 90px; }
+  main { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  figure { margin: 0; background: #332c2e; border: 1px solid #655244; border-radius: 9px; overflow: hidden; }
+  canvas { display: block; width: 100%; aspect-ratio: 1.3; image-rendering: pixelated;
+    background: repeating-conic-gradient(#75835c 0% 25%, #7d8b63 0% 50%) 50% / 32px 32px; }
+  figcaption { padding: 14px 18px; font-size: 15px; }
+  small { display: block; color: #bbab96; margin-top: 5px; }
+</style>
+<h1>Lanternroot · hinged gates</h1>
+<p>Solid timber at rest, a quarter turn while someone occupies the passage, then closed again.
+Fixed posts and hinges keep the door the same size through every pose. Wide entrances have paired leaves.</p>
+<div class="controls">
+  <button id="toggle" type="button">Pause</button>
+  <button id="closed" type="button">Rest closed</button>
+  <button id="open" type="button">Occupied</button>
+  <input id="pose" aria-label="Gate opening" type="range" min="0" max="12" value="0">
+  <output id="state">Closed</output>
+</div>
+<main id="gates"></main>
+<p>The images shown here are the final palette-locked game sheets. Thirteen registered poses per design;
+the in-game swing takes 0.16 seconds. Player and NPC occupancy share the same behavior.
+The programmed cabbage gate keeps its own lock and saved state.</p>
+<script>
+  const designs = [
+    ['gate', 'Timber door', 'Horizontal · one tile', 120, 100],
+    ['gate_v', 'Timber door', 'Vertical · one tile', 120, 100],
+    ['gate-wide-2', 'Paired timber doors', 'Horizontal · two tiles', 160, 100],
+    ['gate-wide-3', 'Broad timber entrance', 'Horizontal · three tiles', 200, 100],
+    ['gate-wide-2-v', 'Paired timber doors', 'Vertical · two tiles', 120, 140],
+    ['expand-arched_wood_gate', 'Arched timber door', 'Horizontal · one tile', 120, 100],
+    ['expand-arched_wood_gate_v', 'Arched timber door', 'Vertical · one tile', 120, 100],
+    ['expand-iron_garden_gate', 'Iron garden gate', 'Horizontal · one tile', 120, 100],
+    ['expand-iron_garden_gate_v', 'Iron garden gate', 'Vertical · one tile', 120, 100],
+  ];
+  const cards = [];
+  const slider = document.getElementById('pose');
+  const toggle = document.getElementById('toggle');
+  let playing = true;
+  function draw(frame) {
+    slider.value = frame;
+    document.getElementById('state').textContent = frame === 0 ? 'Closed' : frame === 12 ? 'Open · 90°' : `${frame * 7.5}°`;
+    for (const { canvas, image, width, height } of cards) {
+      if (!image.complete || !image.naturalWidth) continue;
+      const context = canvas.getContext('2d');
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.imageSmoothingEnabled = false;
+      const scale = Math.min(canvas.width / (width - 55), canvas.height / height);
+      context.drawImage(image, frame * width, 0, width, height,
+        (canvas.width - width * scale) / 2, (canvas.height - height * scale) / 2, width * scale, height * scale);
+    }
+  }
+  for (const [id, label, detail, width, height] of designs) {
+    const figure = document.createElement('figure');
+    const canvas = document.createElement('canvas');
+    canvas.width = 400; canvas.height = 308;
+    const caption = document.createElement('figcaption');
+    caption.textContent = label;
+    const small = document.createElement('small');
+    small.textContent = detail;
+    caption.append(small); figure.append(canvas, caption);
+    document.getElementById('gates').append(figure);
+    const image = new Image();
+    cards.push({ canvas, image, width, height });
+    image.onload = () => draw(Number(slider.value));
+    image.src = `../../../../game/assets/overworld/world/${id}.png`;
+  }
+  function pauseAt(frame) { playing = false; toggle.textContent = 'Play'; draw(frame); }
+  toggle.onclick = () => { playing = !playing; toggle.textContent = playing ? 'Pause' : 'Play'; };
+  document.getElementById('closed').onclick = () => pauseAt(0);
+  document.getElementById('open').onclick = () => pauseAt(12);
+  slider.oninput = () => pauseAt(Number(slider.value));
+  function tick(time) {
+    if (playing) {
+      const phase = (time % 2800) / 1000;
+      const amount = Math.max(0, Math.min(1, phase < 1.4 ? (phase - 0.8) / 0.16 : (2.2 - phase) / 0.16));
+      draw(Math.round(amount * amount * (3 - 2 * amount) * 12));
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+</script>
+</html>

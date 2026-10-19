@@ -1,0 +1,94 @@
+// Pip's progress (Concept/v0.4/01, 5.8): progress(done, total) turns the steps done into the tracker's bar.
+// Stage 1 (Pip) is the whole task: a whole percent, and nothing to divide when a quest has no steps.
+{
+  "id": "progress",
+  "name": "The Progress Bar",
+  "title": "Pip's progress",
+  "giver": "pip",
+  "built_line": "Your progress() fills quest bars and unlocks the expanded journal.",
+  "entry": {"python": "progress", "javascript": "progress"},
+  "params": [
+    {"name": "done", "meaning": "How many steps are finished. A whole number, 0 or more.", "example": "2"},
+    {"name": "total", "meaning": "How many steps the quest has in all. A whole number, 0 or more.", "example": "4"}
+  ],
+  "gives": {"meaning": "The percent done, a whole number from 0 to 100. A quest with no steps gives 0, and not an error.", "example": "50"},
+  "words": {
+    "python": [
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "pets = 3 * 4"},
+      {"term": "//", "meaning": "Divides and keeps only the whole number, leaving out the part after the point.", "example": "slices = 13 // 4"},
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "pet == \"cat\""},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if weather == \"rain\":\n    return \"umbrella\""},
+      {"term": "None", "meaning": "Python's word for nothing at all.", "example": "return None"}
+    ],
+    "javascript": [
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "const pets = 3 * 4;"},
+      {"term": "Math.floor", "meaning": "Rounds a number down to the whole number below it.", "example": "Math.floor(7.8)"},
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "pet === \"cat\""},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (weather === \"rain\") {\n  return \"umbrella\";\n}"},
+      {"term": "null", "meaning": "JavaScript's word for nothing at all.", "example": "return null;"}
+    ]
+  },
+  "starter": {"python": "progress.starter.py", "javascript": "progress.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def progress(done, total):",
+        "[no_steps]    if total == 0:",
+        "[no_steps]        return {empty}",
+        "    return {expr}"
+      ],
+      "javascript": [
+        "function progress(done, total) {",
+        "[no_steps]  if (total === 0) {",
+        "[no_steps]    return {empty};",
+        "[no_steps]  }",
+        "  return {expr};",
+        "}"
+      ]
+    },
+    "slots": {
+      "expr": {
+        "label": "give back",
+        "choices": [
+          "done / total",
+          {"label": "done times 100, rounded down", "python": "done * 100 // total", "javascript": "Math.floor(done * 100 / total)"},
+          {"label": "total divided by done", "python": "total // done", "javascript": "Math.floor(total / done)"}
+        ]
+      },
+      "empty": {
+        "label": "with no steps, give back",
+        "choices": ["100", "0", {"label": "nothing", "python": "None", "javascript": "null"}]
+      }
+    },
+    "toggles": {
+      "no_steps": {"label": "When there are no steps"}
+    },
+    "start": {"slots": {"expr": 2, "empty": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "progress-built",
+      "goal": "Give back the percent done, a whole number from 0 to 100. A quest with no steps gives 0.",
+      "judge": "progress",
+      "cases": [
+        {"args": [0, 4], "want": 0, "say": "no steps done yet"},
+        {"args": [2, 4], "want": 50, "say": "half of four steps"},
+        {"args": [4, 4], "want": 100, "say": "every step done"},
+        {"args": [1, 3], "want": 33, "say": "one step of three"},
+        {"args": [2, 3], "any": [66, 67], "say": "two steps of three"},
+        {"args": [0, 0], "want": 0, "say": "a quest with no steps at all", "edge": true}
+      ],
+      "hints": [
+        "Pip counts out of 100, not out of 1. If 2 of 4 steps are done, how many hundredths of the steps is that?",
+        "A fraction like 0.5 is a part of one whole. Which kind of division gives back only whole numbers?",
+        "A quest with no steps would divide by zero, which can't be done. Put that case first, and say what it should give back."
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "With {arg0} of {arg1} steps done, Pip wants about {want} percent. You gave {got}.",
+    "not-whole": "{got} has bits after the point. Pip wants a whole number of percent, like 50.",
+    "fraction": "Pip counts out of 100, not out of 1. {got} is a part of one whole, so Pip can't show it.",
+    "zero": "A quest with no steps: {arg0} out of {arg1}. There is nothing to finish, so it should give 0. You gave {got}."
+  }
+}

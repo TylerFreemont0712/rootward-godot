@@ -1,0 +1,118 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "expand-chair-windsor-update-8dbfb4bf",
+  "kind": "furniture",
+  "what": "a tall spindle back windsor chair in dark wood with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.15,
+        0.43
+      ],
+      "size": [
+        0.64,
+        0.64,
+        0.12
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.18,
+        0
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.43
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.7,
+        0.18,
+        0
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.43
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.72,
+        0.43
+      ],
+      "size": [
+        0.64,
+        0.08,
+        0.78
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.24,
+        0.7,
+        0.5
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.62
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.42,
+        0.7,
+        0.5
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.62
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.6,
+        0.7,
+        0.5
+      ],
+      "size": [
+        0.08,
+        0.08,
+        0.62
+      ],
+      "ramp": "wood",
+      "shade": 2
+    }
+  ]
+}

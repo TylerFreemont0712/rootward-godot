@@ -1,0 +1,16 @@
+// Music box: beside the Warm Hearth's door (v0.4 art, section 11). A wooden box on a short stand, lid open at the back.
+{
+ "id": "music-box",
+ "kind": "prop",
+ "what": "a wooden music box on a short wooden stand, its lid open at the back, with a brass comb and cylinder inside",
+ "footprint": [1, 1],
+ "ramps": {"wood": "wood", "lining": "cloth_red", "brass": "gold"},
+ "parts": [
+  {"shape": "box", "at": [0.2, 0.2, 0], "size": [0.6, 0.6, 0.3], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.14, 0.14, 0.3], "size": [0.72, 0.72, 0.3], "ramp": "wood"},
+  {"shape": "box", "at": [0.2, 0.2, 0.6], "size": [0.6, 0.6, 0.02], "ramp": "lining", "shade": 2},
+  {"shape": "cylinder", "at": [0.32, 0.32, 0.62], "size": [0.36, 0.36, 0.1], "ramp": "brass", "shade": 0},
+  {"shape": "box", "at": [0.28, 0.56, 0.62], "size": [0.44, 0.06, 0.16], "ramp": "brass", "shade": 2},
+  {"shape": "box", "at": [0.14, 0.82, 0.6], "size": [0.72, 0.04, 0.5], "ramp": "wood", "shade": 1}
+ ]
+}

@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4, Concept/v0.4/03-story.md): the first time Esc opens the pocket menu, before the menu part exists.
+{
+  "id": "hotaru-pocket-menu",
+  "start": [
+    {
+      "goto": "pocket"
+    }
+  ],
+  "nodes": {
+    "pocket": {
+      "lines": [
+        {
+          "text": "This is my pocket menu! I keep it for emergencies.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "It only holds the basics: your boots, Save, Settings and the ways out. My pocket is small!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Mira at the workshop could build you a real one. She loves a neat machine.",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "pocket-menu-told"
+      ]
+    }
+  }
+}

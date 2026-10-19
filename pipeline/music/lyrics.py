@@ -17,11 +17,12 @@ import argparse
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
-TRACKS = Path(__file__).with_name("tracks")
-CACHE = ROOT / "pipeline" / "cache" / "music"
+sys.path.insert(0, str(Path(__file__).parent))
+import library  # noqa: E402
+
 MODEL = "large-v3"
 
 
@@ -73,9 +74,9 @@ def transcribe(audio: Path) -> list[dict]:
 
 
 def check(track: str, take: str) -> dict:
-    brief = json.loads((TRACKS / track / "brief.json").read_text())
-    audio = CACHE / track / f"{take}.wav"
-    cached = CACHE / track / f"{take}.lyrics.json"
+    brief = library.brief(track)
+    audio = library.find_take(track, take)
+    cached = library.track_takes_dir(track) / f"{take}.lyrics.json"
     if cached.exists():
         heard = json.loads(cached.read_text())["heard"]
     else:
@@ -98,7 +99,7 @@ def main() -> None:
     parser.add_argument("track")
     parser.add_argument("takes", nargs="*")
     args = parser.parse_args()
-    takes = args.takes or sorted(path.stem for path in (CACHE / args.track).glob("*.wav"))
+    takes = args.takes or library.takes(args.track)
     for take in takes:
         report = check(args.track, take)
         print(f"{take}: word error rate {report['wer']} ({report['ok']} of {report['lyric_words']} words heard, "

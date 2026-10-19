@@ -1,0 +1,15 @@
+// A bed of cabbages (14 placements, in rows of 1 x 1 pieces): a strip of soil edge to edge and two cabbages on it.
+{
+ "id": "cabbages",
+ "kind": "prop",
+ "what": "a row of two round green cabbages in a strip of brown soil",
+ "footprint": [1, 1],
+ "ramps": {"soil": "dirt", "cabbage": "leaf"},
+ "parts": [
+  {"shape": "box", "at": [0.0, 0.0, 0], "size": [1.0, 1.0, 0.08], "ramp": "soil", "shade": 2},
+  {"shape": "ball", "at": [0.03, 0.25, 0.04], "size": [0.46, 0.5, 0.42], "ramp": "cabbage", "shade": 2},
+  {"shape": "ball", "at": [0.09, 0.32, 0.2], "size": [0.34, 0.36, 0.3], "ramp": "cabbage", "shade": 0},
+  {"shape": "ball", "at": [0.51, 0.25, 0.04], "size": [0.46, 0.5, 0.42], "ramp": "cabbage", "shade": 2},
+  {"shape": "ball", "at": [0.57, 0.32, 0.2], "size": [0.34, 0.36, 0.3], "ramp": "cabbage", "shade": 0}
+ ]
+}

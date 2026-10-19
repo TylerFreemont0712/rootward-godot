@@ -1,0 +1,52 @@
+{
+  "id": "vesper-v2",
+  "pipeline": "sprites",
+  "name": "VesperV2.0",
+  "epithet": "Star-Script Witch",
+  "accent": "#b48cff",
+  "_about": "A separate Vesper skin with portrait-inspired anime artwork and enemy-facing poses. ChatGPT imagegen supplies the corrected hurt and casting poses; import_imagegen_hq.gd preserves head scale, normalizes body proportions and restricts idle movement. The existing RIFE workflow adds in-between frames. See README.md for the active build workflow.",
+  "character": "1girl, solo, little witch, (purple bob hair:1.3) with blunt bangs, big amber eyes, small smile, navy blue witch hat with a gold crescent moon on its band, (short plum purple capelet:1.3) that ends above the elbows with gold trim fastened with a gold star brooch, teal dress with a gold hem, brown belt, black tights, little brown boots, empty hands, arms relaxed at her sides",
+  "style": {
+    "prefix": "masterpiece, best quality, cute game character sprite art, (chibi:0.55), small girl, simple clean lineart, thick outline, flat colors, soft cel shading, full body, ",
+    "suffix": ", three-quarter view, body turned toward the right, facing the viewer, standing, plain white background, no shadow",
+    "negative": "worst quality, low quality, blurry, text, watermark, signature, cropped, realistic, 3d, tall, long legs, mature, detailed shading, multiple views, sprite sheet, grid, border, extra limbs, extra arms, background scenery, floor, ground shadow, gradient background, back view, side view, profile, holding, book, staff, wand, weapon, magic effects, glow, particles, sparkles, light rays, moon in background, long cape, cloak, multiple girls, 2girls, duplicate, clone, twins, character sheet, reference sheet, small figure beside her, pale hair, grey hair, white hair, silver hair, words, lettering, logo",
+    "motion_suffix": ", cute anime cel animation, clean line art, smooth motion, plain white background, static camera, full body always in frame",
+    "motion_negative": "camera movement, zoom, pan, cut, flicker, color shift, morphing, blurry, deformed hands, extra limbs, extra fingers, text, watermark, background scenery, floor, shadow, low quality, still image, static frame, magic effects, light burst, lightning, sparkles, glow, beams, energy, particles, flash, holding object, long cape, billowing cape"
+  },
+  "reference": {
+    "seed": 5100,
+    "steps": 30,
+    "cfg": 5.5,
+    "control": 1.0,
+    "control_end": 0.9,
+    "scale_up": 1.6,
+    "detail": 0.3,
+    "place": false
+  },
+  "animate": {
+    "seed": 7300,
+    "speed": 0.0
+  },
+  "ship": {
+    "frame": [
+      640,
+      560
+    ]
+  },
+  "casts": {
+    "light": [
+      "cast-light"
+    ],
+    "heavy": "cast-light"
+  },
+  "fx": {
+    "flight": "star",
+    "secondary": "#f0b85e"
+  },
+  "portrait": {
+    "denoise": 0.5,
+    "seed": 9300,
+    "prompt": ", upper body portrait, looking at the viewer, cute, detailed glossy amber eyes with highlights, clean lineart, soft cel shading, gold trim"
+  },
+  "profileSize": 512
+}

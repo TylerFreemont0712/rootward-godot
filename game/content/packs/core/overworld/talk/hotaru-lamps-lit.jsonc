@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): right after the lane is lit (lamps-lit), nudging the tinker towards Lumen's turn.
+{
+  "id": "hotaru-lamps-lit",
+  "start": [
+    {
+      "goto": "waving"
+    }
+  ],
+  "nodes": {
+    "waving": {
+      "lines": [
+        {
+          "text": "Look at that lane! Every lamp, awake at once!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Lumen is waving at you. She has her serious face on.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "A serious face means good news. Or a lecture. Let's go and see!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "lamps-lit-told"
+      ]
+    }
+  }
+}

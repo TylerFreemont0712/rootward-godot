@@ -1,0 +1,114 @@
+{
+  "_doc": "Lanternroot's cast as sprite sheets (pipeline/animation/README.md, ADR-0063). Each character's look comes from the game's content (townsfolk.jsonc; the player's is looks.jsonc `start`); this file holds how they are made: the camera every turn shares, the views, the sheet's layout and sizes, the ComfyUI restyle, the prompt words for every part, the fixed colours (boots, wood, glow...), and one short description per character from their portrait.",
+  "camera": {"height": 3.0, "center_z": 1.4, "render": [800, 1200]},
+  "blockout": {"segments": 16, "subsurf": 1, "samples": 32},
+  "views": {"front": 0, "left": -90, "back": 180, "right": 90},
+  "sheet": {
+    "review_sizes": [[48, 72], [96, 144]],
+    "rows": [
+      {"facing": "down", "view": "front"},
+      {"facing": "up", "view": "back"},
+      {"facing": "left", "view": "left"},
+      {"facing": "right", "view": "right"}
+    ],
+    "columns": ["stop", "idle"],
+    "idle": {"drop": 2, "waist": 0.55},
+    "colors": 32,
+    "alpha_cut": 0.5,
+    "guard": 24
+  },
+  "comfy": {
+    "url": "http://127.0.0.1:8188",
+    "checkpoint": "novaAnimeXL_ilV190.safetensors",
+    "lora": "pixel-art-xl-v1.1.safetensors",
+    "lora_strength": 1.0,
+    "steps": 28,
+    "cfg": 5.5,
+    "sampler": "euler_ancestral",
+    "scheduler": "normal",
+    "rmbg": true,
+    "candidates": 2,
+    "denoise": 0.7
+  },
+  "prompt": {
+    "prefix": "masterpiece, best quality, pixel art, ",
+    "body": "full body sprite of {who}, {parts}, {boots}, standing still, arms slightly away from the body, feet apart, {view}",
+    "boots": {"outfit/armor": "{metal} armored boots", "default": "brown leather boots"},
+    "suffix": ", single rpg character sprite, plain white background, clean dark outline, crisp pixels, limited palette, simple cel shading, centered, whole figure visible from head to feet",
+    "negative": "worst quality, low quality, blurry, text, watermark, signature, sprite sheet, multiple characters, collage, grid, tileset, background, scenery, cropped, frame, border, drop shadow, gradient background, realistic, photo, 3d render, extra limbs, deformed hands, floating object, sparkles, stars, particles, weapon, sword, shield, nsfw",
+    "views": {
+      "front": "front view, facing the viewer",
+      "left": "side view, facing left, profile",
+      "back": "back view, seen from behind",
+      "right": "side view, facing right, profile"
+    },
+    "view_negative": {
+      "front": "back view, side view, profile, three-quarter view",
+      "left": "front view, three-quarter view, both eyes, back view",
+      "back": "face, eyes, nose, mouth, front view, three-quarter view",
+      "right": "front view, three-quarter view, both eyes, back view"
+    },
+    "parts": {
+      "outfit/undersuit": "a plain fitted {second} shirt and shorts",
+      "outfit/tunic": "{main} tunic with {second} trim and a {accent} sash",
+      "outfit/dress": "long {main} dress with a {second} apron",
+      "outfit/robe": "long {main} robe with {second} trim",
+      "outfit/coat": "{main} coat with a {second} collar",
+      "outfit/vest": "{main} vest over a {second} shirt, {accent} trousers",
+      "outfit/armor": "{main} armor with {metal} shoulder plates",
+      "hair/short": "short {hair} hair",
+      "hair/bun": "{hair} hair in a bun",
+      "hair/fluffy": "fluffy {hair} hair",
+      "hair/long": "long {hair} hair",
+      "hair/braid": "{hair} hair in a braid",
+      "hair/spiky": "spiky {hair} hair",
+      "hat/kettle": "{metal} kettle helmet",
+      "hat/hood": "{main} hood",
+      "hat/leaves": "a crown of leaves",
+      "hat/goggles": "goggles on the forehead",
+      "hat/wide": "wide brimmed {accent} hat",
+      "hat/visor": "full {metal} helmet with a glowing visor",
+      "face/glasses": "round glasses",
+      "face/beard": "{hair} beard",
+      "face/mask": "{second} face mask",
+      "item/lantern": "holding a lantern",
+      "item/book": "holding a thick teal book against the hip",
+      "item/staff": "gripping a tall pale wooden staff in one hand"
+    },
+    "words": {"cloth_navy": "navy blue", "cloth_denim": "denim blue", "cloth_sky": "sky blue", "hair_ash": "ash grey", "hair_espresso": "dark brown"}
+  },
+  "colours": {
+    "shade": 1,
+    "fixed": {
+      "boot": "cloth_brown.1",
+      "wood": "wood.1",
+      "staff": "wood.0",
+      "cover": "cloth_teal.2",
+      "glow": "glow.1",
+      "leaf": "leaf.1",
+      "page": "cloth_cream.0",
+      "shine": "cloth_white.0",
+      "blush": "hair_pink.1",
+      "glass": "cloth_sky.1",
+      "ink": "ink.0"
+    }
+  },
+  "cast": {
+    "innkeeper": {"who": "a young woman innkeeper"},
+    "pip": {"who": "a cheerful young boy with freckles"},
+    "guard": {"who": "a young man town guard"},
+    "oracle": {"who": "a young woman oracle"},
+    "archivist": {"who": "a young woman scholar"},
+    "artificer": {"who": "a young girl artificer"},
+    "compiler": {"who": "a burly blacksmith man"},
+    "guildmaster": {"who": "an old man village elder"},
+    "keeper": {"who": "a young woman druid", "picks": {"left": 0}, "seeds": {"front": 4242}},
+    "necromancer": {"who": "a pale mysterious mage", "picks": {"left": 0}},
+    "pell": {"who": "a young boy tinkerer"},
+    "quartermaster": {"who": "a jolly old man with a white moustache"},
+    "sergeant": {"who": "a silver-haired officer with swept short hair and steel plate armor", "authored_sheet": true},
+    "shade": {"who": "a hooded rogue"},
+    "summoner": {"who": "a young girl mage"},
+    "warden": {"who": "a knight in dark armor", "picks": {"left": 0}}
+  }
+}

@@ -1,0 +1,108 @@
+// Fern's weather (Concept/v0.4/05, 2.7): the player's weather(day) says what each day of the town's year is like. One
+// stage: every day gives sun, rain or cloud, and every 7 days in a row hold a rain day and a sun day. The game asks it
+// for days 0 to 27 and repeats them (a table); a rain day makes rain fall over the town.
+{
+  "id": "weather",
+  "name": "The Weather",
+  "title": "Fern's weather",
+  "giver": "keeper",
+  "built_line": "Rain falls in town on the days your weather() says.",
+  "entry": {"python": "weather", "javascript": "weather"},
+  "params": [
+    {"name": "day", "meaning": "The town's day number, from 0. The days go on and on.", "example": "3"}
+  ],
+  "gives": {"meaning": "The weather that day: \"sun\", \"rain\" or \"cloud\".", "example": "\"cloud\""},
+  "words": {
+    "python": [
+      {"term": "%", "meaning": "Gives the rest left over after dividing one whole number by another.", "example": "9 % 4"},
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "fruit == \"pear\""},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if score == 10:\n    return \"ten\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "%", "meaning": "Gives the rest left over after dividing one whole number by another.", "example": "9 % 4"},
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "fruit === \"pear\""},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (score === 10) {\n  return \"ten\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "weather.starter.py", "javascript": "weather.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def weather(day):",
+        "    if day % {every} == 0:",
+        "        return \"rain\"",
+        "[cloud]    if day % {every} == {cloud_day}:",
+        "[cloud]        return \"cloud\"",
+        "    return \"sun\""
+      ],
+      "javascript": [
+        "function weather(day) {",
+        "  if (day % {every} === 0) {",
+        "    return \"rain\";",
+        "  }",
+        "[cloud]  if (day % {every} === {cloud_day}) {",
+        "[cloud]    return \"cloud\";",
+        "[cloud]  }",
+        "  return \"sun\";",
+        "}"
+      ]
+    },
+    "slots": {
+      "every": {"label": "rain every", "choices": ["10", "4", "7"]},
+      "cloud_day": {"label": "cloud on", "choices": ["3", "2", "1"]}
+    },
+    "toggles": {
+      "cloud": {"label": "Some days are cloud too"}
+    },
+    "start": {"slots": {"every": 0, "cloud_day": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "weather-built",
+      "goal": "Give back sun, rain or cloud for each day, so that every 7 days in a row has a rain day and a sun day.",
+      "judge": "weather_week",
+      "cases": [
+        {"args": [0], "say": "day 0"},
+        {"args": [1], "say": "day 1"},
+        {"args": [2], "say": "day 2"},
+        {"args": [3], "say": "day 3"},
+        {"args": [4], "say": "day 4"},
+        {"args": [5], "say": "day 5"},
+        {"args": [6], "say": "day 6"},
+        {"args": [7], "say": "day 7"},
+        {"args": [8], "say": "day 8"},
+        {"args": [9], "say": "day 9"},
+        {"args": [10], "say": "day 10"},
+        {"args": [11], "say": "day 11"},
+        {"args": [12], "say": "day 12"},
+        {"args": [13], "say": "day 13"},
+        {"args": [14], "say": "day 14"},
+        {"args": [15], "say": "day 15"},
+        {"args": [16], "say": "day 16"},
+        {"args": [17], "say": "day 17"},
+        {"args": [18], "say": "day 18"},
+        {"args": [19], "say": "day 19"},
+        {"args": [20], "say": "day 20"},
+        {"args": [21], "say": "day 21"},
+        {"args": [22], "say": "day 22"},
+        {"args": [23], "say": "day 23"},
+        {"args": [24], "say": "day 24"},
+        {"args": [25], "say": "day 25"},
+        {"args": [26], "say": "day 26"},
+        {"args": [27], "say": "day 27"}
+      ],
+      "hints": [
+        "The days go on forever, so the answer has to repeat in a pattern. The % sign gives the rest after a division, and that rest comes round again and again.",
+        "Choose one rest that means rain. Every other day can be sun. Ask yourself: in any 7 days in a row, does a rain day come up?",
+        "Try a number to divide by, then count 7 days in a row by hand. Does every run of 7 hold a rain day and a sun day?"
+      ]
+    }
+  ],
+  "advice": {
+    "not-weather": "Day {arg0} gave back {got}. It has to be \"sun\", \"rain\" or \"cloud\", spelled just so.",
+    "no-rain": "The days {name} have no rain. In every 7 days in a row, one day must be rain.",
+    "no-sun": "The days {name} have no sun. In every 7 days in a row, one day must be sun."
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "comment": "takes_dir holds everything heavy and local (raw takes, masters, loop auditions, qc, the listening page); it is not in git. read_also are older folders whose takes, plans, masters and loop reports are found when they are not in takes_dir (read only: new files are always written to takes_dir). ROOTWARD_MUSIC_TAKES overrides takes_dir.",
+  "comment": "takes_dir holds everything heavy and local: the takes (raw wav, requests, logs, results), their masters, analyses, lyrics and the listening page. It is not in git. ROOTWARD_MUSIC_TAKES overrides it. workflow is the ComfyUI workflow the comfy engine runs; comfy_url is ComfyUI (ROOTWARD_COMFY_URL overrides it); yue2_dir is yue2.cpp (YUE2_DIR overrides it).",
   "takes_dir": "pipeline/cache/music",
-  "read_also": ["test/music"],
   "workflow": "pipeline/music/workflows/yue2_MusicGen.json",
   "comfy_url": "http://127.0.0.1:8188",
+  "yue2_dir": "~/personal-project/yue2.cpp",
   "home_key": "D"
 }

@@ -1,0 +1,21 @@
+// A piece of the pond's footbridge (7 placements stacked north to south, each 2 x 1, ground layer): a deck of planks
+// that run east to west, low rails along its left and right edges and a post where each piece starts. One tile of depth
+// is drawn 0.6 tile tall, so the deck is 1 / 0.6 deep to fill its cell and the pieces meet on the screen.
+{
+ "id": "bridge",
+ "kind": "prop",
+ "what": "a wooden footbridge seen from above, wooden planks across a deck, low wooden rails on both sides",
+ "footprint": [2, 1],
+ "ramps": {"planks": "wood", "rails": "wood"},
+ "parts": [
+  {"shape": "box", "at": [0.0, 0.0, 0], "size": [2.0, 1.6667, 0.07], "ramp": "planks", "shade": 3},
+  {"shape": "box", "at": [0.02, 0.0, 0.07], "size": [1.96, 0.4, 0.07], "ramp": "planks", "shade": 0},
+  {"shape": "box", "at": [0.02, 0.44, 0.07], "size": [1.96, 0.4, 0.07], "ramp": "planks", "shade": 1},
+  {"shape": "box", "at": [0.02, 0.88, 0.07], "size": [1.96, 0.4, 0.07], "ramp": "planks", "shade": 0},
+  {"shape": "box", "at": [0.02, 1.32, 0.07], "size": [1.96, 0.3467, 0.07], "ramp": "planks", "shade": 1},
+  {"shape": "box", "at": [0.0, 0.0, 0.14], "size": [0.16, 1.6667, 0.26], "ramp": "rails", "shade": 2},
+  {"shape": "box", "at": [1.84, 0.0, 0.14], "size": [0.16, 1.6667, 0.26], "ramp": "rails", "shade": 2},
+  {"shape": "box", "at": [0.0, 0.0, 0.14], "size": [0.22, 0.22, 0.5], "ramp": "rails", "shade": 3},
+  {"shape": "box", "at": [1.78, 0.0, 0.14], "size": [0.22, 0.22, 0.5], "ramp": "rails", "shade": 3}
+ ]
+}

@@ -1,9 +1,9 @@
 extends GdUnitTestSuite
 ## The opening, from the overworld with real key events (ADR-0061): a new tinker makes their character, Hotaru wakes
 ## them, the boots open and are tried, the first step is taken, the player teaches the boots the two keys the way to
-## the door and the noticeboard need, the doormat takes them into town, and the noticeboard's first choice hands over to
-## the letters. The scene change does not run in a test: ScreenTransition is held busy, so Game.go returns at once, and
-## the hand-over is asserted by the letters' return target, the overworld's busy flag and the saved state instead.
+## the door and the noticeboard need, the doormat takes them into town, and the noticeboard's four lines are read: that
+## sets read-notices and ends the opening in town. The scene change does not run in a test: ScreenTransition is held
+## busy, so Game.go returns at once, and the ending is asserted by the overworld's busy flag and the saved state.
 ## Each case needs the sandbox runtime (scripts/fetch-sandbox.sh); without it the case is skipped, and gdUnit shows why.
 ## Driven as the flow test is: Game.reset into a temporary save folder, the screen added to the tree, and keys pushed to
 ## the root of the tree.
@@ -13,14 +13,21 @@ const HOME := "home"
 const TOWN := "lanternroot"
 const HOME_START := Vector2i(2, 3)
 const FIRST_STEP := Vector2i(3, 3)
-const TOWN_START := Vector2i(6, 23)
-const BOARD_SIDE := Vector2i(16, 12)
 ## How far one press of each key walks.
 const DELTA := {KEY_UP: Vector2i(0, -1), KEY_DOWN: Vector2i(0, 1), KEY_LEFT: Vector2i(-1, 0), KEY_RIGHT: Vector2i(1, 0)}
 ## The most presses one talk is given: a line to finish typing and then the next, for each line, and a choice.
 const PRESSES := 20
+## The keys the walk to the noticeboard uses: right, down and up, which the boots know by then
+## (asserted in (c) and (e)).
+const WALK_KEYS: Array[Key] = [KEY_RIGHT, KEY_DOWN, KEY_UP]
 
 var screen: OverworldScreen
+## The town as its content says it is (ADR-0061): its start and its noticeboard are read from the map, not pinned here.
+var _town: Dictionary = {}
+
+
+func before() -> void:
+	_town = OverworldContent.load_world().catalog.maps[TOWN]
 
 
 func before_test() -> void:
@@ -120,72 +127,80 @@ func test_the_opening_runs_from_the_creator_to_the_letters(
 	(
 		assert_that(OverworldState.cell(screen.state))
 		. override_failure_message("the player arrives at the town's start")
-		. is_equal(TOWN_START)
+		. is_equal(_town_start())
 	)
 	var saved := OverworldStore.for_profile().load_state()
 	assert_str(String(saved.get("map", ""))).override_failure_message("the town was not saved").is_equal(TOWN)
 	assert_that(OverworldState.cell(saved)).override_failure_message("the town's start was not saved").is_equal(
-		TOWN_START
+		_town_start()
 	)
 	assert_bool(talk.busy).override_failure_message("arriving in town starts hotaru-town").is_true()
 	var welcomed: bool = await _advance_until(func() -> bool: return not talk.busy)
 	assert_bool(welcomed).override_failure_message("hotaru-town should end").is_true()
-	# The town reads its own boots (a 40 x 30 table) before any key is walked on, so the walk waits for it.
+	# The town reads its own boots before any key is walked on, so the walk waits for it.
 	var town_read: bool = await _until(func() -> bool: return _read_ready())
 	assert_bool(town_read).override_failure_message("the town's boots were never read: %s" % _table_message()).is_true()
 
-	# (g) Across the square to the noticeboard: right six, up ten, right four, then up once onto (16, 12), facing up.
-	# Every press is checked to walk exactly one tile.
-	for _i in 6:
-		await _step(KEY_RIGHT)
-	for _i in 10:
-		await _step(KEY_UP)
-	for _i in 4:
-		await _step(KEY_RIGHT)
+	# (g) Across the square to the noticeboard. The way is worked out from the town's own map: the shortest walk to
+	# the cell below the sign, with the keys taught so far and never through a door. One press up then puts the player
+	# beside the sign, facing up. Every press is checked to walk exactly one tile.
+	var noticeboard := _noticeboard(_town)
+	assert_bool(not noticeboard.is_empty()).override_failure_message("the town has a noticeboard").is_true()
+	if noticeboard.is_empty():
+		return
+	var footprint := OverworldMap.cell_of(noticeboard.get("size", [1, 1]))
+	var side := OverworldMap.cell_of(noticeboard.at) + Vector2i(0, footprint.y)
+	var route := _route(_town, _town_start(), side + Vector2i(0, 1))
+	(
+		assert_bool(bool(route.found))
+		. override_failure_message("no way to the noticeboard with the keys taught so far")
+		. is_true()
+	)
+	if not bool(route.found):
+		return
+	for key: Key in route.keys:
+		await _step(key)
 	await _step(KEY_UP)
 	(
 		assert_that(OverworldState.cell(screen.state))
 		. override_failure_message("the player stands beside the noticeboard")
-		. is_equal(BOARD_SIDE)
+		. is_equal(side)
 	)
 	assert_str(String(screen.state.facing)).override_failure_message("the player faces up at the noticeboard").is_equal(
 		"up"
 	)
 
-	# (h) Space talks to the noticeboard, whose first choice is Take the letters. Choosing it hands over to the letters.
+	# (h) The noticeboard is a four-line sign with no choices (ADR-0061). Space reads it through, and reading it sets
+	# read-notices. Nothing hands over: the opening ends in town.
 	_tap(KEY_SPACE)
 	await _settle()
 	assert_bool(talk.busy).override_failure_message("Space at the noticeboard opens its talk").is_true()
-	var offered: bool = await _advance_until(func() -> bool: return not _choices(talk).is_empty())
-	assert_bool(offered).override_failure_message("the noticeboard offers its choices").is_true()
-	var choices := _choices(talk)
+	var ended: bool = await _advance_until(func() -> bool: return not talk.busy or not _choices(talk).is_empty())
 	(
-		assert_bool(not choices.is_empty() and choices[0] == "Take the letters")
-		. override_failure_message("the first choice is Take the letters: %s" % [choices])
+		assert_bool(_choices(talk).is_empty())
+		. override_failure_message("the sign offers no choice: %s" % [_choices(talk)])
 		. is_true()
 	)
-	# The first choice takes the focus at the end of a frame; the next Space presses it.
-	await _settle()
-	var handed: bool = await _advance_until(func() -> bool: return not talk.busy)
-	assert_bool(handed).override_failure_message("Take the letters should end the talk, and that hands over").is_true()
-	assert_str(LanternrootScreen.returns_to).override_failure_message("the letters return to the overworld").is_equal(
-		Game.OVERWORLD
-	)
+	assert_bool(ended).override_failure_message("the sign's four lines should end the talk").is_true()
 	(
 		assert_bool(bool(screen.get("_busy")))
-		. override_failure_message("the overworld is handing over to the letters")
-		. is_true()
+		. override_failure_message("the opening ends in town: nothing hands over")
+		. is_false()
+	)
+	assert_str(String(screen.state.map)).override_failure_message("the player is still in town").is_equal(TOWN)
+	(
+		assert_that(OverworldState.cell(screen.state))
+		. override_failure_message("the player still stands beside the noticeboard")
+		. is_equal(side)
 	)
 
-	# The hand-over is saved: the town, the cell and facing, the beats so far, and the three rules the boots were taught.
+	# The ending is saved: the town, the cell and facing, the beats and read-notices, and the three rules taught.
 	var board := OverworldStore.for_profile().load_state()
 	assert_str(String(board.get("map", ""))).override_failure_message("the noticeboard's town is saved").is_equal(TOWN)
-	assert_that(OverworldState.cell(board)).override_failure_message("the noticeboard's cell is saved").is_equal(
-		BOARD_SIDE
-	)
+	assert_that(OverworldState.cell(board)).override_failure_message("the noticeboard's cell is saved").is_equal(side)
 	assert_str(String(board.get("facing", ""))).override_failure_message("the facing is saved").is_equal("up")
 	var flags: Dictionary = board.get("flags", {})
-	for flag: String in ["woke", "first-step", "left-home"]:
+	for flag: String in ["woke", "first-step", "left-home", "read-notices"]:
 		assert_bool(bool(flags.get(flag, false))).override_failure_message("the %s beat is saved" % flag).is_true()
 	var blocks: Array = (board.get("boots", {}) as Dictionary).get("blocks", [])
 	assert_int(blocks.size()).override_failure_message("the three rules taught are saved").is_equal(3)
@@ -332,6 +347,57 @@ func _tap(code: Key) -> void:
 func _settle() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
+
+
+## The town's start, read from its map: where the player stands on arriving from home.
+func _town_start() -> Vector2i:
+	return OverworldMap.cell_of(_town.start)
+
+
+## The town's noticeboard: the thing whose art is `noticeboard` (ADR-0061), or {} when the town has none.
+func _noticeboard(map: Dictionary) -> Dictionary:
+	for thing: Dictionary in map.objects:
+		if String(thing.get("art", "")) == "noticeboard":
+			return thing
+	return {}
+
+
+## The cells the townspeople stand on, as OverworldMap.blocked takes them (cell -> who).
+func _people_cells(map: Dictionary) -> Dictionary:
+	var cells := {}
+	for person: Dictionary in map.people:
+		cells[OverworldMap.cell_of(person.at)] = person.id
+	return cells
+
+
+## The shortest walk from `from` to `to` that uses only WALK_KEYS, over cells a walk can enter: walkable, nobody
+## standing there, never a door (a door takes the player inside). `found` is false when there is no such walk.
+func _route(map: Dictionary, from: Vector2i, to: Vector2i) -> Dictionary:
+	var people := _people_cells(map)
+	var came := {from: KEY_NONE}
+	var queue: Array[Vector2i] = [from]
+	var head := 0
+	while head < queue.size() and not came.has(to):
+		var here: Vector2i = queue[head]
+		head += 1
+		for key: Key in WALK_KEYS:
+			var next: Vector2i = here + DELTA[key]
+			if came.has(next) or OverworldMap.blocked(map, next, people):
+				continue
+			if not OverworldMap.warp_at(map, next).is_empty():
+				continue
+			came[next] = key
+			queue.append(next)
+	var keys: Array[Key] = []
+	if not came.has(to):
+		return {"found": false, "keys": keys}
+	var back := to
+	while back != from:
+		var way: Key = came[back]
+		keys.push_front(way)
+		var step: Vector2i = DELTA[way]
+		back -= step
+	return {"found": true, "keys": keys}
 
 
 ## Waits, frame by frame, until `done` holds. Time, not frames: the sandbox and the walks take real time.

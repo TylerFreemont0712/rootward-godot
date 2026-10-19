@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): the first time the tinker opens the menu they built themselves (menu-opened).
+{
+  "id": "hotaru-own-menu",
+  "start": [
+    {
+      "goto": "own"
+    }
+  ],
+  "nodes": {
+    "own": {
+      "lines": [
+        {
+          "text": "That's YOUR menu!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "It shows what your code said, in the order you chose.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Mine was only a pocket. Yours even has a picture of you!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "own-menu-told"
+      ]
+    }
+  }
+}

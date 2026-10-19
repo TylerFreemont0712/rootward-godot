@@ -1,0 +1,165 @@
+{
+  "id": "item-gear",
+  "kind": "prop",
+  "what": "a brass cog wheel standing upright facing us, a round toothed gear with a hole in its middle, game inventory icon, clear silhouette",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "brass": "gold",
+    "hole": "steel"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.28,
+        0.42,
+        0.22
+      ],
+      "size": [
+        0.44,
+        0.12,
+        0.44
+      ],
+      "ramp": "brass",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.43,
+        0.4,
+        0.38
+      ],
+      "size": [
+        0.14,
+        0.12,
+        0.12
+      ],
+      "ramp": "hole",
+      "shade": 3
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.43,
+        0.42,
+        0.66
+      ],
+      "size": [
+        0.14,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.43,
+        0.42,
+        0.12
+      ],
+      "size": [
+        0.14,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.18,
+        0.42,
+        0.37
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.14
+      ],
+      "ramp": "brass",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.72,
+        0.42,
+        0.37
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.14
+      ],
+      "ramp": "brass",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.42,
+        0.6
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.68,
+        0.42,
+        0.6
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.42,
+        0.18
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.68,
+        0.42,
+        0.18
+      ],
+      "size": [
+        0.1,
+        0.12,
+        0.1
+      ],
+      "ramp": "brass",
+      "shade": 2
+    }
+  ]
+}

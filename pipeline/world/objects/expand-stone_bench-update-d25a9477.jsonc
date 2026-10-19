@@ -1,0 +1,60 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "expand-stone_bench-update-d25a9477",
+  "kind": "prop",
+  "what": "a carved stone garden bench with a solid pedestal base with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.14,
+        0.24,
+        0.48
+      ],
+      "size": [
+        1.72,
+        0.48,
+        0.16
+      ],
+      "ramp": "stone",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.22,
+        0.28,
+        0.12
+      ],
+      "size": [
+        0.24,
+        0.4,
+        0.36
+      ],
+      "ramp": "stone",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.54,
+        0.28,
+        0.12
+      ],
+      "size": [
+        0.24,
+        0.4,
+        0.36
+      ],
+      "ramp": "stone",
+      "shade": 2
+    }
+  ]
+}

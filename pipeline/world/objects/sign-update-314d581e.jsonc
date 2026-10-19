@@ -1,0 +1,76 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "sign-update-314d581e",
+  "kind": "prop",
+  "what": "a welcoming wooden village sign with carved trim and a clear message area, refined cozy pixel art; Quality is too low, doesn't fit the theme.",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "post": "wood",
+    "board": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.43,
+        0.43,
+        0
+      ],
+      "size": [
+        0.14,
+        0.14,
+        1.0
+      ],
+      "ramp": "post",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.34,
+        0.6
+      ],
+      "size": [
+        0.8,
+        0.12,
+        0.5
+      ],
+      "ramp": "board",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.06,
+        0.33,
+        0.56
+      ],
+      "size": [
+        0.88,
+        0.1,
+        0.06
+      ],
+      "ramp": "post",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.06,
+        0.33,
+        1.08
+      ],
+      "size": [
+        0.88,
+        0.1,
+        0.06
+      ],
+      "ramp": "post",
+      "shade": 1
+    }
+  ]
+}

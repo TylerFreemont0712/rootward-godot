@@ -1,5 +1,45 @@
-max-line-length: 120
-max-file-lines: 800
-function-arguments-number: 8
-max-public-methods: 40
-max-returns: 25
+# gdlint settings for Rootward (gdtoolkit 4.5.0, run by scripts/lint.sh). Loose on purpose (the player's call,
+# 2026-10-13): the bar is that the project runs and its tests pass; style is fixed later, when it matters. Only checks
+# that point at likely bugs stay on; every size, naming, ordering and style rule is off.
+
+# Still on: comparing a value with itself, a statement whose result is thrown away, the same file loaded twice.
+comparison-with-itself: null
+expression-not-assigned: null
+duplicated-load: null
+
+disable:
+- max-line-length
+- max-file-lines
+- max-public-methods
+- function-arguments-number
+- max-returns
+- class-definitions-order
+- class-name
+- sub-class-name
+- class-load-variable-name
+- class-variable-name
+- constant-name
+- load-constant-name
+- enum-name
+- enum-element-name
+- function-name
+- function-argument-name
+- function-variable-name
+- function-preload-variable-name
+- loop-variable-name
+- signal-name
+- no-elif-return
+- no-else-return
+- unnecessary-pass
+- unused-argument
+- trailing-whitespace
+- mixed-tabs-and-spaces
+
+# Folders never linted: version control, Godot's cache, third-party addons, test reports, and throwaway probes.
+excluded_directories: !!set
+  .git: null
+  .godot: null
+  addons: null
+  reports: null
+  tmp_editor_probe: null
+  probe_front: null

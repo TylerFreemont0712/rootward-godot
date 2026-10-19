@@ -1,0 +1,6 @@
+// Nym's shop (Concept/v0.4/05, 2.9): what Nym buys from the player and for how many coins each, and what Nym sells.
+// Each item is an id from items.jsonc; "buys" pays coins for one, "sells" costs coins for one.
+{
+  "buys": {"apple": 2, "cabbage": 3, "carrot": 2, "turnip": 2, "pumpkin": 5, "berries": 2, "mushroom": 3, "flower": 1, "honey": 6, "pinecone": 1, "pebble": 1},
+  "sells": {"bread": 5, "lantern-oil": 8, "gear": 12}
+}

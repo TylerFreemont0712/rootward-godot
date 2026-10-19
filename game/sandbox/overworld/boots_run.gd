@@ -16,6 +16,10 @@ const HARNESS := {
 }
 const ENTRY := "_boots"
 const TIME_MS := 3000
+## The table is one line per tile per key: about 207 KB for the town's 80 x 56 map (4,480 tiles), past the sandbox's
+## 256 KB default. The table is what walking reads, so the cap is raised here, before the town grows. (Concept/v0.3/09,
+## section 9.)
+const OUTPUT_KB := 512
 
 
 static func run(language: String, source: String, size: Vector2i, keys: Array[String] = BootsRules.KEYS) -> Dictionary:
@@ -25,6 +29,7 @@ static func run(language: String, source: String, size: Vector2i, keys: Array[St
 	var files: Dictionary[String, String] = {entry: FileAccess.get_file_as_string(HARNESS[language])}
 	var job := SandboxJob.of(language, files, entry)
 	job.time_ms = TIME_MS
+	job.output_kb = OUTPUT_KB
 	job.stdin = JSON.stringify({"source": source, "keys": keys, "width": size.x, "height": size.y})
 	return read(Sandbox.run(job), size, keys)
 

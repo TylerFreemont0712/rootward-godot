@@ -24,9 +24,24 @@ const STEPS := {"up": Vector2i(0, -1), "down": Vector2i(0, 1), "left": Vector2i(
 
 
 static func ready(table: Dictionary) -> bool:
+	if String(table.get("status", "")) != "ok":
+		return false
+	var keys: Variant = table.get("keys")
+	var xs: Variant = table.get("x")
+	var ys: Variant = table.get("y")
+	var marks: Variant = table.get("error")
+	var width := int(table.get("width", 0))
+	var height := int(table.get("height", 0))
+	if width < 1 or height < 1 or not keys is Array or (keys as Array).is_empty():
+		return false
+	if not xs is PackedInt32Array or not ys is PackedInt32Array or not marks is PackedInt32Array:
+		return false
+	var count := width * height * (keys as Array).size()
 	return (
-		String(table.get("status", "")) == "ok"
-		and not (table.get("x", PackedInt32Array()) as PackedInt32Array).is_empty()
+		(xs as PackedInt32Array).size() == count
+		and (ys as PackedInt32Array).size() == count
+		and (marks as PackedInt32Array).size() == count
+		and table.get("errors") is Array
 	)
 
 
@@ -77,7 +92,8 @@ static func facing_of(delta: Vector2i) -> String:
 	return "down" if delta.y > 0 else "up"
 
 
-## Which keys already do something somewhere on the map: the keys the player has taught their boots.
+## Which arrows have a successful one-tile answer in their own direction somewhere on the map. A displacement
+## followed by an exception is not a learned key; neither is a jump, diagonal, wrong direction or off-map answer.
 static func taught(table: Dictionary) -> Array[String]:
 	var out: Array[String] = []
 	if not ready(table):
@@ -86,11 +102,33 @@ static func taught(table: Dictionary) -> Array[String]:
 	var height := int(table.height)
 	var xs: PackedInt32Array = table.x
 	var ys: PackedInt32Array = table.y
+	var marks: PackedInt32Array = table.error
 	for k in (table.keys as Array).size():
 		var key := String(table.keys[k])
+		if not STEPS.has(key) or key in out:
+			continue
 		for i in width * height:
 			var at := k * width * height + i
-			if xs[at] != i % width or ys[at] != i / width:
+			if marks[at] != -1:
+				continue
+			var cell := Vector2i(i % width, i / width)
+			var to := Vector2i(xs[at], ys[at])
+			if to.x < 0 or to.y < 0 or to.x >= width or to.y >= height:
+				continue
+			if to - cell == (STEPS[key] as Vector2i):
 				out.append(key)
 				break
+	return out
+
+
+## Evidence to add to the live flags after a table loads, including on resume. Never clears an earned milestone.
+## LEARN: evidence is a patch, not a saved copy of all flags: another event may finish while the sandbox is running.
+## Historical all-ways proves an additional direction was already learned, even if today's code has been changed.
+static func milestones(table: Dictionary, flags: Dictionary = {}) -> Dictionary:
+	var out := {}
+	var learned := taught(table)
+	if bool(flags.get("all-ways", false)) or learned.any(func(key: String) -> bool: return key != "right"):
+		out["boots-expanded"] = true
+	if learned.size() == KEYS.size():
+		out["all-ways"] = true
 	return out

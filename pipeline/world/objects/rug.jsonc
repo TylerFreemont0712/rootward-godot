@@ -1,0 +1,14 @@
+// The rug at home (1 placement, 2 x 1, ground layer): a red border, a yellow stripe and a red middle, flat on the floor.
+// A tile of depth is drawn 0.6 tall, so the rug is 1 / 0.6 deep to fill its cell.
+{
+ "id": "rug",
+ "kind": "furniture",
+ "what": "a flat oval woven rug with a red border, a yellow stripe and a dark red middle",
+ "footprint": [2, 1],
+ "ramps": {"border": "cloth_red", "stripe": "cloth_yellow", "middle": "cloth_maroon"},
+ "parts": [
+  {"shape": "box", "at": [0.06, 0.1, 0], "size": [1.88, 1.46, 0.03], "ramp": "border", "shade": 1},
+  {"shape": "box", "at": [0.2, 0.26, 0.03], "size": [1.6, 1.14, 0.02], "ramp": "stripe", "shade": 1},
+  {"shape": "box", "at": [0.34, 0.4, 0.05], "size": [1.32, 0.86, 0.02], "ramp": "middle", "shade": 1}
+ ]
+}

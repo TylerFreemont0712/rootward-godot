@@ -1,9 +1,9 @@
 {
- "tile": 16,
+ "tile": 40,
  "base": {
   "grass": {
    "row": 0,
-   "count": 6
+   "count": 8
   },
   "floor": {
    "row": 1,
@@ -17,35 +17,189 @@
    "row": 3,
    "count": 1
   },
-  "path": {
+  "meadow": {
    "row": 4,
-   "count": 2
+   "count": 8
+  },
+  "dry_grass": {
+   "row": 5,
+   "count": 8
+  },
+  "forest_floor": {
+   "row": 6,
+   "count": 8
+  },
+  "moss": {
+   "row": 7,
+   "count": 8
+  },
+  "flowers": {
+   "row": 8,
+   "count": 8
+  },
+  "soil": {
+   "row": 9,
+   "count": 8
+  },
+  "tilled_soil": {
+   "row": 10,
+   "count": 8
+  },
+  "path": {
+   "row": 11,
+   "count": 8
+  },
+  "brick_path": {
+   "row": 12,
+   "count": 8
+  },
+  "stone_path": {
+   "row": 13,
+   "count": 8
+  },
+  "wood_path": {
+   "row": 14,
+   "count": 8
+  },
+  "root_floor": {
+   "row": 15,
+   "count": 8
+  },
+  "fern_moss": {
+   "row": 16,
+   "count": 8
+  },
+  "glow_moss": {
+   "row": 17,
+   "count": 8
+  },
+  "gravel": {
+   "row": 18,
+   "count": 8
+  },
+  "sand": {
+   "row": 19,
+   "count": 8
   },
   "cobble": {
-   "row": 5,
-   "count": 2
+   "row": 20,
+   "count": 8
   },
   "water": {
-   "row": 6,
+   "row": 21,
    "count": 3
   }
  },
  "overlay": {
-  "path": {
-   "row": 7,
-   "frames": 1
+  "meadow": {
+   "row": 22,
+   "frames": 1,
+   "variants": 8
   },
-  "cobble": {
-   "row": 8,
-   "frames": 1
+  "dry_grass": {
+   "row": 30,
+   "frames": 1,
+   "variants": 8
   },
-  "water": {
-   "row": 9,
-   "frames": 3
+  "forest_floor": {
+   "row": 38,
+   "frames": 1,
+   "variants": 8
+  },
+  "moss": {
+   "row": 46,
+   "frames": 1,
+   "variants": 8
   },
   "flowers": {
-   "row": 12,
-   "frames": 1
+   "row": 54,
+   "frames": 1,
+   "variants": 8
+  },
+  "soil": {
+   "row": 62,
+   "frames": 1,
+   "variants": 8
+  },
+  "tilled_soil": {
+   "row": 70,
+   "frames": 1,
+   "variants": 8
+  },
+  "path": {
+   "row": 78,
+   "frames": 1,
+   "variants": 8
+  },
+  "brick_path": {
+   "row": 86,
+   "frames": 1,
+   "variants": 8
+  },
+  "stone_path": {
+   "row": 94,
+   "frames": 1,
+   "variants": 8
+  },
+  "wood_path": {
+   "row": 102,
+   "frames": 1,
+   "variants": 8
+  },
+  "root_floor": {
+   "row": 110,
+   "frames": 1,
+   "variants": 8
+  },
+  "fern_moss": {
+   "row": 118,
+   "frames": 1,
+   "variants": 8
+  },
+  "glow_moss": {
+   "row": 126,
+   "frames": 1,
+   "variants": 8
+  },
+  "gravel": {
+   "row": 134,
+   "frames": 1,
+   "variants": 8
+  },
+  "sand": {
+   "row": 142,
+   "frames": 1,
+   "variants": 8
+  },
+  "cobble": {
+   "row": 150,
+   "frames": 1,
+   "variants": 8
+  },
+  "water": {
+   "row": 158,
+   "frames": 3,
+   "variants": 8
   }
- }
+ },
+ "order": [
+  "meadow",
+  "dry_grass",
+  "forest_floor",
+  "moss",
+  "flowers",
+  "soil",
+  "tilled_soil",
+  "path",
+  "brick_path",
+  "stone_path",
+  "wood_path",
+  "root_floor",
+  "fern_moss",
+  "glow_moss",
+  "gravel",
+  "sand",
+  "cobble",
+  "water"
+ ]
 }

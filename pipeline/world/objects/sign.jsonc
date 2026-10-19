@@ -1,0 +1,14 @@
+// A wooden board on a post (1 placement), chest high on a person.
+{
+ "id": "sign",
+ "kind": "prop",
+ "what": "a small wooden notice board sign on a single post",
+ "footprint": [1, 1],
+ "ramps": {"post": "wood", "board": "thatch"},
+ "parts": [
+  {"shape": "box", "at": [0.43, 0.43, 0], "size": [0.14, 0.14, 1.0], "ramp": "post", "shade": 2},
+  {"shape": "box", "at": [0.1, 0.34, 0.6], "size": [0.8, 0.12, 0.5], "ramp": "board", "shade": 1},
+  {"shape": "box", "at": [0.06, 0.33, 0.56], "size": [0.88, 0.1, 0.06], "ramp": "post", "shade": 1},
+  {"shape": "box", "at": [0.06, 0.33, 1.08], "size": [0.88, 0.1, 0.06], "ramp": "post", "shade": 1}
+ ]
+}

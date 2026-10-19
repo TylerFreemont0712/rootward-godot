@@ -1,0 +1,24 @@
+// Revised, integrated observatory tower concept after camera review.
+{
+  "id": "expand-observatory",
+  "kind": "building",
+  "what": "a narrow observatory with an integrated star chamber and violet slate gables",
+  "footprint": [
+    7,
+    8
+  ],
+  "ramps": {
+    "walls": "plaster",
+    "roof": "cloth_purple",
+    "trim": "gold",
+    "base": "stone",
+    "window": "cloth_navy"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-observatory-cohesive-source.png"
+  },
+  "door": [
+    3,
+    7
+  ]
+}

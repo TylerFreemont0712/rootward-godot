@@ -4,6 +4,36 @@
   "start": [
     {
       "if": {
+        "flag": "lockbox-opened"
+      },
+      "goto": "lockbox_done"
+    },
+    {
+      "if": {
+        "flag": "locks-strong"
+      },
+      "goto": "lockbox"
+    },
+    {
+      "if": {
+        "flag": "locks-built"
+      },
+      "goto": "locks_stage_two"
+    },
+    {
+      "if": {
+        "flag": "locks-asked"
+      },
+      "goto": "lock_waits"
+    },
+    {
+      "if": {
+        "flag": "drills-medal"
+      },
+      "goto": "lock_offer"
+    },
+    {
+      "if": {
         "flag": "met-shade"
       },
       "goto": "again"
@@ -22,7 +52,7 @@
           "text": "I'm Nix. I test the town's locks. If I can open one, so could a thief. So I tell people how to fix them."
         },
         {
-          "text": "Your front door, by the way. Fine. For now."
+          "text": "Your lock is loose, by the way. Fine. For now."
         }
       ],
       "set": [
@@ -33,6 +63,101 @@
       "lines": [
         {
           "text": "Locks are holding. For now."
+        }
+      ]
+    },
+    "lock_offer": {
+      "lines": [
+        {
+          "text": "Psst! Tinker! Over here, behind the crate."
+        },
+        {
+          "text": "The lockbox needs a checker. It must say yes to a good code, and no to the rest."
+        },
+        {
+          "text": "A lock is only as good as the codes it refuses. Write yours, and I will try my best tricks."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll write the checker.",
+          "goto": "lock_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "lock_later"
+        }
+      ]
+    },
+    "lock_teach": {
+      "lines": [
+        {
+          "text": "Count the characters first. Then look at each one, and refuse anything that is not a digit."
+        }
+      ],
+      "set": [
+        "locks-asked"
+      ],
+      "open": "task:locks"
+    },
+    "lock_later": {
+      "lines": [
+        {
+          "text": "Come back when you are ready. I will be somewhere you cannot see me."
+        }
+      ]
+    },
+    "lock_waits": {
+      "lines": [
+        {
+          "text": "The lockbox is still shut, and my tricks are getting bored."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's check the codes.",
+          "goto": "lock_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "lock_later"
+        }
+      ]
+    },
+    "locks_stage_two": {
+      "lines": [
+        {
+          "text": "Four digits, good! But a thief always tries 1111 first. So do I.",
+          "mood": "happy"
+        },
+        {
+          "text": "Refuse the easy codes too, tinker. The same digit four times is no lock at all."
+        }
+      ],
+      "open": "task:locks"
+    },
+    "lockbox": {
+      "lines": [
+        {
+          "text": "Click! Hah, it is open! Your checker refused every trick I had.",
+          "mood": "happy"
+        },
+        {
+          "text": "Nobody gets into my lockbox that way. Good work, tinker."
+        },
+        {
+          "text": "Here. A key, for a tinker who tests like a thief."
+        }
+      ],
+      "set": [
+        "lockbox-opened"
+      ],
+      "open": "receive:key"
+    },
+    "lockbox_done": {
+      "lines": [
+        {
+          "text": "Your checker is a good one, tinker. The lockbox is open, and it will stay that way. For now."
         }
       ]
     }

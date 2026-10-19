@@ -1,0 +1,328 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "bookshelf-update-650aa36d",
+  "kind": "furniture",
+  "what": "a tall wooden bookshelf, three shelves packed with rows of colourful book spines with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "red": "cloth_red",
+    "blue": "cloth_blue",
+    "green": "cloth_green",
+    "cream": "cloth_cream"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.4,
+        0
+      ],
+      "size": [
+        1.9,
+        0.55,
+        1.9
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.3,
+        0.06
+      ],
+      "size": [
+        1.9,
+        0.12,
+        0.06
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.27999999999999997,
+        0.08,
+        0.4
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.48,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.2,
+        0.08,
+        0.36
+      ],
+      "ramp": "blue"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.72,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.32,
+        0.08,
+        0.42
+      ],
+      "ramp": "green"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.08,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.18000000000000002,
+        0.08,
+        0.34
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.3,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.26,
+        0.08,
+        0.4
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.6,
+        0.34,
+        0.12
+      ],
+      "size": [
+        0.22,
+        0.08,
+        0.38
+      ],
+      "ramp": "blue"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.3,
+        0.66
+      ],
+      "size": [
+        1.9,
+        0.12,
+        0.06
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.72,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.32,
+        0.08,
+        0.42
+      ],
+      "ramp": "blue"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.08,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.18000000000000002,
+        0.08,
+        0.34
+      ],
+      "ramp": "green"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.3,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.26,
+        0.08,
+        0.4
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.6,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.22,
+        0.08,
+        0.38
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.27999999999999997,
+        0.08,
+        0.4
+      ],
+      "ramp": "blue"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.48,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.2,
+        0.08,
+        0.36
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.05,
+        0.3,
+        1.24
+      ],
+      "size": [
+        1.9,
+        0.12,
+        0.06
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.3,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.26,
+        0.08,
+        0.4
+      ],
+      "ramp": "green"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.6,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.22,
+        0.08,
+        0.38
+      ],
+      "ramp": "cream"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.16,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.27999999999999997,
+        0.08,
+        0.4
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.48,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.2,
+        0.08,
+        0.36
+      ],
+      "ramp": "blue"
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.72,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.32,
+        0.08,
+        0.42
+      ],
+      "ramp": "red"
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.08,
+        0.34,
+        1.3
+      ],
+      "size": [
+        0.18000000000000002,
+        0.08,
+        0.34
+      ],
+      "ramp": "blue"
+    }
+  ]
+}

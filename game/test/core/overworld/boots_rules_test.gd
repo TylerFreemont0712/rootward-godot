@@ -84,8 +84,79 @@ func test_no_table_means_no_boots() -> void:
 	assert_str(step.kind).is_equal("empty")
 
 
-func test_taught_lists_the_keys_that_move_the_player_somewhere() -> void:
+func test_taught_lists_keys_with_a_successful_step_in_their_own_direction() -> void:
 	assert_array(BootsRules.taught(_table(_right_only))).contains_exactly(["right"])
+	var all_ways := func(key: String, cell: Vector2i) -> Variant: return cell + (BootsRules.STEPS[key] as Vector2i)
+	assert_array(BootsRules.taught(_table(all_ways))).contains_exactly(BootsRules.KEYS)
+
+
+func test_taught_does_not_count_wrong_directions_jumps_or_diagonals() -> void:
+	var wrong := func(_key: String, cell: Vector2i) -> Variant: return cell + Vector2i(1, 0)
+	assert_array(BootsRules.taught(_table(wrong))).contains_exactly(["right"])
+	var leap := func(key: String, cell: Vector2i) -> Variant: return cell + (BootsRules.STEPS[key] as Vector2i) * 2
+	assert_array(BootsRules.taught(_table(leap))).is_empty()
+	var diagonal := func(_key: String, cell: Vector2i) -> Variant: return cell + Vector2i(1, 1)
+	assert_array(BootsRules.taught(_table(diagonal))).is_empty()
+
+
+func test_taught_does_not_count_a_move_that_raised_an_error_after_changing_coordinates() -> void:
+	var moved_then_failed := _table(_right_only)
+	var marks: PackedInt32Array = moved_then_failed.error
+	marks.fill(0)
+	moved_then_failed.error = marks
+	assert_array(BootsRules.taught(moved_then_failed)).is_empty()
+	assert_dict(BootsRules.milestones(moved_then_failed)).is_empty()
+
+
+func test_taught_ignores_error_cells_without_discarding_other_successful_cells() -> void:
+	var partial := _table(_right_only)
+	var marks: PackedInt32Array = partial.error
+	marks[3 * SIZE.x * SIZE.y] = 0
+	partial.error = marks
+	assert_array(BootsRules.taught(partial)).contains_exactly(["right"])
+
+
+func test_taught_does_not_count_answers_that_only_leave_the_map() -> void:
+	var outside := func(key: String, cell: Vector2i) -> Variant:
+		return cell + Vector2i(1, 0) if key == "right" and cell.x == SIZE.x - 1 else cell
+	assert_array(BootsRules.taught(_table(outside))).is_empty()
+
+
+func test_failed_or_malformed_tables_are_not_taught() -> void:
+	assert_array(BootsRules.taught(BootsRun.failed(SIZE, BootsRules.KEYS, "failed"))).is_empty()
+	var malformed := _table(_right_only)
+	malformed.y = PackedInt32Array()
+	assert_bool(BootsRules.ready(malformed)).is_false()
+	assert_array(BootsRules.taught(malformed)).is_empty()
+
+
+func test_starter_right_rule_does_not_complete_the_additional_boots_rule() -> void:
+	assert_dict(BootsRules.milestones(_table(_right_only))).is_empty()
+
+
+func test_an_additional_arrow_earns_its_milestone_before_any_first_walk() -> void:
+	var expanded := func(key: String, cell: Vector2i) -> Variant:
+		return cell + (BootsRules.STEPS[key] as Vector2i) if key in ["right", "up"] else cell
+	assert_dict(BootsRules.milestones(_table(expanded))).is_equal({"boots-expanded": true})
+
+
+func test_all_four_matching_arrows_repair_both_boots_milestones_on_load() -> void:
+	var all_ways := func(key: String, cell: Vector2i) -> Variant: return cell + (BootsRules.STEPS[key] as Vector2i)
+	assert_dict(BootsRules.milestones(_table(all_ways))).is_equal({"boots-expanded": true, "all-ways": true})
+
+
+func test_historical_all_ways_repairs_the_extra_rule_even_when_current_code_is_broken() -> void:
+	var flags := {"all-ways": true, "left-home": true}
+	var broken := BootsRun.failed(SIZE, BootsRules.KEYS, "syntax error")
+	assert_dict(BootsRules.milestones(broken, flags)).is_equal({"boots-expanded": true})
+	assert_dict(flags).is_equal({"all-ways": true, "left-home": true})
+
+
+func test_boots_milestones_do_not_replace_historical_progress_or_complete_thing_interactions() -> void:
+	var flags := {"boots-expanded": true, "all-ways": true, "first-action": true}
+	var kept := flags.merged(BootsRules.milestones(_table(_right_only), flags), true)
+	assert_dict(kept).is_equal(flags)
+	assert_bool(BootsRules.milestones(_table(_right_only)).has("first-action")).is_false()
 
 
 func test_facing_follows_the_larger_part_of_a_move() -> void:

@@ -1,0 +1,13 @@
+// A remake of barrel at [2, 1], drafted by Lanternroot Studio (Concept/v0.3/10, section 7.7).
+{
+ "id": "barrel-2x1",
+ "kind": "prop",
+ "what": "an oak barrel with iron hoops",
+ "footprint": [2, 1],
+ "ramps": {"staves": "wood", "hoops": "steel"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.3, 0.15, 0], "size": [1.4, 0.7, 0.9], "ramp": "staves"},
+  {"shape": "cylinder", "at": [0.24, 0.12, 0.18], "size": [1.52, 0.76, 0.08], "ramp": "hoops"},
+  {"shape": "cylinder", "at": [0.24, 0.12, 0.64], "size": [1.52, 0.76, 0.08], "ramp": "hoops"}
+ ]
+}

@@ -1,0 +1,15 @@
+// The honey: a Bag and pickup icon (pipeline/world/README.md). A clay pot of honey with a wooden dipper resting in it.
+{
+ "id": "item-honey",
+ "kind": "prop",
+ "what": "a small clay honey pot full of golden honey with a wooden dipper, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"clay": "dirt", "honey": "gold", "wood": "wood"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.5], "ramp": "clay", "shade": 1},
+  {"shape": "cylinder", "at": [0.28, 0.28, 0.42], "size": [0.44, 0.44, 0.1], "ramp": "clay"},
+  {"shape": "cylinder", "at": [0.32, 0.32, 0.5], "size": [0.36, 0.36, 0.04], "ramp": "honey"},
+  {"shape": "cylinder", "at": [0.62, 0.45, 0.48], "size": [0.06, 0.06, 0.3], "ramp": "wood", "shade": 1},
+  {"shape": "ball", "at": [0.56, 0.4, 0.74], "size": [0.18, 0.16, 0.12], "ramp": "wood", "shade": 2}
+ ]
+}

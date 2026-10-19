@@ -1,0 +1,17 @@
+// A park bench for two along the lanes.
+{
+ "id": "bench",
+ "kind": "prop",
+ "what": "a wooden park bench with a slatted backrest and dark iron legs",
+ "footprint": [2, 1],
+ "ramps": {"seat": "wood", "legs": "steel"},
+ "parts": [
+  {"shape": "box", "at": [0.1, 0.2, 0.4], "size": [1.8, 0.42, 0.08], "ramp": "seat"},
+  {"shape": "box", "at": [0.1, 0.72, 0.62], "size": [1.8, 0.06, 0.14], "ramp": "seat", "shade": 0},
+  {"shape": "box", "at": [0.1, 0.72, 0.86], "size": [1.8, 0.06, 0.14], "ramp": "seat", "shade": 0},
+  {"shape": "box", "at": [0.16, 0.24, 0], "size": [0.08, 0.08, 0.4], "ramp": "legs", "shade": 3},
+  {"shape": "box", "at": [1.76, 0.24, 0], "size": [0.08, 0.08, 0.4], "ramp": "legs", "shade": 3},
+  {"shape": "box", "at": [0.16, 0.7, 0], "size": [0.08, 0.08, 1.0], "ramp": "legs", "shade": 3},
+  {"shape": "box", "at": [1.76, 0.7, 0], "size": [0.08, 0.08, 1.0], "ramp": "legs", "shade": 3}
+ ]
+}

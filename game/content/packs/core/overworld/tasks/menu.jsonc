@@ -1,0 +1,85 @@
+// The menu (Concept/v0.4/01, 5.2): the player's menu_items(built) says what the menu lists, in order. The town gives it
+// the items it can show now (built); the menu starts with "continue", ends with "quit", and shows each item of built
+// once. One stage (Mira, quest "menu"): the menu's list, taught with lists, joining them or appending in a loop.
+{
+  "id": "menu",
+  "name": "The Menu",
+  "title": "Your own menu",
+  "giver": "artificer",
+  "built_line": "Your menu shows what your menu_items() gives back.",
+  "entry": {"python": "menu_items", "javascript": "menuItems"},
+  "params": [
+    {"name": "built", "meaning": "The items the town can show now, in the town's own order. Each is a word such as \"quests\", \"bag\" or \"settings\".", "example": "[\"settings\"]"}
+  ],
+  "gives": {"meaning": "The items the menu shows, in order: \"continue\" first, \"quit\" last, and every item of built once in between.", "example": "[\"cat\", \"dog\"]"},
+  "words": {
+    "python": [
+      {"term": "[]", "meaning": "A list: things in square brackets, in order, with commas between them. [] is an empty list.", "example": "pets = [\"cat\", \"dog\"]"},
+      {"term": "+", "meaning": "Joins two lists into one: the first list's things, then the second's.", "example": "pets = [\"cat\"] + [\"dog\"]"},
+      {"term": "for", "meaning": "Goes through a list one thing at a time. The lines under it run once for each thing.", "example": "for score in scores:\n    total = total + score"},
+      {"term": "append", "meaning": "Adds one thing to the end of a list. Written as the list, a dot, then append.", "example": "basket.append(\"pear\")"}
+    ],
+    "javascript": [
+      {"term": "[]", "meaning": "A list: things in square brackets, in order, with commas between them. [] is an empty list.", "example": "const pets = [\"cat\", \"dog\"];"},
+      {"term": "for...of", "meaning": "Goes through a list one thing at a time. The lines in its braces run once for each thing.", "example": "for (const score of scores) {\n  total = total + score;\n}"},
+      {"term": ".push", "meaning": "Adds one thing to the end of a list. Written as the list, a dot, then push.", "example": "basket.push(\"pear\");"},
+      {"term": ".concat", "meaning": "Joins a list onto the end of another, and gives back the joined list.", "example": "const pets = [\"cat\"].concat([\"dog\"]);"}
+    ]
+  },
+  "starter": {"python": "menu.starter.py", "javascript": "menu.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def menu_items(built):",
+        "    items = {first}",
+        "[all]    for item in built:",
+        "[all]        items.append(item)",
+        "    items.append({last})",
+        "    return items"
+      ],
+      "javascript": [
+        "function menuItems(built) {",
+        "  let items = {first};",
+        "[all]  for (const item of built) {",
+        "[all]    items.push(item);",
+        "[all]  }",
+        "  items.push({last});",
+        "  return items;",
+        "}"
+      ]
+    },
+    "slots": {
+      "first": {"label": "starts with", "choices": ["[]", "[\"quit\"]", "[\"continue\"]"]},
+      "last": {"label": "ends with", "choices": ["\"title\"", "\"quit\"", "\"settings\""]}
+    },
+    "toggles": {
+      "all": {"label": "Add everything the town built"}
+    },
+    "start": {"slots": {"first": 0, "last": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "menu-built",
+      "goal": "Make the menu list what the town built, with \"continue\" first and \"quit\" last.",
+      "judge": "menu_items",
+      "cases": [
+        {"args": [["quests", "workbench", "save", "settings", "characters", "title"]], "say": "a fresh tinker's town"},
+        {"args": [["quests", "workbench", "bag", "map", "music", "options", "save", "settings", "characters", "title"]], "say": "a longer town, with the bag, the map, the music box and the options"},
+        {"args": [["settings"]], "say": "a short town with only Settings"}
+      ],
+      "hints": [
+        "A menu is a list, and a list keeps its order. Which thing should the player see first, and which should be last?",
+        "The town's items are in built. A loop can visit each of them in turn, one at a time, while your own list grows.",
+        "Start your own list with the first item in it, then add each item from built to its end, then add the last item. Adding one thing to the end of a list is append in Python and push in JavaScript."
+      ]
+    }
+  ],
+  "advice": {
+    "not-list": "Your menu should give back a list of items, in square brackets, but it gave back {got}.",
+    "first": "The menu has to start with \"continue\", so the player can always go back to the town. Yours starts with {got}.",
+    "last": "The menu has to end with \"quit\". Yours ends with {got}.",
+    "missing": "Your menu leaves out {name}, which the town built. Every item the town built goes on the menu.",
+    "twice": "{name} is on the menu twice. Each item goes on the menu once.",
+    "unknown": "{name} isn't something the town built, and it isn't continue or quit. Check the spelling, or take it out."
+  }
+}

@@ -1,0 +1,13 @@
+// The doormat at the door of home (1 placement, ground layer): the rug's colours, small.
+{
+ "id": "doormat",
+ "kind": "furniture",
+ "what": "a small flat woven doormat with a red border and a yellow middle",
+ "footprint": [1, 1],
+ "ramps": {"border": "cloth_red", "middle": "cloth_yellow", "centre": "cloth_maroon"},
+ "parts": [
+  {"shape": "box", "at": [0.1, 0.5, 0], "size": [0.8, 0.8, 0.03], "ramp": "border", "shade": 1},
+  {"shape": "box", "at": [0.18, 0.62, 0.03], "size": [0.64, 0.56, 0.02], "ramp": "middle", "shade": 1},
+  {"shape": "box", "at": [0.3, 0.72, 0.05], "size": [0.4, 0.36, 0.02], "ramp": "centre", "shade": 1}
+ ]
+}

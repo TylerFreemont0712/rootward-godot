@@ -1,0 +1,59 @@
+{
+  "source_grid": [
+    4,
+    3
+  ],
+  "player_height": 84,
+  "models": {
+    "male": {
+      "down": {
+        "source": "Concept/v0.3/animation/player/sources/male-down.png",
+        "flip_frames": []
+      },
+      "up": {
+        "source": "Concept/v0.3/animation/player/sources/male-up.png",
+        "flip_frames": []
+      },
+      "left": {
+        "source": "Concept/v0.3/animation/player/sources/male-left.png",
+        "flip_frames": []
+      },
+      "right": {
+        "source": "Concept/v0.3/animation/player/sources/male-right.png",
+        "flip_frames": []
+      }
+    },
+    "female": {
+      "down": {
+        "source": "Concept/v0.3/animation/player/sources/female-down.png",
+        "flip_frames": []
+      },
+      "up": {
+        "source": "Concept/v0.3/animation/player/sources/female-up.png",
+        "flip_frames": []
+      },
+      "left": {
+        "source": "Concept/v0.3/animation/player/sources/female-left.png",
+        "flip_frames": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "right": {
+        "source": "Concept/v0.3/animation/player/sources/female-right.png",
+        "flip_frames": []
+      }
+    }
+  },
+  "commander": {
+    "source": "Concept/v0.3/animation/player/sources/commander.png",
+    "source_grid": [
+      4,
+      2
+    ],
+    "height": 86,
+    "output": "res://assets/overworld/cast/sergeant.png"
+  }
+}

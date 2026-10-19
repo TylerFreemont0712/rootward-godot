@@ -1,0 +1,16 @@
+// Reeds with cattails at the pond's edge (2 placements, ground layer).
+{
+ "id": "reeds",
+ "kind": "prop",
+ "what": "a clump of green reeds with brown cattail heads",
+ "footprint": [1, 1],
+ "ramps": {"reed": "leaf", "head": "wood"},
+ "parts": [
+  {"shape": "ball", "at": [0.2, 0.2, 0], "size": [0.6, 0.45, 0.3], "ramp": "reed", "shade": 2},
+  {"shape": "cylinder", "at": [0.28, 0.35, 0.1], "size": [0.05, 0.05, 0.9], "ramp": "reed", "shade": 1},
+  {"shape": "cylinder", "at": [0.62, 0.3, 0.1], "size": [0.05, 0.05, 1.05], "ramp": "reed", "shade": 1},
+  {"shape": "cylinder", "at": [0.46, 0.4, 0.1], "size": [0.05, 0.05, 0.7], "ramp": "reed", "shade": 2},
+  {"shape": "cylinder", "at": [0.255, 0.325, 0.85], "size": [0.1, 0.1, 0.3], "ramp": "head", "shade": 3},
+  {"shape": "cylinder", "at": [0.595, 0.275, 1.0], "size": [0.1, 0.1, 0.3], "ramp": "head", "shade": 3}
+ ]
+}

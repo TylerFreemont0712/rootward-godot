@@ -1,0 +1,14 @@
+// A clay pot of flowers outside the inn.
+{
+ "id": "flowerpot",
+ "kind": "prop",
+ "what": "a terracotta flower pot overflowing with pink and white flowers",
+ "footprint": [1, 1],
+ "ramps": {"pot": "cloth_coral", "leaves": "leaf", "flowers": "cloth_pink"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.25, 0.25, 0], "size": [0.5, 0.5, 0.42], "ramp": "pot"},
+  {"shape": "ball", "at": [0.14, 0.2, 0.32], "size": [0.72, 0.6, 0.55], "ramp": "leaves"},
+  {"shape": "ball", "at": [0.3, 0.25, 0.6], "size": [0.22, 0.2, 0.2], "ramp": "flowers"},
+  {"shape": "ball", "at": [0.55, 0.3, 0.52], "size": [0.2, 0.2, 0.2], "ramp": "flowers"}
+ ]
+}

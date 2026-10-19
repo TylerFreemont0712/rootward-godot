@@ -37,8 +37,10 @@ Then say in one short message what you are picking up, ask any blocking question
   behind an option or their own playstyle.
 - **Small slices.** Every step leaves tests green and the game launchable. Commit after each meaningful step with a
   conventional message. Never push unless asked.
-- **Strict quality.** Typed GDScript (untyped declarations are errors), small files, clear names, tests first for
-  `core/` and `sandbox/`. Verify Godot APIs against the 4.7 docs or the engine itself; do not guess.
+- **It runs, then it gets tidy.** The bar is that the game launches and the tests pass; style is fixed later, when it
+  matters (the player's call, 2026-10-13). Typed GDScript stays (untyped declarations are errors through
+  project.godot), tests first for `core/` and `sandbox/`, clear names. Lint (`scripts/lint.sh`) is loose and only
+  flags likely bugs; formatting is advice. Verify Godot APIs against the 4.7 docs or the engine itself; do not guess.
 - **Assets are optional.** Every picture, model and sound has a fallback, and a missing file never breaks a screen.
 - **Look at it.** Anything visible is checked with a screenshot (`scripts/screenshot.sh`) before it is called done.
 - **Teaching mode.** `# LEARN:` comments where a decision or a language feature is non-obvious, with an entry in
@@ -48,7 +50,7 @@ Then say in one short message what you are picking up, ask any blocking question
 - **Ask only** when a choice changes what the player will see or play, or when an action is destructive.
 
 ## 3. Definition of done
-Tests green headless (`scripts/test.sh`), lint clean (`scripts/lint.sh`), screenshots of anything visible, the
+Tests green headless (`scripts/test.sh`), the game launching, screenshots of anything visible, the
 phase's checklist ticked in `docs/PLAN.md`, docs and an ADR for any decision a later reader could question, a commit,
 and a short summary: what changed, how it was verified, what is next.
 

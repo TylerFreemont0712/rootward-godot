@@ -1,0 +1,52 @@
+// ChatGPT ImageGen source, palette-locked and cut at this world’s scale by pipeline/world.
+{
+  "id": "hall",
+  "kind": "building",
+  "what": "broad village hall with a compact clock gable",
+  "footprint": [
+    9,
+    8
+  ],
+  "pad": 0.0,
+  "above": 0.0,
+  "ramps": {
+    "cloth_red": "cloth_red",
+    "cloth_orange": "cloth_orange",
+    "cloth_yellow": "cloth_yellow",
+    "cloth_green": "cloth_green",
+    "cloth_teal": "cloth_teal",
+    "cloth_blue": "cloth_blue",
+    "cloth_navy": "cloth_navy",
+    "cloth_purple": "cloth_purple",
+    "cloth_pink": "cloth_pink",
+    "cloth_white": "cloth_white",
+    "cloth_grey": "cloth_grey",
+    "cloth_black": "cloth_black",
+    "cloth_brown": "cloth_brown",
+    "cloth_cream": "cloth_cream",
+    "cloth_mint": "cloth_mint",
+    "cloth_sky": "cloth_sky",
+    "cloth_lavender": "cloth_lavender",
+    "cloth_maroon": "cloth_maroon",
+    "cloth_olive": "cloth_olive",
+    "cloth_coral": "cloth_coral",
+    "cloth_denim": "cloth_denim",
+    "steel": "steel",
+    "gold": "gold",
+    "grass": "grass",
+    "leaf": "leaf",
+    "pine": "pine",
+    "dirt": "dirt",
+    "cobble": "cobble",
+    "stone": "stone",
+    "water": "water",
+    "wood": "wood",
+    "plaster": "plaster",
+    "thatch": "thatch",
+    "glow": "glow",
+    "firefly": "firefly"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/hall-source.png"
+  }
+}

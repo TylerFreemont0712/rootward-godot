@@ -1,0 +1,38 @@
+{
+  "above": 1.5,
+  "footprint": [
+    1,
+    1
+  ],
+  "id": "gate_v",
+  "kind": "prop",
+  "pad": 1,
+  "ramps": {
+    "brass": "gold",
+    "iron": "steel",
+    "timber": "wood"
+  },
+  "source": {
+    "images": [
+      "Concept/v0.3/Update/gate-swing/gate_v-00.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-01.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-02.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-03.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-04.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-05.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-06.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-07.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-08.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-09.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-10.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-11.png",
+      "Concept/v0.3/Update/gate-swing/gate_v-12.png"
+    ],
+    "registered": true
+  },
+  "swing": {
+    "axis": "vertical",
+    "material": "wood"
+  },
+  "what": "a crafted chestnut wooden gate with iron hinges and a latch"
+}

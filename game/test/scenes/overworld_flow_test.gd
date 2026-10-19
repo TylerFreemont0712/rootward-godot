@@ -10,7 +10,6 @@ const HOME := "home"
 const TOWN := "lanternroot"
 const HOME_START := Vector2i(2, 3)
 const MAT := Vector2i(5, 7)
-const TOWN_START := Vector2i(6, 23)
 const LOOK := {
 	"outfit": "outfit/tunic",
 	"hair": "hair/short",
@@ -25,8 +24,21 @@ const LOOK := {
 }
 ## Every beat has played: Hotaru has said her piece, so nothing opens over the walk.
 const ALL_BEATS := {"woke": true, "first-step": true, "left-home": true, "all-ways": true}
+## The four ways a walk can go, in the order a start is tried: the key, the rule the boots start with, and its step.
+const WAYS: Array[Dictionary] = [
+	{"key": KEY_RIGHT, "name": "right", "axis": "x", "by": 1, "step": Vector2i(1, 0)},
+	{"key": KEY_DOWN, "name": "down", "axis": "y", "by": 1, "step": Vector2i(0, 1)},
+	{"key": KEY_UP, "name": "up", "axis": "y", "by": -1, "step": Vector2i(0, -1)},
+	{"key": KEY_LEFT, "name": "left", "axis": "x", "by": -1, "step": Vector2i(-1, 0)},
+]
 
 var screen: OverworldScreen
+## The town as its content says it is (ADR-0061): its start is read from the map, not pinned here.
+var _town: Dictionary = {}
+
+
+func before() -> void:
+	_town = OverworldContent.load_world().catalog.maps[TOWN]
 
 
 func before_test() -> void:
@@ -124,16 +136,46 @@ func _bubble_shows(words: String = "") -> bool:
 	return bubble.visible and text.contains(words)
 
 
-func test_pressing_right_moves_the_player_one_cell(
+## The town's start, read from its map: where the player stands on arriving from home.
+func _town_start() -> Vector2i:
+	return OverworldMap.cell_of(_town.start)
+
+
+## The first of WAYS whose step from `from` lands on a cell a walk can enter (walkable, nobody standing there, and not a
+## door, which would take the player inside), or {} when no way is open.
+func _free_way(map: Dictionary, from: Vector2i) -> Dictionary:
+	var people := _people_cells(map)
+	for way: Dictionary in WAYS:
+		var to: Vector2i = from + way.step
+		if not OverworldMap.blocked(map, to, people) and OverworldMap.warp_at(map, to).is_empty():
+			return way
+	return {}
+
+
+## The cells the townspeople stand on, as OverworldMap.blocked takes them (cell -> who).
+func _people_cells(map: Dictionary) -> Dictionary:
+	var cells := {}
+	for person: Dictionary in map.people:
+		cells[OverworldMap.cell_of(person.at)] = person.id
+	return cells
+
+
+func test_pressing_a_key_moves_the_player_one_cell(
 	_do_skip := not Sandbox.is_available(SandboxJob.PYTHON),
 	_skip_reason := "the sandbox runtime is not installed: run scripts/fetch-sandbox.sh to walk the boots' code",
 ) -> void:
-	await _open(TOWN, TOWN_START, ALL_BEATS, [BootsCode.rule("right", "x", 1)])
-	await _walk(KEY_RIGHT)
+	# The first open way out of the start, so the test does not depend on what the town puts beside it.
+	var start := _town_start()
+	var way := _free_way(_town, start)
+	assert_bool(not way.is_empty()).override_failure_message("the town's start has no open way out").is_true()
+	if way.is_empty():
+		return
+	await _open(TOWN, start, ALL_BEATS, [BootsCode.rule(way.name, way.axis, way.by)])
+	await _walk(way.key)
 	await _wait(0.4)
 	assert_str(String(screen.state.map)).is_equal(TOWN)
 	assert_that(OverworldState.cell(screen.state)).override_failure_message("one press is one cell").is_equal(
-		TOWN_START + Vector2i(1, 0)
+		start + way.step
 	)
 
 
@@ -160,9 +202,10 @@ func test_a_key_with_no_rule_stands_still_and_says_what_is_missing(
 	_do_skip := not Sandbox.is_available(SandboxJob.PYTHON),
 	_skip_reason := "the sandbox runtime is not installed: run scripts/fetch-sandbox.sh to walk the boots' code",
 ) -> void:
-	await _open(TOWN, TOWN_START, ALL_BEATS, [BootsCode.rule("right", "x", 1)])
+	var start := _town_start()
+	await _open(TOWN, start, ALL_BEATS, [BootsCode.rule("right", "x", 1)])
 	await _press(KEY_DOWN)
-	assert_that(OverworldState.cell(screen.state)).override_failure_message("no rule, no step").is_equal(TOWN_START)
+	assert_that(OverworldState.cell(screen.state)).override_failure_message("no rule, no step").is_equal(start)
 	(
 		assert_bool(_bubble_shows("Your boots don't know the down key yet"))
 		. override_failure_message("Hotaru should say the boots do not know the down key")
@@ -179,18 +222,23 @@ func test_walking_onto_the_home_mat_takes_you_to_town_and_saves(
 	var left: bool = await _until(func() -> bool: return not bool(screen.get("_busy")))
 	assert_bool(left).override_failure_message("the door did not finish opening").is_true()
 	assert_str(String(screen.state.map)).is_equal(TOWN)
-	assert_that(OverworldState.cell(screen.state)).is_equal(TOWN_START)
+	assert_that(OverworldState.cell(screen.state)).is_equal(_town_start())
 	var saved := OverworldStore.for_profile().load_state()
 	assert_str(String(saved.get("map", ""))).override_failure_message("the town was not saved").is_equal(TOWN)
-	assert_that(OverworldState.cell(saved)).is_equal(TOWN_START)
+	assert_that(OverworldState.cell(saved)).is_equal(_town_start())
 
 
 func test_the_first_step_in_town_starts_hotaru_talking(
 	_do_skip := not Sandbox.is_available(SandboxJob.PYTHON),
 	_skip_reason := "the sandbox runtime is not installed: run scripts/fetch-sandbox.sh to walk the boots' code",
 ) -> void:
-	await _open(TOWN, TOWN_START, {"woke": true, "left-home": true}, [BootsCode.rule("right", "x", 1)])
-	await _walk(KEY_RIGHT)
+	var start := _town_start()
+	var way := _free_way(_town, start)
+	assert_bool(not way.is_empty()).override_failure_message("the town's start has no open way out").is_true()
+	if way.is_empty():
+		return
+	await _open(TOWN, start, {"woke": true, "left-home": true}, [BootsCode.rule(way.name, way.axis, way.by)])
+	await _walk(way.key)
 	var talk := screen.get("_talk") as DialogueBox
 	assert_bool(talk.busy).override_failure_message("the first step should start hotaru-first-step").is_true()
 	assert_bool(bool((screen.state.flags as Dictionary).get("first-step", false))).is_true()

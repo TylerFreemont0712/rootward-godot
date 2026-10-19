@@ -1,0 +1,15 @@
+// The mushroom: a Bag and pickup icon (pipeline/world/README.md). One red toadstool with white spots, no stand.
+{
+ "id": "item-mushroom",
+ "kind": "prop",
+ "what": "a single red-capped mushroom with white spots and a cream stem, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"stem": "cloth_cream", "cap": "cloth_red", "spots": "cloth_white"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.36, 0.36, 0], "size": [0.28, 0.28, 0.42], "ramp": "stem", "shade": 1},
+  {"shape": "ball", "at": [0.14, 0.15, 0.3], "size": [0.72, 0.7, 0.4], "ramp": "cap"},
+  {"shape": "ball", "at": [0.3, 0.3, 0.6], "size": [0.14, 0.14, 0.12], "ramp": "spots"},
+  {"shape": "ball", "at": [0.56, 0.36, 0.56], "size": [0.14, 0.14, 0.12], "ramp": "spots"},
+  {"shape": "ball", "at": [0.44, 0.52, 0.64], "size": [0.12, 0.12, 0.1], "ramp": "spots"}
+ ]
+}

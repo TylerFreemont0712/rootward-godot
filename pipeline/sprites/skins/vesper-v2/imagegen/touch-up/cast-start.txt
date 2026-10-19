@@ -1,0 +1,12 @@
+Use case: identity-preserve. Create a corrected high-quality anime CAST ANIMATION sheet by duplicating the supplied neutral Vesper and changing ONLY one arm gesture. Eight full-body frames, 4 columns x 2 rows.
+HARD RULE: The arm on the SCREEN LEFT of the figure hangs beside her thigh in EVERY SINGLE cell. Its hand stays down by the left skirt hem, including during anticipation, casting and hold. Do NOT lift that arm. ONLY the OTHER ARM emerging from the SCREEN-RIGHT sleeve moves. That right-side hand rises and extends toward the right-side enemy. Keep identity of this arm through all eight frames.
+Pose1 exact reference neutral.
+Pose2 RIGHT-SIDE hand begins rising beside the belt, LEFT-SIDE hand remains down.
+Pose3 RIGHT-SIDE hand rises in front of chest, LEFT-SIDE hand remains down.
+Pose4 RIGHT-SIDE open palm rises beside her right cheek, LEFT-SIDE hand remains down.
+Pose5 RIGHT-SIDE palm pushes halfway toward right, LEFT-SIDE hand remains down.
+Pose6 RIGHT-SIDE arm extends to right at shoulder height, palm open toward enemy, LEFT-SIDE hand remains down.
+Pose7 same extension held, LEFT-SIDE hand remains down.
+Pose8 same extension settles, LEFT-SIDE hand remains down.
+Copy the reference's EXACT head-to-body proportions, all clothing, navy-plum and muted teal colors, purple bob and gold eyes, shading and brightness. Same hat/head scale and boot baseline throughout, small face and long legs, NO CHIBI, no shrinking torso. Face/gaze always RIGHT. Feet and torso steady, no strong lean or skirt flare. Do not relight or saturate. No spells, glow or effects.
+Use spacious four by two grid with transparent gaps, full hats and boots visible in each cell, ample room for extended hand. ACTUAL TRANSPARENT ALPHA BACKGROUND, not a painted backdrop or checkerboard. No scenery, floor, gradients, shadows, labels, borders, extra sprites, speckles or halo. Output sheet only.

@@ -1,7 +1,8 @@
 extends Control
 ## A run set up for a screenshot, then the run screen over it. ROOTWARD_SHOT picks the moment:
 ##   map (default), fight, table (a Shardrun hand half played), cast, volley (the bolts, without the code), storm (a
-##   heavy spark spell on two foes: lightning called down), turn, reward, treasure, rest, forge, end, code,
+##   heavy spark spell on two foes: lightning called down), turn, reward, script_reward (the final script stage),
+##   treasure, rest, forge, end, code,
 ##   dev (a sandbox run with its tools open), and for the program Shardrun: draft (the paradigms),
 ##   focus (all three focuses), pack (a draft
 ##   pack), write (a card played into the Program, its code mid-rune; use ROOTWARD_SHOT_AFTER_MS), race (a foe quicker
@@ -28,12 +29,12 @@ extends Control
 ##       res://tools/shardrun_shot.tscn shots/vesper-volley.png 1
 ## ROOTWARD_SHOT_CAPACITY=6 gives the Program six slots, to cast the grand circle's six shards.
 ## ROOTWARD_SHOT_LOADOUT wears cosmetic looks (ADR-0037), slot=id pairs: "circle=rootglass,impact=starfall".
-
 ## The legendary hooks (docs/LEGENDARY_LOOKS.md): ROOTWARD_SHOT_AFTER_VOLLEY_MS=n and ROOTWARD_SHOT_AFTER_IMPACT_MS=n
 ## catch the moment n ms after a cast's first bolt, or after a black hole's blow lands, and print the state behind the
 ## frame.
 ## ROOTWARD_SHOT_CASTS=2 (with the volley hook) plays the same spell again in the next turn, and the frame is of that
 ## second cast; the first cast's state is printed too, so the two casts' routes can be compared.
+
 signal shot_ready
 
 const SAVES := "user://shot-saves"
@@ -51,7 +52,6 @@ func _ready() -> void:
 		var worn := Cosmetics.loadout()
 		worn["circle"] = OS.get_environment("ROOTWARD_SHOT_CIRCLE")
 		Settings.loadout = worn
-	var face := OS.get_environment("ROOTWARD_FONT")
 	# ROOTWARD_SHOT_BOLT=<bolt id> and ROOTWARD_SHOT_IMPACT=<impact id> wear those looks the same way:
 	# legendary-constellation draws the cast's volley, legendary-singularity the black hole (docs/LEGENDARY_LOOKS.md).
 	if OS.get_environment("ROOTWARD_SHOT_BOLT") != "":
@@ -66,6 +66,7 @@ func _ready() -> void:
 	# with it off, whatever the player's settings file says. Unset, the setting is left as it is.
 	if OS.get_environment("ROOTWARD_SHOT_REDUCED") != "":
 		Settings.reduced_motion = OS.get_environment("ROOTWARD_SHOT_REDUCED") == "1"
+	var face := OS.get_environment("ROOTWARD_FONT")
 	if UiFonts.CHOICES.has(face):
 		Settings.font_style = face
 		UiTheme.refresh_fonts()
@@ -188,8 +189,12 @@ func _ready() -> void:
 			if not foes.is_empty():
 				var kind := OS.get_environment("ROOTWARD_SHOT_KIND")
 				await bot.send({"type": "dev-spawn", "kind": kind if kind != "" else "fight", "foes": Array(foes)})
-		"reward":
+		"reward", "script_reward":
 			await bot.play_until("reward")
+			if shot == "script_reward":
+				var reward: Dictionary = session.state.get("reward", {})
+				for key: String in ["cursed_relic", "relics", "shards", "chest", "spell"]:
+					reward.erase(key)
 		"relics":
 			# A guardian beaten in a sandbox run: its reward offers epic and legendary relics.
 			session.start(language if language != "" else "python", "beginner", "screenshot", true)
@@ -274,11 +279,6 @@ func _ready() -> void:
 		set_meta("shot_ready", true)
 		shot_ready.emit()
 		return
-	set_meta("shot_ready", true)
-	shot_ready.emit()
-	_act(shot, screen)
-
-
 	# ROOTWARD_SHOT_AFTER_VOLLEY_MS=n catches the moment n ms after the cast's first legendary volley exists (its first
 	# bolt has just launched). The sandbox returns the bolts after a delay that varies, so AFTER_MS cannot time it.
 	var after_volley := int(OS.get_environment("ROOTWARD_SHOT_AFTER_VOLLEY_MS"))
@@ -309,6 +309,11 @@ func _ready() -> void:
 		set_meta("shot_ready", true)
 		shot_ready.emit()
 		return
+	set_meta("shot_ready", true)
+	shot_ready.emit()
+	_act(shot, screen)
+
+
 ## ROOTWARD_SHOT=trial plays real commands up to ROOTWARD_SHOT_TRIAL_STEP, then captures its chapter or lesson.
 func _show_trial(language: String) -> void:
 	Game.profile.preferred_language = "ja" if language == "ja" else "en"
@@ -417,11 +422,6 @@ func _show_git_log(session: ShardrunSession) -> void:
 	shot_ready.emit()
 
 
-func _act(shot: String, screen: Control) -> void:
-	match shot:
-		"forge":
-			# ROOTWARD_SHOT_PICK=<card id> chooses that card in the open forge stage (a melt or a refactor).
-			var picked := OS.get_environment("ROOTWARD_SHOT_PICK")
 ## Waits until a legendary volley is under the screen. After 15 s with none, the shot stops with an error (false).
 func _wait_for_volley(screen: Control) -> bool:
 	var started := Time.get_ticks_msec()
@@ -595,6 +595,11 @@ static func _report_volley(volley: Node2D, to_pixels: Transform2D, index: int) -
 		)
 
 
+func _act(shot: String, screen: Control) -> void:
+	match shot:
+		"forge":
+			# ROOTWARD_SHOT_PICK=<card id> chooses that card in the open forge stage (a melt or a refactor).
+			var picked := OS.get_environment("ROOTWARD_SHOT_PICK")
 			for node: Node in screen.find_children("*", "", true, false):
 				if (
 					picked != ""
@@ -663,6 +668,12 @@ static func _report_volley(volley: Node2D, to_pixels: Transform2D, index: int) -
 				if desired.to_lower() in tip.title.to_lower():
 					tip.show_now()
 					break
+		"script_reward":
+			if OS.get_environment("ROOTWARD_SHOT_TOOLTIP") == "1":
+				for tip: HoverInfo in screen.find_children("*", "HoverInfo", true, false):
+					if tip.source is TextureRect:
+						tip.show_now()
+						break
 
 
 ## A sandbox run past its first fight, standing on the map, ready to be put into a room by the shot.

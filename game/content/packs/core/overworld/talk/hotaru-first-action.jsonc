@@ -1,0 +1,39 @@
+// Hotaru's first action beat (Concept/v0.3/09, sections 3 and 4). Talk.opening picks the rung from the flags: the walk
+// (first-step) gives the open line; a pause with no action gives the nudge, then the concept, then the key. The first
+// answer that went through (first-action, a shut gate's words count too) gives the done line. Each rung sets its own
+// flag, so each plays once.
+{
+  "id": "hotaru-first-action",
+  "start": [
+    {"if": {"flag": "first-action", "not": "action-done"}, "goto": "done"},
+    {"if": {"flag": "action-concept", "not": "action-key"}, "goto": "key"},
+    {"if": {"flag": "action-nudged", "not": "action-concept"}, "goto": "concept"},
+    {"if": {"flag": "action-opened", "not": "action-nudged"}, "goto": "nudge"},
+    {"if": {"flag": "first-step", "not": "action-opened"}, "goto": "open"}
+  ],
+  "nodes": {
+    "open": {
+      "lines": [{"text": "Walking is only half of what boots can do.", "speaker": "hotaru"}],
+      "set": ["action-opened"]
+    },
+    "nudge": {
+      "lines": [{"text": "What would you like to happen to the thing you're facing?", "speaker": "hotaru"}],
+      "set": ["action-nudged"]
+    },
+    "concept": {
+      "lines": [{"text": "Your boots always know which way you face. Their code can ask.", "speaker": "hotaru"}],
+      "set": ["action-concept"]
+    },
+    "key": {
+      "lines": [{"text": "Try a new key. Not an arrow, not B, not Space.", "speaker": "hotaru"}],
+      "set": ["action-key"]
+    },
+    "done": {
+      "lines": [
+        {"text": "It answered! Right where you were looking, your code did something.", "speaker": "hotaru", "mood": "happy"},
+        {"text": "Fireflies do that too. One blinks, and another answers.", "speaker": "hotaru"}
+      ],
+      "set": ["action-done"]
+    }
+  }
+}

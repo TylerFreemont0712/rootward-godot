@@ -1,15 +1,30 @@
 // The ground of Lanternroot's overworld (ADR-0061): what can be walked on, and what a step on it sounds like.
 // A map's legend names these; the art for each lives in game/assets/overworld/tiles/.
+// `paint` exposes a surface in the Studio's Land palette, in this order. Art variants are automatic and cosmetic.
 {
-  "grass": {"walk": true, "step": "grass"},
-  "flowers": {"walk": true, "step": "grass"},
-  "path": {"walk": true, "step": "dirt"},
-  "cobble": {"walk": true, "step": "stone"},
+  "grass": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "meadow": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "dry_grass": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "forest_floor": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "moss": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "root_floor": {"walk": true, "step": "dirt", "paint": "outdoor"},
+  "fern_moss": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "glow_moss": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "flowers": {"walk": true, "step": "grass", "paint": "outdoor"},
+  "path": {"walk": true, "step": "dirt", "paint": "outdoor"},
+  "brick_path": {"walk": true, "step": "stone", "paint": "outdoor"},
+  "stone_path": {"walk": true, "step": "stone", "paint": "outdoor"},
+  "wood_path": {"walk": true, "step": "wood", "paint": "outdoor"},
+  "soil": {"walk": true, "step": "dirt", "paint": "outdoor"},
+  "tilled_soil": {"walk": true, "step": "dirt", "paint": "outdoor"},
+  "sand": {"walk": true, "step": "dirt", "paint": "outdoor"},
+  "gravel": {"walk": true, "step": "stone", "paint": "outdoor"},
+  "cobble": {"walk": true, "step": "stone", "paint": "outdoor"},
+  "water": {"walk": false, "paint": "outdoor"},
   "bridge": {"walk": true, "step": "wood"},
-  "floor": {"walk": true, "step": "wood"},
+  "floor": {"walk": true, "step": "wood", "paint": "indoor"},
   "rug": {"walk": true, "step": "cloth"},
-  "water": {"walk": false},
   "hedge": {"walk": false},
-  "wall": {"walk": false},
-  "void": {"walk": false}
+  "wall": {"walk": false, "paint": "indoor"},
+  "void": {"walk": false, "paint": "indoor"}
 }

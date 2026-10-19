@@ -39,6 +39,22 @@
     "loopStart": 94.2331458,
     "loopEnd": 122.0591458
   },
+  "music-lanternroot-front": {
+    "loopStart": 10.3752917,
+    "loopEnd": 49.1464583
+  },
+  "music-lanternroot-home": {
+    "loopStart": 10.5066042,
+    "loopEnd": 114.856625
+  },
+  "music-lanternroot-lesson": {
+    "loopStart": 8.8818542,
+    "loopEnd": 57.7854375
+  },
+  "music-lanternroot-town": {
+    "loopStart": 8.0503333,
+    "loopEnd": 97.258375
+  },
   "music-rest": {
     "loopStart": 27.9070625,
     "loopEnd": 79.3360625
@@ -60,7 +76,7 @@
     "loopEnd": 64.5901458
   },
   "music-title": {
-    "loopStart": 65.7591458,
-    "loopEnd": 116.7721458
+    "loopStart": 10.4110417,
+    "loopEnd": 112.6700208
   }
 }

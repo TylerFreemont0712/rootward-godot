@@ -1,0 +1,32 @@
+// Adopted from ow-building-inn (pipeline/pixel/manifest.json): its render re-cut at this world's scale.
+{
+ "id": "inn",
+ "kind": "building",
+ "what": "cozy two-story village inn",
+ "footprint": [
+  6,
+  6
+ ],
+ "pad": 0.0,
+ "above": 0.0,
+ "ramps": {
+  "plaster": "plaster",
+  "wood": "wood",
+  "thatch": "thatch",
+  "stone": "stone",
+  "cobble": "cobble",
+  "leaf": "leaf",
+  "cloth_red": "cloth_red",
+  "cloth_maroon": "cloth_maroon",
+  "cloth_blue": "cloth_blue",
+  "cloth_teal": "cloth_teal",
+  "cloth_brown": "cloth_brown",
+  "gold": "gold",
+  "steel": "steel",
+  "glow": "glow"
+ },
+ "source": {
+  "picture": "ow-building-inn",
+  "pick": 0
+ }
+}

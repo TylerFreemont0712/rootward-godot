@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): the first time the tinker opens their map (map-opened).
+{
+  "id": "hotaru-map-opened",
+  "start": [
+    {
+      "goto": "map"
+    }
+  ],
+  "nodes": {
+    "map": {
+      "lines": [
+        {
+          "text": "That's Lanternroot! In your colours!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Pell was right. Water that looks like water is much easier to find.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Find the big tree. Find the pond. Find us!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "map-told"
+      ]
+    }
+  }
+}

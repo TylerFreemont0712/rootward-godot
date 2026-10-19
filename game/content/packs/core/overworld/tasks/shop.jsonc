@@ -1,0 +1,125 @@
+// Nym's shop (Concept/v0.4/05, 2.9): price(prices, item, count) gives the coins for count of an item, or 0 when the shop
+// does not sell it. Stage 2 is can_buy(coins, cost) (canBuy in JavaScript): True when the coins are at least the cost.
+// The shop panel asks both live, and judges every answer the way the cases here are judged.
+{
+  "id": "shop",
+  "name": "Nym's Shop",
+  "title": "Nym's shop",
+  "giver": "quartermaster",
+  "built_line": "Nym's shop prices and sells with your price() and can_buy().",
+  "entry": {"python": "price", "javascript": "price"},
+  "params": [
+    {"name": "prices", "meaning": "What the shop sells: a dictionary from each item's name to its price in coins for one. An item the shop does not sell is not in it.", "example": "{\"apple\": 2, \"honey\": 6}"},
+    {"name": "item", "meaning": "The name of the item, such as \"apple\".", "example": "\"honey\""},
+    {"name": "count", "meaning": "How many of the item, a whole number.", "example": "3"}
+  ],
+  "gives": {"meaning": "The coins for count of the item: its price times count. When the shop does not sell the item, 0.", "example": "9"},
+  "words": {
+    "python": [
+      {"term": "in", "meaning": "Asks whether a name is in a dictionary or a list. The answer is True or False.", "example": "\"cat\" in pets"},
+      {"term": "[ ]", "meaning": "Looks up the number under a name in a dictionary.", "example": "scores[\"ana\"]"},
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "legs = 4 * 2"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if weather == \"rain\":\n    return \"umbrella\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "in", "meaning": "Asks whether a name is in an object. The answer is true or false.", "example": "\"cat\" in pets"},
+      {"term": "[ ]", "meaning": "Looks up the number under a name in an object.", "example": "scores[\"ana\"]"},
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "legs = 4 * 2;"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (weather === \"rain\") {\n  return \"umbrella\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "shop.starter.py", "javascript": "shop.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def price(prices, item, count):",
+        "    if item in prices:",
+        "        return prices[item] {op} count",
+        "    return {missing}",
+        "",
+        "[buy]def can_buy(coins, cost):",
+        "[buy]    return coins {cmp} cost"
+      ],
+      "javascript": [
+        "function price(prices, item, count) {",
+        "  if (item in prices) {",
+        "    return prices[item] {op} count;",
+        "  }",
+        "  return {missing};",
+        "}",
+        "",
+        "[buy]function canBuy(coins, cost) {",
+        "[buy]  return coins {cmp} cost;",
+        "[buy]}"
+      ]
+    },
+    "slots": {
+      "op": {"label": "do what", "choices": ["+", "*", "-"]},
+      "missing": {"label": "when not sold", "choices": [{"label": "nothing", "python": "None", "javascript": "null"}, "0", "-1"]},
+      "cmp": {"label": "compare", "choices": ["==", ">=", "<"], "stage": 1}
+    },
+    "toggles": {
+      "buy": {"label": "Write can_buy too", "stage": 1}
+    },
+    "start": {"slots": {"op": 0, "missing": 0, "cmp": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "shop-price",
+      "goal": "Give back the coins for some of an item: its price times how many. An item the shop does not sell gives 0.",
+      "judge": "equals",
+      "cases": [
+        {"args": [{"apple": 2, "honey": 6}, "apple", 3], "want": 6, "say": "three apples"},
+        {"args": [{"apple": 2, "honey": 6}, "honey", 1], "want": 6, "say": "one honey"},
+        {"args": [{"apple": 2, "honey": 6}, "pebble", 1], "want": 0, "say": "a pebble, which the shop does not sell", "edge": true},
+        {"args": [{"apple": 2, "honey": 6}, "apple", 0], "want": 0, "say": "no apples at all", "edge": true}
+      ],
+      "hints": [
+        "The prices are a dictionary, so you can look up one item's price by its name, the way you look up a word in a list.",
+        "Three apples cost three times as much as one apple. What do you need to multiply the price by?",
+        "An item that is not in the prices has no price to look up. Ask first whether it is there, using in, and give back 0 when it is not."
+      ]
+    },
+    {
+      "flag": "shop-buy",
+      "goal": "Say whether the coins are enough: True when they are at least the cost, False when they are not.",
+      "unlocked_by": {"flag": "shop-price"},
+      "entry": {"python": "can_buy", "javascript": "canBuy"},
+      "params": [
+        {"name": "coins", "meaning": "How many coins you have, a whole number.", "example": "10"},
+        {"name": "cost", "meaning": "What the item costs in coins, a whole number.", "example": "5"}
+      ],
+      "gives": {"meaning": "True when the coins are at least the cost, otherwise False. In JavaScript, true or false."},
+      "words": {
+        "python": [
+          {"term": ">=", "meaning": "Asks whether one number is at least another: True when it is bigger or the same.", "example": "legs >= 4"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+        ],
+        "javascript": [
+          {"term": ">=", "meaning": "Asks whether one number is at least another: true when it is bigger or the same.", "example": "legs >= 4"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+        ]
+      },
+      "judge": "equals",
+      "cases": [
+        {"args": [10, 5], "want": true, "say": "10 coins for something that costs 5"},
+        {"args": [5, 5], "want": true, "say": "exactly enough: 5 coins for something that costs 5", "edge": true},
+        {"args": [4, 5], "want": false, "say": "4 coins for something that costs 5"},
+        {"args": [0, 1], "want": false, "say": "no coins for something that costs 1"}
+      ],
+      "hints": [
+        "Look at the two numbers: the coins you have, and the cost. The answer is a question, True or False: are the coins enough?",
+        "Python and JavaScript have a word that asks whether one number is at least another. It is in the list of words in the Hints column.",
+        "Your answer is already True or False, so you can give it straight back with return. You do not need an if."
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "With {say}, the answer was {got}. It should be {want}.",
+    "nothing": "With {say}, nothing came back. It should be {want}.",
+    "wrong-type": "With {say}, the answer was {got}, but it should be {want}. Check what kind of answer you give back.",
+    "edge": "This one is a special case: {say}. It should give {want}."
+  }
+}

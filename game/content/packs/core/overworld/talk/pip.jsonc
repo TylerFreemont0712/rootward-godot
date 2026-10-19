@@ -1,7 +1,67 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Pip builds the tracker's progress bar (v0.4, quest 11, "Pip's
+// progress", the progress task). He offers it once the options and the bag are done.
 {
   "id": "pip",
   "start": [
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "count-built"
+          },
+          {
+            "flag": "tally-read"
+          }
+        ]
+      },
+      "goto": "count_done"
+    },
+    {
+      "if": {
+        "flag": "count-built"
+      },
+      "goto": "count_built"
+    },
+    {
+      "if": {
+        "flag": "count-asked"
+      },
+      "goto": "count_waits"
+    },
+    {
+      "if": {
+        "flag": "credits-rolled"
+      },
+      "goto": "count_offer"
+    },
+    {
+      "if": {
+        "flag": "progress-built"
+      },
+      "goto": "progress_done"
+    },
+    {
+      "if": {
+        "flag": "progress-asked"
+      },
+      "goto": "progress_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "volume-clamped"
+          },
+          {
+            "flag": "volume-tried"
+          },
+          {
+            "flag": "bag-key-written"
+          }
+        ]
+      },
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-pip"
@@ -65,6 +125,197 @@
       "lines": [
         {
           "text": "No thank you! I'm almost sure it's ten."
+        }
+      ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Shh! I am counting your quest steps. Two done, two to go."
+        },
+        {
+          "text": "Two out of four. That's half!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Half is not a number. I want a number out of one hundred, for the tracker bar."
+        },
+        {
+          "text": "Give me the steps done and the steps in all. I will give you how full the bar is."
+        },
+        {
+          "text": "And if a quest has no steps at all?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "...Do not ask me that."
+        }
+      ],
+      "set": [
+        "met-pip"
+      ],
+      "choices": [
+        {
+          "text": "I'll build it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "Done goes in. Total goes in. Out comes a whole number, from nothing to a hundred."
+        }
+      ],
+      "set": [
+        "progress-asked"
+      ],
+      "open": "task:progress"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "Fine. I will count something else. Nine, ten... eleven? Ten!"
+        }
+      ]
+    },
+    "progress_waits": {
+      "lines": [
+        {
+          "text": "My bar is still empty. Empty is zero. Zero is where I do not like to be."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's fill it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "progress_done": {
+      "lines": [
+        {
+          "text": "It fills! I watched it twice. Fifty percent! ...Is that a tinker thing? Good.",
+          "mood": "happy"
+        },
+        {
+          "text": "Eleven lanterns, by the way.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "TEN."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my bar.",
+          "goto": "teach"
+        },
+        {
+          "text": "Bye, Pip.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "Bye! One, two, three... oh no. Starting again."
+        }
+      ]
+    },
+    "count_offer": {
+      "lines": [
+        {
+          "text": "Shh! My tally board is by the Root, and it has a terrible problem. It says TEN."
+        },
+        {
+          "text": "There are eleven lanterns, Pip. I can see all of them.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Eleven? I counted TEN! Then the board will count them, and it will not argue."
+        },
+        {
+          "text": "Teach it to count. Go down the list, one lantern at a time, and count only the lit ones."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll teach it.",
+          "goto": "count_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "count_teach": {
+      "lines": [
+        {
+          "text": "Lit ones only, tinker. A dark lantern does not count, even if it is nearly lit."
+        }
+      ],
+      "set": [
+        "count-asked"
+      ],
+      "open": "task:count"
+    },
+    "count_waits": {
+      "lines": [
+        {
+          "text": "My board still says ten. Teach it to count the lit ones!"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's teach it.",
+          "goto": "count_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "count_built": {
+      "lines": [
+        {
+          "text": "The board can count! Now go and look at it, by the Root. Stand by it and press Space."
+        }
+      ]
+    },
+    "count_done": {
+      "lines": [
+        {
+          "text": "It says ELEVEN! My board says eleven, all by itself!",
+          "mood": "happy"
+        },
+        {
+          "text": "Eleven lanterns, Pip. You counted them.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "...Fine. The board is right. Ten was a long time ago."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my bar.",
+          "goto": "teach"
+        },
+        {
+          "text": "Bye, Pip.",
+          "goto": "bye"
         }
       ]
     }

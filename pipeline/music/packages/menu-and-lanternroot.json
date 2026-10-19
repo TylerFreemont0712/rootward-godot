@@ -1,0 +1,12 @@
+{
+  "name": "menu-and-lanternroot",
+  "title": "The main menu and Lanternroot",
+  "concept": "Concept/v0.3/13-soundtrack-solid.md",
+  "tracks": [
+    "title",
+    "lanternroot-front",
+    "lanternroot-town",
+    "lanternroot-home",
+    "lanternroot-lesson"
+  ]
+}

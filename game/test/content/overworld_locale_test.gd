@@ -24,7 +24,7 @@ const FAILED_CALL := 'failed\\([^\\n]*("(?:[^"\\\\]|\\\\.)*")\\)'
 
 
 func test_every_english_string_the_overworld_shows_has_a_japanese_entry() -> void:
-	var shown := _shown()
+	var shown := OverworldStrings.shown_list()
 	var strings: Dictionary = ContentLocale.load_overlay("ja").strings
 	var missing: Array[String] = []
 	for english: String in shown:
@@ -90,39 +90,32 @@ func test_the_harness_messages_listed_here_are_the_ones_the_harnesses_say() -> v
 	assert_array(said).override_failure_message("a harness message changed: %s" % [said]).is_equal([true, true, true])
 
 
-## Every string the overworld shows, in English, each once and in order.
+## Every string the overworld shows, in English, each once and in order (OverworldStrings, which the translators'
+## batches use too).
 func _shown() -> Array[String]:
-	var found := {}
-	for path: String in _scripts(SCENES):
-		for text: String in _literals(FileAccess.get_file_as_string(path), TEXT_CALL):
-			found[text] = true
-	for text: String in _literals(FileAccess.get_file_as_string(BOOTS_RUN), FAILED_CALL):
-		found[text] = true
-	for message: String in HARNESS_MESSAGES:
-		found[message] = true
-	var catalog: Dictionary = OverworldContent.load_world().catalog
-	for id: String in catalog.talk:
-		for node: Dictionary in (catalog.talk[id].nodes as Dictionary).values():
-			for line: Dictionary in node.get("lines", []):
-				found[String(line.get("text", ""))] = true
-			for choice: Dictionary in node.get("choices", []):
-				found[String(choice.get("text", ""))] = true
-	for id: String in catalog.townsfolk:
-		var person: Dictionary = catalog.townsfolk[id]
-		found[String(person.get("name", ""))] = true
-		found[String(person.get("title", ""))] = true
-	for map_id: String in catalog.maps:
-		for thing: Dictionary in catalog.maps[map_id].objects:
-			if thing.has("text"):
-				found[String(thing.text)] = true
-	for key: String in BootsRules.KEYS:
-		found[key] = true
-	found[String(DialogueBox.HOTARU.name)] = true
-	found.erase("")
-	var out: Array[String] = []
-	out.assign(found.keys())
-	out.sort()
-	return out
+	return OverworldStrings.shown_list()
+
+
+## No overworld overlay keeps a key that nothing shows any more: an English line that changed leaves its old key
+## behind, and its Japanese with it (a stale translation). The overworld's own files: overworld.jsonc,
+## overworld-talk.jsonc and every overworld-*.jsonc.
+func test_no_overworld_japanese_entry_is_stale() -> void:
+	var shown := OverworldStrings.shown()
+	var stale: Array[String] = []
+	var dir := ContentLoader.ROOT.path_join("packs/core/locales/ja")
+	for name: String in ContentLoader._sorted_files(dir, ".jsonc"):
+		if not (name == "overworld.jsonc" or name.begins_with("overworld-")):
+			continue
+		var parsed := Jsonc.parse_file(dir.path_join(name))
+		if not bool(parsed.get("ok", false)):
+			continue
+		for entry: Dictionary in parsed.value:
+			var english := String(entry.get("en", ""))
+			if not shown.has(english):
+				stale.append("%s: %s" % [name, english])
+	for line in stale:
+		print("stale: %s" % line)
+	assert_array(stale).override_failure_message("%d stale Japanese entries: %s" % [stale.size(), stale.slice(0, 20)]).is_empty()
 
 
 ## Every .gd file under `dir`, the subfolders too.

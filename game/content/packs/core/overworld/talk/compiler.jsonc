@@ -4,6 +4,30 @@
   "start": [
     {
       "if": {
+        "flag": "forge-gear"
+      },
+      "goto": "forge_done"
+    },
+    {
+      "if": {
+        "flag": "forge-built"
+      },
+      "goto": "gear"
+    },
+    {
+      "if": {
+        "flag": "forge-asked"
+      },
+      "goto": "forge_waits"
+    },
+    {
+      "if": {
+        "flag": "drills-medal"
+      },
+      "goto": "forge_offer"
+    },
+    {
+      "if": {
         "flag": "met-compiler"
       },
       "goto": "again"
@@ -16,7 +40,7 @@
     "hello": {
       "lines": [
         {
-          "text": "Hmph. So you're the tinker."
+          "text": "Hm. So you're the tinker."
         },
         {
           "text": "I'm Brannoc. I turn rough iron into good tools. A tool from my forge works the same way, every single time."
@@ -33,6 +57,90 @@
       "lines": [
         {
           "text": "Still here? The forge doesn't wait."
+        }
+      ]
+    },
+    "forge_offer": {
+      "lines": [
+        {
+          "text": "Hm. Careful work, I hear. Good. Now try a careful forge."
+        },
+        {
+          "text": "The forge never lies. Same iron in, same tool out, and nothing else touched."
+        },
+        {
+          "text": "Nothing else? Not even the list?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Especially the list. Make a new one, and leave the one you were given alone."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll forge it.",
+          "goto": "forge_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "forge_later"
+        }
+      ]
+    },
+    "forge_teach": {
+      "lines": [
+        {
+          "text": "Same materials in any order, the same tool out. The list you were given stays as it was."
+        }
+      ],
+      "set": [
+        "forge-asked"
+      ],
+      "open": "task:forge"
+    },
+    "forge_waits": {
+      "lines": [
+        {
+          "text": "The iron is still waiting. Iron does not like to wait, and neither do I."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's forge it.",
+          "goto": "forge_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "forge_later"
+        }
+      ]
+    },
+    "forge_later": {
+      "lines": [
+        {
+          "text": "The iron will keep. It always does."
+        }
+      ]
+    },
+    "gear": {
+      "lines": [
+        {
+          "text": "Look at that. A proper tool, made the right way, and the list is as I gave it.",
+          "mood": "happy"
+        },
+        {
+          "text": "Take this gear. Every gear from my forge works the same way, every single time."
+        }
+      ],
+      "set": [
+        "forge-gear"
+      ],
+      "open": "receive:gear"
+    },
+    "forge_done": {
+      "lines": [
+        {
+          "text": "A gear from my forge, the same as every time. Keep it well."
         }
       ]
     }

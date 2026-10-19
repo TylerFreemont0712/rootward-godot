@@ -1,0 +1,12 @@
+// A stone step (catalog only so far): two stone treads, one above the other.
+{
+ "id": "step",
+ "kind": "prop",
+ "what": "a short flight of two worn grey stone steps",
+ "footprint": [1, 1],
+ "ramps": {"stone": "stone"},
+ "parts": [
+  {"shape": "box", "at": [0.05, 0.0, 0], "size": [0.9, 0.9, 0.2], "ramp": "stone", "shade": 1},
+  {"shape": "box", "at": [0.05, 0.45, 0.2], "size": [0.9, 0.45, 0.2], "ramp": "stone", "shade": 0}
+ ]
+}

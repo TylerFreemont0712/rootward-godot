@@ -1,0 +1,12 @@
+// The pebble: a Bag and pickup icon (pipeline/world/README.md). A smooth round stone, a darker underside.
+{
+ "id": "item-pebble",
+ "kind": "prop",
+ "what": "a single smooth round grey pebble, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"stone": "stone"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.2, 0], "size": [0.7, 0.6, 0.36], "ramp": "stone", "shade": 2},
+  {"shape": "ball", "at": [0.2, 0.22, 0.08], "size": [0.6, 0.56, 0.56], "ramp": "stone", "shade": 1}
+ ]
+}

@@ -3,1367 +3,1367 @@
   // (import heapq, global total, -O3...) stay code: a program's words are the same in every language.
   {
     "en": "Adds 4 power to every bolt. The more bolts, the more it adds.",
-    "to": "すべての矢の威力を4上げます。矢が多いほど、上がる合計も増えます。"
+    "to": "すべての矢の威力を4上げます。矢が多いほど、上がる合計も増えます。", "kanji": "すべての矢の威力を4上げます。矢が多いほど、上がる合計も増えます。"
   },
   {
     "en": "Adds 3 power to every bolt. The more bolts, the more it adds.",
-    "to": "すべての矢の威力を3上げます。矢が多いほど、上がる合計も増えます。"
+    "to": "すべての矢の威力を3上げます。矢が多いほど、上がる合計も増えます。", "kanji": "すべての矢の威力を3上げます。矢が多いほど、上がる合計も増えます。"
   },
   {
     "en": "Binary Execute+",
-    "to": "二分探索の一撃+"
+    "to": "二分探索の一撃+", "kanji": "二分探索の一撃+"
   },
   {
     "en": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it. The bolts left over still fly, at the front foe.",
-    "to": "弱い敵から順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます。残った矢も、前列の敵へ飛びます。"
+    "to": "弱い敵から順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます。残った矢も、前列の敵へ飛びます。", "kanji": "弱い敵から順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます。残った矢も、前列の敵へ飛びます。"
   },
   {
     "en": "Binary Execute",
-    "to": "二分探索の一撃"
+    "to": "二分探索の一撃", "kanji": "二分探索の一撃"
   },
   {
     "en": "For each foe, weakest first, binary-searches the sorted volley for the smallest bolt that kills it (the strongest if none does). Only those bolts fly. On unsorted data it picks wrong.",
-    "to": "敵ごとに弱い順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます（倒せる矢がなければ、いちばん強い矢）。選んだ矢だけが飛びます。並んでいないデータでは、選び間違えます。"
+    "to": "敵ごとに弱い順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます（倒せる矢がなければ、いちばん強い矢）。選んだ矢だけが飛びます。並んでいないデータでは、選び間違えます。", "kanji": "敵ごとに弱い順に、並んだ一斉射を二分探索して、その敵を倒せるいちばん小さな矢を選びます（倒せる矢がなければ、いちばん強い矢）。選んだ矢だけが飛びます。並んでいないデータでは、選び間違えます。"
   },
   {
     "en": "Bisect Insert+",
-    "to": "二分挿入+"
+    "to": "二分挿入+", "kanji": "二分挿入+"
   },
   {
     "en": "Binary-searches for where an 8-power bolt belongs and puts it there, three times. A sorted volley stays sorted.",
-    "to": "威力8の矢が入るべき場所を二分探索で見つけて差し込むことを、3回くり返します。並んだ一斉射は並んだままです。"
+    "to": "威力8の矢が入るべき場所を二分探索で見つけて差し込むことを、3回くり返します。並んだ一斉射は並んだままです。", "kanji": "威力8の矢が入るべき場所を二分探索でみつけて差し込むことを、3回くり返します。並んだ一斉射は並んだままです。"
   },
   {
     "en": "Bisect Insert",
-    "to": "二分挿入"
+    "to": "二分挿入", "kanji": "二分挿入"
   },
   {
     "en": "Binary-searches for where a 7-power bolt belongs and puts it there, twice. A sorted volley stays sorted; an unsorted one gets them wherever the search lands.",
-    "to": "威力7の矢が入るべき場所を二分探索で見つけて差し込むことを、2回くり返します。並んだ一斉射は並んだまま。並んでいなければ、探索がたどり着いた場所に入ります。"
+    "to": "威力7の矢が入るべき場所を二分探索で見つけて差し込むことを、2回くり返します。並んだ一斉射は並んだまま。並んでいなければ、探索がたどり着いた場所に入ります。", "kanji": "威力7の矢が入るべき場所を二分探索でみつけて差し込むことを、2回くり返します。並んだ一斉射は並んだまま。並んでいなければ、探索がたどり着いた場所に入ります。"
   },
   {
     "en": "Bubble Sort",
-    "to": "バブルソート"
+    "to": "バブルソート", "kanji": "バブルソート"
   },
   {
     "en": "Walks the volley again and again, swapping neighbours that are out of order, until a pass swaps nothing: weakest first. Free, and slow, O(n²). A forge optimises it into Merge Sort.",
-    "to": "一斉射を何度もたどり、順番の違う隣どうしを入れ替えます。入れ替えのない一巡が来たら終わり、弱い順に並びます。マナはかからず、O(n²)で遅い。鍛冶場でマージソートに最適化できます。"
+    "to": "一斉射を何度もたどり、順番の違う隣どうしを入れ替えます。入れ替えのない一巡が来たら終わり、弱い順に並びます。マナはかからず、O(n²)で遅い。鍛冶場でマージソートに最適化できます。", "kanji": "一斉射を何度もたどり、順番の違う隣どうしを入れ替えます。入れ替えのない一巡が来たら終わり、弱い順に並びます。マナはかからず、O(n²)で遅い。鍛冶場でマージソートに最適化できます。"
   },
   {
     "en": "Charge+",
-    "to": "充填+"
+    "to": "充填+", "kanji": "充填+"
   },
   {
     "en": "Sets every bolt to spark, 2 stronger. Foes weak to spark take half again as much.",
-    "to": "すべての矢を雷属性にし、威力を2上げます。雷に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を雷属性にし、威力を2上げます。雷に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を雷属性にし、威力を2上げます。雷に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Sets every bolt to spark, 1 stronger. Foes weak to spark take half again as much.",
-    "to": "すべての矢を雷属性にし、威力を1上げます。雷に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を雷属性にし、威力を1上げます。雷に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を雷属性にし、威力を1上げます。雷に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Sets every bolt to frost, 2 stronger. Foes weak to frost take half again as much.",
-    "to": "すべての矢を霜属性にし、威力を2上げます。霜に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を霜属性にし、威力を2上げます。霜に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を霜属性にし、威力を2上げます。霜に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Sets every bolt to frost, 1 stronger. Foes weak to frost take half again as much.",
-    "to": "すべての矢を霜属性にし、威力を1上げます。霜に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を霜属性にし、威力を1上げます。霜に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を霜属性にし、威力を1上げます。霜に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Dedupe+",
-    "to": "重複除去+"
+    "to": "重複除去+", "kanji": "重複除去+"
   },
   {
     "en": "A set remembers every power seen: a bolt whose power was seen before is dropped, and every bolt that stays gains 3.",
-    "to": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が3上がります。"
+    "to": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が3上がります。", "kanji": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が3上がります。"
   },
   {
     "en": "Dedupe",
-    "to": "重複除去"
+    "to": "重複除去", "kanji": "重複除去"
   },
   {
     "en": "A set remembers every power seen: a bolt whose power was seen before is dropped, and every bolt that stays gains 2.",
-    "to": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が2上がります。"
+    "to": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が2上がります。", "kanji": "集合が見た威力をすべて覚えます。前に見た威力の矢は取り除き、残った矢はそれぞれ威力が2上がります。"
   },
   {
     "en": "Divide+",
-    "to": "分割+"
+    "to": "分割+", "kanji": "分割+"
   },
   {
     "en": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 2 stronger (3 with import math): about 2 log₂ n each.",
-    "to": "一斉射を半分に、そのまた半分にと、1本ずつになるまで分けます。一段ごとにすべての矢の威力が2上がり（import math があれば3）、1本あたりおよそ 2 log₂ n 強くなります。"
+    "to": "一斉射を半分に、そのまた半分にと、1本ずつになるまで分けます。一段ごとにすべての矢の威力が2上がり（import math があれば3）、1本あたりおよそ 2 log₂ n 強くなります。", "kanji": "一斉射を半分に、そのまた半分にと、1本ずつになるまで分けます。一段ごとにすべての矢の威力が2上がり（import math があれば3）、1本あたりおよそ 2 log₂ n 強くなります。"
   },
   {
     "en": "Divide",
-    "to": "分割"
+    "to": "分割", "kanji": "分割"
   },
   {
     "en": "Splits the volley in half, and each half in half, down to single bolts. Every level makes every bolt 1 stronger (2 with import math): about log₂ n each.",
-    "to": "一斉射を半分に割り、その半分をさらに半分に、一本になるまで割ります。割るたびに矢は威力1上がります（数学のインポートがあれば2）。およそlog₂ n回です。"
+    "to": "一斉射を半分に割り、その半分をさらに半分に、一本になるまで割ります。割るたびに矢は威力1上がります（数学のインポートがあれば2）。およそlog₂ n回です。", "kanji": "一斉射を半分に割り、その半分をさらに半分に、一本になるまで割ります。割るたびに矢は威力1上がります（数学のインポートがあれば2）。およそlog₂ n回です。"
   },
   {
     "en": "Exhaustive Kill+",
-    "to": "総当たりの一撃+"
+    "to": "総当たりの一撃+", "kanji": "総当たりの一撃+"
   },
   {
     "en": "Tries every subset of the first 12 bolts for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance; those bolts hit it, the rest hit the weakest of the other foes. If no subset kills, every bolt hits the front foe.",
-    "to": "最初の12本の矢の部分集合から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは残りの敵のうち最も弱い敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
+    "to": "最初の12本の矢の部分集合から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは残りの敵のうち最も弱い敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。", "kanji": "最初の12本の矢の部分集合から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは残りの敵のうち最も弱い敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
   },
   {
     "en": "Exhaustive Kill",
-    "to": "総当たりの一撃"
+    "to": "総当たりの一撃", "kanji": "総当たりの一撃"
   },
   {
     "en": "Tries every subset of the first 12 bolts (2ⁿ of them) for the one that kills the front foe with the least overkill, counting power alone and ignoring weakness and resistance. Those bolts hit it, the rest go at the next foe; if no subset kills, every bolt hits the front foe.",
-    "to": "最初の12本の矢の部分集合（2ⁿ通り）の中から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは次の敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
+    "to": "最初の12本の矢の部分集合（2ⁿ通り）の中から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは次の敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。", "kanji": "最初の12本の矢の部分集合（2ⁿ通り）の中から、前の敵を倒して過剰ダメージがいちばん少ないものを探します。数えるのは威力だけで、弱点と耐性は無視します。それらの矢はその敵へ、残りは次の敵へ飛びます。どの部分集合も倒せなければ、すべての矢が前の敵に当たります。"
   },
   {
     "en": "Exhaustive Ward+",
-    "to": "総当たりの守り+"
+    "to": "総当たりの守り+", "kanji": "総当たりの守り+"
   },
   {
     "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 16 block with the least to spare. Those guard and the rest still fly; if none reaches 16, all ten guard.",
-    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック16に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りも飛びます。どの部分集合も16に届かなければ、10本すべてが守ります。"
+    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック16に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りも飛びます。どの部分集合も16に届かなければ、10本すべてが守ります。", "kanji": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック16に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りも飛びます。どの部分集合も16に届かなければ、10本すべてが守ります。"
   },
   {
     "en": "Exhaustive Ward",
-    "to": "総当たりの守り"
+    "to": "総当たりの守り", "kanji": "総当たりの守り"
   },
   {
     "en": "Tries every subset of the first ten bolts (2ⁿ of them) for the one that reaches 12 block with the least to spare. Those bolts guard you and the rest still fly; if none reaches 12, all ten guard. Perfect, and slow.",
-    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック12に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りは飛びます。どの部分集合も12に届かなければ、10本すべてが守ります。完璧だけど、遅い。"
+    "to": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック12に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りは飛びます。どの部分集合も12に届かなければ、10本すべてが守ります。完璧だけど、遅い。", "kanji": "最初の10本の矢の部分集合（2ⁿ通り）の中から、ブロック12に届いて余りがいちばん少ないものを探します。それらの矢が守り、残りは飛びます。どの部分集合も12に届かなければ、10本すべてが守ります。完璧だけど、遅い。"
   },
   {
     "en": "Fibonacci Table+",
-    "to": "フィボナッチ表+"
+    "to": "フィボナッチ表+", "kanji": "フィボナッチ表+"
   },
   {
     "en": "The Fibonacci surge from a table built once: each bolt gains fib(i) for its place i, up to fib(20), in O(n).",
-    "to": "一度だけ作った表から、フィボナッチの奔流を放ちます。i 番目の矢は威力が fib(i) 上がり（最大 fib(20)）、O(n)で済みます。"
+    "to": "一度だけ作った表から、フィボナッチの奔流を放ちます。i 番目の矢は威力が fib(i) 上がり（最大 fib(20)）、O(n)で済みます。", "kanji": "一度だけ作った表から、フィボナッチの奔流を放ちます。i 番目の矢は威力が fib(i) 上がり（最大 fib(20)）、O(n)で済みます。"
   },
   {
     "en": "Fibonacci Table",
-    "to": "フィボナッチ表"
+    "to": "フィボナッチ表", "kanji": "フィボナッチ表"
   },
   {
     "en": "The same Fibonacci surge, remembered instead of recomputed: each fib(i) is the sum of the two before it. O(n) where the naive one was O(2ⁿ).",
-    "to": "同じフィボナッチの奔流を、計算し直さずに覚えておきます。fib(i) はそれぞれ直前の2つの和。素朴な再帰がO(2ⁿ)だったところを、O(n)で。"
+    "to": "同じフィボナッチの奔流を、計算し直さずに覚えておきます。fib(i) はそれぞれ直前の2つの和。素朴な再帰がO(2ⁿ)だったところを、O(n)で。", "kanji": "同じフィボナッチの奔流を、計算し直さずに覚えておきます。fib(i) はそれぞれ直前の2つの和。素朴な再帰がO(2ⁿ)だったところを、O(n)で。"
   },
   {
     "en": "Fibonacci Surge",
-    "to": "フィボナッチの奔流"
+    "to": "フィボナッチの奔流", "kanji": "フィボナッチの奔流"
   },
   {
     "en": "Each bolt gains fib(i) power for its place i in the volley (up to fib(16)), computed by naive recursion: about 2ⁿ calls. A forge can optimise it.",
-    "to": "一斉射の i 番目の矢は威力が fib(i) 上がります（最大 fib(16)）。素朴な再帰で計算するので、呼び出しはおよそ 2ⁿ 回。鍛冶場で最適化できます。"
+    "to": "一斉射の i 番目の矢は威力が fib(i) 上がります（最大 fib(16)）。素朴な再帰で計算するので、呼び出しはおよそ 2ⁿ 回。鍛冶場で最適化できます。", "kanji": "一斉射の i 番目の矢は威力が fib(i) 上がります（最大 fib(16)）。素朴な再帰で計算するので、呼び出しはおよそ 2ⁿ 回。鍛冶場で最適化できます。"
   },
   {
     "en": "Filter+",
-    "to": "フィルター+"
+    "to": "フィルター+", "kanji": "フィルター+"
   },
   {
     "en": "Drops every bolt under 3 power; the strongest bolt that stays absorbs each dropped one, 1 stronger for every bolt it swallows.",
-    "to": "威力3未満の矢を取り除き、残った中で最も強い矢がそれを吸収します。吸収した矢1本ごとに、さらに威力が1上がります。"
+    "to": "威力3未満の矢を取り除き、残った中で最も強い矢がそれを吸収します。吸収した矢1本ごとに、さらに威力が1上がります。", "kanji": "威力3未満の矢を取り除き、残った中で最も強い矢がそれを吸収します。吸収した矢1本ごとに、さらに威力が1上がります。"
   },
   {
     "en": "Filter",
-    "to": "フィルター"
+    "to": "フィルター", "kanji": "フィルター"
   },
   {
     "en": "Drops every bolt under 3 power; the strongest bolt that stays absorbs what was dropped. If none would stay, it keeps them all.",
-    "to": "威力3未満の矢を取り除き、残った中で最も強い矢が取り除いた分を吸収します。1本も残らないなら、すべてそのままにします。"
+    "to": "威力3未満の矢を取り除き、残った中で最も強い矢が取り除いた分を吸収します。1本も残らないなら、すべてそのままにします。", "kanji": "威力3未満の矢を取り除き、残った中で最も強い矢が取り除いた分を吸収します。1本も残らないなら、すべてそのままにします。"
   },
   {
     "en": "Every bolt splits in two, each with 70% of its power, rounded down (at least 1). The volley doubles.",
-    "to": "すべての矢が二本に分かれ、それぞれ威力の70%（切り捨て、最低1）になります。一斉射は二倍になります。"
+    "to": "すべての矢が二本に分かれ、それぞれ威力の70%（切り捨て、最低1）になります。一斉射は二倍になります。", "kanji": "すべての矢が二本に分かれ、それぞれ威力の70%（切り捨て、最低1）になります。一斉射は二倍になります。"
   },
   {
     "en": "Every bolt splits in two, each with 60% of its power, rounded down (at least 1). The volley doubles.",
-    "to": "すべての矢が二本に分かれ、それぞれ威力の60%（切り捨て、最低1）になります。一斉射は二倍になります。"
+    "to": "すべての矢が二本に分かれ、それぞれ威力の60%（切り捨て、最低1）になります。一斉射は二倍になります。", "kanji": "すべての矢が二本に分かれ、それぞれ威力の60%（切り捨て、最低1）になります。一斉射は二倍になります。"
   },
   {
     "en": "Generator+",
-    "to": "ジェネレーター+"
+    "to": "ジェネレーター+", "kanji": "ジェネレーター+"
   },
   {
     "en": "A generator that never runs out: for the rest of the fight, every program starts with three more 3-power bolts, yielded one at a time.",
-    "to": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を3本多く持って始まります。1本ずつ yield されます。"
+    "to": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を3本多く持って始まります。1本ずつ yield されます。", "kanji": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を3本多く持って始まります。1本ずつ yield されます。"
   },
   {
     "en": "A generator that never runs out: for the rest of the fight, every program starts with two more 3-power bolts, yielded one at a time.",
-    "to": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を2本多く持って始まります。1本ずつ yield されます。"
+    "to": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を2本多く持って始まります。1本ずつ yield されます。", "kanji": "尽きることのないジェネレーター。この戦いのあいだ、どのプログラムも威力3の矢を2本多く持って始まります。1本ずつ yield されます。"
   },
   {
     "en": "global total+",
-    "to": "global total+",
+    "to": "global total+", "kanji": "global total+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, every program adds the damage it lands to a global total. Release turns the total into a bolt.",
-    "to": "この戦いのあいだ、どのプログラムも与えたダメージをグローバル変数 total に足していきます。「解放」がその合計を矢に変えます。"
+    "to": "この戦いのあいだ、どのプログラムも与えたダメージをグローバル変数 total に足していきます。「解放」がその合計を矢に変えます。", "kanji": "この戦いのあいだ、どのプログラムも与えたダメージをグローバル変数 total に足していきます。「解放」がその合計を矢に変えます。"
   },
   {
     "en": "global total",
-    "to": "global total",
+    "to": "global total", "kanji": "global total",
     "note": "code: stays as written"
   },
   {
     "en": "Greedy Assign+",
-    "to": "貪欲な割り当て+"
+    "to": "貪欲な割り当て+", "kanji": "貪欲な割り当て+"
   },
   {
     "en": "Sorts the bolts strongest first and the foes weakest first, pours bolts into each foe until it would fall, and sends the rest at the toughest; every bolt it aims gains 1.",
-    "to": "矢を強い順、敵を弱い順に並べ、倒れるまで各敵へ矢を注ぎます。残りの矢は一番手強い敵へ送ります。狙った矢はすべて威力が1上がります。"
+    "to": "矢を強い順、敵を弱い順に並べ、倒れるまで各敵へ矢を注ぎます。残りの矢は一番手強い敵へ送ります。狙った矢はすべて威力が1上がります。", "kanji": "矢を強い順、敵を弱い順に並べ、倒れるまで各敵へ矢を注ぎます。残りの矢は一番手強い敵へ送ります。狙った矢はすべて威力が1上がります。"
   },
   {
     "en": "Greedy Assign",
-    "to": "貪欲な割り当て"
+    "to": "貪欲な割り当て", "kanji": "貪欲な割り当て"
   },
   {
     "en": "Sorts the bolts strongest first and the foes weakest first, then pours bolts into each foe until it would die. The rest go at the toughest.",
-    "to": "矢を強い順に、敵を弱い順に並べ、倒れるまでそれぞれの敵に矢を注ぎます。残りは最も手ごわい敵へ。"
+    "to": "矢を強い順に、敵を弱い順に並べ、倒れるまでそれぞれの敵に矢を注ぎます。残りは最も手ごわい敵へ。", "kanji": "矢を強い順に、敵を弱い順に並べ、倒れるまでそれぞれの敵に矢を注ぎます。残りは最も手ごわい敵へ。"
   },
   {
     "en": "Greedy Ward+",
-    "to": "貪欲な守り+"
+    "to": "貪欲な守り+", "kanji": "貪欲な守り+"
   },
   {
     "en": "Greedy defence: the strongest bolts become your block, biggest first, until they reach 14.",
-    "to": "貪欲な守り。最も強い矢から順に防御へ変え、合計が14に届くまで続けます。"
+    "to": "貪欲な守り。最も強い矢から順に防御へ変え、合計が14に届くまで続けます。", "kanji": "貪欲な守り。最も強い矢から順に防御へ変え、合計が14に届くまで続けます。"
   },
   {
     "en": "Greedy Ward",
-    "to": "貪欲な守り"
+    "to": "貪欲な守り", "kanji": "貪欲な守り"
   },
   {
     "en": "Greedy defence: the strongest bolts become your block, biggest first, until they reach 10. The rest still fly. Quick, and it may take more than it needed.",
-    "to": "貪欲な守り。最も強い矢から順に防御へ変え、合計が10に届くまで続けます。残りはそのまま飛びます。速いけれど、必要より多く使うこともあります。"
+    "to": "貪欲な守り。最も強い矢から順に防御へ変え、合計が10に届くまで続けます。残りはそのまま飛びます。速いけれど、必要より多く使うこともあります。", "kanji": "貪欲な守り。最も強い矢から順に防御へ変え、合計が10に届くまで続けます。残りはそのまま飛びます。速いけれど、必要より多く使うこともあります。"
   },
   {
     "en": "Hash Aim+",
-    "to": "ハッシュ照準+"
+    "to": "ハッシュ照準+", "kanji": "ハッシュ照準+"
   },
   {
     "en": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt flies at the foe weak to its element, or else at the foe with the least HP plus shield.",
-    "to": "敵を一回走査して、属性ごとに、その属性に弱い最初の敵の表を作ります。各矢は、その属性に弱い敵へ飛びます。いなければ、HPにシールドを足した値がいちばん小さい敵へ飛びます。"
+    "to": "敵を一回走査して、属性ごとに、その属性に弱い最初の敵の表を作ります。各矢は、その属性に弱い敵へ飛びます。いなければ、HPにシールドを足した値がいちばん小さい敵へ飛びます。", "kanji": "敵を一回走査して、属性ごとに、その属性に弱い最初の敵の表を作ります。各矢は、その属性に弱い敵へ飛びます。いなければ、HPにシールドを足した値がいちばん小さい敵へ飛びます。"
   },
   {
     "en": "Hash Aim",
-    "to": "ハッシュ照準"
+    "to": "ハッシュ照準", "kanji": "ハッシュ照準"
   },
   {
     "en": "One pass over the foes builds a map from each element to the first foe weak to it; every bolt then looks its target up in O(1). A bolt no foe is weak to flies at the front foe.",
-    "to": "敵を一度たどって、属性ごとに「それに弱い最初の敵」の対応表を作ります。どの矢もO(1)で狙う相手を引けます。弱い敵がいない属性の矢は、前列の敵へ飛びます。"
+    "to": "敵を一度たどって、属性ごとに「それに弱い最初の敵」の対応表を作ります。どの矢もO(1)で狙う相手を引けます。弱い敵がいない属性の矢は、前列の敵へ飛びます。", "kanji": "敵を一度たどって、属性ごとに「それに弱い最初の敵」の対応表を作ります。どの矢もO(1)で狙う相手を引けます。弱い敵がいない属性の矢は、前列の敵へ飛びます。"
   },
   {
     "en": "Hash Merge+",
-    "to": "ハッシュ融合+"
+    "to": "ハッシュ融合+", "kanji": "ハッシュ融合+"
   },
   {
     "en": "A hash map from element to bolt: bolts of the same element fuse into one, 2 stronger for every bolt it swallows.",
-    "to": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が2上がります。"
+    "to": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が2上がります。", "kanji": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が2上がります。"
   },
   {
     "en": "Hash Merge",
-    "to": "ハッシュ融合"
+    "to": "ハッシュ融合", "kanji": "ハッシュ融合"
   },
   {
     "en": "A hash map from element to bolt: bolts of the same element fuse into one, 1 stronger for every bolt it swallowed. Fewer, bigger bolts.",
-    "to": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が1上がります。少なく、大きな矢に。"
+    "to": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が1上がります。少なく、大きな矢に。", "kanji": "属性から矢へのハッシュ表。同じ属性の矢が1本に融合し、飲み込んだ矢1本ごとに威力が1上がります。少なく、大きな矢に。"
   },
   {
     "en": "Higher Order+",
-    "to": "高階関数+"
+    "to": "高階関数+", "kanji": "高階関数+"
   },
   {
     "en": "map(f, bolts): every bolt gains 2 power. It also writes three Lambdas onto your draw pile, for the next turn: free cards that run once.",
-    "to": "map(f, bolts)：すべての矢の威力を2上げます。さらに、次のターンのためにラムダを3枚、山札の上に書き足します。マナのかからない、一度きりのカードです。"
+    "to": "map(f, bolts)：すべての矢の威力を2上げます。さらに、次のターンのためにラムダを3枚、山札の上に書き足します。マナのかからない、一度きりのカードです。", "kanji": "map(f, bolts)：すべての矢の威力を2上げます。さらに、次のターンのためにラムダを3枚、山札の上に書き足します。マナのかからない、一度きりのカードです。"
   },
   {
     "en": "Higher Order",
-    "to": "高階関数"
+    "to": "高階関数", "kanji": "高階関数"
   },
   {
     "en": "map(f, bolts): every bolt gains 1 power. It also writes two Lambdas onto your draw pile, for the next turn: free cards that run once.",
-    "to": "map(f, bolts)：すべての矢の威力を1上げます。さらに、次のターンのためにラムダを2枚、山札の上に書き足します。マナのかからない、一度きりのカードです。"
+    "to": "map(f, bolts)：すべての矢の威力を1上げます。さらに、次のターンのためにラムダを2枚、山札の上に書き足します。マナのかからない、一度きりのカードです。", "kanji": "map(f, bolts)：すべての矢の威力を1上げます。さらに、次のターンのためにラムダを2枚、山札の上に書き足します。マナのかからない、一度きりのカードです。"
   },
   {
     "en": "Huffman+",
-    "to": "ハフマン+"
+    "to": "ハフマン+", "kanji": "ハフマン+"
   },
   {
     "en": "A min-heap: take the two weakest bolts, fuse them into one bolt with their combined power plus 2, and repeat until three are left.",
-    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に2を足した1本にまとめます。矢が3本残るまで繰り返します。"
+    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に2を足した1本にまとめます。矢が3本残るまで繰り返します。", "kanji": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に2を足した1本にまとめます。矢が3本残るまで繰り返します。"
   },
   {
     "en": "Huffman",
-    "to": "ハフマン"
+    "to": "ハフマン", "kanji": "ハフマン"
   },
   {
     "en": "A min-heap: take the two weakest bolts, fuse them into one bolt with their combined power plus 1, push it back, until three bolts remain. Huffman's greedy step; they come out weakest first.",
-    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に1を足した1本にまとめて戻します。矢が3本になるまで繰り返します。ハフマンの貪欲な一手で、弱い順に出てきます。"
+    "to": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に1を足した1本にまとめて戻します。矢が3本になるまで繰り返します。ハフマンの貪欲な一手で、弱い順に出てきます。", "kanji": "最小ヒープ：いちばん弱い矢を2本取り、その2本の威力の合計に1を足した1本にまとめて戻します。矢が3本になるまで繰り返します。ハフマンの貪欲な一手で、弱い順に出てきます。"
   },
   {
     "en": "import bisect+",
-    "to": "import bisect+",
+    "to": "import bisect+", "kanji": "import bisect+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, every bolt a source card makes is put in its sorted place by a binary search: the volley stays sorted, weakest first, with no sort card.",
-    "to": "この戦いのあいだ、生成カードが作った矢は、二分探索で並びの正しい場所に入ります。並べ替えのカードがなくても、一斉射は弱い順に並んだままです。"
+    "to": "この戦いのあいだ、生成カードが作った矢は、二分探索で並びの正しい場所に入ります。並べ替えのカードがなくても、一斉射は弱い順に並んだままです。", "kanji": "この戦いのあいだ、生成カードが作った矢は、二分探索で並びの正しい場所に入ります。並べ替えのカードがなくても、一斉射は弱い順に並んだままです。"
   },
   {
     "en": "import bisect",
-    "to": "import bisect",
+    "to": "import bisect", "kanji": "import bisect",
     "note": "code: stays as written"
   },
   {
     "en": "functools.cache+",
-    "to": "functools.cache+",
+    "to": "functools.cache+", "kanji": "functools.cache+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, a card that already ran does no work: its answers are remembered. Memoisation, as one line.",
-    "to": "この戦いのあいだ、一度動いたカードは演算がかかりません。答えを覚えているからです。メモ化を、たった1行で。"
+    "to": "この戦いのあいだ、一度動いたカードは演算がかかりません。答えを覚えているからです。メモ化を、たった1行で。", "kanji": "この戦いのあいだ、一度動いたカードは演算がかかりません。答えを覚えているからです。メモ化を、立った1行で。"
   },
   {
     "en": "functools.cache",
-    "to": "functools.cache",
+    "to": "functools.cache", "kanji": "functools.cache",
     "note": "code: stays as written"
   },
   {
     "en": "import heapq+",
-    "to": "import heapq+",
+    "to": "import heapq+", "kanji": "import heapq+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, every strike card is handed the volley strongest first: a heap pops the biggest bolt in turn, before each aim, for free.",
-    "to": "この戦いのあいだ、攻撃カードには一斉射が強い順で渡されます。狙いをつける前にヒープが最も大きな矢から順に取り出します。演算はかかりません。"
+    "to": "この戦いのあいだ、攻撃カードには一斉射が強い順で渡されます。狙いをつける前にヒープが最も大きな矢から順に取り出します。演算はかかりません。", "kanji": "この戦いのあいだ、攻撃カードには一斉射が強い順で渡されます。狙いをつける前にヒープが最も大きな矢から順に取り出します。演算はかかりません。"
   },
   {
     "en": "import heapq",
-    "to": "import heapq",
+    "to": "import heapq", "kanji": "import heapq",
     "note": "code: stays as written"
   },
   {
     "en": "import itertools+",
-    "to": "import itertools+",
+    "to": "import itertools+", "kanji": "import itertools+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you. Always in your opening hand.",
-    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。いつも最初の手札にあります。"
+    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。いつも最初の手札にあります。", "kanji": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。いつも最初の手札にあります。"
   },
   {
     "en": "For the rest of the fight, Pairwise, Exhaustive Kill, Power Set and Exhaustive Ward cost 1 less mana: the standard library writes their loops for you.",
-    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。"
+    "to": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。", "kanji": "この戦闘の残りの間、Pairwise、Exhaustive Kill、Power Set、Exhaustive Wardは、マナが1少なくて済みます。標準ライブラリがループを書いてくれます。"
   },
   {
     "en": "import itertools",
-    "to": "import itertools",
+    "to": "import itertools", "kanji": "import itertools",
     "note": "code: stays as written"
   },
   {
     "en": "import math+",
-    "to": "import math+",
+    "to": "import math+", "kanji": "import math+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, recursion reaches further: Divide adds 2 a level instead of 1, Merge Strike's merges add 40% instead of 20%, and Recursion Tree grows a level deeper.",
-    "to": "この戦いのあいだ、再帰がより深く届きます。「分割」は一段ごとに1ではなく2、「マージの一撃」の融合は20%ではなく40%上がり、「再帰の木」は一段深く育ちます。"
+    "to": "この戦いのあいだ、再帰がより深く届きます。「分割」は一段ごとに1ではなく2、「マージの一撃」の融合は20%ではなく40%上がり、「再帰の木」は一段深く育ちます。", "kanji": "この戦いのあいだ、再帰がより深く届きます。「分割」は一段ごとに1ではなく2、「マージの一撃」の融合は20%ではなく40%上がり、「再帰の木」は一段深く育ちます。"
   },
   {
     "en": "import math",
-    "to": "import math",
+    "to": "import math", "kanji": "import math",
     "note": "code: stays as written"
   },
   {
     "en": "import numpy+",
-    "to": "import numpy+",
+    "to": "import numpy+", "kanji": "import numpy+",
     "note": "code: stays as written"
   },
   {
     "en": "For the rest of the fight, shape cards do O(1) work: the whole volley changes in one vectorised step instead of bolt by bolt.",
-    "to": "この戦いのあいだ、変形カードの演算はO(1)になります。矢を1本ずつではなく、一斉射全体をベクトル化した一手で変えます。"
+    "to": "この戦いのあいだ、変形カードの演算はO(1)になります。矢を1本ずつではなく、一斉射全体をベクトル化した一手で変えます。", "kanji": "この戦いのあいだ、変形カードの演算はO(1)になります。矢を1本ずつではなく、一斉射全体をベクトル化した一手で変えます。"
   },
   {
     "en": "import numpy",
-    "to": "import numpy",
+    "to": "import numpy", "kanji": "import numpy",
     "note": "code: stays as written"
   },
   {
     "en": "Kadane+",
-    "to": "カダネ+"
+    "to": "カダネ+", "kanji": "カダネ+"
   },
   {
     "en": "Kadane's algorithm scores each bolt as its power minus 3 and keeps a running best: the strongest run of neighbours fuses into one bolt, 2 stronger for every bolt in it.",
-    "to": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。最も強い連続した矢の並びが1本に融合し、含まれる矢1本ごとに威力が2上がります。"
+    "to": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。最も強い連続した矢の並びが1本に融合し、含まれる矢1本ごとに威力が2上がります。", "kanji": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。最も強い連続した矢の並びが1本に融合し、含まれる矢1本ごとに威力が2上がります。"
   },
   {
     "en": "Kadane",
-    "to": "カダネ"
+    "to": "カダネ", "kanji": "カダネ"
   },
   {
     "en": "Kadane's algorithm scores each bolt as its power minus 3 and keeps a running best: the stretch of neighbouring bolts with the highest score fuses into one bolt of its whole power, 1 stronger for every bolt in it.",
-    "to": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。点数が最も高い連続した矢の並びが、その威力をすべて合わせた1本に融合し、含まれる矢1本ごとに威力が1上がります。"
+    "to": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。点数が最も高い連続した矢の並びが、その威力をすべて合わせた1本に融合し、含まれる矢1本ごとに威力が1上がります。", "kanji": "カダネのアルゴリズムは各矢を「威力−3」で採点し、最善を更新しながら進みます。点数が最も高い連続した矢の並びが、その威力をすべて合わせた1本に融合し、含まれる矢1本ごとに威力が1上がります。"
   },
   {
     "en": "Sets every bolt to fire, 2 stronger. Foes weak to fire take half again as much.",
-    "to": "すべての矢を火属性にし、威力を2上げます。火に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を火属性にし、威力を2上げます。火に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を火属性にし、威力を2上げます。火に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Sets every bolt to fire, 1 stronger. Foes weak to fire take half again as much.",
-    "to": "すべての矢を火属性にし、威力を1上げます。火に弱い敵は1.5倍のダメージを受けます。"
+    "to": "すべての矢を火属性にし、威力を1上げます。火に弱い敵は1.5倍のダメージを受けます。", "kanji": "すべての矢を火属性にし、威力を1上げます。火に弱い敵は1.5倍のダメージを受けます。"
   },
   {
     "en": "Knapsack Strike+",
-    "to": "ナップサックの一撃+"
+    "to": "ナップサックの一撃+", "kanji": "ナップサックの一撃+"
   },
   {
     "en": "Dynamic programming over sums: finds the smallest total a subset of bolts can make that still kills the front foe, and aims exactly those. The rest go at the weakest other foe.",
-    "to": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけ、ちょうどその矢で狙います。残りは、ほかの敵のうち最も弱い敵へ。"
+    "to": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけ、ちょうどその矢で狙います。残りは、ほかの敵のうち最も弱い敵へ。", "kanji": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけ、ちょうどその矢で狙います。残りは、ほかの敵のうち最も弱い敵へ。"
   },
   {
     "en": "Knapsack Strike",
-    "to": "ナップサックの一撃"
+    "to": "ナップサックの一撃", "kanji": "ナップサックの一撃"
   },
   {
     "en": "Dynamic programming over sums: finds the smallest total a subset of bolts can make that still kills the front foe (exactly, if it can). Those fly at it; the rest at the next foe.",
-    "to": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけます（できればぴったりに）。その矢が前列の敵へ、残りは次の敵へ飛びます。"
+    "to": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけます（できればぴったりに）。その矢が前列の敵へ、残りは次の敵へ飛びます。", "kanji": "合計についての動的計画法。前列の敵を倒せる中で、矢の部分集合が作れるいちばん小さな合計を見つけます（できればぴったりに）。その矢が前列の敵へ、残りは次の敵へ飛びます。"
   },
   {
     "en": "Knapsack Ward+",
-    "to": "ナップサックの守り+"
+    "to": "ナップサックの守り+", "kanji": "ナップサックの守り+"
   },
   {
     "en": "Exhaustive Ward's question answered with a table: which totals can a subset make? The smallest of 16 or more becomes your block.",
-    "to": "「総当たりの守り」の問いに表で答えます。部分集合でどの合計が作れるか。16以上でいちばん小さな合計が防御になります。"
+    "to": "「総当たりの守り」の問いに表で答えます。部分集合でどの合計が作れるか。16以上でいちばん小さな合計が防御になります。", "kanji": "「総当たりの守り」の問いに表で答えます。部分集合でどの合計が作れるか。16以上でいちばん小さな合計が防御になります。"
   },
   {
     "en": "Knapsack Ward",
-    "to": "ナップサックの守り"
+    "to": "ナップサックの守り", "kanji": "ナップサックの守り"
   },
   {
     "en": "Exhaustive Ward's question answered with a table instead of every subset: which totals can the bolts make? The smallest total of 12 or more becomes your block; the rest still fly. O(n·H), where brute force was O(2ⁿ).",
-    "to": "「総当たりの守り」の問いに、すべての部分集合ではなく表で答えます。矢でどの合計が作れるか。12以上でいちばん小さな合計が防御になり、残りはそのまま飛びます。総当たりのO(2ⁿ)に対して、O(n·H)。"
+    "to": "「総当たりの守り」の問いに、すべての部分集合ではなく表で答えます。矢でどの合計が作れるか。12以上でいちばん小さな合計が防御になり、残りはそのまま飛びます。総当たりのO(2ⁿ)に対して、O(n·H)。", "kanji": "「総当たりの守り」の問いに、すべての部分集合ではなく表で答えます。矢でどの合計が作れるか。12以上でいちばん小さな合計が防御になり、残りはそのまま飛びます。総当たりのO(2ⁿ)に対して、O(n·H)。"
   },
   {
     "en": "Lambda",
-    "to": "ラムダ"
+    "to": "ラムダ", "kanji": "ラムダ"
   },
   {
     "en": "An anonymous function: every bolt gains 2 power. It costs nothing, and runs once.",
-    "to": "名前のない関数。すべての矢の威力を2上げます。マナはかからず、一度だけ動きます。"
+    "to": "名前のない関数。すべての矢の威力を2上げます。マナはかからず、一度だけ動きます。", "kanji": "名前のない関数。すべての矢の威力を2上げます。マナはかからず、一度だけ動きます。"
   },
   {
     "en": "Linear Search+",
-    "to": "線形探索+"
+    "to": "線形探索+", "kanji": "線形探索+"
   },
   {
     "en": "For each foe, weakest first, checks every bolt for the weakest one that kills it alone: no sorting needed. The bolts left over go at the toughest foe.",
-    "to": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいりません。残った矢は最も手ごわい敵へ。"
+    "to": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいりません。残った矢は最も手ごわい敵へ。", "kanji": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいりません。残った矢は最も手ごわい敵へ。"
   },
   {
     "en": "Linear Search",
-    "to": "線形探索"
+    "to": "線形探索", "kanji": "線形探索"
   },
   {
     "en": "For each foe, weakest first, checks every bolt for the weakest one that kills it alone: no sorting needed, n checks per foe. The bolts left over fly at the front foe.",
-    "to": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいらず、敵1体につき n 回の確認。残った矢は前列の敵へ飛びます。"
+    "to": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいらず、敵1体につき n 回の確認。残った矢は前列の敵へ飛びます。", "kanji": "弱い敵から順に、1本でその敵を倒せる最も弱い矢を、すべての矢から探します。並べ替えはいらず、敵1体につき n 回の確認。残った矢は前列の敵へ飛びます。"
   },
   {
     "en": "LIS Strike+",
-    "to": "最長増加列の一撃+"
+    "to": "最長増加列の一撃+", "kanji": "最長増加列の一撃+"
   },
   {
     "en": "Dynamic programming finds the longest rising sequence of bolts: they fly at the front foe, each 2 stronger for every bolt in the sequence. The rest ward.",
-    "to": "動的計画法で、威力が増え続ける最長の矢の列を見つけます。その矢は前列の敵へ飛び、列の長さ1につき威力が2上がります。残りは守りになります。"
+    "to": "動的計画法で、威力が増え続ける最長の矢の列を見つけます。その矢は前列の敵へ飛び、列の長さ1につき威力が2上がります。残りは守りになります。", "kanji": "動的計画法で、威力が増え続ける最長の矢の列を見つけます。その矢は前列の敵へ飛び、列の長さ1につき威力が2上がります。残りは守りになります。"
   },
   {
     "en": "LIS Strike",
-    "to": "最長増加列の一撃"
+    "to": "最長増加列の一撃", "kanji": "最長増加列の一撃"
   },
   {
     "en": "Dynamic programming finds the longest sequence of bolts that keeps rising (not necessarily neighbours): it flies at the front foe, every bolt in it stronger by the sequence's length. Every other bolt becomes block.",
-    "to": "動的計画法で、威力が増え続ける最長の矢の列（隣どうしでなくてよい）を見つけます。その列は前列の敵へ飛び、矢はどれも列の長さだけ強くなります。ほかの矢はすべて防御になります。"
+    "to": "動的計画法で、威力が増え続ける最長の矢の列（隣どうしでなくてよい）を見つけます。その列は前列の敵へ飛び、矢はどれも列の長さだけ強くなります。ほかの矢はすべて防御になります。", "kanji": "動的計画法で、威力が増え続ける最長の矢の列（隣どうしでなくてよい）を見つけます。その列は前列の敵へ飛び、矢はどれも列の長さだけ強くなります。ほかの矢はすべて防御になります。"
   },
   {
     "en": "Literal+",
-    "to": "リテラル+"
+    "to": "リテラル+", "kanji": "リテラル+"
   },
   {
     "en": "Appends one 12-power bolt: a constant written into the code, added in O(1).",
-    "to": "威力12の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。"
+    "to": "威力12の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。", "kanji": "威力12の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。"
   },
   {
     "en": "Literal",
-    "to": "リテラル"
+    "to": "リテラル", "kanji": "リテラル"
   },
   {
     "en": "Appends one 9-power bolt: a constant written into the code, added in O(1).",
-    "to": "威力9の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。"
+    "to": "威力9の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。", "kanji": "威力9の矢を1本、最後に足します。コードに書かれた定数で、O(1)で加わります。"
   },
   {
     "en": "Load Balance+",
-    "to": "負荷分散+"
+    "to": "負荷分散+", "kanji": "負荷分散+"
   },
   {
     "en": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after the bolts already given. The damage spreads evenly.",
-    "to": "大きい仕事から割り当てます。矢を威力の強い順に、それまでに割り当てた矢を差し引いて残りHPがいちばん多い敵へ送ります。ダメージは均等に散らばります。"
+    "to": "大きい仕事から割り当てます。矢を威力の強い順に、それまでに割り当てた矢を差し引いて残りHPがいちばん多い敵へ送ります。ダメージは均等に散らばります。", "kanji": "大きい仕事から割り当てます。矢を威力の強い順に、それまでに割り当てた矢を差し引いて残りHPがいちばん多い敵へ送ります。ダメージは均等に散らばります。"
   },
   {
     "en": "Load Balance",
-    "to": "負荷分散"
+    "to": "負荷分散", "kanji": "負荷分散"
   },
   {
     "en": "Scheduling, biggest job first: each bolt, strongest first, goes to the foe with the most HP still standing after what is already aimed at it. The damage spreads evenly.",
-    "to": "大きな仕事から割り振るスケジューリング。強い矢から順に、すでに向けた分を引いてもHPが最も多く残る敵へ送ります。ダメージが均等に広がります。"
+    "to": "大きな仕事から割り振るスケジューリング。強い矢から順に、すでに向けた分を引いてもHPが最も多く残る敵へ送ります。ダメージが均等に広がります。", "kanji": "大きな仕事から割り振るスケジューリング。強い矢から順に、すでに向けた分を引いてもHPが最も多く残る敵へ送ります。ダメージが均等に広がります。"
   },
   {
     "en": "Make Change+",
-    "to": "両替+"
+    "to": "両替+", "kanji": "両替+"
   },
   {
     "en": "Greedy change-making: the strongest bolt is paid out in coins of 5 and 1, the biggest coin first, each coin a bolt 2 stronger than its value.",
-    "to": "貪欲な両替。最も強い矢を、大きい硬貨から順に5と1の硬貨で払い出します。硬貨はそれぞれ、額面より2強い矢になります。"
+    "to": "貪欲な両替。最も強い矢を、大きい硬貨から順に5と1の硬貨で払い出します。硬貨はそれぞれ、額面より2強い矢になります。", "kanji": "貪欲な両替。最も強い矢を、大きい硬貨から順に5と1の硬貨で払い出します。硬貨はそれぞれ、額面より2強い矢になります。"
   },
   {
     "en": "Make Change",
-    "to": "両替"
+    "to": "両替", "kanji": "両替"
   },
   {
     "en": "Greedy change-making: the strongest bolt is paid out in coins of 5 and 1, the biggest coin that fits first, and every coin is minted 1 stronger. More bolts, and more power.",
-    "to": "貪欲な両替。最も強い矢を、入るいちばん大きな硬貨から順に5と1の硬貨で払い出し、どの硬貨も額面より1強く作られます。矢も威力も増えます。"
+    "to": "貪欲な両替。最も強い矢を、入るいちばん大きな硬貨から順に5と1の硬貨で払い出し、どの硬貨も額面より1強く作られます。矢も威力も増えます。", "kanji": "貪欲な両替。最も強い矢を、入るいちばん大きな硬貨から順に5と1の硬貨で払い出し、どの硬貨も額面より1強く作られます。矢も威力も増えます。"
   },
   {
     "en": "Merge Sort+",
-    "to": "マージソート+"
+    "to": "マージソート+", "kanji": "マージソート+"
   },
   {
     "en": "Sorts the volley weakest first: split it in half, sort each half, merge them back. It costs nothing.",
-    "to": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。マナはかかりません。"
+    "to": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。マナはかかりません。", "kanji": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。マナはかかりません。"
   },
   {
     "en": "Merge Sort",
-    "to": "マージソート"
+    "to": "マージソート", "kanji": "マージソート"
   },
   {
     "en": "Sorts the volley weakest first: split it in half, sort each half, merge them back. Searches need this.",
-    "to": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。探索にはこれが必要です。"
+    "to": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。探索にはこれが必要です。", "kanji": "一斉射を弱い順に並べます。半分に分け、それぞれを並べてから、合わせ直します。探索にはこれが必要です。"
   },
   {
     "en": "Merge Strike+",
-    "to": "マージの一撃+"
+    "to": "マージの一撃+", "kanji": "マージの一撃+"
   },
   {
     "en": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 30% (50% with import math). It flies at the toughest foe.",
-    "to": "矢を2本ずつ、その組をまた2組ずつと、1本になるまで融合します。融合のたびに威力が30%（import math があれば50%）上がり、最も手ごわい敵へ飛びます。"
+    "to": "矢を2本ずつ、その組をまた2組ずつと、1本になるまで融合します。融合のたびに威力が30%（import math があれば50%）上がり、最も手ごわい敵へ飛びます。", "kanji": "矢を2本ずつ、その組をまた2組ずつと、1本になるまで融合します。融合のたびに威力が30%（import math があれば50%）上がり、最も手ごわい敵へ飛びます。"
   },
   {
     "en": "Merge Strike",
-    "to": "マージの一撃"
+    "to": "マージの一撃", "kanji": "マージの一撃"
   },
   {
     "en": "Merges the bolts in pairs, then the pairs in pairs, until one is left. Every merge adds 20% (40% with import math). It flies at the toughest foe.",
-    "to": "矢を二本ずつ、次は組同士で、一本になるまで合わせます。合わせるたびに威力が20%上がります（数学のインポートがあれば40%）。いちばん手強い敵へ飛びます。"
+    "to": "矢を二本ずつ、次は組同士で、一本になるまで合わせます。合わせるたびに威力が20%上がります（数学のインポートがあれば40%）。いちばん手強い敵へ飛びます。", "kanji": "矢を二本ずつ、次は組同士で、一本になるまで合わせます。合わせるたびに威力が20%上がります（数学のインポートがあれば40%）。いちばん手強い敵へ飛びます。"
   },
   {
     "en": "Pairwise+",
-    "to": "総当たりの対+"
+    "to": "総当たりの対+", "kanji": "総当たりの対+"
   },
   {
     "en": "Brute force: every pair of bolts fuses into a new bolt with their combined power, doubled when their elements differ. A volley of n makes n(n-1)/2.",
-    "to": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば2倍。n 本の一斉射から n(n-1)/2 本が生まれます。"
+    "to": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば2倍。n 本の一斉射から n(n-1)/2 本が生まれます。", "kanji": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば2倍。n 本の一斉射から n(n-1)/2 本が生まれます。"
   },
   {
     "en": "Pairwise",
-    "to": "総当たりの対"
+    "to": "総当たりの対", "kanji": "総当たりの対"
   },
   {
     "en": "Brute force: every pair of bolts fuses into a new bolt with their combined power, half again if their elements differ. n bolts make n(n-1)/2.",
-    "to": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば1.5倍。n 本から n(n-1)/2 本が生まれます。"
+    "to": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば1.5倍。n 本から n(n-1)/2 本が生まれます。", "kanji": "総当たり。矢のどの2本も、威力を合わせた新しい矢に融合します。属性が違えば1.5倍。n 本から n(n-1)/2 本が生まれます。"
   },
   {
     "en": "Pascal Row+",
-    "to": "パスカルの行+"
+    "to": "パスカルの行+", "kanji": "パスカルの行+"
   },
   {
     "en": "Builds Pascal's triangle bottom-up, each entry the sum of the two above it, down to row 6, and adds the row as bolts: 1, 6, 15, 20, 15, 6, 1.",
-    "to": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。6段目まで作り、その段を矢として加えます：1, 6, 15, 20, 15, 6, 1。"
+    "to": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。6段目まで作り、その段を矢として加えます：1, 6, 15, 20, 15, 6, 1。", "kanji": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。6段目まで作り、その段を矢として加えます：1, 6, 15, 20, 15, 6, 1。"
   },
   {
     "en": "Pascal Row",
-    "to": "パスカルの行"
+    "to": "パスカルの行", "kanji": "パスカルの行"
   },
   {
     "en": "Builds Pascal's triangle bottom-up, each entry the sum of the two above it, down to row 5, and adds that row as bolts: 1, 5, 10, 10, 5, 1.",
-    "to": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。5段目まで作り、その段を矢として加えます：1, 5, 10, 10, 5, 1。"
+    "to": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。5段目まで作り、その段を矢として加えます：1, 5, 10, 10, 5, 1。", "kanji": "パスカルの三角形を下から積み上げて作ります。どの数もすぐ上の2つの和。5段目まで作り、その段を矢として加えます：1, 5, 10, 10, 5, 1。"
   },
   {
     "en": "Power Set+",
-    "to": "べき集合+"
+    "to": "べき集合+", "kanji": "べき集合+"
   },
   {
     "en": "Every non-empty subset of the first four bolts, counted as a bitmask from 1 to 15, becomes a bolt of its sum. 2ⁿ subsets: fifteen bolts from four.",
-    "to": "先頭4本の矢の空でない部分集合を、1から15までのビットマスクで数え、それぞれを合計の威力の矢にします。部分集合は 2ⁿ 通り、4本から15本。"
+    "to": "先頭4本の矢の空でない部分集合を、1から15までのビットマスクで数え、それぞれを合計の威力の矢にします。部分集合は 2ⁿ 通り、4本から15本。", "kanji": "先頭4本の矢の空でない部分集合を、1から15までのビットマスクで数え、それぞれを合計の威力の矢にします。部分集合は 2ⁿ 通り、4本から15本。"
   },
   {
     "en": "Power Set",
-    "to": "べき集合"
+    "to": "べき集合", "kanji": "べき集合"
   },
   {
     "en": "Every non-empty subset of the first three bolts, counted as a bitmask from 1 to 7, becomes one bolt of its sum. Seven bolts from three; the rest of the volley follows. volatile: gone if not played.",
-    "to": "最初の三本の矢の、空でないすべての部分集合（ビットマスクで1から7）が、その合計の威力の矢一本になります。三本から七本。残りの一斉射はそのまま続きます。揮発性（プレイしないまま手札に残ると、ターン終了時に消える）。"
+    "to": "最初の三本の矢の、空でないすべての部分集合（ビットマスクで1から7）が、その合計の威力の矢一本になります。三本から七本。残りの一斉射はそのまま続きます。揮発性（プレイしないまま手札に残ると、ターン終了時に消える）。", "kanji": "最初の三本の矢の、空でないすべての部分集合（ビットマスクで1から7）が、その合計の威力の矢一本になります。三本から七本。残りの一斉射はそのまま続きます。揮発性（プレイしないまま手札に残ると、ターン終了時に消える）。"
   },
   {
     "en": "Prefix Sum+",
-    "to": "累積和+"
+    "to": "累積和+", "kanji": "累積和+"
   },
   {
     "en": "Each bolt becomes the running total of every bolt up to it. Totals only grow, so the volley comes out sorted.",
-    "to": "各矢は、それまでのすべての矢の合計の威力になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
+    "to": "各矢は、それまでのすべての矢の合計の威力になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。", "kanji": "各矢は、それまでのすべての矢の合計の威力になります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
   },
   {
     "en": "Prefix Sum",
-    "to": "累積和"
+    "to": "累積和", "kanji": "累積和"
   },
   {
     "en": "Quick Sort+",
-    "to": "クイックソート+"
+    "to": "クイックソート+", "kanji": "クイックソート+"
   },
   {
     "en": "The median of the first, middle and last bolts is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. O(n log n), even on a sorted volley.",
-    "to": "先頭・真ん中・最後の矢の中央値を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。並んだ一斉射でも O(n log n)。"
+    "to": "先頭・真ん中・最後の矢の中央値を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。並んだ一斉射でも O(n log n)。", "kanji": "先頭・真ん中・最後の矢の中央値を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。並んだ一斉射でも O(n log n)。"
   },
   {
     "en": "Quick Sort",
-    "to": "クイックソート"
+    "to": "クイックソート", "kanji": "クイックソート"
   },
   {
     "en": "The first bolt is the pivot: the rest split into weaker and not weaker, and each side is sorted the same way. Weakest first, for no mana. On a volley already sorted every split is lopsided, and it slows to O(n²).",
-    "to": "先頭の矢を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。マナなしで弱い順に。すでに並んだ一斉射では分け方がいつも偏り、O(n²)まで遅くなります。"
+    "to": "先頭の矢を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。マナなしで弱い順に。すでに並んだ一斉射では分け方がいつも偏り、O(n²)まで遅くなります。", "kanji": "先頭の矢を軸にします。残りを軸より弱いものとそうでないものに分け、それぞれを同じやり方で並べます。マナなしで弱い順に。すでに並んだ一斉射では分け方がいつも偏り、O(n²)まで遅くなります。"
   },
   {
     "en": "Quickselect+",
-    "to": "クイックセレクト+"
+    "to": "クイックセレクト+", "kanji": "クイックセレクト+"
   },
   {
     "en": "Finds the median bolt without sorting: every bolt at or above it flies at the toughest foe, 2 stronger; the rest at the weakest.",
-    "to": "並べ替えずに中央値の矢を見つけます。それ以上の矢は威力が2上がって最も手ごわい敵へ、残りは最も弱い敵へ飛びます。"
+    "to": "並べ替えずに中央値の矢を見つけます。それ以上の矢は威力が2上がって最も手ごわい敵へ、残りは最も弱い敵へ飛びます。", "kanji": "並べ替えずに中央値の矢を見つけます。それ以上の矢は威力が2上がって最も手ごわい敵へ、残りは最も弱い敵へ飛びます。"
   },
   {
     "en": "Quickselect",
-    "to": "クイックセレクト"
+    "to": "クイックセレクト", "kanji": "クイックセレクト"
   },
   {
     "en": "Finds the median bolt without sorting the volley: every bolt at or above it flies at the toughest foe, the rest at the weakest. On a volley already sorted it slows to O(n²).",
-    "to": "一斉射を並べ替えずに中央値の矢を見つけます。中央値以上の矢はいちばん手強い敵へ、残りは最も弱い敵へ飛びます。すでに並んでいる一斉射では、O(n²)まで遅くなります。"
+    "to": "一斉射を並べ替えずに中央値の矢を見つけます。中央値以上の矢はいちばん手強い敵へ、残りは最も弱い敵へ飛びます。すでに並んでいる一斉射では、O(n²)まで遅くなります。", "kanji": "一斉射を並べ替えずに中央値の矢を見つけます。中央値以上の矢はいちばん手強い敵へ、残りは最も弱い敵へ飛びます。すでに並んでいる一斉射では、O(n²)まで遅くなります。"
   },
   {
     "en": "Recursion Tree+",
-    "to": "再帰の木+"
+    "to": "再帰の木+", "kanji": "再帰の木+"
   },
   {
     "en": "A function that calls itself twice grows a tree four levels deep (five with import math): one 5-power bolt at the root, two 4s, four 3s, eight 2s, added after the volley.",
-    "to": "自分自身を2回呼ぶ関数が、4段の木を育てます（import math があれば5段）。根に威力5の矢が1本、威力4が2本、3が4本、2が8本。一斉射の後ろに加わります。"
+    "to": "自分自身を2回呼ぶ関数が、4段の木を育てます（import math があれば5段）。根に威力5の矢が1本、威力4が2本、3が4本、2が8本。一斉射の後ろに加わります。", "kanji": "自分自身を2回呼ぶ関数が、4段の木を育てます（import math があれば5段）。根に威力5の矢が1本、威力4が2本、3が4本、2が8本。一斉射の後ろに加わります。"
   },
   {
     "en": "Recursion Tree",
-    "to": "再帰の木"
+    "to": "再帰の木", "kanji": "再帰の木"
   },
   {
     "en": "A function that calls itself twice, until it reaches the leaves, grows a tree three levels deep (four with import math): one 5-power bolt at the root, two 4s, four 3s, added after the volley.",
-    "to": "自分を二回呼び出す関数が、葉に届くまで、三段の木を育てます（数学のインポートがあれば四段）。根は威力5の矢が一本、次の段は4が二本、その次は3が四本で、一斉射の後に加わります。"
+    "to": "自分を二回呼び出す関数が、葉に届くまで、三段の木を育てます（数学のインポートがあれば四段）。根は威力5の矢が一本、次の段は4が二本、その次は3が四本で、一斉射の後に加わります。", "kanji": "自分を二回呼び出す関数が、葉に届くまで、三段の木を育てます（数学のインポートがあれば四段）。根は威力5の矢が一本、次の段は4が二本、その次は3が四本で、一斉射の後に加わります。"
   },
   {
     "en": "Reduce+",
-    "to": "畳み込み+"
+    "to": "畳み込み+", "kanji": "畳み込み+"
   },
   {
     "en": "Folds the whole volley into one bolt: the sum of every power, plus a quarter. It takes the strongest bolt's element. Runs once a fight.",
-    "to": "一斉射全体を1本の矢に畳み込みます。威力はすべての合計に、その4分の1を足したもの。属性は最も強い矢のもの。1回の戦いで一度だけ動きます。"
+    "to": "一斉射全体を1本の矢に畳み込みます。威力はすべての合計に、その4分の1を足したもの。属性は最も強い矢のもの。1回の戦いで一度だけ動きます。", "kanji": "一斉射全体を1本の矢に畳み込みます。威力はすべての合計に、その4分の1を足したもの。属性は最も強い矢のもの。1回の戦いで一度だけ動きます。"
   },
   {
     "en": "Reduce",
-    "to": "畳み込み"
+    "to": "畳み込み", "kanji": "畳み込み"
   },
   {
     "en": "Folds the whole volley into one bolt: the sum of every power, plus a tenth. It takes the strongest bolt's element. Runs once a fight.",
-    "to": "一斉射全体を一本にまとめます。威力の合計に、その十分の一を足します。属性はいちばん強い矢のものです。一戦闘に一度だけ動きます。"
+    "to": "一斉射全体を一本にまとめます。威力の合計に、その十分の一を足します。属性はいちばん強い矢のものです。一戦闘に一度だけ動きます。", "kanji": "一斉射全体を一本にまとめます。威力の合計に、その十分の一を足します。属性はいちばん強い矢のものです。一戦闘に一度だけ動きます。"
   },
   {
     "en": "Release+",
-    "to": "解放+"
+    "to": "解放+", "kanji": "解放+"
   },
   {
     "en": "Appends one bolt of three quarters of the fight's global total (the damage every program landed since `global total` was imported), then the total starts again from 0.",
-    "to": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の4分の3の威力の矢を1本足します。そのあと total は0からやり直しです。"
+    "to": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の4分の3の威力の矢を1本足します。そのあと total は0からやり直しです。", "kanji": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の4分の3の威力の矢を1本足します。その後 total は0からやり直しです。"
   },
   {
     "en": "Release",
-    "to": "解放"
+    "to": "解放", "kanji": "解放"
   },
   {
     "en": "Appends one bolt of half the fight's global total (the damage every program landed since `global total` was imported), then the total starts again from 0. Without the global, nothing.",
-    "to": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の半分の威力の矢を1本足します。そのあと total は0からやり直し。グローバル変数がなければ、何も起きません。"
+    "to": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の半分の威力の矢を1本足します。そのあと total は0からやり直し。グローバル変数がなければ、何も起きません。", "kanji": "戦いのグローバル変数 total（`global total` をインポートしてから、どのプログラムも与えたダメージの合計）の半分の威力の矢を1本足します。その後 total は0からやり直し。グローバル変数がなければ、何も起きません。"
   },
   {
     "en": "Repeat+",
-    "to": "繰り返し+"
+    "to": "繰り返し+", "kanji": "繰り返し+"
   },
   {
     "en": "Copies the last bolt four more times (four 4-power bolts when the volley is empty).",
-    "to": "最後の矢をさらに4本複製します（一斉射が空なら、威力4の矢が4本）。"
+    "to": "最後の矢をさらに4本複製します（一斉射が空なら、威力4の矢が4本）。", "kanji": "最後の矢をさらに4本複製します（一斉射が空なら、威力4の矢が4本）。"
   },
   {
     "en": "Repeat",
-    "to": "繰り返し"
+    "to": "繰り返し", "kanji": "繰り返し"
   },
   {
     "en": "Copies the last bolt three more times (three 4-power bolts when the volley is empty). Put your strongest bolt last before it.",
-    "to": "最後の矢をさらに3本複製します（一斉射が空なら、威力4の矢が3本）。この前に、いちばん強い矢を最後に置きましょう。"
+    "to": "最後の矢をさらに3本複製します（一斉射が空なら、威力4の矢が3本）。この前に、いちばん強い矢を最後に置きましょう。", "kanji": "最後の矢をさらに3本複製します（一斉射が空なら、威力4の矢が3本）。この前に、いちばん強い矢を最後に置きましょう。"
   },
   {
     "en": "Reverse+",
-    "to": "反転+"
+    "to": "反転+", "kanji": "反転+"
   },
   {
     "en": "Turns the volley around in place, two pointers swapping from the ends in. It stays in your hand from turn to turn.",
-    "to": "一斉射をその場で逆向きにします。両端から2つのポインタが入れ替えながら内側へ進みます。ターンをまたいで手札に残ります。"
+    "to": "一斉射をその場で逆向きにします。両端から2つのポインタが入れ替えながら内側へ進みます。ターンをまたいで手札に残ります。", "kanji": "一斉射をその場で逆向きにします。両端から2つのポインタが入れ替えながら内側へ進みます。ターンをまたいで手札に残ります。"
   },
   {
     "en": "Reverse",
-    "to": "反転"
+    "to": "反転", "kanji": "反転"
   },
   {
     "en": "Turns the volley around, the last bolt first. A sorted volley comes out strongest first.",
-    "to": "一斉射を逆向きにし、最後の矢を先頭にします。並んだ一斉射は強い順になって出てきます。"
+    "to": "一斉射を逆向きにし、最後の矢を先頭にします。並んだ一斉射は強い順になって出てきます。", "kanji": "一斉射を逆向きにし、最後の矢を先頭にします。並んだ一斉射は強い順になって出てきます。"
   },
   {
     "en": "Round Robin+",
-    "to": "ラウンドロビン+"
+    "to": "ラウンドロビン+", "kanji": "ラウンドロビン+"
   },
   {
     "en": "Deals the bolts to the foes in turn, like cards, but skips a foe whose dealt bolts already cover its HP and shield. Once every foe is covered, it deals on as before.",
-    "to": "矢を敵へ順番に配ります。ただし、配った矢の合計がその敵のHPとシールドを覆った敵は飛ばします。全員が覆われたら、それまでどおり配り続けます。"
+    "to": "矢を敵へ順番に配ります。ただし、配った矢の合計がその敵のHPとシールドを覆った敵は飛ばします。全員が覆われたら、それまでどおり配り続けます。", "kanji": "矢を敵へ順番に配ります。ただし、配った矢の合計がその敵のHPとシールドを覆った敵は飛ばします。全員が覆われたら、それまでどおり配り続けます。"
   },
   {
     "en": "Round Robin",
-    "to": "ラウンドロビン"
+    "to": "ラウンドロビン", "kanji": "ラウンドロビン"
   },
   {
     "en": "Deals the bolts out to the foes in turn, like cards: the first foe, the second, the third, the first again.",
-    "to": "カードを配るように、矢を敵へ順番に配ります。1体目、2体目、3体目、また1体目へ。"
+    "to": "カードを配るように、矢を敵へ順番に配ります。1体目、2体目、3体目、また1体目へ。", "kanji": "カードを配るように、矢を敵へ順番に配ります。1体目、2体目、3体目、また1体目へ。"
   },
   {
     "en": "Salvo+",
-    "to": "斉射+"
+    "to": "斉射+", "kanji": "斉射+"
   },
   {
     "en": "Adds a rising run of six bolts, 2 to 7 power, after the volley.",
-    "to": "威力2から7へ上がっていく6本の矢を、一斉射の後ろに加えます。"
+    "to": "威力2から7へ上がっていく6本の矢を、一斉射の後ろに加えます。", "kanji": "威力2から7へ上がっていく6本の矢を、一斉射の後ろに加えます。"
   },
   {
     "en": "Salvo",
-    "to": "斉射"
+    "to": "斉射", "kanji": "斉射"
   },
   {
     "en": "Adds a rising run of six bolts, 1 to 6 power, after the volley.",
-    "to": "威力1から6へ上がっていく6本の矢を、一斉射の後ろに加えます。"
+    "to": "威力1から6へ上がっていく6本の矢を、一斉射の後ろに加えます。", "kanji": "威力1から6へ上がっていく6本の矢を、一斉射の後ろに加えます。"
   },
   {
     "en": "Split+",
-    "to": "分解+"
+    "to": "分解+", "kanji": "分解+"
   },
   {
     "en": "Divides every bolt of 4 or more power into its two halves, and those halves again, until each is under 4. Every piece gains 1.",
-    "to": "威力4以上の矢を半分に、その半分をまた半分にと、どれも4未満になるまで分けます。かけらはどれも威力が1上がります。"
+    "to": "威力4以上の矢を半分に、その半分をまた半分にと、どれも4未満になるまで分けます。かけらはどれも威力が1上がります。", "kanji": "威力4以上の矢を半分に、その半分をまた半分にと、どれも4未満になるまで分けます。かけらはどれも威力が1上がります。"
   },
   {
     "en": "Split",
-    "to": "分解"
+    "to": "分解", "kanji": "分解"
   },
   {
     "en": "Divides every bolt of 4 or more power into its two halves, and those halves again, until every piece is under 4. The same power in many more bolts: what Amplify likes best.",
-    "to": "威力4以上の矢を半分に、その半分をまた半分にと、どのかけらも4未満になるまで分けます。同じ威力を、ずっと多くの矢に。「増幅」がいちばん喜ぶ形です。"
+    "to": "威力4以上の矢を半分に、その半分をまた半分にと、どのかけらも4未満になるまで分けます。同じ威力を、ずっと多くの矢に。「増幅」がいちばん喜ぶ形です。", "kanji": "威力4以上の矢を半分に、その半分をまた半分にと、どのかけらも4未満になるまで分けます。同じ威力を、ずっと多くの矢に。「増幅」がいちばん喜ぶ形です。"
   },
   {
     "en": "Sweep+",
-    "to": "掃射+"
+    "to": "掃射+", "kanji": "掃射+"
   },
   {
     "en": "Area: every bolt hits every foe, at two thirds of its power (at least 1).",
-    "to": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の3分の2（最低1）です。"
+    "to": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の3分の2（最低1）です。", "kanji": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の3分の2（最低1）です。"
   },
   {
     "en": "Sweep",
-    "to": "掃射"
+    "to": "掃射", "kanji": "掃射"
   },
   {
     "en": "Area: every bolt hits every foe, at half its power (at least 1).",
-    "to": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の半分（最低1）です。"
+    "to": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の半分（最低1）です。", "kanji": "範囲攻撃。どの矢もすべての敵に当たり、威力は元の半分（最低1）です。"
   },
   {
     "en": "Tabulate+",
-    "to": "表の作成+"
+    "to": "表の作成+", "kanji": "表の作成+"
   },
   {
     "en": "Bottom-up dynamic programming: each bolt becomes the best total collectable up to it without taking two neighbours, plus 1. The totals only grow, so the volley comes out sorted.",
-    "to": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計に、1を足したものになります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
+    "to": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計に、1を足したものになります。合計は増える一方なので、一斉射は並んだ状態で出てきます。", "kanji": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計に、1を足したものになります。合計は増える一方なので、一斉射は並んだ状態で出てきます。"
   },
   {
     "en": "Tabulate",
-    "to": "表の作成"
+    "to": "表の作成", "kanji": "表の作成"
   },
   {
     "en": "Bottom-up dynamic programming: each bolt becomes the best total collectable up to it without taking two neighbours. The table only grows.",
-    "to": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計になります。表は増える一方です。"
+    "to": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計になります。表は増える一方です。", "kanji": "下から積み上げる動的計画法。どの矢も、隣どうしを2本続けて取らずにそこまでで集められる最大の合計になります。表は増える一方です。"
   },
   {
     "en": "Take Max+",
-    "to": "最大の選抜+"
+    "to": "最大の選抜+", "kanji": "最大の選抜+"
   },
   {
     "en": "Keeps only the four strongest bolts and makes each half again as strong. Focus beats volume. Comes out weakest first.",
-    "to": "いちばん強い4本だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順に出てきます。"
+    "to": "いちばん強い4本だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順に出てきます。", "kanji": "いちばん強い4本だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順に出てきます。"
   },
   {
     "en": "Take Max",
-    "to": "最大の選抜"
+    "to": "最大の選抜", "kanji": "最大の選抜"
   },
   {
     "en": "Keeps only the three strongest bolts and makes each half again as strong. Focus beats volume. Comes out weakest first.",
-    "to": "最も強い3本の矢だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順で出てきます。"
+    "to": "最も強い3本の矢だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順で出てきます。", "kanji": "最も強い3本の矢だけを残し、それぞれの威力を1.5倍にします。数より集中。弱い順で出てきます。"
   },
   {
     "en": "Two Pointers+",
-    "to": "2つのポインタ+"
+    "to": "2つのポインタ+", "kanji": "2つのポインタ+"
   },
   {
     "en": "On a sorted volley, one pointer at each end: the weakest and the strongest bolt fuse, 1 stronger, then the next pair inward. Half as many bolts, all of about the same power.",
-    "to": "並んだ一斉射の両端に一つずつ、ポインタを置きます。いちばん弱い矢といちばん強い矢が合わさって威力1上がり、次の組が内側へ進みます。矢は半分になり、どれもほぼ同じ威力になります。"
+    "to": "並んだ一斉射の両端に一つずつ、ポインタを置きます。いちばん弱い矢といちばん強い矢が合わさって威力1上がり、次の組が内側へ進みます。矢は半分になり、どれもほぼ同じ威力になります。", "kanji": "並んだ一斉射の両端に一つずつ、ポインタを置きます。いちばん弱い矢といちばん強い矢が合わさって威力1上がり、次の組が内側へ進みます。矢は半分になり、どれもほぼ同じ威力になります。"
   },
   {
     "en": "Two Pointers",
-    "to": "2つのポインタ"
+    "to": "2つのポインタ", "kanji": "2つのポインタ"
   },
   {
     "en": "On a sorted volley, one pointer at each end: the weakest and the strongest bolt fuse, then the next pair inward. Half as many bolts, all of about the same power.",
-    "to": "並んだ一斉射の両端にポインタを1つずつ置き、最も弱い矢と最も強い矢を融合し、次は内側の組へ進みます。矢の数は半分に、威力はどれもほぼ同じになります。"
+    "to": "並んだ一斉射の両端にポインタを1つずつ置き、最も弱い矢と最も強い矢を融合し、次は内側の組へ進みます。矢の数は半分に、威力はどれもほぼ同じになります。", "kanji": "並んだ一斉射の両端にポインタを1つずつ置き、最も弱い矢と最も強い矢を融合し、次は内側の組へ進みます。矢の数は半分に、威力はどれもほぼ同じになります。"
   },
   {
     "en": "Finds the strongest bolt and turns it into block for you, 4 stronger. The rest still fly.",
-    "to": "最も強い矢を見つけ、威力を4足してあなたの防御に変えます。残りはそのまま飛びます。"
+    "to": "最も強い矢を見つけ、威力を4足してあなたの防御に変えます。残りはそのまま飛びます。", "kanji": "最も強い矢を見つけ、威力を4足してあなたの防御に変えます。残りはそのまま飛びます。"
   },
   {
     "en": "Finds the strongest bolt and turns it into block for you, 2 stronger. The rest still fly.",
-    "to": "最も強い矢を見つけ、威力を2足してあなたの防御に変えます。残りはそのまま飛びます。"
+    "to": "最も強い矢を見つけ、威力を2足してあなたの防御に変えます。残りはそのまま飛びます。", "kanji": "最も強い矢を見つけ、威力を2足してあなたの防御に変えます。残りはそのまま飛びます。"
   },
   {
     "en": "Big-O Compass",
-    "to": "ビッグOの羅針盤"
+    "to": "ビッグOの羅針盤", "kanji": "ビッグOの羅針盤"
   },
   {
     "en": "Your program deals 30% more attack damage if every card is linear or faster (O(n) or cheaper).",
-    "to": "すべてのカードが線形時間（O(n)）以下で動くと、プログラムの攻撃ダメージが30%増えます。"
+    "to": "すべてのカードが線形時間（O(n)）以下で動くと、プログラムの攻撃ダメージが30%増えます。", "kanji": "すべてのカードが線形時間（O(n)）以下で動くと、プログラムの攻撃ダメージが30%増えます。"
   },
   {
     "en": "It always points away from the nested loop.",
-    "to": "いつも、入れ子のループとは反対を指しています。"
+    "to": "いつも、入れ子のループとは反対を指しています。", "kanji": "いつも、入れ子のループとは反対を指しています。"
   },
   {
     "en": "Every program that runs burns 1 Integrity before its bolts land. A rest can cleanse this curse instead of healing.",
-    "to": "プログラムが動くたび、矢が着弾する前に整合性を1失います。休息で、回復の代わりにこの呪いを浄化できます。"
+    "to": "プログラムが動くたび、矢が着弾する前に整合性を1失います。休息で、回復の代わりにこの呪いを浄化できます。", "kanji": "プログラムが動くたび、矢が着弾する前に整合性を1失います。休息で、回復の代わりにこの呪いを浄化できます。"
   },
   {
     "en": "Branch Predictor",
-    "to": "分岐予測器"
+    "to": "分岐予測器", "kanji": "分岐予測器"
   },
   {
     "en": "Every foe waits 24 more operations before it acts: your programs land first more often.",
-    "to": "どの敵も、行動するまでの演算が24多くなります。あなたのプログラムが先に着弾しやすくなります。"
+    "to": "どの敵も、行動するまでの演算が24多くなります。あなたのプログラムが先に着弾しやすくなります。", "kanji": "どの敵も、行動するまでの演算が24多くなります。あなたのプログラムが先に着弾しやすくなります。"
   },
   {
     "en": "It guesses which way the code will go, and it is usually right.",
-    "to": "コードがどちらへ進むかを当てにいき、たいてい当たります。"
+    "to": "コードがどちらへ進むかを当てにいき、たいてい当たります。", "kanji": "コードがどちらへ進むかを当てにいき、たいてい当たります。"
   },
   {
     "en": "Checksum",
-    "to": "チェックサム"
+    "to": "チェックサム", "kanji": "チェックサム"
   },
   {
     "en": "When every attacking bolt shares one element (not plain), they deal 30% more.",
-    "to": "攻撃の矢がすべて同じ属性（無属性以外）なら、与えるダメージが30%増えます。"
+    "to": "攻撃の矢がすべて同じ属性（無属性以外）なら、与えるダメージが30%増えます。", "kanji": "攻撃の矢がすべて同じ属性（無属性以外）なら、与えるダメージが30%増えます。"
   },
   {
     "en": "Every byte accounted for, and every byte the same colour.",
-    "to": "どのバイトも数えられ、どのバイトも同じ色。"
+    "to": "どのバイトも数えられ、どのバイトも同じ色。", "kanji": "どのバイトも数えられ、どのバイトも同じ色。"
   },
   {
     "en": "-O3",
-    "to": "-O3",
+    "to": "-O3", "kanji": "-O3",
     "note": "code: stays as written"
   },
   {
     "en": "Every card does half its work, and every bolt lands with 2 more power.",
-    "to": "どのカードも演算が半分になり、どの矢も威力が2上がって着弾します。"
+    "to": "どのカードも演算が半分になり、どの矢も威力が2上がって着弾します。", "kanji": "どのカードも演算が半分になり、どの矢も威力が2上がって着弾します。"
   },
   {
     "en": "Every optimisation the compiler knows, and a few it should not.",
-    "to": "コンパイラが知るかぎりの最適化と、知らないほうがよかったいくつか。"
+    "to": "コンパイラが知るかぎりの最適化と、知らないほうがよかったいくつか。", "kanji": "コンパイラが知るかぎりの最適化と、知らないほうがよかったいくつか。"
   },
   {
     "en": "Cron Job",
-    "to": "cronジョブ"
+    "to": "cronジョブ", "kanji": "cronジョブ"
   },
   {
     "en": "Every third turn of a fight, your program costs no mana.",
-    "to": "戦いの3ターンごとに、プログラムのマナがかかりません。"
+    "to": "戦いの3ターンごとに、プログラムのマナがかかりません。", "kanji": "戦いの3ターンごとに、プログラムのマナがかかりません。"
   },
   {
     "en": "*/3 * * * *. It never forgets, and it never asks.",
-    "to": "*/3 * * * *。決して忘れず、決して尋ねない。"
+    "to": "*/3 * * * *。決して忘れず、決して尋ねない。", "kanji": "*/3 * * * *。決して忘れず、決して尋ねない。"
   },
   {
     "en": "DRY Principle",
-    "to": "DRY原則"
+    "to": "DRY原則", "kanji": "DRY原則"
   },
   {
     "en": "The first copy of each card costs its usual mana; every repeat of that card in the same program costs 0.",
-    "to": "各カードの1枚目は通常どおりマナを使い、同じプログラム内でくり返す分はマナ0になります。"
+    "to": "各カードの1枚目は通常どおりマナを使い、同じプログラム内でくり返す分はマナ0になります。", "kanji": "各カードの1枚目は通常どおりマナを使い、同じプログラム内でくり返す分はマナ0になります。"
   },
   {
     "en": "Don't repeat yourself. Or do, if it is free.",
-    "to": "同じことを繰り返すな。ただで済むなら、繰り返してもいい。"
+    "to": "同じことを繰り返すな。ただで済むなら、繰り返してもいい。", "kanji": "同じことを繰り返すな。ただで済むなら、繰り返してもいい。"
   },
   {
     "en": "Dual Core",
-    "to": "デュアルコア"
+    "to": "デュアルコア", "kanji": "デュアルコア"
   },
   {
     "en": "Every bolt in your program's volley resolves twice at full strength; the cards run only once.",
-    "to": "プログラムの各ボルトは威力を保ったまま2回着弾します。カード自体は1回だけ実行されます。"
+    "to": "プログラムの各ボルトは威力を保ったまま2回着弾します。カード自体は1回だけ実行されます。", "kanji": "プログラムの各ボルトは威力を保ったまま2回着弾します。カード自体は1回だけ実行されます。"
   },
   {
     "en": "Two of everything, running at once, neither waiting for the other.",
-    "to": "何もかもが2つ、同時に動き、どちらも相手を待たない。"
+    "to": "何もかもが2つ、同時に動き、どちらも相手を待たない。", "kanji": "何もかもが2つ、同時に動き、どちらも相手を待たない。"
   },
   {
     "en": "Garbage Collection",
-    "to": "ガベージコレクション"
+    "to": "ガベージコレクション", "kanji": "ガベージコレクション"
   },
   {
     "en": "Each foe your program defeats restores 4 Integrity and grants 1 bonus mana next turn, up to 3 that turn.",
-    "to": "プログラムで敵を1体倒すごとにIntegrityが4回復し、次のターンに追加マナを1得ます（そのターン最大3）。"
+    "to": "プログラムで敵を1体倒すごとにIntegrityが4回復し、次のターンに追加マナを1得ます（そのターン最大3）。", "kanji": "プログラムで敵を1体倒すごとにIntegrityが4回復し、次のターンに追加マナを1得ます（そのターン最大3）。"
   },
   {
     "en": "What nothing points to anymore is swept up and handed back.",
-    "to": "もう誰も指していないものは、掃き集められて返される。"
+    "to": "もう誰も指していないものは、掃き集められて返される。", "kanji": "もう誰も指していないものは、掃き集められて返される。"
   },
   {
     "en": "Your program gains a slot: one more card every turn.",
-    "to": "プログラムの枠が1つ増え、毎ターン1枚多くカードを置けます。"
+    "to": "プログラムの枠が1つ増え、毎ターン1枚多くカードを置けます。", "kanji": "プログラムの枠が1つ増え、毎ターン1枚多くカードを置けます。"
   },
   {
     "en": "Hello, World",
-    "to": "Hello, World",
+    "to": "Hello, World", "kanji": "Hello, World",
     "note": "code: stays as written"
   },
   {
     "en": "Every program starts somewhere, and most start here.",
-    "to": "どのプログラムもどこかで始まり、たいていはここで始まる。"
+    "to": "どのプログラムもどこかで始まり、たいていはここで始まる。", "kanji": "どのプログラムもどこかで始まり、たいていはここで始まる。"
   },
   {
     "en": "Hot Path",
-    "to": "ホットパス"
+    "to": "ホットパス", "kanji": "ホットパス"
   },
   {
     "en": "The strongest attacking bolt of every program deals 2.5 times its damage.",
-    "to": "どのプログラムでも、最も強い攻撃の矢が2.5倍のダメージを与えます。"
+    "to": "どのプログラムでも、最も強い攻撃の矢が2.5倍のダメージを与えます。", "kanji": "どのプログラムでも、最も強い攻撃の矢が2.5倍のダメージを与えます。"
   },
   {
     "en": "Ninety per cent of the time is spent in ten per cent of the code. Make that ten per cent burn.",
-    "to": "時間の九割は、コードの一割で使われる。その一割を燃やせ。"
+    "to": "時間の九割は、コードの一割で使われる。その一割を燃やせ。", "kanji": "時間の九割は、コードの一割で使われる。その一割を燃やせ。"
   },
   {
     "en": "Immutable State",
-    "to": "不変の状態"
+    "to": "不変の状態", "kanji": "不変の状態"
   },
   {
     "en": "Block is never lost between turns.",
-    "to": "防御がターンをまたいでも失われません。"
+    "to": "防御がターンをまたいでも失われません。", "kanji": "防御がターンをまたいでも失われません。"
   },
   {
     "en": "Nothing changes it. Nothing takes it away.",
-    "to": "何ものも変えられず、何ものも奪えない。"
+    "to": "何ものも変えられず、何ものも奪えない。", "kanji": "何ものも変えられず、何ものも奪えない。"
   },
   {
     "en": "JIT Compiler",
-    "to": "JITコンパイラ"
+    "to": "JITコンパイラ", "kanji": "JITコンパイラ"
   },
   {
     "en": "A card that already ran this fight has been compiled: it does no work from then on.",
-    "to": "この戦いで一度動いたカードはコンパイル済み。それからは演算がかかりません。"
+    "to": "この戦いで一度動いたカードはコンパイル済み。それからは演算がかかりません。", "kanji": "この戦いで一度動いたカードはコンパイル済み。それからは演算がかかりません。"
   },
   {
     "en": "The second time through, it already knows the way.",
-    "to": "二度目には、もう道を知っている。"
+    "to": "二度目には、もう道を知っている。", "kanji": "二度目には、もう道を知っている。"
   },
   {
     "en": "Lazy Evaluation",
-    "to": "遅延評価"
+    "to": "遅延評価", "kanji": "遅延評価"
   },
   {
     "en": "Power that is wasted, past a foe's last HP or at a foe already down, becomes block.",
-    "to": "無駄になった威力（敵のHPを越えた分や、すでに倒れた敵に向けた分）が防御になります。"
+    "to": "無駄になった威力（敵のHPを越えた分や、すでに倒れた敵に向けた分）が防御になります。", "kanji": "無駄になった威力（敵のHPを越えた分や、すでに倒れた敵に向けた分）が防御になります。"
   },
   {
     "en": "Why compute it now, when you might never need it?",
-    "to": "使わないかもしれないのに、なぜ今計算する？"
+    "to": "使わないかもしれないのに、なぜ今計算する？", "kanji": "使わないかもしれないのに、なぜ今計算する？"
   },
   {
     "en": "Load Balancer",
-    "to": "ロードバランサー"
+    "to": "ロードバランサー", "kanji": "ロードバランサー"
   },
   {
     "en": "Damage past a foe's last HP flows on into the next plain foe still standing (guardians and foes with special damage rules are passed over).",
-    "to": "敵のHPを超えたダメージは、まだ残っている次の普通の敵へ流れます（ガーディアンや特別なダメージ規則のある敵は飛ばされます）。"
+    "to": "敵のHPを超えたダメージは、まだ残っている次の普通の敵へ流れます（ガーディアンや特別なダメージ規則のある敵は飛ばされます）。", "kanji": "敵のHPを超えたダメージは、まだ残っている次の普通の敵へ流れます（ガーディアンや特別なダメージ規則のある敵は飛ばされます）。"
   },
   {
     "en": "No request dropped, no server idle.",
-    "to": "取りこぼす要求はなく、遊んでいるサーバーもない。"
+    "to": "取りこぼす要求はなく、遊んでいるサーバーもない。", "kanji": "取りこぼす要求はなく、遊んでいるサーバーもない。"
   },
   {
     "en": "Your programs may do 256 more operations before they time out, in every layer.",
-    "to": "プログラムは、時間切れになるまでに、あと256回多く操作できます（どの階層でも）。"
+    "to": "プログラムは、時間切れになるまでに、あと256回多く操作できます（どの階層でも）。", "kanji": "プログラムは、時間切れになるまでに、後256回多く操作できます（どの階層でも）。"
   },
   {
     "en": "Voids the warranty. Runs anyway.",
-    "to": "保証は切れる。それでも動く。"
+    "to": "保証は切れる。それでも動く。", "kanji": "保証は切れる。それでも動く。"
   },
   {
     "en": "Pipeline",
-    "to": "パイプライン"
+    "to": "パイプライン", "kanji": "パイプライン"
   },
   {
     "en": "A program that fills every slot deals 50% more damage.",
-    "to": "すべての枠を埋めたプログラムは、与えるダメージが50%増えます。"
+    "to": "すべての枠を埋めたプログラムは、与えるダメージが50%増えます。", "kanji": "すべての枠を埋めたプログラムは、与えるダメージが50%増えます。"
   },
   {
     "en": "Every stage busy, nothing waiting, the whole line moving at once.",
-    "to": "どの段も働き、何も待たず、列全体がいっせいに動く。"
+    "to": "どの段も働き、何も待たず、列全体がいっせいに動く。", "kanji": "どの段も働き、何も待たず、列全体がいっせいに動く。"
   },
   {
     "en": "Preemption",
-    "to": "プリエンプション"
+    "to": "プリエンプション", "kanji": "プリエンプション"
   },
   {
     "en": "Initiative bites deeper: a foe your program lands before takes 30% more on top of Initiative's 25%, so 62.5% more in all (the two multiply).",
-    "to": "イニシアチブが深く効きます。プログラムが先に当てた敵は、さらに30%多くダメージを受けます。イニシアチブの25%にさらに重なり、合計62.5%多くなります（二つは掛け合わさります）。"
+    "to": "イニシアチブが深く効きます。プログラムが先に当てた敵は、さらに30%多くダメージを受けます。イニシアチブの25%にさらに重なり、合計62.5%多くなります（二つは掛け合わさります）。", "kanji": "イニシアチブが深く効きます。プログラムが先に当てた敵は、さらに30%多くダメージを受けます。イニシアチブの25%にさらに重なり、合計62.5%多くなります（二つは掛け合わさります）。"
   },
   {
     "en": "The scheduler takes the time slice back mid-sentence.",
-    "to": "スケジューラは、文の途中でタイムスライスを取り上げる。"
+    "to": "スケジューラは、文の途中でタイムスライスを取り上げる。", "kanji": "スケジューラは、文の途中でタイムスライスを取り上げる。"
   },
   {
     "en": "Profiler",
-    "to": "プロファイラ"
+    "to": "プロファイラ", "kanji": "プロファイラ"
   },
   {
     "en": "The first card in each program uses 0 operations but still resolves and costs its usual mana.",
-    "to": "各プログラムの最初のカードはオペレーションを消費しませんが、効果は発動し、通常どおりマナを使います。"
+    "to": "各プログラムの最初のカードはオペレーションを消費しませんが、効果は発動し、通常どおりマナを使います。", "kanji": "各プログラムの最初のカードはオペレーションを消費しませんが、効果は発動し、通常どおりマナを使います。"
   },
   {
     "en": "Measure before you optimise. The first line was never the slow one.",
-    "to": "最適化の前に測れ。遅いのは、いつだって最初の1行ではなかった。"
+    "to": "最適化の前に測れ。遅いのは、いつだって最初の1行ではなかった。", "kanji": "最適化の前に測れ。遅いのは、いつだって最初の1行ではなかった。"
   },
   {
     "en": "Order cards cost no mana and do only O(n) work.",
-    "to": "整列カードはマナがかからず、演算はO(n)だけになります。"
+    "to": "整列カードはマナがかからず、演算はO(n)だけになります。", "kanji": "整列カードはマナがかからず、演算はO(n)だけになります。"
   },
   {
     "en": "Sort by the digits instead of comparing: the n log n wall was never a law.",
-    "to": "比べる代わりに桁で並べよ。n log n の壁は、掟ではなかった。"
+    "to": "比べる代わりに桁で並べよ。n log n の壁は、掟ではなかった。", "kanji": "比べる代わりに桁で並べよ。n log n の壁は、掟ではなかった。"
   },
   {
     "en": "Reference Counter",
-    "to": "参照カウンタ"
+    "to": "参照カウンタ", "kanji": "参照カウンタ"
   },
   {
     "en": "Each foe your program breaks gives 1 more mana next turn (2 at most).",
-    "to": "プログラムで敵を1体倒すごとに、次のターンのマナが1増えます（最大2）。"
+    "to": "プログラムで敵を1体倒すごとに、次のターンのマナが1増えます（最大2）。", "kanji": "プログラムで敵を1体倒すごとに、次のターンのマナが1増えます（最大2）。"
   },
   {
     "en": "When the count reaches zero, the memory comes back.",
-    "to": "数がゼロになれば、メモリは戻ってくる。"
+    "to": "数がゼロになれば、メモリは戻ってくる。", "kanji": "数がゼロになれば、メモリは戻ってくる。"
   },
   {
     "en": "Root Access",
-    "to": "root権限"
+    "to": "root権限", "kanji": "root権限"
   },
   {
     "en": "Gain 3 mana each turn. Foes act 12 operations sooner, and your operation budget drops to one quarter.",
-    "to": "毎ターン、マナを3多く得ます。その代わり敵は12オペレーション早く行動し、オペレーション予算は4分の1になります。"
+    "to": "毎ターン、マナを3多く得ます。その代わり敵は12オペレーション早く行動し、オペレーション予算は4分の1になります。", "kanji": "毎ターン、マナを3多く得ます。その代わり敵は12オペレーション早く行動し、オペレーション予算は4分の1になります。"
   },
   {
     "en": "sudo, with nobody left to ask for the password.",
-    "to": "sudo。パスワードを尋ねる者は、もう誰もいない。"
+    "to": "sudo。パスワードを尋ねる者は、もう誰もいない。", "kanji": "sudo。パスワードを尋ねる者は、もう誰もいない。"
   },
   {
     "en": "Gain 4 block every time your program runs to its end, even when it lands nothing. A crash or a timeout gives none.",
-    "to": "プログラムが最後まで動くたびに防御を4得ます。何も着弾しなくても得られますが、クラッシュや時間切れでは得られません。"
+    "to": "プログラムが最後まで動くたびに防御を4得ます。何も着弾しなくても得られますが、クラッシュや時間切れでは得られません。", "kanji": "プログラムが最後まで動くたびに防御を4得ます。何も着弾しなくても得られますが、クラッシュや時間切れでは得られません。"
   },
   {
     "en": "Stable Sort",
-    "to": "安定ソート"
+    "to": "安定ソート", "kanji": "安定ソート"
   },
   {
     "en": "When a volley lands sorted (weakest first), every attacking bolt has 1 more power.",
-    "to": "一斉射が並んだ状態（弱い順）で着弾すると、攻撃の矢はどれも威力が1上がります。"
+    "to": "一斉射が並んだ状態（弱い順）で着弾すると、攻撃の矢はどれも威力が1上がります。", "kanji": "一斉射が並んだ状態（弱い順）で着弾すると、攻撃の矢はどれも威力が1上がります。"
   },
   {
     "en": "Equal things keep their places. Everything else knows its own.",
-    "to": "等しいものは、元の場所を守る。ほかのものは、みな自分の場所を知っている。"
+    "to": "等しいものは、元の場所を守る。ほかのものは、みな自分の場所を知っている。", "kanji": "等しいものは、元の場所を守る。他のものは、みな自分の場所を知っている。"
   },
   {
     "en": "Stdin Buffer",
-    "to": "標準入力バッファ"
+    "to": "標準入力バッファ", "kanji": "標準入力バッファ"
   },
   {
     "en": "Your program's input gains a fourth 3-power bolt.",
-    "to": "プログラムの入力に、4本目となる威力3の矢が加わります。"
+    "to": "プログラムの入力に、4本目となる威力3の矢が加わります。", "kanji": "プログラムの入力に、4本目となる威力3の矢が加わります。"
   },
   {
     "en": "More input than the program asked for. It never complains.",
-    "to": "プログラムが求めた以上の入力。文句はひとつも言わない。"
+    "to": "プログラムが求めた以上の入力。文句はひとつも言わない。", "kanji": "プログラムが求めた以上の入力。文句はひとつも言わない。"
   },
   {
     "en": "Sticky Note",
-    "to": "付箋"
+    "to": "付箋", "kanji": "付箋"
   },
   {
     "en": "Hold one more card into the next turn.",
-    "to": "次のターンへ取り置けるカードが1枚増えます。"
+    "to": "次のターンへ取り置けるカードが1枚増えます。", "kanji": "次のターンへ取り置けるカードが1枚増えます。"
   },
   {
     "en": "TODO: remember this.",
-    "to": "TODO：これを覚えておく。"
+    "to": "TODO：これを覚えておく。", "kanji": "TODO：これを覚えておく。"
   },
   {
     "en": "Superposition",
-    "to": "重ね合わせ"
+    "to": "重ね合わせ", "kanji": "重ね合わせ"
   },
   {
     "en": "Every bolt counts as the element each foe is weak to.",
-    "to": "どの矢も、それぞれの敵が弱い属性として扱われます。"
+    "to": "どの矢も、それぞれの敵が弱い属性として扱われます。", "kanji": "どの矢も、それぞれの敵が弱い属性として扱われます。"
   },
   {
     "en": "Fire, frost and spark at once, until something looks at it.",
-    "to": "火であり、霜であり、雷でもある。誰かが見るまでは。"
+    "to": "火であり、霜であり、雷でもある。誰かが見るまでは。", "kanji": "火であり、霜であり、雷でもある。誰かが見るまでは。"
   },
   {
     "en": "Try / Finally",
-    "to": "try / finally",
+    "to": "try / finally", "kanji": "try / finally",
     "note": "code: stays as written"
   },
   {
     "en": "Gain 2 block for every card of a program that runs to its end.",
-    "to": "最後まで動いたプログラムのカード1枚ごとに、防御を2得ます。"
+    "to": "最後まで動いたプログラムのカード1枚ごとに、防御を2得ます。", "kanji": "最後まで動いたプログラムのカード1枚ごとに、防御を2得ます。"
   },
   {
     "en": "Whatever happens in the try, the finally always runs.",
-    "to": "try の中で何が起きても、finally は必ず動く。"
+    "to": "try の中で何が起きても、finally は必ず動く。", "kanji": "try の中で何が起きても、finally は必ず動く。"
   },
   {
     "en": "Type Hints",
-    "to": "型ヒント"
+    "to": "型ヒント", "kanji": "型ヒント"
   },
   {
     "en": "Bolts with an element (fire, frost or spark) land with 1 more power.",
-    "to": "属性（火・霜・雷）を持つ矢は、威力が1上がって着弾します。"
+    "to": "属性（火・霜・雷）を持つ矢は、威力が1上がって着弾します。", "kanji": "属性（火・霜・雷）を持つ矢は、威力が1上がって着弾します。"
   },
   {
     "en": "Annotated, and a little quicker to read.",
-    "to": "注釈つきで、少しだけ読みやすい。"
+    "to": "注釈つきで、少しだけ読みやすい。", "kanji": "注釈つきで、少しだけ読みやすい。"
   },
   {
     "en": "Unix Philosophy",
-    "to": "Unix哲学"
+    "to": "Unix哲学", "kanji": "Unix哲学"
   },
   {
     "en": "A program of one or two cards deals double damage.",
-    "to": "カードが1枚か2枚のプログラムは、2倍のダメージを与えます。"
+    "to": "カードが1枚か2枚のプログラムは、2倍のダメージを与えます。", "kanji": "カードが1枚か2枚のプログラムは、2倍のダメージを与えます。"
   },
   {
     "en": "Write programs that do one thing, and do it well.",
-    "to": "ひとつのことをうまくやるプログラムを書け。"
+    "to": "ひとつのことをうまくやるプログラムを書け。", "kanji": "ひとつのことをうまくやるプログラムを書け。"
   },
   {
     "en": "Warm Start",
-    "to": "ウォームスタート"
+    "to": "ウォームスタート", "kanji": "ウォームスタート"
   },
   {
     "en": "The first turn of every fight gives 2 more mana.",
-    "to": "どの戦いでも、最初のターンのマナが2増えます。"
+    "to": "どの戦いでも、最初のターンのマナが2増えます。", "kanji": "どの戦いでも、最初のターンのマナが2増えます。"
   },
   {
     "en": "The caches are already warm when the first request comes in.",
-    "to": "最初の要求が来るころには、キャッシュはもう温まっている。"
+    "to": "最初の要求が来るころには、キャッシュはもう温まっている。", "kanji": "最初の要求が来るころには、キャッシュはもう温まっている。"
   },
   {
     "en": "Golem Lock A",
-    "to": "ゴーレムのロックA"
+    "to": "ゴーレムのロックA", "kanji": "ゴーレムのロックA"
   },
   {
     "en": "It holds Lock A and waits for Lock B. Its twin holds Lock B and waits for Lock A. Neither will ever let go.",
-    "to": "ロックAを握り、ロックBを待っている。双子はロックBを握り、ロックAを待っている。どちらも決して手を放さない。"
+    "to": "ロックAを握り、ロックBを待っている。双子はロックBを握り、ロックAを待っている。どちらも決して手を放さない。", "kanji": "ロックAを握り、ロックBを待っている。双子はロックBを握り、ロックAを待っている。どちらも決して手を放さない。"
   },
   {
     "en": "Golem Lock B",
-    "to": "ゴーレムのロックB"
+    "to": "ゴーレムのロックB", "kanji": "ゴーレムのロックB"
   },
   {
     "en": "It holds Lock B and waits for Lock A. Hit both in one program and the knot comes undone.",
-    "to": "ロックBを握り、ロックAを待っている。1つのプログラムで両方を撃てば、結び目はほどける。"
+    "to": "ロックBを握り、ロックAを待っている。1つのプログラムで両方を撃てば、結び目はほどける。", "kanji": "ロックBを握り、ロックAを待っている。1つのプログラムで両方を撃てば、結び目はほどける。"
   },
   {
     "en": "Divide & Conquer",
-    "to": "分割統治"
+    "to": "分割統治", "kanji": "分割統治"
   },
   {
     "en": "Search & Index",
-    "to": "探索と索引"
+    "to": "探索と索引", "kanji": "探索と索引"
   },
   {
     "en": "Greedy",
-    "to": "貪欲法"
+    "to": "貪欲法", "kanji": "貪欲法"
   },
   {
     "en": "Brute Force",
-    "to": "総当たり"
+    "to": "総当たり", "kanji": "総当たり"
   },
   {
     "en": "Dynamic Programming",
-    "to": "動的計画法"
+    "to": "動的計画法", "kanji": "動的計画法"
   },
   {
     "en": "Split the volley in half, again and again. Every level of recursion makes every bolt stronger, so the bigger the volley, the harder it hits.",
-    "to": "一斉射を半分に、何度も分けます。再帰の一段ごとにすべての矢が強くなるので、一斉射が大きいほど強く撃てます。"
+    "to": "一斉射を半分に、何度も分けます。再帰の一段ごとにすべての矢が強くなるので、一斉射が大きいほど強く撃てます。", "kanji": "一斉射を半分に、何度も分けます。再帰の一段ごとにすべての矢が強くなるので、一斉射が大きいほど強く撃てます。"
   },
   {
     "en": "Pay once to put the volley in order, then find exactly the bolt each foe needs. Nothing wasted, but only on sorted data.",
-    "to": "一度だけ手間をかけて一斉射を並べ、それぞれの敵にちょうど必要な矢を見つけます。無駄はないけれど、並んだデータでしか働きません。"
+    "to": "一度だけ手間をかけて一斉射を並べ、それぞれの敵にちょうど必要な矢を見つけます。無駄はないけれど、並んだデータでしか働きません。", "kanji": "一度だけ手間をかけて一斉射を並べ、それぞれの敵にちょうど必要な矢を見つけます。無駄はないけれど、並んだデータでしか働きません。"
   },
   {
     "en": "Take the best choice in front of you, every time. Fast and cheap, great against crowds, not always optimal.",
-    "to": "目の前のいちばんよい選択を、毎回取ります。速くて安く、群れに強い。ただし、いつも最適とは限りません。"
+    "to": "目の前のいちばんよい選択を、毎回取ります。速くて安く、群れに強い。ただし、いつも最適とは限りません。", "kanji": "目の前のいちばんよい選択を、毎回取ります。速くて安く、群れに強い。ただし、いつも最適とは限りません。"
   },
   {
     "en": "Try every pair, every subset. Enormous damage and perfect answers, but slow: foes act first, and a big volley times out.",
-    "to": "すべての対、すべての部分集合を試します。莫大なダメージと完璧な答え。けれど遅く、敵が先に動き、大きな一斉射は時間切れになります。"
+    "to": "すべての対、すべての部分集合を試します。莫大なダメージと完璧な答え。けれど遅く、敵が先に動き、大きな一斉射は時間切れになります。", "kanji": "すべての対、すべての部分集合を試します。莫大なダメージと完璧な答え。けれど遅く、敵が先に動き、大きな一斉射は時間切れになります。"
   },
   {
     "en": "Build answers from smaller answers. Tables that grow as they go, exact kills with no overkill, and naive recursion worth optimising.",
-    "to": "小さな答えから大きな答えを組み立てます。進むほど育つ表、無駄のないぴったりの一撃、そして最適化しがいのある素朴な再帰。"
+    "to": "小さな答えから大きな答えを組み立てます。進むほど育つ表、無駄のないぴったりの一撃、そして最適化しがいのある素朴な再帰。", "kanji": "小さな答えから大きな答えを組み立てます。進むほど育つ表、無駄のないぴったりの一撃、そして最適化しがいのある素朴な再帰。"
   },
   {
     "en": "Runs once a fight: after its program it leaves the deck until the next fight.",
-    "to": "1回の戦いで一度だけ動きます。そのプログラムのあと、次の戦いまでデッキから外れます。"
+    "to": "1回の戦いで一度だけ動きます。そのプログラムのあと、次の戦いまでデッキから外れます。", "kanji": "1回の戦いで一度だけ動きます。そのプログラムのあと、次の戦いまでデッキから外れます。"
   },
   {
     "en": "If it is still in your hand at the end of the turn, it is gone until the next fight.",
-    "to": "ターンの終わりにまだ手札にあれば、次の戦いまで消えます。"
+    "to": "ターンの終わりにまだ手札にあれば、次の戦いまで消えます。", "kanji": "ターンの終わりにまだ手札にあれば、次の戦いまで消えます。"
   },
   {
     "en": "Stays in your hand from turn to turn, without taking a hold slot.",
-    "to": "取り置きの枠を使わずに、ターンをまたいで手札に残ります。"
+    "to": "取り置きの枠を使わずに、ターンをまたいで手札に残ります。", "kanji": "取り置きの枠を使わずに、ターンをまたいで手札に残ります。"
   },
   {
     "en": "Always in your opening hand.",
-    "to": "いつも最初の手札に入っています。"
+    "to": "いつも最初の手札に入っています。", "kanji": "いつも最初の手札に入っています。"
   },
   {
     "en": "Made by another card, for this fight only.",
-    "to": "ほかのカードが作ったカード。この戦いのあいだだけあります。"
+    "to": "ほかのカードが作ったカード。この戦いのあいだだけあります。", "kanji": "ほかのカードが作ったカード。この戦いのあいだだけあります。"
   },
   {
     "en": "The Quine",
-    "to": "クワイン"
+    "to": "クワイン", "kanji": "クワイン"
   },
   {
     "en": "It knows only one program: the one you just ran. It will run it again, at you.",
-    "to": "知っているプログラムはひとつだけ。あなたがいま走らせたものです。それをもう一度、あなたに向けて走らせます。"
+    "to": "知っているプログラムはひとつだけ。あなたがいま走らせたものです。それをもう一度、あなたに向けて走らせます。", "kanji": "知っているプログラムはひとつだけ。あなたがいま走らせたものです。それをもう一度、あなたに向けて走らせます。"
   },
   {
     "en": "The Interrupt Foundry",
-    "to": "割り込み鋳造所"
+    "to": "割り込み鋳造所", "kanji": "割り込み鋳造所"
   },
   {
     "en": "Copper buses carry requests into the deep. Please hold: your interrupt is important to us.",
-    "to": "銅のバスが要求を深部へ運びます。お待ちください。あなたの割り込みは大切です。"
+    "to": "銅のバスが要求を深部へ運びます。お待ちください。あなたの割り込みは大切です。", "kanji": "銅のバスが要求を深部へ運びます。お待ちください。あなたの割り込みは大切です。"
   },
   {
     "en": "All roots lead here. Every process answers to one owner; permission denied is no longer a suggestion.",
-    "to": "すべての根がここへ通じます。全プロセスがひとりの所有者に従い、権限拒否はもう忠告ではありません。"
+    "to": "すべての根がここへ通じます。全プロセスがひとりの所有者に従い、権限拒否はもう忠告ではありません。", "kanji": "すべての根がここへ通じます。全プロセスがひとりの所有者に従い、権限拒否はもう忠告ではありません。"
   },
-  {"en": "Activity Selection", "to": "アクティビティ選択"},
-  {"en": "Activity Selection+", "to": "アクティビティ選択+"},
-  {"en": "Sorts foes by intent tempo and sends the strongest bolts until each falls. Quick attackers come first.", "to": "敵を行動の速さ順に並べ、強いボルトから倒れるまで送る。すばやい敵を先に倒そう。"},
-  {"en": "Sorts foes by intent tempo; ties favour the greater intended damage. Sends the strongest bolts until each falls.", "to": "敵を行動の速さ順に並べ、同じ速さなら攻撃の大きい敵を先にする。強いボルトから倒れるまで送る。"},
-  {"en": "First-Fit Decreasing", "to": "最初に入る大きい順"},
-  {"en": "First-Fit Decreasing+", "to": "最初に入る大きい順+"},
-  {"en": "Strongest bolts first: packs each into the first foe it overkills by at most 2. Leftovers aim at the front.", "to": "強いボルトから、余りが2以下になる最初の敵へ詰める。入らなかった分は前の敵へ。"},
-  {"en": "Strongest bolts first: packs each into the first foe it overkills by at most 1. Leftovers aim at the front.", "to": "強いボルトから、余りが1以下になる最初の敵へ詰める。入らなかった分は前の敵へ。"},
-  {"en": "Cartesian Product", "to": "直積（ちょくせき）"},
-  {"en": "Cartesian Product+", "to": "直積（ちょくせき）+"},
-  {"en": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe.", "to": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。"},
-  {"en": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe. Costs 1 mana.", "to": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。1マナ。"},
-  {"en": "Nested Strike", "to": "入れ子の一撃"},
-  {"en": "Nested Strike+", "to": "入れ子の一撃+"},
-  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls, so every bolt can strike every foe. Bolts no foe needed are lost.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの矢もどの敵にも当たりえます。どの敵も必要としなかった矢は失われます。"},
-  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls; bolts no foe needed are lost. Costs 1 mana.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの敵も必要としなかった矢は失われます。1マナかかります。"},
-  {"en": "Memo Strike", "to": "メモの一撃"},
-  {"en": "Memo Strike+", "to": "メモの一撃+"},
-  {"en": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 4.", "to": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大4。"},
-  {"en": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 6.", "to": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大6。"},
-  {"en": "Recurrence", "to": "漸化式（ぜんかしき）"},
-  {"en": "Recurrence+", "to": "漸化式（ぜんかしき）+"},
-  {"en": "From turn 2, appends a bolt of half the sum of the last two DP rows. Missing rows count as zero.", "to": "2ターン目から、DP表の最後の2行の合計の半分をボルトにする。ない行は0として読む。"},
-  {"en": "From turn 2, appends a bolt of the sum of the last two DP rows plus one third. Missing rows count as zero.", "to": "2ターン目から、DP表の最後の2行の合計に、その3分の1を足したボルトを作る。ない行は0として読む。"},
-  {"en": "Base Case", "to": "基本ケース"},
-  {"en": "Base Case+", "to": "基本ケース+"},
-  {"en": "Doubles every bolt when the volley has at most 2 bolts. Recurse makes small halves reach this base case.", "to": "ボルトが2本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。"},
-  {"en": "Doubles every bolt when the volley has at most 3 bolts. Recurse makes small halves reach this base case.", "to": "ボルトが3本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。"},
-  {"en": "Top-K", "to": "トップK"},
-  {"en": "Top-K+", "to": "トップK+"},
-  {"en": "A bounded min-heap keeps the four strongest bolts; discarded power fuses into the weakest survivor.", "to": "小さいものが先頭のヒープで、強いボルト4本を残す。残らなかった威力は、その中の最も弱い1本へ合体。"},
-  {"en": "A bounded min-heap keeps the five strongest bolts; discarded power fuses into the weakest survivor.", "to": "小さいものが先頭のヒープで、強いボルト5本を残す。残らなかった威力は、その中の最も弱い1本へ合体。"},
-  {"en": "Lookup", "to": "ルックアップ"},
-  {"en": "Lookup+", "to": "ルックアップ+"},
-  {"en": "Binary-searches the index for the smallest bolt that kills the front foe; otherwise takes its strongest.", "to": "インデックスを二分探索して、前の敵を倒せる最小のボルトを取る。なければ最も強いものを取る。"},
-  {"en": "Takes the smallest index bolt that kills the front foe, plus one more from the index; if none kills, takes the two strongest.", "to": "前の敵を倒す最小の索引の矢を取り、さらに索引からもう一本取ります。倒せる矢がなければ、いちばん強い2本を取ります。"},
-  {"en": "Two Sum", "to": "2つの和"},
-  {"en": "Two Sum+", "to": "2つの和+"},
-  {"en": "A hash map finds two bolts summing to the front foe's HP plus shield; they fuse into one bolt aimed at it. Otherwise its two strongest aim there.", "to": "ハッシュマップで、前の敵のHPにシールドを足した値になる矢の組を見つけます。その組は一本に合わさり、その敵へ飛びます。見つからなければ、いちばん強い2本がそこへ飛びます。"},
-  {"en": "A hash map finds two bolts summing to each of the first two foes' HP plus shield; each pair found fuses into one bolt aimed at its foe. Otherwise the two strongest aim at that foe.", "to": "ハッシュマップで、先頭の2体の敵それぞれのHPにシールドを足した値になる矢の組を見つけます。見つけた組は一本に合わさって、その敵へ飛びます。見つからなければ、いちばん強い2本がその敵へ飛びます。"},
-  {"en": "Coin Change (DP)", "to": "おつり計算（DP）"},
-  {"en": "Coin Change (DP)+", "to": "おつり計算（DP）+"},
-  {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe.", "to": "DP表で、前の敵のHPぴったりになる最少本数を探す。残りは次の敵へ送る。"},
-  {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the first two foes' HP in turn. Bolts are used only once.", "to": "DP表で、最初の2体の敵のHPぴったりになる最少本数を順に探す。各ボルトを使うのは1回だけ。"},
-  {"en": "Backtracking", "to": "バックトラッキング"},
-  {"en": "Backtracking+", "to": "バックトラッキング+"},
-  {"en": "Backtracks over assignments of bolts to foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, each choosing one of the foes.", "to": "すべての敵への矢の割り当てを試して、倒す数がいちばん多いものを探します。最良を超えられない枝は切り捨てます。矢は最大12本で、それぞれ敵の一体を選びます。"},
-  {"en": "Backtracks over assignments to all foes for the most kills, then least overkill. Also prunes already beaten foes; up to 12 bolts.", "to": "すべての敵への割り当てをたどり、最も多く倒し、余りも小さくする。倒した敵への枝も切る。最大12本。"},
-  {"en": "Interpolation Search", "to": "補間探索（ほかんたんさく）"},
-  {"en": "Interpolation Search+", "to": "補間探索（ほかんたんさく）+"},
-  {"en": "On a sorted volley, estimates where each foe's killing bolt lies from its power, with no fallback, so a lopsided volley costs linear work. Uses the strongest if none kills.", "to": "並んだ一斉射で、各敵を倒す矢がどこにあるかを、威力から見積もります。二分探索による予備はないので、偏った一斉射は線形の仕事になります。倒せる矢がなければ、いちばん強い矢を使います。"},
-  {"en": "On a sorted volley, estimates each killing bolt's position; falls back to binary search after a poor guess.", "to": "並んだ一斉射で、倒せるボルトの位置を予想する。予想が悪ければ二分探索へ切りかえる。"},
-  {"en": "K-Way Merge", "to": "K列マージ"},
-  {"en": "K-Way Merge+", "to": "K列マージ+"},
-  {"en": "Finds rising runs and heap-merges them weakest first. Every bolt gains 1 per run.", "to": "上がり続ける列を見つけ、ヒープで弱い順にまとめる。ボルトの威力は列の数だけ上がる。"},
-  {"en": "Finds rising runs and heap-merges them. Every bolt gains 1 per run, and the volley comes out strongest first.", "to": "上昇する並びを見つけて、ヒープで合わせます。矢は並びごとに威力が1上がり、一斉射は威力の強い順に出てきます。"},
-  {"en": "Dutch Flag", "to": "3色の旗"},
-  {"en": "Dutch Flag+", "to": "3色の旗+"},
-  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact bolts are pivots.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの矢が基準になります。"},
-  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact pivots gain 1.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの基準の矢は威力が1上がります。"}
+  {"en": "Activity Selection", "to": "アクティビティ選択", "kanji": "アクティビティ選択"},
+  {"en": "Activity Selection+", "to": "アクティビティ選択+", "kanji": "アクティビティ選択+"},
+  {"en": "Sorts foes by intent tempo and sends the strongest bolts until each falls. Quick attackers come first.", "to": "敵を行動の速さ順に並べ、強いボルトから倒れるまで送る。すばやい敵を先に倒そう。", "kanji": "敵を行動の速さ順に並べ、強いボルトから倒れるまで送る。すばやい敵を先に倒そう。"},
+  {"en": "Sorts foes by intent tempo; ties favour the greater intended damage. Sends the strongest bolts until each falls.", "to": "敵を行動の速さ順に並べ、同じ速さなら攻撃の大きい敵を先にする。強いボルトから倒れるまで送る。", "kanji": "敵を行動の速さ順に並べ、同じ速さなら攻撃の大きい敵を先にする。強いボルトから倒れるまで送る。"},
+  {"en": "First-Fit Decreasing", "to": "最初に入る大きい順", "kanji": "最初に入る大きい順"},
+  {"en": "First-Fit Decreasing+", "to": "最初に入る大きい順+", "kanji": "最初に入る大きい順+"},
+  {"en": "Strongest bolts first: packs each into the first foe it overkills by at most 2. Leftovers aim at the front.", "to": "強いボルトから、余りが2以下になる最初の敵へ詰める。入らなかった分は前の敵へ。", "kanji": "強いボルトから、余りが2以下になる最初の敵へ詰める。入らなかった分は前の敵へ。"},
+  {"en": "Strongest bolts first: packs each into the first foe it overkills by at most 1. Leftovers aim at the front.", "to": "強いボルトから、余りが1以下になる最初の敵へ詰める。入らなかった分は前の敵へ。", "kanji": "強いボルトから、余りが1以下になる最初の敵へ詰める。入らなかった分は前の敵へ。"},
+  {"en": "Cartesian Product", "to": "直積（ちょくせき）", "kanji": "直積"},
+  {"en": "Cartesian Product+", "to": "直積（ちょくせき）+", "kanji": "直積+"},
+  {"en": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe.", "to": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。", "kanji": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。"},
+  {"en": "Every bolt-foe pair makes a new bolt of half power, aimed at that foe. Costs 1 mana.", "to": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。1マナ。", "kanji": "ボルトと敵の組み合わせごとに、威力が半分のボルトを作ってその敵へ送る。1マナ。"},
+  {"en": "Nested Strike", "to": "入れ子の一撃", "kanji": "入れ子の一撃"},
+  {"en": "Nested Strike+", "to": "入れ子の一撃+", "kanji": "入れ子の一撃+"},
+  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls, so every bolt can strike every foe. Bolts no foe needed are lost.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの矢もどの敵にも当たりえます。どの敵も必要としなかった矢は失われます。", "kanji": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの矢もどの敵にも当たりえます。どの敵も必要としなかった矢は失われます。"},
+  {"en": "Each foe in turn is struck by the volley's bolts, in order, at full power, until it falls; bolts no foe needed are lost. Costs 1 mana.", "to": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの敵も必要としなかった矢は失われます。1マナかかります。", "kanji": "敵ごとに、一斉射の矢が順番に、全力で、その敵が倒れるまで当たります。どの敵も必要としなかった矢は失われます。1マナかかります。"},
+  {"en": "Memo Strike", "to": "メモの一撃", "kanji": "メモの一撃"},
+  {"en": "Memo Strike+", "to": "メモの一撃+", "kanji": "メモの一撃+"},
+  {"en": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 4.", "to": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大4。", "kanji": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大4。"},
+  {"en": "Aims at the foe hit most this fight. Each bolt gains 1 per earlier hit, up to 6.", "to": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大6。", "kanji": "この戦いで最も多く当てた敵を狙う。前に当てた数だけボルトの威力が上がり、最大6。"},
+  {"en": "Recurrence", "to": "漸化式（ぜんかしき）", "kanji": "漸化式"},
+  {"en": "Recurrence+", "to": "漸化式（ぜんかしき）+", "kanji": "漸化式+"},
+  {"en": "From turn 2, appends a bolt of half the sum of the last two DP rows. Missing rows count as zero.", "to": "2ターン目から、DP表の最後の2行の合計の半分をボルトにする。ない行は0として読む。", "kanji": "2ターン目から、DP表の最後の2行の合計の半分をボルトにする。ない行は0として読む。"},
+  {"en": "From turn 2, appends a bolt of the sum of the last two DP rows plus one third. Missing rows count as zero.", "to": "2ターン目から、DP表の最後の2行の合計に、その3分の1を足したボルトを作る。ない行は0として読む。", "kanji": "2ターン目から、DP表の最後の2行の合計に、その3分の1を足したボルトを作る。ない行は0として読む。"},
+  {"en": "Base Case", "to": "基本ケース", "kanji": "基本ケース"},
+  {"en": "Base Case+", "to": "基本ケース+", "kanji": "基本ケース+"},
+  {"en": "Doubles every bolt when the volley has at most 2 bolts. Recurse makes small halves reach this base case.", "to": "ボルトが2本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。", "kanji": "ボルトが2本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。"},
+  {"en": "Doubles every bolt when the volley has at most 3 bolts. Recurse makes small halves reach this base case.", "to": "ボルトが3本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。", "kanji": "ボルトが3本以下なら、すべての威力を2倍にする。再帰で小さく分けると、この基本ケースに届く。"},
+  {"en": "Top-K", "to": "トップK", "kanji": "トップK"},
+  {"en": "Top-K+", "to": "トップK+", "kanji": "トップK+"},
+  {"en": "A bounded min-heap keeps the four strongest bolts; discarded power fuses into the weakest survivor.", "to": "小さいものが先頭のヒープで、強いボルト4本を残す。残らなかった威力は、その中の最も弱い1本へ合体。", "kanji": "小さいものが先頭のヒープで、強いボルト4本を残す。残らなかった威力は、その中の最も弱い1本へ合体。"},
+  {"en": "A bounded min-heap keeps the five strongest bolts; discarded power fuses into the weakest survivor.", "to": "小さいものが先頭のヒープで、強いボルト5本を残す。残らなかった威力は、その中の最も弱い1本へ合体。", "kanji": "小さいものが先頭のヒープで、強いボルト5本を残す。残らなかった威力は、その中の最も弱い1本へ合体。"},
+  {"en": "Lookup", "to": "ルックアップ", "kanji": "ルックアップ"},
+  {"en": "Lookup+", "to": "ルックアップ+", "kanji": "ルックアップ+"},
+  {"en": "Binary-searches the index for the smallest bolt that kills the front foe; otherwise takes its strongest.", "to": "インデックスを二分探索して、前の敵を倒せる最小のボルトを取る。なければ最も強いものを取る。", "kanji": "インデックスを二分探索して、前の敵を倒せる最小のボルトを取る。なければ最も強いものを取る。"},
+  {"en": "Takes the smallest index bolt that kills the front foe, plus one more from the index; if none kills, takes the two strongest.", "to": "前の敵を倒す最小の索引の矢を取り、さらに索引からもう一本取ります。倒せる矢がなければ、いちばん強い2本を取ります。", "kanji": "前の敵を倒す最小の索引の矢を取り、さらに索引からもう一本取ります。倒せる矢がなければ、いちばん強い2本を取ります。"},
+  {"en": "Two Sum", "to": "2つの和", "kanji": "2つの和"},
+  {"en": "Two Sum+", "to": "2つの和+", "kanji": "2つの和+"},
+  {"en": "A hash map finds two bolts summing to the front foe's HP plus shield; they fuse into one bolt aimed at it. Otherwise its two strongest aim there.", "to": "ハッシュマップで、前の敵のHPにシールドを足した値になる矢の組を見つけます。その組は一本に合わさり、その敵へ飛びます。見つからなければ、いちばん強い2本がそこへ飛びます。", "kanji": "ハッシュマップで、前の敵のHPにシールドを足した値になる矢の組を見つけます。その組は一本に合わさり、その敵へ飛びます。見つからなければ、いちばん強い2本がそこへ飛びます。"},
+  {"en": "A hash map finds two bolts summing to each of the first two foes' HP plus shield; each pair found fuses into one bolt aimed at its foe. Otherwise the two strongest aim at that foe.", "to": "ハッシュマップで、先頭の2体の敵それぞれのHPにシールドを足した値になる矢の組を見つけます。見つけた組は一本に合わさって、その敵へ飛びます。見つからなければ、いちばん強い2本がその敵へ飛びます。", "kanji": "ハッシュマップで、先頭の2体の敵それぞれのHPにシールドを足した値になる矢の組を見つけます。見つけた組は一本に合わさって、その敵へ飛びます。見つからなければ、いちばん強い2本がその敵へ飛びます。"},
+  {"en": "Coin Change (DP)", "to": "おつり計算（DP）", "kanji": "おつり計算（DP）"},
+  {"en": "Coin Change (DP)+", "to": "おつり計算（DP）+", "kanji": "おつり計算（DP）+"},
+  {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the front foe's HP. The rest aim at the next foe.", "to": "DP表で、前の敵のHPぴったりになる最少本数を探す。残りは次の敵へ送る。", "kanji": "DP表で、前の敵のHPぴったりになる最少本数を探す。残りは次の敵へ送る。"},
+  {"en": "A 0/1 DP table finds the fewest bolts summing exactly to the first two foes' HP in turn. Bolts are used only once.", "to": "DP表で、最初の2体の敵のHPぴったりになる最少本数を順に探す。各ボルトを使うのは1回だけ。", "kanji": "DP表で、最初の2体の敵のHPぴったりになる最少本数を順に探す。各ボルトを使うのは1回だけ。"},
+  {"en": "Backtracking", "to": "バックトラッキング", "kanji": "バックトラッキング"},
+  {"en": "Backtracking+", "to": "バックトラッキング+", "kanji": "バックトラッキング+"},
+  {"en": "Backtracks over assignments of bolts to foes for the most kills. Prunes branches that cannot improve the best; up to 12 bolts, each choosing one of the foes.", "to": "すべての敵への矢の割り当てを試して、倒す数がいちばん多いものを探します。最良を超えられない枝は切り捨てます。矢は最大12本で、それぞれ敵の一体を選びます。", "kanji": "すべての敵への矢の割り当てを試して、倒す数がいちばん多いものを探します。最良を超えられない枝は切り捨てます。矢は最大12本で、それぞれ敵の一体を選びます。"},
+  {"en": "Backtracks over assignments to all foes for the most kills, then least overkill. Also prunes already beaten foes; up to 12 bolts.", "to": "すべての敵への割り当てをたどり、最も多く倒し、余りも小さくする。倒した敵への枝も切る。最大12本。", "kanji": "すべての敵への割り当てをたどり、最も多く倒し、余りも小さくする。倒した敵への枝も切る。最大12本。"},
+  {"en": "Interpolation Search", "to": "補間探索（ほかんたんさく）", "kanji": "補間探索"},
+  {"en": "Interpolation Search+", "to": "補間探索（ほかんたんさく）+", "kanji": "補間探索+"},
+  {"en": "On a sorted volley, estimates where each foe's killing bolt lies from its power, with no fallback, so a lopsided volley costs linear work. Uses the strongest if none kills.", "to": "並んだ一斉射で、各敵を倒す矢がどこにあるかを、威力から見積もります。二分探索による予備はないので、偏った一斉射は線形の仕事になります。倒せる矢がなければ、いちばん強い矢を使います。", "kanji": "並んだ一斉射で、各敵を倒す矢がどこにあるかを、威力から見積もります。二分探索による予備はないので、偏った一斉射は線形の仕事になります。倒せる矢がなければ、いちばん強い矢を使います。"},
+  {"en": "On a sorted volley, estimates each killing bolt's position; falls back to binary search after a poor guess.", "to": "並んだ一斉射で、倒せるボルトの位置を予想する。予想が悪ければ二分探索へ切りかえる。", "kanji": "並んだ一斉射で、倒せるボルトの位置を予想する。予想が悪ければ二分探索へ切りかえる。"},
+  {"en": "K-Way Merge", "to": "K列マージ", "kanji": "K列マージ"},
+  {"en": "K-Way Merge+", "to": "K列マージ+", "kanji": "K列マージ+"},
+  {"en": "Finds rising runs and heap-merges them weakest first. Every bolt gains 1 per run.", "to": "上がり続ける列を見つけ、ヒープで弱い順にまとめる。ボルトの威力は列の数だけ上がる。", "kanji": "上がり続ける列を見つけ、ヒープで弱い順にまとめる。ボルトの威力は列の数だけ上がる。"},
+  {"en": "Finds rising runs and heap-merges them. Every bolt gains 1 per run, and the volley comes out strongest first.", "to": "上昇する並びを見つけて、ヒープで合わせます。矢は並びごとに威力が1上がり、一斉射は威力の強い順に出てきます。", "kanji": "上昇する並びを見つけて、ヒープで合わせます。矢は並びごとに威力が1上がり、一斉射は威力の強い順に出てきます。"},
+  {"en": "Dutch Flag", "to": "3色の旗", "kanji": "3色の旗"},
+  {"en": "Dutch Flag+", "to": "3色の旗+", "kanji": "3色の旗+"},
+  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact bolts are pivots.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの矢が基準になります。", "kanji": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの矢が基準になります。"},
+  {"en": "Three-way partitions around the front foe's HP plus shield: exact bolts first, stronger next, weaker last. Exact pivots gain 1.", "to": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの基準の矢は威力が1上がります。", "kanji": "前の敵のHPにシールドを足した値を基準に、三つに分けます。ちょうど倒せる矢、それより強い矢、弱い矢の順に並びます。ちょうどの基準の矢は威力が1上がります。"}
 ]

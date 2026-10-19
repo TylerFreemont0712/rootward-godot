@@ -1,91 +1,23 @@
-// Solid modular boundary wall; five courses reach the same 1.105-tile height.
+// Thin modular geometry. Grid depth is divided by .6 for the town camera; all joins meet at cell center.
+// NW: west+north; NE: east+north; SE: east+south; SW: west+south. The unsuffixed corner is NW.
 {
-  "id": "expand-log_wall_v",
-  "kind": "prop",
-  "what": "a solid continuous low log boundary wall seen end-on, five uninterrupted courses",
-  "footprint": [
-    1,
-    1
-  ],
-  "ramps": {
-    "wall": "wood"
-  },
-  "parts": [
-    {
-      "shape": "box",
-      "at": [
-        0.22,
-        0,
-        0.0
-      ],
-      "size": [
-        0.56,
-        1.667,
-        0.205
-      ],
-      "ramp": "wall",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.22,
-        0,
-        0.225
-      ],
-      "size": [
-        0.56,
-        1.667,
-        0.205
-      ],
-      "ramp": "wall",
-      "shade": 2
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.22,
-        0,
-        0.45
-      ],
-      "size": [
-        0.56,
-        1.667,
-        0.205
-      ],
-      "ramp": "wall",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.22,
-        0,
-        0.675
-      ],
-      "size": [
-        0.56,
-        1.667,
-        0.205
-      ],
-      "ramp": "wall",
-      "shade": 2
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.22,
-        0,
-        0.9
-      ],
-      "size": [
-        0.56,
-        1.667,
-        0.205
-      ],
-      "ramp": "wall",
-      "shade": 1
-    }
-  ],
-  "denoise": 0.4
+ "id": "expand-log_wall_v",
+ "kind": "prop",
+ "what": "a thin log boundary wall running north to south",
+ "footprint": [1, 1],
+ "ramps": {"wall": "wood"},
+ "restyle": false,
+ "parts": [
+  {"shape": "box", "at": [0.42, 0.0, 0], "size": [0.16, 1.66667, 1.105], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.0, 0.0], "size": [0.2, 1.66667, 0.205], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.3975, 0.0, 0.145], "size": [0.205, 1.66667, 0.035], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.225], "size": [0.2, 1.66667, 0.205], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.3975, 0.0, 0.37], "size": [0.205, 1.66667, 0.035], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.45], "size": [0.2, 1.66667, 0.205], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.3975, 0.0, 0.595], "size": [0.205, 1.66667, 0.035], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.675], "size": [0.2, 1.66667, 0.205], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.3975, 0.0, 0.82], "size": [0.205, 1.66667, 0.035], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.9], "size": [0.2, 1.66667, 0.205], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.3975, 0.0, 1.045], "size": [0.205, 1.66667, 0.035], "ramp": "wall", "shade": 0}
+ ]
 }

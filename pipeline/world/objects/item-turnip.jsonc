@@ -1,0 +1,14 @@
+// The turnip: a Bag and pickup icon (pipeline/world/README.md). A round root with a purple shoulder and greens.
+{
+ "id": "item-turnip",
+ "kind": "prop",
+ "what": "a round white turnip with a purple shoulder and a tuft of green leaves, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"root": "cloth_cream", "shoulder": "cloth_purple", "greens": "leaf"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.5], "ramp": "root"},
+  {"shape": "ball", "at": [0.24, 0.24, 0.3], "size": [0.52, 0.52, 0.24], "ramp": "shoulder", "shade": 1},
+  {"shape": "cone", "at": [0.3, 0.3, 0.5], "size": [0.4, 0.4, 0.3], "ramp": "greens"},
+  {"shape": "ball", "at": [0.56, 0.42, 0.5], "size": [0.26, 0.18, 0.16], "ramp": "greens", "shade": 1}
+ ]
+}

@@ -86,7 +86,9 @@ static func select_profile(id: String, remember := true) -> bool:
 	var overrides: Dictionary = profile.get("settings", {})
 	Settings.language = String(overrides.get("language", SandboxJob.PYTHON))
 	Settings.difficulty = String(overrides.get("difficulty", "beginner"))
-	Text.setup(String(profile.get("preferred_language", "en")))
+	Text.setup(
+		String(profile.get("preferred_language", "en")), String(profile.get("japanese_reading", "hiragana"))
+	)
 	_load_sessions(
 		diagnostics.all(func(d: Dictionary) -> bool: return d.severity != "error"), SaveStore.new(profiles.run_root(id))
 	)
@@ -113,8 +115,7 @@ static func remember_avatar() -> void:
 static func display_catalog() -> Dictionary:
 	if profile.get("preferred_language", "en") != "ja":
 		return catalog
-	var overlay := ContentLocale.load_overlay("ja")
-	return ContentLocale.localize(catalog, overlay.strings)
+	return ContentLocale.localize(catalog, Text.translations())
 
 
 static func _load_sessions(content_ok: bool, saves: SaveStore) -> void:

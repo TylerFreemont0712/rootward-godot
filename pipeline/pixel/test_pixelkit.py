@@ -150,17 +150,17 @@ class ProblemsTest(unittest.TestCase):
 
 
 class SheetTest(unittest.TestCase):
-    def test_a_sheet_is_48_by_72_and_places_each_frame(self) -> None:
+    def test_a_sheet_is_75_by_105_and_places_each_frame(self) -> None:
         palette = Palette.load()
-        text = "sprite part 16 24\nlegend Z cloth_red.1\nframe left.step_b at 0 0\nZ\n"
+        text = "sprite part 25 35\nlegend Z cloth_red.1\nframe left.step_b at 0 0\nZ\n"
         part = pixelkit.parse(text, palette)["part"]
         sheet = characters.sheet_of(part)
-        # Three facings down the rows (24 pixels each), three poses across the columns (16 pixels each).
-        self.assertEqual(sheet.shape, (72, 48, 4))
-        self.assertEqual(sheet[48, 32, 3], 255, "left facing, step b: the frame's first pixel")
+        # Three facings down the rows (35 pixels each), three poses across the columns (25 pixels each).
+        self.assertEqual(sheet.shape, (105, 75, 4))
+        self.assertEqual(sheet[70, 50, 3], 255, "left facing, step b: the frame's first pixel")
         self.assertEqual(sheet[0, 0, 3], 0)
 
-    def test_every_character_part_makes_a_crisp_48_by_72_sheet(self) -> None:
+    def test_every_character_part_makes_a_crisp_75_by_105_sheet(self) -> None:
         palette = Palette.load()
         parts = characters.load_parts(pixelkit.HERE / "sprites", palette)
         # Character parts are named <layer>/<part> (body/base, hair/short); props and the firefly are not sheets.
@@ -170,15 +170,15 @@ class SheetTest(unittest.TestCase):
             with self.subTest(part=name):
                 self.assertEqual((part.width, part.height), (characters.FRAME_W, characters.FRAME_H))
                 sheet = characters.sheet_of(part)
-                self.assertEqual(sheet.shape, (72, 48, 4))
+                self.assertEqual(sheet.shape, (105, 75, 4))
                 self.assertEqual(pixelkit.problems(sheet, palette, name), [])
 
-    def test_a_look_made_of_parts_makes_a_48_by_72_sheet(self) -> None:
+    def test_a_look_made_of_parts_makes_a_75_by_105_sheet(self) -> None:
         palette = Palette.load()
         parts = characters.load_parts(pixelkit.HERE / "sprites", palette)
         for look in characters.SAMPLE_LOOKS:
             with self.subTest(look=look):
-                self.assertEqual(characters.look_sheet(parts, palette, look).shape, (72, 48, 4))
+                self.assertEqual(characters.look_sheet(parts, palette, look).shape, (105, 75, 4))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+Use case: identity-preserve. Asset type: corrected anime game CAST animation first eight key poses.
+Image1 is the approved neutral sprite: exact character identity, geometry, scale, rendering AND COLOR master. Image2 old cast sheet is only gesture context: its arm-switches and palette drift must be FIXED.
+Draw eight consecutive full-body Vesper sprites in a 4-column 2-row sheet, all looking screen RIGHT at the enemy. Exact same purple bob, face/head size, navy-plum crescent hat and short embroidered cape, MUTED teal dress, brown belt/boots, gold details as image1. Match image1 color/exposure exactly in all poses; no lighter purple hair, no cyan dress, no brighter cape, no lighting changes.
+CRITICAL ARM CONTINUITY: The CASTING ARM is the visible NEAR arm attached to the sleeve at the SCREEN-LEFT EDGE of her torso. This SAME near arm crosses in front of her chest and extends toward screen right. The OTHER far arm on screen-right side hangs down beside the skirt in EVERY frame. Never switch which arm performs the cast. Trace a single elbow/wrist path from the screen-left shoulder. Same five-finger hand in every frame, no extra limbs.
+Eight frames row-major:
+1 exact neutral master.
+2 near elbow bends, near hand rises from thigh to belt.
+3 same near hand crosses upward to sternum, palm cupped slightly, elbow bent.
+4 same near hand higher in front of chin, fingers open toward RIGHT.
+5 near forearm extends halfway to right, elbow opening gradually, palm facing right.
+6 RELEASE near arm extends toward right at shoulder height with open palm, only 2 degree torso lean, far hand still hanging at skirt.
+7 same release held, compact arm follow-through only.
+8 same extension settles, ready for recovery.
+Do not skip anticipation/belt/chest/chin/half-extension poses. No instant jumps. Boots/pelvis fixed, head and hat SAME pixel size and almost SAME position in all poses, no crouch, no head shrinking. Preserve clothing shapes/trim. No magic or lighting/glow. Clean refined anime cel shaded art.
+Spacious landscape sheet, 4x2 equal cells, eight complete full-body figures, fully visible hats AND boots with generous transparent margins and room on right for extended palm. Genuine transparent alpha background, no floor, shadow, grid, labels, speckled/fringed edges.

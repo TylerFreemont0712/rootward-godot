@@ -1,0 +1,125 @@
+// Nix's lock (Concept/v0.4/05, 2.4): Nix's lockbox trusts your good_code(). Stage 1 says what a good lock code is: exactly
+// four digits. Stage 2 refuses the codes a thief tries first, one digit four times. The game asks it about each code the
+// lockbox is given, and the lockbox opens once stage 2 is written.
+{
+  "id": "locks",
+  "name": "Nix's Lock",
+  "title": "Nix's lock",
+  "giver": "shade",
+  "built_line": "Nix's lockbox trusts your good_code().",
+  "entry": {"python": "good_code", "javascript": "goodCode"},
+  "params": [
+    {"name": "code", "meaning": "The lock code the player typed, as text: characters in a row, such as \"2580\".", "example": "\"2580\""}
+  ],
+  "gives": {"meaning": "True when the code is a good lock code, and False when it is not. In JavaScript these are true and false."},
+  "words": {
+    "python": [
+      {"term": "len(...)", "meaning": "Counts the characters in some text.", "example": "len(\"cat\")"},
+      {"term": "!=", "meaning": "Asks whether two things are different. The answer is True or False.", "example": "pet != \"dog\""},
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "pet == \"cat\""},
+      {"term": "not", "meaning": "Turns True into False, and False into True.", "example": "not raining"},
+      {"term": ".isdigit()", "meaning": "Asks whether every character in some text is a digit from 0 to 9. The answer is True or False.", "example": "\"42\".isdigit()"},
+      {"term": "[0]", "meaning": "The first character of some text. [1] is the second character, and so on.", "example": "\"cat\"[0]"},
+      {"term": "*", "meaning": "Makes some text again and again: \"ha\" * 3 is \"hahaha\".", "example": "\"ha\" * 3"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if pet == \"fish\":\n    return \"bowl\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": ".length", "meaning": "How many characters some text has.", "example": "\"cat\".length"},
+      {"term": "!==", "meaning": "Asks whether two things are different. The answer is true or false.", "example": "pet !== \"dog\""},
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "pet === \"cat\""},
+      {"term": "!", "meaning": "Turns true into false, and false into true.", "example": "!raining"},
+      {"term": "/^[0-9]+$/.test(...)", "meaning": "Asks whether some text fits a pattern. This pattern fits only text made of the digits 0 to 9. The answer is true or false.", "example": "/^[a-z]+$/.test(\"cat\")"},
+      {"term": "[0]", "meaning": "The first character of some text. [1] is the second character, and so on.", "example": "\"cat\"[0]"},
+      {"term": ".repeat", "meaning": "Makes some text again and again: \"ha\".repeat(3) is \"hahaha\".", "example": "\"ha\".repeat(3)"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (pet === \"fish\") {\n  return \"bowl\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "locks.starter.py", "javascript": "locks.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def good_code(code):",
+        "    if len(code) {length_test} {size}:",
+        "        return False",
+        "    if {digit_test}:",
+        "        return False",
+        "[strong]    if code == code[0] * {size}:",
+        "[strong]        return False",
+        "    return True"
+      ],
+      "javascript": [
+        "function goodCode(code) {",
+        "  if (code.length {length_test} {size}) {",
+        "    return false;",
+        "  }",
+        "  if ({digit_test}) {",
+        "    return false;",
+        "  }",
+        "[strong]  if (code === code[0].repeat({size})) {",
+        "[strong]    return false;",
+        "[strong]  }",
+        "  return true;",
+        "}"
+      ]
+    },
+    "slots": {
+      "length_test": {"label": "the length", "choices": [
+        {"label": "is", "python": "==", "javascript": "==="},
+        {"label": "is not", "python": "!=", "javascript": "!=="},
+        {"label": "is more than", "python": ">", "javascript": ">"}
+      ]},
+      "size": {"label": "a good length", "choices": ["3", "4", "5"]},
+      "digit_test": {"label": "the digits", "choices": [
+        {"python": "code.isdigit()", "javascript": "/^[0-9]+$/.test(code)"},
+        {"python": "not code.isdigit()", "javascript": "!/^[0-9]+$/.test(code)"},
+        {"python": "code.isalpha()", "javascript": "/^[a-z]+$/.test(code)"}
+      ]}
+    },
+    "toggles": {
+      "strong": {"label": "Refuse one digit four times", "stage": 1}
+    },
+    "start": {"slots": {"length_test": 0, "size": 0, "digit_test": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "locks-built",
+      "goal": "Make the lockbox take only good codes: exactly four characters, and all of them digits.",
+      "judge": "equals",
+      "cases": [
+        {"args": ["2580"], "want": true, "say": "a code of four digits"},
+        {"args": ["12a4"], "want": false, "say": "a code with a letter in it"},
+        {"args": ["123"], "want": false, "say": "a code of three digits"},
+        {"args": ["12345"], "want": false, "say": "a code of five digits"},
+        {"args": [""], "want": false, "say": "an empty code", "edge": true}
+      ],
+      "hints": [
+        "Think like a thief. A thief tries codes that are too short, too long, or full of letters. Which of those should the lockbox refuse?",
+        "A good code has two rules. Write one question for its length, and one question for its characters.",
+        "Length: len(code) in Python and code.length in JavaScript count the characters. Text can also tell you whether every character is a digit."
+      ]
+    },
+    {
+      "flag": "locks-strong",
+      "goal": "Refuse the codes a thief tries first: one digit four times, such as 1111.",
+      "unlocked_by": {"flag": "locks-built"},
+      "judge": "equals",
+      "cases": [
+        {"args": ["1111"], "want": false, "say": "one digit four times"},
+        {"args": ["1112"], "want": true, "say": "three of one digit and one other"}
+      ],
+      "hints": [
+        "A thief's first guess is 1111. It has four digits, so the old checks let it through. What else is true of it?",
+        "Look at the first character. Could a code be that same character four times over?",
+        "Make a text that is the first character four times over, and ask whether the code is that text. The words column says how to repeat text."
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "Nix checked {say}. It gave back {got}, but it should give back {want}.",
+    "nothing": "Nix checked {say} and got nothing back. Give back yes or no: True or False in Python, true or false in JavaScript.",
+    "wrong-type": "Nix checked {say}. It gave back {got}, which is not yes or no. Give back True or False, as the language writes them.",
+    "edge": "Nix checks the strange codes too. For {say}, it gave back {got}, but it should give back {want}."
+  }
+}

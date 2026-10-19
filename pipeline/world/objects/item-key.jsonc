@@ -1,0 +1,119 @@
+{
+  "id": "item-key",
+  "kind": "prop",
+  "what": "an old iron key seen from the side, ring bow on the left, long shaft to the right, two teeth at its end, game inventory icon",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "iron": "steel"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.42,
+        0.3
+      ],
+      "size": [
+        0.08,
+        0.12,
+        0.32
+      ],
+      "ramp": "iron",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0.42,
+        0.3
+      ],
+      "size": [
+        0.08,
+        0.12,
+        0.32
+      ],
+      "ramp": "iron",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.42,
+        0.54
+      ],
+      "size": [
+        0.32,
+        0.12,
+        0.08
+      ],
+      "ramp": "iron",
+      "shade": 0
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.1,
+        0.42,
+        0.3
+      ],
+      "size": [
+        0.32,
+        0.12,
+        0.08
+      ],
+      "ramp": "iron",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.42,
+        0.42,
+        0.42
+      ],
+      "size": [
+        0.46,
+        0.12,
+        0.08
+      ],
+      "ramp": "iron",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.7,
+        0.42,
+        0.3
+      ],
+      "size": [
+        0.07,
+        0.12,
+        0.12
+      ],
+      "ramp": "iron",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.81,
+        0.42,
+        0.28
+      ],
+      "size": [
+        0.07,
+        0.12,
+        0.14
+      ],
+      "ramp": "iron",
+      "shade": 2
+    }
+  ]
+}

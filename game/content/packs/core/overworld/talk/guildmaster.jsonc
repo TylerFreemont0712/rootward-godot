@@ -1,7 +1,100 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Orin tells the Long Hush and the Makers once the lamps are lit
+// (v0.4, Concept/v0.4/03-story.md), and gives the last quest (13, "Sign your work", the credits task) once the
+// music, the soup, the map, the progress bar and the clock are done. His "roll" node opens the credits.
 {
   "id": "guildmaster",
   "start": [
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "credits-rolled"
+          },
+          {
+            "not": "town-still-told"
+          },
+          {
+            "not": "hours-seen"
+          },
+          {
+            "not": "rain-seen"
+          }
+        ]
+      },
+      "goto": "wake_up"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "history-viewed"
+          },
+          {
+            "flag": "hours-seen"
+          },
+          {
+            "flag": "rain-seen"
+          },
+          {
+            "not": "town-time-told"
+          }
+        ]
+      },
+      "goto": "town_time"
+    },
+    {
+      "if": {
+        "flag": "credits-rolled"
+      },
+      "goto": "after_credits"
+    },
+    {
+      "if": {
+        "flag": "credits-built"
+      },
+      "goto": "roll"
+    },
+    {
+      "if": {
+        "flag": "credits-asked"
+      },
+      "goto": "credits_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "lamps-lit"
+          },
+          {
+            "not": "makers-told"
+          }
+        ]
+      },
+      "goto": "hush"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "music-played"
+          },
+          {
+            "flag": "gave-cabbage"
+          },
+          {
+            "flag": "map-opened"
+          },
+          {
+            "flag": "progress-built"
+          },
+          {
+            "flag": "clock-evening"
+          }
+        ]
+      },
+      "goto": "credits_offer"
+    },
     {
       "if": {
         "flag": "met-guildmaster"
@@ -16,7 +109,7 @@
     "hello": {
       "lines": [
         {
-          "text": "Welcome to Lanternroot, young tinker. I'm Orin. I've watched this town grow for a very long time."
+          "text": "I'm Orin, young tinker. I've watched this town grow for years."
         },
         {
           "text": "We've needed a tinker since the old one left. Things here are... a little broken."
@@ -35,6 +128,223 @@
           "text": "The town is glad you came."
         }
       ]
+    },
+    "hush": {
+      "lines": [
+        {
+          "text": "Lumen's lamps listened to you. I saw it from the Root. Sit with me, young tinker."
+        },
+        {
+          "text": "Long ago, Lanternroot was built by Makers. They wrote the town's everyday parts as code."
+        },
+        {
+          "text": "The keys. The menus. The loudness of the bells. The songs in the inn. The bags. The maps. The clock."
+        },
+        {
+          "text": "Then came the Long Hush. The code went quiet, piece by piece. No one remembers who stopped first."
+        },
+        {
+          "text": "A whole town, holding its breath?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Just so. Some parts fell silent. Some were never finished. We learned to live without them."
+        }
+      ],
+      "next": "makers"
+    },
+    "makers": {
+      "lines": [
+        {
+          "text": "The Makers were tinkers, like you. Each one wrote a part, and each part kept the town a little alive."
+        },
+        {
+          "text": "When the last Maker left, the writing stopped. Today your loop lit the lane. That has not happened for years."
+        },
+        {
+          "text": "You are the first Maker in a long time."
+        },
+        {
+          "text": "Tinker. Maker. It's the same word in a different hat!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "makers-told"
+      ],
+      "choices": [
+        {
+          "text": "What should I do?",
+          "goto": "mend"
+        },
+        {
+          "text": "That is a lot.",
+          "goto": "gentle"
+        }
+      ]
+    },
+    "mend": {
+      "lines": [
+        {
+          "text": "Mend the parts, one at a time, in any order. Seren wants a knob. Nym wants a bag."
+        },
+        {
+          "text": "Marta wants her music. Pell has a grey map. Pip has a bar. Mira has a key."
+        },
+        {
+          "text": "They have waited longer than they will say."
+        }
+      ]
+    },
+    "gentle": {
+      "lines": [
+        {
+          "text": "It is. Walk around. Eat some soup. The Makers never did it all in a day."
+        }
+      ]
+    },
+    "credits_offer": {
+      "lines": [
+        {
+          "text": "I walked all round the town today, tinker. Everything works."
+        },
+        {
+          "text": "Under the Lantern Root there is an Engine of gears, one for each part. Yours is turning."
+        },
+        {
+          "text": "The Root also keeps a Book of Makers. Every Maker signs it. Yours is still empty."
+        },
+        {
+          "text": "Sign your work! Say who made it, and what they made.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "A list of lines for the Root to read aloud: your name, and every part you built."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll sign it.",
+          "goto": "credits_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "credits_later"
+        }
+      ]
+    },
+    "credits_teach": {
+      "lines": [
+        {
+          "text": "Make a list of lines. Your name goes in it. So does every part you built."
+        }
+      ],
+      "set": [
+        "credits-asked"
+      ],
+      "open": "task:credits"
+    },
+    "credits_later": {
+      "lines": [
+        {
+          "text": "The page will wait. The Book has waited years."
+        }
+      ]
+    },
+    "credits_waits": {
+      "lines": [
+        {
+          "text": "The Book is open, and the page is empty."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's write it.",
+          "goto": "credits_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "credits_later"
+        }
+      ]
+    },
+    "roll": {
+      "lines": [
+        {
+          "text": "Your lines are written. Stand with me, tinker. The Root will read them aloud."
+        },
+        {
+          "text": "I'm nervous. Is this what a drum roll feels like?",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Hush now. Listen."
+        }
+      ],
+      "open": "credits"
+    },
+    "after_credits": {
+      "lines": [
+        {
+          "text": "There is a new name in the Book of Makers. Yours."
+        },
+        {
+          "text": "The Warden has been looking at you all morning. I think he wishes to say something loudly."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Roll the credits again.",
+          "goto": "roll"
+        },
+        {
+          "text": "Change my credits.",
+          "goto": "credits_teach"
+        },
+        {
+          "text": "Bye, Orin.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "The town is glad you came."
+        }
+      ]
+    },
+    "wake_up": {
+      "lines": [
+        {
+          "text": "Lanternroot has its parts back, but it is so still. Nobody keeps an hour. Not even the rain."
+        },
+        {
+          "text": "Then let's wake it up!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "town-still-told"
+      ]
+    },
+    "town_time": {
+      "lines": [
+        {
+          "text": "Listen. The rain falls on the days it should, and everyone keeps their hours.",
+          "mood": "happy"
+        },
+        {
+          "text": "The town keeps its own time now."
+        }
+      ],
+      "set": [
+        "town-time-told"
+      ],
+      "next": "after_credits"
     }
   }
 }

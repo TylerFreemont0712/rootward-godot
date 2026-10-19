@@ -1,0 +1,50 @@
+X:1
+T:Lanternroot Lesson
+M:4/4
+L:1/16
+Q:1/4=116
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:Em
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+e4b4e'4b4|c4g4c'4g4|g4d'4g'4d'4|d4a4d'4a4|
+% verse
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+e2b2e'2g2f2e2z4|c2g2c'2e2d2c2z4|g2d2g'2b2a2g2z4|d2a2d'2f2e2d2z4|
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+e2b2e'2g2f2e2z4|c2g2c'2e2d2c2z4|g2d2g'2b2a2g2z4|d2a2d'2f2e2d2z4|
+% bridge
+V: Vocal
+"C"z16|"G"z16|"D"z16|"Em"z16|
+V: Ins
+c2e2g2c'2g2e2c4|d2g2b2d'2b2g2d4|f2a2d'2f'2d'2a2f4|e2g2b2e'2b2g2e4|
+V: Vocal
+"C"z16|"G"z16|"Em"z16|"D"z16|
+V: Ins
+c2e2g2c'2g2e2c4|d2g2b2d'2b2g2d4|e2g2b2e'2b2g2e4|f2a2d'2f'2d'2a2f4|
+% verse
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+e2b2e'2g2f2e2z4|c2g2c'2e2d2c2z4|g2d2g'2b2a2g2z4|d2a2d'2f2e2d2z4|
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+e2b2e'2g2f2e2z4|c2g2c'2e2d2c2z4|g2d2g'2b2a2g2z4|d2a2d'2f2e2d2z4|
+% outro
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"Em"z16|
+V: Ins
+e4b4e'4b4|c4g4c'4g4|g4d'4g'4d'4|e16|

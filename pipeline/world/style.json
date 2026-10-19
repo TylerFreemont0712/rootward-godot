@@ -1,0 +1,71 @@
+{
+  "_doc": "How Lanternroot's background objects are made (pipeline/world/README.md, ADR-0064): the projection every blockout shares, the ComfyUI restyle, and per kind its prompt words, the colour roles a spec must name, and how hard the restyle may change the blockout. Specs live in pipeline/world/objects/<id>.jsonc; the scale (the tile) is game/content/packs/core/overworld/scale.jsonc.",
+  "projection": {
+    "_doc": "A blockout is drawn in the town's 3/4 view: a point at height z standing y tiles back from the footprint's front edge is drawn y * depth_scale + z tiles up. Heights show full, depths foreshortened, and one tile across is one tile.",
+    "depth_scale": 0.6,
+    "long_side": 1024,
+    "min_side": 512,
+    "samples": 24
+  },
+  "comfy": {
+    "url": "http://127.0.0.1:8188",
+    "checkpoint": "novaAnimeXL_ilV190.safetensors",
+    "lora": "pixel-art-xl-v1.1.safetensors",
+    "lora_strength": 1.0,
+    "steps": 28,
+    "cfg": 5.5,
+    "sampler": "euler_ancestral",
+    "scheduler": "normal",
+    "rmbg": true,
+    "candidates": 3
+  },
+  "prompt": {
+    "prefix": "masterpiece, best quality, pixel art, ",
+    "suffix": ", single rpg game asset, 3/4 top-down view, front facing, cozy fantasy village, warm colors, clean dark outline, crisp pixels, simple cel shading, plain white background, whole object visible, centered",
+    "negative": "worst quality, low quality, blurry, text, watermark, signature, sprite sheet, multiple objects, collage, grid, tileset, inventory, people, characters, person, animal, cropped, frame, border, drop shadow, gradient background, ground, grass, floor, scenery, realistic, photo, 3d render, isometric, perspective"
+  },
+  "kinds": {
+    "building": {
+      "words": "village building",
+      "denoise": 0.62,
+      "colors": 40,
+      "guard": 20,
+      "roles": {"walls": "plaster", "roof": "thatch", "trim": "wood", "door": "wood", "window": "glow", "base": "stone"},
+      "fields": {"walls": 2.4, "roof": "gable", "door": null, "windows": []}
+    },
+    "landmark": {
+      "words": "village landmark",
+      "denoise": 0.62,
+      "colors": 40,
+      "guard": 24,
+      "roles": {},
+      "fields": {}
+    },
+    "tree": {
+      "words": "tree",
+      "denoise": 0.66,
+      "colors": 28,
+      "guard": 28,
+      "roles": {"trunk": "wood", "leaves": "leaf"},
+      "fields": {"trunk": 1.0, "canopy": [2.0, 2.0], "shape": "round"}
+    },
+    "prop": {
+      "words": "village prop",
+      "denoise": 0.55,
+      "colors": 24,
+      "guard": 16,
+      "roles": {},
+      "fields": {}
+    },
+    "furniture": {
+      "words": "piece of indoor furniture",
+      "denoise": 0.55,
+      "colors": 24,
+      "guard": 16,
+      "roles": {},
+      "fields": {}
+    }
+  },
+  "shade": 1,
+  "always_lock": ["ink", "ink_soft"]
+}

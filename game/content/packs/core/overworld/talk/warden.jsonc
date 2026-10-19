@@ -1,7 +1,14 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). After the credits roll (v0.4, quest 13) the Warden hints at the
+// Root Gate, the hook for the spells that come later.
 {
   "id": "warden",
   "start": [
+    {
+      "if": {
+        "flag": "credits-rolled"
+      },
+      "goto": "gate"
+    },
     {
       "if": {
         "flag": "met-warden"
@@ -35,6 +42,23 @@
           "text": "THE GATE IS SEALED. ...Have a pleasant day."
         }
       ]
+    },
+    "gate": {
+      "lines": [
+        {
+          "text": "...TINKER. YOUR NAME IS IN THE BOOK OF MAKERS."
+        },
+        {
+          "text": "...Apologies. I read it twice. The gate is still sealed."
+        },
+        {
+          "text": "But it listens now. Below it, the roots hold spells nobody has written yet."
+        },
+        {
+          "text": "Come back when you are ready to write them."
+        }
+      ],
+      "choices": []
     }
   }
 }

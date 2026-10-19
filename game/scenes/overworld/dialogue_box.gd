@@ -13,14 +13,24 @@ extends Control
 signal ended(flags: Dictionary, opens: Array[String])
 
 const CHARS_PER_SECOND := 42.0
-const PORTRAIT := 384.0
+## The Options page's "text_speed" (Concept/v0.4/01 section 8.3): letters a second for each choice. Until the player
+## picks one the box types at CHARS_PER_SECOND, as it always has.
+const TEXT_SPEEDS := {"slow": 30.0, "normal": 55.0, "fast": 90.0}
+const PORTRAIT := 320.0
 const PORTRAIT_X := 64.0
 const PORTRAIT_SLIDE := 36.0
 const MARGIN := 36.0
+## The box is 1250 wide (1100 px at 1920 x 1080): about 70 English characters a line at 34.
+const BOX_WIDTH := 1250.0
+## Choices keep their size (26) while the labels come down to 24.
+const CHOICE_SIZE := 26
 ## The box's height at the start of each line; the words and the choices then make it taller.
 const BOX_HEIGHT := 230.0
 const BLINK_SPEED := 4.0
 const HOTARU := {"name": "Hotaru", "portrait": "hotaru", "voice": 1.45}
+
+## How fast words type out now. The Options page sets it (set_text_speed); every box of the town reads it.
+static var letters_per_second := CHARS_PER_SECOND
 
 var busy := false
 
@@ -81,11 +91,11 @@ func _ready() -> void:
 		"panel", UiTheme.box(Color(0.1, 0.075, 0.06, 0.94), UiTheme.AMBER_DIM, 2, 14, Vector2(36, 26))
 	)
 	_box.anchor_left = 0.0
-	_box.anchor_right = 1.0
+	_box.anchor_right = 0.0
 	_box.anchor_top = 1.0
 	_box.anchor_bottom = 1.0
 	_box.offset_left = 48
-	_box.offset_right = -48
+	_box.offset_right = _box.offset_left + BOX_WIDTH
 	_box.offset_bottom = -MARGIN
 	_box.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -117,6 +127,12 @@ func _ready() -> void:
 	_box.resized.connect(_layout)
 	resized.connect(_layout)
 	_layout()
+
+
+## Sets the typing speed to "slow", "normal" or "fast" (TEXT_SPEEDS); any other name leaves it as it is.
+static func set_text_speed(speed: String) -> void:
+	if TEXT_SPEEDS.has(speed):
+		letters_per_second = float(TEXT_SPEEDS[speed])
 
 
 ## The portrait and the name plate follow the box's top edge, which moves as the box grows.
@@ -237,7 +253,7 @@ func _process(delta: float) -> void:
 	if not _typing:
 		return
 	var before := int(_shown)
-	_shown += delta * CHARS_PER_SECOND
+	_shown += delta * letters_per_second
 	var total := _text.get_total_character_count()
 	_text.visible_characters = mini(int(_shown), total)
 	if int(_shown) != before:
@@ -265,6 +281,7 @@ func _offer_choices() -> void:
 	for choice in Talk.choices(_talk, _node, _flags):
 		var button := Ui.button(Text.t(String(choice.text)), _choose.bind(String(choice.goto)))
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.add_theme_font_size_override("font_size", CHOICE_SIZE)
 		button.add_theme_stylebox_override("focus", _focus_frame())
 		_choices.add_child(button)
 		if first == null:

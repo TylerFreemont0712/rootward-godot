@@ -1,0 +1,109 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "expand-handcart-harvest-update-483a47c2",
+  "kind": "prop",
+  "what": "harvest handcart village asset with clear readable shapes with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "leaf": "leaf",
+    "stone": "stone",
+    "soil": "dirt",
+    "crop": "grass",
+    "flower": "cloth_yellow",
+    "metal": "steel",
+    "straw": "thatch"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.14,
+        0.24,
+        0.4
+      ],
+      "size": [
+        1.3,
+        0.58,
+        0.32
+      ],
+      "ramp": "wood"
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        0.27,
+        0.16,
+        0.03
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "cylinder",
+      "at": [
+        1.1,
+        0.16,
+        0.03
+      ],
+      "size": [
+        0.25,
+        0.25,
+        0.25
+      ],
+      "ramp": "steel",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        1.35,
+        0.46,
+        0.39
+      ],
+      "size": [
+        0.55,
+        0.1,
+        0.1
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.35,
+        0.34,
+        0.72
+      ],
+      "size": [
+        0.28,
+        0.27,
+        0.24
+      ],
+      "ramp": "cloth_orange"
+    },
+    {
+      "shape": "ball",
+      "at": [
+        0.72,
+        0.36,
+        0.7
+      ],
+      "size": [
+        0.28,
+        0.26,
+        0.22
+      ],
+      "ramp": "cloth_red"
+    }
+  ]
+}

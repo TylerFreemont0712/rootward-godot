@@ -1,0 +1,15 @@
+Use case: identity-preserve. Asset type: high quality anime Vesper CAST ANIMATION, first eight KEY poses.
+Image1: the old cast-start sheet, ONLY a loose gesture/sequence skeleton. Image2: the finished high quality enemy-facing Vesper idle model; THIS is the character, body proportions, face direction and rendering style to preserve exactly. Image3: enemy-facing full-body design reference.
+Draw this refined purple-haired gold-eyed witch performing one COMPACT PALM CAST to the ENEMY ON SCREEN RIGHT. Keep her nose pointing right and her pupils aimed at the enemy in EVERY pose, no glance at camera. Precisely the same hair/face/hat/short embroidered capelet/blue star clasp/teal belted dress/tights/brown boots as Image2, consistent model and scale throughout. Finely drawn polished anime art with clean cel shading. Empty hands.
+Eight poses in row-major order:
+1 calm neutral exactly matching Image2 first pose;
+2 slight anticipation, casting elbow draws back a little, hand rises toward belt;
+3 casting hand rises to chest, elbow bent;
+4 open casting palm comes near right cheek, elbow remains bent;
+5 shoulder drives forward, forearm extends halfway toward right;
+6 RELEASE: casting arm extended toward screen right at chest/shoulder height, open palm facing the enemy, five natural fingers; small confident forward shoulder lean;
+7 SAME release pose held, tiny relaxed cloth follow-through;
+8 SAME forward palm pose, slight settling only.
+Gesture may refine the primitive original skeleton to reduce jerkiness. Boots locked in identical positions, pelvis stationary, torso leans at most five degrees; head/hat size and position steady, no jumping or shrinking. One smooth arm arc and a short firm hold, no spiraling whole-body twists, no changing arm identity or hand shape randomly. Capelet never disappears or becomes a long cloak. Hat and face do not change between frames. No magic, particles, props, staff or glowing palm.
+EXACT GRID: 4 columns x 2 rows, 8 complete full-body figures, landscape canvas 2048x1536 or 3072x2304, each tall portrait cell 512x768. Character uses 70–75% of cell height; entire hat AND boots shown in EVERY cell with clear margins (80px) and extra empty room on right for the extended palm. Same scale and boot baseline across all cells; don't cut off any second-row boots. Transparent gaps between cells. No third row, extra sprites or labels.
+ACTUAL TRANSPARENT ALPHA BACKGROUND, crisp clean cutout edges, no red/white speckles, pixel noise, fringe, haze, glow, smoke, starfield, floor, shadow, scenery, text, grid lines or watermark. Output the complete eight-frame sheet.

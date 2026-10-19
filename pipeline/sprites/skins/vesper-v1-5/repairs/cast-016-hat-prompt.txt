@@ -1,0 +1,3 @@
+Use case: precise-object-edit. Make ONE tiny correction to this repaired Vesper casting sprite.
+There are two gold crescents. KEEP the crescent dangling from the hat's LEFT TIP exactly as it is. REMOVE ONLY the small gold crescent/loop sitting on the RIGHT END OF THE GOLD HAT BAND, just above the brim near the top right of her head. Fill its place with the same plain cream/gold band and navy hat material. The band has no jewelry or ornament.
+Preserve every other part of this image: exact head/face/hair proportions, gold eyes, colors, raised palm gesture, short capelet, dress, belt, boots, outlines, shading, pose, composition and transparent alpha. Do not redraw or add anything else. Same single full-body sprite, transparent background, no text or shadows.

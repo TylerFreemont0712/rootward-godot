@@ -1,0 +1,21 @@
+{
+  "id": "lanternroot-lesson",
+  "out": "music-lanternroot-lesson",
+  "kind": "loop",
+  "title": "Lanternroot Lesson",
+  "role": "Coding with the boots, and everything else that takes code: the editor, the sandbox, the lesson's text. Steady, minimal and unobtrusive, so it helps focus and never pulls the eye off the code. A marimba and a steady pulse, nothing that asks to be listened to.",
+  "theme": "The motif in E minor (E B E G F# E): a loop in code. It is repeated as a figure of eighth notes, rebuilt on each chord (E, C, G, D), the way a loop re-runs the same code over new inputs; the bridge turns the chords into arpeggios over C, G and D.",
+  "reference": "The player's request: the mode played music-rest, a lullaby in F at 76 BPM in 3/4 with harp, and wanted a solid soundtrack. Coding is the mode's most-played screen, so this one is the quietest of the four, but it keeps time.",
+  "bpm": 116,
+  "key": "E minor",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (the marimba's quarter-note pulse alone), verse 8 (the motif as a repeating figure, rebuilt on each chord), bridge 8 (arpeggios over C, G and D), verse 8 (return), outro 4",
+  "loop": {
+    "from": "verse",
+    "to": "verse",
+    "occurrence": 2
+  },
+  "style": "minimal focused folk, marimba with plucked mallets, steady light brushed drums, upright bass, calm and unobtrusive, a repeating figure, instrumental, no vocals, E minor, 116 BPM",
+  "lyrics": "",
+  "pick": "yue2-comfy-1000-1100-s32-e5afcf"
+}

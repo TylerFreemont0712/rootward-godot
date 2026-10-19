@@ -425,6 +425,26 @@ func test_reduce_motion_applies_to_the_current_scene_immediately() -> void:
 	assert_bool(backdrop.get("_motion")).is_true()
 
 
+func test_japanese_reading_mode_switches_live_and_persists_in_fonts_settings() -> void:
+	_title.call("_set_locale", "ja")
+	_title.call("_open_options")
+	var panel := _panel("FoundrySettingsPanel") as FoundrySettingsPanel
+	_button(panel, "文字とフォント").pressed.emit()
+	await get_tree().process_frame
+	panel = _panel("FoundrySettingsPanel") as FoundrySettingsPanel
+	_button(panel, "かんじ").pressed.emit()
+	assert_str(Game.profile.japanese_reading).is_equal("kanji")
+	assert_str(Text.f("Time played: %s", ["まち"])).is_equal("プレイ時間：まち")
+	assert_str(Game.profiles.get_profile(String(Game.profile.id)).japanese_reading).is_equal("kanji")
+	assert_bool(Game.select_profile(String(Game.profile.id), false)).is_true()
+	assert_str(Text.f("Time played: %s", ["まち"])).is_equal("プレイ時間：まち")
+	panel = _panel("FoundrySettingsPanel") as FoundrySettingsPanel
+	_button(panel, "ひらがな").pressed.emit()
+	assert_str(Game.profile.japanese_reading).is_equal("hiragana")
+	assert_str(Text.f("Time played: %s", ["まち"])).is_equal("あそんだ じかん：まち")
+	_title.call("_set_locale", "en")
+
+
 func test_library_creatures_come_from_the_live_catalog_and_can_be_searched() -> void:
 	_title.call("_open_archive")
 	var panel := _panel("FoundryLibraryPanel") as FoundryLibraryPanel

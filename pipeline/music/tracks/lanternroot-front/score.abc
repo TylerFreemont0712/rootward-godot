@@ -1,0 +1,36 @@
+X:1
+T:Lanternroot Front Door
+M:4/4
+L:1/16
+Q:1/4=100
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:D
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"D"z16|"G"z16|"A"z16|"D"z16|
+V: Ins
+z16|z16|z16|z12a2f2|
+% verse
+V: Vocal
+"D"z16|"G"z16|"D"z16|"A"z16|
+V: Ins
+d4A4d4f4|e4d8z4|a4f4d8|e4c4e4a4|
+V: Vocal
+"Bm"z16|"G"z16|"A"z16|"D"z16|
+V: Ins
+b4a4f4d4|g4b4d'4b4|a4e4c4e4|d12z4|
+% chorus
+V: Vocal
+"G"z16|"A"z16|"Bm"z16|"G"z16|
+V: Ins
+d'2a2d'2f'2e'4d'4|c'4e'4a'4e'4|f'4d'4b4d'4|g4b4d'4g'4|
+V: Vocal
+"D"z16|"Em"z16|"A"z16|"D"z16|
+V: Ins
+a'8f'4d'4|e'4g'4e'4b4|c'4a4e'4c'4|d'16|

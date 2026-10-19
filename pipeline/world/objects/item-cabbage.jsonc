@@ -1,0 +1,13 @@
+// The cabbage: a Bag and pickup icon (pipeline/world/README.md). One round head, no stand.
+{
+ "id": "item-cabbage",
+ "kind": "prop",
+ "what": "a round green cabbage head with pale ribbed leaves, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"outer": "leaf", "heart": "grass"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.6], "ramp": "outer", "shade": 1},
+  {"shape": "ball", "at": [0.3, 0.3, 0.42], "size": [0.4, 0.4, 0.3], "ramp": "heart", "shade": 0},
+  {"shape": "ball", "at": [0.2, 0.1, 0], "size": [0.6, 0.2, 0.3], "ramp": "outer", "shade": 2}
+ ]
+}

@@ -1,0 +1,38 @@
+// Thin modular geometry. Grid depth is divided by .6 for the town camera; all joins meet at cell center.
+// NW: west+north; NE: east+north; SE: east+south; SW: west+south. The unsuffixed corner is NW.
+{
+ "id": "expand-fieldstone_wall_corner_sw",
+ "kind": "prop",
+ "what": "a thin fieldstone boundary wall corner joining SW",
+ "footprint": [1, 1],
+ "ramps": {"wall": "stone"},
+ "restyle": false,
+ "parts": [
+  {"shape": "box", "at": [0, 0.7, 0], "size": [0.6, 0.26667, 1.105], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 0.0], "size": [0.34, 0.33333, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.34, 0.66667, 0.0], "size": [0.26, 0.33333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0, 0.66667, 0.225], "size": [0.19, 0.33333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.19, 0.66667, 0.225], "size": [0.32, 0.33333, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.51, 0.66667, 0.225], "size": [0.09, 0.33333, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0, 0.66667, 0.45], "size": [0.34, 0.33333, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.34, 0.66667, 0.45], "size": [0.26, 0.33333, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0, 0.66667, 0.675], "size": [0.19, 0.33333, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.19, 0.66667, 0.675], "size": [0.32, 0.33333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.51, 0.66667, 0.675], "size": [0.09, 0.33333, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 0.9], "size": [0.34, 0.33333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.34, 0.66667, 0.9], "size": [0.26, 0.33333, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.42, 0.0, 0], "size": [0.16, 1.0, 1.105], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.0, 0.0], "size": [0.2, 0.56667, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.56667, 0.0], "size": [0.2, 0.43333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.4, 0.0, 0.225], "size": [0.2, 0.31667, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.4, 0.31667, 0.225], "size": [0.2, 0.53333, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.85, 0.225], "size": [0.2, 0.15, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.45], "size": [0.2, 0.56667, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.56667, 0.45], "size": [0.2, 0.43333, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0.675], "size": [0.2, 0.31667, 0.213], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.31667, 0.675], "size": [0.2, 0.53333, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.4, 0.85, 0.675], "size": [0.2, 0.15, 0.213], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.0, 0.9], "size": [0.2, 0.56667, 0.213], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.4, 0.56667, 0.9], "size": [0.2, 0.43333, 0.213], "ramp": "wall", "shade": 2}
+ ]
+}

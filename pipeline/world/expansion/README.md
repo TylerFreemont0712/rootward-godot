@@ -1,18 +1,20 @@
 # Lanternroot catalog expansion
 
-This batch adds 90 placeable objects to Lanternroot Studio: 31 street and boundary objects, 28 furnishings,
-14 nature objects, 15 farm and work objects, and two buildings. Three Luna agents prepared the object specs;
-the conductor generated, reviewed, and registered the finished pictures.
+Lanternroot Studio now has 118 registered expansion objects across four groups: 43 street and boundary objects,
+28 furnishings, 29 nature and work objects, and 18 ImageGen assets. The ImageGen group contains 16 buildings and two
+props. The completed refresh also replaces the town's placed building art and registers 14 new builder buildings;
+the catalog now has 220 entries.
 
 ## Sources
 
-- 86 objects use the existing Blender blockout → ComfyUI restyle → palette cut workflow. Their editable specs
-  are `pipeline/world/objects/expand-*.jsonc`. The checkpoint, LoRA, palette, and projection are the existing
-  `pipeline/world/style.json` and `pipeline/pixel/palette.json`.
-- The bakery, greenhouse, village fountain, and roofed noticeboard use ChatGPT's built-in image generation,
-  requested explicitly by the user for this batch. Original transparent images are kept in `imagegen/`;
-  `imagegen-sources.json` records the complete prompts and source paths. The world pipeline cuts these
-  adopted sources to the same 40 px tile scale and palette as the other objects.
+- Other expansion objects retain their original blockout/restyle sources and editable specs in
+  `pipeline/world/objects/expand-*.jsonc`.
+- The bakery, greenhouse, village fountain, and roofed noticeboard use ChatGPT ImageGen sources. Fourteen more
+  building options use the same source workflow: six service or weathered designs and eight additional fantasy
+  designs. Their transparent PNGs are preserved in
+  `Concept/v0.35/building-architecture/imagegen-candidates/`; `imagegen-sources.json` records source paths and
+  generation briefs. The world pipeline fits them to 40 px tiles, locks the approved palette, and produces
+  person-scale reviews. No ComfyUI generation is needed for these buildings.
 
 The four metadata files (`boundaries.json`, `furniture.json`, `nature-work.json`, `imagegen.json`) record catalog
 names, categories, tags, footprints, placement rules, and variant families. They are inputs for registration;
@@ -20,18 +22,12 @@ the game reads the resulting entries in `game/content/packs/core/overworld/catal
 
 ## Rebuild and inspect
 
-Run from the repository root. For an individual object:
+Run from the repository root. To rebuild the registered ImageGen group:
 
 ```sh
-scripts/world.sh make --only expand-chair-cushioned
+scripts/world.sh cut --only expand-bakery,expand-greenhouse,expand-fountain,expand-noticeboard,expand-apothecary,expand-stable,expand-guardhouse,expand-bathhouse,expand-abandoned-cottage,expand-ruin-cottage,expand-observatory,expand-watermill,expand-moonweaver,expand-teahouse,expand-lighthouse,expand-crystalwright,expand-belltower,expand-mushroom-cottage
 pipeline/.venv/bin/python pipeline/world/expansion/register.py
 pipeline/.venv/bin/python pipeline/world/expansion/review.py
-```
-
-`make` handles the GPU handoff between Blender and ComfyUI. For the four adopted ChatGPT sources, `cut` is enough:
-
-```sh
-scripts/world.sh cut --only expand-bakery,expand-greenhouse,expand-fountain,expand-noticeboard
 ```
 
 Every object has a pipeline review at `Concept/v0.3/world/<id>.png`. The grouped contact sheets are generated

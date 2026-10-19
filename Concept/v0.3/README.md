@@ -14,6 +14,10 @@ start.
 | [05-lanternroot-overworld.md](05-lanternroot-overworld.md) | Path 1 refined: a top-down pixel town, light-novel dialogue, and coding your own movement |
 | [06-overworld-handoff.md](06-overworld-handoff.md) | The overworld's first slice as built, what is open, and the prompt and multi-agent plan for turn 2 |
 | [07-lanternroot-quests.md](07-lanternroot-quests.md) | The first four quests as built, and ideas for the quests and programs that come next |
+| [08-lanternroot-town-art.md](08-lanternroot-town-art.md) | The town's current visual beats, art priorities, and grounded concepts for later routes |
+| [09-lanternroot-town-overhaul.md](09-lanternroot-town-overhaul.md) | The town overhaul (level 1): the decisions, the 80 x 56 town in seven districts, the programmable first things, characters at 25 x 35, the ComfyUI pictures and the compact menus, with the file ownership of the build |
+| [Update/README.md](Update/README.md) | Ongoing Lanternroot handoffs, progress and art provenance |
+| [../v0.35/README.md](../v0.35/README.md) | Next Studio implementation plan: People & Doors, Build, modular rooms/roofs, and new areas/map expansion, with detailed Luna packets |
 
 ## The short answer
 

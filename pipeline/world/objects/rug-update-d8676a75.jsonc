@@ -1,0 +1,62 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "rug-update-d8676a75",
+  "kind": "furniture",
+  "what": "a flat oval woven rug with a red border, a yellow stripe and a dark red middle with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    2,
+    1
+  ],
+  "ramps": {
+    "border": "cloth_red",
+    "stripe": "cloth_yellow",
+    "middle": "cloth_maroon"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.06,
+        0.1,
+        0
+      ],
+      "size": [
+        1.88,
+        1.46,
+        0.03
+      ],
+      "ramp": "border",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.2,
+        0.26,
+        0.03
+      ],
+      "size": [
+        1.6,
+        1.14,
+        0.02
+      ],
+      "ramp": "stripe",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.34,
+        0.4,
+        0.05
+      ],
+      "size": [
+        1.32,
+        0.86,
+        0.02
+      ],
+      "ramp": "middle",
+      "shade": 1
+    }
+  ]
+}

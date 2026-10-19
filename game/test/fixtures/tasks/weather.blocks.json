@@ -1,0 +1,5 @@
+{
+  "stages": [
+    {"slots": {"every": 1, "cloud_day": 1}, "toggles": ["cloud"]}
+  ]
+}

@@ -1,0 +1,24 @@
+// Thin modular geometry. Grid depth is divided by .6 for the town camera; all joins meet at cell center.
+// NW: west+north; NE: east+north; SE: east+south; SW: west+south. The unsuffixed corner is NW.
+{
+ "id": "expand-plaster_wall_corner_sw",
+ "kind": "prop",
+ "what": "a thin plaster boundary wall corner joining SW",
+ "footprint": [1, 1],
+ "ramps": {"wall": "plaster", "wood": "wood"},
+ "restyle": false,
+ "parts": [
+  {"shape": "box", "at": [0, 0.7, 0], "size": [0.6, 0.26667, 1.105], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 0], "size": [0.6, 0.33333, 1.06], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0, 0.66667, 0], "size": [0.6, 0.33333, 0.1], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 1.01], "size": [0.6, 0.33333, 0.095], "ramp": "wood", "shade": 1},
+  {"shape": "box", "at": [0, 0.65833, 0], "size": [0.075, 0.35, 1.105], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.525, 0.65833, 0], "size": [0.075, 0.35, 1.105], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.42, 0.0, 0], "size": [0.16, 1.0, 1.105], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.0, 0], "size": [0.2, 1.0, 1.06], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.4, 0.0, 0], "size": [0.2, 1.0, 0.1], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.4, 0.0, 1.01], "size": [0.2, 1.0, 0.095], "ramp": "wood", "shade": 1},
+  {"shape": "box", "at": [0.395, 0.0, 0], "size": [0.21, 0.125, 1.105], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.395, 0.875, 0], "size": [0.21, 0.125, 1.105], "ramp": "wood", "shade": 2}
+ ]
+}

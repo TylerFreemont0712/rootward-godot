@@ -6,8 +6,8 @@
   QuickJS for WASI, about 100 MB, pinned by SHA-256) into `game/sandbox/runtime/`. The sandbox tests need it.
 - Tests (gdUnit4 6.2.1, headless): `scripts/test.sh`; one suite: `scripts/test.sh -a res://test/core/rng_test.gd`.
   It runs an import pass first, so a new `class_name` is visible.
-- Lint: `scripts/lint.sh` (gdlint and a gdformat check through `uvx`, gdtoolkit 4.5.0 pinned). Format a file you
-  wrote with `uvx --from gdtoolkit==4.5.0 gdformat --line-length 120 <file>`.
+- Lint: `scripts/lint.sh` (gdlint for likely bugs only, then a formatting report that never fails; gdtoolkit 4.5.0
+  pinned, rules in `.gdlintrc`, loose by the player's choice). `scripts/lint.sh --fix` formats everything first.
 - Screenshot a scene: `scripts/screenshot.sh res://scenes/boot/boot.tscn shots/boot.png [frames]`. It renders on the
   GPU under a private Xvfb display, so nothing opens on the desktop, at the 1920x1080 design size (`SHOT_SIZE=2560x1440`
   for another window). `shots/` is ignored.
@@ -27,9 +27,14 @@
 - **Asset tools are free and local only** (the player's rule, 2026-10-09): ComfyUI, Blender, their MCPs, code, hand-placed
   pixels, CC0 packs on disk. Never propose paid services or packs. Keep the list of assets that could not ship
   commercially in `docs/ASSET_LICENCES.md` current.
-- Lanternroot's overworld pixel art (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh` (hand-placed parts and props,
-  code-made tiles, portraits, then a lint that fails soft alpha or off-palette colours), `scripts/pixel.sh --comfy
-  'ow-building-*'` for ComfyUI pictures (palette-locked). 16 px tiles, 16 x 24 characters, one palette.
+- Lanternroot's scale (ADR-0064): 40 px tiles, a 1280 x 720 view (2x on the laptop), people 64 x 96, one palette. The
+  numbers live in `OverworldScale` and `game/content/packs/core/overworld/scale.jsonc` (a test keeps them equal).
+- Lanternroot's things (buildings, trees, props, furniture; pipeline/world/README.md, the `rootward-world-art` skill):
+  `scripts/world.sh new <id> --kind building --footprint 5x5 --what "..."`, then `scripts/world.sh make --only <id>`
+  (Blender blockout, ComfyUI restyle, cut; it stops and starts ComfyUI itself), then look at `Concept/v0.3/world/<id>.png`.
+- Lanternroot's people (pipeline/animation/README.md, ADR-0063): `scripts/cast.sh turns|restyle|sheets|check`.
+- Lanternroot's older pixel art (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh` (hand-placed parts and props,
+  code-made ground tiles at the world's tile, portraits, then a lint that fails soft alpha or off-palette colours).
 - Screenshot the overworld: `ROOTWARD_LANTERNTOWN=town scripts/screenshot.sh res://tools/overworld_shot.tscn
   shots/overworld/town.png 50` (creator, wake, home, boots, code, town, square, talk; `-ja` for Japanese).
 - Assets (pipeline/README.md): `scripts/art.sh --only '<ids>'`, `scripts/audio.sh --only '<ids>'` (`--reprocess` for

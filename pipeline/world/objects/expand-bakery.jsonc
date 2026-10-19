@@ -1,3 +1,4 @@
+// ChatGPT ImageGen source in the V4 Lanternroot building camera.
 {
   "id": "expand-bakery",
   "kind": "building",
@@ -14,7 +15,7 @@
     "window": "glow"
   },
   "source": {
-    "image": "pipeline/world/expansion/imagegen/expand-bakery.png"
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-bakery-source.png"
   },
   "above": 0
 }

@@ -1,0 +1,15 @@
+{
+  "frame": [64, 96],
+  "ground": 93,
+  "tile": 40,
+  "rows": ["down", "up", "left", "right"],
+  "columns": ["stop", "idle_in", "idle_blink", "idle_out", "walk_0", "walk_1", "walk_2", "walk_3", "walk_4", "walk_5", "walk_6", "walk_7"],
+  "animations": {
+    "idle": {"frames": [0, 1, 2, 3], "durations": [0.55, 0.5, 0.09, 0.46]},
+    "walk": {"frames": [4, 5, 6, 7, 8, 9, 10, 11], "fps": 12.0}
+  },
+  "models": {
+    "male": {"file": "male.png"},
+    "female": {"file": "female.png"}
+  }
+}

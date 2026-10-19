@@ -1,9 +1,23 @@
 {
- "barrel": {
+ "anvil": {
   "frames": 1,
   "size": [
    16,
    16
+  ]
+ },
+ "banner": {
+  "frames": 1,
+  "size": [
+   16,
+   40
+  ]
+ },
+ "barrel": {
+  "frames": 1,
+  "size": [
+   16,
+   20
   ]
  },
  "bed": {
@@ -17,7 +31,7 @@
   "frames": 1,
   "size": [
    32,
-   16
+   20
   ]
  },
  "bookshelf": {
@@ -25,6 +39,27 @@
   "size": [
    32,
    32
+  ]
+ },
+ "bridge": {
+  "frames": 1,
+  "size": [
+   40,
+   24
+  ]
+ },
+ "cabbages": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "cart": {
+  "frames": 1,
+  "size": [
+   32,
+   24
   ]
  },
  "chair": {
@@ -38,7 +73,7 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
   ]
  },
  "desk": {
@@ -59,10 +94,24 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
+  ]
+ },
+ "fence_v": {
+  "frames": 1,
+  "size": [
+   16,
+   20
   ]
  },
  "fencepost": {
+  "frames": 1,
+  "size": [
+   16,
+   20
+  ]
+ },
+ "flowerbed": {
   "frames": 1,
   "size": [
    16,
@@ -73,17 +122,31 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
+  ]
+ },
+ "gate": {
+  "frames": 1,
+  "size": [
+   16,
+   20
   ]
  },
  "lamppost": {
   "frames": 2,
   "size": [
    16,
-   32
+   40
   ]
  },
  "lantern": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "lilypad": {
   "frames": 1,
   "size": [
    16,
@@ -94,7 +157,7 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
   ]
  },
  "mushrooms": {
@@ -118,11 +181,18 @@
    24
   ]
  },
+ "reeds": {
+  "frames": 1,
+  "size": [
+   16,
+   20
+  ]
+ },
  "rock": {
   "frames": 1,
   "size": [
    16,
-   16
+   20
   ]
  },
  "rug": {
@@ -136,10 +206,31 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
   ]
  },
  "sign": {
+  "frames": 1,
+  "size": [
+   16,
+   20
+  ]
+ },
+ "signpost": {
+  "frames": 1,
+  "size": [
+   16,
+   40
+  ]
+ },
+ "step": {
+  "frames": 1,
+  "size": [
+   16,
+   16
+  ]
+ },
+ "stonewall": {
   "frames": 1,
   "size": [
    16,
@@ -157,7 +248,7 @@
   "frames": 1,
   "size": [
    16,
-   16
+   20
   ]
  },
  "tuft": {
@@ -171,6 +262,13 @@
   "frames": 1,
   "size": [
    16,
+   16
+  ]
+ },
+ "woodpile": {
+  "frames": 1,
+  "size": [
+   32,
    16
   ]
  }

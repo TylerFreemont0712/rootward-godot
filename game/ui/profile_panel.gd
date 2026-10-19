@@ -19,7 +19,11 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 	var avatar := OptionButton.new()
 	avatar.add_item(Text.t("Vesper"))
 	avatar.add_item(Text.t("Emberfox"))
-	avatar.selected = 1 if current.get("avatar", "vesper") == "emberfox" else 0
+	avatar.add_item(Text.t("VesperV2.0"))
+	avatar.add_item(Text.t("Vesper 1.5"))
+	var avatar_ids: Array[String] = ["vesper", "emberfox", "vesper-v2", "vesper-v1-5"]
+	var selected_avatar := avatar_ids.find(String(current.get("avatar", "vesper")))
+	avatar.selected = maxi(selected_avatar, 0)
 	var error := Ui.tint(Ui.label("", "Muted", true), UiTheme.FAIL)
 	var save := func() -> void:
 		var result := Game.profiles.create(name.text) if id == "" else Game.profiles.rename(id, name.text)
@@ -28,7 +32,7 @@ static func editor(id: String, required: bool, done: Callable, cancel: Callable)
 			return
 		var player: Dictionary = result.profile
 		player.preferred_language = "ja" if language.selected == 1 else "en"
-		player.avatar = "emberfox" if avatar.selected == 1 else "vesper"
+		player.avatar = avatar_ids[avatar.selected]
 		if not Game.profiles.save_profile(player) or not Game.select_profile(String(player.id)):
 			error.text = Text.t("Could not save this player.")
 			return

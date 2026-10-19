@@ -1,0 +1,15 @@
+// The carrot: a Bag and pickup icon (pipeline/world/README.md). Stepped down to a tip, its greens on top.
+{
+ "id": "item-carrot",
+ "kind": "prop",
+ "what": "a single orange carrot with a bushy green top, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"root": "cloth_orange", "greens": "leaf"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.27, 0.27, 0.36], "size": [0.46, 0.46, 0.3], "ramp": "root"},
+  {"shape": "cylinder", "at": [0.33, 0.33, 0.14], "size": [0.34, 0.34, 0.24], "ramp": "root", "shade": 1},
+  {"shape": "cylinder", "at": [0.4, 0.4, 0], "size": [0.2, 0.2, 0.16], "ramp": "root", "shade": 2},
+  {"shape": "cone", "at": [0.25, 0.25, 0.64], "size": [0.5, 0.5, 0.24], "ramp": "greens"},
+  {"shape": "ball", "at": [0.15, 0.3, 0.6], "size": [0.24, 0.4, 0.26], "ramp": "greens", "shade": 1}
+ ]
+}

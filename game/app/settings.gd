@@ -10,7 +10,7 @@ const PATH := "user://settings.json"
 const DEFAULT_FONT := "cinzel"
 const FONT_REVISION := 2
 const CODE_SPEEDS: Array[String] = ["off", "slow", "normal", "fast"]
-const CHARACTER_SKINS: Array[String] = ["vesper", "emberfox", "shibu", "dummy"]
+const CHARACTER_SKINS: Array[String] = ["vesper", "vesper-v1-5", "vesper-v2", "emberfox", "shibu", "dummy"]
 ## Reference skins kept on this machine only (git-ignored, never shipped): each a folder with a skin.json.
 const LOCAL_SKINS := "res://characters/_local/"
 
@@ -36,6 +36,9 @@ static var frame_limit := Graphics.AUTO
 static var background_slowdown := true
 ## A small frame-rate readout in the corner.
 static var show_fps := false
+## Lanternroot Studio, the town's editor (ADR-0066): F2 edits, F1 plays. It exists only when the game runs from the
+## repository (StudioFiles.can_write); ROOTWARD_STUDIO=1 turns it on for one launch without changing this.
+static var studio := false
 ## The interface's size, one of Graphics.UI_SCALES (0.88 is how the layouts were drawn).
 static var ui_scale := 0.88
 ## Which graphics device draws (Graphics.GPU_INDEXES) and with which renderer (Graphics.RENDERERS); both take a restart.
@@ -77,6 +80,7 @@ static func load_file(from := PATH) -> void:
 	vsync = String(Graphics.choose(values.get("vsync"), Graphics.VSYNC_MODES, vsync))
 	frame_limit = int(Graphics.choose(values.get("frame_limit"), Graphics.FRAME_LIMITS, frame_limit))
 	background_slowdown = _bool(values, "background_slowdown", background_slowdown)
+	studio = _bool(values, "studio", studio)
 	show_fps = _bool(values, "show_fps", show_fps)
 	ui_scale = float(Graphics.choose(values.get("ui_scale"), Graphics.UI_SCALES, ui_scale))
 	gpu_index = int(Graphics.choose(values.get("gpu_index"), Graphics.GPU_INDEXES, gpu_index))
@@ -144,6 +148,7 @@ static func save_file() -> void:
 		"frame_limit": frame_limit,
 		"background_slowdown": background_slowdown,
 		"show_fps": show_fps,
+		"studio": studio,
 		"ui_scale": ui_scale,
 		"gpu_index": gpu_index,
 		"renderer": renderer,

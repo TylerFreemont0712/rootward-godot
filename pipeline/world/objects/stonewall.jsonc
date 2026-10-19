@@ -1,0 +1,29 @@
+// Thin modular geometry. Grid depth is divided by .6 for the town camera; all joins meet at cell center.
+{
+ "id": "stonewall",
+ "kind": "prop",
+ "what": "a thin low grey dry stone boundary wall with fitted stone courses",
+ "footprint": [1, 1],
+ "ramps": {"wall": "stone"},
+ "restyle": false,
+ "parts": [
+  {"shape": "box", "at": [0, 0.7, 0.0], "size": [1, 0.26667, 0.87295], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 0.0], "size": [0.34, 0.33333, 0.16827], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.34, 0.66667, 0.0], "size": [0.38, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.72, 0.66667, 0.0], "size": [0.28, 0.33333, 0.16827], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0, 0.66667, 0.17775], "size": [0.19, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.19, 0.66667, 0.17775], "size": [0.32, 0.33333, 0.16827], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.51, 0.66667, 0.17775], "size": [0.29, 0.33333, 0.16827], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.8, 0.66667, 0.17775], "size": [0.2, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0, 0.66667, 0.3555], "size": [0.34, 0.33333, 0.16827], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.34, 0.66667, 0.3555], "size": [0.38, 0.33333, 0.16827], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.72, 0.66667, 0.3555], "size": [0.28, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0, 0.66667, 0.53325], "size": [0.19, 0.33333, 0.16827], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0.19, 0.66667, 0.53325], "size": [0.32, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.51, 0.66667, 0.53325], "size": [0.29, 0.33333, 0.16827], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.8, 0.66667, 0.53325], "size": [0.2, 0.33333, 0.16827], "ramp": "wall", "shade": 0},
+  {"shape": "box", "at": [0, 0.66667, 0.711], "size": [0.34, 0.33333, 0.16827], "ramp": "wall", "shade": 1},
+  {"shape": "box", "at": [0.34, 0.66667, 0.711], "size": [0.38, 0.33333, 0.16827], "ramp": "wall", "shade": 2},
+  {"shape": "box", "at": [0.72, 0.66667, 0.711], "size": [0.28, 0.33333, 0.16827], "ramp": "wall", "shade": 0}
+ ]
+}

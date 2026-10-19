@@ -1,0 +1,12 @@
+// A leafy house plant in a pot.
+{
+ "id": "plant",
+ "kind": "furniture",
+ "what": "a leafy green house plant in a terracotta pot",
+ "footprint": [1, 1],
+ "ramps": {"pot": "cloth_coral", "leaves": "leaf"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.28, 0.28, 0.0], "size": [0.44, 0.44, 0.42], "ramp": "pot"},
+  {"shape": "ball", "at": [0.1, 0.18, 0.35], "size": [0.8, 0.64, 0.95], "ramp": "leaves"}
+ ]
+}

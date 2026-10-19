@@ -1,0 +1,23 @@
+// Adopted from ow-tree-oak2 (pipeline/pixel/manifest.json): its render re-cut at this world's scale.
+{
+ "id": "oak2",
+ "kind": "tree",
+ "what": "round leafy green oak tree with a thick brown trunk",
+ "footprint": [
+  1,
+  1
+ ],
+ "pad": 1.0,
+ "above": 3.0,
+ "ramps": {
+  "leaf": "leaf",
+  "grass": "grass",
+  "pine": "pine",
+  "wood": "wood",
+  "dirt": "dirt"
+ },
+ "source": {
+  "picture": "ow-tree-oak",
+  "pick": 0
+ }
+}

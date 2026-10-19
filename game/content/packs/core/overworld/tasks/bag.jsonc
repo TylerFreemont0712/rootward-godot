@@ -1,0 +1,159 @@
+// The bag (Concept/v0.4/01, 5.6): Nym's bag holds stacks, {"item", "count"}. Stage 1 is add(bag, item), which puts one more
+// of an item in the bag: in its stack when it has one, else in a new stack. Stage 2 is remove(bag, item), which takes one
+// away, and a stack that reaches 0 goes. The game runs add when you pick something up and remove when you give it.
+{
+  "id": "bag",
+  "name": "The Bag",
+  "title": "A bag of your own",
+  "giver": "quartermaster",
+  "built_line": "Things you pick up go in your bag with your add().",
+  "entry": {"python": "add", "javascript": "add"},
+  "params": [
+    {"name": "bag", "meaning": "Your bag: a list of stacks. Each stack is a dictionary with \"item\" (what it holds) and \"count\" (how many), such as {\"item\": \"pear\", \"count\": 1}.", "example": "[{\"item\": \"pear\", \"count\": 2}]"},
+    {"name": "item", "meaning": "The name of what was picked up, such as \"apple\".", "example": "\"pear\""}
+  ],
+  "gives": {"meaning": "The bag, with one more of the item in it. A stack of that item grows by one; if there is none, a new stack of one is added.", "example": "[{\"item\": \"pear\", \"count\": 3}]"},
+  "words": {
+    "python": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in a list, in order.", "example": "for score in scores:\n    total += score"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if weather == \"rain\":\n    return \"umbrella\""},
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "pet == \"cat\""},
+      {"term": "+=", "meaning": "Adds to the number a name holds, and keeps the new number there.", "example": "score += 10"},
+      {"term": "-=", "meaning": "Takes from the number a name holds, and keeps the new number there.", "example": "lives -= 1"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""},
+      {"term": ".append", "meaning": "Adds one thing to the end of a list.", "example": "basket.append(\"pear\")"},
+      {"term": ".remove", "meaning": "Takes the first thing that matches out of a list.", "example": "basket.remove(\"pear\")"}
+    ],
+    "javascript": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in an array, in order.", "example": "for (const score of scores) {\n  total += score;\n}"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (weather === \"rain\") {\n  return \"umbrella\";\n}"},
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "pet === \"cat\""},
+      {"term": "+=", "meaning": "Adds to the number a name holds, and keeps the new number there.", "example": "score += 10;"},
+      {"term": "-=", "meaning": "Takes from the number a name holds, and keeps the new number there.", "example": "lives -= 1;"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"},
+      {"term": ".push", "meaning": "Adds one thing to the end of an array.", "example": "basket.push(\"pear\");"},
+      {"term": ".indexOf", "meaning": "Gives the place of a thing in an array, or -1 when it is not there.", "example": "basket.indexOf(\"pear\")"},
+      {"term": ".splice", "meaning": "Takes things out of an array, starting at a place: splice(place, how many).", "example": "basket.splice(2, 1);"}
+    ]
+  },
+  "starter": {"python": "bag.starter.py", "javascript": "bag.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def add(bag, item):",
+        "[look]    for stack in bag:",
+        "[look]        if stack[\"item\"] == item:",
+        "[look]            stack[\"count\"] {add_op} 1",
+        "[look]            {add_stop}",
+        "[new]    bag.append({\"item\": item, \"count\": 1})",
+        "    return bag",
+        "",
+        "[take]def remove(bag, item):",
+        "[take]    for stack in bag:",
+        "[take]        if stack[\"item\"] == item:",
+        "[take]            stack[\"count\"] {take_op} 1",
+        "[empty]            if stack[\"count\"] == 0:",
+        "[empty]                bag.remove(stack)",
+        "[take]            return bag",
+        "[take]    return bag"
+      ],
+      "javascript": [
+        "function add(bag, item) {",
+        "[look]  for (const stack of bag) {",
+        "[look]    if (stack.item === item) {",
+        "[look]      stack.count {add_op} 1;",
+        "[look]      {add_stop}",
+        "[look]    }",
+        "[look]  }",
+        "[new]  bag.push({ item: item, count: 1 });",
+        "  return bag;",
+        "}",
+        "",
+        "[take]function remove(bag, item) {",
+        "[take]  for (const stack of bag) {",
+        "[take]    if (stack.item === item) {",
+        "[take]      stack.count {take_op} 1;",
+        "[empty]      if (stack.count === 0) {",
+        "[empty]        bag.splice(bag.indexOf(stack), 1);",
+        "[empty]      }",
+        "[take]      return bag;",
+        "[take]    }",
+        "[take]  }",
+        "[take]  return bag;",
+        "[take]}"
+      ]
+    },
+    "slots": {
+      "add_op": {"label": "the count", "choices": ["-=", "+="]},
+      "add_stop": {
+        "label": "then",
+        "choices": [
+          {"label": "keep looking", "python": "pass", "javascript": "// keep looking"},
+          {"label": "stop here", "python": "return bag", "javascript": "return bag;"}
+        ]
+      },
+      "take_op": {"label": "the count", "choices": ["+=", "-="], "stage": 1}
+    },
+    "toggles": {
+      "look": {"label": "If this stack is the item"},
+      "new": {"label": "Otherwise, a new stack"},
+      "take": {"label": "Find the item and take one away", "stage": 1},
+      "empty": {"label": "Take an empty stack out", "stage": 1}
+    },
+    "start": {"slots": {"add_op": 0, "add_stop": 0, "take_op": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "bag-built",
+      "goal": "Put one more of an item in the bag: in its own stack if it already has one, else in a new stack.",
+      "judge": "bag_add",
+      "mutates": 0,
+      "cases": [
+        {"args": [[], "apple"], "want": [{"item": "apple", "count": 1}], "say": "an empty bag, and an apple", "edge": true},
+        {"args": [[{"item": "apple", "count": 1}], "apple"], "want": [{"item": "apple", "count": 2}], "say": "one apple in the bag, and another apple"},
+        {"args": [[{"item": "apple", "count": 2}], "cabbage"], "want": [{"item": "apple", "count": 2}, {"item": "cabbage", "count": 1}], "say": "two apples in the bag, and a cabbage"},
+        {"args": [[{"item": "apple", "count": 1}, {"item": "cabbage", "count": 2}, {"item": "carrot", "count": 1}], "cabbage"], "want": [{"item": "apple", "count": 1}, {"item": "cabbage", "count": 3}, {"item": "carrot", "count": 1}], "say": "three stacks, and the cabbage in the middle"}
+      ],
+      "hints": [
+        "Your bag is a list of stacks. Look at each stack's item: is any of them the item you were given?",
+        "When you find the stack with that item, what should happen to its count? Look at the words += and -=.",
+        "If no stack has the item, the bag needs a new stack at its end. Which list word adds something to the end?"
+      ]
+    },
+    {
+      "flag": "bag-remove",
+      "goal": "Take one of an item out of the bag, and take its stack out once its count reaches 0.",
+      "unlocked_by": {"flag": "soup-asked"},
+      "entry": {"python": "remove", "javascript": "remove"},
+      "params": [
+        {"name": "bag", "meaning": "Your bag: a list of stacks. Each stack is a dictionary with \"item\" (what it holds) and \"count\" (how many), such as {\"item\": \"pear\", \"count\": 1}.", "example": "[{\"item\": \"pear\", \"count\": 2}]"},
+        {"name": "item", "meaning": "The name of what is given away, such as \"cabbage\".", "example": "\"pear\""}
+      ],
+      "gives": {"meaning": "The bag, with one fewer of the item in it. A stack whose count reaches 0 is taken out. An item that is not in the bag leaves the bag as it was.", "example": "[{\"item\": \"pear\", \"count\": 1}]"},
+      "mutates": 0,
+      "judge": "bag_remove",
+      "cases": [
+        {"args": [[{"item": "cabbage", "count": 3}], "cabbage"], "want": [{"item": "cabbage", "count": 2}], "say": "three cabbages, and one cabbage taken away"},
+        {"args": [[{"item": "cabbage", "count": 1}, {"item": "apple", "count": 2}], "cabbage"], "want": [{"item": "apple", "count": 2}], "say": "one cabbage and two apples, and the cabbage taken away"},
+        {"args": [[{"item": "apple", "count": 2}], "pumpkin"], "want": [{"item": "apple", "count": 2}], "say": "two apples, and a pumpkin that is not there", "edge": true},
+        {"args": [[], "apple"], "want": [], "say": "an empty bag, and an apple that is not there", "edge": true}
+      ],
+      "hints": [
+        "Taking away is the opposite of adding. Which way should the count go?",
+        "A stack with nothing left in it should not stay in the bag. What number would it hold when it is empty?",
+        "Python lists have remove, which takes a thing out. JavaScript arrays have splice, which needs the place of the thing, and indexOf can find that place."
+      ]
+    }
+  ],
+  "advice": {
+    "not-list": "Give back the whole bag: a list of stacks. Yours gave back {got}.",
+    "not-stack": "One of the stacks is {got}. Every stack needs an \"item\" (a word) and a \"count\" (a whole number).",
+    "bad-count": "The {name} stack has a count of {got}. A stack holds 1 or more, or it should not be in the bag.",
+    "two-stacks": "The bag holds {name} in two stacks. Each item has one stack, and its count grows.",
+    "no-more": "Adding {name} should make {want} in the bag, but it makes {got}.",
+    "no-less": "Taking {name} away should leave {want} in the bag, but it leaves {got}.",
+    "zero-stack": "The {name} stack is down to {got}, and an empty stack should leave the bag.",
+    "changed-other": "Only the item you were given should change. {name} should be {want}, but it is {got}.",
+    "invented": "That item wasn't in the bag, so nothing should change. {name} should stay at {want}, but it is {got}."
+  }
+}

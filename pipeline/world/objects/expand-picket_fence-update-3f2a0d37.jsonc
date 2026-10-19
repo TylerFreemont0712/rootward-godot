@@ -1,0 +1,153 @@
+// Replacement variant; original asset retained for comparison.
+{
+  "id": "expand-picket_fence-update-3f2a0d37",
+  "kind": "prop",
+  "what": "a neat white picket fence with pointed slats and end posts with polished pixel details in a cozy woodland village style",
+  "footprint": [
+    1,
+    1
+  ],
+  "ramps": {
+    "wood": "wood",
+    "plaster": "plaster",
+    "steel": "steel",
+    "stone": "stone"
+  },
+  "parts": [
+    {
+      "shape": "box",
+      "at": [
+        0.02,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0.84,
+        0.4,
+        0
+      ],
+      "size": [
+        0.14,
+        0.2,
+        1.05
+      ],
+      "ramp": "wood",
+      "shade": 2
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.37,
+        0.25
+      ],
+      "size": [
+        1,
+        0.1,
+        0.11
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "box",
+      "at": [
+        0,
+        0.37,
+        0.66
+      ],
+      "size": [
+        1,
+        0.1,
+        0.11
+      ],
+      "ramp": "wood",
+      "shade": 1
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.12,
+        0.39,
+        0.28
+      ],
+      "size": [
+        0.09,
+        0.07,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.3,
+        0.39,
+        0.28
+      ],
+      "size": [
+        0.09,
+        0.07,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.48,
+        0.39,
+        0.28
+      ],
+      "size": [
+        0.09,
+        0.07,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.66,
+        0.39,
+        0.28
+      ],
+      "size": [
+        0.09,
+        0.07,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    },
+    {
+      "shape": "cone",
+      "at": [
+        0.84,
+        0.39,
+        0.28
+      ],
+      "size": [
+        0.09,
+        0.07,
+        0.63
+      ],
+      "ramp": "plaster",
+      "shade": 0
+    }
+  ]
+}

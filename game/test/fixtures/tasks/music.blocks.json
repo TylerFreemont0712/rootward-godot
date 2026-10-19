@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"field": 1}, "toggles": ["list"]},
+    {"slots": {"field": 1, "op": 1, "wrap": 1}, "toggles": ["list", "next"]}
+  ]
+}

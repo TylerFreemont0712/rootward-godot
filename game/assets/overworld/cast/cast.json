@@ -1,0 +1,264 @@
+{
+ "_doc": "Made by pipeline/animation/cast.py (ADR-0063); do not edit. A look with a sheet here draws from it.",
+ "columns": [
+  "stop",
+  "idle"
+ ],
+ "frame": [
+  64,
+  96
+ ],
+ "ground": 93,
+ "rows": [
+  "down",
+  "up",
+  "left",
+  "right"
+ ],
+ "sheets": {
+  "archivist": {
+   "file": "archivist.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_brown",
+     "hair": "hair_brown",
+     "main": "cloth_red",
+     "second": "cloth_cream",
+     "skin": "skin_porcelain"
+    },
+    "face": "face/glasses",
+    "hair": "hair/braid",
+    "item": "item/book",
+    "outfit": "outfit/robe"
+   }
+  },
+  "artificer": {
+   "file": "artificer.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_purple",
+     "hair": "hair_violet",
+     "main": "cloth_purple",
+     "second": "gold"
+    },
+    "hair": "hair/short",
+    "hat": "hat/hood",
+    "item": "item/book",
+    "outfit": "outfit/robe"
+   }
+  },
+  "compiler": {
+   "file": "compiler.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_black",
+     "hair": "hair_red",
+     "main": "cloth_brown",
+     "second": "cloth_blue",
+     "skin": "skin_tan"
+    },
+    "face": "face/beard",
+    "hair": "hair/spiky",
+    "outfit": "outfit/vest"
+   }
+  },
+  "guard": {
+   "file": "guard.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_yellow",
+     "hair": "hair_black",
+     "main": "cloth_blue",
+     "skin": "skin_tan"
+    },
+    "hair": "hair/short",
+    "hat": "hat/kettle",
+    "outfit": "outfit/armor"
+   }
+  },
+  "guildmaster": {
+   "file": "guildmaster.png",
+   "look": {
+    "colours": {
+     "accent": "gold",
+     "hair": "hair_silver",
+     "main": "cloth_teal",
+     "second": "cloth_grey"
+    },
+    "face": "face/beard",
+    "hair": "hair/short",
+    "outfit": "outfit/coat"
+   }
+  },
+  "innkeeper": {
+   "file": "innkeeper.png",
+   "look": {
+    "colours": {
+     "hair": "hair_auburn",
+     "main": "cloth_black",
+     "second": "cloth_white",
+     "skin": "skin_porcelain"
+    },
+    "hair": "hair/bun",
+    "outfit": "outfit/dress"
+   }
+  },
+  "keeper": {
+   "file": "keeper.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_orange",
+     "hair": "hair_auburn",
+     "main": "cloth_brown",
+     "second": "cloth_green"
+    },
+    "hair": "hair/long",
+    "hat": "hat/leaves",
+    "item": "item/staff",
+    "outfit": "outfit/robe"
+   }
+  },
+  "necromancer": {
+   "file": "necromancer.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_black",
+     "hair": "hair_silver",
+     "main": "cloth_black",
+     "second": "cloth_green",
+     "skin": "skin_porcelain"
+    },
+    "hair": "hair/long",
+    "hat": "hat/hood",
+    "item": "item/staff",
+    "outfit": "outfit/robe"
+   }
+  },
+  "oracle": {
+   "file": "oracle.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_white",
+     "hair": "hair_blonde",
+     "main": "cloth_white",
+     "second": "gold"
+    },
+    "hair": "hair/long",
+    "hat": "hat/hood",
+    "item": "item/lantern",
+    "outfit": "outfit/robe"
+   }
+  },
+  "pell": {
+   "file": "pell.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_red",
+     "hair": "hair_ginger",
+     "main": "cloth_cream",
+     "second": "cloth_brown"
+    },
+    "hair": "hair/spiky",
+    "hat": "hat/goggles",
+    "outfit": "outfit/tunic"
+   }
+  },
+  "pip": {
+   "file": "pip.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_brown",
+     "hair": "hair_blonde",
+     "main": "cloth_teal",
+     "second": "cloth_cream"
+    },
+    "hair": "hair/fluffy",
+    "outfit": "outfit/coat"
+   }
+  },
+  "player": {
+   "file": "player.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_orange",
+     "hair": "hair_brown",
+     "main": "cloth_teal",
+     "second": "cloth_cream",
+     "skin": "skin_peach"
+    },
+    "hair": "hair/short",
+    "outfit": "outfit/tunic"
+   }
+  },
+  "quartermaster": {
+   "file": "quartermaster.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_brown",
+     "hair": "hair_silver",
+     "main": "cloth_green",
+     "second": "cloth_cream"
+    },
+    "face": "face/beard",
+    "hair": "hair/short",
+    "hat": "hat/wide",
+    "outfit": "outfit/vest"
+   }
+  },
+  "sergeant": {
+   "file": "sergeant.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_red",
+     "hair": "hair_silver",
+     "main": "cloth_grey",
+     "skin": "skin_peach"
+    },
+    "hair": "hair/spiky",
+    "outfit": "outfit/armor"
+   }
+  },
+  "shade": {
+   "file": "shade.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_green",
+     "main": "cloth_green",
+     "second": "cloth_black"
+    },
+    "face": "face/mask",
+    "hair": "hair/short",
+    "hat": "hat/hood",
+    "outfit": "outfit/robe"
+   }
+  },
+  "summoner": {
+   "file": "summoner.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_blue",
+     "hair": "hair_silver",
+     "main": "cloth_purple",
+     "second": "cloth_white",
+     "skin": "skin_porcelain"
+    },
+    "hair": "hair/long",
+    "item": "item/staff",
+    "outfit": "outfit/robe"
+   }
+  },
+  "warden": {
+   "file": "warden.png",
+   "look": {
+    "colours": {
+     "accent": "cloth_orange",
+     "main": "cloth_navy",
+     "metal": "cloth_black"
+    },
+    "hat": "hat/visor",
+    "outfit": "outfit/armor"
+   }
+  }
+ },
+ "tile": 40
+}

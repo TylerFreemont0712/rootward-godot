@@ -1,7 +1,59 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Seren builds the options page and its volume knob (v0.4, quest 6,
+// "Turn it up"): the options task, then the volume task, whose stage 2 is "past the ends". She offers it once the
+// lamps are lit.
 {
   "id": "summoner",
   "start": [
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "volume-clamped"
+          },
+          {
+            "flag": "volume-tried"
+          }
+        ]
+      },
+      "goto": "knob_done"
+    },
+    {
+      "if": {
+        "flag": "volume-clamped"
+      },
+      "goto": "go_try"
+    },
+    {
+      "if": {
+        "flag": "volume-built"
+      },
+      "goto": "past_ends"
+    },
+    {
+      "if": {
+        "flag": "options-built"
+      },
+      "goto": "volume_offer"
+    },
+    {
+      "if": {
+        "flag": "options-asked"
+      },
+      "goto": "page_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "lamps-lit"
+          },
+          {
+            "flag": "menu-opened"
+          }
+        ]
+      },
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-summoner"
@@ -19,7 +71,7 @@
           "text": "Hello, tinker. I'm Seren. I call little helper spirits when they're needed."
         },
         {
-          "text": "Tell them clearly what to do, and when to do it, and they'll never let you down."
+          "text": "Tell them clearly what to do and when. They'll never let you down."
         }
       ],
       "set": [
@@ -30,6 +82,198 @@
       "lines": [
         {
           "text": "My helpers are resting. Even spirits need sleep."
+        }
+      ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker. Can you hear it? The bells, the water, the gate, the wind."
+        },
+        {
+          "text": "In Lanternroot every sound is as loud as it wants to be. That is very loud."
+        },
+        {
+          "text": "I can hear a cabbage thinking.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "I need a knob. A page where sounds turn up and down. You would build the page."
+        }
+      ],
+      "set": [
+        "met-summoner"
+      ],
+      "choices": [
+        {
+          "text": "I'll build it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "A page is a list of rows. Each row is one thing to turn, with a name you choose."
+        },
+        {
+          "text": "Name them kindly. My spirits answer to anything kind."
+        }
+      ],
+      "set": [
+        "options-asked"
+      ],
+      "open": "task:options"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "The spirits can wait. Even the loud ones."
+        }
+      ]
+    },
+    "page_waits": {
+      "lines": [
+        {
+          "text": "Your page has no rows yet. A page with no rows is a very quiet wall."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's build it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "volume_offer": {
+      "lines": [
+        {
+          "text": "Your page stands, and it is lovely. But a slider has to know how loud each notch is."
+        },
+        {
+          "text": "There are eleven notches, from none to all. Say how loud each one makes the sound."
+        },
+        {
+          "text": "Zero should be silent. Ten should be as loud as it gets.",
+          "speaker": "hotaru"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let me write it.",
+          "goto": "teach_volume"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach_volume": {
+      "lines": [
+        {
+          "text": "A notch goes in. A loudness comes out."
+        },
+        {
+          "text": "Small for the low notches, big for the high ones."
+        }
+      ],
+      "open": "task:volume"
+    },
+    "past_ends": {
+      "lines": [
+        {
+          "text": "Your knob sings! Now a secret: some pads can push a slider past its ends."
+        },
+        {
+          "text": "Below none. Above all. Your knob must still make sense out there."
+        },
+        {
+          "text": "Louder than loud? That sounds like trouble.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "It is. So we must catch it."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's catch it.",
+          "goto": "teach_ends"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach_ends": {
+      "lines": [
+        {
+          "text": "No sound should be quieter than silence, or louder than full."
+        }
+      ],
+      "open": "task:volume"
+    },
+    "go_try": {
+      "lines": [
+        {
+          "text": "Both ends hold. Now go and use it: open your menu, choose Options, and move a slider."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my knob.",
+          "goto": "teach_ends"
+        },
+        {
+          "text": "Change my page.",
+          "goto": "teach"
+        },
+        {
+          "text": "Thanks, Seren.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "knob_done": {
+      "lines": [
+        {
+          "text": "Now Lanternroot has a volume of its own. I can finally hear myself think.",
+          "mood": "happy"
+        },
+        {
+          "text": "I can hear you thinking. It is mostly 'hmm'.",
+          "speaker": "hotaru"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my knob.",
+          "goto": "teach_ends"
+        },
+        {
+          "text": "Change my page.",
+          "goto": "teach"
+        },
+        {
+          "text": "Bye, Seren.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "The spirits say thank you. In their way, which is quietly."
         }
       ]
     }

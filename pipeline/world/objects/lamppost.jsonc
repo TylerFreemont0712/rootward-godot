@@ -1,0 +1,20 @@
+// A street lamp (14 placements), taller than a person. Two frames side by side: the glass dark, then lit (the game
+// shows the lit one at night and the dark one for the lamp lane before lesson 3).
+{
+ "id": "lamppost",
+ "kind": "prop",
+ "what": "a tall iron street lamp with a glowing glass lantern on top",
+ "footprint": [1, 1],
+ "ramps": {"iron": "steel", "light": "glow"},
+ "unlit": {"light": "steel"},
+ "parts": [
+  {"shape": "box", "at": [0.24, 0.24, 0], "size": [0.52, 0.52, 0.16], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.32, 0.32, 0.16], "size": [0.36, 0.36, 0.2], "ramp": "iron", "shade": 1},
+  {"shape": "cylinder", "at": [0.4, 0.4, 0.36], "size": [0.2, 0.2, 1.3], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.26, 0.26, 1.64], "size": [0.48, 0.48, 0.1], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.3, 0.3, 1.74], "size": [0.4, 0.4, 0.46], "ramp": "light", "shade": 1},
+  {"shape": "box", "at": [0.26, 0.26, 2.2], "size": [0.48, 0.48, 0.08], "ramp": "iron", "shade": 2},
+  {"shape": "hip", "at": [0.22, 0.22, 2.28], "size": [0.56, 0.56, 0.2], "ramp": "iron", "shade": 2},
+  {"shape": "ball", "at": [0.43, 0.43, 2.46], "size": [0.14, 0.14, 0.12], "ramp": "iron", "shade": 1}
+ ]
+}

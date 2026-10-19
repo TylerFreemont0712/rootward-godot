@@ -1,0 +1,15 @@
+// A washing line between two posts for one tile (catalog only so far), with clothes pegged on it.
+{
+ "id": "laundry",
+ "kind": "prop",
+ "what": "a washing line strung between two wooden posts with a red shirt and a blue cloth pegged on it",
+ "footprint": [1, 1],
+ "ramps": {"posts": "wood", "line": "cloth_white", "shirt": "cloth_red", "cloth": "cloth_blue"},
+ "parts": [
+  {"shape": "box", "at": [0.02, 0.45, 0], "size": [0.1, 0.1, 1.5], "ramp": "posts"},
+  {"shape": "box", "at": [0.88, 0.45, 0], "size": [0.1, 0.1, 1.5], "ramp": "posts"},
+  {"shape": "box", "at": [0.06, 0.48, 1.38], "size": [0.88, 0.04, 0.04], "ramp": "line"},
+  {"shape": "box", "at": [0.16, 0.46, 0.92], "size": [0.32, 0.06, 0.46], "ramp": "shirt"},
+  {"shape": "box", "at": [0.56, 0.46, 1.0], "size": [0.28, 0.06, 0.38], "ramp": "cloth"}
+ ]
+}

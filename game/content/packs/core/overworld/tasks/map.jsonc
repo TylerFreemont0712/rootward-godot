@@ -1,0 +1,159 @@
+// The map (Concept/v0.4/01, 5.7): Pell's minimap. Stage 1 gives every kind of ground its colour (the minimap is drawn in
+// them), stage 2 says which place a cell is in (the place's name shows under the minimap, and the full map's labels).
+{
+  "id": "map",
+  "name": "The Map",
+  "title": "Pell's little map",
+  "giver": "pell",
+  "built_line": "The minimap is drawn in your map_colour() colours.",
+  "entry": {"python": "map_colour", "javascript": "mapColour"},
+  "params": [
+    {"name": "ground", "meaning": "The kind of map cell, as text: a ground such as \"grass\", \"water\" or \"path\", or \"building\", \"tree\" or \"thing\" (any other solid prop).", "example": "\"water\""}
+  ],
+  "gives": {"meaning": "A colour's name, as text: green, dark green, light green, blue, light blue, brown, tan, grey, dark grey, white, yellow, orange, red, pink, purple or black."},
+  "words": {
+    "python": [
+      {"term": "{}", "meaning": "Makes a dictionary: pairs of a name and its value, in braces, with a colon between each name and value and a comma between the pairs.", "example": "pets = {\"cat\": \"meow\", \"cow\": \"moo\"}"},
+      {"term": "[]", "meaning": "Looks up the value for one name in a dictionary, when the name is in square brackets after it.", "example": "pets[\"cow\"]"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "{}", "meaning": "Makes an object: pairs of a name and its value, in braces, with a colon between each name and value and a comma between the pairs.", "example": "const pets = {cat: \"meow\", cow: \"moo\"};"},
+      {"term": "[]", "meaning": "Looks up the value for one name in an object, when the name is in square brackets after it.", "example": "pets[\"cow\"]"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "map.starter.py", "javascript": "map.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def map_colour(ground):",
+        "    if ground == \"water\": return {water_colour}",
+        "    if ground == \"path\": return {path_colour}",
+        "    if ground == \"building\": return {building_colour}",
+        "    if ground == \"grass\": return {grass_colour}",
+        "    if ground == \"tree\": return {tree_colour}",
+        "    return {other_colour}",
+        "",
+        "def place_of(x, y, places):",
+        "[look]    for place in places:",
+        "[look]        if place[\"x\"] <= x {right_edge} place[\"x\"] + place[\"w\"] and place[\"y\"] <= y {right_edge} place[\"y\"] + place[\"h\"]:",
+        "[look]            return place[\"name\"]",
+        "    return \"\""
+      ],
+      "javascript": [
+        "function mapColour(ground) {",
+        "  if (ground === \"water\") return {water_colour};",
+        "  if (ground === \"path\") return {path_colour};",
+        "  if (ground === \"building\") return {building_colour};",
+        "  if (ground === \"grass\") return {grass_colour};",
+        "  if (ground === \"tree\") return {tree_colour};",
+        "  return {other_colour};",
+        "}",
+        "",
+        "function placeOf(x, y, places) {",
+        "[look]  for (const place of places) {",
+        "[look]    if (place.x <= x && x {right_edge} place.x + place.w && place.y <= y && y {right_edge} place.y + place.h) {",
+        "[look]      return place.name;",
+        "[look]    }",
+        "[look]  }",
+        "  return \"\";",
+        "}"
+      ]
+    },
+    "slots": {
+      "water_colour": {"label": "water", "choices": ["\"green\"", "\"blue\"", "\"light blue\""]},
+      "path_colour": {"label": "path", "choices": ["\"grey\"", "\"tan\"", "\"brown\""]},
+      "building_colour": {"label": "building", "choices": ["\"grey\"", "\"dark grey\"", "\"brown\""]},
+      "grass_colour": {"label": "grass", "choices": ["\"dark green\"", "\"green\"", "\"light green\""]},
+      "tree_colour": {"label": "tree", "choices": ["\"green\"", "\"dark green\"", "\"brown\""]},
+      "other_colour": {"label": "everything else", "choices": ["\"grey\"", "\"tan\"", "\"white\""]},
+      "right_edge": {"label": "the right edge", "choices": ["<=", "<"], "stage": 1}
+    },
+    "toggles": {
+      "look": {"label": "Look through each place", "stage": 1}
+    },
+    "start": {"slots": {}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "map-built",
+      "goal": "Give each kind of ground a colour name, so the minimap can draw it.",
+      "judge": "map_colours",
+      "cases": [
+        {"args": ["grass"], "say": "grass"},
+        {"args": ["flowers"], "say": "flowers"},
+        {"args": ["path"], "say": "a path"},
+        {"args": ["cobble"], "say": "cobbles"},
+        {"args": ["bridge"], "say": "a bridge"},
+        {"args": ["floor"], "say": "a floor"},
+        {"args": ["rug"], "say": "a rug"},
+        {"args": ["water"], "say": "water"},
+        {"args": ["hedge"], "say": "a hedge"},
+        {"args": ["wall"], "say": "a wall"},
+        {"args": ["void"], "say": "the void"},
+        {"args": ["building"], "say": "a building"},
+        {"args": ["tree"], "say": "a tree"},
+        {"args": ["thing"], "say": "any other solid thing"}
+      ],
+      "hints": [
+        "Every kind of ground gets one colour. Make a list of the grounds, and beside each one, the colour it should be.",
+        "Water, paths, cobbles and buildings each need a colour the grass does not have. Buildings also need one the path does not have.",
+        "A dictionary holds pairs: a ground on the left, its colour on the right. Look a ground up by putting it in square brackets."
+      ]
+    },
+    {
+      "flag": "map-places",
+      "goal": "Say which place a cell is in, or \"\" when it is in none.",
+      "unlocked_by": {"flag": "map-built"},
+      "entry": {"python": "place_of", "javascript": "placeOf"},
+      "params": [
+        {"name": "x", "meaning": "The cell's column: a whole number, 0 at the left.", "example": "4"},
+        {"name": "y", "meaning": "The cell's row: a whole number, 0 at the top.", "example": "1"},
+        {"name": "places", "meaning": "A list of places. Each is a box with a \"name\" (its text), and \"x\", \"y\", \"w\" and \"h\": the cell at its top-left corner, then its width and height in cells.", "example": "[{\"name\": \"Pond\", \"x\": 0, \"y\": 0, \"w\": 4, \"h\": 3}]"}
+      ],
+      "gives": {"meaning": "The \"name\" of the place the cell is in, as text. \"\" (nothing) when the cell is in no place."},
+      "words": {
+        "python": [
+          {"term": "for", "meaning": "Does the lines under it once for each thing in a list, one after another.", "example": "for pet in pets:"},
+          {"term": "and", "meaning": "Joins two questions. The answer is True only when both are True.", "example": "if rain and cold:"},
+          {"term": "<", "meaning": "Asks whether the first number is less than the second. <= asks the same, and also takes equal.", "example": "pet_age < 3"},
+          {"term": "+", "meaning": "Adds two numbers together.", "example": "total = 2 + 3"},
+          {"term": "[]", "meaning": "Looks up one thing in a dictionary by its name, in square brackets.", "example": "pets[\"cat\"]"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+        ],
+        "javascript": [
+          {"term": "for", "meaning": "Does the lines in its braces once for each thing in a list, one after another.", "example": "for (const pet of pets) {"},
+          {"term": "&&", "meaning": "Joins two questions. The answer is true only when both are true.", "example": "if (rain && cold) {"},
+          {"term": ".", "meaning": "Looks up one named part of an object, after a dot.", "example": "pet.name"},
+          {"term": "<", "meaning": "Asks whether the first number is less than the second. <= asks the same, and also takes equal.", "example": "pet_age < 3"},
+          {"term": "+", "meaning": "Adds two numbers together.", "example": "total = 2 + 3;"},
+          {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+        ]
+      },
+      "judge": "place_of",
+      "cases": [
+        {"args": [2, 1, [{"name": "Pond", "x": 0, "y": 0, "w": 4, "h": 3}]], "want": "Pond", "say": "a cell inside a place"},
+        {"args": [0, 0, [{"name": "Pond", "x": 0, "y": 0, "w": 4, "h": 3}]], "want": "Pond", "say": "the top-left corner of a place (inside, on the edge)", "edge": true},
+        {"args": [4, 1, [{"name": "Pond", "x": 0, "y": 0, "w": 4, "h": 3}]], "want": "", "say": "the right edge of a place (outside, on the edge)", "edge": true},
+        {"args": [9, 9, [{"name": "Pond", "x": 0, "y": 0, "w": 4, "h": 3}]], "want": "", "say": "a cell in no place"},
+        {"args": [5, 1, [{"name": "Pond", "x": 0, "y": 0, "w": 4, "h": 3}, {"name": "Mill", "x": 4, "y": 0, "w": 3, "h": 3}]], "want": "Mill", "say": "a cell in the second of two places"},
+        {"args": [1, 1, []], "want": "", "say": "an empty list of places", "edge": true}
+      ],
+      "hints": [
+        "Pell's map is a list of boxes. This function asks which box, if any, holds the cell.",
+        "Go through the boxes one at a time. For each one, ask whether the cell's column and its row are both inside it.",
+        "A box holds the cells from its left and top edges, up to but not including its right and bottom edges. Once you find one, give back its name. If you reach the end, give back \"\"."
+      ]
+    }
+  ],
+  "advice": {
+    "not-colour": "{name} gives {got}, which is not a colour name from the gives list. Choose one of those names, as text.",
+    "same-water": "Water is {got}, the same colour as the grass. Water should look different from the grass.",
+    "same-path": "{name} is {got}, the same colour as the grass. A path should stand out from the grass.",
+    "same-building": "{name} is {got}, the same colour as the grass or the path. A building should stand out from both.",
+    "wrong": "At {say}, the function gave back {got}, but it should give back {want}.",
+    "not-text": "At {say}, the function gave back {got}, which is not text. Give back a place's name as text, or \"\".",
+    "edge": "Look closely at {say}. A box holds its left and top edges, but not its right or bottom edges: check the cell is less than where the box stops."
+  }
+}

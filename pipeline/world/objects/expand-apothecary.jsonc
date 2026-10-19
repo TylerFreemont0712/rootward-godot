@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-apothecary",
+  "kind": "building",
+  "what": "a fantasy apothecary with a lavender roof and potion windows",
+  "footprint": [
+    6,
+    6
+  ],
+  "ramps": {
+    "walls": "plaster",
+    "roof": "cloth_lavender",
+    "trim": "wood",
+    "base": "stone",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-apothecary-source.png"
+  },
+  "door": [
+    3,
+    5
+  ]
+}

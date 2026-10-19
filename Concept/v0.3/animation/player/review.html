@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Lanternward character animations</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui;background:#171c22;color:#eadfce}
+body{max-width:1320px;margin:32px auto;padding:0 24px}h1{font-size:30px;margin-bottom:6px}h2{font-size:23px}
+p{color:#bfc9bf}a{color:#a2dbc7}button,select{font:inherit;padding:8px 18px;border:1px solid #657c70;background:#253c35;color:#fff;border-radius:8px}
+.controls{display:flex;gap:12px;align-items:center;margin:24px 0}.directions{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.card{padding:16px;border:1px solid #43574d;border-radius:12px;background:#22312b}.title{text-transform:capitalize;font-weight:600}
+.pair{display:flex;justify-content:space-around}.caption{text-align:center;font-size:13px;color:#b9c7bb}
+.figure{width:128px;height:192px;background-repeat:no-repeat;image-rendering:pixelated;position:relative;margin-top:12px}
+.figure:after{content:"";position:absolute;background:#10201965;border-radius:50%;width:54px;height:9px;left:37px;bottom:3px;z-index:-1}
+.section{margin:32px 0 42px}.comparison{display:flex;gap:20px;align-items:center;flex-wrap:wrap;padding:20px;border:1px solid #43574d;border-radius:12px;background:#22312b}
+.portrait{width:180px;image-rendering:auto}.sheet{max-width:100%;image-rendering:pixelated;border-radius:6px;background:#2c4135}
+details{margin-top:18px}summary{cursor:pointer;color:#a2dbc7}.muted{font-size:13px}
+</style>
+<h1>Lanternward character animations</h1>
+<p>Male and female tinkers, with walk and idle loops in four directions. The silver-haired officer uses the commander’s portrait as the character reference.</p>
+<div class="controls"><button id="toggle">Pause</button><label>Speed <select id="speed"><option value=".5">½×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label></div>
+<div id="players"></div>
+<section class="section"><h2>Commander · Sergeant Brisk</h2><div class="comparison" id="officer"><img class="portrait" alt="Commander's portrait" src="../../../../game/assets/overworld/portraits/sergeant.png"></div></section>
+<p class="muted">Artwork: built-in OpenAI imagegen · <a href="prompts.json">Generation prompts</a> · <a href="../../../../game/assets/overworld/player/player.json">Animation layout</a></p>
+<script>
+const root="../../../../game/assets/overworld/";
+const facings=["down","up","left","right"];
+const sprites=[];
+function figure(file,row,clip,officer=false){
+ const wrap=document.createElement("div");
+ const div=document.createElement("div");div.className="figure";
+ div.style.backgroundImage='url("'+root+file+'")';
+ div.style.backgroundSize=(officer?256:1536)+"px 768px";
+ div.style.backgroundPositionY=(-row*192)+"px";
+ const caption=document.createElement("div");caption.className="caption";caption.textContent=clip;
+ wrap.append(div,caption);sprites.push({div,clip,officer});return wrap;
+}
+for(const model of ["male","female"]){
+ const section=document.createElement("section");section.className="section";
+ const title=document.createElement("h2");title.textContent=model==="male"?"Male":"Female";section.append(title);
+ const directions=document.createElement("div");directions.className="directions";
+ for(let row=0;row<4;row++){
+  const card=document.createElement("div");card.className="card";
+  const label=document.createElement("div");label.className="title";label.textContent=facings[row];
+  const pair=document.createElement("div");pair.className="pair";
+  pair.append(figure("player/"+model+".png",row,"walk"),figure("player/"+model+".png",row,"idle"));
+  card.append(label,pair);directions.append(card);
+ }
+ section.append(directions);
+ const details=document.createElement("details");details.innerHTML='<summary>Full sprite sheet</summary><p><a href="'+root+'player/'+model+'.png">Open PNG</a></p><img class="sheet" alt="'+model+' complete sheet" src="'+root+'player/'+model+'.png">';
+ section.append(details);document.querySelector("#players").append(section);
+}
+for(let row=0;row<4;row++)document.querySelector("#officer").append(figure("cast/sergeant.png",row,"idle",true));
+let playing=true,speed=1,clock=0,last=performance.now();
+document.querySelector("#toggle").onclick=e=>{playing=!playing;e.target.textContent=playing?"Pause":"Play"};
+document.querySelector("#speed").onchange=e=>speed=Number(e.target.value);
+function draw(now){
+ if(playing)clock+=(now-last)/1000*speed;last=now;
+ for(const s of sprites){
+  let column=0;
+  if(s.officer)column=clock%1.6>=.96?1:0;
+  else if(s.clip==="walk")column=4+(Math.floor(clock*12)%8);
+  else{let phase=clock%1.6;column=phase<.55?0:phase<1.05?1:phase<1.14?2:3}
+  s.div.style.backgroundPositionX=(-column*128)+"px";
+ }
+ requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script></html>

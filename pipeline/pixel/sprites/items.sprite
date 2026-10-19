@@ -1,4 +1,5 @@
 // Things carried, drawn last. A lantern's light is fixed (glow); a staff's stone is the accent slot.
+// Held in the hand: facing down the hand is at x 4, facing up at x 15, facing left at x 9 (all on row 22).
 
 legend H glow.0
 legend G glow.1
@@ -6,11 +7,13 @@ legend R glow.2
 legend F gold.2
 legend W wood.1
 legend V wood.2
+legend L leaf.1
+legend D leaf.2
 
 // A hand lantern (the oracle, the keeper): Lanternroot's own.
-sprite item/lantern 16 24
+sprite item/lantern 25 35
 
-frame down at 0 18
+frame down at 3 28
 ...F............
 .#FFF#..........
 .#GHG#..........
@@ -18,7 +21,7 @@ frame down at 0 18
 .#FFF#..........
 ..###...........
 
-frame up at 0 18
+frame up at 3 28
 ............F...
 ..........#FFF#.
 ..........#GHG#.
@@ -26,7 +29,7 @@ frame up at 0 18
 ..........#FFF#.
 ...........###..
 
-frame left at 0 18
+frame left at 3 28
 ........F.......
 .......#F#......
 ......#GHG#.....
@@ -35,9 +38,9 @@ frame left at 0 18
 .......###......
 
 // A tall staff with a stone (the keeper, the summoner, the necromancer).
-sprite item/staff 16 24
+sprite item/staff 25 35
 
-frame down at 12 2
+frame down at 18 7
 .##.
 #xy#
 #yz#
@@ -58,7 +61,7 @@ frame down at 12 2
 .#V#
 ..#.
 
-frame up at 0 2
+frame up at 3 7
 .##.
 #xy#
 #yz#
@@ -79,7 +82,7 @@ frame up at 0 2
 #V#.
 .#..
 
-frame left at 2 2
+frame left at 5 7
 .##.
 #xy#
 #yz#
@@ -101,18 +104,105 @@ frame left at 2 2
 ..#.
 
 // A book held to the chest (the archivist, the artificer).
-sprite item/book 16 24
+sprite item/book 25 35
 
-frame down at 4 15
+frame down at 8 24
 .######.
 #xxwwxx#
 #yywwyy#
 #zzzzzz#
 .######.
 
-frame left at 2 15
+frame left at 5 24
 .####.
 #xxwy#
 #yywz#
 #zzzz#
 .####.
+
+// A flower picked on the way (petals in the accent, a yellow heart), held up by its stem.
+sprite item/flower 25 35
+
+frame down at 3 19
+.#xy#.
+#xxyy#
+#xGHy#
+#yyzz#
+.#yz#.
+..#L#.
+..#D#.
+
+frame up at 14 19
+.#xy#.
+#xxyy#
+#xGHy#
+#yyzz#
+.#yz#.
+..#L#.
+..#D#.
+
+frame left at 8 19
+.#xy#.
+#xxyy#
+#xGHy#
+#yyzz#
+.#yz#.
+..#L#.
+..#D#.
+
+// A watering can (accent) with a metal rose on its spout, hanging from the hand.
+sprite item/watering 25 35
+
+frame down at 3 26
+..####.
+k.#..#.
+#k#xxy#
+.#xxyz#
+.#xyyz#
+.#yyzz#
+..####.
+
+frame up at 14 26
+.####..
+.#..#.k
+#xxy#k#
+#xxyz#.
+#xyyz#.
+#yyzz#.
+.####..
+
+frame left at 8 26
+..####.
+k.#..#.
+#k#xxy#
+.#xxyz#
+.#xyyz#
+.#yyzz#
+..####.
+
+// A little wand (accent) with a glowing star on its tip, held out beside the body.
+sprite item/wand 25 35
+
+frame down at 3 20
+..H..
+HHGHH
+.GRG.
+.G.R.
+..#x#
+..#y#
+
+frame up at 16 20
+..H..
+HHGHH
+.GRG.
+.R.G.
+#x#..
+#y#..
+
+frame left at 8 20
+..H..
+HHGHH
+.GRG.
+.G.R.
+..#x#
+..#y#

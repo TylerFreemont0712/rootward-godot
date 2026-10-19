@@ -11,6 +11,9 @@ func _ready() -> void:
 	Game.profile.name = "Mira"
 	Game.profile.needs_name = false
 	Game.profile.preferred_language = "ja" if moment.ends_with("-ja") else "en"
+	var reading := OS.get_environment("ROOTWARD_LANTERNTOWN_READING")
+	if reading in ["hiragana", "kanji"]:
+		Game.profile.japanese_reading = reading
 	Game.profile.avatar = "vesper"
 	Game.profiles.save_profile(Game.profile)
 	Game.select_profile(String(Game.profile.id), false)

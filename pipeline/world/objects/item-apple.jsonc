@@ -1,0 +1,13 @@
+// The apple: a Bag and pickup icon (pipeline/world/README.md). One object on its tile, no stand.
+{
+ "id": "item-apple",
+ "kind": "prop",
+ "what": "a single shiny red apple with a small brown stem and one green leaf, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"skin": "cloth_red", "stalk": "wood", "leaf": "leaf"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.66], "ramp": "skin"},
+  {"shape": "cylinder", "at": [0.47, 0.47, 0.6], "size": [0.07, 0.07, 0.18], "ramp": "stalk", "shade": 2},
+  {"shape": "ball", "at": [0.52, 0.4, 0.7], "size": [0.3, 0.14, 0.12], "ramp": "leaf"}
+ ]
+}

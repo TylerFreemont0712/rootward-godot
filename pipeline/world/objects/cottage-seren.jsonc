@@ -1,0 +1,31 @@
+// ChatGPT ImageGen source, palette-locked and cut at this world’s scale by pipeline/world.
+{
+  "id": "cottage-seren",
+  "kind": "building",
+  "what": "small village cottage",
+  "footprint": [
+    5,
+    5
+  ],
+  "pad": 0.0,
+  "above": 0.0,
+  "ramps": {
+    "plaster": "plaster",
+    "wood": "wood",
+    "thatch": "thatch",
+    "stone": "stone",
+    "cobble": "cobble",
+    "leaf": "leaf",
+    "cloth_red": "cloth_red",
+    "cloth_maroon": "cloth_maroon",
+    "cloth_blue": "cloth_blue",
+    "cloth_teal": "cloth_teal",
+    "cloth_brown": "cloth_brown",
+    "gold": "gold",
+    "steel": "steel",
+    "glow": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/cottage-seren-source.png"
+  }
+}

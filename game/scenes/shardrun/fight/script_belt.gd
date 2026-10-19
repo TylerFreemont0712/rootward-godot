@@ -5,14 +5,14 @@ extends HBoxContainer
 
 signal use_pressed(index: int)
 
-const SLOT := Vector2(56, 56)
+const SLOT := Vector2(62, 62)
 
 
 func show_belt(state: Dictionary, catalog: Dictionary) -> void:
 	Ui.clear(self)
 	var belt: Array = state.get("belt", [])
 	var places := ProgramScripts.belt_size(state, catalog)
-	add_theme_constant_override("separation", 6)
+	add_theme_constant_override("separation", 4)
 	alignment = BoxContainer.ALIGNMENT_CENTER
 	for index in maxi(places, belt.size()):
 		add_child(_slot(index, belt[index] if index < belt.size() else "", catalog))

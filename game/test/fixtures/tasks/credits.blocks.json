@@ -1,0 +1,5 @@
+{
+  "stages": [
+    {"slots": {"title": 1}, "toggles": ["maker", "parts"]}
+  ]
+}

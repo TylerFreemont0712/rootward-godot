@@ -37,7 +37,13 @@ func _build() -> void:
 		"Audio": FoundryUi.text("Audio", "音"),
 		"Battle": FoundryUi.text("Spell playback", "呪文の再生")
 	}
-	for tab: String in ["Display", "Graphics", "Fonts", "Audio", "Battle"]:
+	var tab_names: Array[String] = ["Display", "Graphics", "Fonts", "Audio", "Battle"]
+	if StudioFiles.can_write(StudioMode.content_dir):
+		names["Developer"] = StudioText.t("developer")
+		tab_names.append("Developer")
+	if not names.has(_tab):
+		_tab = "Display"
+	for tab: String in tab_names:
 		var choose := func() -> void:
 			_tab = tab
 			_rebuild()
@@ -87,6 +93,11 @@ func _build() -> void:
 				]
 			)
 		)
+	elif _tab == "Developer":
+		column.add_child(_setting(
+			StudioText.t("studio_name"), StudioText.t("studio_settings_tip"),
+			_on_off(Settings.studio, func(on: bool) -> void: Settings.studio = on)
+		))
 	elif _tab == "Graphics":
 		_graphics_tab(column)
 	elif _tab == "Display":
@@ -299,6 +310,17 @@ func _pick(options: Array, current: Variant, apply: Callable) -> Control:
 
 
 func _font_choices(column: VBoxContainer) -> void:
+	var reading_modes := [
+		["hiragana", Text.t("Hiragana")],
+		["kanji", Text.t("Kanji")]
+	]
+	column.add_child(
+		_setting(
+			Text.t("Japanese reading"),
+			Text.t("Choose hiragana or standard Japanese with kanji. You can change this in Settings anytime."),
+			_pick(reading_modes, String(Game.profile.get("japanese_reading", "hiragana")), _choose_reading)
+		)
+	)
 	var choices := Ui.vbox([], 12)
 	choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	choices.add_child(Ui.label(FoundryUi.text("Choose the voice of your journey", "冒険の文字を選ぼう"), "Subheading"))
@@ -346,6 +368,14 @@ func _choose_font(id: String) -> void:
 	UiTheme.refresh_fonts()
 	_saved()
 	_rebuild()
+
+
+func _choose_reading(mode: String) -> void:
+	if mode not in ["hiragana", "kanji"] or Game.profile.is_empty():
+		return
+	Game.profile.japanese_reading = mode
+	Game.profiles.save_profile(Game.profile)
+	Text.setup(String(Game.profile.get("preferred_language", "en")), mode)
 
 
 func _font_preview() -> VBoxContainer:

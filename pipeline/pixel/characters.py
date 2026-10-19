@@ -1,7 +1,8 @@
 """Characters from parts: the layer order, the sheet layout the game reads, and a look's colours.
 
-A sheet is three rows (facing down, up, left) of three frames (standing, step a, step b), each 16 x 24. The game
-mirrors the left row for right. A part without its own step frame uses its standing frame (hair, hats).
+A sheet is three rows (facing down, up, left) of three hand-authored 25 x 35 frames (standing, step a, step b). The
+game mirrors the left row for right. Every hand-authored part uses the same pixel canvas; no runtime resampling is used.
+A part without its own step frame uses its standing frame (hair, hats).
 `python pipeline/pixel/characters.py --preview shots/pixel/look.png` draws a few looks, big, to judge by eye.
 """
 
@@ -15,8 +16,8 @@ import numpy as np
 import pixelkit
 from pixelkit import Palette, Sprite
 
-FRAME_W = 16
-FRAME_H = 24
+FRAME_W = 25
+FRAME_H = 35
 FACINGS = ("down", "up", "left")
 POSES = ("stand", "step_a", "step_b")
 ## Parts in drawing order: what comes later covers what came before.

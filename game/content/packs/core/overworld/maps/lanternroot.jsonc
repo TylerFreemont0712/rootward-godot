@@ -1,1321 +1,980 @@
 // A map of Lanternroot's overworld (ADR-0061): its ground through the legend, one row a string, and the things on it.
-// Coordinates are [column, row], counted from 0 at the top left.
+// Coordinates are [column, row], counted from 0 at the top left. Lanternroot is 80 x 56 tiles, the town overhaul
+// (Concept/v0.3/09), seven districts round the Lantern Square: Home Hollow in the south-west (the start at (13, 45),
+// facing down, out of the door of home), Waterside with the pond and its one bridge and the forge, the Lantern Square
+// with the Lantern Root and the shut Hall, Warm Hearth Row to the east on Main Street, the Archive Quarter and Fern's
+// Grove to the west, the North Green and the Old Stones, and the Root Gate Road with the drill yard in the east and
+// south-east. The lamp lane runs north from the square to Lumen's shrine; its six lamps are group "lane", dark until
+// lesson 3. Solid bands of trees hold the edges. Only the cabbage plot and the Old Stones are fenced, each with a
+// two-tile gate; every opening of the square and the Root Gate mouth has gate pieces that stay walkable.
+// Flat things (the footbridge) are anchored a row above where they lie and sunk, so walkers draw over them.
+// Things that take code (TownThings, ADR-0061) are props with an id and a program: the cabbage-plot gate and the
+// crossroads signpost. Each one's file is in things/, with its hints and starter code.
+// v0.4 added the music box by the Warm Hearth (it opens the music box), Pell's map table (the map), a small farm by the
+// cabbage plot, a pine and a rock: props that give items to the bag are listed in pickups.jsonc.
 {
  "id": "lanternroot",
  "name": "Lanternroot",
  "music": "music-rest",
- "legend": {
-  ".": "grass",
-  ",": "path",
-  "=": "cobble",
-  "~": "water",
-  "*": "flowers"
- },
+ "legend": {".": "grass", ",": "path", "=": "cobble", "~": "water", "*": "flowers", "b": "bridge", "d": "dry_grass", "f": "forest_floor", "m": "meadow", "M": "moss"},
  "ground": [
-  "........................................",
-  "........................................",
-  "........................................",
-  "........................................",
-  "......................***...............",
-  "......................***...............",
-  "..................................***...",
-  "..................................***...",
-  "........................................",
-  "..,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,..",
-  "..***.......,**==========*,.............",
-  "..***.......,**==========*,.............",
-  "............,..==========.,.............",
-  "............,..==========.,.............",
-  "............,..==========.,.............",
-  "............,..==========.,.............",
-  "..,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,..",
-  ".........**.,.............,**...........",
-  ".........**.,.............,**...........",
-  "............,.............,.............",
-  "............,.............,.............",
-  "............,.............,........,,...",
-  "............,.............,........,,...",
-  "..,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,..",
-  "..***......~~~~.***............***......",
-  "..***.....~~~~~~***............***......",
-  "..........~~~~~~***............***......",
-  "..........~~~~~~........................",
-  "...........~~~~.........................",
-  "........................................"
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmm*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmm*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm*mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmm,,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmm,,mmmmmmmmmmmmmmmm==================mmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmm,,,,,,,,,,,,,,,,,,,,,,,,,==================mmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmm,,,,,,,,,,,,,,,,,,,,,,,,,==================mmmmmmmm,,mmmmmmmmmm,,,mmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====mmmmmmmm,,mmmmmmmmmm,,,mmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====mmmmmmmm,,mmmmmmmmmm,,,mmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====mmmmmmmm,,mmmmmmmmmm,,,mmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====mmmmmmmm,,mmmmmmmmmm,,,mmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====m,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====m,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm====.........=====m,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm==================m,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmm==================m,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,mmmmmmmmmmmmmmmmm~~~bb~~~mmmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,,,,,,,,,,,,,,,,~~~~~bb~~~~~mmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmm,,,,,,,,,,,,,,,,,~~~~~bb~~~~~mmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmm,,~~~~~bb~~~~~mmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmm,,~~~~~bb~~~~mmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmm,,.~~~~bb~~~mmmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmm,,..~~~bb~~mmmmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmm,,.....,,mmmmmmmmmmmmmmmm,,m,,,,,,,,,,,,,,,mmmmmmmmmmmmm",
+  "mmmm,,mmmmmmmmmmmmmmmmmm,,.....,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmm,,mmmmmmmmmmmmmmmmmm,,.....,,mmmmmmmmmmmmmmmm,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,mmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"
  ],
- "start": [
-  6,
-  23
- ],
+ "start": [13, 45],
  "facing": "down",
  "objects": [
-  {
-   "kind": "building",
-   "art": "archive",
-   "at": [
-    6,
-    5
-   ],
-   "size": [
-    5,
-    4
-   ],
-   "door": [
-    2,
-    3
-   ],
-   "text": "The Archive. Every change anyone has made in Lanternroot is written down inside."
-  },
-  {
-   "kind": "building",
-   "art": "hall",
-   "at": [
-    17,
-    4
-   ],
-   "size": [
-    6,
-    5
-   ],
-   "door": [
-    2,
-    4
-   ],
-   "text": "The Village Hall. Its doors are closed for now."
-  },
-  {
-   "kind": "building",
-   "art": "shrine",
-   "at": [
-    29,
-    6
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    2,
-    2
-   ],
-   "text": "The Lantern Shrine. A warm light glows behind the door."
-  },
-  {
-   "kind": "building",
-   "art": "workshop",
-   "at": [
-    5,
-    13
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    3,
-    2
-   ],
-   "text": "Mira's workshop. Something inside is ticking."
-  },
-  {
-   "kind": "building",
-   "art": "inn",
-   "at": [
-    30,
-    13
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    1,
-    2
-   ],
-   "text": "The Warm Hearth. It smells like soup."
-  },
-  {
-   "kind": "building",
-   "art": "home",
-   "at": [
-    4,
-    20
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    2,
-    2
-   ],
-   "to": {
-    "map": "home",
-    "at": [
-     5,
-     6
-    ],
-    "facing": "up"
-   }
-  },
-  {
-   "kind": "building",
-   "art": "smithy",
-   "at": [
-    17,
-    19
-   ],
-   "size": [
-    5,
-    4
-   ],
-   "door": [
-    2,
-    3
-   ],
-   "text": "Brannoc's forge. The air shimmers with heat."
-  },
-  {
-   "kind": "building",
-   "art": "shop",
-   "at": [
-    28,
-    20
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    1,
-    2
-   ],
-   "text": "Nym's. A sign in the window says: OPENING SOON!"
-  },
-  {
-   "kind": "building",
-   "art": "rootgate",
-   "at": [
-    34,
-    18
-   ],
-   "size": [
-    4,
-    3
-   ],
-   "door": [
-    1,
-    2
-   ],
-   "text": "The Root Gate. It is sealed, and the roots around it are humming."
-  },
-  {
-   "kind": "building",
-   "art": "lanterntree",
-   "at": [
-    19,
-    12
-   ],
-   "size": [
-    2,
-    2
-   ],
-   "door": [
-    0,
-    1
-   ],
-   "text": "The Lantern Root. Little lanterns sway in its branches."
-  },
-  {
-   "kind": "prop",
-   "art": "noticeboard",
-   "talk": "noticeboard",
-   "at": [
-    16,
-    11
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "text": "LANTERNROOT NOTICES. Lost: one firefly. Found: the same firefly. (Lumen) / The Lantern Festival is coming!"
-  },
-  {
-   "kind": "prop",
-   "art": "well",
-   "at": [
-    22,
-    14
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "text": "A deep old well. Your voice comes back up a moment later."
-  },
-  {
-   "kind": "prop",
-   "art": "bench",
-   "at": [
-    16,
-    15
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    14,
-    8
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    25,
-    8
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    14,
-    17
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    25,
-    17
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    11,
-    22
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    27,
-    24
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    3,
-    17
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "lamppost",
-   "at": [
-    36,
-    17
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "sign",
-   "at": [
-    13,
-    17
-   ],
-   "text": "← Workshop and home   ·   Warm Hearth and the Root Gate →"
-  },
-  {
-   "kind": "prop",
-   "art": "mailbox",
-   "at": [
-    9,
-    22
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "barrel",
-   "at": [
-    29,
-    15
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "crate",
-   "at": [
-    34,
-    15
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "barrel",
-   "at": [
-    34,
-    14
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "stall",
-   "at": [
-    32,
-    21
-   ],
-   "size": [
-    3,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "laundry",
-   "at": [
-    35,
-    12
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "sack",
-   "at": [
-    23,
-    21
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "crate",
-   "at": [
-    16,
-    22
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "barrel",
-   "at": [
-    22,
-    22
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "flowerpot",
-   "at": [
-    10,
-    15
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "flowerpot",
-   "at": [
-    4,
-    8
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "flowerpot",
-   "at": [
-    33,
-    8
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tombstone",
-   "at": [
-    1,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tombstone",
-   "at": [
-    3,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tombstone",
-   "at": [
-    5,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tombstone",
-   "at": [
-    1,
-    3
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tombstone",
-   "at": [
-    5,
-    3
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "mushrooms",
-   "at": [
-    2,
-    2
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "mushrooms",
-   "at": [
-    6,
-    2
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    8,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    11,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    14,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    23,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    26,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    30,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    33,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    36,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    39,
-    1
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple",
-   "at": [
-    0,
-    4
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    38,
-    4
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    0,
-    7
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    38,
-    7
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple",
-   "at": [
-    0,
-    10
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    38,
-    10
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    0,
-    13
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    38,
-    13
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple",
-   "at": [
-    0,
-    16
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    38,
-    16
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    0,
-    19
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    38,
-    19
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple",
-   "at": [
-    0,
-    22
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    38,
-    22
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    0,
-    25
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak2",
-   "at": [
-    38,
-    25
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    2,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple2",
-   "at": [
-    5,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    8,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple2",
-   "at": [
-    17,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    20,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple2",
-   "at": [
-    23,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    26,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple2",
-   "at": [
-    29,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "oak",
-   "at": [
-    32,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "apple2",
-   "at": [
-    35,
-    28
-   ],
-   "size": [
-    2,
-    1
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    14,
-    2
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    35,
-    2
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    1,
-    15
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    24,
-    25
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    30,
-    27
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "birch",
-   "at": [
-    16,
-    27
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    4,
-    12
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush",
-   "at": [
-    9,
-    12
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    28,
-    12
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    34,
-    10
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    23,
-    19
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    27,
-    19
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    3,
-    19
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    9,
-    19
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush",
-   "at": [
-    24,
-    7
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "bush2",
-   "at": [
-    15,
-    3
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "rock",
-   "at": [
-    37,
-    26
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "rock",
-   "at": [
-    2,
-    27
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "rock",
-   "at": [
-    18,
-    27
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "stump",
-   "at": [
-    21,
-    27
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    5,
-    10
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    13,
-    13
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    27,
-    11
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    33,
-    11
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    7,
-    17
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    20,
-    17
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    31,
-    18
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    16,
-    21
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    25,
-    26
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    8,
-    27
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    35,
-    26
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "tuft",
-   "at": [
-    29,
-    4
-   ],
-   "solid": false
-  },
-  {
-   "kind": "person",
-   "id": "innkeeper",
-   "at": [
-    32,
-    17
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "pip",
-   "at": [
-    9,
-    25
-   ],
-   "facing": "right"
-  },
-  {
-   "kind": "person",
-   "id": "guard",
-   "at": [
-    37,
-    22
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "oracle",
-   "at": [
-    33,
-    10
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "archivist",
-   "at": [
-    11,
-    7
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "artificer",
-   "at": [
-    10,
-    14
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "compiler",
-   "at": [
-    22,
-    20
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "guildmaster",
-   "at": [
-    17,
-    13
-   ],
-   "facing": "right"
-  },
-  {
-   "kind": "person",
-   "id": "keeper",
-   "at": [
-    21,
-    13
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "necromancer",
-   "at": [
-    3,
-    2
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "pell",
-   "at": [
-    2,
-    17
-   ],
-   "facing": "right"
-  },
-  {
-   "kind": "person",
-   "id": "quartermaster",
-   "at": [
-    27,
-    22
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "sergeant",
-   "at": [
-    24,
-    17
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "shade",
-   "at": [
-    36,
-    14
-   ],
-   "facing": "left"
-  },
-  {
-   "kind": "person",
-   "id": "summoner",
-   "at": [
-    26,
-    6
-   ],
-   "facing": "down"
-  },
-  {
-   "kind": "person",
-   "id": "warden",
-   "at": [
-    33,
-    20
-   ],
-   "facing": "right"
-  }
+  {"kind": "building", "art": "hall", "at": [33, 12], "size": [9, 8], "door": [4, 7], "solid_rows": [5, 6, 7], "text": "The Village Hall. Its doors are closed for now."},
+  {"kind": "building", "art": "archive", "at": [25, 2], "size": [12, 8], "door": [6, 7], "solid_rows": [5, 6, 7], "text": "The Archive. Every change anyone has made in Lanternroot is written down inside.", "art_size": [7, 6], "art_shape": {"door": [5, 7], "solid_rows": [4, 5], "door_size": [11, 8]}},
+  {"kind": "building", "art": "workshop", "at": [20, 15], "size": [7, 6], "door": [3, 5], "solid_rows": [3, 4, 5], "text": "Mira's workshop. Something inside is ticking.", "art_size": [6, 5], "art_shape": {"door": [3, 5], "solid_rows": [3, 4], "door_size": [7, 6]}},
+  {"kind": "building", "art": "shrine", "at": [56, 6], "size": [6, 6], "door": [3, 5], "solid_rows": [3, 4, 5], "text": "The Lantern Shrine. A warm light glows behind the door."},
+  {"kind": "building", "art": "inn", "at": [50, 21], "size": [6, 6], "door": [3, 5], "solid_rows": [3, 4, 5], "text": "The Warm Hearth. It smells like soup."},
+  {"kind": "building", "art": "shop", "at": [58, 21], "size": [6, 6], "door": [3, 5], "solid_rows": [3, 4, 5], "text": "Nym's. A sign in the window says: OPENING SOON!"},
+  {"kind": "building", "art": "rootgate", "at": [67, 16], "size": [6, 6], "door": [3, 5], "text": "The Root Gate. It is sealed, and the roots around it are humming."},
+  {"kind": "building", "art": "cottage-hollis", "at": [73, 22], "size": [5, 5], "door": [2, 4], "solid_rows": [2, 3, 4], "text": "Hollis's house. The door is locked. Twice."},
+  {"kind": "building", "art": "cottage-pell", "at": [4, 15], "size": [7, 6], "door": [3, 5], "solid_rows": [2, 3, 4, 5], "text": "Pell's house. There is a map pinned in every window.", "art_size": [5, 5], "art_shape": {"door": [3, 5], "solid_rows": [2, 3, 4], "door_size": [7, 6]}},
+  {"kind": "building", "art": "cottage-seren", "at": [19, 39], "size": [5, 6], "door": [2, 5], "solid_rows": [2, 3, 4, 5], "text": "Seren's cottage. Something small and glowing is asleep on the windowsill.", "art_size": [5, 5], "art_shape": {"door": [2, 4], "solid_rows": [2, 3, 4]}},
+  {"kind": "building", "art": "home", "at": [11, 39], "size": [5, 6], "door": [2, 5], "solid_rows": [3, 4, 5], "to": {"map": "home", "at": [5, 6], "facing": "up"}, "art_size": [6, 6], "art_shape": {"door": [3, 5], "solid_rows": [3, 4, 5], "door_size": [7, 6]}},
+  {"kind": "building", "art": "smithy", "at": [38, 39], "size": [8, 6], "door": [3, 5], "solid_rows": [2, 3, 4, 5], "text": "Brannoc's forge. The air shimmers with heat.", "art_size": [7, 5], "art_shape": {"door": [5, 7], "solid_rows": [2, 3, 4], "door_size": [12, 8]}},
+  {"kind": "building", "art": "lanterntree", "at": [36, 28], "size": [5, 4], "door": [2, 3], "solid_cells": [[2, 2], [1, 3], [2, 3], [3, 3]], "text": "The Lantern Root. Little lanterns sway in its branches."},
+  {"kind": "prop", "art": "oak", "at": [0, 0]},
+  {"kind": "prop", "art": "oak2", "at": [1, 0]},
+  {"kind": "prop", "art": "birch", "at": [2, 0]},
+  {"kind": "prop", "art": "oak", "at": [3, 0]},
+  {"kind": "prop", "art": "oak2", "at": [4, 0]},
+  {"kind": "prop", "art": "birch", "at": [5, 0]},
+  {"kind": "prop", "art": "oak", "at": [6, 0]},
+  {"kind": "prop", "art": "oak2", "at": [7, 0]},
+  {"kind": "prop", "art": "birch", "at": [8, 0]},
+  {"kind": "prop", "art": "oak", "at": [9, 0]},
+  {"kind": "prop", "art": "oak2", "at": [10, 0]},
+  {"kind": "prop", "art": "birch", "at": [11, 0]},
+  {"kind": "prop", "art": "oak", "at": [12, 0]},
+  {"kind": "prop", "art": "oak2", "at": [13, 0]},
+  {"kind": "prop", "art": "birch", "at": [14, 0]},
+  {"kind": "prop", "art": "oak", "at": [15, 0]},
+  {"kind": "prop", "art": "oak2", "at": [16, 0]},
+  {"kind": "prop", "art": "birch", "at": [17, 0]},
+  {"kind": "prop", "art": "oak", "at": [18, 0]},
+  {"kind": "prop", "art": "oak2", "at": [19, 0]},
+  {"kind": "prop", "art": "birch", "at": [20, 0]},
+  {"kind": "prop", "art": "oak", "at": [21, 0]},
+  {"kind": "prop", "art": "oak2", "at": [22, 0]},
+  {"kind": "prop", "art": "birch", "at": [23, 0]},
+  {"kind": "prop", "art": "oak", "at": [24, 0]},
+  {"kind": "prop", "art": "oak2", "at": [25, 0]},
+  {"kind": "prop", "art": "birch", "at": [26, 0]},
+  {"kind": "prop", "art": "oak", "at": [27, 0]},
+  {"kind": "prop", "art": "oak2", "at": [28, 0]},
+  {"kind": "prop", "art": "birch", "at": [29, 0]},
+  {"kind": "prop", "art": "oak", "at": [30, 0]},
+  {"kind": "prop", "art": "oak2", "at": [31, 0]},
+  {"kind": "prop", "art": "birch", "at": [32, 0]},
+  {"kind": "prop", "art": "oak", "at": [33, 0]},
+  {"kind": "prop", "art": "oak2", "at": [34, 0]},
+  {"kind": "prop", "art": "birch", "at": [35, 0]},
+  {"kind": "prop", "art": "oak", "at": [36, 0]},
+  {"kind": "prop", "art": "oak2", "at": [37, 0]},
+  {"kind": "prop", "art": "birch", "at": [38, 0]},
+  {"kind": "prop", "art": "oak", "at": [39, 0]},
+  {"kind": "prop", "art": "oak2", "at": [40, 0]},
+  {"kind": "prop", "art": "birch", "at": [41, 0]},
+  {"kind": "prop", "art": "oak", "at": [42, 0]},
+  {"kind": "prop", "art": "oak2", "at": [43, 0]},
+  {"kind": "prop", "art": "birch", "at": [44, 0]},
+  {"kind": "prop", "art": "oak", "at": [45, 0]},
+  {"kind": "prop", "art": "oak2", "at": [46, 0]},
+  {"kind": "prop", "art": "birch", "at": [47, 0]},
+  {"kind": "prop", "art": "oak", "at": [48, 0]},
+  {"kind": "prop", "art": "oak2", "at": [49, 0]},
+  {"kind": "prop", "art": "birch", "at": [50, 0]},
+  {"kind": "prop", "art": "oak", "at": [51, 0]},
+  {"kind": "prop", "art": "oak2", "at": [52, 0]},
+  {"kind": "prop", "art": "birch", "at": [53, 0]},
+  {"kind": "prop", "art": "oak", "at": [54, 0]},
+  {"kind": "prop", "art": "oak2", "at": [55, 0]},
+  {"kind": "prop", "art": "birch", "at": [56, 0]},
+  {"kind": "prop", "art": "oak", "at": [57, 0]},
+  {"kind": "prop", "art": "oak2", "at": [58, 0]},
+  {"kind": "prop", "art": "birch", "at": [59, 0]},
+  {"kind": "prop", "art": "oak", "at": [60, 0]},
+  {"kind": "prop", "art": "oak2", "at": [61, 0]},
+  {"kind": "prop", "art": "birch", "at": [62, 0]},
+  {"kind": "prop", "art": "oak", "at": [63, 0]},
+  {"kind": "prop", "art": "oak2", "at": [0, 1]},
+  {"kind": "prop", "art": "birch", "at": [1, 1]},
+  {"kind": "prop", "art": "oak", "at": [2, 1]},
+  {"kind": "prop", "art": "oak2", "at": [3, 1]},
+  {"kind": "prop", "art": "birch", "at": [4, 1]},
+  {"kind": "prop", "art": "oak", "at": [5, 1]},
+  {"kind": "prop", "art": "oak2", "at": [6, 1]},
+  {"kind": "prop", "art": "birch", "at": [7, 1]},
+  {"kind": "prop", "art": "oak", "at": [8, 1]},
+  {"kind": "prop", "art": "oak2", "at": [9, 1]},
+  {"kind": "prop", "art": "birch", "at": [10, 1]},
+  {"kind": "prop", "art": "oak", "at": [11, 1]},
+  {"kind": "prop", "art": "oak2", "at": [12, 1]},
+  {"kind": "prop", "art": "birch", "at": [13, 1]},
+  {"kind": "prop", "art": "oak", "at": [14, 1]},
+  {"kind": "prop", "art": "oak2", "at": [15, 1]},
+  {"kind": "prop", "art": "birch", "at": [16, 1]},
+  {"kind": "prop", "art": "oak", "at": [17, 1]},
+  {"kind": "prop", "art": "oak2", "at": [18, 1]},
+  {"kind": "prop", "art": "birch", "at": [19, 1]},
+  {"kind": "prop", "art": "oak", "at": [20, 1]},
+  {"kind": "prop", "art": "oak2", "at": [21, 1]},
+  {"kind": "prop", "art": "birch", "at": [22, 1]},
+  {"kind": "prop", "art": "oak", "at": [23, 1]},
+  {"kind": "prop", "art": "oak2", "at": [24, 1]},
+  {"kind": "prop", "art": "birch", "at": [25, 1]},
+  {"kind": "prop", "art": "oak", "at": [26, 1]},
+  {"kind": "prop", "art": "oak2", "at": [27, 1]},
+  {"kind": "prop", "art": "birch", "at": [28, 1]},
+  {"kind": "prop", "art": "oak", "at": [29, 1]},
+  {"kind": "prop", "art": "oak2", "at": [30, 1]},
+  {"kind": "prop", "art": "birch", "at": [31, 1]},
+  {"kind": "prop", "art": "oak", "at": [32, 1]},
+  {"kind": "prop", "art": "oak2", "at": [33, 1]},
+  {"kind": "prop", "art": "birch", "at": [34, 1]},
+  {"kind": "prop", "art": "oak", "at": [35, 1]},
+  {"kind": "prop", "art": "oak2", "at": [36, 1]},
+  {"kind": "prop", "art": "birch", "at": [37, 1]},
+  {"kind": "prop", "art": "oak", "at": [38, 1]},
+  {"kind": "prop", "art": "oak2", "at": [39, 1]},
+  {"kind": "prop", "art": "birch", "at": [40, 1]},
+  {"kind": "prop", "art": "oak", "at": [41, 1]},
+  {"kind": "prop", "art": "oak2", "at": [42, 1]},
+  {"kind": "prop", "art": "birch", "at": [43, 1]},
+  {"kind": "prop", "art": "oak", "at": [44, 1]},
+  {"kind": "prop", "art": "oak2", "at": [45, 1]},
+  {"kind": "prop", "art": "birch", "at": [46, 1]},
+  {"kind": "prop", "art": "oak", "at": [47, 1]},
+  {"kind": "prop", "art": "oak2", "at": [48, 1]},
+  {"kind": "prop", "art": "birch", "at": [49, 1]},
+  {"kind": "prop", "art": "oak", "at": [50, 1]},
+  {"kind": "prop", "art": "oak2", "at": [51, 1]},
+  {"kind": "prop", "art": "birch", "at": [52, 1]},
+  {"kind": "prop", "art": "oak", "at": [53, 1]},
+  {"kind": "prop", "art": "oak2", "at": [54, 1]},
+  {"kind": "prop", "art": "birch", "at": [55, 1]},
+  {"kind": "prop", "art": "oak", "at": [56, 1]},
+  {"kind": "prop", "art": "oak2", "at": [57, 1]},
+  {"kind": "prop", "art": "birch", "at": [58, 1]},
+  {"kind": "prop", "art": "oak", "at": [59, 1]},
+  {"kind": "prop", "art": "oak2", "at": [60, 1]},
+  {"kind": "prop", "art": "birch", "at": [61, 1]},
+  {"kind": "prop", "art": "oak", "at": [62, 1]},
+  {"kind": "prop", "art": "oak2", "at": [63, 1]},
+  {"kind": "prop", "art": "birch", "at": [0, 2]},
+  {"kind": "prop", "art": "oak", "at": [1, 2]},
+  {"kind": "prop", "art": "oak2", "at": [2, 2]},
+  {"kind": "prop", "art": "birch", "at": [3, 2]},
+  {"kind": "prop", "art": "oak", "at": [4, 2]},
+  {"kind": "prop", "art": "oak2", "at": [5, 2]},
+  {"kind": "prop", "art": "birch", "at": [6, 2]},
+  {"kind": "prop", "art": "oak", "at": [7, 2]},
+  {"kind": "prop", "art": "oak2", "at": [8, 2]},
+  {"kind": "prop", "art": "birch", "at": [9, 2]},
+  {"kind": "prop", "art": "oak", "at": [10, 2]},
+  {"kind": "prop", "art": "oak2", "at": [11, 2]},
+  {"kind": "prop", "art": "oak", "at": [46, 2]},
+  {"kind": "prop", "art": "oak2", "at": [47, 2]},
+  {"kind": "prop", "art": "birch", "at": [48, 2]},
+  {"kind": "prop", "art": "oak", "at": [49, 2]},
+  {"kind": "prop", "art": "oak2", "at": [50, 2]},
+  {"kind": "prop", "art": "birch", "at": [51, 2]},
+  {"kind": "prop", "art": "oak", "at": [52, 2]},
+  {"kind": "prop", "art": "oak2", "at": [53, 2]},
+  {"kind": "prop", "art": "birch", "at": [54, 2]},
+  {"kind": "prop", "art": "oak", "at": [55, 2]},
+  {"kind": "prop", "art": "oak2", "at": [56, 2]},
+  {"kind": "prop", "art": "birch", "at": [57, 2]},
+  {"kind": "prop", "art": "oak", "at": [58, 2]},
+  {"kind": "prop", "art": "oak2", "at": [59, 2]},
+  {"kind": "prop", "art": "birch", "at": [60, 2]},
+  {"kind": "prop", "art": "oak", "at": [61, 2]},
+  {"kind": "prop", "art": "oak2", "at": [62, 2]},
+  {"kind": "prop", "art": "birch", "at": [63, 2]},
+  {"kind": "prop", "art": "oak", "at": [0, 3]},
+  {"kind": "prop", "art": "oak2", "at": [1, 3]},
+  {"kind": "prop", "art": "fence-corner-se", "at": [2, 3]},
+  {"kind": "prop", "art": "fence", "at": [3, 3]},
+  {"kind": "prop", "art": "fence", "at": [4, 3]},
+  {"kind": "prop", "art": "fence", "at": [5, 3]},
+  {"kind": "prop", "art": "fence", "at": [6, 3]},
+  {"kind": "prop", "art": "fence", "at": [7, 3]},
+  {"kind": "prop", "art": "fence", "at": [8, 3]},
+  {"kind": "prop", "art": "fence", "at": [9, 3]},
+  {"kind": "prop", "art": "fence", "at": [10, 3]},
+  {"kind": "prop", "art": "fence-corner-sw", "at": [11, 3]},
+  {"kind": "prop", "art": "oak2", "at": [46, 3]},
+  {"kind": "prop", "art": "birch", "at": [47, 3]},
+  {"kind": "prop", "art": "oak", "at": [48, 3]},
+  {"kind": "prop", "art": "oak2", "at": [49, 3]},
+  {"kind": "prop", "art": "birch", "at": [50, 3]},
+  {"kind": "prop", "art": "oak", "at": [51, 3]},
+  {"kind": "prop", "art": "oak2", "at": [52, 3]},
+  {"kind": "prop", "art": "birch", "at": [53, 3]},
+  {"kind": "prop", "art": "oak", "at": [54, 3]},
+  {"kind": "prop", "art": "oak2", "at": [55, 3]},
+  {"kind": "prop", "art": "birch", "at": [56, 3]},
+  {"kind": "prop", "art": "oak", "at": [57, 3]},
+  {"kind": "prop", "art": "oak2", "at": [58, 3]},
+  {"kind": "prop", "art": "birch", "at": [59, 3]},
+  {"kind": "prop", "art": "oak", "at": [60, 3]},
+  {"kind": "prop", "art": "oak2", "at": [61, 3]},
+  {"kind": "prop", "art": "birch", "at": [62, 3]},
+  {"kind": "prop", "art": "oak", "at": [63, 3]},
+  {"kind": "prop", "art": "oak2", "at": [0, 4]},
+  {"kind": "prop", "art": "birch", "at": [1, 4]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 4]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 4]},
+  {"kind": "prop", "art": "birch", "at": [46, 4]},
+  {"kind": "prop", "art": "oak", "at": [47, 4]},
+  {"kind": "prop", "art": "oak2", "at": [48, 4]},
+  {"kind": "prop", "art": "birch", "at": [49, 4]},
+  {"kind": "prop", "art": "oak", "at": [50, 4]},
+  {"kind": "prop", "art": "oak2", "at": [51, 4]},
+  {"kind": "prop", "art": "birch", "at": [52, 4]},
+  {"kind": "prop", "art": "oak", "at": [53, 4]},
+  {"kind": "prop", "art": "oak2", "at": [54, 4]},
+  {"kind": "prop", "art": "birch", "at": [55, 4]},
+  {"kind": "prop", "art": "oak", "at": [56, 4]},
+  {"kind": "prop", "art": "oak2", "at": [57, 4]},
+  {"kind": "prop", "art": "birch", "at": [58, 4]},
+  {"kind": "prop", "art": "oak", "at": [59, 4]},
+  {"kind": "prop", "art": "oak2", "at": [60, 4]},
+  {"kind": "prop", "art": "birch", "at": [61, 4]},
+  {"kind": "prop", "art": "oak", "at": [62, 4]},
+  {"kind": "prop", "art": "oak2", "at": [63, 4]},
+  {"kind": "prop", "art": "birch", "at": [0, 5]},
+  {"kind": "prop", "art": "oak", "at": [1, 5]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 5]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 5]},
+  {"kind": "prop", "art": "oak", "at": [46, 5]},
+  {"kind": "prop", "art": "oak2", "at": [47, 5]},
+  {"kind": "prop", "art": "birch", "at": [48, 5]},
+  {"kind": "prop", "art": "oak", "at": [49, 5]},
+  {"kind": "prop", "art": "oak2", "at": [50, 5]},
+  {"kind": "prop", "art": "birch", "at": [51, 5]},
+  {"kind": "prop", "art": "oak", "at": [52, 5]},
+  {"kind": "prop", "art": "oak2", "at": [53, 5]},
+  {"kind": "prop", "art": "birch", "at": [54, 5]},
+  {"kind": "prop", "art": "oak", "at": [55, 5]},
+  {"kind": "prop", "art": "oak2", "at": [56, 5]},
+  {"kind": "prop", "art": "birch", "at": [57, 5]},
+  {"kind": "prop", "art": "oak", "at": [58, 5]},
+  {"kind": "prop", "art": "oak2", "at": [59, 5]},
+  {"kind": "prop", "art": "birch", "at": [60, 5]},
+  {"kind": "prop", "art": "oak", "at": [61, 5]},
+  {"kind": "prop", "art": "oak2", "at": [62, 5]},
+  {"kind": "prop", "art": "birch", "at": [63, 5]},
+  {"kind": "prop", "art": "oak", "at": [0, 6]},
+  {"kind": "prop", "art": "oak2", "at": [1, 6]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 6]},
+  {"kind": "prop", "art": "tombstone", "at": [5, 6]},
+  {"kind": "prop", "art": "tombstone", "at": [8, 6]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 6]},
+  {"kind": "prop", "art": "oak2", "at": [46, 6]},
+  {"kind": "prop", "art": "birch", "at": [47, 6]},
+  {"kind": "prop", "art": "oak", "at": [48, 6]},
+  {"kind": "prop", "art": "oak2", "at": [49, 6]},
+  {"kind": "prop", "art": "birch", "at": [50, 6]},
+  {"kind": "prop", "art": "oak", "at": [51, 6]},
+  {"kind": "prop", "art": "oak2", "at": [52, 6]},
+  {"kind": "prop", "art": "birch", "at": [53, 6]},
+  {"kind": "prop", "art": "oak", "at": [54, 6]},
+  {"kind": "prop", "art": "oak2", "at": [55, 6]},
+  {"kind": "prop", "art": "birch", "at": [62, 6]},
+  {"kind": "prop", "art": "oak", "at": [63, 6]},
+  {"kind": "prop", "art": "oak2", "at": [0, 7]},
+  {"kind": "prop", "art": "birch", "at": [1, 7]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 7]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 7]},
+  {"kind": "prop", "art": "birch", "at": [46, 7]},
+  {"kind": "prop", "art": "oak", "at": [47, 7]},
+  {"kind": "prop", "art": "oak2", "at": [48, 7]},
+  {"kind": "prop", "art": "birch", "at": [49, 7]},
+  {"kind": "prop", "art": "oak", "at": [50, 7]},
+  {"kind": "prop", "art": "oak2", "at": [51, 7]},
+  {"kind": "prop", "art": "birch", "at": [52, 7]},
+  {"kind": "prop", "art": "oak", "at": [53, 7]},
+  {"kind": "prop", "art": "oak2", "at": [54, 7]},
+  {"kind": "prop", "art": "birch", "at": [55, 7]},
+  {"kind": "prop", "art": "oak", "at": [62, 7]},
+  {"kind": "prop", "art": "oak2", "at": [63, 7]},
+  {"kind": "prop", "art": "birch", "at": [0, 8]},
+  {"kind": "prop", "art": "oak", "at": [1, 8]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 8]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 8]},
+  {"kind": "prop", "art": "oak", "at": [46, 8]},
+  {"kind": "prop", "art": "oak2", "at": [47, 8]},
+  {"kind": "prop", "art": "birch", "at": [48, 8]},
+  {"kind": "prop", "art": "oak", "at": [49, 8]},
+  {"kind": "prop", "art": "oak2", "at": [50, 8]},
+  {"kind": "prop", "art": "birch", "at": [51, 8]},
+  {"kind": "prop", "art": "oak", "at": [52, 8]},
+  {"kind": "prop", "art": "oak2", "at": [53, 8]},
+  {"kind": "prop", "art": "birch", "at": [54, 8]},
+  {"kind": "prop", "art": "oak", "at": [55, 8]},
+  {"kind": "prop", "art": "oak2", "at": [62, 8]},
+  {"kind": "prop", "art": "birch", "at": [63, 8]},
+  {"kind": "prop", "art": "oak", "at": [0, 9]},
+  {"kind": "prop", "art": "oak2", "at": [1, 9]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 9]},
+  {"kind": "prop", "art": "tombstone", "at": [5, 9]},
+  {"kind": "prop", "art": "tombstone", "at": [8, 9]},
+  {"kind": "prop", "art": "gate-wide-2-v", "at": [11, 9], "size": [1, 2], "solid": false},
+  {"kind": "prop", "art": "oak", "at": [48, 9]},
+  {"kind": "prop", "art": "oak2", "at": [49, 9]},
+  {"kind": "prop", "art": "birch", "at": [50, 9]},
+  {"kind": "prop", "art": "oak", "at": [51, 9]},
+  {"kind": "prop", "art": "oak2", "at": [52, 9], "flip": true},
+  {"kind": "prop", "art": "birch", "at": [53, 9]},
+  {"kind": "prop", "art": "oak", "at": [54, 9]},
+  {"kind": "prop", "art": "oak2", "at": [55, 9]},
+  {"kind": "prop", "art": "birch", "at": [62, 9]},
+  {"kind": "prop", "art": "oak", "at": [63, 9]},
+  {"kind": "prop", "art": "oak2", "at": [0, 10]},
+  {"kind": "prop", "art": "birch", "at": [1, 10]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 10]},
+  {"kind": "prop", "art": "oak", "at": [62, 10]},
+  {"kind": "prop", "art": "oak2", "at": [63, 10]},
+  {"kind": "prop", "art": "birch", "at": [0, 11]},
+  {"kind": "prop", "art": "oak", "at": [1, 11]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 11]},
+  {"kind": "prop", "art": "fence_v", "at": [11, 11]},
+  {"kind": "prop", "art": "oak2", "at": [62, 11]},
+  {"kind": "prop", "art": "birch", "at": [63, 11]},
+  {"kind": "prop", "art": "oak", "at": [64, 11]},
+  {"kind": "prop", "art": "oak2", "at": [65, 11]},
+  {"kind": "prop", "art": "birch", "at": [66, 11]},
+  {"kind": "prop", "art": "oak", "at": [67, 11]},
+  {"kind": "prop", "art": "oak2", "at": [68, 11]},
+  {"kind": "prop", "art": "birch", "at": [69, 11]},
+  {"kind": "prop", "art": "oak", "at": [70, 11]},
+  {"kind": "prop", "art": "oak2", "at": [71, 11]},
+  {"kind": "prop", "art": "birch", "at": [72, 11]},
+  {"kind": "prop", "art": "oak", "at": [73, 11]},
+  {"kind": "prop", "art": "oak2", "at": [74, 11]},
+  {"kind": "prop", "art": "birch", "at": [75, 11]},
+  {"kind": "prop", "art": "oak", "at": [76, 11]},
+  {"kind": "prop", "art": "oak2", "at": [77, 11]},
+  {"kind": "prop", "art": "birch", "at": [78, 11]},
+  {"kind": "prop", "art": "oak", "at": [79, 11]},
+  {"kind": "prop", "art": "oak", "at": [0, 12]},
+  {"kind": "prop", "art": "oak2", "at": [1, 12]},
+  {"kind": "prop", "art": "fence-corner-ne", "at": [2, 12]},
+  {"kind": "prop", "art": "fence", "at": [3, 12]},
+  {"kind": "prop", "art": "fence", "at": [4, 12]},
+  {"kind": "prop", "art": "fence", "at": [5, 12]},
+  {"kind": "prop", "art": "fence", "at": [6, 12]},
+  {"kind": "prop", "art": "fence", "at": [7, 12]},
+  {"kind": "prop", "art": "fence", "at": [8, 12]},
+  {"kind": "prop", "art": "fence", "at": [9, 12]},
+  {"kind": "prop", "art": "fence", "at": [10, 12]},
+  {"kind": "prop", "art": "fence-corner-nw", "at": [11, 12]},
+  {"kind": "prop", "art": "oak", "at": [63, 12]},
+  {"kind": "prop", "art": "oak2", "at": [64, 12]},
+  {"kind": "prop", "art": "birch", "at": [65, 12]},
+  {"kind": "prop", "art": "oak", "at": [66, 12]},
+  {"kind": "prop", "art": "birch", "at": [68, 12]},
+  {"kind": "prop", "art": "oak", "at": [69, 12]},
+  {"kind": "prop", "art": "oak2", "at": [70, 12]},
+  {"kind": "prop", "art": "birch", "at": [71, 12]},
+  {"kind": "prop", "art": "oak", "at": [72, 12]},
+  {"kind": "prop", "art": "oak2", "at": [73, 12]},
+  {"kind": "prop", "art": "birch", "at": [74, 12]},
+  {"kind": "prop", "art": "oak", "at": [75, 12]},
+  {"kind": "prop", "art": "oak2", "at": [76, 12]},
+  {"kind": "prop", "art": "birch", "at": [77, 12]},
+  {"kind": "prop", "art": "oak", "at": [78, 12]},
+  {"kind": "prop", "art": "oak2", "at": [79, 12]},
+  {"kind": "prop", "art": "oak2", "at": [0, 13]},
+  {"kind": "prop", "art": "birch", "at": [1, 13]},
+  {"kind": "prop", "art": "oak2", "at": [63, 13]},
+  {"kind": "prop", "art": "birch", "at": [64, 13]},
+  {"kind": "prop", "art": "oak", "at": [65, 13]},
+  {"kind": "prop", "art": "oak2", "at": [66, 13]},
+  {"kind": "prop", "art": "birch", "at": [67, 13]},
+  {"kind": "prop", "art": "oak", "at": [68, 13]},
+  {"kind": "prop", "art": "oak2", "at": [69, 13]},
+  {"kind": "prop", "art": "birch", "at": [70, 13]},
+  {"kind": "prop", "art": "oak", "at": [71, 13]},
+  {"kind": "prop", "art": "oak2", "at": [72, 13]},
+  {"kind": "prop", "art": "birch", "at": [73, 13]},
+  {"kind": "prop", "art": "oak", "at": [74, 13]},
+  {"kind": "prop", "art": "oak2", "at": [75, 13]},
+  {"kind": "prop", "art": "birch", "at": [76, 13]},
+  {"kind": "prop", "art": "oak", "at": [77, 13]},
+  {"kind": "prop", "art": "oak2", "at": [78, 13]},
+  {"kind": "prop", "art": "birch", "at": [79, 13]},
+  {"kind": "prop", "art": "birch", "at": [0, 14]},
+  {"kind": "prop", "art": "oak", "at": [1, 14]},
+  {"kind": "prop", "art": "lamppost", "at": [51, 14], "group": "lane"},
+  {"kind": "prop", "art": "apple", "at": [62, 14]},
+  {"kind": "prop", "art": "apple2", "at": [63, 14]},
+  {"kind": "prop", "art": "oak", "at": [64, 14]},
+  {"kind": "prop", "art": "birch", "at": [66, 14]},
+  {"kind": "prop", "art": "oak", "at": [67, 14]},
+  {"kind": "prop", "art": "oak2", "at": [68, 14]},
+  {"kind": "prop", "art": "birch", "at": [69, 14]},
+  {"kind": "prop", "art": "oak", "at": [70, 14]},
+  {"kind": "prop", "art": "birch", "at": [72, 14]},
+  {"kind": "prop", "art": "oak", "at": [73, 14]},
+  {"kind": "prop", "art": "oak2", "at": [74, 14]},
+  {"kind": "prop", "art": "birch", "at": [75, 14]},
+  {"kind": "prop", "art": "oak", "at": [76, 14]},
+  {"kind": "prop", "art": "oak2", "at": [77, 14]},
+  {"kind": "prop", "art": "birch", "at": [78, 14]},
+  {"kind": "prop", "art": "oak", "at": [79, 14]},
+  {"kind": "prop", "art": "oak", "at": [0, 15]},
+  {"kind": "prop", "art": "oak2", "at": [1, 15]},
+  {"kind": "prop", "art": "lamppost", "at": [45, 15], "group": "lane"},
+  {"kind": "prop", "art": "lamppost", "at": [48, 15], "group": "lane"},
+  {"kind": "prop", "art": "apple2", "at": [62, 15]},
+  {"kind": "prop", "art": "apple", "at": [63, 15]},
+  {"kind": "prop", "art": "bush2", "at": [64, 15]},
+  {"kind": "prop", "art": "bush", "at": [65, 15]},
+  {"kind": "prop", "art": "bush2", "at": [66, 15]},
+  {"kind": "prop", "art": "oak2", "at": [67, 15]},
+  {"kind": "prop", "art": "oak", "at": [69, 15]},
+  {"kind": "prop", "art": "oak2", "at": [70, 15]},
+  {"kind": "prop", "art": "birch", "at": [71, 15]},
+  {"kind": "prop", "art": "oak", "at": [72, 15]},
+  {"kind": "prop", "art": "oak2", "at": [73, 15]},
+  {"kind": "prop", "art": "birch", "at": [74, 15]},
+  {"kind": "prop", "art": "oak", "at": [75, 15]},
+  {"kind": "prop", "art": "oak2", "at": [76, 15]},
+  {"kind": "prop", "art": "birch", "at": [77, 15]},
+  {"kind": "prop", "art": "oak", "at": [78, 15]},
+  {"kind": "prop", "art": "oak2", "at": [79, 15]},
+  {"kind": "prop", "art": "oak2", "at": [0, 16]},
+  {"kind": "prop", "art": "birch", "at": [1, 16]},
+  {"kind": "prop", "art": "bush", "at": [64, 16]},
+  {"kind": "prop", "art": "bush2", "at": [65, 16]},
+  {"kind": "prop", "art": "bush", "at": [66, 16]},
+  {"kind": "prop", "art": "bush2", "at": [73, 16]},
+  {"kind": "prop", "art": "bush", "at": [74, 16]},
+  {"kind": "prop", "art": "bush2", "at": [75, 16]},
+  {"kind": "prop", "art": "bush", "at": [76, 16]},
+  {"kind": "prop", "art": "bush2", "at": [77, 16]},
+  {"kind": "prop", "art": "oak2", "at": [78, 16]},
+  {"kind": "prop", "art": "birch", "at": [79, 16]},
+  {"kind": "prop", "art": "birch", "at": [0, 17]},
+  {"kind": "prop", "art": "oak", "at": [1, 17]},
+  {"kind": "prop", "art": "apple2", "at": [50, 17]},
+  {"kind": "prop", "art": "apple", "at": [53, 17]},
+  {"kind": "prop", "art": "bush2", "at": [64, 17]},
+  {"kind": "prop", "art": "bush", "at": [65, 17]},
+  {"kind": "prop", "art": "bush2", "at": [66, 17]},
+  {"kind": "prop", "art": "bush", "at": [73, 17]},
+  {"kind": "prop", "art": "bush2", "at": [74, 17]},
+  {"kind": "prop", "art": "bush", "at": [75, 17]},
+  {"kind": "prop", "art": "bush2", "at": [76, 17]},
+  {"kind": "prop", "art": "bush", "at": [77, 17]},
+  {"kind": "prop", "art": "birch", "at": [78, 17]},
+  {"kind": "prop", "art": "oak", "at": [79, 17]},
+  {"kind": "prop", "art": "oak", "at": [0, 18]},
+  {"kind": "prop", "art": "oak2", "at": [1, 18]},
+  {"kind": "prop", "art": "lamppost", "at": [45, 18], "group": "lane"},
+  {"kind": "prop", "art": "lamppost", "at": [48, 18], "group": "lane"},
+  {"kind": "prop", "art": "bush", "at": [64, 18]},
+  {"kind": "prop", "art": "bush2", "at": [65, 18]},
+  {"kind": "prop", "art": "bush", "at": [66, 18]},
+  {"kind": "prop", "art": "bush2", "at": [73, 18]},
+  {"kind": "prop", "art": "bush", "at": [74, 18]},
+  {"kind": "prop", "art": "bush2", "at": [75, 18]},
+  {"kind": "prop", "art": "bush", "at": [76, 18]},
+  {"kind": "prop", "art": "bush2", "at": [77, 18]},
+  {"kind": "prop", "art": "oak", "at": [78, 18]},
+  {"kind": "prop", "art": "oak2", "at": [79, 18]},
+  {"kind": "prop", "art": "oak2", "at": [0, 19]},
+  {"kind": "prop", "art": "birch", "at": [1, 19]},
+  {"kind": "prop", "art": "bush2", "at": [64, 19]},
+  {"kind": "prop", "art": "bush", "at": [65, 19]},
+  {"kind": "prop", "art": "bush2", "at": [66, 19]},
+  {"kind": "prop", "art": "bush", "at": [73, 19]},
+  {"kind": "prop", "art": "bush2", "at": [74, 19]},
+  {"kind": "prop", "art": "bush", "at": [75, 19]},
+  {"kind": "prop", "art": "bush2", "at": [76, 19]},
+  {"kind": "prop", "art": "bush", "at": [77, 19]},
+  {"kind": "prop", "art": "oak2", "at": [78, 19]},
+  {"kind": "prop", "art": "birch", "at": [79, 19]},
+  {"kind": "prop", "art": "birch", "at": [0, 20]},
+  {"kind": "prop", "art": "oak", "at": [1, 20]},
+  {"kind": "prop", "art": "bush", "at": [64, 20]},
+  {"kind": "prop", "art": "bush2", "at": [65, 20]},
+  {"kind": "prop", "art": "bush", "at": [66, 20]},
+  {"kind": "prop", "art": "bush2", "at": [73, 20]},
+  {"kind": "prop", "art": "bush", "at": [74, 20]},
+  {"kind": "prop", "art": "bush2", "at": [75, 20]},
+  {"kind": "prop", "art": "bush", "at": [76, 20]},
+  {"kind": "prop", "art": "bush2", "at": [77, 20]},
+  {"kind": "prop", "art": "birch", "at": [78, 20]},
+  {"kind": "prop", "art": "oak", "at": [79, 20]},
+  {"kind": "prop", "art": "oak", "at": [0, 21]},
+  {"kind": "prop", "art": "oak2", "at": [1, 21]},
+  {"kind": "prop", "art": "bush2", "at": [64, 21]},
+  {"kind": "prop", "art": "bush", "at": [65, 21]},
+  {"kind": "prop", "art": "bush2", "at": [66, 21]},
+  {"kind": "prop", "art": "bush", "at": [73, 21]},
+  {"kind": "prop", "art": "bush2", "at": [74, 21]},
+  {"kind": "prop", "art": "bush", "at": [75, 21]},
+  {"kind": "prop", "art": "bush2", "at": [76, 21]},
+  {"kind": "prop", "art": "bush", "at": [77, 21]},
+  {"kind": "prop", "art": "oak", "at": [78, 21]},
+  {"kind": "prop", "art": "oak2", "at": [79, 21]},
+  {"kind": "prop", "art": "oak2", "at": [0, 22]},
+  {"kind": "prop", "art": "birch", "at": [1, 22]},
+  {"kind": "prop", "art": "oak2", "at": [78, 22]},
+  {"kind": "prop", "art": "birch", "at": [79, 22]},
+  {"kind": "prop", "art": "birch", "at": [0, 23]},
+  {"kind": "prop", "art": "oak", "at": [1, 23]},
+  {"kind": "prop", "art": "oak2", "at": [2, 23]},
+  {"kind": "prop", "art": "birch", "at": [3, 23]},
+  {"kind": "prop", "art": "oak", "at": [4, 23]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 23]},
+  {"kind": "prop", "art": "bush2", "at": [35, 23]},
+  {"kind": "prop", "art": "bush", "at": [36, 23]},
+  {"kind": "prop", "art": "flowerbed", "at": [37, 23]},
+  {"kind": "prop", "art": "bush2", "at": [38, 23]},
+  {"kind": "prop", "art": "bush", "at": [39, 23]},
+  {"kind": "prop", "art": "flowerbed", "at": [40, 23]},
+  {"kind": "prop", "art": "bush2", "at": [41, 23]},
+  {"kind": "prop", "art": "bush", "at": [42, 23]},
+  {"kind": "prop", "art": "birch", "at": [78, 23]},
+  {"kind": "prop", "art": "oak", "at": [79, 23]},
+  {"kind": "prop", "art": "oak", "at": [0, 24]},
+  {"kind": "prop", "art": "oak2", "at": [1, 24]},
+  {"kind": "prop", "art": "birch", "at": [2, 24]},
+  {"kind": "prop", "art": "oak", "at": [3, 24]},
+  {"kind": "prop", "art": "oak2", "at": [4, 24]},
+  {"kind": "prop", "art": "birch", "at": [5, 24]},
+  {"kind": "prop", "art": "oak", "at": [6, 24]},
+  {"kind": "prop", "art": "oak2", "at": [7, 24]},
+  {"kind": "prop", "art": "birch", "at": [12, 24]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 24]},
+  {"kind": "prop", "art": "bush2", "at": [35, 24]},
+  {"kind": "prop", "art": "bush", "at": [36, 24]},
+  {"kind": "prop", "art": "flowerbed", "at": [37, 24]},
+  {"kind": "prop", "art": "bush2", "at": [38, 24]},
+  {"kind": "prop", "art": "bush", "at": [39, 24]},
+  {"kind": "prop", "art": "flowerbed", "at": [40, 24]},
+  {"kind": "prop", "art": "bush2", "at": [41, 24]},
+  {"kind": "prop", "art": "bush", "at": [42, 24]},
+  {"kind": "prop", "art": "oak", "at": [78, 24]},
+  {"kind": "prop", "art": "oak2", "at": [79, 24]},
+  {"kind": "prop", "art": "oak2", "at": [0, 25]},
+  {"kind": "prop", "art": "birch", "at": [1, 25]},
+  {"kind": "prop", "art": "oak", "at": [2, 25]},
+  {"kind": "prop", "art": "oak2", "at": [3, 25]},
+  {"kind": "prop", "art": "birch", "at": [4, 25]},
+  {"kind": "prop", "art": "oak", "at": [5, 25]},
+  {"kind": "prop", "art": "oak2", "at": [6, 25]},
+  {"kind": "prop", "art": "birch", "at": [7, 25]},
+  {"kind": "prop", "art": "birch", "at": [16, 25]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 25]},
+  {"kind": "prop", "art": "bush2", "at": [35, 25]},
+  {"kind": "prop", "art": "bush", "at": [36, 25]},
+  {"kind": "prop", "art": "flowerbed", "at": [37, 25]},
+  {"kind": "prop", "art": "bush2", "at": [38, 25]},
+  {"kind": "prop", "art": "bush", "at": [39, 25]},
+  {"kind": "prop", "art": "flowerbed", "at": [40, 25]},
+  {"kind": "prop", "art": "bush2", "at": [41, 25]},
+  {"kind": "prop", "art": "bush", "at": [42, 25]},
+  {"kind": "prop", "art": "oak2", "at": [78, 25]},
+  {"kind": "prop", "art": "birch", "at": [79, 25]},
+  {"kind": "prop", "art": "birch", "at": [0, 26]},
+  {"kind": "prop", "art": "oak", "at": [1, 26]},
+  {"kind": "prop", "art": "oak2", "at": [2, 26]},
+  {"kind": "prop", "art": "birch", "at": [3, 26]},
+  {"kind": "prop", "art": "oak", "at": [4, 26]},
+  {"kind": "prop", "art": "oak2", "at": [5, 26]},
+  {"kind": "prop", "art": "birch", "at": [6, 26]},
+  {"kind": "prop", "art": "oak", "at": [7, 26]},
+  {"kind": "prop", "art": "oak2", "at": [23, 26]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 26]},
+  {"kind": "prop", "art": "bush2", "at": [35, 26]},
+  {"kind": "prop", "art": "bush", "at": [36, 26]},
+  {"kind": "prop", "art": "flowerbed", "at": [37, 26]},
+  {"kind": "prop", "art": "bush2", "at": [38, 26]},
+  {"kind": "prop", "art": "bush", "at": [39, 26]},
+  {"kind": "prop", "art": "flowerbed", "at": [40, 26]},
+  {"kind": "prop", "art": "bush2", "at": [41, 26]},
+  {"kind": "prop", "art": "bush", "at": [42, 26]},
+  {"kind": "prop", "art": "birch", "at": [78, 26]},
+  {"kind": "prop", "art": "oak", "at": [79, 26]},
+  {"kind": "prop", "art": "oak", "at": [0, 27]},
+  {"kind": "prop", "art": "oak2", "at": [1, 27]},
+  {"kind": "prop", "art": "birch", "at": [2, 27]},
+  {"kind": "prop", "art": "oak", "at": [3, 27]},
+  {"kind": "prop", "art": "oak2", "at": [4, 27]},
+  {"kind": "prop", "art": "birch", "at": [5, 27]},
+  {"kind": "prop", "art": "oak", "at": [6, 27]},
+  {"kind": "prop", "art": "oak2", "at": [7, 27]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 27]},
+  {"kind": "prop", "art": "bush2", "at": [35, 27]},
+  {"kind": "prop", "art": "bush", "at": [36, 27]},
+  {"kind": "prop", "art": "flowerbed", "at": [37, 27]},
+  {"kind": "prop", "art": "bush2", "at": [38, 27]},
+  {"kind": "prop", "art": "bush", "at": [39, 27]},
+  {"kind": "prop", "art": "flowerbed", "at": [40, 27]},
+  {"kind": "prop", "art": "bush2", "at": [41, 27]},
+  {"kind": "prop", "art": "bush", "at": [42, 27]},
+  {"kind": "prop", "art": "oak2", "at": [79, 27]},
+  {"kind": "prop", "art": "oak2", "at": [0, 28]},
+  {"kind": "prop", "art": "birch", "at": [1, 28]},
+  {"kind": "prop", "art": "oak", "at": [2, 28]},
+  {"kind": "prop", "art": "oak2", "at": [3, 28]},
+  {"kind": "prop", "art": "birch", "at": [4, 28]},
+  {"kind": "prop", "art": "oak", "at": [5, 28]},
+  {"kind": "prop", "art": "oak2", "at": [6, 28]},
+  {"kind": "prop", "art": "birch", "at": [7, 28]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 28]},
+  {"kind": "prop", "art": "bush2", "at": [35, 28]},
+  {"kind": "prop", "art": "bush2", "at": [41, 28]},
+  {"kind": "prop", "art": "bush", "at": [42, 28]},
+  {"kind": "prop", "art": "birch", "at": [0, 29]},
+  {"kind": "prop", "art": "oak", "at": [1, 29]},
+  {"kind": "prop", "art": "oak2", "at": [2, 29]},
+  {"kind": "prop", "art": "birch", "at": [3, 29]},
+  {"kind": "prop", "art": "oak", "at": [4, 29]},
+  {"kind": "prop", "art": "oak2", "at": [5, 29]},
+  {"kind": "prop", "art": "birch", "at": [6, 29]},
+  {"kind": "prop", "art": "oak", "at": [7, 29]},
+  {"kind": "prop", "art": "oak2", "at": [13, 29]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 29]},
+  {"kind": "prop", "art": "bush2", "at": [35, 29]},
+  {"kind": "prop", "art": "bush2", "at": [41, 29]},
+  {"kind": "prop", "art": "bush", "at": [42, 29]},
+  {"kind": "prop", "art": "oak", "at": [0, 30]},
+  {"kind": "prop", "art": "oak2", "at": [1, 30]},
+  {"kind": "prop", "art": "birch", "at": [2, 30]},
+  {"kind": "prop", "art": "oak", "at": [3, 30]},
+  {"kind": "prop", "art": "oak2", "at": [4, 30]},
+  {"kind": "prop", "art": "birch", "at": [5, 30]},
+  {"kind": "prop", "art": "oak", "at": [6, 30]},
+  {"kind": "prop", "art": "oak2", "at": [7, 30]},
+  {"kind": "prop", "art": "birch", "at": [18, 30]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 30]},
+  {"kind": "prop", "art": "bush2", "at": [35, 30]},
+  {"kind": "prop", "art": "bush2", "at": [41, 30]},
+  {"kind": "prop", "art": "bush", "at": [42, 30]},
+  {"kind": "prop", "art": "oak2", "at": [67, 30]},
+  {"kind": "prop", "art": "birch", "at": [68, 30]},
+  {"kind": "prop", "art": "oak2", "at": [0, 31]},
+  {"kind": "prop", "art": "birch", "at": [1, 31]},
+  {"kind": "prop", "art": "oak", "at": [2, 31]},
+  {"kind": "prop", "art": "oak2", "at": [3, 31]},
+  {"kind": "prop", "art": "birch", "at": [4, 31]},
+  {"kind": "prop", "art": "oak", "at": [5, 31]},
+  {"kind": "prop", "art": "oak2", "at": [6, 31]},
+  {"kind": "prop", "art": "birch", "at": [7, 31]},
+  {"kind": "prop", "art": "flowerbed", "at": [34, 31]},
+  {"kind": "prop", "art": "bush2", "at": [35, 31]},
+  {"kind": "prop", "art": "bush2", "at": [41, 31]},
+  {"kind": "prop", "art": "bush", "at": [42, 31]},
+  {"kind": "prop", "art": "oak", "at": [68, 31]},
+  {"kind": "prop", "art": "birch", "at": [0, 32]},
+  {"kind": "prop", "art": "oak", "at": [1, 32]},
+  {"kind": "prop", "art": "oak2", "at": [2, 32]},
+  {"kind": "prop", "art": "birch", "at": [3, 32]},
+  {"kind": "prop", "art": "oak", "at": [4, 32]},
+  {"kind": "prop", "art": "oak2", "at": [5, 32]},
+  {"kind": "prop", "art": "birch", "at": [6, 32]},
+  {"kind": "prop", "art": "oak", "at": [7, 32]},
+  {"kind": "prop", "art": "oak2", "at": [22, 32]},
+  {"kind": "prop", "art": "oak2", "at": [68, 32]},
+  {"kind": "prop", "art": "oak", "at": [0, 33]},
+  {"kind": "prop", "art": "oak2", "at": [1, 33]},
+  {"kind": "prop", "art": "birch", "at": [2, 33]},
+  {"kind": "prop", "art": "oak", "at": [3, 33]},
+  {"kind": "prop", "art": "oak2", "at": [4, 33]},
+  {"kind": "prop", "art": "birch", "at": [5, 33]},
+  {"kind": "prop", "art": "oak", "at": [6, 33]},
+  {"kind": "prop", "art": "oak2", "at": [7, 33]},
+  {"kind": "prop", "art": "birch", "at": [68, 33]},
+  {"kind": "prop", "art": "oak2", "at": [0, 34]},
+  {"kind": "prop", "art": "birch", "at": [1, 34]},
+  {"kind": "prop", "art": "oak", "at": [2, 34]},
+  {"kind": "prop", "art": "oak2", "at": [3, 34]},
+  {"kind": "prop", "art": "birch", "at": [4, 34]},
+  {"kind": "prop", "art": "oak", "at": [5, 34]},
+  {"kind": "prop", "art": "oak2", "at": [6, 34]},
+  {"kind": "prop", "art": "birch", "at": [7, 34]},
+  {"kind": "prop", "art": "birch", "at": [14, 34]},
+  {"kind": "prop", "art": "birch", "at": [20, 34]},
+  {"kind": "prop", "art": "oak", "at": [68, 34]},
+  {"kind": "prop", "art": "birch", "at": [0, 35]},
+  {"kind": "prop", "art": "oak", "at": [1, 35]},
+  {"kind": "prop", "art": "oak2", "at": [2, 35]},
+  {"kind": "prop", "art": "birch", "at": [3, 35]},
+  {"kind": "prop", "art": "oak", "at": [4, 35]},
+  {"kind": "prop", "art": "oak2", "at": [5, 35]},
+  {"kind": "prop", "art": "birch", "at": [6, 35]},
+  {"kind": "prop", "art": "oak", "at": [7, 35]},
+  {"kind": "prop", "art": "oak2", "at": [68, 35]},
+  {"kind": "prop", "art": "oak", "at": [0, 36]},
+  {"kind": "prop", "art": "oak2", "at": [1, 36]},
+  {"kind": "prop", "art": "birch", "at": [2, 36]},
+  {"kind": "prop", "art": "oak", "at": [3, 36]},
+  {"kind": "prop", "art": "oak2", "at": [4, 36]},
+  {"kind": "prop", "art": "birch", "at": [5, 36]},
+  {"kind": "prop", "art": "oak", "at": [6, 36]},
+  {"kind": "prop", "art": "oak2", "at": [7, 36]},
+  {"kind": "prop", "art": "birch", "at": [68, 36]},
+  {"kind": "prop", "art": "oak2", "at": [0, 37]},
+  {"kind": "prop", "art": "birch", "at": [1, 37]},
+  {"kind": "prop", "art": "oak", "at": [2, 37]},
+  {"kind": "prop", "art": "oak2", "at": [3, 37]},
+  {"kind": "prop", "art": "birch", "at": [4, 37]},
+  {"kind": "prop", "art": "oak", "at": [5, 37]},
+  {"kind": "prop", "art": "oak2", "at": [6, 37]},
+  {"kind": "prop", "art": "birch", "at": [7, 37]},
+  {"kind": "prop", "art": "oak", "at": [68, 37]},
+  {"kind": "prop", "art": "birch", "at": [0, 38]},
+  {"kind": "prop", "art": "oak", "at": [1, 38]},
+  {"kind": "prop", "art": "oak2", "at": [2, 38]},
+  {"kind": "prop", "art": "birch", "at": [3, 38]},
+  {"kind": "prop", "art": "oak", "at": [4, 38]},
+  {"kind": "prop", "art": "oak2", "at": [5, 38]},
+  {"kind": "prop", "art": "birch", "at": [6, 38]},
+  {"kind": "prop", "art": "oak", "at": [7, 38]},
+  {"kind": "prop", "art": "oak2", "at": [8, 38]},
+  {"kind": "prop", "art": "oak2", "at": [68, 38]},
+  {"kind": "prop", "art": "oak", "at": [0, 39]},
+  {"kind": "prop", "art": "oak2", "at": [1, 39]},
+  {"kind": "prop", "art": "fence-corner-se", "at": [2, 39]},
+  {"kind": "prop", "art": "fence", "at": [3, 39]},
+  {"kind": "prop", "art": "fence", "at": [4, 39]},
+  {"kind": "prop", "art": "fence", "at": [5, 39]},
+  {"kind": "prop", "art": "fence", "at": [6, 39]},
+  {"kind": "prop", "art": "fence-corner-sw", "at": [7, 39]},
+  {"kind": "prop", "art": "birch", "at": [68, 39]},
+  {"kind": "prop", "art": "oak2", "at": [0, 40]},
+  {"kind": "prop", "art": "birch", "at": [1, 40]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 40]},
+  {"kind": "prop", "art": "cabbages", "at": [3, 40]},
+  {"kind": "prop", "art": "cabbages", "at": [4, 40]},
+  {"kind": "prop", "art": "cabbages", "at": [5, 40]},
+  {"kind": "prop", "art": "cabbages", "at": [6, 40]},
+  {"kind": "prop", "art": "fence_v", "at": [7, 40]},
+  {"kind": "prop", "art": "oak", "at": [68, 40]},
+  {"kind": "prop", "art": "birch", "at": [0, 41]},
+  {"kind": "prop", "art": "oak", "at": [1, 41]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 41]},
+  {"kind": "prop", "art": "cabbages", "at": [3, 41]},
+  {"kind": "prop", "art": "cabbages", "at": [4, 41]},
+  {"kind": "prop", "art": "cabbages", "at": [5, 41]},
+  {"kind": "prop", "art": "cabbages", "at": [6, 41]},
+  {"kind": "prop", "art": "fence_v", "at": [7, 41]},
+  {"kind": "prop", "art": "oak2", "at": [68, 41]},
+  {"kind": "prop", "art": "oak", "at": [0, 42]},
+  {"kind": "prop", "art": "oak2", "at": [1, 42]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 42]},
+  {"kind": "prop", "art": "cabbages", "at": [3, 42]},
+  {"kind": "prop", "art": "cabbages", "at": [4, 42]},
+  {"kind": "prop", "art": "cabbages", "at": [5, 42]},
+  {"kind": "prop", "art": "cabbages", "at": [6, 42]},
+  {"kind": "prop", "art": "fence_v", "at": [7, 42]},
+  {"kind": "prop", "art": "birch", "at": [68, 42]},
+  {"kind": "prop", "art": "oak2", "at": [0, 43]},
+  {"kind": "prop", "art": "birch", "at": [1, 43]},
+  {"kind": "prop", "art": "fence_v", "at": [2, 43]},
+  {"kind": "prop", "art": "cabbages", "at": [3, 43]},
+  {"kind": "prop", "art": "cabbages", "at": [6, 43]},
+  {"kind": "prop", "art": "fence_v", "at": [7, 43]},
+  {"kind": "prop", "art": "birch", "at": [67, 43]},
+  {"kind": "prop", "art": "oak", "at": [68, 43]},
+  {"kind": "prop", "art": "birch", "at": [0, 44]},
+  {"kind": "prop", "art": "oak", "at": [1, 44]},
+  {"kind": "prop", "art": "fence-corner-ne", "at": [2, 44]},
+  {"kind": "prop", "art": "fence", "at": [3, 44]},
+  {"kind": "prop", "art": "gate-wide-2", "at": [4, 44], "size": [2, 1], "id": "cabbage-gate", "solid_unless": "open", "program": {"hook": "on_use", "fields": {"open": {"type": "bool", "default": false}}}},
+  {"kind": "prop", "art": "fence", "at": [6, 44]},
+  {"kind": "prop", "art": "fence-corner-nw", "at": [7, 44]},
+  {"kind": "prop", "art": "oak", "at": [67, 44]},
+  {"kind": "prop", "art": "oak2", "at": [68, 44]},
+  {"kind": "prop", "art": "oak", "at": [0, 45]},
+  {"kind": "prop", "art": "oak2", "at": [1, 45]},
+  {"kind": "prop", "art": "oak2", "at": [67, 45]},
+  {"kind": "prop", "art": "birch", "at": [68, 45]},
+  {"kind": "prop", "art": "oak2", "at": [0, 46]},
+  {"kind": "prop", "art": "birch", "at": [1, 46]},
+  {"kind": "prop", "art": "birch", "at": [67, 46]},
+  {"kind": "prop", "art": "oak", "at": [68, 46]},
+  {"kind": "prop", "art": "birch", "at": [0, 47]},
+  {"kind": "prop", "art": "oak", "at": [1, 47]},
+  {"kind": "prop", "art": "oak", "at": [67, 47]},
+  {"kind": "prop", "art": "oak2", "at": [68, 47]},
+  {"kind": "prop", "art": "oak", "at": [0, 48]},
+  {"kind": "prop", "art": "oak2", "at": [1, 48]},
+  {"kind": "prop", "art": "oak2", "at": [67, 48]},
+  {"kind": "prop", "art": "birch", "at": [68, 48]},
+  {"kind": "prop", "art": "gate-wide-2-v", "at": [30, 21], "size": [1, 2], "solid": false},
+  {"kind": "prop", "art": "gate-wide-2", "at": [30, 20], "size": [2, 1], "solid": false},
+  {"kind": "prop", "art": "gate-wide-2", "at": [46, 20], "size": [2, 1], "solid": false},
+  {"kind": "prop", "art": "gate-wide-2-v", "at": [48, 27], "size": [1, 2], "solid": false},
+  {"kind": "prop", "art": "gate-wide-2", "at": [31, 33], "size": [2, 1], "solid": false},
+  {"kind": "prop", "art": "gate-wide-3", "at": [68, 22], "size": [3, 1], "solid": false},
+  {"kind": "prop", "art": "lamppost", "at": [29, 20]},
+  {"kind": "prop", "art": "lamppost", "at": [32, 19]},
+  {"kind": "prop", "art": "lamppost", "at": [48, 20]},
+  {"kind": "prop", "art": "lamppost", "at": [30, 34]},
+  {"kind": "prop", "art": "lamppost", "at": [48, 26]},
+  {"kind": "prop", "art": "lamppost", "at": [54, 29]},
+  {"kind": "prop", "art": "lamppost", "at": [60, 29]},
+  {"kind": "prop", "art": "lamppost", "at": [66, 26]},
+  {"kind": "prop", "art": "lamppost", "at": [72, 26]},
+  {"kind": "prop", "art": "noticeboard", "at": [43, 20], "size": [2, 1], "talk": "noticeboard"},
+  {"kind": "prop", "art": "signpost", "at": [11, 20], "text": "The Archive. The square. Home. Pick a road.", "id": "crossroads-sign", "program": {"hook": "on_use", "fields": {}}},
+  {"kind": "prop", "art": "signpost", "at": [45, 12], "text": "The lamp lane. Lumen's shrine is at the end."},
+  {"kind": "prop", "art": "sign", "at": [13, 8], "text": "The old stones. Please walk softly."},
+  {"kind": "prop", "art": "bench", "at": [31, 26], "size": [2, 1]},
+  {"kind": "prop", "art": "bench", "at": [45, 26], "size": [2, 1]},
+  {"kind": "prop", "art": "bench", "at": [38, 21], "size": [2, 1]},
+  {"kind": "prop", "art": "flowerpot", "at": [46, 22]},
+  {"kind": "prop", "art": "flowerpot", "at": [46, 31]},
+  {"kind": "prop", "art": "barrel", "at": [35, 41]},
+  {"kind": "prop", "art": "barrel", "at": [34, 43]},
+  {"kind": "prop", "art": "crate", "at": [33, 43]},
+  {"kind": "prop", "art": "woodpile", "at": [33, 44], "size": [2, 1]},
+  {"kind": "prop", "art": "mailbox", "at": [9, 44]},
+  {"kind": "prop", "art": "barrel", "at": [49, 21]},
+  {"kind": "prop", "art": "barrel", "at": [49, 22]},
+  {"kind": "prop", "art": "barrel", "at": [64, 22]},
+  {"kind": "prop", "art": "barrel", "at": [64, 23]},
+  {"kind": "prop", "art": "barrel", "at": [65, 30]},
+  {"kind": "prop", "art": "barrel", "at": [66, 30]},
+  {"kind": "prop", "art": "banner", "at": [21, 6]},
+  {"kind": "prop", "art": "banner", "at": [39, 6]},
+  {"kind": "prop", "art": "flowerbed", "at": [42, 32]},
+  {"kind": "prop", "art": "tuft", "at": [15, 4], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "mushrooms", "at": [4, 5], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "mushrooms", "at": [9, 11], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "tuft", "at": [14, 27], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "reeds", "at": [26, 41], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "reeds", "at": [36, 35], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "lilypad", "at": [28, 37], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "lilypad", "at": [34, 36], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "lilypad", "at": [29, 40], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 34], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 35], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 36], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 37], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 38], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 39], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "prop", "art": "bridge", "at": [31, 40], "size": [2, 1], "solid": false, "sink": 50, "draw_layer": "ground"},
+  {"kind": "person", "id": "summoner", "at": [18, 44], "facing": "right"},
+  {"kind": "person", "id": "compiler", "at": [35, 43], "facing": "down"},
+  {"kind": "person", "id": "guildmaster", "at": [44, 24], "facing": "left"},
+  {"kind": "person", "id": "pip", "at": [36, 33], "facing": "up"},
+  {"kind": "person", "id": "keeper", "at": [42, 33], "facing": "up"},
+  {"kind": "person", "id": "oracle", "at": [60, 13], "facing": "left"},
+  {"kind": "person", "id": "innkeeper", "at": [49, 24], "facing": "right"},
+  {"kind": "person", "id": "quartermaster", "at": [64, 24], "facing": "left"},
+  {"kind": "person", "id": "archivist", "at": [19, 20], "facing": "left"},
+  {"kind": "person", "id": "artificer", "at": [29, 15], "facing": "right"},
+  {"kind": "person", "id": "pell", "at": [11, 18], "facing": "right"},
+  {"kind": "person", "id": "necromancer", "at": [6, 8], "facing": "right"},
+  {"kind": "person", "id": "warden", "at": [71, 24], "facing": "left"},
+  {"kind": "person", "id": "guard", "at": [72, 23], "facing": "left"},
+  {"kind": "person", "id": "sergeant", "at": [58, 35], "facing": "down"},
+  {"kind": "person", "id": "shade", "at": [66, 31], "facing": "up"},
+  {"kind": "prop", "art": "anvil", "at": [35, 44]},
+  {"kind": "prop", "art": "stonewall", "at": [43, 33]},
+  {"kind": "prop", "art": "stonewall", "at": [44, 33]},
+  {"kind": "prop", "art": "stonewall", "at": [45, 33]},
+  {"kind": "prop", "art": "stonewall", "at": [46, 33]},
+  {"kind": "prop", "art": "stonewall", "at": [47, 33], "flip": true},
+  {"kind": "prop", "art": "barrel-2x1", "at": [54, 19], "size": [2, 1]},
+  {"kind": "prop", "art": "barrel-2x1", "at": [56, 19], "size": [2, 1]},
+  {"kind": "prop", "art": "barrel-2x1", "at": [58, 19], "size": [2, 1]},
+  {"kind": "prop", "art": "music-box", "at": [51, 27], "opens": "music", "text": "A music box. No tunes in it yet..."},
+  {"kind": "prop", "art": "map-table", "at": [15, 17], "size": [2, 1], "opens": "map", "text": "Pell's map table, covered in blank maps."},
+  {"kind": "prop", "art": "expand-carrot-row", "at": [8, 39], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "expand-turnip-row", "at": [9, 39], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "expand-pumpkin-patch", "at": [8, 40], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "expand-berry-patch", "at": [9, 41], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "expand-beehive", "at": [9, 43]},
+  {"kind": "prop", "art": "pine", "at": [3, 14]},
+  {"kind": "prop", "art": "rock", "at": [28, 43]},
+  {"kind": "prop", "art": "expand-planter-round", "at": [30, 28]},
+  {"kind": "prop", "art": "expand-planter-round", "at": [44, 31]},
+  {"kind": "prop", "art": "expand-willow-tree", "at": [24, 35]},
+  {"kind": "prop", "art": "expand-boulder-moss", "at": [26, 35]},
+  {"kind": "prop", "art": "expand-cherry-tree", "at": [12, 7]},
+  {"kind": "prop", "art": "expand-golden-tree", "at": [10, 8]},
+  {"kind": "prop", "art": "expand-stone_bench", "at": [14, 8], "size": [2, 1]},
+  {"kind": "prop", "art": "expand-mushroom-patch", "at": [10, 11], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "expand-stump-mossy", "at": [14, 12]},
+  {"kind": "prop", "art": "expand-log-fallen", "at": [16, 12], "size": [2, 1]},
+  {"kind": "prop", "art": "expand-tool-rack", "at": [8, 35]},
+  {"kind": "prop", "art": "expand-compost-bin", "at": [11, 35]},
+  {"kind": "prop", "art": "expand-wooden-trough", "at": [13, 35], "size": [2, 1]},
+  {"kind": "prop", "art": "expand-crate-open", "at": [48, 11]},
+  {"kind": "prop", "art": "expand-basket-apples", "at": [50, 11]},
+  {"kind": "prop", "art": "expand-lantern_boundary_post", "at": [66, 22]},
+  {"kind": "prop", "art": "expand-young-pine", "at": [66, 24]},
+  {"kind": "prop", "art": "sign", "at": [38, 34], "opens": "tally", "text": "Pip's tally board. It counts lanterns."},
+  {"kind": "prop", "art": "crate", "at": [64, 30], "opens": "lockbox", "text": "A lockbox with a four-digit lock."},
+  {"kind": "prop", "art": "noticeboard", "at": [58, 33], "size": [2, 1], "opens": "drills", "text": "Brisk's drill board."},
+  {"kind": "prop", "art": "expand-arched_wood_gate", "at": [15, 12]},
+  {"kind": "prop", "art": "expand-stone_boundary_post", "at": [43, 12]}
  ]
 }

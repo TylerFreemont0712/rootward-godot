@@ -1,0 +1,13 @@
+// The letter: a Bag and pickup icon (pipeline/world/README.md). A sealed envelope with a red wax seal.
+{
+ "id": "item-letter",
+ "kind": "prop",
+ "what": "a folded cream envelope with a red wax seal, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"paper": "plaster", "flap": "plaster", "seal": "cloth_red"},
+ "parts": [
+  {"shape": "box", "at": [0.15, 0.2, 0], "size": [0.7, 0.5, 0.45], "ramp": "paper", "shade": 1},
+  {"shape": "gable", "at": [0.15, 0.2, 0.45], "size": [0.7, 0.5, 0.22], "ramp": "flap"},
+  {"shape": "ball", "at": [0.4, 0.12, 0.2], "size": [0.2, 0.12, 0.2], "ramp": "seal", "shade": 1}
+ ]
+}

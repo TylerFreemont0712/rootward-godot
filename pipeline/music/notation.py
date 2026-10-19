@@ -32,14 +32,32 @@ STEPS = {"C": 0, "D": 2, "E": 4, "F": 5, "G": 7, "A": 9, "B": 11}
 # The lengths (in sixteenths) SheetSage2 writes a note or rest as; anything else it splits and ties (yue2.cpp's
 # notation.h, not_split_duration), so a `z14` or a `c10` is a spelling YuE2 never saw in training.
 LENGTHS = {1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48}
-# The accidentals each key signature implies (sharps positive, flats negative), for the melody's pitches.
-KEY_ACCIDENTALS = {
-    "C": {}, "Am": {}, "G": {"F": 1}, "Em": {"F": 1}, "D": {"F": 1, "C": 1}, "Bm": {"F": 1, "C": 1},
-    "A": {"F": 1, "C": 1, "G": 1}, "F#m": {"F": 1, "C": 1, "G": 1}, "E": {"F": 1, "C": 1, "G": 1, "D": 1},
-    "F": {"B": -1}, "Dm": {"B": -1}, "Bb": {"B": -1, "E": -1}, "Gm": {"B": -1, "E": -1},
-    "Eb": {"B": -1, "E": -1, "A": -1}, "Cm": {"B": -1, "E": -1, "A": -1},
-    "Ab": {"B": -1, "E": -1, "A": -1, "D": -1}, "Fm": {"B": -1, "E": -1, "A": -1, "D": -1},
-}
+# The key signature, from the circle of fifths. A letter's place in the circle is its major key's count of sharps (or
+# flats, negative); each sharp in the spelling adds seven (Db is 2 - 7 = -5: five flats). A minor key sits three fifths
+# below its relative major, so Dm is one flat (F major's count, -1). Sharps are added in F C G D A E B, flats in
+# B E A D G C F.
+FIFTHS = {"C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5, "F": -1}
+SHARP_ORDER = ["F", "C", "G", "D", "A", "E", "B"]
+FLAT_ORDER = ["B", "E", "A", "D", "G", "C", "F"]
+KEY = re.compile(r"([A-G])(#|b)?\s*(m|min|minor|maj|major)?")
+
+
+def key_signature(key: str) -> dict[str, int]:
+    """The alteration each letter carries in a key: {"F": 1} is F sharp, {"B": -1} is B flat. Takes a key as the scores
+    write it (`D`, `Dm`, `Bb`, `F#m`) or in words (`D minor`). Anything else is a ValueError: a key this does not know
+    must not be read as C major."""
+    match = KEY.fullmatch(key.strip())
+    if not match:
+        raise ValueError(f"not a key: {key!r} (write it as D, Dm, Bb or F#m)")
+    letter, accidental, mode = match.groups()
+    fifths = FIFTHS[letter] + 7 * {"#": 1, "b": -1, None: 0}[accidental]
+    if mode in ("m", "min", "minor"):
+        fifths -= 3
+    if not -7 <= fifths <= 7:
+        raise ValueError(f"key {key!r} has more than seven sharps or flats")
+    if fifths > 0:
+        return {name: 1 for name in SHARP_ORDER[:fifths]}
+    return {name: -1 for name in FLAT_ORDER[:-fifths]}
 
 
 @dataclass
@@ -150,6 +168,13 @@ def check(score: Score) -> list[str]:
     for field_name in ("M", "L", "Q", "K"):
         if field_name not in score.header:
             problems.append(f"header: no {field_name}:")
+    keys = [score.header.get("K", "C")] + [key for section in score.sections for changes in section.keys.values()
+                                             for key in changes.values()]
+    for key in keys:
+        try:
+            key_signature(key)
+        except ValueError as error:
+            problems.append(str(error))
     per_bar = score.metre / score.unit
     sixteenths = score.unit == Fraction(1, 16)
     for section in score.sections:
@@ -201,7 +226,7 @@ def timeline(score: Score) -> list[dict]:
 
 def notes(score: Score, voice: str = "Ins") -> list[tuple[float, float, int]]:
     """The voice's notes as (start seconds, length seconds, pitch class), rests left out."""
-    signature = KEY_ACCIDENTALS.get(score.header.get("K", "C").split()[0], {})
+    signature = key_signature(score.header.get("K", "C"))
     unit_seconds = float(score.unit / Fraction(1, 4)) * 60.0 / score.bpm
     out: list[tuple[float, float, int]] = []
     clock = 0.0
@@ -209,7 +234,7 @@ def notes(score: Score, voice: str = "Ins") -> list[tuple[float, float, int]]:
         changes = section.keys.get(voice, {})
         for index, bar in enumerate(section.bars.get(voice, []) or []):
             if index in changes:
-                signature = KEY_ACCIDENTALS.get(changes[index].split()[0], {})
+                signature = key_signature(changes[index])
             length = bar_length(bar)
             if isinstance(length, int) and length < 0:
                 clock += -length * score.bar_seconds
@@ -258,7 +283,7 @@ def bars(score: Score) -> list[dict]:
     """The score bar by bar, both voices together: its section, the chords written over it, and the notes sounding
     in it as (pitch class, length in units of L). What a performance of the bar should hold, for `analyze.adherence`."""
     out: list[dict] = []
-    signatures = {voice: KEY_ACCIDENTALS.get(score.header.get("K", "C").split()[0], {}) for voice in ("Vocal", "Ins")}
+    signatures = {voice: key_signature(score.header.get("K", "C")) for voice in ("Vocal", "Ins")}
     for section in score.sections:
         start = len(out)
         for voice, voice_bars in section.bars.items():
@@ -266,7 +291,7 @@ def bars(score: Score) -> list[dict]:
             index = start
             for position, bar in enumerate(voice_bars):
                 if position in changes:
-                    signatures[voice] = KEY_ACCIDENTALS.get(changes[position].split()[0], {})
+                    signatures[voice] = key_signature(changes[position])
                 length = bar_length(bar)
                 rest = isinstance(length, int) and length < 0
                 for _ in range(-length if rest else 1):
@@ -285,6 +310,25 @@ def bars(score: Score) -> list[dict]:
                                 entry["notes"].append(((STEPS[letter] + shift) % 12, float(value)))
                     index += 1
     return out
+
+
+def loop_bars(score: Score, loop: dict) -> tuple[int, int]:
+    """The loop a brief asks for, in score bars: from the first bar of section `from` to the end of the `occurrence`-th
+    section `to` (the first, by default). Returns (first bar, end bar), the end exclusive, counted from the score's
+    first bar (its leading silence is bar 0). A loop the score cannot hold is a ValueError."""
+    parts = timeline(score)
+    starts = [part for part in parts if part["name"] == loop.get("from")]
+    ends = [part for part in parts if part["name"] == loop.get("to")]
+    occurrence = int(loop.get("occurrence", 1))
+    if not starts:
+        raise ValueError(f"the score has no section {loop.get('from')!r} to loop from")
+    if occurrence < 1 or len(ends) < occurrence:
+        raise ValueError(f"the score has no {occurrence} section(s) {loop.get('to')!r} to loop to")
+    first = starts[0]["bar"]
+    end = ends[occurrence - 1]["bar"] + ends[occurrence - 1]["bars"]
+    if end <= first:
+        raise ValueError(f"the loop ends (bar {end}) before it starts (bar {first})")
+    return first, end
 
 
 def sung(score: Score, voice: str = "Vocal") -> list[tuple[str, int]]:

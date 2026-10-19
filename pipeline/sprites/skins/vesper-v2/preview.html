@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vesper / VesperV2.0</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui, sans-serif; background: #171725; color: #eee8ff; }
+  body { max-width: 1050px; margin: 32px auto; padding: 0 20px; }
+  h1 { margin-bottom: 8px; } p { color: #c0b9cf; }
+  .controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+  button, select { font: inherit; padding: 8px 12px; border: 1px solid #817298; border-radius: 6px; background: #282238; color: inherit; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  figure { margin: 0; } canvas { display: block; width: 100%; background: #292737; border-radius: 8px; }
+  figcaption { text-align: center; padding: 10px; }
+  input[type=range] { width: min(500px, 70vw); }
+  @media (max-width: 600px) { .pair { grid-template-columns: 1fr; } }
+</style>
+<h1>Vesper / VesperV2.0</h1>
+<p>Compare the touch-up with the previous VesperV2.0 or the original Vesper.</p>
+<div class="controls">
+  <label>Compare with <select id="comparison"><option value="previous" selected>Previous VesperV2.0</option><option value="original">Original Vesper</option></select></label>
+  <select id="clip" aria-label="Animation">
+    <option value="idle-breathe">Breathing</option>
+    <option value="cast-light">Casting</option>
+    <option value="hurt">Hit reaction</option>
+  </select>
+  <button id="pause">Pause</button>
+  <label>Speed <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+</div>
+<div class="pair">
+  <figure><canvas id="original" width="400" height="350"></canvas><figcaption id="comparison-name">Previous VesperV2.0</figcaption></figure>
+  <figure><canvas id="updated" width="400" height="350"></canvas><figcaption>VesperV2.0 — touch-up</figcaption></figure>
+</div>
+<div class="controls"><input id="frame" aria-label="Frame" type="range" min="0" max="31" value="0"><output id="position"></output></div>
+<p id="error" role="alert"></p>
+<script src="preview-manifests.js"></script>
+<script>
+const models = window.vesperPreview;
+const sheets = {};
+const comparison = document.querySelector('#comparison');
+const clip = document.querySelector('#clip'), slider = document.querySelector('#frame');
+const pause = document.querySelector('#pause'), speed = document.querySelector('#speed');
+let playing = true, seconds = 0, previous;
+if (!models.previous || !models.previous.clips) {
+  comparison.value = 'original';
+  comparison.querySelector('[value="previous"]').disabled = true;
+}
+for (const [canvas, skin] of [['original', 'vesper'], ['updated', 'vesper-v2'], ['previous', 'previous']]) {
+  if (!models[canvas]?.clips) continue;
+  sheets[canvas] = {};
+  for (const name of Object.keys(models[canvas].clips)) {
+    const image = new Image();
+    image.src = canvas === 'previous' ? `../../../../pipeline/cache/sprites/vesper-v2/before-touch-up/${name}.webp` : `../../../../game/assets/sprites/${skin}/${name}.webp`;
+    image.onerror = () => {
+      if (canvas === 'previous') {
+        comparison.value = 'original';
+        comparison.querySelector('[value="previous"]').disabled = true;
+      } else document.querySelector('#error').textContent = 'Could not load the sprite sheets. Keep this preview in its project folder.';
+    };
+    sheets[canvas][name] = image;
+  }
+}
+function timeAt(c, f) {
+  return c.releaseFrame === undefined ? f / c.fps : f < c.releaseFrame ? f / c.releaseFrame * .38 : .38 + (f - c.releaseFrame) / c.fps;
+}
+function frameAt(c, t) {
+  return c.releaseFrame === undefined ? Math.floor(t * c.fps) : t < .38 ? Math.floor(t / .38 * c.releaseFrame) : c.releaseFrame + Math.floor((t - .38) * c.fps);
+}
+clip.onchange = () => { seconds = 0; slider.max = models.updated.clips[clip.value].frames - 1; slider.value = 0; };
+comparison.onchange = () => { seconds = 0; };
+pause.onclick = () => { playing = !playing; pause.textContent = playing ? 'Pause' : 'Play'; };
+slider.oninput = () => { playing = false; pause.textContent = 'Play'; seconds = timeAt(models.updated.clips[clip.value], Number(slider.value)) + 1e-6; };
+function tick(now) {
+  const c = models.updated.clips[clip.value];
+  if (previous !== undefined && playing) seconds += Math.min((now - previous) / 1000, .1) * Number(speed.value);
+  previous = now;
+  const originalClip = models[comparison.value].clips[clip.value];
+  document.querySelector('#comparison-name').textContent = comparison.value === 'previous' ? 'Previous VesperV2.0' : 'Original Vesper';
+  const duration = Math.max(timeAt(c, c.frames), timeAt(originalClip, originalClip.frames));
+  const cycle = duration + (c.loop ? 0 : .45);
+  if (seconds >= cycle) seconds %= cycle;
+  const f = Math.min(c.frames - 1, frameAt(c, seconds));
+  slider.value = f;
+  document.querySelector('#position').textContent = `${f + 1} / ${c.frames}`;
+  for (const id of ['original', 'updated']) {
+    const source = id === 'original' ? comparison.value : id;
+    const ctx = document.querySelector(`#${id}`).getContext('2d'), sheet = sheets[source][clip.value];
+    const info = models[source].clips[clip.value], cell = models[source].frame;
+    const ownFrame = Math.min(info.frames - 1, frameAt(info, seconds));
+    ctx.clearRect(0, 0, 400, 350);
+    if (sheet.complete && sheet.naturalWidth) ctx.drawImage(sheet, (ownFrame % info.columns) * cell.width, Math.floor(ownFrame / info.columns) * cell.height, cell.width, cell.height, 0, 0, 400, 350);
+  }
+  requestAnimationFrame(tick);
+}
+clip.onchange();
+requestAnimationFrame(tick);
+</script>
+</html>

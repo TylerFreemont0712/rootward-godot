@@ -1,14 +1,11 @@
 // A map of Lanternroot's overworld (ADR-0061): its ground through the legend, one row a string, and the things on it.
-// Coordinates are [column, row], counted from 0 at the top left.
+// Coordinates are [column, row], counted from 0 at the top left. The desk opens the Workbench and the wall clock
+// reads the time once the clock part is built (v0.4).
 {
  "id": "home",
  "name": "Your house",
  "interior": true,
- "legend": {
-  "W": "wall",
-  "f": "floor",
-  "v": "void"
- },
+ "legend": {"W": "wall", "f": "floor", "v": "void"},
  "ground": [
   "WWWWWWWWWWW",
   "WWWWWWWWWWW",
@@ -19,131 +16,20 @@
   "fffffffffff",
   "vvvvvfvvvvv"
  ],
- "start": [
-  2,
-  3
- ],
+ "start": [2, 3],
  "facing": "down",
  "objects": [
-  {
-   "kind": "prop",
-   "art": "bed",
-   "at": [
-    1,
-    2
-   ],
-   "size": [
-    1,
-    2
-   ],
-   "text": "Your bed. Still warm."
-  },
-  {
-   "kind": "prop",
-   "art": "bookshelf",
-   "at": [
-    3,
-    2
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "text": "Books about gears, lanterns, and something called Python."
-  },
-  {
-   "kind": "prop",
-   "art": "desk",
-   "at": [
-    7,
-    2
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "text": "Your desk. Hotaru's lantern sits on it."
-  },
-  {
-   "kind": "prop",
-   "art": "lantern",
-   "at": [
-    7,
-    2
-   ],
-   "solid": false,
-   "sink": -7
-  },
-  {
-   "kind": "prop",
-   "art": "chair",
-   "at": [
-    6,
-    2
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "plant",
-   "at": [
-    9,
-    2
-   ]
-  },
-  {
-   "kind": "prop",
-   "art": "rug",
-   "at": [
-    4,
-    4
-   ],
-   "size": [
-    2,
-    1
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "window",
-   "at": [
-    2,
-    1
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "window",
-   "at": [
-    8,
-    1
-   ],
-   "solid": false
-  },
-  {
-   "kind": "prop",
-   "art": "doormat",
-   "at": [
-    5,
-    7
-   ],
-   "solid": false
-  },
-  {
-   "kind": "warp",
-   "at": [
-    5,
-    7
-   ],
-   "to": {
-    "map": "lanternroot",
-    "at": [
-     6,
-     23
-    ],
-    "facing": "down"
-   }
-  }
+  {"kind": "prop", "art": "bed", "at": [1, 2], "size": [1, 2], "text": "Your bed. Still warm."},
+  {"kind": "prop", "art": "bookshelf", "at": [3, 2], "size": [2, 1], "text": "Books about gears, lanterns, and something called Python."},
+  {"kind": "prop", "art": "desk", "at": [7, 2], "size": [2, 1], "opens": "workbench", "text": "Your workbench. Every part you build is here."},
+  {"kind": "prop", "art": "lantern", "at": [7, 2], "solid": false, "sink": -36},
+  {"kind": "prop", "art": "chair", "at": [6, 2]},
+  {"kind": "prop", "art": "plant", "at": [9, 2]},
+  {"kind": "prop", "art": "rug", "at": [4, 5], "size": [2, 1], "solid": false, "draw_layer": "ground"},
+  {"kind": "prop", "art": "window", "at": [2, 1], "solid": false},
+  {"kind": "prop", "art": "window", "at": [8, 1], "solid": false},
+  {"kind": "prop", "art": "doormat", "at": [5, 6], "solid": false, "draw_layer": "ground"},
+  {"kind": "warp", "at": [5, 7], "to": {"map": "lanternroot", "at": [13, 45], "facing": "down"}},
+  {"kind": "prop", "art": "expand-wall-clock", "at": [5, 1], "solid": false, "text": "A pendulum clock. It ticks, and it is never late.", "opens": "clock"}
  ]
 }

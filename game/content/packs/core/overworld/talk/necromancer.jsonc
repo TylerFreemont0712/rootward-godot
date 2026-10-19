@@ -4,6 +4,42 @@
   "start": [
     {
       "if": {
+        "flag": "stones-rest"
+      },
+      "goto": "stones_done"
+    },
+    {
+      "if": {
+        "flag": "stones-3"
+      },
+      "goto": "rest"
+    },
+    {
+      "if": {
+        "flag": "stones-2"
+      },
+      "goto": "stones_three"
+    },
+    {
+      "if": {
+        "flag": "stones-1"
+      },
+      "goto": "stones_two"
+    },
+    {
+      "if": {
+        "flag": "stones-asked"
+      },
+      "goto": "stones_waits"
+    },
+    {
+      "if": {
+        "flag": "tally-read"
+      },
+      "goto": "stones_offer"
+    },
+    {
+      "if": {
         "flag": "met-necromancer"
       },
       "goto": "again"
@@ -19,7 +55,7 @@
           "text": "Oh. A visitor. Most people avoid my corner."
         },
         {
-          "text": "I'm Morrow. I keep the old stones. Each one marks something that someone made long ago, and then stopped using."
+          "text": "I'm Morrow. I keep the old stones. Each one marks something someone made long ago and stopped using."
         },
         {
           "text": "Nothing here is dead, you know. It's only... retired."
@@ -33,6 +69,108 @@
       "lines": [
         {
           "text": "The stones are quiet today. They usually are."
+        }
+      ]
+    },
+    "stones_offer": {
+      "lines": [
+        {
+          "text": "Oh. You are the one who read Pip's board. Pip was very loud about it."
+        },
+        {
+          "text": "Some of my old stones still talk. They talk in old code, and nobody reads it any more."
+        },
+        {
+          "text": "Old code, like a riddle? I love riddles!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Read each stone, and say what it gives back. Tell me what they say, and they can rest."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll read them.",
+          "goto": "stones_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "stones_later"
+        }
+      ]
+    },
+    "stones_teach": {
+      "lines": [
+        {
+          "text": "Start with the first stone. Trace its loop one turn at a time, and say what it gives back."
+        }
+      ],
+      "set": [
+        "stones-asked"
+      ],
+      "open": "task:stones"
+    },
+    "stones_later": {
+      "lines": [
+        {
+          "text": "The stones will wait. They are very good at waiting."
+        }
+      ]
+    },
+    "stones_waits": {
+      "lines": [
+        {
+          "text": "The first stone is still silent. Read its code, one line at a time."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's read it.",
+          "goto": "stones_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "stones_later"
+        }
+      ]
+    },
+    "stones_two": {
+      "lines": [
+        {
+          "text": "The first stone speaks! Now the second. Look at what the if checks, and which branch runs.",
+          "mood": "happy"
+        }
+      ],
+      "open": "task:stones"
+    },
+    "stones_three": {
+      "lines": [
+        {
+          "text": "Two stones are awake. The third one builds its list backwards. Follow each step, one at a time."
+        }
+      ],
+      "open": "task:stones"
+    },
+    "rest": {
+      "lines": [
+        {
+          "text": "All three have spoken. Now they can rest. Nothing here is dead, you know."
+        },
+        {
+          "text": "Only retired. And look, the stones are blooming!",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "stones-rest"
+      ],
+      "open": "receive:flower"
+    },
+    "stones_done": {
+      "lines": [
+        {
+          "text": "The stones are quiet, and the flowers are not. Thank you, tinker."
         }
       ]
     }

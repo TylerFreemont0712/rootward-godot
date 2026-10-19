@@ -32,6 +32,16 @@ static var _holding := false
 static var _held := ""
 
 
+## The first of `ids` that has a file, played as `music` plays it: a place's own track falls back to the next one
+## until it is made (Concept/v0.3/13-soundtrack-solid.md). Nothing plays when none has a file.
+static func music_first(ids: Array[String]) -> void:
+	for id: String in ids:
+		if Art.music(id) != null:
+			music(id)
+			return
+	music("")
+
+
 static func music(id: String) -> void:
 	if _holding:
 		_held = id

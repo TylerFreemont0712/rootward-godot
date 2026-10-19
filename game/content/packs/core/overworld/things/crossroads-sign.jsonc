@@ -1,0 +1,11 @@
+// The crossroads signpost (TownThings, ADR-0061): its words are what its code says. Its prop is in maps/lanternroot.jsonc.
+{
+  "id": "crossroads-sign",
+  "name": "The crossroads signpost",
+  "hints": [
+    "A sign can say what it is told.",
+    "Your code can read where you stand from the player.",
+    "Return the words you want said under say."
+  ],
+  "starter": {"python": "crossroads-sign.starter.py", "javascript": "crossroads-sign.starter.js"}
+}

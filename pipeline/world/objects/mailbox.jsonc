@@ -1,0 +1,13 @@
+// The mailbox by your house: where the letters come.
+{
+ "id": "mailbox",
+ "kind": "prop",
+ "what": "a blue village mailbox on a wooden post with a red flag",
+ "footprint": [1, 1],
+ "ramps": {"post": "wood", "box": "cloth_blue", "flag": "cloth_red"},
+ "parts": [
+  {"shape": "box", "at": [0.43, 0.42, 0], "size": [0.14, 0.14, 0.95], "ramp": "post"},
+  {"shape": "box", "at": [0.18, 0.25, 0.95], "size": [0.64, 0.45, 0.38], "ramp": "box"},
+  {"shape": "box", "at": [0.8, 0.42, 1.05], "size": [0.06, 0.06, 0.4], "ramp": "flag"}
+ ]
+}

@@ -1,0 +1,14 @@
+// Your bed, against the left wall of your house.
+{
+ "id": "bed",
+ "kind": "furniture",
+ "what": "a cosy single wooden bed with a blue quilt and a white pillow",
+ "footprint": [1, 2],
+ "ramps": {"frame": "wood", "quilt": "cloth_blue", "pillow": "cloth_white"},
+ "parts": [
+  {"shape": "box", "at": [0.08, 0.0, 0.0], "size": [0.84, 1.9, 0.42], "ramp": "frame"},
+  {"shape": "box", "at": [0.1, 0.0, 0.3], "size": [0.8, 1.35, 0.22], "ramp": "quilt"},
+  {"shape": "box", "at": [0.16, 1.4, 0.34], "size": [0.68, 0.38, 0.2], "ramp": "pillow"},
+  {"shape": "box", "at": [0.05, 1.82, 0.0], "size": [0.9, 0.14, 1.05], "ramp": "frame"}
+ ]
+}

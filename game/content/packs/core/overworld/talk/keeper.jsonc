@@ -4,6 +4,30 @@
   "start": [
     {
       "if": {
+        "flag": "rain-seen"
+      },
+      "goto": "rain_done"
+    },
+    {
+      "if": {
+        "flag": "weather-built"
+      },
+      "goto": "weather_ready"
+    },
+    {
+      "if": {
+        "flag": "weather-asked"
+      },
+      "goto": "weather_waits"
+    },
+    {
+      "if": {
+        "flag": "glow-built"
+      },
+      "goto": "offer"
+    },
+    {
+      "if": {
         "flag": "met-keeper"
       },
       "goto": "again"
@@ -37,6 +61,108 @@
           "text": "The roots are humming today. Can you hear them?"
         }
       ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker! The grove is thirsty, and the roots have been waiting for rain."
+        },
+        {
+          "text": "The grove needs rain now and then, and a sunny day every week."
+        },
+        {
+          "text": "Make the weather for each day, and the clouds will do as they are told!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "met-keeper"
+      ],
+      "choices": [
+        {
+          "text": "I'll write it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "Write weather(day): the weather for a day, as sun, rain or cloud. Day 0 is the first day."
+        },
+        {
+          "text": "Let the day number decide. Every week needs some rain and some sun."
+        }
+      ],
+      "set": [
+        "weather-asked"
+      ],
+      "open": "task:weather"
+    },
+    "weather_waits": {
+      "lines": [
+        {
+          "text": "The grove is still waiting for its weather. Shall we write it?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "No rush. The roots will hum until you are ready."
+        }
+      ]
+    },
+    "rain_done": {
+      "lines": [
+        {
+          "text": "Rain on the grove! Every leaf is shining, and the roots are singing!",
+          "mood": "happy"
+        }
+      ]
+    },
+    "weather_ready": {
+      "lines": [
+        {
+          "text": "Your weather is in the sky now. Every day takes its weather from your code."
+        },
+        {
+          "text": "The grove is so thirsty, though. Shall we wait for your first rain?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's wait for the rain.",
+          "goto": "wait_rain"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "wait_rain": {
+      "lines": [
+        {
+          "text": "Sit with me under the Root. We'll wake on the first day your weather says rain."
+        }
+      ],
+      "open": "next-rain"
     }
   }
 }

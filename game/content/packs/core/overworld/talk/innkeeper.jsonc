@@ -1,7 +1,159 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Marta gives two v0.4 quests: the music box (quest 7, "The music
+// box", the music task in two stages) and the soup (quest 9, "Soup for the Hearth": the bag's remove, then three
+// cabbages given with give:cabbage:3). The rules go from the most finished state to the offers, so one quest never
+// hides the other, and the hello quest's nodes (met-innkeeper) come last, as before.
 {
   "id": "innkeeper",
   "start": [
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "gave-cabbage"
+          },
+          {
+            "not": "soup-thanked"
+          }
+        ]
+      },
+      "goto": "soup_thanks"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "bag-remove"
+          },
+          {
+            "not": "gave-cabbage"
+          },
+          {
+            "has": "cabbage",
+            "at_least": 3
+          }
+        ]
+      },
+      "goto": "soup_have"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "bag-remove"
+          },
+          {
+            "not": "gave-cabbage"
+          }
+        ]
+      },
+      "goto": "soup_gather"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "soup-asked"
+          },
+          {
+            "not": "bag-remove"
+          }
+        ]
+      },
+      "goto": "soup_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "music-next"
+          },
+          {
+            "not": "music-played"
+          }
+        ]
+      },
+      "goto": "go_play"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "music-listed"
+          },
+          {
+            "not": "music-next"
+          }
+        ]
+      },
+      "goto": "next_offer"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "music-asked"
+          },
+          {
+            "not": "music-listed"
+          }
+        ]
+      },
+      "goto": "box_waits"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "volume-clamped"
+          },
+          {
+            "flag": "volume-tried"
+          },
+          {
+            "not": "music-asked"
+          }
+        ]
+      },
+      "goto": "music_offer"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "bag-key-written"
+          },
+          {
+            "not": "soup-asked"
+          }
+        ]
+      },
+      "goto": "soup_offer"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "music-played"
+          },
+          {
+            "flag": "gave-cabbage"
+          }
+        ]
+      },
+      "goto": "inn_done"
+    },
+    {
+      "if": {
+        "flag": "music-played"
+      },
+      "goto": "music_done"
+    },
+    {
+      "if": {
+        "flag": "gave-cabbage"
+      },
+      "goto": "soup_done"
+    },
     {
       "if": {
         "flag": "met-innkeeper"
@@ -16,7 +168,7 @@
     "hello": {
       "lines": [
         {
-          "text": "Oh! You must be the new tinker. Welcome, welcome!",
+          "text": "Oh! You must be the new tinker! Pull up a stool.",
           "mood": "happy"
         },
         {
@@ -58,7 +210,423 @@
     "bye": {
       "lines": [
         {
-          "text": "And you, love. Come by when your boots get tired."
+          "text": "Come by when your boots get tired."
+        }
+      ]
+    },
+    "music_offer": {
+      "lines": [
+        {
+          "text": "Tinker! Come here. Do you see the little box by my door?",
+          "mood": "happy"
+        },
+        {
+          "text": "It is a music box with no tunes in it. The evenings here are so quiet."
+        },
+        {
+          "text": "I could hum.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Hotaru, dear, you hum already. All day."
+        },
+        {
+          "text": "The town has songs. The box needs their names on its little page."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's build it.",
+          "goto": "music_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "soup_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "bag-key-written"
+              },
+              {
+                "not": "soup-asked"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "music_teach": {
+      "lines": [
+        {
+          "text": "Every song has a name, a place and a number. I only want the names, in the same order."
+        }
+      ],
+      "set": [
+        "music-asked"
+      ],
+      "open": "task:music"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "No hurry. The pot is always warm, and the box is always patient."
+        }
+      ]
+    },
+    "box_waits": {
+      "lines": [
+        {
+          "text": "The box still has no names on its page. Shall we write them?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "music_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "soup_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "bag-key-written"
+              },
+              {
+                "not": "soup-asked"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "next_offer": {
+      "lines": [
+        {
+          "text": "Names, all in a row! The box has a page now.",
+          "mood": "happy"
+        },
+        {
+          "text": "But when a song ends, the box goes quiet. I want it to play the next one."
+        },
+        {
+          "text": "And after the last song, back to the first."
+        },
+        {
+          "text": "Round and round, like a firefly round a lantern.",
+          "speaker": "hotaru"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Teach it Next.",
+          "goto": "next_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "soup_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "bag-key-written"
+              },
+              {
+                "not": "soup-asked"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "next_teach": {
+      "lines": [
+        {
+          "text": "The box knows which song is playing, and how many there are. It needs the next one."
+        }
+      ],
+      "open": "task:music"
+    },
+    "go_play": {
+      "lines": [
+        {
+          "text": "Now the box goes round and round. Press Space on it, choose a song, and let the evening begin!",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my names.",
+          "goto": "music_teach"
+        },
+        {
+          "text": "Change Next.",
+          "goto": "next_teach"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "soup_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "bag-key-written"
+              },
+              {
+                "not": "soup-asked"
+              }
+            ]
+          }
+        },
+        {
+          "text": "Thanks, Marta.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "music_done": {
+      "lines": [
+        {
+          "text": "Music in the evenings! Even the soup tastes better with a tune.",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my names.",
+          "goto": "music_teach"
+        },
+        {
+          "text": "Change Next.",
+          "goto": "next_teach"
+        },
+        {
+          "text": "Bye, Marta!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "soup_offer": {
+      "lines": [
+        {
+          "text": "Tinker, a small thing. I am making cabbage soup for the whole town tonight."
+        },
+        {
+          "text": "I need three cabbages. But you carry a bag now. Can your bag give things away?"
+        },
+        {
+          "text": "A bag that only takes is a bit greedy.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Exactly! Teach it to give. One thing out, and if it was the last one, no empty pile left."
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll teach it.",
+          "goto": "soup_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "soup_teach": {
+      "lines": [
+        {
+          "text": "One at a time, please. Soup is a patient business."
+        }
+      ],
+      "set": [
+        "soup-asked"
+      ],
+      "open": "task:bag"
+    },
+    "soup_waits": {
+      "lines": [
+        {
+          "text": "Your bag can take, but it cannot give. Shall we fix that?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "soup_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "music_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "volume-clamped"
+              },
+              {
+                "flag": "volume-tried"
+              },
+              {
+                "not": "music-asked"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "soup_gather": {
+      "lines": [
+        {
+          "text": "Your bag can give now! I need three cabbages. The plot is in Home Hollow."
+        },
+        {
+          "text": "Your gate opens it. The cabbages are expecting you.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Pick them with Space, then bring them to me."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my bag.",
+          "goto": "soup_teach"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "music_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "volume-clamped"
+              },
+              {
+                "flag": "volume-tried"
+              },
+              {
+                "not": "music-asked"
+              }
+            ]
+          }
+        },
+        {
+          "text": "On my way!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "soup_have": {
+      "lines": [
+        {
+          "text": "Is that three cabbages in your bag? Round, green and lovely!",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Here you go.",
+          "goto": "soup_give"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        },
+        {
+          "text": "Anything else I can help with?",
+          "goto": "music_offer",
+          "if": {
+            "all": [
+              {
+                "flag": "volume-clamped"
+              },
+              {
+                "flag": "volume-tried"
+              },
+              {
+                "not": "music-asked"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "soup_give": {
+      "lines": [
+        {
+          "text": "Into the pot they go!",
+          "mood": "happy"
+        }
+      ],
+      "open": "give:cabbage:3"
+    },
+    "soup_thanks": {
+      "lines": [
+        {
+          "text": "Three cabbages, and your bag gave them without losing a leaf. Thank you!",
+          "mood": "happy"
+        },
+        {
+          "text": "It gave them on purpose!",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "The soup is on. Smell that? The whole town will come."
+        }
+      ],
+      "set": [
+        "soup-thanked"
+      ]
+    },
+    "soup_done": {
+      "lines": [
+        {
+          "text": "The soup is gone already. It was a very good soup."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my bag.",
+          "goto": "soup_teach"
+        },
+        {
+          "text": "Bye, Marta!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "inn_done": {
+      "lines": [
+        {
+          "text": "Soup in the pot and a tune in the box. This is the Warm Hearth I dreamed of.",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my names.",
+          "goto": "music_teach"
+        },
+        {
+          "text": "Change my bag.",
+          "goto": "soup_teach"
+        },
+        {
+          "text": "Bye, Marta!",
+          "goto": "bye"
         }
       ]
     }

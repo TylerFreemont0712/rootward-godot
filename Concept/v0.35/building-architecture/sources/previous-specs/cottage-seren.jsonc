@@ -1,0 +1,32 @@
+// Adopted from ow-building-cottage-seren (pipeline/pixel/manifest.json): its render re-cut at this world's scale.
+{
+ "id": "cottage-seren",
+ "kind": "building",
+ "what": "small village cottage",
+ "footprint": [
+  5,
+  5
+ ],
+ "pad": 0.0,
+ "above": 0.0,
+ "ramps": {
+  "plaster": "plaster",
+  "wood": "wood",
+  "thatch": "thatch",
+  "stone": "stone",
+  "cobble": "cobble",
+  "leaf": "leaf",
+  "cloth_red": "cloth_red",
+  "cloth_maroon": "cloth_maroon",
+  "cloth_blue": "cloth_blue",
+  "cloth_teal": "cloth_teal",
+  "cloth_brown": "cloth_brown",
+  "gold": "gold",
+  "steel": "steel",
+  "glow": "glow"
+ },
+ "source": {
+  "picture": "ow-building-cottage-seren",
+  "pick": 0
+ }
+}

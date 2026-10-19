@@ -1,0 +1,47 @@
+{
+  "female/down": {
+    "flip_frames": [],
+    "scale": 0.221052631578947,
+    "source": "Concept/v0.3/animation/player/sources/female-down.png"
+  },
+  "female/left": {
+    "flip_frames": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "scale": 0.223404255319149,
+    "source": "Concept/v0.3/animation/player/sources/female-left.png"
+  },
+  "female/right": {
+    "flip_frames": [],
+    "scale": 0.223404255319149,
+    "source": "Concept/v0.3/animation/player/sources/female-right.png"
+  },
+  "female/up": {
+    "flip_frames": [],
+    "scale": 0.23728813559322,
+    "source": "Concept/v0.3/animation/player/sources/female-up.png"
+  },
+  "male/down": {
+    "flip_frames": [],
+    "scale": 0.217616580310881,
+    "source": "Concept/v0.3/animation/player/sources/male-down.png"
+  },
+  "male/left": {
+    "flip_frames": [],
+    "scale": 0.224598930481283,
+    "source": "Concept/v0.3/animation/player/sources/male-left.png"
+  },
+  "male/right": {
+    "flip_frames": [],
+    "scale": 0.219895287958115,
+    "source": "Concept/v0.3/animation/player/sources/male-right.png"
+  },
+  "male/up": {
+    "flip_frames": [],
+    "scale": 0.235294117647059,
+    "source": "Concept/v0.3/animation/player/sources/male-up.png"
+  }
+}

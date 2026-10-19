@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Lanternroot town art and walking pace</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui;background:#18221e;color:#ede2cd}
+body{max-width:1120px;margin:32px auto;padding:0 24px}h1{font-size:30px}h2{margin-top:32px}p{color:#c2cdbf}
+a{color:#9fdac0}button{font:inherit;border:1px solid #668271;background:#30493a;color:#fff;padding:8px 18px;border-radius:6px;cursor:pointer}
+.pair{display:flex;gap:20px;flex-wrap:wrap}.card{border:1px solid #4b6050;border-radius:10px;background:#2a3b2e;padding:16px;min-width:240px;flex:1}
+.card img{max-width:100%;image-rendering:pixelated;display:block;margin:12px auto}.label{font-weight:600}.gallery{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.piece{image-rendering:pixelated;width:80px;height:200px;object-fit:contain;object-position:bottom}
+.gate{width:120px;height:300px;background-size:240px 300px;image-rendering:pixelated;background-repeat:no-repeat}
+code{font-size:13px}.muted{font-size:13px}
+</style>
+<h1>Lanternroot · town art and walking pace</h1>
+<p>Walking now runs at 12 fps, with 0.22 seconds per tile. <a href="../../animation/player/review.html">Play the four-direction character animations</a>.</p>
+<div id="landmarks"></div>
+<h2>Crafted timber boundaries</h2>
+<p>One timber material, shared capped posts and aligned rail sockets. The sixteen shapes cover ends, corners, tees and crossings. Drag a run in Studio to resolve the shapes automatically; R turns the drag and returning to its start releases the axis lock.</p>
+<div class="card gallery" id="pieces"></div>
+<h2>Gate states</h2><p><button id="gate-state">Show open gates</button></p>
+<div class="pair" id="gates"></div>
+<p>Wide entrances use one complete gate, with no repeated center posts. The cabbage gate retains its program and collision behavior. Open posts and hinged panels remain visible.</p>
+<p class="muted">Generated using built-in OpenAI imagegen. <a href="prompts.json">Landmark and kit prompts</a> · <a href="vertical-prompt.json">Vertical timber prompt</a> · <a href="sources/">Selected source PNGs</a> · <a href="../../../../game/assets/overworld/world/">Saved game assets</a>.</p>
+<script>
+const assets="../../../../game/assets/overworld/world/";
+for(const [name,label] of [["lanterntree","Lantern Tree"],["rootgate","Root Gate"]]){
+ const section=document.createElement("section");
+ const title=document.createElement("h2");title.textContent=label;section.append(title);
+ const pair=document.createElement("div");pair.className="pair";
+ for(const [prefix,caption] of [["before/","Previous"],[assets,"Updated"]]){
+  const card=document.createElement("div");card.className="card";
+  const text=document.createElement("div");text.className="label";text.textContent=caption;
+  const link=document.createElement("a");link.href=prefix+name+".png";
+  const img=document.createElement("img");img.src=link.href;img.alt=caption+" "+label;img.style.height=name==="lanterntree"?"360px":"240px";
+  link.append(img);card.append(text,link);pair.append(card);
+ }
+ section.append(pair);document.querySelector("#landmarks").append(section);
+}
+for(const name of ["fence","fence_v","fencepost","fence-end-n","fence-end-e","fence-end-s","fence-end-w","fence-corner-ne","fence-corner-nw","fence-corner-se","fence-corner-sw","fence-tee-n","fence-tee-e","fence-tee-s","fence-tee-w","fence-cross"]){
+ const link=document.createElement("a");link.href=assets+name+".png";link.title=name;
+ const img=document.createElement("img");img.className="piece";img.alt=name;img.src=link.href;link.append(img);document.querySelector("#pieces").append(link);
+}
+for(const [name,label,width,height] of [["gate","Horizontal",40,100],["gate_v","Vertical",40,100],["gate-wide-2","Two cells",80,100],["gate-wide-3","Three cells",120,100],["gate-wide-2-v","Two cells vertical",40,140]]){
+ const card=document.createElement("div");card.className="card";
+ const title=document.createElement("div");title.className="label";title.textContent=label;
+ const gate=document.createElement("div");gate.className="gate";gate.dataset.frame=width*2;
+ gate.style.width=width*2+"px";gate.style.height=height*2+"px";
+ gate.style.backgroundSize=width*4+"px "+height*2+"px";gate.style.backgroundImage='url("'+assets+name+'.png")';
+ card.append(title,gate);document.querySelector("#gates").append(card);
+}
+let open=false;
+document.querySelector("#gate-state").onclick=e=>{
+ open=!open;document.querySelectorAll(".gate").forEach(g=>g.style.backgroundPositionX=open?"-"+g.dataset.frame+"px":"0px");
+ e.target.textContent=open?"Show closed gates":"Show open gates";
+};
+</script></html>

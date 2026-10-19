@@ -1,0 +1,25 @@
+// The music box's tracks (Concept/v0.4/02, section 8): every music-*.ogg in game/assets/audio/, with a title, where it is
+// heard, and an order. The Lanternroot tracks come first, then the title, the rest, the Shardrun's places and fights, and
+// the guardians. The music box lists them in this order through titles(tracks).
+{
+  "music-lanternroot-town": {"title": "Lanternroot", "place": "the town", "order": 1},
+  "music-lanternroot-home": {"title": "Home Hollow", "place": "home and the rooms indoors", "order": 2},
+  "music-lanternroot-lesson": {"title": "The Workbench", "place": "the code editors", "order": 3},
+  "music-lanternroot-front": {"title": "Lanternroot's Front Door", "place": "the character select", "order": 4},
+  "music-title": {"title": "Rootward", "place": "the title", "order": 5},
+  "music-rest": {"title": "A Quiet Alcove", "place": "the rest rooms of a Shardrun", "order": 6},
+  "music-salvage": {"title": "Rust and Roots", "place": "the Shardrun's Salvage", "order": 7},
+  "music-heap": {"title": "Things Live in the Leaks", "place": "the Shardrun's Heap", "order": 8},
+  "music-ring2": {"title": "Heapworks Hum", "place": "the Shardrun's Heapworks", "order": 9},
+  "music-kernel": {"title": "The Kernel", "place": "the Shardrun's Kernel", "order": 10},
+  "music-ring0": {"title": "Root Sanctum", "place": "the Shardrun's Root Sanctum", "order": 11},
+  "music-ring1": {"title": "Between the Rings", "place": "the Shardrun's middle ring", "order": 12},
+  "music-battle-salvage": {"title": "Salvage Skirmish", "place": "fights in the Salvage", "order": 13},
+  "music-battle-heap": {"title": "Use After Free", "place": "fights in the Heap", "order": 14},
+  "music-battle-ring2": {"title": "Leak Hunt", "place": "fights in the Heapworks", "order": 15},
+  "music-battle-kernel": {"title": "Kernel Panic", "place": "fights in the Kernel", "order": 16},
+  "music-battle-ring0": {"title": "Sanctum Strike", "place": "fights in the Root Sanctum", "order": 17},
+  "music-battle-ring1": {"title": "Hold the Middle", "place": "fights in the middle ring", "order": 18},
+  "music-guardian": {"title": "The Guardian", "place": "the guardians of the first layers", "order": 19},
+  "music-guardian-final": {"title": "Root Access", "place": "the last guardian of a Shardrun", "order": 20}
+}

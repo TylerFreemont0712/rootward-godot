@@ -20,6 +20,7 @@ func test_create_list_rename_delete_and_last_played_order() -> void:
 	var b: Dictionary = store.create("Mio", "en", "emberfox")
 	assert_bool(a.ok).is_true()
 	assert_str(a.profile.name).is_equal("Aki")
+	assert_str(a.profile.japanese_reading).is_equal("hiragana")
 	assert_str(a.profile.created_at).is_not_empty()
 	assert_int(store.list_profiles().size()).is_equal(2)
 	assert_bool(store.activate(a.profile.id)).is_true()
@@ -67,6 +68,18 @@ func test_corrupt_profile_never_blocks_other_profiles() -> void:
 	file.close()
 	assert_int(store.list_profiles().size()).is_equal(1)
 	assert_str(store.list_profiles()[0].id).is_equal(good.profile.id)
+
+
+func test_japanese_reading_choice_is_persisted_and_old_profiles_default_to_hiragana() -> void:
+	var store := ProfileStore.new(ROOT)
+	var made: Dictionary = store.create("Mio", "ja")
+	var profile: Dictionary = made.profile
+	profile.japanese_reading = "kanji"
+	assert_bool(store.save_profile(profile)).is_true()
+	assert_str(store.get_profile(profile.id).japanese_reading).is_equal("kanji")
+	profile.erase("japanese_reading")
+	assert_bool(store.save_profile(profile)).is_true()
+	assert_str(store.get_profile(profile.id).japanese_reading).is_equal("hiragana")
 
 
 func test_legacy_saves_are_copied_verified_and_left_in_place() -> void:

@@ -1,7 +1,36 @@
 extends GdUnitTestSuite
 ## The town's save as rules (ADR-0061, OverworldState): a new player's boots start with one rule they can see, an older
-## save still loads with what it lacks filled in, changing the boots keeps the code typed in the other language, and
-## the boots run what their mode says.
+## save still loads with what it lacks filled in, changing the boots keeps the code typed in the other language, the
+## boots run what their mode says, and a saved cell that is blocked on its map moves the player to the start.
+
+## A small town: a wall down x = 3 on the first two rows, and a gate on (1, 2) that is solid until its code opens it.
+const TERRAIN := {"grass": {"walk": true}, "wall": {"walk": false}}
+const TOWN := {
+	"id": "test-town",
+	"legend": {".": "grass", "#": "wall"},
+	"ground": ["...#.", "...#.", "....."],
+	"start": [0, 0],
+	"objects":
+	[
+		{
+			"kind": "prop",
+			"id": "gate",
+			"solid_unless": "open",
+			"at": [1, 2],
+			"program": {"hook": "on_use", "fields": {"open": {"type": "bool", "default": false}}, "raises": []},
+		},
+	],
+}
+
+
+func _town() -> Dictionary:
+	var built := OverworldMap.build(TOWN, TERRAIN)
+	assert_array(built.errors).is_empty()
+	return built.map
+
+
+func _saved_at(cell: Array, things: Dictionary = {}) -> Dictionary:
+	return {"map": "test-town", "cell": cell, "things": things}
 
 
 func _fresh() -> Dictionary:
@@ -113,3 +142,75 @@ func test_moving_and_flagging_return_new_states() -> void:
 	assert_that(OverworldState.cell(moved)).is_equal(Vector2i(6, 23))
 	assert_str(String(moved.facing)).is_equal("up")
 	assert_bool(bool(flagged.flags.woke)).is_true()
+
+
+func test_remembered_adds_dialogue_progress_without_losing_events_since_the_dialogue_opened() -> void:
+	var state := OverworldState.flagged(_fresh(), {"woke": true, "boots-expanded": true, "all-ways": true})
+	var old_talk_flags := {"woke": true, "first-step": true}
+	var after := OverworldState.remembered(state, old_talk_flags)
+	assert_dict(after.flags).is_equal({
+		"woke": true, "boots-expanded": true, "all-ways": true, "first-step": true,
+	})
+	assert_dict(state.flags).is_equal({"woke": true, "boots-expanded": true, "all-ways": true})
+	assert_dict(old_talk_flags).is_equal({"woke": true, "first-step": true})
+	assert_str(String(after.map)).is_equal(String(state.map))
+	assert_array(after.cell).is_equal(state.cell)
+	assert_dict(after.boots).is_equal(state.boots)
+
+
+func test_remembered_does_not_clear_live_progress_with_stale_false_values() -> void:
+	var state := OverworldState.flagged(_fresh(), {"all-ways": true, "unearned": false})
+	var after := OverworldState.remembered(state, {"all-ways": false, "first-step": true, "unearned": false})
+	assert_dict(after.flags).is_equal({"all-ways": true, "unearned": false, "first-step": true})
+
+
+func test_remembered_strips_facts_from_both_the_live_state_and_the_observed_snapshot() -> void:
+	var state := OverworldState.flagged(_fresh(), {"woke": true, "bag:cabbage": 1})
+	var after := OverworldState.remembered(state, {"met-innkeeper": true, "bag:apple": 3})
+	assert_dict(after.flags).is_equal({"woke": true, "met-innkeeper": true})
+
+
+func test_remembered_can_merge_the_live_flags_into_an_older_lesson_state() -> void:
+	var lesson := OverworldState.flagged(_fresh(), {"first-step": true, "memory-written": true})
+	lesson["tasks"] = {"save": {"stage": 1}}
+	var live_flags := {"first-step": true, "boots-expanded": true, "left-home": true}
+	var after := OverworldState.remembered(lesson, live_flags)
+	assert_dict(after.flags).is_equal({
+		"first-step": true, "memory-written": true, "boots-expanded": true, "left-home": true,
+	})
+	assert_dict(after.tasks).is_equal(lesson.tasks)
+
+
+func test_an_older_save_has_no_things_and_a_broken_one_is_emptied() -> void:
+	var state := OverworldState.normalized({"map": "home"}, _fresh())
+	assert_dict(state.things).is_empty()
+	var kept := OverworldState.normalized({"things": {"gate": {"fields": {"open": true}}}}, _fresh())
+	assert_bool(bool(kept.things["gate"]["fields"]["open"])).is_true()
+	assert_dict(OverworldState.normalized({"things": 4}, _fresh()).things).is_empty()
+
+
+func test_a_save_standing_in_a_wall_comes_back_at_the_start() -> void:
+	var state := OverworldState.normalized(_saved_at([3, 0]), _fresh(), _town())
+	assert_that(OverworldState.cell(state)).is_equal(Vector2i.ZERO)
+
+
+func test_a_save_on_open_ground_stays_where_it_was() -> void:
+	var state := OverworldState.normalized(_saved_at([4, 1]), _fresh(), _town())
+	assert_that(OverworldState.cell(state)).is_equal(Vector2i(4, 1))
+
+
+func test_a_save_on_a_closed_gate_comes_back_at_the_start() -> void:
+	var state := OverworldState.normalized(_saved_at([1, 2]), _fresh(), _town())
+	assert_that(OverworldState.cell(state)).is_equal(Vector2i.ZERO)
+
+
+func test_a_save_on_a_gate_that_is_open_stays_put() -> void:
+	var saved := _saved_at([1, 2], {"gate": {"fields": {"open": true}}})
+	assert_that(OverworldState.cell(OverworldState.normalized(saved, _fresh(), _town()))).is_equal(Vector2i(1, 2))
+
+
+func test_the_cell_is_checked_only_on_the_map_it_stands_on() -> void:
+	var elsewhere := {"map": "elsewhere", "cell": [3, 0]}
+	assert_that(OverworldState.cell(OverworldState.normalized(elsewhere, _fresh(), _town()))).is_equal(Vector2i(3, 0))
+	# With no map given, nothing is checked and the cell is kept.
+	assert_that(OverworldState.cell(OverworldState.normalized(_saved_at([3, 0]), _fresh()))).is_equal(Vector2i(3, 0))

@@ -1,0 +1,13 @@
+// The bread: a Bag and pickup icon (pipeline/world/README.md). A round loaf with a scored top.
+{
+ "id": "item-bread",
+ "kind": "prop",
+ "what": "a round golden brown loaf of bread with a scored top, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"crust": "thatch"},
+ "parts": [
+  {"shape": "ball", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.56], "ramp": "crust", "shade": 1},
+  {"shape": "ball", "at": [0.22, 0.22, 0.2], "size": [0.56, 0.56, 0.44], "ramp": "crust"},
+  {"shape": "box", "at": [0.3, 0.46, 0.58], "size": [0.4, 0.08, 0.1], "ramp": "crust", "shade": 3}
+ ]
+}

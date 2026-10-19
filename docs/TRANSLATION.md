@@ -1,13 +1,18 @@
 # Translating Rootward
 
 Everything a player reads can be Japanese (ADR-0047). The game is written in English, and the Japanese lives in
-overlays: `game/content/packs/core/locales/ja/*.jsonc`, each a list of `{"en": ..., "to": ...}` keyed by the English
+overlays: `game/content/packs/core/locales/ja/*.jsonc`, each a list of `{"en": ..., "to": ..., "kanji": ...}` keyed by the English
 text exactly as the game shows or writes it. `scripts/locale.sh ja --missing` lists what has no translation yet.
 
-Who reads it: the player, and their daughters, who are learning to read Japanese. Write warm, short, natural
-Japanese a child can follow: everyday kanji, a reading in full-width brackets for a rarer word the first time a
-screen uses it (`遺物（いぶつ）`), the friendly plain voice of the station and Pip's Trial (`〜しよう`, `〜だよ`) for
-guidance and narration, and short noun phrases for labels and buttons (`ターン終了`, `デッキ`).
+Who reads it: the player and their daughters. Each profile chooses an edition during Japanese character creation,
+and can change it in Settings → Fonts & text (ADR-0075). Keep the warm voices of the cast in both editions.
+
+- `to` retains the accessible edition. Town prose uses hiragana and spaces between phrases, with reviewed readings
+  supplied by `japanese_hiragana_readings.jsonc` for older mixed text.
+- `kanji` is a complete translation for an adult Japanese reader. Use ordinary kanji, natural Japanese spacing and
+  established technical terms. Write 関数, 辞書, 引数 and 値 without forced reading hints. Friendly dialogue can stay
+  friendly; instructions should state the operation clearly. Translate the whole sentence rather than substituting
+  a few words into the kana version.
 
 ## How text reaches the screen
 
@@ -19,19 +24,27 @@ guidance and narration, and short noun phrases for labels and buttons (`ター�
   `"%s takes %d."`; the names inside (`%s`) are translated through their own entries.
 - Code, ids, function names, file names (`main.py`), commands, numbers, `O(n log n)` and `ops` are never translated.
   Code views turn auto-translate off.
-- The title and front-end rooms keep their own inline pairs, `FoundryUi.text("Adventure", "冒険")`.
+- The title and front-end rooms use `FoundryUi.text("Adventure", "冒険")`, which prefers the shared keyed edition
+  and retains inline Japanese as a fallback.
+- Catalog descriptions, cosmetics and Pip's Trial use `Text.translations()` so the selected edition applies to
+  their prose as well as ordinary UI controls.
 
 ## Rules for an entry
 
-- `en` is the English exactly, every space and full stop included; `to` the Japanese.
+- `en` is the English exactly, every space and full stop included; `to` and `kanji` are the complete Japanese editions.
+  Supply both for new entries. The loader accepts older packs without `kanji`, using their original Japanese.
 - Keep every `%s` and `%d`. When Japanese wants them in another order, write numbered slots instead: `{1}` is the
   first `%s`/`%d` of the English, `{2}` the second (`"%s hits %s for %d."` -> `"{1}が{2}に{3}ダメージ。"`). A
   translation uses either `%` slots or numbered slots, never both.
 - One English key, one translation, in one file: the loader rejects a duplicate key across files.
-- Japanese uses `。` and `、`; `！` and `？` where the English exclaims or asks. No spaces between Japanese words; keep
-  a space beside Latin letters or numbers only where it helps reading (`3 ops`).
+- Keep placeholders and quoted code spans identical between the two editions. Select the template before filling
+  it; never run kana-to-kanji conversion on the result or on a player's typed name.
+- Japanese uses `。` and `、`; `！` and `？` where the English exclaims or asks. The adult edition has no spaces
+  between Japanese words; keep a space beside Latin letters or numbers only where it helps reading (`3 ops`).
 
 ## The glossary
+
+Parenthetical readings below describe the terms for translators. The adult edition writes the kanji alone.
 
 | English | Japanese | | English | Japanese |
 |---|---|---|---|---|

@@ -1,0 +1,110 @@
+// The volume knob (Concept/v0.4/01, 5.4): the player's volume(slider) turns the Options page's notches into loudness.
+// Stage 1 (Seren) is the knob itself. Stage 2 (Seren, after stage 1) keeps a pad's nudges past the ends inside the range.
+{
+  "id": "volume",
+  "name": "The Volume Knob",
+  "title": "Turn it up",
+  "giver": "summoner",
+  "built_line": "The Options sliders follow your volume() now.",
+  "entry": {"python": "volume", "javascript": "volume"},
+  "params": [
+    {"name": "slider", "meaning": "A whole number: 0 is the slider all the way down, 10 all the way up.", "example": "7"}
+  ],
+  "gives": {"meaning": "How loud, from 0.0 (silent) to 1.0 (full).", "example": "0.25"},
+  "words": {
+    "python": [{"term": "/", "meaning": "Divides one number by another, and can give a fraction.", "example": "slices = 12 / 4"}],
+    "javascript": [{"term": "/", "meaning": "Divides one number by another, and can give a fraction.", "example": "const slices = 12 / 4;"}]
+  },
+  "starter": {"python": "volume.starter.py", "javascript": "volume.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def volume(slider):",
+        "[low]    slider = max(slider, {lowest})",
+        "[high]    slider = min(slider, {highest})",
+        "    return slider {op} {by}"
+      ],
+      "javascript": [
+        "function volume(slider) {",
+        "[low]  slider = Math.max(slider, {lowest});",
+        "[high]  slider = Math.min(slider, {highest});",
+        "  return slider {op} {by};",
+        "}"
+      ]
+    },
+    "slots": {
+      "op": {"label": "do what", "choices": ["*", "/", "+", "-"]},
+      "by": {"label": "by", "choices": ["100", "10", "2"]},
+      "lowest": {"label": "lowest", "choices": ["-1", "0", "10"], "stage": 1},
+      "highest": {"label": "highest", "choices": ["1", "10", "100"], "stage": 1}
+    },
+    "toggles": {
+      "low": {"label": "Not below 0", "stage": 1},
+      "high": {"label": "Not above 10", "stage": 1}
+    },
+    "start": {"slots": {"op": 0, "by": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "volume-built",
+      "goal": "Turn each notch into a loudness: notch 0 is silent, notch 10 is full.",
+      "judge": "volume_curve",
+      "cases": [
+        {"args": [0], "say": "all the way down", "edge": true},
+        {"args": [1], "say": "one notch up"},
+        {"args": [2], "say": "two notches up"},
+        {"args": [3], "say": "three notches up"},
+        {"args": [4], "say": "four notches up"},
+        {"args": [5], "say": "halfway"},
+        {"args": [6], "say": "six notches up"},
+        {"args": [7], "say": "seven notches up"},
+        {"args": [8], "say": "eight notches up"},
+        {"args": [9], "say": "nine notches up"},
+        {"args": [10], "say": "all the way up", "edge": true}
+      ],
+      "hints": [
+        "A notch is a whole number from 0 to 10. A loudness is a number from 0.0 to 1.0. How do you get from one to the other?",
+        "Think about the top notch, 10. What would you do to 10 to get 1.0?",
+        "Dividing is one way to make a big number small. What should the notch be divided by?"
+      ]
+    },
+    {
+      "flag": "volume-clamped",
+      "goal": "Keep the knob inside its ends: a nudge below 0 is still silent, and one above 10 is still full.",
+      "unlocked_by": {"flag": "volume-built"},
+      "judge": "volume_clamp",
+      "words": {
+        "python": [
+          {"term": "/", "meaning": "Divides one number by another, and can give a fraction.", "example": "slices = 12 / 4"},
+          {"term": "max", "meaning": "Gives back the bigger of two numbers.", "example": "max(3, 9)"},
+          {"term": "min", "meaning": "Gives back the smaller of two numbers.", "example": "min(3, 9)"}
+        ],
+        "javascript": [
+          {"term": "/", "meaning": "Divides one number by another, and can give a fraction.", "example": "const slices = 12 / 4;"},
+          {"term": "Math.max", "meaning": "Gives back the bigger of two numbers.", "example": "Math.max(3, 9)"},
+          {"term": "Math.min", "meaning": "Gives back the smaller of two numbers.", "example": "Math.min(3, 9)"}
+        ]
+      },
+      "cases": [
+        {"args": [-3], "say": "dragged past the bottom"},
+        {"args": [-1], "say": "nudged a little past the bottom"},
+        {"args": [11], "say": "nudged a little past the top"},
+        {"args": [14], "say": "dragged past the top"}
+      ],
+      "hints": [
+        "Some pad nudges go past the ends. What should a notch of -3 give, and what should a notch of 14 give?",
+        "Before the notch is turned into a loudness, it can be kept inside the range from 0 to 10. Which step could do that keeping?",
+        "max and min each keep one end of a range: max keeps the bigger of two numbers, min keeps the smaller. Which one keeps a notch from going under 0?"
+      ]
+    }
+  ],
+  "advice": {
+    "not-number": "Notch {arg0} gave {got}. A loudness is a number, from 0.0 (silent) to 1.0 (full).",
+    "silent-end": "Notch {arg0}, {say}, should be silent: 0.0. It gave {got}.",
+    "full-end": "Notch {arg0}, {say}, should be full: 1.0. It gave {got}.",
+    "out": "Notch {arg0} gave {got}. A loudness can't be below 0.0 or above 1.0.",
+    "goes-down": "Notch {arg0} gave {got}, which is quieter than the notch before it. Should turning a knob up make it quieter?",
+    "low-end": "Notch {arg0} is below the bottom, so it should be silent: 0.0. It gave {got}.",
+    "high-end": "Notch {arg0} is above the top, so it should be full: 1.0. It gave {got}."
+  }
+}

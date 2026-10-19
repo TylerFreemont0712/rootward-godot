@@ -4,6 +4,42 @@
   "start": [
     {
       "if": {
+        "flag": "drills-medal"
+      },
+      "goto": "medal_done"
+    },
+    {
+      "if": {
+        "flag": "drills-first"
+      },
+      "goto": "medal"
+    },
+    {
+      "if": {
+        "flag": "drills-total"
+      },
+      "goto": "stage_three"
+    },
+    {
+      "if": {
+        "flag": "drills-double"
+      },
+      "goto": "stage_two"
+    },
+    {
+      "if": {
+        "flag": "drills-asked"
+      },
+      "goto": "drills_waits"
+    },
+    {
+      "if": {
+        "flag": "credits-rolled"
+      },
+      "goto": "drills_offer"
+    },
+    {
+      "if": {
         "flag": "met-sergeant"
       },
       "goto": "again"
@@ -19,10 +55,10 @@
           "text": "Tinker! Good. Stand up straight!"
         },
         {
-          "text": "I train the town guard. Practise every day, check everything twice, and nothing will surprise you."
+          "text": "I train the town guard. Practise every day, and nothing will surprise you."
         },
         {
-          "text": "Those boots look new. Walk a few laps of the square. Good practice!"
+          "text": "Those boots look new. Walk a few laps of the drill yard. Good practice!"
         }
       ],
       "set": [
@@ -33,6 +69,113 @@
       "lines": [
         {
           "text": "Keep those boots moving!"
+        }
+      ]
+    },
+    "drills_offer": {
+      "lines": [
+        {
+          "text": "Tinker! Stand up straight! Someone wrote my drills wrong, and I want the bugs caught."
+        },
+        {
+          "text": "A drill that never fails catches nothing. Three bugs are hiding in my functions."
+        },
+        {
+          "text": "Three bugs? Where?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "One drill set for each bug, one at a time. Start with double. Go!"
+        }
+      ],
+      "choices": [
+        {
+          "text": "I'll catch them.",
+          "goto": "drills_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "drills_later"
+        }
+      ]
+    },
+    "drills_teach": {
+      "lines": [
+        {
+          "text": "A drill is a pair: an input, and the answer it should give back. Make them catch the bugs!"
+        }
+      ],
+      "set": [
+        "drills-asked"
+      ],
+      "open": "task:drills"
+    },
+    "drills_later": {
+      "lines": [
+        {
+          "text": "March on, then. Come back when you are ready, tinker!"
+        }
+      ]
+    },
+    "drills_waits": {
+      "lines": [
+        {
+          "text": "My drills are still wrong. Three bugs, tinker. Stand up straight and catch them."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's catch them.",
+          "goto": "drills_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "drills_later"
+        }
+      ]
+    },
+    "stage_two": {
+      "lines": [
+        {
+          "text": "Double is caught! Good eyes. Now total. It keeps losing a number somewhere.",
+          "mood": "happy"
+        },
+        {
+          "text": "Look at the end of the list, tinker. What does total forget?"
+        }
+      ],
+      "open": "task:drills"
+    },
+    "stage_three": {
+      "lines": [
+        {
+          "text": "Total is caught! One bug left, in first. Stand up straight!"
+        },
+        {
+          "text": "What should first do when the list is empty? Drill it, and see."
+        }
+      ],
+      "open": "task:drills"
+    },
+    "medal": {
+      "lines": [
+        {
+          "text": "Three bugs caught, and every drill checked! That is what a good soldier does.",
+          "mood": "happy"
+        },
+        {
+          "text": "Take this pebble. It is a medal from my drill yard, and the best one I have."
+        }
+      ],
+      "set": [
+        "drills-medal"
+      ],
+      "open": "receive:pebble"
+    },
+    "medal_done": {
+      "lines": [
+        {
+          "text": "Keep that pebble, tinker. Stand up straight, and keep catching bugs."
         }
       ]
     }

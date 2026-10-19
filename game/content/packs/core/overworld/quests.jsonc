@@ -1,6 +1,9 @@
 // Lanternroot's quests (ADR-0061): what to do next. A step is done when its condition holds over the town's flags
-// (Quests.holds: {flag}, {not}, {all}, {count: prefix, at_least}); a quest opens when the quests it comes after are
-// done. The tracker shows the first open quest's next step; the log shows them all.
+// (Quests.holds: {flag}, {not}, {all}, {count: prefix, at_least}, and v0.4's {has: item, at_least} over the bag); a
+// quest opens when the quests it comes after are done. The tracker shows the first open quest's next step; the log
+// shows them all. Quest 3 and quests 6 to 13 are v0.4 (Concept/v0.4/03-story.md), and quests 14 to 24 are chapter 3
+// (Concept/v0.4/05-chapter-3.md). Each is a part of the game the tinker builds, and its steps follow one pattern: ask
+// the giver, one step for each task stage built, then use it.
 {
   "boots": {
     "order": 1,
@@ -8,9 +11,11 @@
     "giver": "hotaru",
     "summary": "Everything in Lanternroot runs on code, even your boots. Teach them to walk.",
     "steps": [
-      {"text": "Press Try them, then walk right.", "hint": "B opens your boots.", "done": {"flag": "first-step"}},
-      {"text": "Teach your boots all four ways.", "hint": "Up makes y smaller.", "done": {"flag": "all-ways"}},
-      {"text": "Walk out of your house.", "hint": "The door is at the bottom of the room.", "done": {"flag": "left-home"}}
+      {"text": "Press Try them, then take a step.", "hint": "Press B to open your boots. The starting rule moves right. Press Try them, close the editor, and press an arrow key that your rules support.", "done": {"flag": "first-step"}},
+      {"text": "Add another direction to your boots.", "hint": "Press B. Add a rule for another arrow key and change x or y by one tile. Press Try them to check it.", "done": {"flag": "boots-expanded"}},
+      {"text": "Teach your boots all four ways.", "hint": "Make up, down, left and right each move one tile in the matching direction, then press Try them. Up makes y smaller; right makes x bigger.", "done": {"flag": "all-ways"}},
+      {"text": "Walk out of your house.", "hint": "Walk through the door at the bottom of the room. Earlier steps can be finished later; your progress is kept.", "done": {"flag": "left-home"}},
+      {"text": "Teach the cabbage gate when to open.", "hint": "Find the cabbage plot in Home Hollow. Face the gate and press X to edit its code. Run its checks, close the editor, then press Space to use it. Your boots need all four directions.", "done": {"flag": "cabbage-gate-open"}}
     ]
   },
   "hello": {
@@ -26,20 +31,33 @@
       {"text": "Read the noticeboard in the square.", "done": {"flag": "read-notices"}}
     ]
   },
-  "memory": {
+  "menu": {
     "order": 3,
     "after": ["hello"],
+    "title": "A key for every door",
+    "giver": "artificer",
+    "summary": "Esc only opens Hotaru's pocket menu. Mira thinks a town this clever deserves a real one.",
+    "steps": [
+      {"text": "Visit Mira at the workshop.", "done": {"flag": "menu-asked"}},
+      {"text": "Write shortcut: which door does Esc open?", "hint": "A key goes in. The name of a door comes out.", "done": {"flag": "menu-key-written"}},
+      {"text": "Write menu_items: what your menu shows.", "hint": "Continue goes first and Quit goes last.", "done": {"flag": "menu-built"}},
+      {"text": "Press Esc and open your own menu.", "done": {"flag": "menu-opened"}}
+    ]
+  },
+  "memory": {
+    "order": 4,
+    "after": ["menu"],
     "title": "Remember me",
     "giver": "archivist",
-    "summary": "Nothing in Lanternroot is kept unless someone writes the code that keeps it. Not even you.",
+    "summary": "Nothing in Lanternroot is kept unless someone writes code to keep it. Not even you.",
     "steps": [
-      {"text": "Visit Vell at the Archive.", "done": {"flag": "memory-asked"}},
+      {"text": "Meet Vell at the Archive.", "done": {"flag": "memory-asked"}},
       {"text": "Write your save: what should the town remember about you?", "done": {"flag": "memory-written"}},
       {"text": "Save from the menu (Esc).", "done": {"flag": "saved-once"}}
     ]
   },
   "lamps": {
-    "order": 4,
+    "order": 5,
     "after": ["memory"],
     "title": "Light the lane",
     "giver": "oracle",
@@ -48,6 +66,249 @@
       {"text": "Ask Lumen about the dark lane.", "done": {"flag": "lamps-asked"}},
       {"text": "Write light_all: light every lamp on the lane.", "done": {"flag": "lamps-written"}},
       {"text": "Watch the lane light up.", "done": {"flag": "lamps-lit"}}
+    ]
+  },
+  "options": {
+    "order": 6,
+    "after": ["lamps"],
+    "title": "Turn it up",
+    "giver": "summoner",
+    "summary": "Seren hears every sound in Lanternroot, all at full volume. She wants a page with a knob.",
+    "steps": [
+      {"text": "Talk to Seren about the noise.", "done": {"flag": "options-asked"}},
+      {"text": "Write options: which rows does the page show?", "hint": "Each row is one thing to turn, with a name you choose.", "done": {"flag": "options-built"}},
+      {"text": "Write volume: how loud is each notch?", "hint": "Zero is silent. Ten is full.", "done": {"flag": "volume-built"}},
+      {"text": "Write volume again: stay inside the ends.", "hint": "A pad can push a slider past 0 and past 10.", "done": {"flag": "volume-clamped"}},
+      {"text": "Open your Options page and move a slider.", "done": {"flag": "volume-tried"}}
+    ]
+  },
+  "music": {
+    "order": 7,
+    "after": ["options"],
+    "title": "The music box",
+    "giver": "innkeeper",
+    "summary": "The Warm Hearth has a music box with no tunes in it. Marta wants music for the evenings.",
+    "steps": [
+      {"text": "Talk to Marta about the music box.", "done": {"flag": "music-asked"}},
+      {"text": "Write titles: list the songs by name.", "hint": "One name for each song, in the same order.", "done": {"flag": "music-listed"}},
+      {"text": "Write next_track: go on to the next song.", "hint": "After the last song, go back to the first.", "done": {"flag": "music-next"}},
+      {"text": "Choose a song in the music box.", "done": {"flag": "music-played"}}
+    ]
+  },
+  "bag": {
+    "order": 8,
+    "after": ["lamps"],
+    "title": "A bag of your own",
+    "giver": "quartermaster",
+    "summary": "Nym has goods on every shelf and nowhere to put them. A bag would help.",
+    "steps": [
+      {"text": "Talk to Nym about the shelves.", "done": {"flag": "bag-asked"}},
+      {"text": "Write add: put something in the bag.", "hint": "If the bag holds some already, they share a pile.", "done": {"flag": "bag-built"}},
+      {"text": "Write shortcut again: a key for the bag.", "done": {"flag": "bag-key-written"}},
+      {"text": "Pick up 3 different things.", "hint": "Trees, plots and flowers give things. Press Space.", "done": {"count": "picked-", "at_least": 3}}
+    ]
+  },
+  "soup": {
+    "order": 9,
+    "after": ["bag"],
+    "title": "Soup for the Hearth",
+    "giver": "innkeeper",
+    "summary": "Marta is making cabbage soup for the whole town. A bag that only takes is a bit greedy.",
+    "steps": [
+      {"text": "Talk to Marta about the soup.", "done": {"flag": "soup-asked"}},
+      {"text": "Write remove: take something out of the bag.", "hint": "A pile with nothing left should go away.", "done": {"flag": "bag-remove"}},
+      {"text": "Pick cabbages in the plot. Marta needs 3.", "hint": "The plot is in Home Hollow. Your gate opens it.", "done": {"flag": "picked-cabbage"}},
+      {"text": "Give Marta 3 cabbages.", "done": {"flag": "gave-cabbage"}}
+    ]
+  },
+  "map": {
+    "order": 10,
+    "after": ["bag"],
+    "title": "Pell's little map",
+    "giver": "pell",
+    "summary": "Pell has drawn every street, all in grey. A map needs colour, names and a key to open it.",
+    "steps": [
+      {"text": "Talk to Pell about the grey map.", "done": {"flag": "map-asked"}},
+      {"text": "Write map_colour: paint each kind of ground.", "hint": "Water should not look like grass.", "done": {"flag": "map-built"}},
+      {"text": "Write place_of: name the place under a cell.", "hint": "A place is a box. Is the cell inside it?", "done": {"flag": "map-places"}},
+      {"text": "Write shortcut again: a key for the map.", "done": {"flag": "map-key-written"}},
+      {"text": "Open your map.", "done": {"flag": "map-opened"}}
+    ]
+  },
+  "progress": {
+    "order": 11,
+    "after": ["options", "bag"],
+    "title": "Pip's progress",
+    "giver": "pip",
+    "summary": "Pip likes numbers out of a hundred. The tracker needs a bar that fills as you go.",
+    "steps": [
+      {"text": "Talk to Pip about the counting.", "done": {"flag": "progress-asked"}},
+      {"text": "Write progress: how full is the bar?", "hint": "Steps done and steps in all. Out of a hundred.", "done": {"flag": "progress-built"}}
+    ]
+  },
+  "clock": {
+    "order": 12,
+    "after": ["map"],
+    "title": "What time is it?",
+    "giver": "oracle",
+    "summary": "Lanternroot has no clock, so it is always now. Lumen wants her lamps to know when it is evening.",
+    "steps": [
+      {"text": "Ask Lumen about the evening.", "done": {"flag": "clock-asked"}},
+      {"text": "Write time_of_day: night, morning, afternoon or evening.", "hint": "The town's hours are in the margin.", "done": {"flag": "clock-built"}},
+      {"text": "Write clock_text: say the time aloud.", "hint": "Hours, a colon, and minutes with two digits.", "done": {"flag": "clock-text"}},
+      {"text": "Wait for evening in town.", "hint": "A whole day takes only a few minutes.", "done": {"flag": "clock-evening"}}
+    ]
+  },
+  "credits": {
+    "order": 13,
+    "after": ["music", "soup", "map", "progress", "clock"],
+    "title": "Sign your work",
+    "giver": "guildmaster",
+    "summary": "The Lantern Root keeps a Book of Makers. Every Maker signs it with the parts they built.",
+    "steps": [
+      {"text": "Talk to Orin about the Book of Makers.", "done": {"flag": "credits-asked"}},
+      {"text": "Write credits: your name and your parts.", "hint": "One line for you, then one line for each part.", "done": {"flag": "credits-built"}},
+      {"text": "Watch the credits roll.", "done": {"flag": "credits-rolled"}}
+    ]
+  },
+  "count": {
+    "order": 14,
+    "after": ["credits"],
+    "title": "Pip's count",
+    "giver": "pip",
+    "summary": "Pip's tally board by the Root says how many lanterns are lit. Teach it to count only the lit ones.",
+    "steps": [
+      {"text": "Talk to Pip about the tally board.", "done": {"flag": "count-asked"}},
+      {"text": "Write count: how many lanterns are lit?", "hint": "Go down the list. Only the lit ones count.", "done": {"flag": "count-built"}},
+      {"text": "Read Pip's tally board by the Root.", "done": {"flag": "tally-read"}}
+    ]
+  },
+  "glow": {
+    "order": 15,
+    "after": ["credits"],
+    "title": "Hotaru's glow",
+    "giver": "oracle",
+    "summary": "Hotaru has only ever shone with a borrowed light. She asks the tinker for a glow of her own.",
+    "steps": [
+      {"text": "Hear Hotaru ask for a glow of her own.", "done": {"flag": "glow-asked"}},
+      {"text": "Write glow: how bright is each second?", "hint": "A remainder can repeat a pattern, second after second.", "done": {"flag": "glow-built"}}
+    ]
+  },
+  "drills": {
+    "order": 16,
+    "after": ["credits"],
+    "title": "Brisk's drills",
+    "giver": "sergeant",
+    "summary": "Someone wrote Brisk's drills wrong. A drill that never fails catches nothing, so write drills that catch the bugs.",
+    "steps": [
+      {"text": "Talk to Sergeant Brisk about the drills.", "done": {"flag": "drills-asked"}},
+      {"text": "Write drills: catch the bug in double.", "hint": "A drill can pass by luck. Does yours tell Brisk's double apart from a right one?", "done": {"flag": "drills-double"}},
+      {"text": "Write drills: catch the bug in total.", "hint": "Does total see every number in the list?", "done": {"flag": "drills-total"}},
+      {"text": "Write drills: catch the bug in first.", "hint": "Brisk's first works for most lists. Which lists are not like most?", "done": {"flag": "drills-first"}},
+      {"text": "Take Brisk's pebble medal.", "done": {"flag": "drills-medal"}}
+    ]
+  },
+  "locks": {
+    "order": 17,
+    "after": ["drills"],
+    "title": "Nix's lock",
+    "giver": "shade",
+    "summary": "A lock is only as good as the codes it refuses. Nix wants a checker that tells good codes from bad ones.",
+    "steps": [
+      {"text": "Talk to Nix about the lockbox.", "done": {"flag": "locks-asked"}},
+      {"text": "Write good_code: is this a good lock code?", "hint": "Count the characters first. Then look at each one.", "done": {"flag": "locks-built"}},
+      {"text": "Write good_code again: refuse the easy codes.", "hint": "Four of the same digit is a very easy guess.", "done": {"flag": "locks-strong"}},
+      {"text": "Take the key from Nix's lockbox.", "done": {"flag": "lockbox-opened"}}
+    ]
+  },
+  "forge": {
+    "order": 18,
+    "after": ["drills"],
+    "title": "The forge never lies",
+    "giver": "compiler",
+    "summary": "Same iron in, same tool out, and nothing else touched. Brannoc's forge needs a function that keeps its word.",
+    "steps": [
+      {"text": "Talk to Brannoc about the forge.", "done": {"flag": "forge-asked"}},
+      {"text": "Write forge: which tool do these materials make?", "hint": "Do not change the list you were given. Make a new one.", "done": {"flag": "forge-built"}},
+      {"text": "Take the gear Brannoc forges.", "done": {"flag": "forge-gear"}}
+    ]
+  },
+  "stones": {
+    "order": 19,
+    "after": ["count"],
+    "title": "Morrow's old stones",
+    "giver": "necromancer",
+    "summary": "The old stones carry old code. Read what each one says, and they can rest.",
+    "steps": [
+      {"text": "Talk to Morrow about the old stones.", "done": {"flag": "stones-asked"}},
+      {"text": "Read the first stone: what does its loop give?", "hint": "Follow the loop one turn at a time.", "done": {"flag": "stones-1"}},
+      {"text": "Read the second stone: what does its if give?", "hint": "Which word does the if check, and which branch runs?", "done": {"flag": "stones-2"}},
+      {"text": "Read the third stone: what list does it build?", "hint": "Follow each step. What goes into the list first?", "done": {"flag": "stones-3"}},
+      {"text": "Let the old stones rest.", "done": {"flag": "stones-rest"}}
+    ]
+  },
+  "weather": {
+    "order": 20,
+    "after": ["glow"],
+    "title": "Fern's weather",
+    "giver": "keeper",
+    "summary": "The grove needs rain, and the town has no weather at all. Write the weather, one day at a time.",
+    "steps": [
+      {"text": "Talk to Fern about the rain.", "done": {"flag": "weather-asked"}},
+      {"text": "Write weather: sun, rain or cloud for a day.", "hint": "The days repeat. A remainder can find where a day sits in the cycle.", "done": {"flag": "weather-built"}},
+      {"text": "Watch the rain fall in town.", "done": {"flag": "rain-seen"}}
+    ]
+  },
+  "hours": {
+    "order": 21,
+    "after": ["weather"],
+    "title": "Everyone's hours",
+    "giver": "guard",
+    "summary": "Hollis is tired of standing in one place all day, and so is everyone. Write where people go, hour by hour.",
+    "steps": [
+      {"text": "Talk to Hollis about the hours.", "done": {"flag": "hours-asked"}},
+      {"text": "Write where: home, work or the inn, by the hour.", "hint": "Check the hour against a range, one range at a time.", "done": {"flag": "hours-built"}},
+      {"text": "Watch someone walk to their hour.", "done": {"flag": "hours-seen"}}
+    ]
+  },
+  "shop": {
+    "order": 22,
+    "after": ["forge"],
+    "title": "Nym's shop",
+    "giver": "quartermaster",
+    "summary": "At last, a shop with prices. Sell what you pick, and buy what you need with coins.",
+    "steps": [
+      {"text": "Talk to Nym about the shop.", "done": {"flag": "shop-asked"}},
+      {"text": "Write price: what do these goods cost?", "hint": "A price for one, times how many. An item not on the list costs nothing.", "done": {"flag": "shop-price"}},
+      {"text": "Write can_buy: do you have enough coins?", "hint": "Exactly enough coins is enough.", "done": {"flag": "shop-buy"}},
+      {"text": "Sell something to Nym.", "done": {"flag": "shop-sold"}},
+      {"text": "Buy something from Nym.", "done": {"flag": "shop-bought"}}
+    ]
+  },
+  "tidy": {
+    "order": 23,
+    "after": ["shop"],
+    "title": "A tidy bag",
+    "giver": "artificer",
+    "summary": "A neat bag is a happy bag, and Mira knows bags. Teach yours to count its things and to tidy itself.",
+    "steps": [
+      {"text": "Talk to Mira about the bag.", "done": {"flag": "tidy-asked"}},
+      {"text": "Write total: how many things are in the bag?", "hint": "Add every count together, not the number of piles.", "done": {"flag": "tidy-total"}},
+      {"text": "Write tidy: put the bag in name order.", "hint": "The same things, in a new order. Nothing gets lost.", "done": {"flag": "tidy-sorted"}},
+      {"text": "Tidy your bag with T.", "done": {"flag": "bag-tidied"}}
+    ]
+  },
+  "history": {
+    "order": 24,
+    "after": ["stones", "tidy"],
+    "title": "Vell's changelog",
+    "giver": "archivist",
+    "summary": "Every version of your code is a page in the Archive. Vell wants a changelog that says what changed.",
+    "steps": [
+      {"text": "Talk to Vell about the changelog.", "done": {"flag": "history-asked"}},
+      {"text": "Write changed: which lines differ?", "hint": "Count the lines from 1, the way a reader does.", "done": {"flag": "history-built"}},
+      {"text": "Write changed again: new lines at the end count too.", "done": {"flag": "history-longer"}},
+      {"text": "Open the Workbench's changelog.", "done": {"flag": "history-viewed"}}
     ]
   }
 }

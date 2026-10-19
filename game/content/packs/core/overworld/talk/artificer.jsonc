@@ -1,7 +1,67 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Mira builds the menu part of v0.4 (Concept/v0.4/03-story.md,
+// quest 3, "A key for every door"): the shortcut task, then the menu_items task. She offers it once the hello
+// quest's named steps are done (Talk cannot count the met- flags).
 {
   "id": "artificer",
   "start": [
+    {
+      "if": {
+        "flag": "bag-tidied"
+      },
+      "goto": "tidy_done"
+    },
+    {
+      "if": {
+        "flag": "tidy-asked"
+      },
+      "goto": "tidy_waits"
+    },
+    {
+      "if": {
+        "flag": "shop-bought"
+      },
+      "goto": "tidy_offer"
+    },
+    {
+      "if": {
+        "flag": "menu-opened"
+      },
+      "goto": "menu_done"
+    },
+    {
+      "if": {
+        "flag": "menu-built"
+      },
+      "goto": "try_menu"
+    },
+    {
+      "if": {
+        "flag": "menu-key-written"
+      },
+      "goto": "menu_offer"
+    },
+    {
+      "if": {
+        "flag": "menu-asked"
+      },
+      "goto": "keys_wait"
+    },
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "met-innkeeper"
+          },
+          {
+            "flag": "met-guildmaster"
+          },
+          {
+            "flag": "read-notices"
+          }
+        ]
+      },
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-artificer"
@@ -34,6 +94,234 @@
       "lines": [
         {
           "text": "Built anything yet? Come and show me when you do."
+        }
+      ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker! Have you pressed Esc yet?",
+          "mood": "happy"
+        },
+        {
+          "text": "Of course! That's my pocket menu. I keep it for emergencies.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "It's a lovely pocket menu. But it is only a pocket. Doors need keys, and a menu is a door."
+        },
+        {
+          "text": "Let's build a real one. First the key, then the menu behind it."
+        }
+      ],
+      "set": [
+        "met-artificer"
+      ],
+      "choices": [
+        {
+          "text": "Let's build it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Maybe later.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "A key goes in, and the name of a door comes out. Make Esc open the menu."
+        },
+        {
+          "text": "Every other key can open nothing at all. Machines are fine with nothing."
+        }
+      ],
+      "set": [
+        "menu-asked"
+      ],
+      "open": "task:shortcuts"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "The bench will wait. My machines are very patient."
+        }
+      ]
+    },
+    "keys_wait": {
+      "lines": [
+        {
+          "text": "Your key machine is half built. Shall we finish it?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "menu_offer": {
+      "lines": [
+        {
+          "text": "Esc knows its door now! But what is behind the door?",
+          "mood": "happy"
+        },
+        {
+          "text": "A menu is a list of things to choose. The town tells you what it has built."
+        },
+        {
+          "text": "Continue goes first and Quit goes last. Otherwise people get grumpy.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "In between, it is up to you. Put them in any order you like."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let me write it.",
+          "goto": "teach_menu"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach_menu": {
+      "lines": [
+        {
+          "text": "Here is the bench again. Show me your list."
+        },
+        {
+          "text": "Everything the town has built goes in the middle."
+        }
+      ],
+      "open": "task:menu"
+    },
+    "try_menu": {
+      "lines": [
+        {
+          "text": "It's built! Press Esc and look at what you made.",
+          "mood": "happy"
+        },
+        {
+          "text": "Ooh, I want to see! Press it! Press it!",
+          "speaker": "hotaru"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my menu.",
+          "goto": "teach_menu"
+        },
+        {
+          "text": "Change my keys.",
+          "goto": "teach"
+        },
+        {
+          "text": "Thanks, Mira.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "menu_done": {
+      "lines": [
+        {
+          "text": "Your menu, in your order. Neat! A neat machine is a happy machine.",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my menu.",
+          "goto": "teach_menu"
+        },
+        {
+          "text": "Change my keys.",
+          "goto": "teach"
+        },
+        {
+          "text": "Bye!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "Come back any time. I will be tinkering."
+        }
+      ]
+    },
+    "tidy_offer": {
+      "lines": [
+        {
+          "text": "Tinker! Your bag is full, and everything in it is in no order at all.",
+          "mood": "happy"
+        },
+        {
+          "text": "Teach it to count everything it holds, and to tidy itself. A neat bag is a happy bag."
+        },
+        {
+          "text": "A bag that tidies itself? Ooh, I want to see it!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's tidy it.",
+          "goto": "tidy_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "tidy_teach": {
+      "lines": [
+        {
+          "text": "First total: how many things are in the bag, with every pile counted."
+        },
+        {
+          "text": "Then tidy: the same piles, put in order by name, from A to Z."
+        }
+      ],
+      "set": [
+        "tidy-asked"
+      ],
+      "open": "task:tidy"
+    },
+    "tidy_waits": {
+      "lines": [
+        {
+          "text": "Your bag is still in a muddle. Shall we tidy it?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "tidy_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "tidy_done": {
+      "lines": [
+        {
+          "text": "Your bag is tidy! Every pile in its place, from A to Z. A neat bag is a happy bag.",
+          "mood": "happy"
         }
       ]
     }

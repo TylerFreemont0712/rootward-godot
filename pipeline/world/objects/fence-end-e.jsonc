@@ -1,0 +1,20 @@
+{
+  "id": "fence-end-e",
+  "kind": "prop",
+  "what": "a connected junction of the chestnut timber rail fence",
+  "footprint": [
+    1,
+    1
+  ],
+  "pad": 0,
+  "above": 1.5,
+  "ramps": {
+    "timber": "wood",
+    "iron": "steel",
+    "brass": "gold"
+  },
+  "source": {
+    "registered": true,
+    "image": "Concept/v0.3/Update/town-polish/registered/fence-end-e.png"
+  }
+}

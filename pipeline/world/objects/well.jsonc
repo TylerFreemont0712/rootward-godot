@@ -1,0 +1,23 @@
+// Adopted from ow-prop-well (pipeline/pixel/manifest.json): its render re-cut at this world's scale.
+{
+ "id": "well",
+ "kind": "prop",
+ "what": "old stone water well with a small wooden roof and a hanging bucket",
+ "footprint": [
+  2,
+  1
+ ],
+ "pad": 0.0,
+ "above": 1.0,
+ "ramps": {
+  "stone": "stone",
+  "cobble": "cobble",
+  "wood": "wood",
+  "water": "water",
+  "steel": "steel"
+ },
+ "source": {
+  "picture": "ow-prop-well",
+  "pick": 1
+ }
+}

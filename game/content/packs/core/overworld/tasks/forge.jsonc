@@ -1,0 +1,103 @@
+// Brannoc's forge (Concept/v0.4/05, 2.5): the forge makes a tool from two materials, in either order, and nothing from any
+// other pair. The forge must be pure: it gives the answer and leaves the list it was given as it was. The game asks
+// forge() about each case and checks both, so a function that sorts the list it was given is told so.
+{
+  "id": "forge",
+  "name": "The Forge",
+  "title": "The forge never lies",
+  "giver": "compiler",
+  "built_line": "Brannoc's forge follows your forge(), and touches nothing else.",
+  "entry": {"python": "forge", "javascript": "forge"},
+  "params": [
+    {"name": "materials", "meaning": "The materials put in the forge, as a list of text, such as \"iron\" or \"wood\". The list belongs to whoever gave it to you.", "example": "[\"iron\", \"wood\"]"}
+  ],
+  "gives": {"meaning": "The name of the tool the materials make, as text. \"nothing\" when they make no tool."},
+  "words": {
+    "python": [
+      {"term": "[ ]", "meaning": "A list. Its items go in square brackets, separated by commas.", "example": "fruit = [\"pear\", \"apple\"]"},
+      {"term": "sorted(...)", "meaning": "Gives back a new list with the same items in order. The list it was given is not changed.", "example": "sorted([\"pear\", \"apple\"])"},
+      {"term": ".sort()", "meaning": "Puts a list in order by changing that list itself. It gives back nothing.", "example": "fruit.sort()"},
+      {"term": "=", "meaning": "Gives a name a value. The name then holds that value.", "example": "score = 10"},
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "pet == \"cat\""},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if score == 10:\n    return \"win\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "[ ]", "meaning": "An array. Its items go in square brackets, separated by commas.", "example": "fruit = [\"pear\", \"apple\"];"},
+      {"term": ".slice()", "meaning": "Makes a copy of an array. Changing the copy leaves the first one as it was.", "example": "const copy = fruit.slice();"},
+      {"term": ".sort()", "meaning": "Puts an array in order by changing that array itself.", "example": "fruit.sort();"},
+      {"term": ".join()", "meaning": "Joins the items of an array into one text, with the text given between them.", "example": "[\"cat\", \"dog\"].join(\" and \")"},
+      {"term": "=", "meaning": "Gives a name a value. The name then holds that value.", "example": "score = 10;"},
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "pet === \"cat\""},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (score === 10) {\n  return \"win\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "forge.starter.py", "javascript": "forge.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def forge(materials):",
+        "    {sort_step}",
+        "    if materials == [\"iron\", \"wood\"]:",
+        "        return \"hammer\"",
+        "    if materials == [\"iron\", \"iron\"]:",
+        "        return \"gear\"",
+        "    if materials == [\"wood\", \"wood\"]:",
+        "        return \"stick\"",
+        "    return \"nothing\""
+      ],
+      "javascript": [
+        "function forge(materials) {",
+        "  {sort_step}",
+        "  if (materials.join(\" \") === \"iron wood\") {",
+        "    return \"hammer\";",
+        "  }",
+        "  if (materials.join(\" \") === \"iron iron\") {",
+        "    return \"gear\";",
+        "  }",
+        "  if (materials.join(\" \") === \"wood wood\") {",
+        "    return \"stick\";",
+        "  }",
+        "  return \"nothing\";",
+        "}"
+      ]
+    },
+    "slots": {
+      "sort_step": {"label": "the list", "choices": [
+        {"python": "materials.sort()", "javascript": "materials.sort();"},
+        {"python": "materials = list(materials)", "javascript": "materials = materials.slice();"},
+        {"python": "materials = sorted(materials)", "javascript": "materials = materials.slice().sort();"}
+      ]}
+    },
+    "start": {"slots": {"sort_step": 1}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "forge-built",
+      "goal": "Make forge() give back the tool the materials make, in either order. Leave the list it was given as it was.",
+      "judge": "forge_pure",
+      "args_after": true,
+      "cases": [
+        {"args": [["iron", "wood"]], "want": "hammer", "say": "iron and wood"},
+        {"args": [["wood", "iron"]], "want": "hammer", "say": "wood and iron, the other way round"},
+        {"args": [["iron", "iron"]], "want": "gear", "say": "two irons"},
+        {"args": [["wood", "wood"]], "want": "stick", "say": "two woods"},
+        {"args": [["stone"]], "want": "nothing", "say": "stone on its own"},
+        {"args": [[]], "want": "nothing", "say": "no materials at all", "edge": true}
+      ],
+      "hints": [
+        "Look at the pairs. Which two materials make a hammer, which make a gear, and which make a stick?",
+        "Two materials can come in either order. If you put the pair in order first, each tool needs only one check.",
+        "Put the order on a copy, not on the list you were given. The words column says which way of ordering makes a copy."
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "Brannoc tried {say}. The forge gave back {got}, but it should give back {want}.",
+    "nothing": "Brannoc tried {say} and got nothing back. Give back {want}.",
+    "wrong-type": "Brannoc tried {say}. Give back the name of the tool as text, such as {want}.",
+    "edge": "Brannoc tried {say}, the strange case. The forge gave back {got}, but it should give back {want}.",
+    "changed-input": "Brannoc tried {say}, and the list {arg0} came out changed. The forge must not change what it is given. Make a new, ordered list instead."
+  }
+}

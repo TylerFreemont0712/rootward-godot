@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"water_colour": 1, "path_colour": 1, "building_colour": 1, "grass_colour": 1, "tree_colour": 1, "other_colour": 2}, "toggles": []},
+    {"slots": {"water_colour": 1, "path_colour": 1, "building_colour": 1, "grass_colour": 1, "tree_colour": 1, "other_colour": 2, "right_edge": 1}, "toggles": ["look"]}
+  ]
+}

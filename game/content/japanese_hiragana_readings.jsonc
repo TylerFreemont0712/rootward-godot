@@ -1,0 +1,1189 @@
+// Reviewed Japanese word and short-phrase readings used by the hiragana display mode.
+// Keep the source side specific enough to disambiguate the reading. Code, quoted text, IDs, and placeholders are
+// protected by Text before these entries are applied.
+[
+  {
+    "kanji": "60文字までだよ",
+    "hiragana": "60もじまでだよ"
+  },
+  {
+    "kanji": "ランタンの木には",
+    "hiragana": "ランタンのきには"
+  },
+  {
+    "kanji": "おおきな木から",
+    "hiragana": "おおきなきから"
+  },
+  {
+    "kanji": "ともしび村だよ",
+    "hiragana": "ともしびむらだよ"
+  },
+  {
+    "kanji": "ともしび村では",
+    "hiragana": "ともしびむらでは"
+  },
+  {
+    "kanji": "ともしび村には",
+    "hiragana": "ともしびむらには"
+  },
+  {
+    "kanji": "ともしび村にも",
+    "hiragana": "ともしびむらにも"
+  },
+  {
+    "kanji": "わり算のあとに",
+    "hiragana": "わりざんのあとに"
+  },
+  {
+    "kanji": "ランタンの木の",
+    "hiragana": "ランタンのきの"
+  },
+  {
+    "kanji": "360分だね",
+    "hiragana": "360ぷんだね"
+  },
+  {
+    "kanji": "おおきな木が",
+    "hiragana": "おおきなきが"
+  },
+  {
+    "kanji": "おおきな木の",
+    "hiragana": "おおきなきの"
+  },
+  {
+    "kanji": "おおきな木を",
+    "hiragana": "おおきなきを"
+  },
+  {
+    "kanji": "おなじ色だよ",
+    "hiragana": "おなじいろだよ"
+  },
+  {
+    "kanji": "つくった人の",
+    "hiragana": "つくったひとの"
+  },
+  {
+    "kanji": "つくった人を",
+    "hiragana": "つくったひとを"
+  },
+  {
+    "kanji": "ところ以外は",
+    "hiragana": "ところいがいは"
+  },
+  {
+    "kanji": "ともしび村が",
+    "hiragana": "ともしびむらが"
+  },
+  {
+    "kanji": "ともしび村で",
+    "hiragana": "ともしびむらで"
+  },
+  {
+    "kanji": "ともしび村の",
+    "hiragana": "ともしびむらの"
+  },
+  {
+    "kanji": "ともしび村は",
+    "hiragana": "ともしびむらは"
+  },
+  {
+    "kanji": "ともしび村へ",
+    "hiragana": "ともしびむらへ"
+  },
+  {
+    "kanji": "ともしび村を",
+    "hiragana": "ともしびむらを"
+  },
+  {
+    "kanji": "ヒープ工房の",
+    "hiragana": "ヒープこうぼうの"
+  },
+  {
+    "kanji": "ランタンの木",
+    "hiragana": "ランタンのき"
+  },
+  {
+    "kanji": "ルート聖域の",
+    "hiragana": "ルートせいいきの"
+  },
+  {
+    "kanji": "数のことだよ",
+    "hiragana": "かずのことだよ"
+  },
+  {
+    "kanji": "文字だけだよ",
+    "hiragana": "もじだけだよ"
+  },
+  {
+    "kanji": "書いてあるよ",
+    "hiragana": "かいてあるよ"
+  },
+  {
+    "kanji": "考えてみよう",
+    "hiragana": "かんがえてみよう"
+  },
+  {
+    "kanji": "1つ入りの",
+    "hiragana": "ひとついりの"
+  },
+  {
+    "kanji": "60分だよ",
+    "hiragana": "60ぷんだよ"
+  },
+  {
+    "kanji": "かぞえ方を",
+    "hiragana": "かぞえかたを"
+  },
+  {
+    "kanji": "それ以外は",
+    "hiragana": "それいがいは"
+  },
+  {
+    "kanji": "ともしび村",
+    "hiragana": "ともしびむら"
+  },
+  {
+    "kanji": "どちら側に",
+    "hiragana": "どちらがわに"
+  },
+  {
+    "kanji": "ひと組には",
+    "hiragana": "ひとくみには"
+  },
+  {
+    "kanji": "ヒープ工房",
+    "hiragana": "ヒープこうぼう"
+  },
+  {
+    "kanji": "ルート聖域",
+    "hiragana": "ルートせいいき"
+  },
+  {
+    "kanji": "一部だから",
+    "hiragana": "いちぶだから"
+  },
+  {
+    "kanji": "わり算は、おおきい 数を ちいさく する ひとつの やりかた だよ。めもりは なんで わったら いいかな？",
+    "hiragana": "わりざんは、おおきい かずを ちいさく する ひとつの やりかた だよ。めもりは なんで わったら いいかな？"
+  },
+  {
+    "kanji": "{name}は {got}を かえしたけど、かえすものの リストに ない 色の 名前だよ。リストの 名前から えらんで、文字で かえしてね。",
+    "hiragana": "{name}は {got}を かえしたけど、かえすものの リストに ない いろの なまえだよ。リストの なまえから えらんで、もじで かえしてね。"
+  },
+  {
+    "kanji": "0.5の ような 小数は、1を わけた 一部だよ。整数だけを かえす わり算は どれかな？",
+    "hiragana": "0.5の ような しょうすうは、1を わけた いちぶだよ。せいすうだけを かえす わりざんは どれかな？"
+  },
+  {
+    "kanji": "中かっこの",
+    "hiragana": "なかかっこの"
+  },
+  {
+    "kanji": "何ぶんかな",
+    "hiragana": "なんぷんかな"
+  },
+  {
+    "kanji": "入らないよ",
+    "hiragana": "はいらないよ"
+  },
+  {
+    "kanji": "入れるのは",
+    "hiragana": "いれるのは"
+  },
+  {
+    "kanji": "出したいよ",
+    "hiragana": "だしたいよ"
+  },
+  {
+    "kanji": "出せないよ",
+    "hiragana": "だせないよ"
+  },
+  {
+    "kanji": "十字ボタン",
+    "hiragana": "じゅうじボタン"
+  },
+  {
+    "kanji": "名前つきの",
+    "hiragana": "なまえつきの"
+  },
+  {
+    "kanji": "小さいかを",
+    "hiragana": "ちいさいかを"
+  },
+  {
+    "kanji": "小数点より",
+    "hiragana": "しょうすうてんより"
+  },
+  {
+    "kanji": "手前までを",
+    "hiragana": "てまえまでを"
+  },
+  {
+    "kanji": "整数だけを",
+    "hiragana": "せいすうだけを"
+  },
+  {
+    "kanji": "時間帯かを",
+    "hiragana": "じかんたいかを"
+  },
+  {
+    "kanji": "村じゅうが",
+    "hiragana": "むらじゅうが"
+  },
+  {
+    "kanji": "村じゅうの",
+    "hiragana": "むらじゅうの"
+  },
+  {
+    "kanji": "村ぜんぶが",
+    "hiragana": "むらぜんぶが"
+  },
+  {
+    "kanji": "減らしてね",
+    "hiragana": "へらしてね"
+  },
+  {
+    "kanji": "見えないと",
+    "hiragana": "みえないと"
+  },
+  {
+    "kanji": "見つかった",
+    "hiragana": "みつかった"
+  },
+  {
+    "kanji": "見つかるよ",
+    "hiragana": "みつかるよ"
+  },
+  {
+    "kanji": "見つけたら",
+    "hiragana": "みつけたら"
+  },
+  {
+    "kanji": "見ていこう",
+    "hiragana": "みていこう"
+  },
+  {
+    "kanji": "見てみてね",
+    "hiragana": "みてみてね"
+  },
+  {
+    "kanji": "見てみよう",
+    "hiragana": "みてみよう"
+  },
+  {
+    "kanji": "1分まえ",
+    "hiragana": "1ぷんまえ"
+  },
+  {
+    "kanji": "1文字を",
+    "hiragana": "1もじを"
+  },
+  {
+    "kanji": "2つ目の",
+    "hiragana": "ふたつめの"
+  },
+  {
+    "kanji": "あの木の",
+    "hiragana": "あのきの"
+  },
+  {
+    "kanji": "くらべ方",
+    "hiragana": "くらべかた"
+  },
+  {
+    "kanji": "この村が",
+    "hiragana": "このむらが"
+  },
+  {
+    "kanji": "その中に",
+    "hiragana": "そのなかに"
+  },
+  {
+    "kanji": "その中の",
+    "hiragana": "そのなかの"
+  },
+  {
+    "kanji": "その手前",
+    "hiragana": "そのてまえ"
+  },
+  {
+    "kanji": "つかい方",
+    "hiragana": "つかいかた"
+  },
+  {
+    "kanji": "なん年も",
+    "hiragana": "なんねんも"
+  },
+  {
+    "kanji": "もう少し",
+    "hiragana": "もうすこし"
+  },
+  {
+    "kanji": "一部だよ",
+    "hiragana": "いちぶだよ"
+  },
+  {
+    "kanji": "並べよう",
+    "hiragana": "ならべよう"
+  },
+  {
+    "kanji": "休けいの",
+    "hiragana": "きゅうけいの"
+  },
+  {
+    "kanji": "入るかな",
+    "hiragana": "はいるかな"
+  },
+  {
+    "kanji": "入るかを",
+    "hiragana": "はいるかを"
+  },
+  {
+    "kanji": "入るけど",
+    "hiragana": "はいるけど"
+  },
+  {
+    "kanji": "入れてね",
+    "hiragana": "いれてね"
+  },
+  {
+    "kanji": "入れると",
+    "hiragana": "いれると"
+  },
+  {
+    "kanji": "入れるよ",
+    "hiragana": "いれるよ"
+  },
+  {
+    "kanji": "入力した",
+    "hiragana": "にゅうりょくした"
+  },
+  {
+    "kanji": "区切りを",
+    "hiragana": "くぎりを"
+  },
+  {
+    "kanji": "右と下の",
+    "hiragana": "みぎとしたの"
+  },
+  {
+    "kanji": "名前つき",
+    "hiragana": "なまえつき"
+  },
+  {
+    "kanji": "場所から",
+    "hiragana": "ばしょから"
+  },
+  {
+    "kanji": "大文字で",
+    "hiragana": "おおもじで"
+  },
+  {
+    "kanji": "小数点の",
+    "hiragana": "しょうすうてんの"
+  },
+  {
+    "kanji": "小文字で",
+    "hiragana": "こもじで"
+  },
+  {
+    "kanji": "左と上の",
+    "hiragana": "ひだりとうえの"
+  },
+  {
+    "kanji": "必要だよ",
+    "hiragana": "ひつようだよ"
+  },
+  {
+    "kanji": "手前まで",
+    "hiragana": "てまえまで"
+  },
+  {
+    "kanji": "指定して",
+    "hiragana": "していして"
+  },
+  {
+    "kanji": "整数だけ",
+    "hiragana": "せいすうだけ"
+  },
+  {
+    "kanji": "整数だよ",
+    "hiragana": "せいすうだよ"
+  },
+  {
+    "kanji": "文字では",
+    "hiragana": "もじでは"
+  },
+  {
+    "kanji": "時間帯が",
+    "hiragana": "じかんたいが"
+  },
+  {
+    "kanji": "時間帯に",
+    "hiragana": "じかんたいに"
+  },
+  {
+    "kanji": "時間帯を",
+    "hiragana": "じかんたいを"
+  },
+  {
+    "kanji": "書いてね",
+    "hiragana": "かいてね"
+  },
+  {
+    "kanji": "書けるよ",
+    "hiragana": "かけるよ"
+  },
+  {
+    "kanji": "村ぜんぶ",
+    "hiragana": "むらぜんぶ"
+  },
+  {
+    "kanji": "正しいよ",
+    "hiragana": "ただしいよ"
+  },
+  {
+    "kanji": "決めてね",
+    "hiragana": "きめてね"
+  },
+  {
+    "kanji": "流すから",
+    "hiragana": "ながすから"
+  },
+  {
+    "kanji": "流れるよ",
+    "hiragana": "ながれるよ"
+  },
+  {
+    "kanji": "石だたみ",
+    "hiragana": "いしだたみ"
+  },
+  {
+    "kanji": "答えだよ",
+    "hiragana": "こたえだよ"
+  },
+  {
+    "kanji": "見えない",
+    "hiragana": "みえない"
+  },
+  {
+    "kanji": "見つける",
+    "hiragana": "みつける"
+  },
+  {
+    "kanji": "計算して",
+    "hiragana": "けいさんして"
+  },
+  {
+    "kanji": "39分",
+    "hiragana": "39ふん"
+  },
+  {
+    "kanji": "お花が",
+    "hiragana": "おはなが"
+  },
+  {
+    "kanji": "お花は",
+    "hiragana": "おはなは"
+  },
+  {
+    "kanji": "その中",
+    "hiragana": "そのなか"
+  },
+  {
+    "kanji": "一日の",
+    "hiragana": "いちにちの"
+  },
+  {
+    "kanji": "一日は",
+    "hiragana": "いちにちは"
+  },
+  {
+    "kanji": "一日を",
+    "hiragana": "いちにちを"
+  },
+  {
+    "kanji": "並んだ",
+    "hiragana": "ならんだ"
+  },
+  {
+    "kanji": "中から",
+    "hiragana": "なかから"
+  },
+  {
+    "kanji": "中がわ",
+    "hiragana": "なかがわ"
+  },
+  {
+    "kanji": "以外は",
+    "hiragana": "いがいは"
+  },
+  {
+    "kanji": "休けい",
+    "hiragana": "きゅうけい"
+  },
+  {
+    "kanji": "入って",
+    "hiragana": "はいって"
+  },
+  {
+    "kanji": "入るよ",
+    "hiragana": "はいるよ"
+  },
+  {
+    "kanji": "出そう",
+    "hiragana": "だそう"
+  },
+  {
+    "kanji": "分かな",
+    "hiragana": "ふんかな"
+  },
+  {
+    "kanji": "分だよ",
+    "hiragana": "ふんだよ"
+  },
+  {
+    "kanji": "前まで",
+    "hiragana": "まえまで"
+  },
+  {
+    "kanji": "区切り",
+    "hiragana": "くぎり"
+  },
+  {
+    "kanji": "名まえ",
+    "hiragana": "なまえ"
+  },
+  {
+    "kanji": "名前で",
+    "hiragana": "なまえで"
+  },
+  {
+    "kanji": "場所が",
+    "hiragana": "ばしょが"
+  },
+  {
+    "kanji": "場所は",
+    "hiragana": "ばしょは"
+  },
+  {
+    "kanji": "場所を",
+    "hiragana": "ばしょを"
+  },
+  {
+    "kanji": "外がわ",
+    "hiragana": "そとがわ"
+  },
+  {
+    "kanji": "大きい",
+    "hiragana": "おおきい"
+  },
+  {
+    "kanji": "小さい",
+    "hiragana": "ちいさい"
+  },
+  {
+    "kanji": "小さく",
+    "hiragana": "ちいさく"
+  },
+  {
+    "kanji": "小さな",
+    "hiragana": "ちいさな"
+  },
+  {
+    "kanji": "小数は",
+    "hiragana": "しょうすうは"
+  },
+  {
+    "kanji": "小数点",
+    "hiragana": "しょうすうてん"
+  },
+  {
+    "kanji": "少なく",
+    "hiragana": "すくなく"
+  },
+  {
+    "kanji": "左上の",
+    "hiragana": "ひだりうえの"
+  },
+  {
+    "kanji": "必要な",
+    "hiragana": "ひつような"
+  },
+  {
+    "kanji": "数える",
+    "hiragana": "かぞえる"
+  },
+  {
+    "kanji": "数だよ",
+    "hiragana": "かずだよ"
+  },
+  {
+    "kanji": "整数で",
+    "hiragana": "せいすうで"
+  },
+  {
+    "kanji": "整数に",
+    "hiragana": "せいすうに"
+  },
+  {
+    "kanji": "整数を",
+    "hiragana": "せいすうを"
+  },
+  {
+    "kanji": "文字が",
+    "hiragana": "もじが"
+  },
+  {
+    "kanji": "文字で",
+    "hiragana": "もじで"
+  },
+  {
+    "kanji": "文字と",
+    "hiragana": "もじと"
+  },
+  {
+    "kanji": "文字に",
+    "hiragana": "もじに"
+  },
+  {
+    "kanji": "文字の",
+    "hiragana": "もじの"
+  },
+  {
+    "kanji": "文字は",
+    "hiragana": "もじは"
+  },
+  {
+    "kanji": "文字を",
+    "hiragana": "もじを"
+  },
+  {
+    "kanji": "新しい",
+    "hiragana": "あたらしい"
+  },
+  {
+    "kanji": "時間帯",
+    "hiragana": "じかんたい"
+  },
+  {
+    "kanji": "書いた",
+    "hiragana": "かいた"
+  },
+  {
+    "kanji": "書いて",
+    "hiragana": "かいて"
+  },
+  {
+    "kanji": "書ける",
+    "hiragana": "かける"
+  },
+  {
+    "kanji": "村には",
+    "hiragana": "むらには"
+  },
+  {
+    "kanji": "村にも",
+    "hiragana": "むらにも"
+  },
+  {
+    "kanji": "正しい",
+    "hiragana": "ただしい"
+  },
+  {
+    "kanji": "決めて",
+    "hiragana": "きめて"
+  },
+  {
+    "kanji": "目立つ",
+    "hiragana": "めだつ"
+  },
+  {
+    "kanji": "答えが",
+    "hiragana": "こたえが"
+  },
+  {
+    "kanji": "答えと",
+    "hiragana": "こたえと"
+  },
+  {
+    "kanji": "答えは",
+    "hiragana": "こたえは"
+  },
+  {
+    "kanji": "答えを",
+    "hiragana": "こたえを"
+  },
+  {
+    "kanji": "考えて",
+    "hiragana": "かんがえて"
+  },
+  {
+    "kanji": "考える",
+    "hiragana": "かんがえる"
+  },
+  {
+    "kanji": "自分で",
+    "hiragana": "じぶんで"
+  },
+  {
+    "kanji": "自分の",
+    "hiragana": "じぶんの"
+  },
+  {
+    "kanji": "行ずつ",
+    "hiragana": "ぎょうずつ"
+  },
+  {
+    "kanji": "行まで",
+    "hiragana": "ぎょうまで"
+  },
+  {
+    "kanji": "行目は",
+    "hiragana": "ぎょうめは"
+  },
+  {
+    "kanji": "見てね",
+    "hiragana": "みてね"
+  },
+  {
+    "kanji": "見よう",
+    "hiragana": "みよう"
+  },
+  {
+    "kanji": "見るよ",
+    "hiragana": "みるよ"
+  },
+  {
+    "kanji": "足して",
+    "hiragana": "たして"
+  },
+  {
+    "kanji": "足すよ",
+    "hiragana": "たすよ"
+  },
+  {
+    "kanji": "部分を",
+    "hiragana": "ぶぶんを"
+  },
+  {
+    "kanji": "5分",
+    "hiragana": "5ふん"
+  },
+  {
+    "kanji": "一日",
+    "hiragana": "いちにち"
+  },
+  {
+    "kanji": "一部",
+    "hiragana": "いちぶ"
+  },
+  {
+    "kanji": "上が",
+    "hiragana": "うえが"
+  },
+  {
+    "kanji": "下の",
+    "hiragana": "したの"
+  },
+  {
+    "kanji": "中で",
+    "hiragana": "なかで"
+  },
+  {
+    "kanji": "中に",
+    "hiragana": "なかに"
+  },
+  {
+    "kanji": "中の",
+    "hiragana": "なかの"
+  },
+  {
+    "kanji": "中へ",
+    "hiragana": "なかへ"
+  },
+  {
+    "kanji": "人の",
+    "hiragana": "ひとの"
+  },
+  {
+    "kanji": "以外",
+    "hiragana": "いがい"
+  },
+  {
+    "kanji": "値が",
+    "hiragana": "あたいが"
+  },
+  {
+    "kanji": "値の",
+    "hiragana": "あたいの"
+  },
+  {
+    "kanji": "値を",
+    "hiragana": "あたいを"
+  },
+  {
+    "kanji": "側に",
+    "hiragana": "がわに"
+  },
+  {
+    "kanji": "出す",
+    "hiragana": "だす"
+  },
+  {
+    "kanji": "分が",
+    "hiragana": "ふんが"
+  },
+  {
+    "kanji": "分で",
+    "hiragana": "ふんで"
+  },
+  {
+    "kanji": "分に",
+    "hiragana": "ふんに"
+  },
+  {
+    "kanji": "分の",
+    "hiragana": "ふんの"
+  },
+  {
+    "kanji": "分は",
+    "hiragana": "ふんは"
+  },
+  {
+    "kanji": "分を",
+    "hiragana": "ふんを"
+  },
+  {
+    "kanji": "列と",
+    "hiragana": "れつと"
+  },
+  {
+    "kanji": "前の",
+    "hiragana": "まえの"
+  },
+  {
+    "kanji": "半分",
+    "hiragana": "はんぶん"
+  },
+  {
+    "kanji": "右が",
+    "hiragana": "みぎが"
+  },
+  {
+    "kanji": "右の",
+    "hiragana": "みぎの"
+  },
+  {
+    "kanji": "右を",
+    "hiragana": "みぎを"
+  },
+  {
+    "kanji": "合う",
+    "hiragana": "あう"
+  },
+  {
+    "kanji": "場所",
+    "hiragana": "ばしょ"
+  },
+  {
+    "kanji": "声が",
+    "hiragana": "こえが"
+  },
+  {
+    "kanji": "声も",
+    "hiragana": "こえも"
+  },
+  {
+    "kanji": "山が",
+    "hiragana": "やまが"
+  },
+  {
+    "kanji": "山に",
+    "hiragana": "やまに"
+  },
+  {
+    "kanji": "山の",
+    "hiragana": "やまの"
+  },
+  {
+    "kanji": "山は",
+    "hiragana": "やまは"
+  },
+  {
+    "kanji": "山を",
+    "hiragana": "やまを"
+  },
+  {
+    "kanji": "左が",
+    "hiragana": "ひだりが"
+  },
+  {
+    "kanji": "左に",
+    "hiragana": "ひだりに"
+  },
+  {
+    "kanji": "左の",
+    "hiragana": "ひだりの"
+  },
+  {
+    "kanji": "左を",
+    "hiragana": "ひだりを"
+  },
+  {
+    "kanji": "必要",
+    "hiragana": "ひつよう"
+  },
+  {
+    "kanji": "手前",
+    "hiragana": "てまえ"
+  },
+  {
+    "kanji": "数が",
+    "hiragana": "かずが"
+  },
+  {
+    "kanji": "数で",
+    "hiragana": "かずで"
+  },
+  {
+    "kanji": "数の",
+    "hiragana": "かずの"
+  },
+  {
+    "kanji": "数を",
+    "hiragana": "かずを"
+  },
+  {
+    "kanji": "整数",
+    "hiragana": "せいすう"
+  },
+  {
+    "kanji": "文字",
+    "hiragana": "もじ"
+  },
+  {
+    "kanji": "方向",
+    "hiragana": "ほうこう"
+  },
+  {
+    "kanji": "時点",
+    "hiragana": "じてん"
+  },
+  {
+    "kanji": "書く",
+    "hiragana": "かく"
+  },
+  {
+    "kanji": "木が",
+    "hiragana": "きが"
+  },
+  {
+    "kanji": "木に",
+    "hiragana": "きに"
+  },
+  {
+    "kanji": "木の",
+    "hiragana": "きの"
+  },
+  {
+    "kanji": "木を",
+    "hiragana": "きを"
+  },
+  {
+    "kanji": "村が",
+    "hiragana": "むらが"
+  },
+  {
+    "kanji": "村で",
+    "hiragana": "むらで"
+  },
+  {
+    "kanji": "村に",
+    "hiragana": "むらに"
+  },
+  {
+    "kanji": "村の",
+    "hiragana": "むらの"
+  },
+  {
+    "kanji": "村は",
+    "hiragana": "むらは"
+  },
+  {
+    "kanji": "村へ",
+    "hiragana": "むらへ"
+  },
+  {
+    "kanji": "村を",
+    "hiragana": "むらを"
+  },
+  {
+    "kanji": "状態",
+    "hiragana": "じょうたい"
+  },
+  {
+    "kanji": "番号",
+    "hiragana": "ばんごう"
+  },
+  {
+    "kanji": "目を",
+    "hiragana": "めを"
+  },
+  {
+    "kanji": "答え",
+    "hiragana": "こたえ"
+  },
+  {
+    "kanji": "組に",
+    "hiragana": "くみに"
+  },
+  {
+    "kanji": "聖域",
+    "hiragana": "せいいき"
+  },
+  {
+    "kanji": "自分",
+    "hiragana": "じぶん"
+  },
+  {
+    "kanji": "色で",
+    "hiragana": "いろで"
+  },
+  {
+    "kanji": "色に",
+    "hiragana": "いろに"
+  },
+  {
+    "kanji": "色の",
+    "hiragana": "いろの"
+  },
+  {
+    "kanji": "色は",
+    "hiragana": "いろは"
+  },
+  {
+    "kanji": "色も",
+    "hiragana": "いろも"
+  },
+  {
+    "kanji": "色を",
+    "hiragana": "いろを"
+  },
+  {
+    "kanji": "行が",
+    "hiragana": "ぎょうが"
+  },
+  {
+    "kanji": "行で",
+    "hiragana": "ぎょうで"
+  },
+  {
+    "kanji": "行に",
+    "hiragana": "ぎょうに"
+  },
+  {
+    "kanji": "行の",
+    "hiragana": "ぎょうの"
+  },
+  {
+    "kanji": "行は",
+    "hiragana": "ぎょうは"
+  },
+  {
+    "kanji": "行も",
+    "hiragana": "ぎょうも"
+  },
+  {
+    "kanji": "行を",
+    "hiragana": "ぎょうを"
+  },
+  {
+    "kanji": "見て",
+    "hiragana": "みて"
+  },
+  {
+    "kanji": "見る",
+    "hiragana": "みる"
+  },
+  {
+    "kanji": "計算",
+    "hiragana": "けいさん"
+  },
+  {
+    "kanji": "足す",
+    "hiragana": "たす"
+  },
+  {
+    "kanji": "遺構",
+    "hiragana": "いこう"
+  },
+  {
+    "kanji": "部分",
+    "hiragana": "ぶぶん"
+  },
+  {
+    "kanji": "上",
+    "hiragana": "うえ"
+  },
+  {
+    "kanji": "中",
+    "hiragana": "なか"
+  },
+  {
+    "kanji": "値",
+    "hiragana": "あたい"
+  },
+  {
+    "kanji": "分",
+    "hiragana": "ふん"
+  },
+  {
+    "kanji": "列",
+    "hiragana": "れつ"
+  },
+  {
+    "kanji": "前",
+    "hiragana": "まえ"
+  },
+  {
+    "kanji": "右",
+    "hiragana": "みぎ"
+  },
+  {
+    "kanji": "山",
+    "hiragana": "やま"
+  },
+  {
+    "kanji": "左",
+    "hiragana": "ひだり"
+  },
+  {
+    "kanji": "閉じる",
+    "hiragana": "とじる"
+  },
+  {
+    "kanji": "数",
+    "hiragana": "かず"
+  },
+  {
+    "kanji": "木",
+    "hiragana": "き"
+  },
+  {
+    "kanji": "村",
+    "hiragana": "むら"
+  },
+  {
+    "kanji": "色",
+    "hiragana": "いろ"
+  },
+  {
+    "kanji": "花",
+    "hiragana": "はな"
+  },
+  {
+    "kanji": "行",
+    "hiragana": "ぎょう"
+  }
+]

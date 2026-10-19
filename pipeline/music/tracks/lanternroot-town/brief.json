@@ -1,0 +1,21 @@
+{
+  "id": "lanternroot-town",
+  "out": "music-lanternroot-town",
+  "kind": "loop",
+  "title": "Lanternroot Walk",
+  "role": "Walking the town at night: lanterns, townspeople, Hotaru beside you. Lively folk with a backbeat that never tires over a long walk, a fiddle tune you can hum, a whistle chorus, and one contrasting B section where the town slows and sighs before it dances again.",
+  "theme": "The motif is the tune's opening: G D G B A G, in eighth notes on the fiddle in the verse. The whistle chorus climbs in dotted rhythms on the same G shape (G B D G); the bridge sighs down the motif's tail (B A G) in E minor colour; the outro lands on G.",
+  "reference": "The player's request: the mode played music-rest, a lullaby in F at 76 BPM in 3/4, and wanted a solid soundtrack. This is the walking track: a pulse to walk to, a tune to hum, nothing that lulls.",
+  "bpm": 110,
+  "key": "G major",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (strummed guitar, drums enter, the whistle teases), verse 8 (fiddle tune opens on the motif), chorus 8 (whistle, dotted and lifted), bridge 8 (B section: a minor sigh, contrasting), verse 8 (return), chorus 8 (return), outro 4",
+  "loop": {
+    "from": "verse",
+    "to": "chorus",
+    "occurrence": 2
+  },
+  "style": "lively lantern folk with a backbeat, fiddle melody, tin whistle, accordion, strummed acoustic guitar, upright bass, snare and bodhran drums, dancing and unhurried, bright intimate recording, instrumental, no vocals, G major, 110 BPM",
+  "lyrics": "",
+  "pick": "yue2-comfy-1000-1100-s32-a00109"
+}

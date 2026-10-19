@@ -1,0 +1,25 @@
+// Updated imagegen source, cut through the shared world palette and footprint workflow.
+{
+  "id": "lanterntree",
+  "kind": "landmark",
+  "what": "giant ancient tree with many small glowing paper lanterns hanging from its branches",
+  "footprint": [
+    5,
+    4
+  ],
+  "pad": 2.0,
+  "above": 5.0,
+  "ramps": {
+    "bark": "wood",
+    "leaves": "leaf",
+    "pine": "pine",
+    "leaf_highlight": "grass",
+    "lamps": "glow",
+    "light": "firefly",
+    "cord": "cloth_brown",
+    "metal": "gold"
+  },
+  "source": {
+    "image": "Concept/v0.3/Update/town-polish/sources/tree.png"
+  }
+}

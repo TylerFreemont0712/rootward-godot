@@ -1,0 +1,4 @@
+def count(lanterns):
+    # lanterns is the town's list of lanterns. Each one has a "name" and a "lit", which is True when it is lit.
+    # Give back how many lanterns are lit, as a whole number.
+    return None

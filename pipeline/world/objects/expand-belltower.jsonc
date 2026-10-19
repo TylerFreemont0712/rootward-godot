@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-belltower",
+  "kind": "building",
+  "what": "a rose-stone chapel bell tower with an integrated teal roof",
+  "footprint": [
+    6,
+    9
+  ],
+  "ramps": {
+    "walls": "cloth_coral",
+    "roof": "cloth_teal",
+    "trim": "gold",
+    "base": "stone",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-belltower-source.png"
+  },
+  "door": [
+    3,
+    8
+  ]
+}

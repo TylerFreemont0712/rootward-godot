@@ -1,0 +1,86 @@
+// The credits (Concept/v0.4/01, 5.10): the Book of Makers. One function gives the lines the credits roll, with the
+// player's name and a line for each part they built. Finishing the quest rolls them.
+{
+  "id": "credits",
+  "name": "The Credits",
+  "title": "Sign your work",
+  "giver": "guildmaster",
+  "built_line": "The credits roll with your lines.",
+  "entry": {"python": "credits", "javascript": "credits"},
+  "params": [
+    {"name": "maker", "meaning": "The player's name, as text, as they typed it.", "example": "\"Sam\""},
+    {"name": "parts", "meaning": "A list of the names of the parts the player built, as text, in the order they built them.", "example": "[\"Apple\", \"Pear\"]"}
+  ],
+  "gives": {"meaning": "A list of lines of text, in the order the credits show them: one line for each thing to show.", "example": "[\"Sam\", \"Apple\", \"Pear\"]"},
+  "words": {
+    "python": [
+      {"term": "[]", "meaning": "Makes a list: things in square brackets, with a comma between each one.", "example": "pets = [\"cat\", \"dog\"]"},
+      {"term": "append", "meaning": "Adds one thing to the end of a list.", "example": "pets.append(\"fox\")"},
+      {"term": "for", "meaning": "Does the lines under it once for each thing in a list, one after another.", "example": "for pet in pets:"},
+      {"term": "+", "meaning": "Joins two pieces of text into one.", "example": "\"Hello, \" + \"Sam\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "[]", "meaning": "Makes a list: things in square brackets, with a comma between each one.", "example": "const pets = [\"cat\", \"dog\"];"},
+      {"term": "push", "meaning": "Adds one thing to the end of a list.", "example": "pets.push(\"fox\");"},
+      {"term": "for", "meaning": "Does the lines in its braces once for each thing in a list, one after another.", "example": "for (const pet of pets) {"},
+      {"term": "+", "meaning": "Joins two pieces of text into one.", "example": "\"Hello, \" + \"Sam\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "credits.starter.py", "javascript": "credits.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def credits(maker, parts):",
+        "    lines = [{title}]",
+        "[maker]    lines.append(\"Made by \" + maker)",
+        "[parts]    for part in parts:",
+        "[parts]        lines.append(\"Built: \" + part)",
+        "    return lines"
+      ],
+      "javascript": [
+        "function credits(maker, parts) {",
+        "  const lines = [{title}];",
+        "[maker]  lines.push(\"Made by \" + maker);",
+        "[parts]  for (const part of parts) {",
+        "[parts]    lines.push(\"Built: \" + part);",
+        "[parts]  }",
+        "  return lines;",
+        "}"
+      ]
+    },
+    "slots": {
+      "title": {"label": "the first line", "choices": ["\"Lanternroot\"", "\"The Makers\"", "\"Thanks for playing\""]}
+    },
+    "toggles": {
+      "maker": {"label": "Add the maker", "stage": 0},
+      "parts": {"label": "Add every part", "stage": 0}
+    },
+    "start": {"slots": {}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "credits-built",
+      "goal": "Make the credits: a line with the player's name, then a line for each part they built.",
+      "judge": "credits",
+      "cases": [
+        {"args": ["Kai", ["Boots", "Save", "Lamps", "Shortcuts", "Menu"]], "say": "Kai, with five parts"},
+        {"args": ["Mina", ["Bag"]], "say": "Mina, with one part"},
+        {"args": ["Tinker", ["Boots", "Save", "Lamps", "Shortcuts", "Menu", "Options", "Volume Knob", "Music Box", "Bag", "Map"]], "say": "Tinker, with ten parts"}
+      ],
+      "hints": [
+        "The credits are a list of lines. The first line is for the maker. What goes into the list first?",
+        "After the maker's line, go through the parts one at a time. Each part gets a line of its own.",
+        "Text joins with +. Add each line to the list with append, then give the whole list back."
+      ]
+    }
+  ],
+  "advice": {
+    "not-list": "The credits roll a list of lines, so give back a list. {got} is not a list.",
+    "not-text": "Line {index} is not text. Every line must be text, in quotes.",
+    "no-maker": "No line has the name {arg0} in it. Put the maker's name on one of the lines.",
+    "missing-part": "No line names {name}. Every part the player built needs a line of its own.",
+    "too-long": "The credits hold 40 lines at most, and 60 letters on a line. Make the lines shorter, or fewer."
+  }
+}

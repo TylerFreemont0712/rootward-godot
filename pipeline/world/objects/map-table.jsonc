@@ -1,0 +1,19 @@
+// Pell's map table: outside Pell's cottage (v0.4 art, section 11). A prop, not furniture: it stands outdoors.
+{
+ "id": "map-table",
+ "kind": "prop",
+ "what": "a wooden table outside a cottage with a spread parchment map, a brass compass and a small lit candle",
+ "footprint": [2, 1],
+ "ramps": {"wood": "wood", "parchment": "dirt", "brass": "gold", "wax": "cloth_cream", "flame": "glow"},
+ "parts": [
+  {"shape": "box", "at": [0.1, 0.1, 0.7], "size": [1.8, 0.8, 0.1], "ramp": "wood"},
+  {"shape": "box", "at": [0.15, 0.15, 0], "size": [0.12, 0.12, 0.7], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [1.73, 0.15, 0], "size": [0.12, 0.12, 0.7], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.15, 0.73, 0], "size": [0.12, 0.12, 0.7], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [1.73, 0.73, 0], "size": [0.12, 0.12, 0.7], "ramp": "wood", "shade": 2},
+  {"shape": "box", "at": [0.25, 0.2, 0.8], "size": [1.0, 0.6, 0.02], "ramp": "parchment", "shade": 0},
+  {"shape": "cylinder", "at": [1.35, 0.4, 0.82], "size": [0.24, 0.24, 0.04], "ramp": "brass", "shade": 0},
+  {"shape": "cylinder", "at": [1.66, 0.22, 0.8], "size": [0.12, 0.12, 0.22], "ramp": "wax", "shade": 1},
+  {"shape": "ball", "at": [1.67, 0.23, 1.02], "size": [0.1, 0.1, 0.14], "ramp": "flame"}
+ ]
+}

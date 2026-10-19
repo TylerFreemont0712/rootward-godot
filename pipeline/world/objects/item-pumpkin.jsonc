@@ -1,0 +1,13 @@
+// The pumpkin: a Bag and pickup icon (pipeline/world/README.md). A round squash with a stalk and one leaf.
+{
+ "id": "item-pumpkin",
+ "kind": "prop",
+ "what": "a round orange pumpkin with a short brown stalk and one green leaf, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"skin": "cloth_orange", "stalk": "wood", "leaf": "leaf"},
+ "parts": [
+  {"shape": "ball", "at": [0.14, 0.15, 0], "size": [0.72, 0.7, 0.56], "ramp": "skin", "shade": 1},
+  {"shape": "cylinder", "at": [0.44, 0.44, 0.5], "size": [0.12, 0.12, 0.16], "ramp": "stalk"},
+  {"shape": "ball", "at": [0.55, 0.28, 0.56], "size": [0.3, 0.2, 0.12], "ramp": "leaf"}
+ ]
+}

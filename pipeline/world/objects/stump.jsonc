@@ -1,0 +1,14 @@
+// A tree stump (catalog only so far): a cut trunk with rings on its top and a couple of roots.
+{
+ "id": "stump",
+ "kind": "prop",
+ "what": "a short cut tree stump with a pale ringed top and two roots",
+ "footprint": [1, 1],
+ "ramps": {"bark": "wood"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.14, 0.18, 0], "size": [0.72, 0.64, 0.4], "ramp": "bark", "shade": 2},
+  {"shape": "cylinder", "at": [0.18, 0.22, 0.4], "size": [0.64, 0.56, 0.04], "ramp": "bark", "shade": 0},
+  {"shape": "ball", "at": [0.02, 0.32, 0], "size": [0.3, 0.3, 0.22], "ramp": "bark", "shade": 2},
+  {"shape": "ball", "at": [0.7, 0.4, 0], "size": [0.28, 0.28, 0.2], "ramp": "bark", "shade": 2}
+ ]
+}

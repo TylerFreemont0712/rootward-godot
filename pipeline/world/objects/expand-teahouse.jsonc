@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-teahouse",
+  "kind": "building",
+  "what": "a broad low teahouse with layered jade roof bands and warm windows",
+  "footprint": [
+    9,
+    7
+  ],
+  "ramps": {
+    "walls": "plaster",
+    "roof": "cloth_mint",
+    "trim": "cloth_maroon",
+    "base": "stone",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-teahouse-source.png"
+  },
+  "door": [
+    4,
+    6
+  ]
+}

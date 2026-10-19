@@ -1,7 +1,52 @@
-// A townsperson of Lanternroot (ADR-0061, Talk).
+// A townsperson of Lanternroot (ADR-0061, Talk). Pell builds the map (v0.4, quest 10, "Pell's little map"): the
+// map task's colours, then its places, then the map's key, which is the shortcut task's stage 3. She offers it once
+// the bag's key is written.
 {
   "id": "pell",
   "start": [
+    {
+      "if": {
+        "all": [
+          {
+            "flag": "map-key-written"
+          },
+          {
+            "flag": "map-opened"
+          }
+        ]
+      },
+      "goto": "map_done"
+    },
+    {
+      "if": {
+        "flag": "map-key-written"
+      },
+      "goto": "go_open"
+    },
+    {
+      "if": {
+        "flag": "map-places"
+      },
+      "goto": "key_offer"
+    },
+    {
+      "if": {
+        "flag": "map-built"
+      },
+      "goto": "places_offer"
+    },
+    {
+      "if": {
+        "flag": "map-asked"
+      },
+      "goto": "colours_wait"
+    },
+    {
+      "if": {
+        "flag": "bag-key-written"
+      },
+      "goto": "offer"
+    },
     {
       "if": {
         "flag": "met-pell"
@@ -34,6 +79,200 @@
       "lines": [
         {
           "text": "Lost? Everything starts at the big tree."
+        }
+      ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker! Tinker! I need help! I drew the whole town and it is all grey!",
+          "mood": "happy"
+        },
+        {
+          "text": "Grey grass. Grey water. A grey me! A map should show where the water is without a word."
+        },
+        {
+          "text": "A grey Pell would be funny.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Not to Pell. I have the pencils. I need the colours."
+        }
+      ],
+      "set": [
+        "met-pell"
+      ],
+      "choices": [
+        {
+          "text": "I'll paint it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "Tell me what colour each kind of ground is. Water should look like water."
+        },
+        {
+          "text": "And a path must never look like grass. People get lost."
+        }
+      ],
+      "set": [
+        "map-asked"
+      ],
+      "open": "task:map"
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "It is still grey, but it is a very tidy grey."
+        }
+      ]
+    },
+    "colours_wait": {
+      "lines": [
+        {
+          "text": "Still grey! Can you finish my colours?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Yes, let's.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "places_offer": {
+      "lines": [
+        {
+          "text": "Colours! The map is BEAUTIFUL!",
+          "mood": "happy"
+        },
+        {
+          "text": "Now it needs names. Point at any spot, and the map should say which place that is."
+        },
+        {
+          "text": "Home Hollow. Waterside. Lantern Square. And so on."
+        },
+        {
+          "text": "What if you point at nowhere?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Then it should say nothing at all."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let me write it.",
+          "goto": "places_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "places_teach": {
+      "lines": [
+        {
+          "text": "Each place is a box on the map. Is the spot inside the box? That is the whole question."
+        }
+      ],
+      "open": "task:map"
+    },
+    "key_offer": {
+      "lines": [
+        {
+          "text": "It knows where it is! Now, how do I open it?"
+        },
+        {
+          "text": "Mira has a key for the menu. Nym has one for the bag. The map needs a key too."
+        },
+        {
+          "text": "I vote for M. M is for map!",
+          "speaker": "hotaru"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's add it.",
+          "goto": "key_teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "key_teach": {
+      "lines": [
+        {
+          "text": "Back to Mira's key machine. Add a door for the map."
+        }
+      ],
+      "open": "task:shortcuts"
+    },
+    "go_open": {
+      "lines": [
+        {
+          "text": "Press the key! Open your map! Is that... that is our town!",
+          "mood": "happy"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my colours.",
+          "goto": "teach"
+        },
+        {
+          "text": "Change my places.",
+          "goto": "places_teach"
+        },
+        {
+          "text": "Thanks, Pell.",
+          "goto": "bye"
+        }
+      ]
+    },
+    "map_done": {
+      "lines": [
+        {
+          "text": "I hung your map on my wall, next to my first one. Yours is better.",
+          "mood": "happy"
+        },
+        {
+          "text": "Everything starts at the big tree. Now it can find the big tree by itself."
+        }
+      ],
+      "choices": [
+        {
+          "text": "Change my colours.",
+          "goto": "teach"
+        },
+        {
+          "text": "Change my places.",
+          "goto": "places_teach"
+        },
+        {
+          "text": "Bye, Pell!",
+          "goto": "bye"
+        }
+      ]
+    },
+    "bye": {
+      "lines": [
+        {
+          "text": "Bye! Do not get lost. (You cannot. You have a map.)"
         }
       ]
     }

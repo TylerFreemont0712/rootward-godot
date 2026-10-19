@@ -1,5 +1,5 @@
 {
- "_doc": "Lanternroot's overworld pictures from ComfyUI (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh --comfy 'ow-*'`. The art pipeline's machinery (pipeline/art/generate.py) with every result locked to pipeline/pixel/palette.json (post `lock`). Buildings, landmarks, trees and larger props come from here; 16-pixel characters, small props and ground tiles do not (ComfyUI walk cycles at 16 x 24 and its tile textures were tried on 2026-10-09 and rejected: thin, faceless, muddy). A `raw_from` entry re-cuts another entry's cached render to keep its second candidate as a variant.",
+ "_doc": "Lanternroot's overworld pictures from ComfyUI (pipeline/pixel/README.md, ADR-0061): `scripts/pixel.sh --comfy 'ow-*'`. Every asset has a fixed seed and selected candidate; the pixel build validates ids, output paths, picks and raw_from dependencies. Results lock to pipeline/pixel/palette.json. Buildings, landmarks, trees and larger props come from here; 16-pixel characters, small props and ground tiles do not. A raw_from sibling reuses a prior asset's cached candidates, and must follow its source in this list. The Root Gate's generated silhouette receives a deterministic closed-face overlay in landmarks.py so it remains sealed until its story reveal.",
  "comfy_url": "http://127.0.0.1:8188",
  "styles": {
   "ow-prop": {
@@ -25,6 +25,32 @@
     ],
     "colors": 14,
     "saturation": 0.95,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  "ow-building": {
+   "checkpoint": "sd_xl_base_1.0.safetensors",
+   "lora": "pixel-art-xl-v1.1.safetensors",
+   "lora_strength": 1.0,
+   "prefix": "pixel art, ",
+   "suffix": ", single small rpg building sprite, consistent front-facing facade, slight high angle showing the roof and ground-facing front, minimal visible side wall, centered, whole building visible, front door at the bottom center, plain white background, clean silhouette, cozy fantasy village, warm colors",
+   "negative": "blurry, text, watermark, signature, sprite sheet, multiple objects, collage, tileset, inventory, grid, people, characters, cropped, frame, border, drop shadow, gradient background, realistic, photo, 3d render, isometric, strong perspective, side elevation",
+   "width": 1024,
+   "height": 1024,
+   "steps": 28,
+   "cfg": 7,
+   "sampler": "euler_ancestral",
+   "scheduler": "normal",
+   "rmbg": true,
+   "candidates": 2,
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     96
+    ],
+    "colors": 26,
     "lock": true,
     "outline_color": "#2a1d2b"
    }
@@ -61,7 +87,24 @@
    "style": "ow-prop",
    "seed": 4201,
    "pick": 1,
-   "prompt": "old stone water well with a small wooden roof and a hanging bucket"
+   "prompt": "old stone water well with a small wooden roof and a hanging bucket",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     32
+    ],
+    "colors": 20,
+    "lock": true,
+    "lock_ramps": [
+     "stone",
+     "cobble",
+     "wood",
+     "water",
+     "steel"
+    ],
+    "outline_color": "#2a1d2b"
+   }
   },
   {
    "id": "ow-prop-stall",
@@ -76,8 +119,15 @@
      48,
      40
     ],
-    "colors": 16,
+    "colors": 22,
     "lock": true,
+    "lock_ramps": [
+     "wood",
+     "thatch",
+     "cloth_red",
+     "cloth_white",
+     "plaster"
+    ],
     "outline_color": "#2a1d2b"
    }
   },
@@ -86,134 +136,67 @@
    "out": "overworld/props/oak",
    "style": "ow-prop",
    "seed": 4205,
-   "pick": 0,
+   "pick": 1,
    "prompt": "round leafy green oak tree with a thick brown trunk",
    "post": {
     "kind": "sprite",
     "size": [
-     32,
-     40
+     48,
+     64
     ],
-    "colors": 10,
+    "colors": 20,
     "lock": true,
+    "lock_ramps": [
+     "leaf",
+     "grass",
+     "pine",
+     "wood",
+     "dirt"
+    ],
     "outline_color": "#2a1d2b"
    }
   },
   {
    "id": "ow-building-inn",
    "out": "overworld/buildings/inn",
-   "style": "ow-prop",
+   "style": "ow-building",
    "seed": 4301,
    "pick": 0,
-   "prompt": "cozy two-story village inn, timber frame, cream plaster walls, red tiled roof, wooden front door, hanging sign, flower boxes under the windows, chimney",
+   "prompt": "cozy two-story village inn, cream plaster walls with a timber frame, red tiled roof, two lit windows, a round hanging sign with a bowl symbol, a centred wooden door, symmetric front facade, front view facing the viewer, no text, no crates, no barrels",
    "post": {
     "kind": "sprite",
     "size": [
-     64,
-     64
+     96,
+     96
     ],
-    "colors": 20,
+    "colors": 26,
     "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
     "outline_color": "#2a1d2b"
    }
   },
   {
    "id": "ow-building-home",
    "out": "overworld/buildings/home",
-   "style": "ow-prop",
+   "style": "ow-building",
    "seed": 4311,
    "pick": 1,
    "prompt": "small cozy cottage with a thatched roof, a round window and a little lantern beside the door, flowers by the wall, front view facing the viewer, the front door at the bottom middle",
-   "post": {
-    "kind": "sprite",
-    "size": [
-     64,
-     64
-    ],
-    "colors": 22,
-    "lock": true,
-    "outline_color": "#2a1d2b"
-   }
-  },
-  {
-   "id": "ow-building-archive",
-   "out": "overworld/buildings/archive",
-   "style": "ow-prop",
-   "seed": 4312,
-   "pick": 0,
-   "prompt": "tall old stone library with arched windows, blue slate roof, a sign with an open book, front view facing the viewer, the front door at the bottom middle",
-   "post": {
-    "kind": "sprite",
-    "size": [
-     80,
-     80
-    ],
-    "colors": 22,
-    "lock": true,
-    "outline_color": "#2a1d2b"
-   }
-  },
-  {
-   "id": "ow-building-smithy",
-   "out": "overworld/buildings/smithy",
-   "style": "ow-prop",
-   "seed": 4313,
-   "pick": 0,
-   "prompt": "village blacksmith forge with a stone chimney, an anvil under a wooden awning, warm glow from inside, front view facing the viewer, the front door at the bottom middle",
-   "post": {
-    "kind": "sprite",
-    "size": [
-     80,
-     72
-    ],
-    "colors": 22,
-    "lock": true,
-    "outline_color": "#2a1d2b"
-   }
-  },
-  {
-   "id": "ow-building-shop",
-   "out": "overworld/buildings/shop",
-   "style": "ow-prop",
-   "seed": 4314,
-   "pick": 0,
-   "prompt": "small village general store with a green and white striped awning, crates and barrels by the door, front view facing the viewer, the front door at the bottom middle",
-   "post": {
-    "kind": "sprite",
-    "size": [
-     64,
-     64
-    ],
-    "colors": 22,
-    "lock": true,
-    "outline_color": "#2a1d2b"
-   }
-  },
-  {
-   "id": "ow-building-shrine",
-   "out": "overworld/buildings/shrine",
-   "style": "ow-prop",
-   "seed": 4315,
-   "pick": 1,
-   "prompt": "small wooden lantern shrine with a curved red roof and a big glowing paper lantern hanging at the entrance, front view facing the viewer, the front door at the bottom middle",
-   "post": {
-    "kind": "sprite",
-    "size": [
-     64,
-     64
-    ],
-    "colors": 22,
-    "lock": true,
-    "outline_color": "#2a1d2b"
-   }
-  },
-  {
-   "id": "ow-building-hall",
-   "out": "overworld/buildings/hall",
-   "style": "ow-prop",
-   "seed": 4316,
-   "pick": 0,
-   "prompt": "large village hall with a small clock tower, purple roof, stone and timber walls, banners, front view facing the viewer, the front door at the bottom middle",
    "post": {
     "kind": "sprite",
     "size": [
@@ -226,19 +209,185 @@
    }
   },
   {
-   "id": "ow-building-workshop",
-   "out": "overworld/buildings/workshop",
-   "style": "ow-prop",
-   "seed": 4317,
+   "id": "ow-building-archive",
+   "out": "overworld/buildings/archive",
+   "style": "ow-building",
+   "seed": 4312,
    "pick": 0,
-   "prompt": "tinker workshop with brass gears on the wall and a telescope on the roof, teal roof, front view facing the viewer, the front door at the bottom middle",
+   "approved_imagegen_candidate": {
+    "path": "candidates/ow-building-archive-chatgpt-v1.png",
+    "source": "Concept/v0.3/Update/art-source/building-archive-chatgpt-imagegen-2026-10-10.png",
+    "method": "ChatGPT Image Generation; processed with pipeline/pixel/imagegen_candidate.py",
+    "approval": "Approved after in-town review on 2026-10-10; see shots/overworld/2026-10-10-building-archive-review.png"
+   },
+   "prompt": "broad compact village archive with stone walls, blue slate roof, small dormers, a clear open-book sign above a centered arched wooden door, low wide facade, front view facing the viewer, full building visible, front door at the bottom middle, no tall tower",
    "post": {
     "kind": "sprite",
     "size": [
-     64,
-     64
+     112,
+     96
     ],
-    "colors": 22,
+    "colors": 28,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-smithy",
+   "out": "overworld/buildings/smithy",
+   "style": "ow-building",
+   "seed": 4313,
+   "pick": 0,
+   "approved_imagegen_candidate": {
+    "path": "candidates/ow-building-smithy-chatgpt-v1.png",
+    "source": "Concept/v0.3/Update/art-source/building-smithy-chatgpt-imagegen-2026-10-10.png",
+    "method": "ChatGPT Image Generation; processed with pipeline/pixel/imagegen_candidate.py",
+    "approval": "Approved after in-town review on 2026-10-10; see shots/overworld/2026-10-10-building-smithy-review.png"
+   },
+   "prompt": "broad low village blacksmith forge with stone and timber walls, a compact chimney integrated into the roof, warm forge glow in one side bay, small anvil detail, centered front door at the bottom middle, full building visible, front view facing the viewer, no tall tower",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     112,
+     80
+    ],
+    "colors": 28,
+    "key_light": 0.6,
+    "keep_largest_component": true,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-shop",
+   "out": "overworld/buildings/shop",
+   "style": "ow-building",
+   "seed": 4314,
+   "pick": 0,
+   "prompt": "small village general shop, green and white striped awning, a jar-shaped window, a centred wooden door, a coin symbol sign, symmetric front facade, front view facing the viewer, no crates, no barrels, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     96
+    ],
+    "colors": 26,
+    "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-shrine",
+   "out": "overworld/buildings/shrine",
+   "style": "ow-building",
+   "seed": 4315,
+   "pick": 1,
+   "prompt": "small wooden lantern shrine, curved red roof with gold ridge ends, one glowing paper lantern hanging over the centred entrance, symmetric front facade, front view facing the viewer, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     96
+    ],
+    "colors": 26,
+    "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-hall",
+   "out": "overworld/buildings/hall",
+   "style": "ow-building",
+   "seed": 4316,
+   "pick": 0,
+   "approved_imagegen_candidate": {
+    "path": "candidates/ow-building-hall-chatgpt-v2.png",
+    "source": "Concept/v0.3/Update/art-source/guildhall-chatgpt-imagegen-2026-10-10b.png",
+    "method": "ChatGPT Image Generation; processed with pipeline/pixel/imagegen_candidate.py",
+    "approval": "Approved after in-town review on 2026-10-10; see shots/overworld/2026-10-10-building-hall-review.png"
+   },
+   "prompt": "broad village hall with a compact clock gable, plum roof, stone and timber walls, balanced two-story front facade, low wide silhouette, centered entrance, front view facing the viewer, full building visible, no tall tower",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     144,
+     128
+    ],
+    "colors": 30,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-workshop",
+   "out": "overworld/buildings/workshop",
+   "style": "ow-building",
+   "seed": 4317,
+   "pick": 0,
+   "approved_imagegen_candidate": {
+    "path": "candidates/ow-building-workshop-chatgpt-v1.png",
+    "source": "Concept/v0.3/Update/art-source/building-workshop-chatgpt-imagegen-2026-10-10.png",
+    "method": "ChatGPT Image Generation; processed with pipeline/pixel/imagegen_candidate.py",
+    "approval": "Approved after in-town review on 2026-10-10; interaction cell aligned to [3,4]; see shots/overworld/2026-10-10-building-workshop-review.png"
+   },
+   "prompt": "single coherent village tinker's workshop with a broad teal roof and one continuous timber-and-stone facade, a brass gear sign in the gable, compact rooftop telescope, workbench windows, centered front door at the bottom middle, full building visible, front view facing the viewer, no detached shed or second structure",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     96,
+     80
+    ],
+    "colors": 26,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-cottage",
+   "out": "overworld/buildings/cottage",
+   "style": "ow-building",
+   "seed": 4302,
+   "pick": 1,
+   "prompt": "small cozy village cottage, stone walls, blue slate roof, round wooden door, ivy, lantern by the door, front view facing the viewer, front door at the bottom center",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     88,
+     88
+    ],
+    "colors": 24,
     "lock": true,
     "outline_color": "#2a1d2b"
    }
@@ -246,17 +395,23 @@
   {
    "id": "ow-landmark-rootgate",
    "out": "overworld/buildings/rootgate",
-   "style": "ow-prop",
+   "style": "ow-building",
    "seed": 4321,
    "pick": 0,
-   "prompt": "ancient stone archway into a hillside, covered in thick glowing tree roots, dark cave inside",
+   "approved_imagegen_candidate": {
+    "path": "candidates/ow-landmark-rootgate-chatgpt-v3.png",
+    "source": "Concept/v0.3/Update/art-source/rootgate-chatgpt-imagegen-2026-10-09c.png",
+    "method": "ChatGPT Image Generation revision c; processed with pipeline/pixel/imagegen_candidate.py",
+    "approval": "Approved by Rootward art review on 2026-10-09; in-town capture accepted on 2026-10-10 at shots/overworld/2026-10-10-rootgate-imagegen-v3-town.png"
+   },
+   "prompt": "ancient stone archway set into a root-covered hillside, sealed with a closed face of old stone and interwoven tree roots, one clear central seam with only a faint amber light behind it, front view, whole threshold visible, no cave opening, no visible chamber",
    "post": {
     "kind": "sprite",
     "size": [
-     64,
-     64
+     96,
+     96
     ],
-    "colors": 22,
+    "colors": 26,
     "lock": true,
     "outline_color": "#2a1d2b"
    }
@@ -271,11 +426,20 @@
    "post": {
     "kind": "sprite",
     "size": [
-     96,
-     96
+     144,
+     144
     ],
     "colors": 24,
     "lock": true,
+    "lock_ramps": [
+     "wood",
+     "leaf",
+     "grass",
+     "thatch",
+     "glow",
+     "firefly",
+     "stone"
+    ],
     "outline_color": "#2a1d2b"
    }
   },
@@ -289,10 +453,10 @@
    "post": {
     "kind": "sprite",
     "size": [
-     24,
-     40
+     36,
+     60
     ],
-    "colors": 10,
+    "colors": 14,
     "lock": true,
     "outline_color": "#2a1d2b"
    }
@@ -307,10 +471,10 @@
    "post": {
     "kind": "sprite",
     "size": [
-     32,
-     36
+     48,
+     54
     ],
-    "colors": 12,
+    "colors": 16,
     "lock": true,
     "outline_color": "#2a1d2b"
    }
@@ -344,10 +508,18 @@
     "kind": "sprite",
     "size": [
      32,
-     24
+     32
     ],
-    "colors": 12,
+    "colors": 16,
     "lock": true,
+    "lock_ramps": [
+     "cloth_red",
+     "cloth_blue",
+     "cloth_cream",
+     "cloth_mint",
+     "cloth_yellow",
+     "wood"
+    ],
     "outline_color": "#2a1d2b"
    }
   },
@@ -358,23 +530,30 @@
    "seed": 4501,
    "candidates": 4,
    "pick": 3,
-   "prompt": "1girl, tiny firefly fairy, short black hair, a red-orange hood like a firefly's collar, black dress, translucent pale blue insect wings, a soft yellow-green glow behind her, holding a tiny paper lantern, cheerful smile, big bright eyes, cute"
+   "prompt": "1girl, tiny fairy, short black hair, a small red-orange cape over a black dress, translucent pale blue fairy wings, a soft yellow-green glow behind her, holding a tiny paper lantern, cheerful smile, big bright eyes, cute"
   },
   {
    "id": "ow-tree-oak2",
    "out": "overworld/props/oak2",
    "style": "ow-prop",
    "seed": 4205,
-   "pick": 1,
+   "pick": 0,
    "prompt": "round leafy green oak tree with a thick brown trunk",
    "post": {
     "kind": "sprite",
     "size": [
-     32,
-     40
+     48,
+     64
     ],
-    "colors": 10,
+    "colors": 20,
     "lock": true,
+    "lock_ramps": [
+     "leaf",
+     "grass",
+     "pine",
+     "wood",
+     "dirt"
+    ],
     "outline_color": "#2a1d2b"
    },
    "raw_from": "ow-tree-oak"
@@ -389,10 +568,10 @@
    "post": {
     "kind": "sprite",
     "size": [
-     32,
-     36
+     48,
+     54
     ],
-    "colors": 12,
+    "colors": 16,
     "lock": true,
     "outline_color": "#2a1d2b"
    },
@@ -416,6 +595,173 @@
     "outline_color": "#2a1d2b"
    },
    "raw_from": "ow-prop-bush"
+  },
+  {
+   "id": "ow-prop-gate-garden",
+   "out": "overworld/props/gate-garden",
+   "style": "ow-prop",
+   "seed": 4352,
+   "pick": 1,
+   "prompt": "low wooden garden gate, two posts with a picket top rail, an open walkway through the bottom centre, no door, no people, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     32
+    ],
+    "colors": 16,
+    "lock": true,
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-cottage-pell",
+   "out": "overworld/buildings/cottage-pell",
+   "style": "ow-building",
+   "seed": 4361,
+   "pick": 1,
+   "prompt": "small village cottage, steep honey thatch roof, one tall window, a red round-top door, flower pots by the door, symmetric front facade, front view facing the viewer, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     80,
+     80
+    ],
+    "colors": 26,
+    "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-cottage-seren",
+   "out": "overworld/buildings/cottage-seren",
+   "style": "ow-building",
+   "seed": 4362,
+   "pick": 0,
+   "prompt": "small village cottage, blue slate roof, a round dormer window, mossy stone wall, a plain wooden door, a wall lantern beside the door, symmetric front facade, front view facing the viewer, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     80,
+     80
+    ],
+    "colors": 26,
+    "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-building-cottage-hollis",
+   "out": "overworld/buildings/cottage-hollis",
+   "style": "ow-building",
+   "seed": 4363,
+   "pick": 0,
+   "prompt": "small village house, ivy up one wall, red-brown roof, a heavy door with iron bands, a lantern by the door, symmetric front facade, front view facing the viewer, no text",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     80,
+     80
+    ],
+    "colors": 26,
+    "lock": true,
+    "lock_ramps": [
+     "plaster",
+     "wood",
+     "thatch",
+     "stone",
+     "cobble",
+     "leaf",
+     "cloth_red",
+     "cloth_maroon",
+     "cloth_blue",
+     "cloth_teal",
+     "cloth_brown",
+     "gold",
+     "steel",
+     "glow"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-tree-pine",
+   "out": "overworld/props/pine",
+   "style": "ow-prop",
+   "seed": 4331,
+   "pick": 1,
+   "prompt": "tall green pine tree",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     64
+    ],
+    "colors": 16,
+    "lock": true,
+    "lock_ramps": [
+     "pine",
+     "leaf",
+     "wood"
+    ],
+    "outline_color": "#2a1d2b"
+   }
+  },
+  {
+   "id": "ow-prop-haycart",
+   "out": "overworld/props/haycart",
+   "style": "ow-prop",
+   "seed": 4342,
+   "pick": 1,
+   "prompt": "wooden cart full of hay",
+   "post": {
+    "kind": "sprite",
+    "size": [
+     32,
+     32
+    ],
+    "colors": 16,
+    "lock": true,
+    "lock_ramps": [
+     "wood",
+     "thatch",
+     "grass",
+     "dirt"
+    ],
+    "outline_color": "#2a1d2b"
+   }
   }
  ]
 }

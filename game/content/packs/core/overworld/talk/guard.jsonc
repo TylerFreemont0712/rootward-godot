@@ -4,6 +4,24 @@
   "start": [
     {
       "if": {
+        "flag": "hours-seen"
+      },
+      "goto": "hours_done"
+    },
+    {
+      "if": {
+        "flag": "hours-asked"
+      },
+      "goto": "hours_waits"
+    },
+    {
+      "if": {
+        "flag": "weather-built"
+      },
+      "goto": "offer"
+    },
+    {
+      "if": {
         "flag": "met-guard"
       },
       "goto": "again"
@@ -37,6 +55,86 @@
       "lines": [
         {
           "text": "All quiet. The way I like it."
+        }
+      ]
+    },
+    "offer": {
+      "lines": [
+        {
+          "text": "Tinker! Could you help me with a thing? I have stood in this one spot since sunrise."
+        },
+        {
+          "text": "So has everyone else in town. Nobody walks anywhere. They just stand where they were put."
+        },
+        {
+          "text": "Poor things! Everyone should have somewhere to go, and a time to go there.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Home, work and the inn. A different place for each hour of the day."
+        }
+      ],
+      "set": [
+        "met-guard"
+      ],
+      "choices": [
+        {
+          "text": "I'll make them walk.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "teach": {
+      "lines": [
+        {
+          "text": "Write where(person, hour): home, work or inn. The hour is a number from 0 to 23."
+        },
+        {
+          "text": "Most of the night is spent at home. The middle of the day is for work. The evening is for the inn."
+        }
+      ],
+      "set": [
+        "hours-asked"
+      ],
+      "open": "task:hours"
+    },
+    "hours_waits": {
+      "lines": [
+        {
+          "text": "Everyone is still standing in one place. Shall we get them walking?"
+        }
+      ],
+      "choices": [
+        {
+          "text": "Let's fix it.",
+          "goto": "teach"
+        },
+        {
+          "text": "Not yet.",
+          "goto": "later"
+        }
+      ]
+    },
+    "later": {
+      "lines": [
+        {
+          "text": "Fine. I will stay here. I am very good at standing."
+        }
+      ]
+    },
+    "hours_done": {
+      "lines": [
+        {
+          "text": "Someone walked to the right place at the right hour, just as your code said!"
+        },
+        {
+          "text": "At last, a rest! I am going to sit down. Right here, on the gate.",
+          "mood": "happy"
         }
       ]
     }

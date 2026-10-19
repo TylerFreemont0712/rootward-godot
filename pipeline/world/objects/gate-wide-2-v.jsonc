@@ -1,0 +1,38 @@
+{
+  "above": 1.5,
+  "footprint": [
+    1,
+    2
+  ],
+  "id": "gate-wide-2-v",
+  "kind": "prop",
+  "pad": 1,
+  "ramps": {
+    "brass": "gold",
+    "iron": "steel",
+    "timber": "wood"
+  },
+  "source": {
+    "images": [
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-00.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-01.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-02.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-03.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-04.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-05.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-06.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-07.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-08.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-09.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-10.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-11.png",
+      "Concept/v0.3/Update/gate-swing/gate-wide-2-v-12.png"
+    ],
+    "registered": true
+  },
+  "swing": {
+    "axis": "vertical",
+    "material": "wood"
+  },
+  "what": "a broad chestnut timber gate with end posts and a clear swung-open passage"
+}

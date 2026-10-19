@@ -1,7 +1,8 @@
 class_name ContentLocale
 extends RefCounted
 ## Translations of content, keyed by the English text itself (old ADR-0018): `packs/<pack>/locales/<locale>/*.jsonc`,
-## each a list of {en, to, note?}. Renaming an id or moving a file never breaks a translation; editing the English makes
+## each a list of {en, to, kanji?, note?}. Japanese may supply a complete adult reading alongside the kana edition.
+## Renaming an id or moving a file never breaks a translation; editing the English makes
 ## its old translation stop matching, so the screen falls back to English and `coverage` names the line to redo.
 ##
 ## The rules always read English. Only what a player is shown is translated, and only the prose fields below: never
@@ -33,13 +34,17 @@ const FIELDS := {
 const PROGRAM_KINDS := {"cards": "shard", "relics": "relic", "foes": "foe"}
 const ENTRY := {
 	"type": "object",
-	"fields": {"en": {"type": "text"}, "to": {"type": "text"}, "note": {"type": "text", "optional": true}},
+	"fields": {
+		"en": {"type": "text"}, "to": {"type": "text"},
+		"kanji": {"type": "text", "optional": true}, "note": {"type": "text", "optional": true}
+	},
 }
 
 
 ## English -> translation for `locale`, from every pack, with diagnostics for broken files and duplicate entries.
 static func load_overlay(locale: String, root := ContentLoader.ROOT) -> Dictionary:
 	var strings := {}
+	var kanji_strings := {}
 	var seen_in := {}
 	var diagnostics: Array[Dictionary] = []
 	for pack in ContentLoader._sorted_dirs(root.path_join("packs")):
@@ -62,7 +67,9 @@ static func load_overlay(locale: String, root := ContentLoader.ROOT) -> Dictiona
 					continue
 				seen_in[entry.en] = file
 				strings[entry.en] = entry.to
-	return {"locale": locale, "strings": strings, "diagnostics": diagnostics}
+				if entry.has("kanji"):
+					kanji_strings[entry.en] = entry.kanji
+	return {"locale": locale, "strings": strings, "kanji_strings": kanji_strings, "diagnostics": diagnostics}
 
 
 ## A copy of `catalog` with every translatable field in `strings`' language; fields without a translation stay English.

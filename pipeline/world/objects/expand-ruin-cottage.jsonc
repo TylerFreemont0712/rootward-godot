@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-ruin-cottage",
+  "kind": "building",
+  "what": "a neglected old stone and timber cottage with a patched roof",
+  "footprint": [
+    6,
+    6
+  ],
+  "ramps": {
+    "walls": "stone",
+    "roof": "cloth_purple",
+    "trim": "wood",
+    "base": "cobble",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-ruin-cottage-source.png"
+  },
+  "door": [
+    3,
+    5
+  ]
+}

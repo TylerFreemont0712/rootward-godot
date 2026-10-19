@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): the first time a slider moves on the tinker's Options page (volume-tried).
+{
+  "id": "hotaru-first-volume",
+  "start": [
+    {
+      "goto": "knob"
+    }
+  ],
+  "nodes": {
+    "knob": {
+      "lines": [
+        {
+          "text": "Whoa! That's YOUR volume!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "See the little chart beside the sliders? That's the shape of your code.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "A different rule would draw a different curve. Try one later!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "volume-told"
+      ]
+    }
+  }
+}

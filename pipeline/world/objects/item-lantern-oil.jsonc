@@ -1,0 +1,14 @@
+// The lantern oil: a Bag and pickup icon (pipeline/world/README.md). A small glass bottle of golden oil with a cork.
+{
+ "id": "item-lantern-oil",
+ "kind": "prop",
+ "what": "a small glass bottle of golden lamp oil with a wooden cork, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"glass": "glow", "oil": "gold", "cork": "thatch"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.2, 0.2, 0], "size": [0.6, 0.6, 0.06], "ramp": "glass", "shade": 0},
+  {"shape": "cylinder", "at": [0.2, 0.2, 0.04], "size": [0.6, 0.6, 0.46], "ramp": "oil", "shade": 1},
+  {"shape": "cylinder", "at": [0.28, 0.28, 0.5], "size": [0.44, 0.44, 0.1], "ramp": "glass", "shade": 1},
+  {"shape": "cylinder", "at": [0.34, 0.34, 0.6], "size": [0.32, 0.32, 0.16], "ramp": "cork", "shade": 1}
+ ]
+}

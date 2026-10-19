@@ -1,0 +1,5 @@
+{
+  "stages": [
+    {"slots": {"first": 2, "last": 1}, "toggles": ["all"]}
+  ]
+}

@@ -1,0 +1,119 @@
+// The shortcuts (Concept/v0.4/01, 5.1): the player's shortcut(key) says what each key opens. Stage 1 is the menu's key
+// (Mira, quest "menu"), stage 2 the bag's (Nym), stage 3 the map's (Pell). The game asks it about every key in
+// Parts.SHORTCUT_KEYS once (a table) and opens what it says; the keys the town walks and talks with are never asked.
+{
+  "id": "shortcuts",
+  "name": "The Shortcuts",
+  "title": "A key for every door",
+  "giver": "artificer",
+  "built_line": "Your keys open your menu now.",
+  "entry": {"python": "shortcut", "javascript": "shortcut"},
+  "params": [
+    {"name": "key", "meaning": "The name of the key that was pressed: \"escape\", a letter like \"p\", or a digit like \"7\".", "example": "\"escape\""}
+  ],
+  "gives": {"meaning": "The name of what that key opens: \"menu\", \"bag\", \"map\", \"quests\", \"workbench\", \"options\" or \"music\". Or nothing, when the key opens nothing.", "example": "\"quests\""},
+  "words": {
+    "python": [
+      {"term": "==", "meaning": "Asks whether two things are the same. The answer is True or False.", "example": "pet == \"cat\""},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if weather == \"rain\":\n    return \"umbrella\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""},
+      {"term": "None", "meaning": "Python's word for nothing at all.", "example": "return None"}
+    ],
+    "javascript": [
+      {"term": "===", "meaning": "Asks whether two things are the same. The answer is true or false.", "example": "pet === \"cat\""},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (weather === \"rain\") {\n  return \"umbrella\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"},
+      {"term": "null", "meaning": "JavaScript's word for nothing at all.", "example": "return null;"}
+    ]
+  },
+  "starter": {"python": "shortcuts.starter.py", "javascript": "shortcuts.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def shortcut(key):",
+        "[menu]    if key == {menu_key}:",
+        "[menu]        return {menu_panel}",
+        "[bag]    if key == {bag_key}:",
+        "[bag]        return \"bag\"",
+        "[map]    if key == {map_key}:",
+        "[map]        return \"map\"",
+        "    return None"
+      ],
+      "javascript": [
+        "function shortcut(key) {",
+        "[menu]  if (key === {menu_key}) {",
+        "[menu]    return {menu_panel};",
+        "[menu]  }",
+        "[bag]  if (key === {bag_key}) {",
+        "[bag]    return \"bag\";",
+        "[bag]  }",
+        "[map]  if (key === {map_key}) {",
+        "[map]    return \"map\";",
+        "[map]  }",
+        "  return null;",
+        "}"
+      ]
+    },
+    "slots": {
+      "menu_key": {"label": "which key", "choices": ["\"p\"", "\"escape\"", "\"o\""]},
+      "menu_panel": {"label": "opens", "choices": [{"label": "nothing", "python": "None", "javascript": "null"}, "\"menu\"", "\"map\""]},
+      "bag_key": {"label": "which key", "choices": ["\"u\"", "\"g\"", "\"i\""], "stage": 1},
+      "map_key": {"label": "which key", "choices": ["\"n\"", "\"m\"", "\"p\""], "stage": 2}
+    },
+    "toggles": {
+      "menu": {"label": "When a key is pressed, open something", "stage": 0},
+      "bag": {"label": "Open the bag on a key", "stage": 1},
+      "map": {"label": "Open the map on a key", "stage": 2}
+    },
+    "start": {"slots": {"menu_key": 0, "menu_panel": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "menu-key-written",
+      "goal": "Make the Esc key open the menu.",
+      "judge": "shortcut",
+      "cases": [
+        {"args": ["escape"], "want": "menu", "say": "the Esc key"},
+        {"args": ["p"], "say": "the P key (any answer the town knows is fine)"}
+      ],
+      "hints": [
+        "Your function hears every key. Which one should open the menu? Look at the top-left corner of your keyboard.",
+        "Ask whether key is that key. If it is, give back what it should open.",
+        "Every other key can give back nothing, so pressing them opens nothing."
+      ]
+    },
+    {
+      "flag": "bag-key-written",
+      "goal": "Make the I key open your bag (I for inventory), and keep Esc opening the menu.",
+      "unlocked_by": {"flag": "bag-built"},
+      "judge": "shortcut",
+      "cases": [
+        {"args": ["i"], "want": "bag", "say": "the I key"}
+      ],
+      "hints": [
+        "Your function already knows one key. It can know two!",
+        "Ask about the new key the same way you asked about Esc.",
+        "Keep the Esc question where it is. Put the new question beside it, before the line that gives back nothing."
+      ]
+    },
+    {
+      "flag": "map-key-written",
+      "goal": "Make the M key open the map, and keep the keys you taught before.",
+      "unlocked_by": {"flag": "map-built"},
+      "judge": "shortcut",
+      "cases": [
+        {"args": ["m"], "want": "map", "say": "the M key"}
+      ],
+      "hints": [
+        "One more key for your collection. M is for map.",
+        "It's the same kind of question as your other keys.",
+        "The order of your questions only matters if two of them ask about the same key."
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "Pressing {say} gave back {got}, but it should open {want}.",
+    "nothing": "Pressing {say} opened nothing. It should open {want}.",
+    "unknown-panel": "{got} isn't something the town can open. It knows \"menu\", \"bag\", \"map\", \"quests\", \"workbench\", \"options\" and \"music\"."
+  }
+}

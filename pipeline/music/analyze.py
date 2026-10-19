@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Measures a piece of music (pipeline/music/README.md), and draws it. The library under `qc.py`, `master.py` and the
-loop finder; also a command of its own for any audio file:
+"""Measures a piece of music (pipeline/music/README.md), and draws it. The library under `master.py` and `listen.py`;
+also a command of its own for any audio file:
 
   - tempo: the beat grid librosa tracks and how steady it is (a drifting tempo puts a loop's seam off the beat). The
     tracker often halves or doubles the tempo, so for the tempo a take was *made* at, read the planner's score;
@@ -8,7 +8,9 @@ loop finder; also a command of its own for any audio file:
   - loudness and dynamics: EBU R128 integrated loudness, loudness range and true peak (ffmpeg), the spread of its
     one-second levels;
   - colour: brightness (spectral centroid, energy above 5 and 10 kHz), weight (energy below 150 Hz), stereo width;
-  - shape: how the piece repeats (a self-similarity matrix) and where its sections turn.
+  - shape: how the piece repeats (a self-similarity matrix) and where its sections turn;
+  - the score it was asked to play: how closely each bar's chroma holds the pitch classes the score spells there
+    (`adherence`, bar by bar, given where bar 0 starts).
 The picture (a PNG beside the report) stacks the level envelope with the beat grid, a spectrogram, the chroma, and
 the self-similarity matrix, so a take can be looked at the way a producer looks at a DAW.
 
@@ -25,6 +27,8 @@ from pathlib import Path
 import librosa
 import numpy as np
 from PIL import Image, ImageDraw
+
+import notation  # the score's pitch classes and chord tones (this folder)
 
 SR = 22050  # analysis rate: every feature here lives below 11 kHz, and it keeps librosa quick
 FULL_SR = 48000
@@ -118,12 +122,67 @@ def grid(mono: np.ndarray, bpm: float) -> tuple[float, float]:
     return beat, phase
 
 
+def chroma_of(mono: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """The take's chroma over time and the time of each frame. Computed once: a fit tries many bar positions."""
+    chroma = librosa.feature.chroma_cqt(y=mono, sr=SR, hop_length=HOP)
+    return chroma, librosa.frames_to_time(np.arange(chroma.shape[1]), sr=SR, hop_length=HOP)
+
+
+def expected_chroma(bar: dict) -> np.ndarray:
+    """The pitch classes a score bar spells (notation.bars): its chords' tones, and its notes by how long they sound.
+    The notes weigh up to half again as much as the chords under them."""
+    expected = np.zeros(12)
+    for symbol in bar["chords"]:
+        for pitch in notation.chord_classes(symbol):
+            expected[pitch] += 1.0
+    total = sum(length for _, length in bar["notes"]) or 1.0
+    for pitch, length in bar["notes"]:
+        expected[pitch] += 1.5 * length / total
+    return expected
+
+
+def adherence(chroma: np.ndarray, times: np.ndarray, bars: list[dict], first: float, bar_seconds: float) -> dict:
+    """How closely a performance holds what its score wrote, bar by bar: the correlation between the chroma heard in
+    the bar and the pitch classes the score spells there. `first` is where bar 0 starts in the audio. A bar that plays
+    the written harmony scores near 0.7 or better; a random pairing scores near 0, so the mean says whether the model
+    played the score at all. Bars with nothing to hold (silence) are not counted."""
+    rows = []
+    for index, bar in enumerate(bars):
+        expected = expected_chroma(bar)
+        start = first + index * bar_seconds
+        window = (times >= start) & (times < start + bar_seconds)
+        if expected.std() == 0 or not window.any():
+            continue
+        heard = chroma[:, window].mean(axis=1)
+        if heard.std() == 0:
+            continue
+        rows.append((index, bar["section"], float(np.corrcoef(expected, heard)[0, 1])))
+    if not rows:
+        return {"mean": 0.0, "bars": 0, "below_0.3": 0, "weakest": []}
+    values = np.array([row[2] for row in rows])
+    weakest = sorted(rows, key=lambda row: row[2])[:5]
+    return {"mean": round(float(values.mean()), 3), "bars": len(rows),
+            "below_0.3": int(np.sum(values < 0.3)),
+            "weakest": [f"bar {index} ({section}) {value:.2f}" for index, section, value in weakest]}
+
+
+def mean_power_spectrum(signal: np.ndarray, block: int = 1 << 20) -> tuple[np.ndarray, np.ndarray]:
+    """The power spectrum of a whole signal: the spectra of its blocks summed, so every moment counts (a spectrum of
+    the first minute alone would measure a two-minute take by its opening)."""
+    total = np.zeros(block // 2 + 1)
+    for start in range(0, len(signal), block):
+        chunk = np.zeros(block)
+        piece = signal[start: start + block]
+        chunk[: len(piece)] = piece
+        total += np.abs(np.fft.rfft(chunk)) ** 2
+    return total, np.fft.rfftfreq(block, 1 / FULL_SR)
+
+
 def colour(stereo: np.ndarray, mono: np.ndarray) -> dict:
-    """How bright, heavy and wide it is. Energy shares come from the full-rate signal's spectrum."""
+    """How bright, heavy and wide it is. Energy shares come from the whole full-rate signal's spectrum."""
     left, right = stereo[:, 0].astype(np.float64), stereo[:, 1].astype(np.float64)
     mid, side = (left + right) / 2, (left - right) / 2
-    spectrum = np.abs(np.fft.rfft(mid[: FULL_SR * 60] if len(mid) > FULL_SR * 60 else mid)) ** 2
-    freqs = np.fft.rfftfreq(min(len(mid), FULL_SR * 60), 1 / FULL_SR)
+    spectrum, freqs = mean_power_spectrum(mid)
     total = spectrum.sum() + 1e-12
     centroid = librosa.feature.spectral_centroid(y=mono, sr=SR, hop_length=HOP)[0]
     return {

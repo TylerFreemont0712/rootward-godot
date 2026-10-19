@@ -1,0 +1,7 @@
+{
+  "stages": [
+    {"slots": {"menu_key": 1, "menu_panel": 1}, "toggles": ["menu"]},
+    {"slots": {"menu_key": 1, "menu_panel": 1, "bag_key": 2}, "toggles": ["menu", "bag"]},
+    {"slots": {"menu_key": 1, "menu_panel": 1, "bag_key": 2, "map_key": 1}, "toggles": ["menu", "bag", "map"]}
+  ]
+}

@@ -1,330 +1,330 @@
 [
   {
     "en": "Sprint",
-    "to": "スプリント"
+    "to": "スプリント", "kanji": "スプリント"
   },
   {
     "en": "Programs with 1–3 cards count as doing 25% less work toward timeouts and foes that move first.",
-    "to": "1〜3枚のカードのプログラムは、タイムアウトと先に動く敵に向けた仕事が25%少ないものとして数えられます。"
+    "to": "1〜3枚のカードのプログラムは、タイムアウトと先に動く敵に向けた仕事が25%少ないものとして数えられます。", "kanji": "1〜3枚のカードのプログラムは、タイムアウトと先に動く敵に向けた仕事が25%少ないものとして数えられます。"
   },
   {
     "en": "Tiny cheap programs every turn; kill chains for mana.",
-    "to": "短く安いプログラムで先手を取り、連続で倒してマナを得よう。"
+    "to": "短く安いプログラムで先手を取り、連続で倒してマナを得よう。", "kanji": "短く安いプログラムで先手を取り、連続で倒してマナを得よう。"
   },
   {
     "en": "Short-circuiting, break, streaming.",
-    "to": "短絡評価、break、ストリーミング。"
+    "to": "短絡評価、break、ストリーミング。", "kanji": "短絡評価、break、ストリーミング。"
   },
   {
     "en": "From the first turn of every fight, import heapq is free: each strike card is handed the volley strongest first.",
-    "to": "どの戦闘の最初のターンからも、import heapqは無料です。どの攻撃カードも、一斉射を威力の強い順に渡されます。"
+    "to": "どの戦闘の最初のターンからも、import heapqは無料です。どの攻撃カードも、一斉射を威力の強い順に渡されます。", "kanji": "どの戦闘の最初のターンからも、import heapqは無料です。どの攻撃カードも、一斉射を威力の強い順に渡されます。"
   },
   {
     "en": "A few huge bolts, strongest first.",
-    "to": "強いボルトを少数作り、大きい順に使おう。"
+    "to": "強いボルトを少数作り、大きい順に使おう。", "kanji": "強いボルトを少数作り、大きい順に使おう。"
   },
   {
     "en": "Heaps, priority queues, heapify in O(n).",
-    "to": "ヒープ、優先キュー、O(n) のヒープ構築。"
+    "to": "ヒープ、優先キュー、O(n) のヒープ構築。", "kanji": "ヒープ、優先キュー、O(n) のヒープ構築。"
   },
   {
     "en": "Scheduler",
-    "to": "スケジューラー"
+    "to": "スケジューラー", "kanji": "スケジューラー"
   },
   {
     "en": "If a program hits every living foe, each attack bolt gains +1 power.",
-    "to": "プログラムが生きている敵全員に攻撃を当てると、各攻撃ボルトの威力が1上がります。"
+    "to": "プログラムが生きている敵全員に攻撃を当てると、各攻撃ボルトの威力が1上がります。", "kanji": "プログラムが生きている敵全員に攻撃を当てると、各攻撃ボルトの威力が1上がります。"
   },
   {
     "en": "Spread bolts over crowds exactly.",
-    "to": "敵の群れにボルトを正確に配ろう。"
+    "to": "敵の群れにボルトを正確に配ろう。", "kanji": "敵の群れにボルトを正確に配ろう。"
   },
   {
     "en": "Scheduling, bin packing, interval problems.",
-    "to": "スケジュール、箱詰め、区間の問題。"
+    "to": "スケジュール、箱詰め、区間の問題。", "kanji": "スケジュール、箱詰め、区間の問題。"
   },
   {
     "en": "Enumerator",
-    "to": "列挙（れっきょ）"
+    "to": "列挙（れっきょ）", "kanji": "列挙"
   },
   {
     "en": "Each bolt created by a Brute Force Source card gains +1 power, rewarding wide volleys. The volley limit rises to 192 bolts.",
-    "to": "Brute ForceのSourceカードが作るボルトは、それぞれ威力が1上がります。さらに、一斉射の上限が192本になります。"
+    "to": "Brute ForceのSourceカードが作るボルトは、それぞれ威力が1上がります。さらに、一斉射の上限が192本になります。", "kanji": "Brute ForceのSourceカードが作るボルトは、それぞれ威力が1上がります。さらに、一斉射の上限が192本になります。"
   },
   {
     "en": "Floods of hundreds of bolts.",
-    "to": "何百本ものボルトで押し切ろう。"
+    "to": "何百本ものボルトで押し切ろう。", "kanji": "何百本物ボルトで押し切ろう。"
   },
   {
     "en": "Combinatorics and growing search spaces.",
-    "to": "組み合わせと、探索する空間の広がり。"
+    "to": "組み合わせと、探索する空間の広がり。", "kanji": "組み合わせと、探索する空間の広がり。"
   },
   {
     "en": "Pruner",
-    "to": "枝刈り"
+    "to": "枝刈り", "kanji": "枝刈り"
   },
   {
     "en": "A program never times out: the card that would cross the budget is skipped instead, and later cards still run.",
-    "to": "制限時間を超えそうなカードだけ飛ばし、次のカードを実行する。時間切れにならない。"
+    "to": "制限時間を超えそうなカードだけ飛ばし、次のカードを実行する。時間切れにならない。", "kanji": "制限時間を超えそうなカードだけ飛ばし、次のカードを実行する。時間切れにならない。"
   },
   {
     "en": "Exhaustive cards safely near the budget.",
-    "to": "制限時間ぎりぎりまで、安全に総当たりしよう。"
+    "to": "制限時間ぎりぎりまで、安全に総当たりしよう。", "kanji": "制限時間ぎりぎりまで、安全に総当たりしよう。"
   },
   {
     "en": "Pruning, branch and bound, graceful degradation.",
-    "to": "枝刈り、分枝限定、無理なく続ける工夫。"
+    "to": "枝刈り、分枝限定、無理なく続ける工夫。", "kanji": "枝刈り、分枝限定、無理なく続ける工夫。"
   },
   {
     "en": "Overclocker",
-    "to": "オーバークロッカー"
+    "to": "オーバークロッカー", "kanji": "オーバークロッカー"
   },
   {
     "en": "The budget is 50% larger; a timeout costs 5 Integrity.",
-    "to": "制限時間が50%増える。時間切れになるとHPを5失う。"
+    "to": "制限時間が50%増える。時間切れになるとHPを5失う。", "kanji": "制限時間が50%増える。時間切れになるとHPを5失う。"
   },
   {
     "en": "The slowest, heaviest programs, all risk.",
-    "to": "遅くて重いプログラムに、リスクをかけよう。"
+    "to": "遅くて重いプログラムに、リスクをかけよう。", "kanji": "遅くて重いプログラムに、リスクをかけよう。"
   },
   {
     "en": "Quadratic code and the limits of more hardware.",
-    "to": "二乗で増える仕事量と、計算機を増やす限界。"
+    "to": "二乗で増える仕事量と、計算機を増やす限界。", "kanji": "二乗で増える仕事量と、計算機を増やす限界。"
   },
   {
     "en": "Memoiser",
-    "to": "メモ化"
+    "to": "メモ化", "kanji": "メモ化"
   },
   {
     "en": "functools.cache is in force from the first turn: a card that already ran this fight does no work.",
-    "to": "最初から functools.cache が使える。この戦闘で実行済みのカードは仕事量が0になる。"
+    "to": "最初から functools.cache が使える。この戦闘で実行済みのカードは仕事量が0になる。", "kanji": "最初から functools.cache が使える。この戦闘で実行済みのカードは仕事量が0になる。"
   },
   {
     "en": "Repeating programs that grow cheaper.",
-    "to": "同じプログラムを繰り返し、だんだん軽くしよう。"
+    "to": "同じプログラムを繰り返し、だんだん軽くしよう。", "kanji": "同じプログラムを繰り返し、だんだん軽くしよう。"
   },
   {
     "en": "Top-down DP and memoisation.",
-    "to": "上から考える動的計画法とメモ化。"
+    "to": "上から考える動的計画法とメモ化。", "kanji": "上から考える動的計画法とメモ化。"
   },
   {
     "en": "Tabulator",
-    "to": "表づくり"
+    "to": "表づくり", "kanji": "表づくり"
   },
   {
     "en": "Starting on turn 2, the Table adds a seed bolt with power floor((damage of the last 2 programs) / 3).",
-    "to": "2ターン目から、テーブルは威力（直前の2プログラムのダメージ÷3、切り捨て）の種の矢を一本加えます。"
+    "to": "2ターン目から、テーブルは威力（直前の2プログラムのダメージ÷3、切り捨て）の種の矢を一本加えます。", "kanji": "2ターン目から、テーブルは威力（直前の2プログラムのダメージ÷3、切り捨て）の種の矢を一本加えます。"
   },
   {
     "en": "Slow first turns, overwhelming late turns.",
-    "to": "最初はゆっくり、後半は大きな力に。"
+    "to": "最初はゆっくり、後半は大きな力に。", "kanji": "最初はゆっくり、後半は大きな力に。"
   },
   {
     "en": "Bottom-up DP and recurrences.",
-    "to": "下から作る動的計画法と漸化式（ぜんかしき）。"
+    "to": "下から作る動的計画法と漸化式（ぜんかしき）。", "kanji": "下から作る動的計画法と漸化式。"
   },
   {
     "en": "Optimiser",
-    "to": "最適化"
+    "to": "最適化", "kanji": "最適化"
   },
   {
     "en": "Killing a foe with exactly enough damage (no overkill) records that damage twice in the Table and grants 2 block.",
-    "to": "敵をオーバーキルなしでちょうど倒すと、そのダメージがテーブルに2倍で記録され、ブロックを2得ます。"
+    "to": "敵をオーバーキルなしでちょうど倒すと、そのダメージがテーブルに2倍で記録され、ブロックを2得ます。", "kanji": "敵をオーバーキルなしでちょうど倒すと、そのダメージがテーブルに2倍で記録され、ブロックを2得ます。"
   },
   {
     "en": "Exact kills, never a point wasted.",
-    "to": "1点もむだにせず、ぴったり倒そう。"
+    "to": "1点もむだにせず、ぴったり倒そう。", "kanji": "1点もむだにせず、ぴったり倒そう。"
   },
   {
     "en": "Optimal substructure, knapsack and coin problems.",
-    "to": "最適な小問題、ナップサックとコインの問題。"
+    "to": "最適な小問題、ナップサックとコインの問題。", "kanji": "最適な小問題、ナップサックとコインの問題。"
   },
   {
     "en": "Indexer",
-    "to": "索引（さくいん）"
+    "to": "索引（さくいん）", "kanji": "索引"
   },
   {
     "en": "The Index stores up to 16 wasted bolts (overkill, bolts aimed at fallen foes, stashed bolts); each program starts with its 2 strongest stored bolts.",
-    "to": "索引には、無駄になった矢を最大16本まで保存できます（オーバーキル、倒れた敵に向いた矢、保存された矢）。各プログラムは、保存された中でいちばん強い2本から始まります。"
+    "to": "索引には、無駄になった矢を最大16本まで保存できます（オーバーキル、倒れた敵に向いた矢、保存された矢）。各プログラムは、保存された中でいちばん強い2本から始まります。", "kanji": "索引には、無駄になった矢を最大16本まで保存できます（オーバーキル、倒れた敵に向いた矢、保存された矢）。各プログラムは、保存された中でいちばん強い2本から始まります。"
   },
   {
     "en": "Bank overkill, then spend it precisely.",
-    "to": "余った威力をため、正確に使おう。"
+    "to": "余った威力をため、正確に使おう。", "kanji": "余った威力をため、正確に使おう。"
   },
   {
     "en": "Indexes and sorted containers.",
-    "to": "インデックスと、並んだデータの入れ物。"
+    "to": "インデックスと、並んだデータの入れ物。", "kanji": "インデックスと、並んだデータの入れ物。"
   },
   {
     "en": "Hasher",
-    "to": "ハッシュ"
+    "to": "ハッシュ", "kanji": "ハッシュ"
   },
   {
     "en": "A bolt that lands on a foe's weakness gains 2 power.",
-    "to": "弱点に当たるボルトの威力が2上がる。"
+    "to": "弱点に当たるボルトの威力が2上がる。", "kanji": "弱点に当たるボルトの威力が2上がる。"
   },
   {
     "en": "Element maps and O(1) lookups.",
-    "to": "属性の表で、O(1) の検索をしよう。"
+    "to": "属性の表で、O(1) の検索をしよう。", "kanji": "属性の表で、O(1) の検索をしよう。"
   },
   {
     "en": "Hash maps, sets, Bloom filters.",
-    "to": "ハッシュマップ、集合、ブルームフィルター。"
+    "to": "ハッシュマップ、集合、ブルームフィルター。", "kanji": "ハッシュマップ、集合、ブルームフィルター。"
   },
   {
     "en": "Bisector",
-    "to": "二分探索"
+    "to": "二分探索", "kanji": "二分探索"
   },
   {
     "en": "When a Strike reads bolts in weakest-first order, each attack bolt it creates gains +1 power.",
-    "to": "Strikeが弱い順に並んだボルトを読むと、作り出す攻撃ボルトの威力がそれぞれ1上がります。"
+    "to": "Strikeが弱い順に並んだボルトを読むと、作り出す攻撃ボルトの威力がそれぞれ1上がります。", "kanji": "Strikeが弱い順に並んだボルトを読むと、作り出す攻撃ボルトの威力がそれぞれ1上がります。"
   },
   {
     "en": "Sort once, search many times.",
-    "to": "一度並べて、何度も探そう。"
+    "to": "一度並べて、何度も探そう。", "kanji": "一度並べて、何度も探そう。"
   },
   {
     "en": "Binary search and its relatives.",
-    "to": "二分探索と、その仲間。"
+    "to": "二分探索と、その仲間。", "kanji": "二分探索と、その仲間。"
   },
   {
     "en": "Deep Recursion",
-    "to": "深い再帰"
+    "to": "深い再帰", "kanji": "深い再帰"
   },
   {
     "en": "Recurse splits one level deeper, so the next card runs on each quarter-size piece instead of each half.",
-    "to": "Recurseがもう一段深く分割するため、次のカードは半分ではなく4分の1ずつに対して実行されます。"
+    "to": "Recurseがもう一段深く分割するため、次のカードは半分ではなく4分の1ずつに対して実行されます。", "kanji": "Recurseがもう一段深く分割するため、次のカードは半分ではなく4分の1ずつに対して実行されます。"
   },
   {
     "en": "Towers of small cards on small pieces.",
-    "to": "小さなカードを、小さな問題に積み重ねよう。"
+    "to": "小さなカードを、小さな問題に積み重ねよう。", "kanji": "小さなカードを、小さな問題に積み重ねよう。"
   },
   {
     "en": "Recursion depth and base cases.",
-    "to": "再帰の深さと、終わりの条件。"
+    "to": "再帰の深さと、終わりの条件。", "kanji": "再帰の深さと、終わりの条件。"
   },
   {
     "en": "Merger",
-    "to": "マージ"
+    "to": "マージ", "kanji": "マージ"
   },
   {
     "en": "When halves rejoin, every bolt gains 1.",
-    "to": "半分ずつの結果を合わせると、すべてのボルトの威力が1上がる。"
+    "to": "半分ずつの結果を合わせると、すべてのボルトの威力が1上がる。", "kanji": "半分ずつの結果を合わせると、すべてのボルトの威力が1上がる。"
   },
   {
     "en": "Splits and merges in a loop.",
-    "to": "分割とマージを繰り返そう。"
+    "to": "分割とマージを繰り返そう。", "kanji": "分割とマージを繰り返そう。"
   },
   {
     "en": "The combine step of merge sort.",
-    "to": "マージソートの、合わせる手順。"
+    "to": "マージソートの、合わせる手順。", "kanji": "マージソートの、合わせる手順。"
   },
   {
     "en": "Partitioner",
-    "to": "分割"
+    "to": "分割", "kanji": "分割"
   },
   {
     "en": "When a pivot algorithm marks a bolt, it deals double damage to the living foe with the most HP.",
-    "to": "ピボットを使うアルゴリズムがボルトに印をつけると、HPが最も多い生存中の敵に2倍のダメージを与えます。"
+    "to": "ピボットを使うアルゴリズムがボルトに印をつけると、HPが最も多い生存中の敵に2倍のダメージを与えます。", "kanji": "ピボットを使うアルゴリズムがボルトに印をつけると、HPが最も多い生存中の敵に2倍のダメージを与えます。"
   },
   {
     "en": "Partitions, selection, quick sort.",
-    "to": "分割、選択、クイックソートを使おう。"
+    "to": "分割、選択、クイックソートを使おう。", "kanji": "分割、選択、クイックソートを使おう。"
   },
   {
     "en": "Partitioning, pivots, linear-time selection.",
-    "to": "分割、ピボット、線形時間の選択。"
+    "to": "分割、ピボット、線形時間の選択。", "kanji": "分割、ピボット、線形時間の選択。"
   },
   {
     "en": "Local Optimum",
-    "to": "局所最適（きょくしょさいてき）"
+    "to": "局所最適（きょくしょさいてき）", "kanji": "局所最適"
   },
   {
     "en": "Defeating a foe before it acts grants 1 bonus mana next turn, up to 2 that turn.",
-    "to": "敵が行動する前に倒すと、次のターンに追加マナを1得ます（そのターン最大2）。"
+    "to": "敵が行動する前に倒すと、次のターンに追加マナを1得ます（そのターン最大2）。", "kanji": "敵が行動する前に倒すと、次のターンに追加マナを1得ます（そのターン最大2）。"
   },
   {
     "en": "Throw Hardware At It",
-    "to": "計算機にまかせよう"
+    "to": "計算機にまかせよう", "kanji": "計算機にまかせよう"
   },
   {
     "en": "Every full 256 operations of the program's work adds 1 power to each attack bolt as it lands. A timeout lands nothing.",
-    "to": "仕事量が256増えるごとに、当たる攻撃ボルトの威力が1上がる。時間切れでは何も当たらない。"
+    "to": "仕事量が256増えるごとに、当たる攻撃ボルトの威力が1上がる。時間切れでは何も当たらない。", "kanji": "仕事量が256増えるごとに、当たる攻撃ボルトの威力が1上がる。時間切れでは何も当たらない。"
   },
   {
     "en": "The Table",
-    "to": "テーブル"
+    "to": "テーブル", "kanji": "テーブル"
   },
   {
     "en": "Records each turn's damage to foes. Starting turn 3, the next program gets a seed bolt with power floor((damage from the last 2 turns) / 4).",
-    "to": "各ターンに敵へ与えたダメージを記録します。3ターン目から、直近2ターンのダメージを4で割って切り捨てた威力の種ボルトが次のプログラムに加わります。"
+    "to": "各ターンに敵へ与えたダメージを記録します。3ターン目から、直近2ターンのダメージを4で割って切り捨てた威力の種ボルトが次のプログラムに加わります。", "kanji": "各ターンに敵へ与えたダメージを記録します。3ターン目から、直近2ターンのダメージを4で割って切り捨てた威力の種ボルトが次のプログラムに加わります。"
   },
   {
     "en": "The Index",
-    "to": "インデックス"
+    "to": "インデックス", "kanji": "インデックス"
   },
   {
     "en": "Power a program wastes (overkill, bolts that land on a fallen foe, bolts left over) is stored as bolts in an Index of up to 8; each program starts with the strongest stored bolt, which leaves the Index.",
-    "to": "プログラムが無駄にした威力（オーバーキル、倒れた敵に当たる矢、余った矢）は、最大8本の索引に矢として保存されます。各プログラムは、保存された中でいちばん強い矢から始まり、その矢は索引から出ます。"
+    "to": "プログラムが無駄にした威力（オーバーキル、倒れた敵に当たる矢、余った矢）は、最大8本の索引に矢として保存されます。各プログラムは、保存された中でいちばん強い矢から始まり、その矢は索引から出ます。", "kanji": "プログラムが無駄にした威力（オーバーキル、倒れた敵に当たる矢、余った矢）は、最大8本の索引に矢として保存されます。各プログラムは、保存された中でいちばん強い矢から始まり、その矢は索引から出ます。"
   },
   {
     "en": "Recurse",
-    "to": "再帰（さいき）"
+    "to": "再帰（さいき）", "kanji": "再帰"
   },
   {
     "en": "The card right after a split runs once on each half, then the halves rejoin.",
-    "to": "分割の次のカードを半分ずつ実行して、結果を合わせる。"
+    "to": "分割の次のカードを半分ずつ実行して、結果を合わせる。", "kanji": "分割の次のカードを半分ずつ実行して、結果を合わせる。"
   },
   {
     "en": "Choose your focus",
-    "to": "集中する方針を選ぼう"
+    "to": "集中する方針を選ぼう", "kanji": "集中する方針を選ぼう"
   },
   {
     "en": "Your focus adds a rule and a signature card. All three are yours to choose from.",
-    "to": "方針にはルールと専用カードがついてくる。3つの中から選ぼう。"
+    "to": "方針にはルールと専用カードがついてくる。3つの中から選ぼう。", "kanji": "方針にはルールと専用カードがついてくる。3つの中から選ぼう。"
   },
   {
     "en": "The law of your paradigm.",
-    "to": "パラダイムの基本ルール。"
+    "to": "パラダイムの基本ルール。", "kanji": "パラダイムの基本ルール。"
   },
   {
     "en": "There is no focus to choose now.",
-    "to": "今は方針を選べないよ。"
+    "to": "今は方針を選べないよ。", "kanji": "今は方針を選べないよ。"
   },
   {
     "en": "That focus was not offered.",
-    "to": "その方針は選べないよ。"
+    "to": "その方針は選べないよ。", "kanji": "その方針は選べないよ。"
   },
   {
     "en": "%s: %s joins your deck.",
-    "to": "%s：%sがデッキに加わる。"
+    "to": "%s：%sがデッキに加わる。", "kanji": "%s：%sがデッキに加わる。"
   },
   {
     "en": "paradigm",
-    "to": "パラダイム"
+    "to": "パラダイム", "kanji": "パラダイム"
   },
   {
     "en": "focus",
-    "to": "方針"
+    "to": "方針", "kanji": "方針"
   },
   {
     "en": "Index",
-    "to": "索引（さくいん）"
+    "to": "索引（さくいん）", "kanji": "索引"
   },
   {
     "en": "Sorted Index: %d / %d bolts. The seed takes the strongest.",
-    "to": "整列した索引：%d / %dボルト。最も強いボルトが入力になる。"
+    "to": "整列した索引：%d / %dボルト。最も強いボルトが入力になる。", "kanji": "整列した索引：%d / %dボルト。最も強いボルトが入力になる。"
   },
   {
     "en": "The Table remembers each program's landed damage.",
-    "to": "テーブルは、各プログラムが与えたダメージを覚える。"
+    "to": "テーブルは、各プログラムが与えたダメージを覚える。", "kanji": "テーブルは、各プログラムが与えたダメージを覚える。"
   },
   {
     "en": "pruned",
-    "to": "枝刈り"
+    "to": "枝刈り", "kanji": "枝刈り"
   },
   {
     "en": "Initiative: %s takes %d%s.",
-    "to": "先手（せんて）！{1}に{2}{3}ダメージ。"
+    "to": "先手（せんて）！{1}に{2}{3}ダメージ。", "kanji": "先手！{1}に{2}{3}ダメージ。"
   }
 ]

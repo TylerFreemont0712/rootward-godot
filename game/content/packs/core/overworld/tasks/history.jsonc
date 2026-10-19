@@ -1,0 +1,134 @@
+// Vell's changelog (Concept/v0.4/05, 2.11): changed(old, latest) gives the numbers, counted from 1, of the lines that differ
+// between two versions. Stage 1 takes two versions of the same length; stage 2 lets the new version be longer or shorter.
+// The Workbench asks it live, to show which lines changed since the version before.
+// The new version's list is called latest here: new is a word JavaScript keeps for itself.
+{
+  "id": "history",
+  "name": "The Changelog",
+  "title": "Vell's changelog",
+  "giver": "archivist",
+  "built_line": "The Workbench shows what changed in your code, by your changed().",
+  "entry": {"python": "changed", "javascript": "changed"},
+  "params": [
+    {"name": "old", "meaning": "The lines of the old version: a list of text, one item for each line.", "example": "[\"red\", \"green\"]"},
+    {"name": "latest", "meaning": "The lines of the new version, the same way: a list of text, one item for each line.", "example": "[\"red\", \"gold\"]"}
+  ],
+  "gives": {"meaning": "The line numbers, counted from 1, of the lines that differ, from the smallest to the biggest. An empty list when no line differs.", "example": "[1, 3]"},
+  "words": {
+    "python": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in a list, in order.", "example": "for score in scores:\n    total += score"},
+      {"term": "range", "meaning": "Makes the whole numbers from 0 up to, but not including, the number you give.", "example": "range(3)"},
+      {"term": "len", "meaning": "Counts how many things a list holds.", "example": "len(scores)"},
+      {"term": "max", "meaning": "Gives the biggest of the numbers you give it.", "example": "max(2, 7)"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if weather == \"rain\":\n    return \"umbrella\""},
+      {"term": "or", "meaning": "Joins two questions. The answer is True when either one is True.", "example": "if rain or cold:"},
+      {"term": "!=", "meaning": "Asks whether two things are not the same. The answer is True or False.", "example": "pet != \"cat\""},
+      {"term": ".append", "meaning": "Adds one thing to the end of a list.", "example": "basket.append(\"pear\")"}
+    ],
+    "javascript": [
+      {"term": "for", "meaning": "Does its indented lines once for each thing in an array, in order.", "example": "for (const score of scores) {\n  total += score;\n}"},
+      {"term": "let", "meaning": "Makes a name that holds a value, and that can change.", "example": "let lives = 3;"},
+      {"term": ".length", "meaning": "How many things an array holds.", "example": "scores.length"},
+      {"term": "Math.max", "meaning": "Gives the biggest of the numbers you give it.", "example": "Math.max(2, 7)"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (weather === \"rain\") {\n  return \"umbrella\";\n}"},
+      {"term": "||", "meaning": "Joins two questions. The answer is true when either one is true.", "example": "if (rain || cold) {"},
+      {"term": "!==", "meaning": "Asks whether two things are not the same. The answer is true or false.", "example": "pet !== \"cat\""},
+      {"term": ".push", "meaning": "Adds one thing to the end of an array.", "example": "basket.push(\"pear\");"}
+    ]
+  },
+  "starter": {"python": "history.starter.py", "javascript": "history.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def changed(old, latest):",
+        "    lines = []",
+        "    for i in range({span}):",
+        "[longer]        if i >= len(old) or i >= len(latest):",
+        "[longer]            lines.append(i + 1)",
+        "[longer]            continue",
+        "        if old[i] {differ} latest[i]:",
+        "            lines.append(i + 1)",
+        "    return lines"
+      ],
+      "javascript": [
+        "function changed(old, latest) {",
+        "  const lines = [];",
+        "  for (let i = 0; i < {span}; i++) {",
+        "[longer]    if (i >= old.length || i >= latest.length) {",
+        "[longer]      lines.push(i + 1);",
+        "[longer]      continue;",
+        "[longer]    }",
+        "    if (old[i] {differ} latest[i]) {",
+        "      lines.push(i + 1);",
+        "    }",
+        "  }",
+        "  return lines;",
+        "}"
+      ]
+    },
+    "slots": {
+      "span": {
+        "label": "go through",
+        "choices": [
+          {"label": "the old lines", "python": "len(old)", "javascript": "old.length"},
+          {"label": "the longer list", "python": "max(len(old), len(latest))", "javascript": "Math.max(old.length, latest.length)"}
+        ],
+        "stage": 1
+      },
+      "differ": {
+        "label": "compare",
+        "choices": [
+          {"label": "is the same as", "python": "==", "javascript": "==="},
+          {"label": "is not the same as", "python": "!=", "javascript": "!=="}
+        ]
+      }
+    },
+    "toggles": {
+      "longer": {"label": "New or missing lines count as changed", "stage": 1}
+    },
+    "start": {"slots": {"span": 0, "differ": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "history-built",
+      "goal": "Give back the line numbers, counted from 1, of the lines that differ. Both versions have the same number of lines.",
+      "judge": "equals",
+      "cases": [
+        {"args": [["red", "green", "blue"], ["red", "gold", "blue"]], "want": [2], "say": "one line changed"},
+        {"args": [["red", "green", "blue", "pink"], ["red", "gold", "blue", "white"]], "want": [2, 4], "say": "two lines changed"},
+        {"args": [["red", "green"], ["red", "green"]], "want": [], "say": "no line changed", "edge": true}
+      ],
+      "hints": [
+        "Go through the lines one at a time, by their place. Which places hold a different line in the two versions?",
+        "A line's number is its place plus one, because the numbers start from 1. Which number goes in your list?",
+        "Start with a list that is empty. Each time two lines differ, add the number to it. Which word adds something to the end of a list?"
+      ]
+    },
+    {
+      "flag": "history-longer",
+      "goal": "Let the new version be longer or shorter. A line that is only in one version counts as changed too.",
+      "unlocked_by": {"flag": "history-built"},
+      "judge": "equals",
+      "cases": [
+        {"args": [["red", "green", "blue"], ["red", "gold", "blue"]], "want": [2], "say": "one line changed"},
+        {"args": [["red"], ["red", "green", "blue"]], "want": [2, 3], "say": "two new lines at the end"},
+        {"args": [["red", "green", "blue"], ["red"]], "want": [2, 3], "say": "two lines taken away from the end"},
+        {"args": [["red", "green"], ["red", "gold", "blue"]], "want": [2, 3], "say": "one line changed, and one new line"},
+        {"args": [[], ["red"]], "want": [1], "say": "an empty old version", "edge": true}
+      ],
+      "hints": [
+        "What happens when one version has more lines than the other? Is there a line in the shorter one at the place of the extra line?",
+        "A place that the shorter list does not have counts as changed. Check the length of each list before you look at a place in it.",
+        "Make your loop go as far as the longer of the two lists. Which function gives the bigger of two numbers?"
+      ]
+    }
+  ],
+  "advice": {
+    "wrong": "For {say}, the answer is {got}, but it should be {want}. Line numbers start from 1.",
+    "nothing": "For {say}, nothing came back. It should be {want}.",
+    "wrong-type": "For {say}, the answer should be a list of line numbers, like {want}.",
+    "wrong-length": "For {say}, the answer is {got}, but it should be {want}. Check the lines at the end too.",
+    "wrong-item": "For {say}, the answer is {got}, but it should be {want}. Line numbers start from 1.",
+    "edge": "This one is a special case: {say}. It should give {want}."
+  }
+}

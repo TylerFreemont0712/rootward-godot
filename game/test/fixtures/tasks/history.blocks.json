@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"span": 0, "differ": 1}, "toggles": []},
+    {"slots": {"span": 1, "differ": 1}, "toggles": ["longer"]}
+  ]
+}

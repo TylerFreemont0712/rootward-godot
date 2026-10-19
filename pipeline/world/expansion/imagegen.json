@@ -86,5 +86,341 @@
       1
     ],
     "flippable": true
+  },
+  "expand-apothecary": {
+    "name": "Apothecary",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "shops_and_inns",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "potion",
+      "herbs",
+      "lavender",
+      "shop"
+    ],
+    "size": [
+      6,
+      6
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      5
+    ]
+  },
+  "expand-stable": {
+    "name": "Stable",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "workshops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "horses",
+      "hay",
+      "olive roof",
+      "animals"
+    ],
+    "size": [
+      8,
+      6
+    ],
+    "flippable": false,
+    "door": [
+      4,
+      5
+    ]
+  },
+  "expand-guardhouse": {
+    "name": "Guardhouse",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "civic",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "watch",
+      "guards",
+      "rust",
+      "tower"
+    ],
+    "size": [
+      6,
+      8
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      7
+    ]
+  },
+  "expand-bathhouse": {
+    "name": "Bathhouse",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "civic",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bathing",
+      "water",
+      "sapphire",
+      "public"
+    ],
+    "size": [
+      8,
+      7
+    ],
+    "flippable": false,
+    "door": [
+      4,
+      6
+    ]
+  },
+  "expand-abandoned-cottage": {
+    "name": "Weathered cottage",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "homes",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "moss",
+      "patched",
+      "old",
+      "timber"
+    ],
+    "size": [
+      6,
+      6
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      5
+    ]
+  },
+  "expand-ruin-cottage": {
+    "name": "Old stone cottage",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "homes",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "ruined",
+      "stone",
+      "moss",
+      "weathered"
+    ],
+    "size": [
+      6,
+      6
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      5
+    ]
+  },
+  "expand-observatory": {
+    "name": "Starwatch Observatory",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "civic",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "stars",
+      "observatory",
+      "violet",
+      "tower"
+    ],
+    "size": [
+      7,
+      8
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      7
+    ]
+  },
+  "expand-watermill": {
+    "name": "Watermill",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "workshops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "waterwheel",
+      "mill",
+      "stone",
+      "river"
+    ],
+    "size": [
+      8,
+      7
+    ],
+    "flippable": false,
+    "door": [
+      4,
+      6
+    ]
+  },
+  "expand-moonweaver": {
+    "name": "Moonweaver Atelier",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "shops_and_inns",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "tailor",
+      "fabric",
+      "moon",
+      "violet"
+    ],
+    "size": [
+      6,
+      7
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      6
+    ]
+  },
+  "expand-teahouse": {
+    "name": "Jade Teahouse",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "shops_and_inns",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "tea",
+      "jade",
+      "broad roof",
+      "warm"
+    ],
+    "size": [
+      9,
+      7
+    ],
+    "flippable": false,
+    "door": [
+      4,
+      6
+    ]
+  },
+  "expand-lighthouse": {
+    "name": "Beacon House",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "landmarks",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "beacon",
+      "tower",
+      "teal",
+      "light"
+    ],
+    "size": [
+      6,
+      9
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      8
+    ]
+  },
+  "expand-crystalwright": {
+    "name": "Crystalwright Workshop",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "workshops",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "crystal",
+      "glass",
+      "lavender",
+      "craft"
+    ],
+    "size": [
+      7,
+      8
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      7
+    ]
+  },
+  "expand-belltower": {
+    "name": "Bell Chapel",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "landmarks",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "bell",
+      "chapel",
+      "rose stone",
+      "teal"
+    ],
+    "size": [
+      6,
+      9
+    ],
+    "flippable": false,
+    "door": [
+      3,
+      8
+    ]
+  },
+  "expand-mushroom-cottage": {
+    "name": "Mushroom Cottage",
+    "kind": "building",
+    "category": "buildings",
+    "subcategory": "homes",
+    "place": [
+      "outdoor"
+    ],
+    "tags": [
+      "fantasy",
+      "mushroom roof",
+      "copper",
+      "cottage"
+    ],
+    "size": [
+      8,
+      7
+    ],
+    "flippable": false,
+    "door": [
+      4,
+      6
+    ]
   }
 }

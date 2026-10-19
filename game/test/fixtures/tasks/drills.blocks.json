@@ -1,0 +1,7 @@
+{
+  "stages": [
+    {"slots": {"double_input": 1, "double_answer": 1, "total_input": 0, "total_answer": 0, "first_input": 0, "first_answer": 0}, "toggles": []},
+    {"slots": {"double_input": 1, "double_answer": 1, "total_input": 1, "total_answer": 1, "first_input": 0, "first_answer": 0}, "toggles": []},
+    {"slots": {"double_input": 1, "double_answer": 1, "total_input": 1, "total_answer": 1, "first_input": 1, "first_answer": 1}, "toggles": []}
+  ]
+}

@@ -24,14 +24,28 @@ const LOOKS: Array[Array] = [
 		"Vesper",
 		"Star-Script Witch",
 		"A crescent hat, a plum capelet, and a palm strike that writes in starlight. Drawn, not modelled.",
-		"res://assets/sprites/vesper/profile.png",
+		"res://assets/portraits/vesper.png",
+	],
+	[
+		"vesper-v1-5",
+		"Vesper 1.5",
+		"Star-Script Witch",
+		"Her original look and animations, with repaired frames.",
+		"res://assets/portraits/vesper-v1-5.png",
+	],
+	[
+		"vesper-v2",
+		"VesperV2.0",
+		"Star-Script Witch",
+		"A fresh pass on her crescent hat, plum capelet, and starlit palm strike.",
+		"res://assets/portraits/vesper-v2.png",
 	],
 	[
 		"emberfox",
 		"Emberfox",
 		"Salvage Runner",
 		"Amber eyes, a teal field coat, and one bright ember tail.",
-		"res://characters/emberfox/emberfox_front.png",
+		"res://assets/portraits/emberfox.png",
 	],
 	[
 		"shibu",
@@ -75,6 +89,9 @@ static func looks() -> Array[Dictionary]:
 	# Reference skins on this machine only (git-ignored, never shipped), for comparing looks in a real fight.
 	for id in Settings.all_skins():
 		if not id in Settings.CHARACTER_SKINS:
+			var portrait := "res://assets/portraits/%s.png" % id
+			if not ResourceLoader.exists(portrait):
+				portrait = Settings.LOCAL_SKINS + id + "/portrait.png"
 			(
 				found
 				. append(
@@ -83,7 +100,7 @@ static func looks() -> Array[Dictionary]:
 						"name": id.capitalize(),
 						"epithet": "Local reference · not shipped",
 						"note": "A model kept on this machine to study its look; it plays the same moves.",
-						"portrait": Settings.LOCAL_SKINS + id + "/portrait.png",
+						"portrait": portrait,
 					}
 				)
 			)

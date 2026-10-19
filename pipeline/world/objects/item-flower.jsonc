@@ -1,0 +1,15 @@
+// The flower: a Bag and pickup icon (pipeline/world/README.md). A pink bloom on a slim stem with two leaves.
+{
+ "id": "item-flower",
+ "kind": "prop",
+ "what": "a single pink flower with a yellow centre, a slim green stem and two leaves, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"petal": "cloth_pink", "centre": "cloth_yellow", "stem": "leaf"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.46, 0.46, 0], "size": [0.08, 0.08, 0.6], "ramp": "stem", "shade": 2},
+  {"shape": "ball", "at": [0.25, 0.25, 0.5], "size": [0.5, 0.5, 0.3], "ramp": "petal"},
+  {"shape": "ball", "at": [0.38, 0.38, 0.68], "size": [0.24, 0.24, 0.2], "ramp": "centre"},
+  {"shape": "ball", "at": [0.16, 0.3, 0.2], "size": [0.3, 0.2, 0.14], "ramp": "stem"},
+  {"shape": "ball", "at": [0.52, 0.3, 0.3], "size": [0.3, 0.2, 0.14], "ramp": "stem", "shade": 1}
+ ]
+}

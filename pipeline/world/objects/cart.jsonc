@@ -1,0 +1,14 @@
+// A two-wheeled hand cart.
+{
+ "id": "cart",
+ "kind": "prop",
+ "what": "a wooden hand cart with two spoked wheels",
+ "footprint": [2, 1],
+ "ramps": {"bed": "wood", "wheels": "wood", "rims": "steel"},
+ "parts": [
+  {"shape": "box", "at": [0.15, 0.2, 0.4], "size": [1.5, 0.6, 0.35], "ramp": "bed"},
+  {"shape": "ball", "at": [0.3, 0.05, 0.0], "size": [0.55, 0.08, 0.55], "ramp": "rims"},
+  {"shape": "ball", "at": [0.36, 0.02, 0.06], "size": [0.43, 0.06, 0.43], "ramp": "wheels"},
+  {"shape": "box", "at": [1.65, 0.45, 0.5], "size": [0.3, 0.08, 0.07], "ramp": "bed"}
+ ]
+}

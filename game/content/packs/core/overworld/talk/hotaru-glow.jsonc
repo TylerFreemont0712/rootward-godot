@@ -1,0 +1,37 @@
+// Hotaru's glow beat (v0.4, quest 15, "Hotaru's glow", the glow task). The game opens it as one of Hotaru's beats
+// (overworld.gd BEATS) until glow-asked is set. Hotaru asks for a glow of her own, sets glow-asked and opens the task.
+{
+  "id": "hotaru-glow",
+  "start": [
+    {
+      "goto": "ask"
+    }
+  ],
+  "nodes": {
+    "ask": {
+      "lines": [
+        {
+          "text": "Tinker! Can you make me a glow of my own?",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "My light is only the lantern's. I would love one with a pattern that is mine.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Give me one number for each second, from 0 to 1. I will shine to your numbers.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Blink for me, up and down. I promise I will not be too fast!",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "glow-asked"
+      ],
+      "open": "task:glow"
+    }
+  }
+}

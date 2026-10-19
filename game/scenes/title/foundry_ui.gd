@@ -4,7 +4,9 @@ extends RefCounted
 
 
 static func text(english: String, japanese: String) -> String:
-	return japanese if Game.profile.get("preferred_language", "en") == "ja" else english
+	if Game.profile.get("preferred_language", "en") != "ja":
+		return english
+	return String(Text.translations().get(english, Text.apply_japanese_reading(japanese)))
 
 
 static func theme() -> Theme:

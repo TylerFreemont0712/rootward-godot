@@ -1,0 +1,125 @@
+// Hotaru's glow (Concept/v0.4/05, 2.2): Hotaru's light follows your glow(t), one brightness a second. One stage.
+// The giver is Lumen (oracle), the keeper of the lanterns, since a giver must be a townsperson. Hotaru does the asking.
+{
+  "id": "glow",                         // the file's name, and the part's id (Parts.IDS)
+  "name": "Hotaru's Glow",              // the part's name: Workbench card, banner
+  "title": "Hotaru's glow",             // the editor's heading
+  "giver": "oracle",                    // a townsfolk id: their portrait in the editor and on the Workbench card
+  "built_line": "Hotaru shines in the pattern your glow() makes.",
+  "entry": {"python": "glow", "javascript": "glow"},
+  "params": [
+    {"name": "t", "meaning": "The second of the minute, from 0 to 59. It goes up by one each second.", "example": "7"}
+  ],
+  "gives": {"meaning": "Hotaru's brightness: 0.0 is dark and 1.0 is bright.", "example": "0.5"},
+  "words": {
+    "python": [
+      {"term": "%", "meaning": "Gives what is left over after sharing a number out. 11 % 5 is 1: 5 fits into 11 twice, and 1 is left.", "example": "cookies = 11 % 5"},
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "pencils = 3 * 4"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "%", "meaning": "Gives what is left over after sharing a number out. 11 % 5 is 1: 5 fits into 11 twice, and 1 is left.", "example": "const cookies = 11 % 5;"},
+      {"term": "*", "meaning": "Multiplies two numbers.", "example": "const pencils = 3 * 4;"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "glow.starter.py", "javascript": "glow.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def glow(t):",
+        "    return t {op} {amount}"
+      ],
+      "javascript": [
+        "function glow(t) {",
+        "  return t {op} {amount};",
+        "}"
+      ]
+    },
+    "slots": {
+      "op": {"label": "do what", "choices": ["*", "+", "%"]},
+      "amount": {"label": "by", "choices": ["10", "4", "2"]}
+    },
+    "toggles": {},
+    "start": {"slots": {"op": 0, "amount": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "glow-built",
+      "goal": "Hotaru asks: make my light blink! Each second, give me a brightness from 0.0 (dark) to 1.0 (bright).",
+      "judge": "glow_pattern",
+      "cases": [
+        {"args": [0], "say": "second 0"},
+        {"args": [1], "say": "second 1"},
+        {"args": [2], "say": "second 2"},
+        {"args": [3], "say": "second 3"},
+        {"args": [4], "say": "second 4"},
+        {"args": [5], "say": "second 5"},
+        {"args": [6], "say": "second 6"},
+        {"args": [7], "say": "second 7"},
+        {"args": [8], "say": "second 8"},
+        {"args": [9], "say": "second 9"},
+        {"args": [10], "say": "second 10"},
+        {"args": [11], "say": "second 11"},
+        {"args": [12], "say": "second 12"},
+        {"args": [13], "say": "second 13"},
+        {"args": [14], "say": "second 14"},
+        {"args": [15], "say": "second 15"},
+        {"args": [16], "say": "second 16"},
+        {"args": [17], "say": "second 17"},
+        {"args": [18], "say": "second 18"},
+        {"args": [19], "say": "second 19"},
+        {"args": [20], "say": "second 20"},
+        {"args": [21], "say": "second 21"},
+        {"args": [22], "say": "second 22"},
+        {"args": [23], "say": "second 23"},
+        {"args": [24], "say": "second 24"},
+        {"args": [25], "say": "second 25"},
+        {"args": [26], "say": "second 26"},
+        {"args": [27], "say": "second 27"},
+        {"args": [28], "say": "second 28"},
+        {"args": [29], "say": "second 29"},
+        {"args": [30], "say": "second 30"},
+        {"args": [31], "say": "second 31"},
+        {"args": [32], "say": "second 32"},
+        {"args": [33], "say": "second 33"},
+        {"args": [34], "say": "second 34"},
+        {"args": [35], "say": "second 35"},
+        {"args": [36], "say": "second 36"},
+        {"args": [37], "say": "second 37"},
+        {"args": [38], "say": "second 38"},
+        {"args": [39], "say": "second 39"},
+        {"args": [40], "say": "second 40"},
+        {"args": [41], "say": "second 41"},
+        {"args": [42], "say": "second 42"},
+        {"args": [43], "say": "second 43"},
+        {"args": [44], "say": "second 44"},
+        {"args": [45], "say": "second 45"},
+        {"args": [46], "say": "second 46"},
+        {"args": [47], "say": "second 47"},
+        {"args": [48], "say": "second 48"},
+        {"args": [49], "say": "second 49"},
+        {"args": [50], "say": "second 50"},
+        {"args": [51], "say": "second 51"},
+        {"args": [52], "say": "second 52"},
+        {"args": [53], "say": "second 53"},
+        {"args": [54], "say": "second 54"},
+        {"args": [55], "say": "second 55"},
+        {"args": [56], "say": "second 56"},
+        {"args": [57], "say": "second 57"},
+        {"args": [58], "say": "second 58"},
+        {"args": [59], "say": "second 59"}
+      ],
+      "hints": [
+        "I need to blink, so some seconds must be dim and some bright. Dim is 0.3 or less, and bright is 0.7 or more. Which seconds should be dim?",
+        "Think of the seconds in pairs: 0 and 1, then 2 and 3, then 4 and 5. Each pair has a first second and a second second. How can your function tell them apart?",
+        "The words column has a sign that gives back what is left over after sharing. As t counts up, a left-over goes round and round: 0, 1, 0, 1, or 0, 1, 2, 0, 1, 2. How could a pattern like that turn into dim and bright?"
+      ]
+    }
+  ],
+  "advice": {
+    "not-number": "For {say}, Hotaru needs a number from 0.0 to 1.0, but your glow() gave {got}.",
+    "out": "For {say}, your glow() gave {got}. Hotaru can only shine from 0.0 (dark) to 1.0 (bright).",
+    "no-blink": "Hotaru does not blink yet. Some seconds need a dim brightness (0.3 or less), and some need a bright one (0.7 or more)."
+  }
+}

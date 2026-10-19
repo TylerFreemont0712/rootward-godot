@@ -15,7 +15,11 @@
           "mood": "happy"
         },
         {
-          "text": "Did you notice? Going up made y smaller. Here, y counts down the page, like lines in a book.",
+          "text": "Did you notice? Going up made y smaller.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "y counts down the page, like lines in a book.",
           "speaker": "hotaru"
         },
         {

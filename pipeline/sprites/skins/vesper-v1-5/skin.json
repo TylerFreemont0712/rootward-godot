@@ -1,0 +1,11 @@
+{
+  "id": "vesper-v1-5",
+  "name": "Vesper 1.5",
+  "pipeline": "sprites",
+  "accent": "#b48cff",
+  "_about": "A repair-only copy of original Vesper. The original idle, frame sizes, frame counts, timing, effects and hand tracks are retained. See README.md for the selected-frame repair workflow.",
+  "ship": {"frame": [400, 350]},
+  "casts": {"light": ["cast-light"], "heavy": "cast-light"},
+  "fx": {"flight": "star", "secondary": "#f0b85e"},
+  "profileSize": 512
+}

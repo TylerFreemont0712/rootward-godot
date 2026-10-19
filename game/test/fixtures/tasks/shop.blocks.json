@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"op": 1, "missing": 1, "cmp": 0}, "toggles": []},
+    {"slots": {"op": 1, "missing": 1, "cmp": 1}, "toggles": ["buy"]}
+  ]
+}

@@ -1,0 +1,21 @@
+// A planter of flowers (20 placements, often side by side): a wooden box edge to edge, soil, flowers on green stems.
+{
+ "id": "flowerbed",
+ "kind": "prop",
+ "what": "a long wooden planter box full of pink and white flowers on green stems",
+ "footprint": [1, 1],
+ "ramps": {"box": "wood", "soil": "dirt", "leaves": "leaf", "bloom": "cloth_pink", "petals": "cloth_white"},
+ "parts": [
+  {"shape": "box", "at": [0.0, 0.1, 0], "size": [1.0, 0.1, 0.32], "ramp": "box", "shade": 1},
+  {"shape": "box", "at": [0.0, 0.7, 0], "size": [1.0, 0.1, 0.32], "ramp": "box", "shade": 2},
+  {"shape": "box", "at": [0.0, 0.2, 0], "size": [1.0, 0.5, 0.26], "ramp": "soil", "shade": 3},
+  {"shape": "ball", "at": [0.05, 0.26, 0.24], "size": [0.4, 0.4, 0.3], "ramp": "leaves", "shade": 2},
+  {"shape": "ball", "at": [0.55, 0.3, 0.24], "size": [0.4, 0.4, 0.3], "ramp": "leaves", "shade": 2},
+  {"shape": "ball", "at": [0.08, 0.24, 0.45], "size": [0.22, 0.22, 0.22], "ramp": "bloom"},
+  {"shape": "ball", "at": [0.34, 0.3, 0.5], "size": [0.22, 0.22, 0.22], "ramp": "petals"},
+  {"shape": "ball", "at": [0.62, 0.24, 0.46], "size": [0.22, 0.22, 0.22], "ramp": "bloom"},
+  {"shape": "ball", "at": [0.2, 0.46, 0.5], "size": [0.2, 0.2, 0.2], "ramp": "petals"},
+  {"shape": "ball", "at": [0.48, 0.48, 0.52], "size": [0.2, 0.2, 0.2], "ramp": "bloom"},
+  {"shape": "ball", "at": [0.76, 0.46, 0.5], "size": [0.2, 0.2, 0.2], "ramp": "petals"}
+ ]
+}

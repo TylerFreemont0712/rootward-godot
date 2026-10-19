@@ -1,0 +1,6 @@
+{
+  "stages": [
+    {"slots": {"op": 1, "by": 1}, "toggles": []},
+    {"slots": {"op": 1, "by": 1, "lowest": 1, "highest": 1}, "toggles": ["low", "high"]}
+  ]
+}

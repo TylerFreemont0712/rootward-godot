@@ -1,0 +1,13 @@
+// An oak barrel by the smithy and the inn (pipeline/world/README.md). Waist high on a person.
+{
+ "id": "barrel",
+ "kind": "prop",
+ "what": "an oak barrel with iron hoops",
+ "footprint": [1, 1],
+ "ramps": {"staves": "wood", "hoops": "steel"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.15, 0.15, 0], "size": [0.7, 0.7, 0.9], "ramp": "staves"},
+  {"shape": "cylinder", "at": [0.12, 0.12, 0.18], "size": [0.76, 0.76, 0.08], "ramp": "hoops"},
+  {"shape": "cylinder", "at": [0.12, 0.12, 0.64], "size": [0.76, 0.76, 0.08], "ramp": "hoops"}
+ ]
+}

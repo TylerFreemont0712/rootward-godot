@@ -1,0 +1,126 @@
+// Brisk's drills (Concept/v0.4/05, 2.3): the player writes tests. Brisk has three functions with a bug each, and each stage
+// asks for a list of drills for one of them: drills_double() (stage 1), drills_total() (stage 2) and drills_first() (stage
+// 3). A drill is [input, expected]. Its expected must be the right answer, and it catches the bug when Brisk's answer for
+// its input is different. The judge holds the right functions and Brisk's buggy ones.
+{
+  "id": "drills",
+  "name": "Brisk's Drills",
+  "title": "Brisk's drills",
+  "giver": "sergeant",
+  "built_line": "Brisk's drill board shows the bugs your tests caught.",
+  "entry": {"python": "drills_double", "javascript": "drillsDouble"},
+  "params": [],
+  "gives": {"meaning": "A list of drills, from 1 to 10 of them. Each drill is [input, expected]: an input for Brisk's function, and the answer the right function gives for it.", "example": "[[\"cat\", \"meow\"], [\"dog\", \"woof\"]]"},
+  "words": {
+    "python": [
+      {"term": "[ ]", "meaning": "A list: things in square brackets, with commas between them, kept in order. An empty list has nothing in it.", "example": "pets = [\"cat\", \"dog\"]"},
+      {"term": "[0]", "meaning": "Takes the thing at a place in a list. Places count from 0, so the first thing is at place 0.", "example": "first_pet = pets[0]"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""},
+      {"term": "None", "meaning": "Python's word for nothing at all.", "example": "return None"}
+    ],
+    "javascript": [
+      {"term": "[ ]", "meaning": "An array: things in square brackets, with commas between them, kept in order. An empty array has nothing in it.", "example": "const pets = [\"cat\", \"dog\"];"},
+      {"term": "[0]", "meaning": "Takes the thing at a place in an array. Places count from 0, so the first thing is at place 0.", "example": "const firstPet = pets[0];"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"},
+      {"term": "null", "meaning": "JavaScript's word for nothing at all.", "example": "return null;"}
+    ]
+  },
+  "starter": {"python": "drills.starter.py", "javascript": "drills.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def drills_double():",
+        "    return [[{double_input}, {double_answer}]]",
+        "",
+        "def drills_total():",
+        "    return [[{total_input}, {total_answer}]]",
+        "",
+        "def drills_first():",
+        "    return [[{first_input}, {first_answer}]]"
+      ],
+      "javascript": [
+        "function drillsDouble() {",
+        "  return [[{double_input}, {double_answer}]];",
+        "}",
+        "",
+        "function drillsTotal() {",
+        "  return [[{total_input}, {total_answer}]];",
+        "}",
+        "",
+        "function drillsFirst() {",
+        "  return [[{first_input}, {first_answer}]];",
+        "}"
+      ]
+    },
+    "slots": {
+      "double_input": {"label": "the input", "choices": ["2", "3", "10"]},
+      "double_answer": {"label": "its answer", "choices": ["4", "6", "20"]},
+      "total_input": {"label": "the list", "choices": ["[]", "[1, 2, 3]", "[5]"], "stage": 1},
+      "total_answer": {"label": "its answer", "choices": ["0", "6", "5"], "stage": 1},
+      "first_input": {"label": "the list", "choices": ["[7, 8]", "[]", "[4]"], "stage": 2},
+      "first_answer": {
+        "label": "its answer",
+        "choices": ["7", {"label": "nothing", "python": "None", "javascript": "null"}, "4"],
+        "stage": 2
+      }
+    },
+    "toggles": {},
+    "start": {
+      "slots": {"double_input": 0, "double_answer": 0, "total_input": 0, "total_answer": 0, "first_input": 0, "first_answer": 0},
+      "toggles": []
+    }
+  },
+  "stages": [
+    {
+      "flag": "drills-double",
+      "goal": "Brisk's double should give back twice its number. Write drills that catch the bug in it.",
+      "entry": {"python": "drills_double", "javascript": "drillsDouble"},
+      "judge": "drills",
+      "cases": [
+        {"args": [], "function": "double", "say": "Brisk's double"}
+      ],
+      "hints": [
+        "Each drill is two things in square brackets: an input, then the answer the right double gives for that input.",
+        "Work out the right answer yourself first. Twice the number is what double should give.",
+        "A drill catches the bug only when Brisk's double gives a different answer from the right one. Try numbers where adding 2 and multiplying by 2 do not agree."
+      ]
+    },
+    {
+      "flag": "drills-total",
+      "goal": "Brisk's total should give back the sum of a list of numbers. Write drills that catch the bug in it.",
+      "unlocked_by": {"flag": "drills-double"},
+      "entry": {"python": "drills_total", "javascript": "drillsTotal"},
+      "judge": "drills",
+      "cases": [
+        {"args": [], "function": "total", "say": "Brisk's total"}
+      ],
+      "hints": [
+        "The input of a total drill is a list of numbers. Its expected answer is the sum of all the numbers in it.",
+        "A drill catches the bug only when Brisk's total gives a different answer from the right sum. Look at what his total adds up, and what it leaves out.",
+        "Add up the numbers in a list you make by hand. Does Brisk's total give the same answer? Try lists of different lengths."
+      ]
+    },
+    {
+      "flag": "drills-first",
+      "goal": "Brisk's first should give back the first item of a list. Write drills that catch the bug in it.",
+      "unlocked_by": {"flag": "drills-total"},
+      "entry": {"python": "drills_first", "javascript": "drillsFirst"},
+      "judge": "drills",
+      "cases": [
+        {"args": [], "function": "first", "say": "Brisk's first"}
+      ],
+      "hints": [
+        "The input of a first drill is a list. Its expected answer is the first item in that list.",
+        "Good tests try the strange cases as well as the usual ones. What is the strangest list there could be?",
+        "If Brisk's first cannot give back any item, it crashes. A crash is not the answer you wrote, so it catches the bug."
+      ]
+    }
+  ],
+  "advice": {
+    "not-list": "Give back a list of drills, in square brackets. Yours gave back {got}.",
+    "count": "A list of drills needs from 1 to 10 drills. Yours has {got}.",
+    "not-drill": "{got} is not a proper drill. A drill is two things in square brackets: an input the function takes, then the answer it should give.",
+    "wrong-expect": "Your drill says Brisk's {name} of {arg0} gives {got}, but the right answer is {want}. Work it out again.",
+    "no-catch": "None of your drills catches the bug in Brisk's {name}, because his {name} gives the right answer for every one of them. Find an input where his answer comes out different."
+  }
+}

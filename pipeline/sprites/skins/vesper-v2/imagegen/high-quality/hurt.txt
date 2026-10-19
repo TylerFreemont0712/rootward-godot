@@ -1,0 +1,15 @@
+Use case: identity-preserve. Asset type: high quality anime Vesper hurt/recovery KEYFRAME sheet.
+Image1 is ONLY the old animation skeleton and eight-pose order. Image2 is the finished new enemy-facing idle model, the exact design/proportions/rest pose to match. Redraw the eight poses as the same refined anime witch: wavy purple bob, gold/amber eyes, navy witch hat with gold crescent/plum lining and gem, short navy/plum embroidered capelet and blue-gem star clasp, teal belted dress, dark tights, brown heeled boots, fine dark linework and smooth detailed cel shading. The same model, scale, lighting and costume in all poses, empty hands.
+Her face and nose stay turned toward the ENEMY ON SCREEN RIGHT in EVERY pose. Even wincing/closed eyes maintain that right-facing three-quarter profile, never look at viewer.
+One contained hit reaction with quick recoil and gentle recovery:
+1 exact neutral idle pose;
+2 small startled recoil through shoulders, one empty hand begins rising toward chest;
+3 brief wince, eyes closed, slight backward shoulder lean and knee bend;
+4 recoil peak, eyes closed, hands near upper torso, maximum five-degree lean;
+5 exhale and recover, head remains level/right-facing;
+6 eyes reopen toward enemy, arm lowers toward waist;
+7 almost neutral, small cape/hair settling;
+8 exact neutral idle pose.
+Tight motion, both boots firmly planted at identical positions, steady pelvis, no hopping, no exaggerated shrinking or arm flailing, no perspective/camera change. Clothes remain intact and consistent. Improve the old skeleton freely; do not copy ugly deformations or blocky chibi rendering.
+EXACT LAYOUT: FOUR columns x TWO rows = eight full-body figures, row-major order, landscape 2048x1536 or 3072x2304, tall 512x768 cells. Each figure occupies only 70–75% of cell height, generous clear margin all around entire hat and complete boots. Second-row feet must ALL be fully visible with space beneath. Same figure scale and foot baseline across cells, no overlaps or third row.
+ACTUAL transparent alpha background with clean edges. No fringe, colored speckles, smoky haze, glow, starfield, magic, props, floor/shadow, backdrop, grid lines, text, labels, watermark or extra figures. Output the whole completed sheet.

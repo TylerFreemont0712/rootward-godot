@@ -1,136 +1,38 @@
-// Expansion asset spec; dimensions are tiles.
 {
-  "id": "expand-arched_wood_gate",
-  "kind": "prop",
-  "what": "a small arched wooden garden gate with iron hinges and upright slats",
+  "above": 1.5,
   "footprint": [
     1,
     1
   ],
+  "id": "expand-arched_wood_gate",
+  "kind": "prop",
+  "pad": 1,
   "ramps": {
-    "wood": "wood",
-    "iron": "steel"
+    "gold": "gold",
+    "steel": "steel",
+    "wood": "wood"
   },
-  "parts": [
-    {
-      "shape": "box",
-      "at": [
-        0.04,
-        0.32,
-        0
-      ],
-      "size": [
-        0.16,
-        0.22,
-        1.4
-      ],
-      "ramp": "wood",
-      "shade": 2
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.8,
-        0.32,
-        0
-      ],
-      "size": [
-        0.16,
-        0.22,
-        1.4
-      ],
-      "ramp": "wood",
-      "shade": 2
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.1,
-        0.33,
-        0.86
-      ],
-      "size": [
-        0.8,
-        0.16,
-        0.12
-      ],
-      "ramp": "wood",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.1,
-        0.33,
-        0.28
-      ],
-      "size": [
-        0.8,
-        0.12,
-        0.1
-      ],
-      "ramp": "wood",
-      "shade": 2
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.18,
-        0.37,
-        0.38
-      ],
-      "size": [
-        0.08,
-        0.08,
-        0.55
-      ],
-      "ramp": "wood",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.37,
-        0.37,
-        0.38
-      ],
-      "size": [
-        0.08,
-        0.08,
-        0.55
-      ],
-      "ramp": "wood",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.56,
-        0.37,
-        0.38
-      ],
-      "size": [
-        0.08,
-        0.08,
-        0.55
-      ],
-      "ramp": "wood",
-      "shade": 1
-    },
-    {
-      "shape": "box",
-      "at": [
-        0.75,
-        0.37,
-        0.38
-      ],
-      "size": [
-        0.08,
-        0.08,
-        0.55
-      ],
-      "ramp": "wood",
-      "shade": 1
-    }
-  ]
+  "source": {
+    "images": [
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-00.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-01.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-02.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-03.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-04.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-05.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-06.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-07.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-08.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-09.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-10.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-11.png",
+      "Concept/v0.3/Update/gate-swing/expand-arched_wood_gate-12.png"
+    ],
+    "registered": true
+  },
+  "swing": {
+    "axis": "horizontal",
+    "material": "wood"
+  },
+  "what": "a hinged arched garden gate with open rail gaps, two posts, iron hinges and a bright latch"
 }

@@ -1,0 +1,21 @@
+{
+  "id": "lanternroot-home",
+  "out": "music-lanternroot-home",
+  "kind": "loop",
+  "title": "Lanternroot Hearth",
+  "role": "Indoors: the player's house and the other interiors, the inn and the workshop. Warm, lit from a lamp, with a steady pulse under it (brushed drums, upright bass, guitar and accordion). Cosy like a kitchen, never a lullaby: it keeps time, and it can be heard for a long while without sounding sleepy.",
+  "theme": "The motif in A major (A E A C# B A), stated by guitar and accordion in the verse's first bar and again after the chorus; the chorus lifts the tune an octave into chord arpeggios; the bridge rolls through B minor and F# minor and lands home on A.",
+  "reference": "The player's request: the mode played music-rest, a lullaby in F at 76 BPM in 3/4, and wanted a solid soundtrack. Indoors is where the player spends most of the lesson, so it must keep a pulse without tiring.",
+  "bpm": 92,
+  "key": "A major",
+  "meter": "4/4",
+  "form": "silence 1, intro 4 (brushes and accordion alone), verse 8 (the motif on guitar and accordion), chorus 8 (lifted an octave, in arpeggios), bridge 8 (rolling, contrasting, home to A), verse 8 (return), chorus 8 (return), outro 4",
+  "loop": {
+    "from": "verse",
+    "to": "chorus",
+    "occurrence": 2
+  },
+  "style": "warm cosy folk indoors, accordion melody, acoustic guitar, upright bass, brushed drums with a steady pulse, lamplit and unhurried but never sleepy, intimate clear recording, instrumental, no vocals, A major, 92 BPM",
+  "lyrics": "",
+  "pick": "yue2-comfy-1000-1100-s32-3f1461"
+}

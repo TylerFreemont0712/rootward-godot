@@ -1,0 +1,153 @@
+// The clock (Concept/v0.4/01, 5.9): Lumen's time_of_day(minute) says which part of the town's day a minute is in, and
+// clock_text(minute) says the time as text, "18:40". Stage 1 is the day and night (flag clock-built); stage 2 the text
+// (clock-text), which opens once the clock is built. The minutes of the day run from 0 (midnight) to 1439 (23:59).
+{
+  "id": "clock",
+  "name": "The Clock",
+  "title": "What time is it?",
+  "giver": "oracle",
+  "built_line": "The town's day follows your time_of_day() now.",
+  "entry": {"python": "time_of_day", "javascript": "timeOfDay"},
+  "params": [
+    {"name": "minute", "meaning": "The minute of the town's day: 0 is midnight, and 1439 is 23:59, the last minute before midnight.", "example": "600"}
+  ],
+  "gives": {"meaning": "The part of the day, as text: \"night\", \"morning\", \"afternoon\" or \"evening\".", "example": "\"morning\""},
+  "words": {
+    "python": [
+      {"term": "<", "meaning": "Asks whether one number is less than another. The answer is True or False.", "example": "pets < 3"},
+      {"term": "if", "meaning": "Runs the lines under it only when its question is True.", "example": "if pets < 3:\n    return \"few\""},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "<", "meaning": "Asks whether one number is less than another. The answer is true or false.", "example": "pets < 3"},
+      {"term": "if", "meaning": "Runs the lines in its braces only when its question is true.", "example": "if (pets < 3) {\n  return \"few\";\n}"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "clock.starter.py", "javascript": "clock.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def time_of_day(minute):",
+        "    if minute < {night_until}:",
+        "        return \"night\"",
+        "    if minute < {morning_until}:",
+        "        return \"morning\"",
+        "    if minute < {afternoon_until}:",
+        "        return \"afternoon\"",
+        "    if minute < {evening_until}:",
+        "        return \"evening\"",
+        "    return {phase}",
+        "",
+        "[text]def clock_text(minute):",
+        "[text]    hours = minute {hour_by} 60",
+        "[text]    mins = minute {minute_by} 60",
+        "[text]    return str(hours) + \":\" + {minutes_text}"
+      ],
+      "javascript": [
+        "function timeOfDay(minute) {",
+        "  if (minute < {night_until}) {",
+        "    return \"night\";",
+        "  }",
+        "  if (minute < {morning_until}) {",
+        "    return \"morning\";",
+        "  }",
+        "  if (minute < {afternoon_until}) {",
+        "    return \"afternoon\";",
+        "  }",
+        "  if (minute < {evening_until}) {",
+        "    return \"evening\";",
+        "  }",
+        "  return {phase};",
+        "}",
+        "",
+        "[text]function clockText(minute) {",
+        "[text]  const hours = Math.floor(minute {hour_by} 60);",
+        "[text]  const mins = minute {minute_by} 60;",
+        "[text]  return hours + \":\" + {minutes_text};",
+        "[text]}"
+      ]
+    },
+    "slots": {
+      "night_until": {"label": "night until", "choices": ["300", "360", "400"]},
+      "morning_until": {"label": "morning until", "choices": ["700", "720", "780"]},
+      "afternoon_until": {"label": "afternoon until", "choices": ["1000", "1080", "1140"]},
+      "evening_until": {"label": "evening until", "choices": ["1200", "1260", "1320"]},
+      "phase": {"label": "after that", "choices": ["\"evening\"", "\"night\"", "\"morning\""]},
+      "hour_by": {"label": "the hours are the minutes", "choices": ["%", {"python": "//", "javascript": "/"}, "*"], "stage": 1},
+      "minute_by": {"label": "the minutes left over", "choices": ["*", "%", "+"], "stage": 1},
+      "minutes_text": {"label": "the minutes as text", "choices": [{"python": "str(mins)", "javascript": "mins"}, {"python": "str(mins).zfill(2)", "javascript": "String(mins).padStart(2, \"0\")"}], "stage": 1}
+    },
+    "toggles": {
+      "text": {"label": "Say the time as text", "stage": 1}
+    },
+    "start": {"slots": {}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "clock-built",
+      "goal": "Make time_of_day(minute) say which part of the day the minute is in, using the town's hours in the starter's comments.",
+      "judge": "equals",
+      "cases": [
+        {"args": [0], "want": "night", "say": "midnight"},
+        {"args": [359], "want": "night", "say": "one minute before 6:00", "edge": true},
+        {"args": [360], "want": "morning", "say": "6:00 exactly", "edge": true},
+        {"args": [719], "want": "morning", "say": "one minute before noon", "edge": true},
+        {"args": [720], "want": "afternoon", "say": "noon exactly", "edge": true},
+        {"args": [1079], "want": "afternoon", "say": "one minute before 18:00", "edge": true},
+        {"args": [1080], "want": "evening", "say": "18:00 exactly", "edge": true},
+        {"args": [1259], "want": "evening", "say": "one minute before 21:00", "edge": true},
+        {"args": [1260], "want": "night", "say": "21:00 exactly", "edge": true},
+        {"args": [1439], "want": "night", "say": "23:59, the last minute of the day"}
+      ],
+      "hints": [
+        "Your function is given a minute of the town's day, from 0 to 1439. The starter's comments say when each part of the day ends. Which part does this minute fall in?",
+        "Ask about the hours in order, starting with the first one. Is the minute before that hour? If it is, the answer is that part of the day. If it is not, ask about the next hour.",
+        "Hours are easier as minutes: 6:00 is minute 360. Each question can be an if with < and a return, and the last part of the day is the one you give back when no question was True."
+      ]
+    },
+    {
+      "flag": "clock-text",
+      "goal": "Make clock_text(minute) say the time as text, like 18:40, with two digits for the minutes.",
+      "unlocked_by": {"flag": "clock-built"},
+      "entry": {"python": "clock_text", "javascript": "clockText"},
+      "gives": {"meaning": "The time as text: the hour, a colon, then the minutes with two digits, so the minutes are never one digit long.", "example": "\"2:07\""},
+      "words": {
+        "python": [
+          {"term": "//", "meaning": "Divides and throws away the fraction: how many whole groups fit.", "example": "bags = 17 // 5  # 3 full bags"},
+          {"term": "%", "meaning": "Gives what is left over after dividing one number by another.", "example": "spare = 17 % 5  # 2 left over"},
+          {"term": "str", "meaning": "Turns a number into text.", "example": "str(42)  # \"42\""},
+          {"term": ".zfill", "meaning": "Pads a text with zeros on the left, up to a width.", "example": "str(7).zfill(3)  # \"007\""},
+          {"term": "+", "meaning": "Joins two texts into one.", "example": "\"cat\" + \"s\"  # \"cats\""}
+        ],
+        "javascript": [
+          {"term": "Math.floor", "meaning": "Rounds a number down to a whole number.", "example": "const bags = Math.floor(17 / 5); // 3 full bags"},
+          {"term": "%", "meaning": "Gives what is left over after dividing one number by another.", "example": "const spare = 17 % 5; // 2 left over"},
+          {"term": "String", "meaning": "Turns a number into text.", "example": "String(42); // \"42\""},
+          {"term": ".padStart", "meaning": "Pads a text with a character at its start, up to a width.", "example": "String(7).padStart(3, \"0\"); // \"007\""},
+          {"term": "+", "meaning": "Joins two texts into one.", "example": "\"cat\" + \"s\"; // \"cats\""}
+        ]
+      },
+      "judge": "clock_text",
+      "cases": [
+        {"args": [0], "want": "0:00", "say": "midnight"},
+        {"args": [65], "want": "1:05", "say": "one hour and five minutes in"},
+        {"args": [600], "want": "10:00", "say": "ten o'clock in the morning"},
+        {"args": [1119], "want": "18:39", "say": "eighteen hours and thirty-nine minutes in"},
+        {"args": [1439], "want": "23:59", "say": "the last minute of the day"}
+      ],
+      "hints": [
+        "Your function is given a minute of the day, such as 65. How many whole hours fit into it, and how many minutes are left over?",
+        "One hour is 60 minutes. Dividing the minute by 60 gives the hours, and what is left over after the division gives the minutes.",
+        "A minute of 5 should show as 05. Padding text with zeros on the left is what zfill does in Python and padStart does in JavaScript. Which of those makes the minutes two digits?"
+      ]
+    }
+  ],
+  "advice": {
+    "nothing": "For {say}, time_of_day gave nothing back. It should give {want}.",
+    "wrong": "At {say}, your answer was {got}, but it should be {want}.",
+    "edge": "Your answers are right, except at the edges. At {say} it goes wrong, so look at which side of that exact minute your comparison puts it on.",
+    "not-text": "clock_text should give back text, such as \"18:40\", not {got}.",
+    "no-zero": "{got} has one digit for the minutes. The minutes always take two digits, so it should be {want}."
+  }
+}

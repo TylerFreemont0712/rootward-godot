@@ -1,0 +1,13 @@
+// A weathered gravestone in the old yard.
+{
+ "id": "tombstone",
+ "kind": "prop",
+ "what": "an old weathered gravestone with a rounded top and moss",
+ "footprint": [1, 1],
+ "ramps": {"stone": "stone", "base": "cobble", "moss": "leaf"},
+ "parts": [
+  {"shape": "box", "at": [0.14, 0.3, 0], "size": [0.72, 0.42, 0.14], "ramp": "base"},
+  {"shape": "box", "at": [0.22, 0.38, 0.1], "size": [0.56, 0.2, 0.6], "ramp": "stone"},
+  {"shape": "ball", "at": [0.22, 0.38, 0.42], "size": [0.56, 0.2, 0.56], "ramp": "stone"}
+ ]
+}

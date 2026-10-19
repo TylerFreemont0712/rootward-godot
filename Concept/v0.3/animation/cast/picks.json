@@ -1,0 +1,580 @@
+{
+ "archivist": {
+  "back": {
+   "iou": [
+    0.938,
+    0.924
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.947,
+    0.938
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.916,
+    0.905
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.919,
+    0.91
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "artificer": {
+  "back": {
+   "iou": [
+    0.945,
+    0.955
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.964,
+    0.964
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.938,
+    0.93
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.946,
+    0.943
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "compiler": {
+  "back": {
+   "iou": [
+    0.919,
+    0.935
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.927,
+    0.927
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.881,
+    0.908
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.882,
+    0.914
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "guard": {
+  "back": {
+   "iou": [
+    0.916,
+    0.922
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.921,
+    0.925
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.913,
+    0.914
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.906,
+    0.909
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "guildmaster": {
+  "back": {
+   "iou": [
+    0.9,
+    0.904
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.897,
+    0.904
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.912,
+    0.877
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.894,
+    0.88
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "innkeeper": {
+  "back": {
+   "iou": [
+    0.923,
+    0.898
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.922,
+    0.934
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.897,
+    0.902
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.938,
+    0.903
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "keeper": {
+  "back": {
+   "iou": [
+    0.953,
+    0.948
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.947,
+    0.956
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.927,
+    0.942
+   ],
+   "override": true,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.915,
+    0.933
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "necromancer": {
+  "back": {
+   "iou": [
+    0.959,
+    0.952
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.96,
+    0.962
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.935,
+    0.935
+   ],
+   "override": true,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.944,
+    0.943
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "oracle": {
+  "back": {
+   "iou": [
+    0.946,
+    0.94
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.938,
+    0.931
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.891,
+    0.91
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.821,
+    0.746
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "pell": {
+  "back": {
+   "iou": [
+    0.9,
+    0.9
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.9,
+    0.893
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.876,
+    0.882
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.868,
+    0.894
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "pip": {
+  "back": {
+   "iou": [
+    0.913,
+    0.895
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.898,
+    0.91
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.905,
+    0.909
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.896,
+    0.913
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "player": {
+  "back": {
+   "iou": [
+    0.887,
+    0.902
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.914,
+    0.895
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.911,
+    0.888
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.887,
+    0.859
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "quartermaster": {
+  "back": {
+   "iou": [
+    0.911,
+    0.91
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.914,
+    0.901
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.923,
+    0.915
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.901,
+    0.897
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "sergeant": {
+  "back": {
+   "iou": [
+    0.891,
+    0.88
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "front": {
+   "iou": [
+    0.909,
+    0.888
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.882,
+    0.867
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.894,
+    0.87
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "shade": {
+  "back": {
+   "iou": [
+    0.953,
+    0.955
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.945,
+    0.956
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.952,
+    0.913
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.946,
+    0.921
+   ],
+   "override": false,
+   "pick": 0
+  }
+ },
+ "summoner": {
+  "back": {
+   "iou": [
+    0.937,
+    0.945
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.932,
+    0.946
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "left": {
+   "iou": [
+    0.9,
+    0.921
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "right": {
+   "iou": [
+    0.872,
+    0.894
+   ],
+   "override": false,
+   "pick": 1
+  }
+ },
+ "warden": {
+  "back": {
+   "iou": [
+    0.932,
+    0.934
+   ],
+   "override": false,
+   "pick": 1
+  },
+  "front": {
+   "iou": [
+    0.939,
+    0.932
+   ],
+   "override": false,
+   "pick": 0
+  },
+  "left": {
+   "iou": [
+    0.92,
+    0.939
+   ],
+   "override": true,
+   "pick": 0
+  },
+  "right": {
+   "iou": [
+    0.926,
+    0.937
+   ],
+   "override": false,
+   "pick": 1
+  }
+ }
+}

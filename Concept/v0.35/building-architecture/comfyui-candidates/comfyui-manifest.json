@@ -1,0 +1,137 @@
+{
+  "_status": "V4 camera and palette retained; home is preserved from the first pass. Cottage, hall, and workshop are the structural revision pass at denoise 0.76.",
+  "_reference": "Concept/v0.35/building-architecture/concepts/home-front-plane-v4.png",
+  "_comfyui": {
+    "url": "http://127.0.0.1:8188",
+    "version": "0.38.2",
+    "checkpoint": "novaAnimeXL_ilV190.safetensors",
+    "lora": "pixel-art-xl-v1.1.safetensors",
+    "lora_strength": 1.0,
+    "steps": 28,
+    "cfg": 5.5,
+    "sampler": "euler_ancestral",
+    "scheduler": "normal",
+    "width": 1024,
+    "height": 1024,
+    "candidates": 1,
+    "rmbg": true,
+    "init_denoise": 0.58,
+    "seed_policy": "fixed per asset id",
+    "free_vram_at_last_check": "about 4.3 GiB (RTX 3070 Ti Laptop GPU)"
+  },
+  "_run_safely": "ComfyUI queue is checked before generation; candidates run sequentially. Command used --no-write and a review sheet in this folder; raw RGB/mask pairs stay in ignored pipeline/cache/art and game/assets is untouched. collect_raws.py writes only candidate source images here.",
+  "comfy_url": "http://127.0.0.1:8188",
+  "styles": {
+    "architecture": {
+      "checkpoint": "novaAnimeXL_ilV190.safetensors",
+      "lora": "pixel-art-xl-v1.1.safetensors",
+      "lora_strength": 1.0,
+      "prefix": "masterpiece, best quality, pixel art, ",
+      "suffix": "",
+      "negative": "worst quality, low quality, blurry, text, letters, numbers, watermark, signature, logo, sprite sheet, multiple objects, collage, split screen, grid, tileset, inventory, people, characters, person, animal, cropped, frame, border, drop shadow, gradient background, ground, grass, floor, scenery, landscape, realistic, photo, 3d render, isometric, 3/4 view, perspective, angled view, rotated building, side elevation, side wall, side windows, side facade",
+      "width": 1024,
+      "height": 1024,
+      "steps": 28,
+      "cfg": 5.5,
+      "sampler": "euler_ancestral",
+      "scheduler": "normal",
+      "rmbg": true,
+      "candidates": 1,
+      "init": {
+        "image": "Concept/v0.35/building-architecture/concepts/home-front-plane-v4.png",
+        "denoise": 0.58,
+        "matte": "#ffffff"
+      },
+      "post": {
+        "kind": "picture",
+        "size": [
+          240,
+          240
+        ],
+        "transparent": true,
+        "colors": 40,
+        "outline": true,
+        "outline_color": "#140c1c",
+        "focus_y": 0.5
+      }
+    }
+  },
+  "assets": [
+    {
+      "id": "home-front-plane-v4",
+      "style": "architecture",
+      "prompt": "high quality crisp 2D pixel art, a single cozy fantasy village building game asset, cardinal top-down game camera looking toward the south/front edge, building aligned to the map grid, broad nearly flat front facade facing the bottom of the image and squarely toward the viewer, no visible side elevation, no side wall, no side windows, deep roof planes receding toward the back/top of the image, roof ridge and eaves clearly visible, whole building isolated and centered, hard pixel edges, compact palette, clean dark outline, centered front entrance with the visible door leaf about 80 pixels tall after fitting to the target frame, keep clear space immediately in front of the doorway, small welcoming family cottage following the accepted V4 palette, broad blue-violet slate roof with layered tiles, warm orange-brown timber front facade, pale warm stone around the doorway and foundation, one central rounded timber door and two small front-facing windows, compact rear chimney, intimate proportions",
+      "out": "Concept/v0.35/building-architecture/comfyui-candidates/home",
+      "seed": 20261019,
+      "candidates": 1,
+      "post": {
+        "size": [
+          240,
+          240
+        ]
+      }
+    },
+    {
+      "id": "cottage-hollis-front-plane-v4",
+      "style": "architecture",
+      "prompt": "high quality crisp 2D pixel art, one complete isolated fantasy village building, cardinal top-down game camera looking south toward the front edge, the broad nearly flat front facade faces the bottom of the image squarely, align the building to the map grid, roof depth extends away from the front toward the top/back with roof ridge and eaves visible, no visible side elevation, no side wall, no side windows, whole building centered, hard pixel edges, compact warm palette, clean dark outline, clear standing space in front of the entrance, a compact low square cottage with a broad hipped slate roof in blue-violet, cream plaster facade with dark warm timber framing, pale stone foundation, single centered arched front door about 80 pixels tall in the fitted frame, two small front-facing windows, no tall front gable, a low shallow roof silhouette distinct from the steep peaked home",
+      "out": "Concept/v0.35/building-architecture/comfyui-candidates/cottage-hollis",
+      "seed": 20261020,
+      "candidates": 1,
+      "post": {
+        "size": [
+          200,
+          200
+        ]
+      },
+      "init": {
+        "image": "Concept/v0.35/building-architecture/concepts/home-front-plane-v4.png",
+        "denoise": 0.76,
+        "matte": "#ffffff"
+      },
+      "width": 1024,
+      "height": 1024,
+      "negative": "worst quality, low quality, blurry, text, letters, numbers, watermark, signature, logo, sprite sheet, multiple objects, collage, split screen, grid, tileset, inventory, people, characters, person, animal, cropped, frame, border, drop shadow, gradient background, ground, grass, floor, scenery, landscape, realistic, photo, 3d render, isometric, 3/4 view, perspective, angled view, rotated building, side elevation, side wall, side windows, side facade, steep gable roof, high peaked gable, tall cottage, side-angle house"
+    },
+    {
+      "id": "hall-front-plane-v4",
+      "style": "architecture",
+      "prompt": "high quality crisp 2D pixel art, one complete isolated fantasy village building, cardinal top-down game camera looking south toward the front edge, the broad nearly flat front facade faces the bottom of the image squarely, align the building to the map grid, roof depth extends away from the front toward the top/back with roof ridge and eaves visible, no visible side elevation, no side wall, no side windows, whole building centered, hard pixel edges, compact warm palette, clean dark outline, clear standing space in front of the entrance, a civic village hall with a long wide horizontal footprint and a broad formal facade much wider than tall, broad blue-violet slate roof with a long central ridge running from the front facade toward the back, centered clock in a small front-facing gable, pale stone facade, symmetric row of tall front-facing windows, grand wide double front entrance with each door leaf about 80 pixels tall in the fitted frame, formal public-building identity, clearly not a small cottage",
+      "out": "Concept/v0.35/building-architecture/comfyui-candidates/hall",
+      "seed": 20261021,
+      "candidates": 1,
+      "post": {
+        "size": [
+          360,
+          320
+        ]
+      },
+      "init": {
+        "image": "Concept/v0.35/building-architecture/concepts/home-front-plane-v4.png",
+        "denoise": 0.76,
+        "matte": "#ffffff"
+      },
+      "width": 1152,
+      "height": 1024,
+      "negative": "worst quality, low quality, blurry, text, letters, numbers, watermark, signature, logo, sprite sheet, multiple objects, collage, split screen, grid, tileset, inventory, people, characters, person, animal, cropped, frame, border, drop shadow, gradient background, ground, grass, floor, scenery, landscape, realistic, photo, 3d render, isometric, 3/4 view, perspective, angled view, rotated building, side elevation, side wall, side windows, side facade, tiny house, small cottage, family home, narrow facade, peaked cottage roof"
+    },
+    {
+      "id": "workshop-front-plane-v4",
+      "style": "architecture",
+      "prompt": "high quality crisp 2D pixel art, a single broad rectangular artisan workshop from a cardinal top-down game camera looking south toward the front. The wide flat front facade faces the image bottom squarely. Show no side elevation, no side wall, no side windows. Roof footprint extends deeply away from the front toward the top of the image, roof ridge and eaves visible. A long low teal roof of green-blue teal tiles, clearly teal and not blue or violet, dominates the back two thirds. Wide warm timber front facade with pale stone trim. One very large pair of timber workshop loading doors fills the center half of the front, each leaf about 80 pixels tall in a 240 by 200 pixel fitted frame; keep open standing clearance at the bottom/front. Mount a clearly readable hammer, saw, and tongs on the front facade beside the doors. One small loft window on the front only. Strong horizontal workshop silhouette, not a cottage or home. Isolated transparent background, clean dark outline, hard pixels, compact warm palette.",
+      "out": "Concept/v0.35/building-architecture/comfyui-candidates/workshop",
+      "seed": 20261022,
+      "candidates": 1,
+      "post": {
+        "size": [
+          240,
+          200
+        ]
+      },
+      "init": null,
+      "negative": "worst quality, low quality, blurry, text, letters, numbers, watermark, signature, logo, sprite sheet, multiple objects, collage, split screen, grid, tileset, inventory, people, characters, person, animal, cropped, frame, border, drop shadow, gradient background, ground, grass, floor, scenery, landscape, realistic, photo, 3d render, isometric, 3/4 view, perspective, angled view, rotated building, side elevation, side wall, side windows, side facade, cottage, home, family house, narrow doorway, tiny door, blue roof, purple roof, violet roof, pitched cottage gable",
+      "width": 1152,
+      "height": 1024
+    }
+  ]
+}

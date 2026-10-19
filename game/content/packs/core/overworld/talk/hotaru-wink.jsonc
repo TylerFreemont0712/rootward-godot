@@ -1,0 +1,36 @@
+// Hotaru's beat (v0.4): after Orin has told the Long Hush and the Makers (makers-told). The wink: nobody answers it,
+// and the credits do.
+{
+  "id": "hotaru-wink",
+  "start": [
+    {
+      "goto": "wink"
+    }
+  ],
+  "nodes": {
+    "wink": {
+      "lines": [
+        {
+          "text": "Orin says the Makers wrote Lanternroot's parts. The keys, the bells, the bags.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "I keep thinking about my pocket menu. And then the real one you wrote.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Wait... is the menu part of Lanternroot? Or part of us?",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "...Never mind! Silly firefly thoughts.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        }
+      ],
+      "set": [
+        "wink-told"
+      ]
+    }
+  }
+}

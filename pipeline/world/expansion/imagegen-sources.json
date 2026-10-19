@@ -1,13 +1,17 @@
 {
   "expand-bakery": {
-    "source": "pipeline/world/expansion/imagegen/expand-bakery.png",
-    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a small welcoming fantasy bakery building, pale cream plaster and exposed dark timber, terracotta pitched roof, stone foundation, a central full-height wooden door, two warm lit windows, a hanging bread-shaped sign and brick chimney. No exterior furniture. Wide facade facing camera. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
-    "tool": "ChatGPT built-in image_gen"
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-bakery-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A small welcoming bakery with pale plaster and warm timber, a terracotta tiled roof, stone base, bread-shaped sign and bright front windows.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript.",
+    "source_spec": "pipeline/world/objects/expand-bakery.jsonc"
   },
   "expand-greenhouse": {
-    "source": "pipeline/world/expansion/imagegen/expand-greenhouse.png",
-    "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a compact fantasy village greenhouse building, green patinated iron frame, many pale aqua glass window panes, pitched glass roof, low stone foundation, centered wooden entrance door. Plants visible inside the glass. Wide facade facing camera. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
-    "tool": "ChatGPT built-in image_gen"
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-greenhouse-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A compact greenhouse with a patinated teal frame, pale aqua glazing, visible plants and a centered timber door.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript.",
+    "source_spec": "pipeline/world/objects/expand-greenhouse.jsonc"
   },
   "expand-fountain": {
     "source": "pipeline/world/expansion/imagegen/expand-fountain.png",
@@ -18,5 +22,89 @@
     "source": "pipeline/world/expansion/imagegen/expand-noticeboard.png",
     "prompt": "Use case: stylized-concept. Asset type: transparent sprite source for Lanternroot, a cozy fantasy RPG with 40px tiles and 64x96 characters. Subject: a village roofed noticeboard prop, two sturdy wooden legs supporting a wide rectangular cork board with several pinned cream notices, tiny gabled terracotta roof over the board. No readable text. Entire noticeboard alone. Style: detailed attractive pixel art, warm restricted palette, dark plum ink outline, chunky coherent pixels, simple cel shading. Camera: orthographic 3/4 top-down RPG view, front facing, horizontal front edge, depth foreshortened, no isometric diamond. Composition: one complete object centered with generous transparent margins, no cropping. Background genuinely transparent alpha. No ground plane, grass, backdrop, cast shadow, people, text, frame or extra objects. This will be reduced and palette locked for in-game use.",
     "tool": "ChatGPT built-in image_gen"
+  },
+  "expand-apothecary": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-apothecary-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: An herb apothecary with lavender accents, potion windows, hanging bundles and pale stone trim.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-stable": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-stable-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A broad timber stable with an olive roof, hayloft details and double stable doors.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-guardhouse": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-guardhouse-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A narrow tall stone watchhouse with a red tiled roof, timber lookout gallery and an integrated bell loft.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-bathhouse": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-bathhouse-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A wide public bathhouse in pale stone with blue-glass bays, teal roof tiles and a water motif.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-abandoned-cottage": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-abandoned-cottage-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A weathered timber cottage with patched slate shingles, moss, and a few dim warm windows.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-ruin-cottage": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-ruin-cottage-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: An old stone cottage with cracked blocks, a half-mended roof, moss and a still-usable front door.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-observatory": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-observatory-cohesive-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A starwatch observatory whose narrow star chamber grows directly from the centered roof ridge, with violet slate and gold celestial details; no separate tower perched on the roof.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-watermill": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-watermill-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A stone and timber watermill with a teal roof and a waterwheel mounted visibly on the front facade.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-moonweaver": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-moonweaver-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A violet textile atelier with a crescent gable ornament, fabric windows and warm stone doorway.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-teahouse": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-teahouse-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A broad jade-roofed teahouse with warm timber latticework and a welcoming front entrance.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-lighthouse": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-lighthouse-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A tall beacon house with pale stone walls and a glowing lantern chamber joined into the roof ridge.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-crystalwright": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-crystalwright-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A stone crystalwright workshop with mint crystal windows, gold brackets and a violet slate roof.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-belltower": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-belltower-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A narrow chapel with its bell chamber integrated into the centered gable and a teal tiled roof.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
+  },
+  "expand-mushroom-cottage": {
+    "source": "Concept/v0.35/building-architecture/imagegen-candidates/expand-mushroom-cottage-source.png",
+    "prompt": "Shared V4 Lanternroot architecture: cardinal top-down gameplay camera; one broad, nearly flat front facade turned slightly toward the camera; centered entrance at screen-bottom; roof ridge receding gently to screen-top; no side wall or side windows. Crisp pixel clusters, dark plum outline, palette-compatible colors. Show one complete isolated building on transparency with no ground, scenery, person, detached prop, frame, text or cast shadow. Subject: A russet mushroom-cap cottage with rounded shingles, a stone doorway and a bright timber facade.",
+    "tool": "ChatGPT built-in image_gen",
+    "prompt_record": "Reproducible design brief; concise documentation, not a verbatim prompt transcript."
   }
 }

@@ -49,6 +49,42 @@ func test_a_house_is_solid_but_its_door_leads_inside() -> void:
 	assert_that(warp.at).is_equal(Vector2i(2, 3))
 
 
+func test_a_building_can_leave_its_roof_walkable_while_keeping_its_walls_solid() -> void:
+	var data: Dictionary = DATA.duplicate(true)
+	var building: Dictionary = data.objects[0]
+	building["solid_rows"] = [1]
+	var built := OverworldMap.build(data, TERRAIN)
+	assert_array(built.errors).is_empty()
+	var map: Dictionary = built.map
+	assert_bool(OverworldMap.blocked(map, Vector2i(0, 1))).is_false()
+	assert_bool(OverworldMap.blocked(map, Vector2i(0, 2))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(1, 2))).is_false()
+	assert_that(OverworldMap.warp_at(map, Vector2i(1, 2)).map).is_equal("cottage")
+
+
+func test_a_building_can_use_sparse_collision_for_a_tree_trunk_and_roots() -> void:
+	var data: Dictionary = DATA.duplicate(true)
+	var building: Dictionary = data.objects[0]
+	building["solid_cells"] = [[0, 0], [0, 1], [1, 1]]
+	var built := OverworldMap.build(data, TERRAIN)
+	assert_array(built.errors).is_empty()
+	var map: Dictionary = built.map
+	assert_bool(OverworldMap.blocked(map, Vector2i(0, 1))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(0, 2))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(1, 2))).is_false()
+	assert_bool(OverworldMap.blocked(map, Vector2i(1, 1))).is_false()
+
+
+func test_an_empty_collision_mask_keeps_its_linked_door() -> void:
+	var data: Dictionary = DATA.duplicate(true)
+	(data.objects[0] as Dictionary)["solid_cells"] = []
+	var built := OverworldMap.build(data, TERRAIN)
+	assert_array(built.errors).is_empty()
+	assert_bool(OverworldMap.blocked(built.map, Vector2i(0, 1))).is_false()
+	assert_bool(OverworldMap.blocked(built.map, Vector2i(1, 2))).is_false()
+	assert_str(OverworldMap.warp_at(built.map, Vector2i(1, 2)).map).is_equal("cottage")
+
+
 func test_signs_block_and_flowers_do_not() -> void:
 	var map := _map()
 	assert_bool(OverworldMap.blocked(map, Vector2i(5, 0))).is_true()
@@ -71,10 +107,17 @@ func test_off_the_map_is_blocked_and_ahead_follows_facing() -> void:
 func test_mistakes_are_reported() -> void:
 	var broken := DATA.duplicate(true)
 	broken.ground[1] = "..?"
+	var building: Dictionary = broken.objects[0]
+	building["solid_rows"] = [2]
 	broken.objects.append({"kind": "prop", "at": [5, 0]})
 	broken.objects.append({"kind": "dragon", "at": [1, 0]})
 	var errors: Array = OverworldMap.build(broken, TERRAIN).errors
 	assert_bool(errors.any(func(e: String) -> bool: return e.contains("is 3 wide"))).is_true()
 	assert_bool(errors.any(func(e: String) -> bool: return e.contains("not in the legend"))).is_true()
+	assert_bool(errors.any(func(e: String) -> bool: return e.contains("solid row outside its footprint"))).is_true()
+	building.erase("solid_rows")
+	building["solid_cells"] = [[2, 2]]
+	var bad_cell_errors: Array = OverworldMap.build(broken, TERRAIN).errors
+	assert_bool(bad_cell_errors.any(func(e: String) -> bool: return e.contains("solid cell outside its footprint"))).is_true()
 	assert_bool(errors.any(func(e: String) -> bool: return e.contains("two things stand on"))).is_true()
 	assert_bool(errors.any(func(e: String) -> bool: return e.contains("unknown kind dragon"))).is_true()

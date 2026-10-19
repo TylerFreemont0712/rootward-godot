@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-lighthouse",
+  "kind": "building",
+  "what": "a tall lighthouse keeper house with an integrated teal beacon tower",
+  "footprint": [
+    6,
+    9
+  ],
+  "ramps": {
+    "walls": "stone",
+    "roof": "cloth_teal",
+    "trim": "cloth_coral",
+    "base": "cobble",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-lighthouse-source.png"
+  },
+  "door": [
+    3,
+    8
+  ]
+}

@@ -1,0 +1,124 @@
+// Morrow's old stones (Concept/v0.4/05, 2.6): reading code. Each stage has an old stone in its Hints, a short piece of code
+// to read from the top. answer1(), answer2() and answer3() give back what that stone gives, the value its code ends with.
+// Read it line by line, keep track of what each name holds, and do not run it in your head all at once.
+{
+  "id": "stones",
+  "name": "The Old Stones",
+  "title": "Morrow's old stones",
+  "giver": "necromancer",
+  "built_line": "The old stones rest, read at last.",
+  "entry": {"python": "answer1", "javascript": "answer1"},
+  "params": [],
+  "gives": {"meaning": "What the old stone gives back: the value its code ends with, as if you had run it.", "example": "\"cat\""},
+  "starter": {"python": "stones.starter.py", "javascript": "stones.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def answer1():",
+        "    return {first_value}",
+        "",
+        "def answer2():",
+        "    return {second_value}",
+        "",
+        "def answer3():",
+        "    return {third_value}"
+      ],
+      "javascript": [
+        "function answer1() {",
+        "  return {first_value};",
+        "}",
+        "",
+        "function answer2() {",
+        "  return {second_value};",
+        "}",
+        "",
+        "function answer3() {",
+        "  return {third_value};",
+        "}"
+      ]
+    },
+    "slots": {
+      "first_value": {"label": "gives", "choices": ["5", "6", "3"]},
+      "second_value": {"label": "gives", "choices": ["\"short\"", "\"long\"", "\"none\""], "stage": 1},
+      "third_value": {"label": "gives", "choices": ["[1, 2, 3]", "[3, 2, 1]", "[]"], "stage": 2}
+    },
+    "toggles": {},
+    "start": {"slots": {"first_value": 0, "second_value": 0, "third_value": 0}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "stones-1",
+      "goal": "Read the old stone in the Hints, and give back what it gives.",
+      "judge": "equals",
+      "words": {
+        "python": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "total = 0\nfor n in [1, 2, 3]:\n    total += n"}
+        ],
+        "javascript": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "let total = 0;\nfor (const n of [1, 2, 3]) {\n  total += n;\n}"}
+        ]
+      },
+      "cases": [
+        {"args": [], "want": 6, "say": "the first old stone"}
+      ],
+      "hints": [
+        "Read the old stone from the top, one line at a time. Before the loop starts, what does total hold?",
+        "The loop does its indented line once for each number in the list. Each time, what does total become?",
+        "Write down total after each number. When the loop has no numbers left, what does total hold? Give that back."
+      ]
+    },
+    {
+      "flag": "stones-2",
+      "goal": "Read the next old stone in the Hints, and give back what it gives.",
+      "unlocked_by": {"flag": "stones-1"},
+      "entry": {"python": "answer2", "javascript": "answer2"},
+      "judge": "equals",
+      "words": {
+        "python": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "word = \"lantern\"\nanswer = \"short\"\nif len(word) > 4:\n    answer = \"long\""}
+        ],
+        "javascript": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "let word = \"lantern\";\nlet answer = \"short\";\nif (word.length > 4) {\n  answer = \"long\";\n}"}
+        ]
+      },
+      "cases": [
+        {"args": [], "want": "long", "say": "the second old stone"}
+      ],
+      "hints": [
+        "Read the old stone from the top. How many letters are in the word?",
+        "The if asks a question. Is that question True or False for this word? If it is True, which line runs?",
+        "Whatever answer holds at the very end of the stone is what it gives back. Which line was the last one to change it?"
+      ]
+    },
+    {
+      "flag": "stones-3",
+      "goal": "Read the last old stone in the Hints, and give back what it gives.",
+      "unlocked_by": {"flag": "stones-2"},
+      "entry": {"python": "answer3", "javascript": "answer3"},
+      "judge": "equals",
+      "words": {
+        "python": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "items = []\nfor n in [1, 2, 3]:\n    items.insert(0, n)"}
+        ],
+        "javascript": [
+          {"term": "The old stone", "meaning": "An old piece of code. Read it from the top, one line at a time, and keep track of what each name holds.", "example": "const items = [];\nfor (const n of [1, 2, 3]) {\n  items.unshift(n);\n}"}
+        ]
+      },
+      "cases": [
+        {"args": [], "want": [3, 2, 1], "say": "the last old stone"}
+      ],
+      "hints": [
+        "Read the old stone from the top. What is items before the loop starts?",
+        "The loop does its line once for each number. That line puts the number at the front of items. After the first number, what is in items?",
+        "Do the same for each number in turn, and keep track of the list after every step. What does it hold at the end?"
+      ]
+    }
+  ],
+  "advice": {
+    "nothing": "The old stone gives something back, and yours gave back {got}. Read it to the end, and give back what its last line leaves.",
+    "wrong": "Your answer {got} is not what the old stone gives. Trace it again, one line at a time, and write down what each name holds.",
+    "wrong-type": "Your answer {got} is the wrong kind of thing. Look at what kind of value the last line of the old stone leaves behind.",
+    "wrong-length": "Your list {got} has the wrong number of things. Each time the loop goes round, think about what it adds.",
+    "wrong-item": "Your list {got} is not the list the old stone makes. Trace how the list grows one item at a time: which item goes in first?"
+  }
+}

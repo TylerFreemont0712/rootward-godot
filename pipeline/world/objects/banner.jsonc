@@ -1,0 +1,16 @@
+// A tall banner on a pole by the square (2 placements): a red cloth hanging from a crossbar, a gold finial.
+{
+ "id": "banner",
+ "kind": "prop",
+ "what": "a tall wooden pole with a hanging red cloth banner with a gold sun and a gold finial on top",
+ "footprint": [1, 1],
+ "ramps": {"pole": "wood", "cloth": "cloth_red", "trim": "gold", "base": "stone"},
+ "parts": [
+  {"shape": "box", "at": [0.3, 0.3, 0], "size": [0.4, 0.4, 0.12], "ramp": "base", "shade": 1},
+  {"shape": "box", "at": [0.44, 0.44, 0.12], "size": [0.12, 0.12, 1.95], "ramp": "pole", "shade": 2},
+  {"shape": "box", "at": [0.14, 0.43, 1.9], "size": [0.72, 0.12, 0.1], "ramp": "pole", "shade": 2},
+  {"shape": "box", "at": [0.2, 0.34, 1.15], "size": [0.6, 0.08, 0.75], "ramp": "cloth"},
+  {"shape": "box", "at": [0.2, 0.32, 1.1], "size": [0.6, 0.1, 0.08], "ramp": "trim"},
+  {"shape": "ball", "at": [0.41, 0.41, 2.07], "size": [0.18, 0.18, 0.18], "ramp": "trim"}
+ ]
+}

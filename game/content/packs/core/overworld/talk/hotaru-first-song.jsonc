@@ -1,0 +1,27 @@
+// Hotaru's beat (v0.4): the first time a song is chosen in the music box (music-played).
+{
+  "id": "hotaru-first-song",
+  "start": [
+    {
+      "goto": "song"
+    }
+  ],
+  "nodes": {
+    "song": {
+      "lines": [
+        {
+          "text": "Music! In the Warm Hearth! Even the soup is dancing.",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "Those song names came from your code. Marta will hum all week.",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "music-told"
+      ]
+    }
+  }
+}

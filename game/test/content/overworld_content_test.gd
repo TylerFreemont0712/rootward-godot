@@ -1,7 +1,8 @@
 extends GdUnitTestSuite
 ## Lanternroot's overworld content, checked whole (ADR-0061): the world loads with no errors, every townsperson has a
-## talk, every talk reads to its end, every door leads to a map and a cell on it, every person on a map is a townsperson
-## who stands on open ground alone, every prop or sign with a talk finds that talk, and each start can be walked on.
+## talk, every talk reads to its end, every door leads to a map and a cell on it that can be walked on, every person
+## on a map is a townsperson who stands on open ground alone, every prop or sign with a talk finds that talk, each
+## start can be walked on, and every ground row is as wide as its map.
 
 const MAPS := "res://content/packs/core/overworld/maps"
 const TALKING: Array[String] = ["prop", "sign"]
@@ -65,8 +66,34 @@ func test_every_door_leads_to_a_map_and_a_cell_on_it() -> void:
 				bad.append("%s: the door at %s leads to %s, which is no map" % [map_id, cell, to.map])
 			elif not OverworldMap.inside(target, OverworldMap.cell_of(to.at)):
 				bad.append("%s: the door at %s leads to %s at %s, off that map" % [map_id, cell, to.map, to.at])
+			elif OverworldMap.blocked(target, OverworldMap.cell_of(to.at)):
+				bad.append(
+					"%s: the door at %s leads to %s at %s, which cannot be walked on" % [map_id, cell, to.map, to.at]
+				)
 	assert_array(bad).override_failure_message("bad doors: %s" % [bad]).is_empty()
 	assert_int(doors).override_failure_message("the town should have doors to check").is_greater(0)
+
+
+## Every map's ground is as wide as the map says, row by row, and as high, so no row can shift the cells after it. A
+## built map keeps the kind of each cell, not the characters as written, so the rows are read from the files.
+func test_every_ground_row_is_as_wide_as_its_map() -> void:
+	assert_int(_maps().size()).override_failure_message("the world should have maps to check").is_greater(0)
+	var bad: Array[String] = []
+	for map_id: String in _maps():
+		var map: Dictionary = _maps()[map_id]
+		var parsed := Jsonc.parse_file(MAPS.path_join("%s.jsonc" % map_id))
+		var reason := String(parsed.get("error", ""))
+		assert_bool(bool(parsed.ok)).override_failure_message("%s does not parse: %s" % [map_id, reason]).is_true()
+		if not bool(parsed.ok):
+			continue
+		var rows: Array = (parsed.value as Dictionary).get("ground", [])
+		if rows.is_empty() or rows.size() != int(map.height):
+			bad.append("%s has %d ground rows, the map is %d high" % [map_id, rows.size(), int(map.height)])
+		for y in rows.size():
+			var row := String(rows[y])
+			if row.length() != int(map.width):
+				bad.append("%s: ground row %d is %d wide, the map is %d" % [map_id, y, row.length(), int(map.width)])
+	assert_array(bad).override_failure_message("ground rows that do not fit their map: %s" % [bad]).is_empty()
 
 
 func test_every_person_on_a_map_is_one_of_the_townsfolk() -> void:
@@ -139,6 +166,25 @@ func test_the_lanternroot_start_is_walkable() -> void:
 		. override_failure_message("lanternroot starts on %s, which is blocked" % [map.start])
 		. is_false()
 	)
+
+
+func test_buildings_block_walls_but_leave_the_back_roof_margin_open() -> void:
+	var map: Dictionary = _maps().lanternroot
+	assert_bool(OverworldMap.blocked(map, Vector2i(13, 40))).is_false()
+	assert_bool(OverworldMap.blocked(map, Vector2i(10, 43))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(15, 43))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(13, 42))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(13, 44))).is_false()
+	assert_that(OverworldMap.warp_at(map, Vector2i(13, 44)).map).is_equal("home")
+
+
+func test_lantern_tree_collision_tracks_its_trunk_and_root_mass_only() -> void:
+	var map: Dictionary = _maps().lanternroot
+	assert_bool(OverworldMap.blocked(map, Vector2i(36, 28))).is_false()
+	assert_bool(OverworldMap.blocked(map, Vector2i(37, 29))).is_false()
+	assert_bool(OverworldMap.blocked(map, Vector2i(38, 30))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(37, 31))).is_true()
+	assert_bool(OverworldMap.blocked(map, Vector2i(39, 31))).is_true()
 
 
 func test_every_maps_start_is_walkable() -> void:

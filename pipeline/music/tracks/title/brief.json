@@ -2,19 +2,19 @@
   "id": "title",
   "out": "music-title",
   "title": "Rootward",
-  "role": "The title screen and the menus between runs: the main theme, in full. Warm, wondrous, a little melancholy; it should make a player want to go down again.",
-  "theme": "The main theme's motif is D A D F# E D (1 5 1 3 2 1): every other track quotes it, in minor, inverted, slowed or driven.",
-  "reference": "The old music-title was a pleasant meander (it repeated almost nothing: 0.11) with a centroid of 490 Hz and nothing above 5 kHz: no tune to remember, and muffled.",
-  "bpm": 84,
+  "role": "The title screen and the menus between runs: the main theme, in full. A confident anthem with a groove from its first bar: the game's front door, bright and solid, that makes a player want to go down again.",
+  "theme": "The motif (1 5 1 3 2 1: D A D F# E D) is the hook: whistled in the intro, stated boldly in the verse, climbed a fourth in the chorus (G D G B A G), on B minor in the chorus's fifth bar, an octave up in the final chorus, and sung down as the bridge's top line (F# E D).",
+  "reference": "The old music-title was a harp-and-cello meander with no pulse to tap: it repeated almost nothing (0.11), had a centroid of 490 Hz and nothing above 5 kHz, so it sounded like a lullaby, and the player found the menus too lullaby-like. This take answers that with a groove from bar one (strummed guitar, upright bass and drums at 104 BPM), a motif that returns as the hook of every section, a fiddle and flute melody in place of the harp, and a brass final chorus for a fuller, brighter sound.",
+  "bpm": 104,
   "key": "D major",
   "meter": "4/4",
-  "form": "silence 1, intro 4 (harp arpeggios), verse 8 (the theme, solo), verse 8 (the theme, strings), bridge 8 (B minor, rising), chorus 8 (the theme an octave up, full), outro 4",
+  "form": "silence 1, intro 4 (a whistled hook over the groove, which starts with the first bar), verse 8 (the motif, bold, fiddle and guitar), verse 8 (answered, flute and strings), pre-chorus 4 (the lift), chorus 8 (the hook, full band), bridge 8 (G major, rising, horns), chorus 8 (the final chorus: an octave up, horns, big), outro 4 (back to the tonic)",
   "loop": {
     "from": "verse",
     "to": "chorus",
-    "occurrence": 1
+    "occurrence": 2
   },
-  "style": "orchestral folk fantasy main theme, video game title music, instrumental, no vocals, warm solo cello and flute melody, plucked harp arpeggios, gentle strings swelling, soft timpani, hopeful and wondrous, bright clear recording, D major, 84 BPM",
+  "style": "lantern folk anthem, video game title music, instrumental, no vocals, strummed acoustic guitar, upright bass, live drums with a steady foot-tapping backbeat, fiddle and wooden flute melody, accordion, bold French horns in the final chorus, confident and warm, punchy full bright mix, D major, 104 BPM",
   "lyrics": "",
-  "pick": "yue2-1000-1100-s32-76c210"
+  "pick": "yue2-comfy-1000-1100-s32-ffb6ca"
 }

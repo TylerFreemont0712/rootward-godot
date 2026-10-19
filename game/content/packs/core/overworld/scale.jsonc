@@ -1,0 +1,12 @@
+// The overworld's one scale (ADR-0064), for the art pipelines (pipeline/animation/cast.py, pipeline/world/). The game
+// reads the same numbers from OverworldScale, and game/test/content/overworld_scale_test.gd fails if the two disagree.
+{
+ // One map cell, in world pixels.
+ "tile": 40,
+ // The world pixels on screen at the base scale: 2x on a 2560 x 1440 panel, 32 x 18 tiles.
+ "view": [1280, 720],
+ // A person's frame (the cast's sheets): about two tiles tall standing.
+ "person": [64, 96],
+ // The tile that art made before ADR-0064 was drawn for. Art records its own tile; anything else is scaled up.
+ "old_tile": 16
+}

@@ -1,0 +1,17 @@
+// A window on the inside wall, letting in the day. The frame stands a little behind the glass and the bars in front of
+// it: faces in the same plane fight in the render and come out black.
+{
+ "id": "window",
+ "kind": "furniture",
+ "what": "a small four-pane wooden window with bright pale blue daylight glass",
+ "footprint": [1, 1],
+ "ramps": {"frame": "wood", "glass": "cloth_sky"},
+ // Lower than furniture's 0.55, so the pale glass stays pale.
+ "denoise": 0.42,
+ "parts": [
+  {"shape": "box", "at": [0.12, 0.04, 0.12], "size": [0.76, 0.04, 0.76], "ramp": "frame"},
+  {"shape": "box", "at": [0.2, 0.02, 0.2], "size": [0.6, 0.02, 0.6], "ramp": "glass", "shade": 0},
+  {"shape": "box", "at": [0.47, 0.0, 0.2], "size": [0.06, 0.02, 0.6], "ramp": "frame"},
+  {"shape": "box", "at": [0.2, 0.0, 0.47], "size": [0.6, 0.02, 0.06], "ramp": "frame"}
+ ]
+}

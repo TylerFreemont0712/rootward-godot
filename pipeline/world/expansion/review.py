@@ -68,8 +68,15 @@ def render_group(group: str, metadata_file: str) -> tuple[Path, list[str]]:
             with Image.open(image_path) as opened:
                 sprite = opened.convert("RGBA")
             max_w, max_h = CELL_W - 28, CELL_H - 116
-            scale = 3 if sprite.width * 3 <= max_w and sprite.height * 3 <= max_h else 2
-            sprite = sprite.resize((sprite.width * scale, sprite.height * scale), Image.Resampling.NEAREST)
+            scale = min(3, max_w // sprite.width, max_h // sprite.height)
+            if scale >= 1:
+                sprite = sprite.resize((sprite.width * scale, sprite.height * scale), Image.Resampling.NEAREST)
+            else:
+                factor = min(max_w / sprite.width, max_h / sprite.height)
+                sprite = sprite.resize(
+                    (max(1, round(sprite.width * factor)), max(1, round(sprite.height * factor))),
+                    Image.Resampling.NEAREST,
+                )
             px = x + (CELL_W - sprite.width) // 2
             py = y + 18 + (max_h - sprite.height) // 2
             sheet.alpha_composite(sprite, (px, py))

@@ -1,0 +1,21 @@
+// Authored imagegen timber, registered on shared tile joins by game/tools/import_town_boundaries.gd.
+{
+  "id": "fencepost",
+  "kind": "prop",
+  "what": "a crafted chestnut timber fence with capped posts and matching rails",
+  "footprint": [
+    1,
+    1
+  ],
+  "pad": 0,
+  "above": 1.5,
+  "ramps": {
+    "timber": "wood",
+    "iron": "steel",
+    "brass": "gold"
+  },
+  "source": {
+    "registered": true,
+    "image": "Concept/v0.3/Update/town-polish/registered/fencepost.png"
+  }
+}

@@ -1,0 +1,15 @@
+// The little lantern on the desk at home (1 placement, sinking by -7 now): a small glass cage with a flame in it.
+{
+ "id": "lantern",
+ "kind": "furniture",
+ "what": "a small glowing glass lantern with an iron frame and a ring handle",
+ "footprint": [1, 1],
+ "ramps": {"iron": "steel", "light": "glow"},
+ "parts": [
+  {"shape": "box", "at": [0.28, 0.28, 0], "size": [0.44, 0.44, 0.07], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.31, 0.31, 0.07], "size": [0.38, 0.38, 0.36], "ramp": "light", "shade": 1},
+  {"shape": "box", "at": [0.26, 0.26, 0.43], "size": [0.48, 0.48, 0.06], "ramp": "iron", "shade": 2},
+  {"shape": "hip", "at": [0.3, 0.3, 0.49], "size": [0.4, 0.4, 0.12], "ramp": "iron", "shade": 2},
+  {"shape": "ball", "at": [0.42, 0.42, 0.6], "size": [0.16, 0.16, 0.1], "ramp": "iron", "shade": 1}
+ ]
+}

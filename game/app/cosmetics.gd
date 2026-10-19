@@ -7,7 +7,6 @@ extends RefCounted
 const PATH := "res://content/cosmetics.jsonc"
 
 static var _catalog: Dictionary = {}
-static var _japanese: Dictionary = {}
 
 
 static func catalog() -> Dictionary:
@@ -40,6 +39,4 @@ static func options(slot: String) -> Array[Dictionary]:
 static func text(english: String) -> String:
 	if Game.profile.get("preferred_language", "en") != "ja":
 		return english
-	if _japanese.is_empty():
-		_japanese = ContentLocale.load_overlay("ja").strings
-	return String(_japanese.get(english, english))
+	return String(Text.translations().get(english, english))

@@ -1,29 +1,17 @@
-// The noticeboard in the square (ADR-0061): the work the villagers pin up. Its first choice opens the letters screen.
+// The noticeboard in the square (ADR-0061): a four-line sign with no choices. Reading it sets read-notices, which the
+// archivist's offer and the hello quest's last step need.
 {
   "id": "noticeboard",
   "start": [{"goto": "notices"}],
   "nodes": {
     "notices": {
       "lines": [
-        {"text": "A sheet pinned at the top, its corners curling: 'Lost: one spare lantern. Found: it was on the bench all along.'"},
-        {"text": "Below it, in careful handwriting: 'Letters for the new tinker. Each one asks for one function. Bring them back working.'"}
+        {"text": "LANTERNROOT NOTICES."},
+        {"text": "Lost: one spare lantern. Found: it was on the bench all along."},
+        {"text": "Lost: one firefly. Found: the same firefly. (Lumen)"},
+        {"text": "The Lantern Festival is coming. Bring something that glows."}
       ],
-      "set": ["read-notices"],
-      "choices": [
-        {"text": "Take the letters", "goto": "to_letters"},
-        {"text": "Not yet", "goto": "later"}
-      ]
-    },
-    "to_letters": {
-      "lines": [
-        {"text": "The letters are on the workbench. Let's see what the villagers need.", "speaker": "hotaru", "mood": "happy"}
-      ],
-      "open": "letters"
-    },
-    "later": {
-      "lines": [
-        {"text": "Whenever you're ready. The letters will keep.", "speaker": "hotaru"}
-      ]
+      "set": ["read-notices"]
     }
   }
 }

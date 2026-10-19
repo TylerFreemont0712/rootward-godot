@@ -1,6 +1,31 @@
 extends GdUnitTestSuite
 
 
+func test_japanese_editions_cover_the_same_keys_and_keep_format_and_code_tokens() -> void:
+	var overlay := ContentLocale.load_overlay("ja")
+	assert_array(overlay.diagnostics).is_empty()
+	assert_int(overlay.kanji_strings.size()).is_equal(overlay.strings.size())
+	var changed := 0
+	var mismatches: Array[String] = []
+	var slots := RegEx.create_from_string("%[-+0-9.]*[sdf]|\\{[A-Za-z_][A-Za-z_0-9]*\\}|\\{[0-9]+\\}")
+	var quoted := RegEx.create_from_string("`[^`]*`|\"[^\"\\n]*\"")
+	for english: String in overlay.strings:
+		var kana := String(overlay.strings[english])
+		var adult := String(overlay.kanji_strings.get(english, ""))
+		changed += 1 if kana != adult else 0
+		for regex: RegEx in [slots, quoted]:
+			var before: Array[String] = []
+			var after: Array[String] = []
+			for found: RegExMatch in regex.search_all(kana):
+				before.append(found.get_string())
+			for found: RegExMatch in regex.search_all(adult):
+				after.append(found.get_string())
+			if before != after:
+				mismatches.append(english + " : " + str(before) + " => " + str(after))
+	assert_array(mismatches).is_empty()
+	assert_int(changed).is_greater(2000)
+
+
 func test_japanese_loads_and_translates_prose_only() -> void:
 	var overlay := ContentLocale.load_overlay("ja")
 	assert_array(overlay.diagnostics).is_empty()

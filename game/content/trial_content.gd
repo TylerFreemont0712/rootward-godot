@@ -13,7 +13,7 @@ static func load_trial(locale := "en") -> Dictionary:
 	if not trial.has("chapters") or not trial.has("steps") or (trial.steps as Array).is_empty():
 		return {"ok": false, "error": "Pip's Trial has no chapters or steps."}
 	if locale == "ja":
-		var translations: Dictionary = ContentLocale.load_overlay("ja").strings
+		var translations := Text.translations()
 		if trial.has("loss_hint"):
 			trial.loss_hint = translations.get(trial.loss_hint, trial.loss_hint)
 		for chapter: Dictionary in trial.chapters:

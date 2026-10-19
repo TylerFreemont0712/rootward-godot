@@ -1,0 +1,31 @@
+// Hotaru's beat (v0.4): the first evening in town (clock-evening), when the lane's lamps start to glow.
+{
+  "id": "hotaru-evening",
+  "start": [
+    {
+      "goto": "evening"
+    }
+  ],
+  "nodes": {
+    "evening": {
+      "lines": [
+        {
+          "text": "Evening! The sky turned peach, and the lane is glowing!",
+          "speaker": "hotaru",
+          "mood": "happy"
+        },
+        {
+          "text": "The lamps know it's evening now. Your clock told them.",
+          "speaker": "hotaru"
+        },
+        {
+          "text": "Lumen will want to see this. She has waited all day. Which is only a few minutes.",
+          "speaker": "hotaru"
+        }
+      ],
+      "set": [
+        "evening-told"
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+// A small hand cart heaped with hay (catalog only so far): one cart, so the cut keeps one thing.
+{
+ "id": "haycart",
+ "kind": "prop",
+ "what": "a small wooden hand cart heaped with golden hay, two spoked wheels",
+ "footprint": [1, 1],
+ "ramps": {"bed": "wood", "hay": "thatch", "rims": "steel"},
+ "parts": [
+  {"shape": "box", "at": [0.1, 0.2, 0.35], "size": [0.8, 0.6, 0.3], "ramp": "bed"},
+  {"shape": "ball", "at": [0.12, 0.22, 0.55], "size": [0.76, 0.56, 0.45], "ramp": "hay"},
+  {"shape": "ball", "at": [0.14, 0.04, 0.0], "size": [0.42, 0.08, 0.42], "ramp": "rims", "shade": 2},
+  {"shape": "ball", "at": [0.18, 0.02, 0.04], "size": [0.34, 0.06, 0.34], "ramp": "bed", "shade": 1},
+  {"shape": "box", "at": [0.88, 0.45, 0.45], "size": [0.12, 0.08, 0.06], "ramp": "bed", "shade": 2}
+ ]
+}

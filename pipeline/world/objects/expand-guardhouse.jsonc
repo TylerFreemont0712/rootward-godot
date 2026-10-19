@@ -1,0 +1,24 @@
+// ChatGPT ImageGen building source in the V4 Lanternroot camera.
+{
+  "id": "expand-guardhouse",
+  "kind": "building",
+  "what": "a tall village guardhouse with a rust red roof and watch windows",
+  "footprint": [
+    6,
+    8
+  ],
+  "ramps": {
+    "walls": "stone",
+    "roof": "cloth_maroon",
+    "trim": "gold",
+    "base": "cobble",
+    "window": "glow"
+  },
+  "source": {
+    "image": "Concept/v0.35/building-architecture/imagegen-candidates/expand-guardhouse-source.png"
+  },
+  "door": [
+    3,
+    7
+  ]
+}

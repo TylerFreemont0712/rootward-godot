@@ -315,8 +315,9 @@ func _mount_character() -> void:
 	_show_overlay(character, false, false, true)
 
 
+## Lanternroot opens on its front door: the player's characters, where one is chosen or made (ADR-0061).
 func _open_lanternroot() -> void:
-	Game.go(Game.OVERWORLD)
+	Game.go(Game.CHARACTERS)
 
 
 func _open_profiles() -> void:
@@ -359,7 +360,7 @@ func _open_profiles() -> void:
 func _set_locale(locale: String) -> void:
 	Game.profile.preferred_language = locale
 	Game.profiles.save_profile(Game.profile)
-	Text.setup(locale)
+	Text.setup(locale, String(Game.profile.get("japanese_reading", "hiragana")))
 	_build(true)
 
 

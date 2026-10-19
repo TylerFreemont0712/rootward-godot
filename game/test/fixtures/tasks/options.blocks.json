@@ -1,0 +1,8 @@
+{
+  "stages": [
+    {
+      "slots": {"music_label": 1, "sound_label": 1, "text_speed_label": 1, "track_label": 2, "fullscreen_label": 1},
+      "toggles": ["music", "sound", "text_speed", "track", "fullscreen"]
+    }
+  ]
+}

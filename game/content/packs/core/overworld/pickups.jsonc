@@ -1,0 +1,28 @@
+// The props that give an item (Concept/v0.4/02, section 8): each pickup is a cell of a prop's footprint (a solid one, or
+// a walkable crop row), the item
+// it gives, and the seconds of play before it gives again. Fruit and flowers regrow in 240 seconds, the honey in 600.
+{
+ "lanternroot": [
+  {"at": [62, 14], "item": "apple", "regrow": 240},
+  {"at": [63, 15], "item": "apple", "regrow": 240},
+  {"at": [50, 17], "item": "apple", "regrow": 240},
+  {"at": [53, 17], "item": "apple", "regrow": 240},
+  {"at": [8, 39], "item": "carrot", "regrow": 240},
+  {"at": [9, 39], "item": "turnip", "regrow": 240},
+  {"at": [8, 40], "item": "pumpkin", "regrow": 240},
+  {"at": [9, 41], "item": "berries", "regrow": 240},
+  {"at": [4, 5], "item": "mushroom", "regrow": 240},
+  {"at": [9, 11], "item": "mushroom", "regrow": 240},
+  {"at": [4, 42], "item": "cabbage", "regrow": 240},
+  {"at": [5, 42], "item": "cabbage", "regrow": 240},
+  {"at": [6, 43], "item": "cabbage", "regrow": 240},
+  {"at": [3, 43], "item": "cabbage", "regrow": 240},
+  {"at": [9, 43], "item": "honey", "regrow": 600},
+  {"at": [34, 23], "item": "flower", "regrow": 240},
+  {"at": [34, 25], "item": "flower", "regrow": 240},
+  {"at": [34, 27], "item": "flower", "regrow": 240},
+  {"at": [3, 14], "item": "pinecone", "regrow": 240},
+  {"at": [28, 43], "item": "pebble", "regrow": 240}
+ ],
+ "home": []
+}

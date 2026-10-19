@@ -1,0 +1,68 @@
+X:1
+T:Lanternroot Walk
+M:4/4
+L:1/16
+Q:1/4=110
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:G
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"G"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+z16|z16|z16|z12d2f2|
+% verse
+V: Vocal
+"G"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+g2d2g2b2a2g2f2e2|c4e4g4e4|b2a2g2b2d'4g4|a2f2d2f2a4f4|
+V: Vocal
+"Em"z16|"C"z16|"D"z16|"G"z16|
+V: Ins
+e2g2b2e'2d'4b4|c'4g4e4c4|d2f2a2d'2a4f4|g8f4g4|
+% chorus
+V: Vocal
+"C"z16|"D"z16|"Em"z16|"C"z16|
+V: Ins
+c'3b1a2g2e'4c'4|d'4f'2e'2d'4a4|e'3d'1b2g2e'4b4|g'4e'4c'4e'4|
+V: Vocal
+"G"z16|"D"z16|"C"z16|"G"z16|
+V: Ins
+d'3b1g2b2d'4g'4|f'4d'4a4f'4|e'2c'2g2e2c'4g4|g'8d'4g4|
+% bridge
+V: Vocal
+"Em"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+b8a4g4|e4c4e8|d4g4b4a4|f4d8f4|
+V: Vocal
+"Em"z16|"C"z16|"D"z16|"G"z16|
+V: Ins
+g8e4b4|c4e4g8|a3f1d4f4a4|g8d8|
+% verse
+V: Vocal
+"G"z16|"C"z16|"G"z16|"D"z16|
+V: Ins
+g2d2g2b2a2g2f2e2|c4e4g4e4|b2a2g2b2d'4g4|a2f2d2f2a4f4|
+V: Vocal
+"Em"z16|"C"z16|"D"z16|"G"z16|
+V: Ins
+e2g2b2e'2d'4b4|c'4g4e4c4|d2f2a2d'2a4f4|g8f4g4|
+% chorus
+V: Vocal
+"C"z16|"D"z16|"Em"z16|"C"z16|
+V: Ins
+c'3b1a2g2e'4c'4|d'4f'2e'2d'4a4|e'3d'1b2g2e'4b4|g'4e'4c'4e'4|
+V: Vocal
+"G"z16|"D"z16|"C"z16|"G"z16|
+V: Ins
+d'3b1g2b2d'4g'4|f'4d'4a4f'4|e'2c'2g2e2c'4g4|g'8d'4g4|
+% outro
+V: Vocal
+"G"z16|"C"z16|"D"z16|"G"z16|
+V: Ins
+b4a4g8|c'4g4e4g4|f4d4a4f4|g16|

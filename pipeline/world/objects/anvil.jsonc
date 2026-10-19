@@ -1,0 +1,17 @@
+// The smith's anvil on its stump (2 placements): a wide flat face and a horn on a narrow waist, so it reads as an anvil
+// and not a barrel with a dark lid.
+{
+ "id": "anvil",
+ "kind": "prop",
+ "what": "a blacksmith's dark iron anvil with a long flat top face, a pointed horn at one end and a narrow waist, standing on a short wooden stump",
+ "footprint": [1, 1],
+ "ramps": {"stump": "wood", "iron": "steel"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.22, 0.2, 0], "size": [0.6, 0.6, 0.36], "ramp": "stump", "shade": 1},
+  {"shape": "box", "at": [0.3, 0.3, 0.36], "size": [0.44, 0.4, 0.1], "ramp": "iron", "shade": 3},
+  {"shape": "box", "at": [0.4, 0.34, 0.46], "size": [0.26, 0.32, 0.16], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.22, 0.26, 0.62], "size": [0.76, 0.48, 0.18], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.06, 0.32, 0.66], "size": [0.18, 0.36, 0.12], "ramp": "iron", "shade": 2},
+  {"shape": "box", "at": [0.0, 0.4, 0.69], "size": [0.1, 0.2, 0.07], "ramp": "iron", "shade": 2}
+ ]
+}

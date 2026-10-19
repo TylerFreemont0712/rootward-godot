@@ -1,0 +1,90 @@
+// The options page (Concept/v0.4/01, 5.3): the player's options() lists the rows of the town's Options page. Each row is
+// a setting ("music", "sound", "text_speed", "track" or "fullscreen") and the label the player calls it. One stage
+// (Seren, quest "options"): the page needs a row for music and one for sound, and may have the others too.
+{
+  "id": "options",
+  "name": "The Options Page",
+  "title": "Turn it up",
+  "giver": "summoner",
+  "built_line": "The Options page shows the rows your options() lists.",
+  "entry": {"python": "options", "javascript": "options"},
+  "params": [],
+  "gives": {"meaning": "The rows of the Options page: a list of dictionaries, each with a \"setting\" (what it turns) and a \"label\" (what the player calls it).", "example": "[{\"fruit\": \"apple\", \"colour\": \"red\"}]"},
+  "words": {
+    "python": [
+      {"term": "{}", "meaning": "A dictionary: pairs of a name and a value, in curly braces, with a colon between each name and its value and a comma between the pairs.", "example": "pet = {\"name\": \"Mimi\", \"animal\": \"cat\"}"},
+      {"term": "[]", "meaning": "A list: things in square brackets, in order, with commas between them.", "example": "fruit = [\"apple\", \"pear\"]"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\""}
+    ],
+    "javascript": [
+      {"term": "{}", "meaning": "An object: pairs of a name and a value, in curly braces, with a colon between each name and its value and a comma between the pairs.", "example": "const pet = {\"name\": \"Mimi\", \"animal\": \"cat\"};"},
+      {"term": "[]", "meaning": "A list: things in square brackets, in order, with commas between them.", "example": "const fruit = [\"apple\", \"pear\"];"},
+      {"term": "return", "meaning": "Gives an answer back and stops the function there.", "example": "return \"hello\";"}
+    ]
+  },
+  "starter": {"python": "options.starter.py", "javascript": "options.starter.js"},
+  "blocks": {
+    "lines": {
+      "python": [
+        "def options():",
+        "    return [",
+        "[music]        {\"setting\": \"music\", \"label\": {music_label}},",
+        "[sound]        {\"setting\": \"sound\", \"label\": {sound_label}},",
+        "[text_speed]        {\"setting\": \"text_speed\", \"label\": {text_speed_label}},",
+        "[track]        {\"setting\": \"track\", \"label\": {track_label}},",
+        "[fullscreen]        {\"setting\": \"fullscreen\", \"label\": {fullscreen_label}},",
+        "    ]"
+      ],
+      "javascript": [
+        "function options() {",
+        "  return [",
+        "[music]    {\"setting\": \"music\", \"label\": {music_label}},",
+        "[sound]    {\"setting\": \"sound\", \"label\": {sound_label}},",
+        "[text_speed]    {\"setting\": \"text_speed\", \"label\": {text_speed_label}},",
+        "[track]    {\"setting\": \"track\", \"label\": {track_label}},",
+        "[fullscreen]    {\"setting\": \"fullscreen\", \"label\": {fullscreen_label}},",
+        "  ];",
+        "}"
+      ]
+    },
+    "slots": {
+      "music_label": {"label": "music row, called", "choices": ["\"Music\"", "\"Songs\"", "\"Tunes\""]},
+      "sound_label": {"label": "sound row, called", "choices": ["\"Sound\"", "\"Noises\"", "\"Boom\""]},
+      "text_speed_label": {"label": "text speed row, called", "choices": ["\"Text speed\"", "\"Words\"", "\"Reading speed\""]},
+      "track_label": {"label": "track row, called", "choices": ["\"Music box\"", "\"Tracks\"", "\"Song list\""]},
+      "fullscreen_label": {"label": "full screen row, called", "choices": ["\"Full screen\"", "\"Big screen\"", "\"Whole screen\""]}
+    },
+    "toggles": {
+      "music": {"label": "A row for the music"},
+      "sound": {"label": "A row for the sound"},
+      "text_speed": {"label": "A row for the text speed"},
+      "track": {"label": "A row for the music box's track"},
+      "fullscreen": {"label": "A row for full screen"}
+    },
+    "start": {"slots": {}, "toggles": []}
+  },
+  "stages": [
+    {
+      "flag": "options-built",
+      "goal": "Make the Options page list a row for music and a row for sound, and any other rows you like.",
+      "judge": "options_rows",
+      "cases": [
+        {"args": [], "say": "the Options page, as your rows make it"}
+      ],
+      "hints": [
+        "The Options page is a list of rows, and each row is one thing the player can turn. What does each row need to say?",
+        "Each row is a dictionary: pairs of a name and a value, in curly braces. Every row needs a setting and a label.",
+        "Two settings must always be on the page: the music and the sound. Put a row for each of them, then any others you like."
+      ]
+    }
+  ],
+  "advice": {
+    "not-list": "Your Options page should be a list of rows, in square brackets, but it gave back {got}.",
+    "not-row": "Item {index} in your list isn't a row (the first item is 0, as code counts). A row needs a setting and a label, in curly braces.",
+    "unknown-setting": "{name} isn't a setting the Options page knows. The settings are \"music\", \"sound\", \"text_speed\", \"track\" and \"fullscreen\".",
+    "label-empty": "The row for {name} has no label. Give it some words the player will understand, such as \"Tunes\".",
+    "label-long": "The label {got} is longer than 24 characters. Shorten it so it fits the row.",
+    "twice": "{name} has two rows. Each setting gets one row.",
+    "needs": "The Options page has no row for {name}. Music and sound always need a row."
+  }
+}

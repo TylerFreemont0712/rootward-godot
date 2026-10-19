@@ -1,0 +1,14 @@
+// The pinecone: a Bag and pickup icon (pipeline/world/README.md). A brown cone with its stalk at the bottom.
+{
+ "id": "item-pinecone",
+ "kind": "prop",
+ "what": "a single brown pine cone with overlapping scales and a short stalk, game inventory icon",
+ "footprint": [1, 1],
+ "ramps": {"scales": "wood", "band": "wood", "stalk": "wood"},
+ "parts": [
+  {"shape": "cylinder", "at": [0.44, 0.44, 0], "size": [0.12, 0.12, 0.14], "ramp": "stalk", "shade": 3},
+  {"shape": "ball", "at": [0.2, 0.2, 0.1], "size": [0.6, 0.6, 0.62], "ramp": "scales", "shade": 1},
+  {"shape": "ball", "at": [0.17, 0.17, 0.3], "size": [0.66, 0.66, 0.2], "ramp": "band", "shade": 2},
+  {"shape": "cone", "at": [0.3, 0.3, 0.7], "size": [0.4, 0.4, 0.18], "ramp": "scales", "shade": 0}
+ ]
+}

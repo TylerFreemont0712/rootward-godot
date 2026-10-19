@@ -1,0 +1,68 @@
+X:1
+T:Lanternroot Hearth
+M:4/4
+L:1/16
+Q:1/4=92
+V: Vocal clef=treble name="Vocal Melody" snm="Vocal"
+V: Ins clef=treble name="Ins Melody" snm="Inst."
+K:A
+% silence
+V: Vocal
+Z|
+V: Ins
+Z|
+% intro
+V: Vocal
+"A"z16|"D"z16|"A"z16|"E"z16|
+V: Ins
+a8c'8|a8f8|e8c8|b4g4b4e'4|
+% verse
+V: Vocal
+"A"z16|"D"z16|"A"z16|"E"z16|
+V: Ins
+a2e2a2c'2b4a4|f4d4a4f4|e4c4a4e4|g4b4e'4b4|
+V: Vocal
+"F#m"z16|"D"z16|"E"z16|"A"z16|
+V: Ins
+a4f4c4f4|a4f2d2f4d4|e4g4b4g4|a8c'4a4|
+% chorus
+V: Vocal
+"D"z16|"E"z16|"F#m"z16|"D"z16|
+V: Ins
+d'4a4f'4d'4|e'2g'2b'2g'2e'4b4|a'4f'4c'4a4|f'8d'4a4|
+V: Vocal
+"A"z16|"E"z16|"D"z16|"A"z16|
+V: Ins
+e'4c'4a4c'4|b4e'4g'8|a4f4d'8|c'4e'4a'8|
+% bridge
+V: Vocal
+"Bm"z16|"F#m"z16|"D"z16|"E"z16|
+V: Ins
+b8d'4b4|a4f4c4a4|f8d4f4|g4e4b4g4|
+V: Vocal
+"Bm"z16|"F#m"z16|"E"z16|"A"z16|
+V: Ins
+d'4b4f4d4|c'4a4f4a4|b4g4e8|a8e4a4|
+% verse
+V: Vocal
+"A"z16|"D"z16|"A"z16|"E"z16|
+V: Ins
+a2e2a2c'2b4a4|f4d4a4f4|e4c4a4e4|g4b4e'4b4|
+V: Vocal
+"F#m"z16|"D"z16|"E"z16|"A"z16|
+V: Ins
+a4f4c4f4|a4f2d2f4d4|e4g4b4g4|a8c'4a4|
+% chorus
+V: Vocal
+"D"z16|"E"z16|"F#m"z16|"D"z16|
+V: Ins
+d'4a4f'4d'4|e'2g'2b'2g'2e'4b4|a'4f'4c'4a4|f'8d'4a4|
+V: Vocal
+"A"z16|"E"z16|"D"z16|"A"z16|
+V: Ins
+e'4c'4a4c'4|b4e'4g'8|a4f4d'8|c'4e'4a'8|
+% outro
+V: Vocal
+"A"z16|"D"z16|"E"z16|"A"z16|
+V: Ins
+a4c'4e'8|d'4a4f4d4|e4g4b4e'4|a16|

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vesper / Vesper 1.5</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui, sans-serif; background: #171725; color: #eee8ff; }
+  body { max-width: 1000px; margin: 32px auto; padding: 0 20px; }
+  h1 { margin-bottom: 8px; } p { color: #c0b9cf; }
+  .controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+  button, select { font: inherit; padding: 8px 12px; border: 1px solid #817298; border-radius: 6px; background: #282238; color: inherit; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  figure { margin: 0; } canvas { display: block; width: 100%; background: #292737; border-radius: 8px; }
+  figcaption { text-align: center; padding: 10px; }
+  input[type=range] { width: min(500px, 70vw); }
+  #changed { color: #ebc280; }
+  @media (max-width: 600px) { .pair { grid-template-columns: 1fr; } }
+</style>
+<h1>Vesper / Vesper 1.5</h1>
+<p>Original design and timing. Selected damaged frames repaired; idle is unchanged.</p>
+<div class="controls">
+  <select id="clip" aria-label="Animation">
+    <option value="idle-breathe">Breathing</option>
+    <option value="cast-light">Casting</option>
+    <option value="hurt" selected>Hit reaction</option>
+  </select>
+  <button id="pause">Pause</button>
+  <label>Speed <select id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1×</option></select></label>
+</div>
+<div class="pair">
+  <figure><canvas id="original" width="400" height="350"></canvas><figcaption>Vesper — original</figcaption></figure>
+  <figure><canvas id="updated" width="400" height="350"></canvas><figcaption>Vesper 1.5 — repaired</figcaption></figure>
+</div>
+<div class="controls"><input id="frame" aria-label="Frame" type="range" min="0" max="20" value="0"><output id="position"></output><output id="changed"></output></div>
+<p id="error" role="alert"></p>
+<script src="preview-manifests.js"></script>
+<script>
+const models = window.vesperPreview;
+const sheets = {};
+const repairs = models.changedFrames || {};
+const clip = document.querySelector('#clip'), slider = document.querySelector('#frame');
+const pause = document.querySelector('#pause'), speed = document.querySelector('#speed');
+let playing = true, seconds = 0, previous;
+for (const [id, skin] of [['original', 'vesper'], ['updated', 'vesper-v1-5']]) {
+  sheets[id] = {};
+  for (const name of Object.keys(models[id].clips)) {
+    const image = new Image();
+    image.src = `../../../../game/assets/sprites/${skin}/${name}.webp`;
+    image.onerror = () => document.querySelector('#error').textContent = 'Could not load the sprite sheets. Keep this preview in its project folder.';
+    sheets[id][name] = image;
+  }
+}
+function timeAt(c, f) {
+  return c.releaseFrame === undefined ? f / c.fps : f < c.releaseFrame ? f / c.releaseFrame * .38 : .38 + (f - c.releaseFrame) / c.fps;
+}
+function frameAt(c, t) {
+  return c.releaseFrame === undefined ? Math.floor(t * c.fps) : t < .38 ? Math.floor(t / .38 * c.releaseFrame) : c.releaseFrame + Math.floor((t - .38) * c.fps);
+}
+clip.onchange = () => { seconds = 0; slider.max = models.updated.clips[clip.value].frames - 1; slider.value = 0; };
+pause.onclick = () => { playing = !playing; pause.textContent = playing ? 'Pause' : 'Play'; };
+slider.oninput = () => { playing = false; pause.textContent = 'Play'; seconds = timeAt(models.updated.clips[clip.value], Number(slider.value)) + 1e-6; };
+function tick(now) {
+  const c = models.updated.clips[clip.value];
+  if (previous !== undefined && playing) seconds += Math.min((now - previous) / 1000, .1) * Number(speed.value);
+  previous = now;
+  const cycle = timeAt(c, c.frames) + (c.loop ? 0 : .5);
+  if (seconds >= cycle) seconds %= cycle;
+  const f = Math.min(c.frames - 1, frameAt(c, seconds));
+  slider.value = f;
+  document.querySelector('#position').textContent = `Frame ${f} / ${c.frames - 1}`;
+  document.querySelector('#changed').textContent = repairs[clip.value]?.includes(f) ? 'Repaired frame' : 'Original frame retained';
+  for (const id of ['original', 'updated']) {
+    const ctx = document.querySelector(`#${id}`).getContext('2d'), sheet = sheets[id][clip.value];
+    const info = models[id].clips[clip.value], cell = models[id].frame;
+    ctx.clearRect(0, 0, 400, 350);
+    if (sheet.complete && sheet.naturalWidth) ctx.drawImage(sheet, (f % info.columns) * cell.width, Math.floor(f / info.columns) * cell.height, cell.width, cell.height, 0, 0, 400, 350);
+  }
+  requestAnimationFrame(tick);
+}
+clip.onchange();
+requestAnimationFrame(tick);
+</script>
+</html>
